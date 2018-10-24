@@ -112,24 +112,10 @@ app.get(`${PUBLIC_URL}login`, (request, response) => {
   login(loginHandler);
 });
 
-
-app.get(`${PUBLIC_URL}logout`, (request, response) => {
-  response.redirect(`${API_ROOT}/saml2/logout/`);
-});
-
-
 // saml2 metadata
 app.get(`${PUBLIC_URL}metadata`, (request, response) => {
   response.type('application/xml');
   response.send(metadata);
-});
-
-// OBC redirect - post data detail
-// endpoint for post-specific data points
-app.get(`${PUBLIC_URL}obc/post/data/:id`, (request, response) => {
-  // set the id passed in the route and pass it to the redirect
-  const id = request.params.id;
-  response.redirect(`${OBC_URL}/post/postdatadetails/${id}`);
 });
 
 app.get(`${PUBLIC_URL}logout`, (request, response) => {
@@ -142,6 +128,14 @@ app.get(`${PUBLIC_URL}obc/post/:id`, (request, response) => {
   // set the id passed in the route and pass it to the redirect
   const id = request.params.id;
   response.redirect(`${OBC_URL}/post/detail/${id}`);
+});
+
+// OBC redirect - post data detail
+// endpoint for post-specific data points
+app.get(`${PUBLIC_URL}obc/post/data/:id`, (request, response) => {
+  // set the id passed in the route and pass it to the redirect
+  const id = request.params.id;
+  response.redirect(`${OBC_URL}/post/postdatadetails/${id}`);
 });
 
 // OBC redirect - countries
