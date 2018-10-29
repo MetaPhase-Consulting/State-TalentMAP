@@ -1,9 +1,5 @@
 FROM node:6.11.5
 
-# Create certificates for testing
-RUN mkdir /certs
-COPY certs /certs/
-
 RUN mkdir /app
 WORKDIR /app
 
