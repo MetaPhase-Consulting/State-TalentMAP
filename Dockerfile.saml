@@ -1,0 +1,9 @@
+FROM centos:latest
+
+RUN yum install openssl -y
+
+# Create certificates for testing
+RUN mkdir /certs
+COPY certs /certs/
+RUN chmod +x /certs/certs.sh
+RUN ./certs/certs.sh
