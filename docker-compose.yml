@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 services:
   web:
     build:
@@ -9,14 +9,24 @@ services:
     environment:
       - PUBLIC_URL=/talentmap/
       - STATIC_PATH=/app/build/
-      - API_ROOT=http://api:8000/
-      - OBC_URL=http://obc:4000/
+      - API_ROOT=http://localhost:8000
+      - OBC_URL=http://localhost:4000/
+      - LOGIN_MODE=saml
+      - ENTITY_ID=http://localhost:3000/talentmap/
+      - ASSERT_ENDPOINT=http://localhost:3000/talentmap/
+      - CERT_FILE=/certs/talentmap-dev.crt
+      - KEY_FILE=/certs/talentmap-dev.key
+      - SSO_LOGIN_URL=http://localhost:8080/simplesaml/module.php/saml/sp/saml2-acs.php/talentmap-sp
+      - SSO_LOGOUT_URL=http://localhost:8080/simplesaml/module.php/saml/sp/saml2-logout.php/talentmap-sp
+      - SSO_CERT_FILE=/certs/server.crt
     volumes:
       - .:/app:delegated
       - node-modules:/app/node_modules/
+      - certs:/certs
     depends_on:
       - api
       - obc
+      - saml
   obc:
     build:
       context: .
@@ -30,15 +40,28 @@ services:
       - 8000:8000
     links:
       - db
+      - saml
     depends_on:
       - db
+      - saml
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ../State-TalentMAP-API/:/app:delegated
+      - certs:/certs/
+      - xml:/app/talentmap_api/saml2/remote_metadata/
     environment:
       - DJANGO_SECRET_KEY=development_secret_key
       - DATABASE_URL=postgres://talentmap-user@db/talentmap
       - DJANGO_DEBUG=true
+      - ENABLE_SAML2=true
+      - SAML2_DEBUG=1
+      - SAML2_XMLSEC1_PATH=/usr/bin/xmlsec1
+      - SAML_LOGIN_REDIRECT_URL=http://localhost:3000/talentmap/
+      - FRONT_END_ACS_BINDING=http://localhost:3000/talentmap/
+      - SAML2_SIGNING_KEY=/certs/server.pem
+      - SAML2_SIGNING_CERT=/certs/server.crt
+      - SAML2_ENCRYPTION_KEY=/certs/talentmap-dev.key
+      - SAML2_ENCRYPTION_CERT=/certs/talentmap-dev.crt
   db:
     image: postgres:9.6.3
     volumes:
@@ -46,6 +69,31 @@ services:
     environment:
       - POSTGRES_DB=talentmap
       - POSTGRES_USER=talentmap-user
+  saml:
+    image: kristophjunge/test-saml-idp
+    volumes:
+      - ./sso/config/authsources.php:/var/www/simplesamlphp/config/authsources.php
+      - ./sso/metadata/saml20-idp-remote.php:/var/www/simplesamlphp/metadata/saml20-idp-remote.php
+    ports:
+      - 8080:8080
+      - 8443:8443
+    environment:
+      - SIMPLESAMLPHP_SP_ENTITY_ID=http://localhost:3000/talentmap/
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://localhost:3000/talentmap/
+      - SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=http://localhost:3000/talentmap/logout
+  saml-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile.saml
+    command: >
+      bash -c "curl http://saml:8080/simplesaml/saml2/idp/metadata.php > /xml/remote_metadata.xml"
+    volumes:
+      - certs:/certs
+      - xml:/xml
+    depends_on:
+      - saml
 volumes:
   pgdata:
   node-modules:
+  certs:
+  xml:
