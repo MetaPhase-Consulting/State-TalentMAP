@@ -1,8 +1,6 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import React from 'react';
-import TestUtils from 'react-dom/test-utils';
-import { MemoryRouter } from 'react-router-dom';
 import ResultsList from './ResultsList';
 import resultsObject from '../../__mocks__/resultsObject';
 
@@ -11,14 +9,15 @@ describe('ResultsListComponent', () => {
   let wrapper = null;
 
   beforeEach(() => {
-    results = TestUtils.renderIntoDocument(<MemoryRouter>
+    results = shallow(
       <ResultsList
         results={resultsObject}
         toggleFavorite={() => {}}
         userProfileFavoritePositionIsLoading={false}
         userProfileFavoritePositionHasErrored={false}
-      />
-    </MemoryRouter>);
+        bidList={[]}
+      />,
+    );
   });
 
   it('is defined', () => {
@@ -31,6 +30,7 @@ describe('ResultsListComponent', () => {
       toggleFavorite={() => {}}
       userProfileFavoritePositionIsLoading={false}
       userProfileFavoritePositionHasErrored={false}
+      bidList={[]}
     />);
     expect(wrapper.instance().props.results.results[0].id).toBe(6);
   });
@@ -41,6 +41,7 @@ describe('ResultsListComponent', () => {
       toggleFavorite={() => {}}
       userProfileFavoritePositionIsLoading={false}
       userProfileFavoritePositionHasErrored={false}
+      bidList={[]}
     />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
@@ -51,6 +52,7 @@ describe('ResultsListComponent', () => {
       toggleFavorite={() => {}}
       userProfileFavoritePositionIsLoading={false}
       userProfileFavoritePositionHasErrored={false}
+      bidList={[]}
     />);
     expect(wrapper.find('div').hasClass('results-loading')).toBe(false);
   });
@@ -61,6 +63,7 @@ describe('ResultsListComponent', () => {
       toggleFavorite={() => {}}
       userProfileFavoritePositionIsLoading={false}
       userProfileFavoritePositionHasErrored={false}
+      bidList={[]}
     />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

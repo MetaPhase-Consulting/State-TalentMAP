@@ -1,5 +1,5 @@
-import queryString from 'query-string';
 import { merge } from 'lodash';
+import queryString from 'query-string';
 
 /**
  * Interface for Profile Menu Configuration

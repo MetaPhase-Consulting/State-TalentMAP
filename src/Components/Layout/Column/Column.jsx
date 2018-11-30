@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNumber, isString, merge } from 'lodash';
+import { merge, isNumber, isString } from 'lodash';
 import Base from '../Base';
 
 export const columnsMap = {

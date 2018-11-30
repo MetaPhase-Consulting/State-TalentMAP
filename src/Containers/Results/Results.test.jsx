@@ -33,6 +33,7 @@ describe('Results', () => {
         postSearchResults={[]}
         postSearchIsLoading={false}
         postSearchHasErrored={false}
+        bidListFetchData={() => {}}
       />
     </MemoryRouter></Provider>);
     expect(results).toBeDefined();
@@ -56,6 +57,7 @@ describe('Results', () => {
         postSearchResults={[]}
         postSearchIsLoading={false}
         postSearchHasErrored={false}
+        bidListFetchData={() => {}}
       />
     </MemoryRouter></Provider>);
     expect(results).toBeDefined();
@@ -81,6 +83,7 @@ describe('Results', () => {
         postSearchResults={[]}
         postSearchIsLoading={false}
         postSearchHasErrored={false}
+        bidListFetchData={() => {}}
       />,
     );
     // define the instance
@@ -113,6 +116,7 @@ describe('Results', () => {
         postSearchResults={[]}
         postSearchIsLoading={false}
         postSearchHasErrored={false}
+        bidListFetchData={() => {}}
       />,
     );
     expect(wrapper.instance().props.filters.hasFetched).toBe(true);
@@ -139,6 +143,7 @@ describe('Results', () => {
         postSearchResults={[]}
         postSearchIsLoading={false}
         postSearchHasErrored={false}
+        bidListFetchData={() => {}}
       />,
     );
     wrapper.instance().saveSearch('test', 1);
@@ -167,6 +172,7 @@ describe('Results', () => {
         postSearchHasErrored={false}
         pageTitle="Results"
         debounceTimeInMs={debounceTimeInMs}
+        bidListFetchData={() => {}}
       />,
     );
     // define the instance
@@ -206,6 +212,7 @@ describe('Results', () => {
         postSearchHasErrored={false}
         pageTitle="Results"
         debounceTimeInMs={debounceTimeInMs}
+        bidListFetchData={() => {}}
       />,
     );
     // define the instance
@@ -245,6 +252,7 @@ describe('Results', () => {
         postSearchHasErrored={false}
         pageTitle="Results"
         debounceTimeInMs={debounceTimeInMs}
+        bidListFetchData={() => {}}
       />,
     );
     // define the instance
@@ -282,6 +290,7 @@ describe('Results', () => {
         postSearchResults={[]}
         postSearchIsLoading={false}
         postSearchHasErrored={false}
+        bidListFetchData={() => {}}
       />,
     );
     const history = { value: { search: null } };

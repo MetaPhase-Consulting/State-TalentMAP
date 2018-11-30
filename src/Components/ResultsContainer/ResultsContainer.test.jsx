@@ -1,7 +1,5 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import TestUtils from 'react-dom/test-utils';
-import { MemoryRouter } from 'react-router-dom';
 import toJSON from 'enzyme-to-json';
 import sinon from 'sinon';
 import ResultsContainer from './ResultsContainer';
@@ -25,7 +23,7 @@ describe('ResultsContainerComponent', () => {
     sortBy, pageSizes, pageSize, hasLoaded, onToggle } = config;
 
   it('is defined', () => {
-    wrapper = TestUtils.renderIntoDocument(<MemoryRouter>
+    wrapper = shallow(
       <ResultsContainer
         results={resultsObject}
         isLoading={isLoading}
@@ -45,8 +43,8 @@ describe('ResultsContainerComponent', () => {
         newSavedSearchHasErrored={false}
         newSavedSearchIsSaving={false}
         resetSavedSearchAlerts={() => {}}
-      />
-    </MemoryRouter>);
+        bidList={[]}
+      />);
     expect(wrapper).toBeDefined();
   });
 
@@ -70,6 +68,7 @@ describe('ResultsContainerComponent', () => {
       newSavedSearchHasErrored={false}
       newSavedSearchIsSaving={false}
       resetSavedSearchAlerts={() => {}}
+      bidList={[]}
     />);
     expect(wrapper.instance().props.pageSizes).toBe(pageSizes);
   });
@@ -94,6 +93,7 @@ describe('ResultsContainerComponent', () => {
       newSavedSearchHasErrored={false}
       newSavedSearchIsSaving={false}
       resetSavedSearchAlerts={() => {}}
+      bidList={[]}
     />);
     expect(wrapper.instance().props.pageSize).toBe(20);
   });
@@ -121,6 +121,7 @@ describe('ResultsContainerComponent', () => {
       newSavedSearchIsSaving={false}
       scrollToTop={scrollSpy}
       resetSavedSearchAlerts={() => {}}
+      bidList={[]}
     />);
     wrapper.instance().onPageChange(1);
     sinon.assert.calledOnce(spy);
@@ -147,6 +148,7 @@ describe('ResultsContainerComponent', () => {
       newSavedSearchHasErrored={false}
       newSavedSearchIsSaving={false}
       resetSavedSearchAlerts={() => {}}
+      bidList={[]}
     />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

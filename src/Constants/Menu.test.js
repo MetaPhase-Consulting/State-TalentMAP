@@ -1,15 +1,4 @@
-import {
-  compact,
-  has,
-  isArray,
-  isBoolean,
-  isNumber,
-  isObject,
-  isString,
-  forOwn,
-  keys,
-  pickBy,
-} from 'lodash';
+import { compact, has, isArray, isBoolean, isNumber, isObject, isString, forOwn, keys, pickBy } from 'lodash';
 import { PROFILE_MENU } from './Menu';
 
 /**

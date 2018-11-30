@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { pick } from 'lodash';
 import PropTypes from 'prop-types';
+import { pick } from 'lodash';
 
 import { fetchBidCycles } from '../../actions/bidCycles';
 import BidCycleList from '../../Components/BidCycleList';

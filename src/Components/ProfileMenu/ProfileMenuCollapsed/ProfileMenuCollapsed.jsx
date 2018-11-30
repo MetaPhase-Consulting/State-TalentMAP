@@ -4,7 +4,6 @@ import FontAwesome from 'react-fontawesome';
 import { difference } from 'lodash';
 import NavLinksContainer from '../NavLinksContainer';
 import NavLink from '../NavLink';
-
 import { PROFILE_MENU } from '../../../Constants/Menu';
 
 const ProfileMenuCollapsed = ({ expand, roles, isCDO, isGlossaryEditor }) => (

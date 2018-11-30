@@ -9,6 +9,7 @@ import queryParamUpdate from '../queryParams';
 import { scrollToTop, cleanQueryParams, getAssetPath } from '../../utilities';
 import { resultsFetchData } from '../../actions/results';
 import { filtersFetchData } from '../../actions/filters/filters';
+import { bidListFetchData } from '../../actions/bidList';
 import { saveSearch, routeChangeResetState } from '../../actions/savedSearch';
 import { userProfileToggleFavoritePosition } from '../../actions/userProfile';
 import { missionSearchFetchData } from '../../actions/autocomplete/missionAutocomplete';
@@ -19,7 +20,7 @@ import ResultsPage from '../../Components/ResultsPage/ResultsPage';
 import { POSITION_SEARCH_RESULTS, FILTERS_PARENT, ACCORDION_SELECTION_OBJECT,
 USER_PROFILE, SAVED_SEARCH_MESSAGE, NEW_SAVED_SEARCH_SUCCESS_OBJECT,
 SAVED_SEARCH_OBJECT, MISSION_DETAILS_ARRAY, POST_DETAILS_ARRAY,
-EMPTY_FUNCTION } from '../../Constants/PropTypes';
+EMPTY_FUNCTION, BID_LIST } from '../../Constants/PropTypes';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
 import { POSITION_SEARCH_SORTS, POSITION_PAGE_SIZES } from '../../Constants/Sort';
@@ -55,6 +56,7 @@ class Results extends Component {
       onNavigateTo(LOGIN_REDIRECT);
     } else {
       this.createQueryParams();
+      this.props.bidListFetchData();
     }
   }
 
@@ -208,7 +210,7 @@ class Results extends Component {
             userProfileFavoritePositionHasErrored, currentSavedSearch,
             newSavedSearchSuccess, newSavedSearchIsSaving, newSavedSearchHasErrored,
             fetchPostAutocomplete, postSearchResults, postSearchIsLoading,
-            postSearchHasErrored, shouldShowSearchBar } = this.props;
+            postSearchHasErrored, shouldShowSearchBar, bidList } = this.props;
     return (
       <ResultsPage
         results={results}
@@ -247,6 +249,7 @@ class Results extends Component {
         postSearchIsLoading={postSearchIsLoading}
         postSearchHasErrored={postSearchHasErrored}
         shouldShowSearchBar={shouldShowSearchBar}
+        bidList={bidList.results}
       />
     );
   }
@@ -287,6 +290,8 @@ Results.propTypes = {
   postSearchHasErrored: PropTypes.bool.isRequired,
   shouldShowSearchBar: PropTypes.bool.isRequired,
   debounceTimeInMs: PropTypes.number,
+  bidList: BID_LIST.isRequired,
+  bidListFetchData: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {
@@ -315,6 +320,7 @@ Results.defaultProps = {
   postSearchHasErrored: false,
   shouldShowSearchBar: true,
   debounceTimeInMs: 50,
+  bidList: { results: [] },
 };
 
 Results.contextTypes = {
@@ -344,6 +350,7 @@ const mapStateToProps = state => ({
   postSearchIsLoading: state.postSearchIsLoading,
   postSearchHasErrored: state.postSearchHasErrored,
   shouldShowSearchBar: state.shouldShowSearchBar,
+  bidList: state.bidListFetchDataSuccess,
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -362,6 +369,7 @@ export const mapDispatchToProps = dispatch => ({
   fetchMissionAutocomplete: query => dispatch(missionSearchFetchData(query)),
   fetchPostAutocomplete: query => dispatch(postSearchFetchData(query)),
   toggleSearchBarVisibility: bool => dispatch(toggleSearchBar(bool)),
+  bidListFetchData: () => dispatch(bidListFetchData()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Results));

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { POSITION_SEARCH_RESULTS, SORT_BY_PARENT_OBJECT, PILL_ITEM_ARRAY,
-ACCORDION_SELECTION_OBJECT, FILTER_ITEMS_ARRAY, USER_PROFILE,
+ACCORDION_SELECTION_OBJECT, FILTER_ITEMS_ARRAY, USER_PROFILE, BID_RESULTS,
 SAVED_SEARCH_MESSAGE, SAVED_SEARCH_OBJECT, MISSION_DETAILS_ARRAY,
 POST_DETAILS_ARRAY, EMPTY_FUNCTION, NEW_SAVED_SEARCH_SUCCESS_OBJECT } from '../../Constants/PropTypes';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
@@ -35,7 +35,8 @@ class Results extends Component {
             newSavedSearchHasErrored, currentSavedSearch, newSavedSearchIsSaving,
             fetchMissionAutocomplete, missionSearchResults, missionSearchIsLoading,
             missionSearchHasErrored, resetSavedSearchAlerts, fetchPostAutocomplete,
-            postSearchResults, postSearchIsLoading, postSearchHasErrored, shouldShowSearchBar }
+            postSearchResults, postSearchIsLoading, postSearchHasErrored, shouldShowSearchBar,
+            bidList }
       = this.props;
     const hasLoaded = !isLoading && results.results && !!results.results.length;
     return (
@@ -104,6 +105,7 @@ class Results extends Component {
             newSavedSearchIsSaving={newSavedSearchIsSaving}
             currentSavedSearch={currentSavedSearch}
             resetSavedSearchAlerts={resetSavedSearchAlerts}
+            bidList={bidList}
           />
         </div>
       </div>
@@ -149,6 +151,7 @@ Results.propTypes = {
   postSearchIsLoading: PropTypes.bool.isRequired,
   postSearchHasErrored: PropTypes.bool.isRequired,
   shouldShowSearchBar: PropTypes.bool.isRequired,
+  bidList: BID_RESULTS.isRequired,
 };
 
 Results.defaultProps = {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { isArray, isPlainObject, keys, map, merge, omit } from 'lodash';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
+import { isArray, isPlainObject, keys, map, merge, omit } from 'lodash';
 import Definition from './Definition/Definition';
 
 const defaults = {

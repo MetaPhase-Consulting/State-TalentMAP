@@ -4,7 +4,6 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import PropTypes from 'prop-types';
 import { get, compact, values } from 'lodash';
 import Avatar from '../Avatar';
-
 import { EMPTY_FUNCTION, USER_PROFILE } from '../../Constants/PropTypes';
 
 export class AccountDropdown extends Component {

@@ -1,8 +1,8 @@
 import Scroll from 'react-scroll';
-import queryString from 'query-string';
 import { distanceInWords, format } from 'date-fns';
+import { cloneDeep, get, isEqual, isNumber, isObject, keys, merge as merge$, transform } from 'lodash';
 import numeral from 'numeral';
-import { cloneDeep, get, keys, merge as merge$, isNumber } from 'lodash';
+import queryString from 'query-string';
 import shortid from 'shortid';
 import { VALID_PARAMS } from './Constants/EndpointParams';
 import { LOGOUT_ROUTE, LOGIN_ROUTE, LOGIN_REDIRECT } from './login/routes';
@@ -80,11 +80,9 @@ export const pillSort = (a, b) => {
 };
 
 export const propSort = (propName, nestedPropName) => (a, b) => {
-  let A = a[propName];
-  if (nestedPropName) { A = a[propName][nestedPropName]; }
+  let A = a[propName][nestedPropName] || a[propName];
   A = A.toString().toLowerCase();
-  let B = b[propName];
-  if (nestedPropName) { B = b[propName][nestedPropName]; }
+  let B = b[propName][nestedPropName] || b[propName];
   B = B.toString().toLowerCase();
   if (A < B) { // sort string ascending
     return -1;
@@ -299,11 +297,9 @@ export const focusById = (id, timeout) => {
 export const focusByFirstOfHeader = (timeout = 1) => {
   setTimeout(() => {
     let element = document.getElementsByTagName('h1');
-    if (element) { element = element[1]; }
-    if (!element) { element = document.getElementsByTagName('h2')[0]; }
-    if (!element) { element = document.getElementsByTagName('h3')[0]; }
-    if (element) { element.setAttribute('tabindex', '-1'); }
+    element = (element && element[1]) || document.getElementsByTagName('h2')[0] || document.getElementsByTagName('h3')[0];
     if (element) {
+      element.setAttribute('tabindex', '-1');
       element.focus();
     }
   }, timeout);
@@ -494,3 +490,19 @@ export const redirectToLogout = () => {
   const prefix = process.env.PUBLIC_URL || '';
   window.location.assign(`${prefix}${LOGOUT_ROUTE}`);
 };
+
+/**
+ * ~ Returns a Deep Diff Object Between 2 Objects (First parameter as base) ~
+ * base = { param1: true, param2: 'loading' };
+ * object = { param1: false, param2: 'loading' };
+ *
+ * difference(base, object) => { param1: false }
+ * difference(object, base) => { param1: true }
+ */
+export const difference = (base, object) => transform(object, (result, value, key) => {
+  /* eslint-disable no-param-reassign */
+  if (!isEqual(value, base[key])) {
+    result[key] = (isObject(value) && isObject(base[key]) && difference(base[key], value)) || value;
+  }
+  /* eslint-enable no-param-reassign */
+});
