@@ -19,6 +19,8 @@ describe('ResultsCardComponent', () => {
         toggleFavorite={() => {}}
         userProfileFavoritePositionIsLoading={false}
         userProfileFavoritePositionHasErrored={false}
+        toggleBid={() => {}}
+        bidList={[]}
       />
     </MemoryRouter>);
     expect(result).toBeDefined();
@@ -33,6 +35,8 @@ describe('ResultsCardComponent', () => {
         toggleFavorite={() => {}}
         userProfileFavoritePositionIsLoading={false}
         userProfileFavoritePositionHasErrored={false}
+        toggleBid={() => {}}
+        bidList={[]}
       />);
     expect(wrapper.instance().props.result.id).toBe(6);
   });
@@ -46,6 +50,8 @@ describe('ResultsCardComponent', () => {
         toggleFavorite={() => {}}
         userProfileFavoritePositionIsLoading={false}
         userProfileFavoritePositionHasErrored={false}
+        toggleBid={() => {}}
+        bidList={[]}
       />);
     expect(wrapper.instance().props.result.id).toBe(60);
   });
@@ -59,6 +65,23 @@ describe('ResultsCardComponent', () => {
         toggleFavorite={() => {}}
         userProfileFavoritePositionIsLoading={false}
         userProfileFavoritePositionHasErrored={false}
+        toggleBid={() => {}}
+        bidList={[]}
+      />);
+    expect(toJSON(wrapper)).toMatchSnapshot();
+  });
+
+  it('matches snapshot with empty result', () => {
+    wrapper = shallow(
+      <ResultsCard
+        id={1}
+        result={{ id: 1 }}
+        onToggle={() => {}}
+        toggleFavorite={() => {}}
+        userProfileFavoritePositionIsLoading={false}
+        userProfileFavoritePositionHasErrored={false}
+        toggleBid={() => {}}
+        bidList={[]}
       />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

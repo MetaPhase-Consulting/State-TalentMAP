@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BidTrackerCardBottomComponent matches snapshot 1`] = `
+<div
+  className="usa-grid-full bid-tracker-card-bottom"
+>
+  <div
+    className="bid-tracker-card-bottom-section"
+  >
+    <ExternalUserStatus
+      email="shadtrachl@state.gov"
+      firstName="Leah"
+      initials="LS"
+      lastName="Shadtrach"
+      showMail={true}
+      type="cdo"
+    />
+  </div>
+  <div
+    className="bid-tracker-card-bottom-section"
+  >
+    <Connect(StaticDevContent)>
+      <OrganizationStamp
+        abbreviation="AF"
+        name="bureau"
+        showMail={true}
+      />
+    </Connect(StaticDevContent)>
+  </div>
+  <div
+    className="bid-tracker-card-bottom-section"
+  >
+    <ExternalUserStatus
+      email="woodwardw@state.gov"
+      firstName="Wendy"
+      initials="WW"
+      lastName="Woodward"
+      showMail={true}
+      type="ao"
+    />
+  </div>
+  <div
+    className="bid-tracker-card-bottom-section"
+  >
+    <Connect(StaticDevContent)>
+      <ExternalUserStatus
+        email="woodwardw@state.gov"
+        firstName="Wendy"
+        initials="WW"
+        lastName="Woodward"
+        showMail={true}
+        type="hr"
+      />
+    </Connect(StaticDevContent)>
+  </div>
+</div>
+`;

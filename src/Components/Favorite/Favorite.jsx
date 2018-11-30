@@ -96,6 +96,42 @@ class Favorite extends Component {
     return getText$(state, Types.TITLE);
   }
 
+  get classNames() {
+    const { hasBorder, useButtonClass, useButtonClassSecondary, hideText, className } = this.props;
+
+    const classNames = ['favorite-container'];
+
+    // Class configs
+    if (hasBorder && !useButtonClass) {
+      classNames.push('favorites-button-border');
+    }
+
+    if (useButtonClass) {
+      classNames.push('usa-button');
+    }
+
+    if (useButtonClassSecondary) {
+      classNames.push('usa-button-secondary');
+    }
+
+    if (hideText) {
+      classNames.push('button-text-hidden');
+    }
+
+    classNames.push(className);
+
+    return classNames;
+  }
+
+  get spinnerClass() {
+    const { useButtonClass, useSpinnerWhite, useButtonClassSecondary } = this.props;
+    let spinnerClass = 'ds-c-spinner';
+    if (useButtonClass || useSpinnerWhite) {
+      spinnerClass = `${spinnerClass} ${useButtonClassSecondary ? 'spinner-blue' : 'spinner-white'}`;
+    }
+    return spinnerClass;
+  }
+
   toggleSaved() {
     const { onToggle, refKey } = this.props;
 
@@ -111,13 +147,7 @@ class Favorite extends Component {
 
   render() {
     const { loading } = this.state;
-    const {
-      as: type,
-      className,
-      hasBorder,
-      useButtonClass,
-      useSpinnerWhite,
-    } = this.props;
+    const { as: type } = this.props;
 
     const icon = this.icon;
     const title = this.title;
@@ -133,27 +163,7 @@ class Favorite extends Component {
       onClick,
     };
 
-    let classNames = ['favorite-container'];
-
-    // Class configs
-    if (hasBorder && !useButtonClass) {
-      classNames.push('favorites-button-border');
-    }
-
-    if (useButtonClass) {
-      classNames.push('usa-button');
-    }
-
-    classNames.push(className);
-    classNames = classNames
-      .join(' ')
-      .trim();
-
-    options.className = classNames;
-    let spinnerClass = 'ds-c-spinner';
-    if (useButtonClass || useSpinnerWhite) {
-      spinnerClass = `${spinnerClass} spinner-white`;
-    }
+    options.className = this.classNames.join(' ').trim();
 
     return (
       <span>
@@ -163,7 +173,7 @@ class Favorite extends Component {
         }
         <InteractiveElement {...options}>
           {loading ?
-            (<span className={spinnerClass} />) :
+            (<span className={this.spinnerClass} />) :
             (<FontAwesome name={icon} />)}
           <MediaQueryWrapper breakpoint="screenMdMax" widthType="max">
             {matches => (
@@ -187,6 +197,7 @@ Favorite.propTypes = {
   hasBorder: PropTypes.bool,
   useLongText: PropTypes.bool,
   useButtonClass: PropTypes.bool,
+  useButtonClassSecondary: PropTypes.bool,
   useSpinnerWhite: PropTypes.bool,
 };
 
@@ -199,6 +210,7 @@ Favorite.defaultProps = {
   hasBorder: false,
   useLongText: false,
   useButtonClass: false,
+  useButtonClassSecondary: false,
   useSpinnerWhite: false,
 };
 
