@@ -101,6 +101,17 @@ function loginRequest(credentials) {
     .catch(error => ({ error }));
 }
 
+function getLoginCredentials(loggingIn) {
+  if (auth.isSAMLAuth()) {
+    return loggingIn.token;
+  }
+
+  return {
+    username: loggingIn.username,
+    password: loggingIn.password,
+  };
+}
+
 /**
  * Sagas
  */
@@ -146,7 +157,7 @@ export function* login(credentials = {}) {
     token = credentials;
   } else {
     // create auth object
-    const authCredentials = { username: credentials.username, password: credentials.password };
+    const authCredentials = getLoginCredentials(credentials);
     yield put(authRequest(true, authCredentials));
 
     // try to call to our loginApi() function. Redux Saga will pause
@@ -186,14 +197,17 @@ export function* login(credentials = {}) {
   return token;
 }
 
-function getLoginCredentials(loggingIn, isSAML) {
-  if (isSAML) {
-    return loggingIn.token;
+function getRaces() {
+  // set request type - default is basic auth
+  let requestType = LOGIN_REQUESTING;
+
+  if (auth.isSAMLAuth()) {
+    requestType = TOKEN_VALIDATION_REQUESTING;
   }
 
   return {
-    username: loggingIn.username,
-    password: loggingIn.password,
+    loggingIn: take(requestType),
+    loggingOut: take(LOGOUT_REQUESTING),
   };
 }
 
@@ -202,16 +216,10 @@ function* loginWatcher() {
   const evaluate = true;
   // Check if user entered already logged in or not
   while (evaluate) {
-    const isSAML = (process.env.LOGIN_MODE === 'saml');
-    const races = {
-      loggingIn: take(isSAML ? TOKEN_VALIDATION_REQUESTING : LOGIN_REQUESTING),
-      loggingOut: take(LOGOUT_REQUESTING),
-    };
-
-    const { loggingIn } = yield race(races);
+    const { loggingIn } = yield race(getRaces());
 
     if (loggingIn) {
-      const credentials = getLoginCredentials(loggingIn, isSAML);
+      const credentials = getLoginCredentials(loggingIn);
       yield call(login, credentials);
     } else {
       // log out
