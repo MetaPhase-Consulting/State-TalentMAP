@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import { BID_OBJECT, EMPTY_FUNCTION } from '../../Constants/PropTypes';
 import { NO_POST } from '../../Constants/SystemMessages';
 import InformationDataPoint from '../ProfileDashboard/InformationDataPoint';
@@ -27,6 +28,7 @@ class BidListResultsCard extends Component {
     const timeDistanceInWords = getTimeDistanceInWords(bid.update_date);
     const contentTitle = timeDistanceInWords && createdDate ?
     `${timeDistanceInWords} | Added to Bid List: ${createdDate}` : null;
+    const bidStatistics = get(bid, 'position.bid_statistics[0]', {});
     return (
       <div className="usa-grid-full saved-search-card" key={bid.id}>
         <div className="usa-grid-full">
@@ -34,12 +36,15 @@ class BidListResultsCard extends Component {
             <InformationDataPoint
               titleOnBottom
               content={
-                <BidContent
-                  positionTitle={bid.position.title}
-                  status={bid.status}
-                  positionNumber={bid.position.position_number}
-                  postName={bid.post || NO_POST}
-                />
+                <div>
+                  <BidContent
+                    positionTitle={bid.position.title}
+                    status={bid.status}
+                    positionNumber={bid.position.position_number}
+                    postName={bid.post || NO_POST}
+                    bidStatistics={bidStatistics}
+                  />
+                </div>
               }
               title={contentTitle}
             />
