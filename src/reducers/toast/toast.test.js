@@ -6,7 +6,7 @@ describe('reducers', () => {
       .toBe('message');
   });
   it('can set reducer TOAST_NOTIFICATION_ERROR', () => {
-    expect(toast({}, { type: 'TOAST_NOTIFICATION_SUCCESS', toast: 'message' }).message)
+    expect(toast({}, { type: 'TOAST_NOTIFICATION_ERROR', toast: 'message' }).message)
       .toBe('message');
   });
 });

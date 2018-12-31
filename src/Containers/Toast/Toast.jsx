@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Alert from '../../Components/Alert';
 
-class Toast extends Component {
+export class Toast extends Component {
   constructor(props) {
     super(props);
     this.notify = this.notify.bind(this);
