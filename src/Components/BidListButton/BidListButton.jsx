@@ -18,9 +18,11 @@ class BidListButton extends Component {
   }
 
   toggleSaved() {
-    const { toggleBidPosition, id } = this.props;
+    const { toggleBidPosition, id, isLoading } = this.props;
     // pass the id and the "remove" param
-    toggleBidPosition(id, this.getIsSaved());
+    if (!isLoading) {
+      toggleBidPosition(id, this.getIsSaved());
+    }
   }
 
   render() {
@@ -32,11 +34,13 @@ class BidListButton extends Component {
     const style = {
       pointerEvents: this.props.isLoading ? 'none' : 'inherit',
     };
-    const { className } = this.props;
+    const { className, isLoading } = this.props;
     return (
       <button className={className} style={style} onClick={this.toggleSaved}>
         <span className="button-icon">
-          <FontAwesome name={iconClass} />
+          {isLoading ?
+            (<span className="ds-c-spinner spinner-white" />) :
+            (<FontAwesome name={iconClass} />)}
         </span>
         <span>{text}</span>
       </button>
