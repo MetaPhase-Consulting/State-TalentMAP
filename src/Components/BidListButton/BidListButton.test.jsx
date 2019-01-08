@@ -58,6 +58,21 @@ describe('BidListButtonComponent', () => {
     sinon.assert.calledOnce(spy);
   });
 
+  it('is disabled and correctly styled when disabled === true', () => {
+    const spy = sinon.spy();
+    const wrapper = shallow(
+      <BidListButton
+        id={1}
+        toggleBidPosition={spy}
+        compareArray={bidListFalse}
+        isLoading={false}
+        disabled
+      />,
+    );
+    wrapper.find('.usa-button-disabled').simulate('click');
+    sinon.assert.notCalled(spy);
+  });
+
   it('displays the spinner when isLoading is true', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
