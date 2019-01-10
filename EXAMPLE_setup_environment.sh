@@ -48,3 +48,6 @@ export KEY_FILE=/path/to/key_file.key
 export SSO_LOGIN_URL=http://localhost:5000/login
 export SSO_LOGOUT_URL=http://localhost:5000/logout
 export SSO_CERT_FILE=/path/to/cert_file.crt
+
+# approved referers
+export APPROVED_REFERERS = []

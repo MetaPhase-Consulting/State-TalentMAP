@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const bunyan = require('bunyan');
 const helmet = require('helmet');
 const path = require('path');
+const hostValidation = require('host-validation');
 const routesArray = require('./routes.js');
 const { metadata, login } = require('./saml2-config');
 
@@ -18,6 +19,9 @@ const API_ROOT = process.env.API_ROOT || 'http://localhost:8000';
 
 // define the prefix for the application
 const PUBLIC_URL = process.env.PUBLIC_URL || '/talentmap/';
+
+// allowd referers
+const APPROVED_REFERERS = process.env.APPROVED_REFERERS;
 
 /* eslint-disable no-unused-vars */
 // Define the SAML login redirect
@@ -91,6 +95,15 @@ app.use(bodyParser.urlencoded({
 
 // middleware for logging
 app.use(loggingMiddleware);
+
+// middleware for referer validation on login route if referers array is provided in config
+if (APPROVED_REFERERS) {
+  app.use(`${PUBLIC_URL}login`, hostValidation({
+    mode: 'either',
+    referers: APPROVED_REFERERS,
+    fail: (req, res) => res.redirect(SAML_LOGOUT),
+  }));
+}
 
 // saml2 acs
 app.post(PUBLIC_URL, (request, response) => {
