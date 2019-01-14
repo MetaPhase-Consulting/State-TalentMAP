@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const hostValidation = require('./host-validation');
 const routesArray = require('./routes.js');
 
 // define full path to static build
@@ -21,10 +22,36 @@ const OBC_URL = process.env.OBC_URL;
 // application port
 const port = process.env.PORT || 3000;
 
+// allowed referers
+const APPROVED_REFERERS = process.env.APPROVED_REFERERS;
+
+// Define the SAML logout redirect
+const SAML_LOGOUT = `${API_ROOT}/saml2/logout/`;
+
 const app = express();
 
 // middleware for static assets
 app.use(PUBLIC_URL, express.static(STATIC_PATH));
+
+// middleware for referer validation on login route if referers array is provided in config
+if (APPROVED_REFERERS) {
+  // cast APPROVED_REFERERS to an array
+  let approved = [];
+
+  if (typeof APPROVED_REFERERS === 'string') {
+    if (APPROVED_REFERERS.indexOf(',') > 0) {
+      approved = APPROVED_REFERERS.split(',');
+    } else {
+      approved.push(APPROVED_REFERERS);
+    }
+  }
+
+  app.use(`${PUBLIC_URL}login`, hostValidation({
+    mode: 'either',
+    referers: approved,
+    fail: (req, res) => res.redirect(SAML_LOGOUT),
+  }));
+}
 
 // saml2 acs
 app.post(PUBLIC_URL, (request, response) => {

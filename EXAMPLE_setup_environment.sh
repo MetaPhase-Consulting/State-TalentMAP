@@ -6,13 +6,16 @@ export PUBLIC_URL=/talentmap/
 
 # The full path location of build artifacts, ie js and css
 # Default - /build/ directory under source root
-export STATIC_PATH=/var/www/html/talentmap/
+export STATIC_PATH=build/
 
 # Protocol, hostname and port of API
-# Default - local dev, http://localhost:8000/
-export API_ROOT=http://localhost:8000/
+# Default - local dev, http://localhost:8000
+export API_ROOT=http://localhost:8000
 
 # Protocol, hostname and port of OBC, 
 # which provides post and country details
 # Default - local test value http://localhost:4000/
 export OBC_URL=http://localhost:4000/
+
+# approved referers
+export APPROVED_REFERERS=localhost
