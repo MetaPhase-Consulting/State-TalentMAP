@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const bunyan = require('bunyan');
 const helmet = require('helmet');
 const path = require('path');
+const hostValidation = require('./host-validation');
 const routesArray = require('./routes.js');
 const { metadata, login } = require('./saml2-config');
 
@@ -42,6 +43,9 @@ const OBC_URL = process.env.OBC_URL;
 
 // path to external about page
 const ABOUT_PAGE = process.env.ABOUT_PAGE || 'https://github.com/18F/State-TalentMAP';
+
+// allowed referers
+const APPROVED_REFERERS = process.env.APPROVED_REFERERS;
 
 // application port
 const port = process.env.PORT || 3000;
@@ -91,6 +95,25 @@ app.use(bodyParser.urlencoded({
 
 // middleware for logging
 app.use(loggingMiddleware);
+
+// middleware for referer validation on login route if referers array is provided in config
+if (APPROVED_REFERERS) {
+  // cast APPROVED_REFERERS to an array
+  let approved = [];
+
+  if (typeof APPROVED_REFERERS === 'string') {
+    if (APPROVED_REFERERS.indexOf(',') > 0) {
+      approved = APPROVED_REFERERS.split(',');
+    } else {
+      approved.push(APPROVED_REFERERS);
+    }
+  }
+
+  app.use(`${PUBLIC_URL}login`, hostValidation({
+    referers: approved,
+    fail: (req, res) => res.redirect(SAML_LOGOUT),
+  }));
+}
 
 // saml2 acs
 app.post(PUBLIC_URL, (request, response) => {
