@@ -20,7 +20,7 @@ const API_ROOT = process.env.API_ROOT || 'http://localhost:8000';
 // define the prefix for the application
 const PUBLIC_URL = process.env.PUBLIC_URL || '/talentmap/';
 
-// allowd referers
+// allowed referers
 const APPROVED_REFERERS = process.env.APPROVED_REFERERS;
 
 /* eslint-disable no-unused-vars */
