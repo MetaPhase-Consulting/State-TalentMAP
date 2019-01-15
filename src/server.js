@@ -111,7 +111,7 @@ if (APPROVED_REFERERS) {
 
   app.use(`${PUBLIC_URL}login`, hostValidation({
     referers: approved,
-    fail: (req, res) => res.redirect(SAML_LOGOUT),
+    fail: (req, res) => res.redirect(process.env.SSO_LOGOUT_URL),
   }));
 }
 
