@@ -74,13 +74,6 @@ export const requests = {
   },
 };
 
-function loginRequest(credentials) {
-  const request = requests['saml'](credentials);
-  return request
-    .then(response => ({ response }))
-    .catch(error => ({ error }));
-}
-
 /**
  * Sagas
  */
@@ -111,31 +104,23 @@ function* logout() {
   }
 }
 
-export function* login(credentials = {}) {
-  let token = null;
-
+export function* login(token = {}) {
   // if credentials is null, don't attempt login, to prevent a loop
-  if (credentials) {
-    // set token
-    token = credentials;
-
+  if (token === null) {
+    yield put(authError(true, 'An issue during login has occured'));
+  } else {
     // We have a token, proceed to log user in
-    if (token !== null) {
-      // set token
-      auth.set(token);
+    // set token
+    auth.set(token);
 
-      // inform Redux to set our client token
-      yield put(setClient(token));
-      // get the user's profile data
-      yield put(userProfileFetchData());
-      // also inform redux that our login was successful
-      yield put(authSuccess());
-
-      // redirect them to home
-      yield put(push('/'));
-    } else {
-      yield put(authError(true, 'An issue during login has occured'));
-    }
+    // inform Redux to set our client token
+    yield put(setClient(token));
+    // get the user's profile data
+    yield put(userProfileFetchData());
+    // also inform redux that our login was successful
+    yield put(authSuccess());
+    // redirect them to home
+    yield put(push('/'));
 
     if (yield cancelled()) {
       redirectToLogin();
@@ -144,6 +129,7 @@ export function* login(credentials = {}) {
     // return the token for health and wealth
     return token;
   }
+
   // if credentials is null, logout
   logout();
   return null;
