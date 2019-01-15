@@ -1,26 +1,23 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { keys, merge, pick } from 'lodash';
+import { keys, pick } from 'lodash';
 
-import LoginForm, { LoginForm as _LoginForm } from './Components/LoginForm';
 import TokenValidation from './Components/TokenValidation';
 
-import { authRequest, tokenValidationRequest } from './actions';
+import { tokenValidationRequest } from './actions';
 import { auth } from './sagas';
-
-const isSAML = auth.isSAMLAuth();
 
 // Get functional component prop-type config
 const props$ = {
-  types: merge({}, _LoginForm.propTypes, TokenValidation.propTypes),
-  defaults: merge({}, _LoginForm.defaultProps, TokenValidation.defaultProps),
+  types: TokenValidation.propTypes,
+  defaults: TokenValidation.defaultProps,
 };
 
 props$.keys = keys(props$.types);
 
 const Login = (props) => {
-  const Element = !isSAML ? LoginForm : TokenValidation;
+  const Element = TokenValidation;
   const isSignedIn = !!auth.get();
 
   // Just to be safe we don't too much automated injecting that we'll just take the ones that
@@ -40,7 +37,6 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  onSubmit: ({ username, password }) => dispatch(authRequest(true, { username, password })),
   tokenValidationRequest: token => dispatch(tokenValidationRequest(token)),
 });
 
