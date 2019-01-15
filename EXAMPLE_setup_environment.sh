@@ -13,11 +13,11 @@ export PUBLIC_URL=/talentmap/
 
 # The full path location of build artifacts, ie js and css
 # Default - /build/ directory under source root
-export STATIC_PATH=/var/www/html/talentmap/
+export STATIC_PATH=build/
 
 # Protocol, hostname and port of API
-# Default - local dev, http://localhost:8000/
-export API_ROOT=http://localhost:8000/
+# Default - local dev, http://localhost:8000
+export API_ROOT=http://localhost:8000
 export API_URL=http://localhost:8000/api/v1
 
 # Port number for the Express web application
@@ -48,3 +48,6 @@ export KEY_FILE=/path/to/key_file.key
 export SSO_LOGIN_URL=http://localhost:5000/login
 export SSO_LOGOUT_URL=http://localhost:5000/logout
 export SSO_CERT_FILE=/path/to/cert_file.crt
+
+# approved referers
+export APPROVED_REFERERS=localhost
