@@ -6,12 +6,11 @@ import { unsetNotificationsCount } from '../actions/notifications';
 import { userProfileFetchData, unsetUserProfile } from '../actions/userProfile';
 import { setClient, unsetClient } from '../client/actions';
 import isCurrentPath from '../Components/ProfileMenu/navigation';
-import { propOrDefault, redirectToLogout, redirectToLogin } from '../utilities';
-import { authError, authRequest, authSuccess } from './actions';
+import { redirectToLogout, redirectToLogin } from '../utilities';
+import { authError, authSuccess } from './actions';
 
 // Our login constants
 import {
-  LOGIN_REQUESTING,
   LOGOUT_REQUESTING,
   TOKEN_VALIDATION_REQUESTING,
 } from './constants';
@@ -53,15 +52,6 @@ export const auth = {
     // remove our local storage token
     localStorage.removeItem('token');
   },
-
-  /**
-   * Auth/Login Mode
-   *   @Values 'saml'|'basic'
-   *   @Default 'basic' (username/password)
-   */
-  mode: () => (process.env.LOGIN_MODE || 'basic'),
-  isBasicAuth: () => (auth.mode() === 'basic'),
-  isSAMLAuth: () => (auth.mode() === 'saml'),
 };
 
 /**
@@ -70,16 +60,6 @@ export const auth = {
  // This creates short chainable axios object similar to Observables.map()
  // Mainly so we can do some data pre-processing first for sake of reusability
 export const requests = {
-  basic: ({ username, password }) => {
-    if (!username || !password) {
-      return Promise.reject(
-        new Error('Fields cannot be blank'),
-      );
-    }
-
-    return api.post('/accounts/token/', { username, password });
-  },
-
   saml: (token) => {
     if (!token) {
       return Promise.reject(
@@ -95,7 +75,7 @@ export const requests = {
 };
 
 function loginRequest(credentials) {
-  const request = requests[auth.isSAMLAuth() ? 'saml' : 'basic'](credentials);
+  const request = requests['saml'](credentials);
   return request
     .then(response => ({ response }))
     .catch(error => ({ error }));
@@ -132,30 +112,12 @@ function* logout() {
 }
 
 export function* login(credentials = {}) {
-  const isSAML = auth.isSAMLAuth();
   let token = null;
 
   // if credentials is null, don't attempt login, to prevent a loop
   if (credentials) {
-    // Determine between basic and saml auth
-    if (isSAML) {
-      // set token
-      token = credentials;
-    } else {
-      // create auth object
-      const authCredentials = { username: credentials.username, password: credentials.password };
-      yield put(authRequest(true, authCredentials));
-
-      // try to call to our loginApi() function. Redux Saga will pause
-      // here until we either are successful or receive an error
-      const { response, error } = yield call(loginRequest, authCredentials);
-
-      if (response) {
-        token = response.data.token;
-      } else {
-        yield put(authError(true, propOrDefault(error, 'message', 'An issue during login has occured')));
-      }
-    }
+    // set token
+    token = credentials;
 
     // We have a token, proceed to log user in
     if (token !== null) {
@@ -187,15 +149,8 @@ export function* login(credentials = {}) {
   return null;
 }
 
-function getLoginCredentials(loggingIn, isSAML) {
-  if (isSAML) {
-    return loggingIn.token;
-  }
-
-  return {
-    username: loggingIn.username,
-    password: loggingIn.password,
-  };
+function getLoginCredentials(loggingIn) {
+  return loggingIn.token;
 }
 
 // Our watcher (saga).  It will watch for many things.
@@ -203,17 +158,15 @@ function* loginWatcher() {
   const evaluate = true;
   // Check if user entered already logged in or not
   while (evaluate) {
-    const isSAML = (process.env.LOGIN_MODE === 'saml');
     const races = {
-      loggingIn: take(isSAML ? TOKEN_VALIDATION_REQUESTING : LOGIN_REQUESTING),
+      loggingIn: take(TOKEN_VALIDATION_REQUESTING),
       loggingOut: take(LOGOUT_REQUESTING),
     };
 
     const { loggingIn } = yield race(races);
 
     if (loggingIn) {
-      const credentials = getLoginCredentials(loggingIn, isSAML);
-      yield call(login, credentials);
+      yield call(login, getLoginCredentials(loggingIn));
     } else {
       // log out
       yield call(logout);
