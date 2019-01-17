@@ -8,7 +8,8 @@
 </head>
 <body>
 <div>
-  <h1>Personas</h1>
+  <h1>Login</h1>
+  <h2>Personas</h2>
   <ul>
     <li>
       <a OnClick="login('admin', 'admin');">Administrator</a>
@@ -26,6 +27,16 @@
       <a OnClick="login('woodwardw', 'password');">Wendy Woodward</a>
     </li>
   </ul>
+</div>
+<div>
+  <h2>Custom</h2>
+  <form onsubmit="submitLogin();" action="POST">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
+    <button type="submit">Submit</button>
+  </form>
 </div>
 <script src="./jquery-2.2.4.min.js"></script>
 <script src="./script.js"></script>
