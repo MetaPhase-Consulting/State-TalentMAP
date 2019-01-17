@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { fetchUserToken, hasValidToken, propOrDefault, redirectToLoginRedirect } from './utilities';
-import { authRequest } from './login/actions';
 
 export const config = {
   baseURL: process.env.API_URL || 'http://localhost:8000/api/v1',
@@ -24,7 +23,8 @@ api.interceptors.response.use(response => response, (error) => {
       // exports of api to be undefined. So this causes an error for `userProfile.js` when
       // attempting to login. Went with the eslint quick re-enable to get around this.
       /* eslint-disable global-require */
-      require('./store').store.dispatch(authRequest(false));
+      // require('./store').store.dispatch(authRequest(false));
+      redirectToLoginRedirect();
       /* eslint-enable global-require */
       break;
     }
