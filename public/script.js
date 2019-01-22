@@ -1,5 +1,4 @@
 function login(username, password) {
-
   $.ajax({
     type:"POST",
     url:"http://localhost:8000/api/v1/accounts/token/",
@@ -15,7 +14,6 @@ function login(username, password) {
 
 };
 
-function submitLogin(e) {
-  e.preventDefault();
-  login(document.getElementById('username'), document.getElementById('password'));
+function submitLogin() {
+  login(document.getElementById('username').value, document.getElementById('password').value);
 }
