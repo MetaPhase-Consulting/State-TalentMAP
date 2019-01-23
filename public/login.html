@@ -1,5 +1,5 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title>TalentMAP Persona Selection</title>
   <style>
@@ -39,6 +39,26 @@
   </form>
 </div>
 <script src="./jquery-2.2.4.min.js"></script>
-<script src="./script.js"></script>
+<script>
+  function login(username, password) {
+    $.ajax({
+      type:"POST",
+      url:"%API_URL%/accounts/token/",
+      data: "username=" + username + "&password=" + password,
+      success: function(data) {
+        window.location.href = '%PUBLIC_URL%/tokenValidation?tmApiToken=' + data.token
+      },
+      error: function(){
+        alert('Request failed');
+      },
+      dataType: 'json',
+    });
+
+  };
+
+  function submitLogin() {
+    login(document.getElementById('username').value, document.getElementById('password').value);
+  }
+</script>
 </body>
 </html>

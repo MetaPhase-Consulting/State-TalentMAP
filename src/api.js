@@ -22,10 +22,7 @@ api.interceptors.response.use(response => response, (error) => {
       // Due to timing of import store before history is created, importing store here causes
       // exports of api to be undefined. So this causes an error for `userProfile.js` when
       // attempting to login. Went with the eslint quick re-enable to get around this.
-      /* eslint-disable global-require */
-      // require('./store').store.dispatch(authRequest(false));
       redirectToLoginRedirect();
-      /* eslint-enable global-require */
       break;
     }
 
