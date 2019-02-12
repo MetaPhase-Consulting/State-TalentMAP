@@ -8,19 +8,13 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { testDispatchFunctions } from '../../../testUtilities/testUtilities';
 import ResultsMultiSearchContainer, { mapDispatchToProps } from './ResultsMultiSearchContainer';
-import filters from '../../../__mocks__/filtersArray';
-import { bidderUserObject } from '../../../__mocks__/userObject';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
 describe('ResultsMultiSearchContainer', () => {
   const props = {
-    filters: { filters },
-    userProfile: bidderUserObject,
-    fetchFilters: () => {},
     onNavigateTo: () => {},
-    history: { location: { pathname: '/results' } },
   };
 
   it('is defined', () => {
@@ -52,51 +46,13 @@ describe('ResultsMultiSearchContainer', () => {
         onNavigateTo={navigateTo}
       />,
     );
-    wrapper.instance().onSubmit({ q: 'german', otherFilters: ['1', '2'], emptyFilters: [] });
-    expect(url.value).toBe('/results?otherFilters=1%2C2&q=german');
-  });
-
-  it('can perform actions upon componentWillMount', () => {
-    const fetchFiltersSpy = sinon.spy();
-    const wrapper = shallow(<ResultsMultiSearchContainer.WrappedComponent
-      {...props}
-      fetchFilters={fetchFiltersSpy}
-      filters={{ ...props.filters, hasFetched: true }}
-    />);
-    wrapper.update();
-    // define the instance
-    sinon.assert.calledOnce(fetchFiltersSpy);
-  });
-
-  it('does not fetch filters if the current route exists in the bypassRoutes', () => {
-    const fetchFiltersSpy = sinon.spy();
-    const wrapper = shallow(<ResultsMultiSearchContainer.WrappedComponent
-      {...props}
-      fetchFilters={fetchFiltersSpy}
-      filters={{ ...props.filters, hasFetched: true }}
-      history={{ location: { pathname: '/profile/searches' } }}
-    />);
-    wrapper.update();
-    sinon.assert.callCount(fetchFiltersSpy, 0);
-  });
-
-
-  it('fetches filters if the current route does not exist in the bypassRoutes', () => {
-    const fetchFiltersSpy = sinon.spy();
-    const wrapper = shallow(<ResultsMultiSearchContainer.WrappedComponent
-      {...props}
-      fetchFilters={fetchFiltersSpy}
-      filters={{ ...props.filters, hasFetched: true }}
-      history={{ location: { pathname: '/profile/favorites' } }}
-    />);
-    wrapper.update();
-    sinon.assert.callCount(fetchFiltersSpy, 1);
+    wrapper.instance().onSubmit({ q: 'german' });
+    expect(url.value).toBe('/results?q=german');
   });
 });
 
 describe('mapDispatchToProps', () => {
   const config = {
-    fetchFilters: [{}],
     onNavigateTo: ['/test'],
     setSearchFilters: [{}],
   };

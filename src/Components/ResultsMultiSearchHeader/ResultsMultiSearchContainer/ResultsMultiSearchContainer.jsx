@@ -5,11 +5,8 @@ import { withRouter } from 'react-router';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { setSelectedSearchbarFilters } from '../../../actions/selectedSearchbarFilters';
-import { FILTERS_PARENT, USER_PROFILE, EMPTY_FUNCTION } from '../../../Constants/PropTypes';
-import { filtersFetchData } from '../../../actions/filters/filters';
+import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
 import ResultsMultiSearchHeader from '../ResultsMultiSearchHeader';
-import bypassRoutes from '../bypassRoutes';
-import { isCurrentPathIn } from '../../ProfileMenu/navigation';
 
 class ResultsMultiSearchHeaderContainer extends Component {
   constructor(props) {
@@ -23,29 +20,9 @@ class ResultsMultiSearchHeaderContainer extends Component {
     };
   }
 
-  componentWillMount() {
-    const { fetchFilters, filters, history } = this.props;
-
-    // We have a nested Saved Search container that fetches all of the data that this one needs.
-    // So we check the user navigated to any route where that's used. If so,
-    // we don't need to fecth filters, because they'll get fetched anyways.
-    const shouldBypassFetch = isCurrentPathIn(history.location.pathname, bypassRoutes);
-
-    // Have the filters already been fetched?
-    // if so, we'll pass back the saved filters
-    // as a param, which tells our filters action
-    // to not perform AJAX, and simply compare
-    // the query params against the filters
-    if (filters.hasFetched && !shouldBypassFetch) {
-      fetchFilters(filters, {}, filters);
-    } else if (!shouldBypassFetch) { // if not, we'll perform AJAX
-      fetchFilters(filters, {});
-    }
-  }
-
   onFilterChange(q) {
-    const { searchbarFilters, setSearchFilters } = this.props;
-    setSearchFilters({ ...searchbarFilters, ...q });
+    const { setSearchFilters } = this.props;
+    setSearchFilters({ ...q });
   }
 
   onSubmit(q) {
@@ -75,13 +52,9 @@ class ResultsMultiSearchHeaderContainer extends Component {
   }
 
   render() {
-    const { filters, userProfile, filtersIsLoading,
-      searchbarFilters } = this.props;
+    const { searchbarFilters } = this.props;
     return (
       <ResultsMultiSearchHeader
-        filters={filters.filters}
-        filtersIsLoading={filtersIsLoading}
-        userProfile={userProfile}
         onSubmit={this.onSubmit}
         onFilterChange={this.onFilterChange}
         defaultFilters={searchbarFilters}
@@ -91,37 +64,21 @@ class ResultsMultiSearchHeaderContainer extends Component {
 }
 
 ResultsMultiSearchHeaderContainer.propTypes = {
-  filters: FILTERS_PARENT,
-  filtersIsLoading: PropTypes.bool,
-  fetchFilters: PropTypes.func.isRequired,
-  userProfile: USER_PROFILE.isRequired,
   onNavigateTo: PropTypes.func.isRequired,
   setSearchFilters: PropTypes.func.isRequired,
   searchbarFilters: PropTypes.shape({}),
-  history: PropTypes.shape({}).isRequired,
 };
 
 ResultsMultiSearchHeaderContainer.defaultProps = {
-  filters: { filters: [] },
-  filtersIsLoading: false,
-  userProfile: {},
   setSearchFilters: EMPTY_FUNCTION,
   searchbarFilters: {},
 };
 
 const mapStateToProps = state => ({
-  filters: state.filters,
-  filtersHasErrored: state.filtersHasErrored,
-  filtersIsLoading: state.filtersIsLoading,
-  selectedAccordion: state.selectedAccordion,
-  userProfile: state.userProfile,
-  userProfileIsLoading: state.userProfileIsLoading,
   searchbarFilters: state.selectedSearchbarFilters,
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchFilters: (items, queryParams, savedFilters) =>
-    dispatch(filtersFetchData(items, queryParams, savedFilters)),
   onNavigateTo: dest => dispatch(push(dest)),
   setSearchFilters: query => dispatch(setSelectedSearchbarFilters(query)),
 });
