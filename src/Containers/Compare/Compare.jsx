@@ -4,13 +4,17 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { push } from 'react-router-redux';
 import { comparisonsFetchData } from '../../actions/comparisons';
+import { favoritePositionsFetchData } from '../../actions/favoritePositions';
 import CompareList from '../../Components/CompareList/CompareList';
-import { COMPARE_LIST } from '../../Constants/PropTypes';
+import { COMPARE_LIST, POSITION_SEARCH_RESULTS } from '../../Constants/PropTypes';
+import { POSITION_RESULTS_OBJECT } from '../../Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
+// import { getAssetPath } from '../../utilities';
 
-class Results extends Component {
+class Compare extends Component {
   constructor(props) {
     super(props);
+    this.onToggle = this.onToggle.bind(this);
     this.state = {
       key: 0,
     };
@@ -21,7 +25,15 @@ class Results extends Component {
       this.props.onNavigateTo(LOGIN_REDIRECT);
     } else {
       this.getComparisons(this.props.match.params.ids);
+      this.props.fetchFavorites();
     }
+  }
+
+  onToggle(id) {
+    let compareArray = this.props.match.params.ids.split(',');
+    compareArray = compareArray.filter(f => f !== id);
+    this.props.onNavigateTo(`/compare/${compareArray.toString()}`);
+    this.getComparisons(`${compareArray.toString()}`);
   }
 
   getComparisons(ids) {
@@ -29,18 +41,20 @@ class Results extends Component {
   }
 
   render() {
-    const { comparisons, hasErrored, isLoading } = this.props;
+    const { comparisons, hasErrored, isLoading, favoritePositions } = this.props;
     return (
       <CompareList
         compare={comparisons}
+        favorites={favoritePositions}
         hasErrored={hasErrored}
         isLoading={isLoading}
+        onToggle={this.onToggle}
       />
     );
   }
 }
 
-Results.propTypes = {
+Compare.propTypes = {
   onNavigateTo: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -52,15 +66,18 @@ Results.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   comparisons: COMPARE_LIST,
   isAuthorized: PropTypes.func.isRequired,
+  favoritePositions: POSITION_SEARCH_RESULTS,
+  fetchFavorites: PropTypes.func.isRequired,
 };
 
-Results.defaultProps = {
+Compare.defaultProps = {
   comparisons: [],
   hasErrored: false,
   isLoading: true,
+  favoritePositions: POSITION_RESULTS_OBJECT,
 };
 
-Results.contextTypes = {
+Compare.contextTypes = {
   router: PropTypes.object,
 };
 
@@ -68,11 +85,13 @@ const mapStateToProps = state => ({
   comparisons: state.comparisons,
   hasErrored: state.comparisonsHasErrored,
   isLoading: state.comparisonsIsLoading,
+  favoritePositions: state.favoritePositions,
 });
 
 export const mapDispatchToProps = dispatch => ({
   fetchData: url => dispatch(comparisonsFetchData(url)),
   onNavigateTo: dest => dispatch(push(dest)),
+  fetchFavorites: () => dispatch(favoritePositionsFetchData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Results));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Compare));
