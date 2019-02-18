@@ -1,7 +1,6 @@
 $tm-table-blue: $primary-blue-darkest;
 
 .tm-table {
-  $border-visible-height: 500%;
   $border-radius: 9px;
 
   border-collapse: separate;
@@ -72,19 +71,6 @@ $tm-table-blue: $primary-blue-darkest;
   }
 
   thead {
-    .border-extension {
-      height: 1px;
-    }
-
-    .border-visible {
-      height: $border-visible-height;
-      left: -300px;
-      position: absolute;
-      top: 0;
-      width: 2000px;
-      z-index: -100;
-    }
-
     th {
       background: inherit;
       font-size: 1.9rem;
@@ -103,33 +89,6 @@ $tm-table-blue: $primary-blue-darkest;
 
   tbody {
     position: relative;
-
-    .border-extension-layer-2 {
-      height: 1px;
-    }
-
-    .border-visible-layer-2 {
-      background: $color-white;
-      height: $border-visible-height + 500%;
-      left: -300px;
-      position: absolute;
-      top: 0;
-      width: 2000px;
-      z-index: -50;
-    }
-
-    .border-extension {
-      height: 1px;
-    }
-
-    .border-visible {
-      background: $tm-table-blue;
-      height: 1px;
-      left: -300px;
-      position: relative;
-      top: 16px;
-      width: 2000px;
-    }
 
     tr:first-of-type,
     tr:last-of-type {

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { push } from 'react-router-redux';
+import { get } from 'lodash';
 import { comparisonsFetchData } from '../../actions/comparisons';
 import { favoritePositionsFetchData } from '../../actions/favoritePositions';
 import CompareList from '../../Components/CompareList/CompareList';
 import { COMPARE_LIST, POSITION_SEARCH_RESULTS } from '../../Constants/PropTypes';
 import { POSITION_RESULTS_OBJECT } from '../../Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
-// import { getAssetPath } from '../../utilities';
 
 class Compare extends Component {
   constructor(props) {
@@ -24,7 +24,8 @@ class Compare extends Component {
     if (!this.props.isAuthorized()) {
       this.props.onNavigateTo(LOGIN_REDIRECT);
     } else {
-      this.getComparisons(this.props.match.params.ids);
+      const ids = get(this, 'props.match.params.ids');
+      if (ids) { this.getComparisons(ids); }
       this.props.fetchFavorites();
     }
   }
@@ -32,8 +33,9 @@ class Compare extends Component {
   onToggle(id) {
     let compareArray = this.props.match.params.ids.split(',');
     compareArray = compareArray.filter(f => f !== id);
-    this.props.onNavigateTo(`/compare/${compareArray.toString()}`);
-    this.getComparisons(`${compareArray.toString()}`);
+    const compareString = compareArray.toString();
+    this.props.onNavigateTo(`/compare/${compareString}`);
+    this.getComparisons(`${compareString}`);
   }
 
   getComparisons(ids) {

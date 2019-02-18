@@ -29,9 +29,6 @@ exports[`CompareListComponent matches snapshot 1`] = `
               scope="row"
             >
               Position
-              <div
-                className="border-extension border-visible"
-              />
             </th>
             <th>
               <div
@@ -456,9 +453,6 @@ exports[`CompareListComponent matches snapshot 1`] = `
           </tr>
         </tbody>
       </table>
-      <div
-        className="border-bottom-extension"
-      />
     </div>
   </div>
 </div>
@@ -511,9 +505,6 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               scope="row"
             >
               Position
-              <div
-                className="border-extension border-visible"
-              />
             </th>
             <th>
               <div
@@ -958,9 +949,6 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
           </tr>
         </tbody>
       </table>
-      <div
-        className="border-bottom-extension"
-      />
     </div>
   </div>
 </div>

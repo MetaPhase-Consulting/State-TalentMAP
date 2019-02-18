@@ -38,7 +38,6 @@ const CompareList = ({ compare, isLoading, favorites, onToggle }) => {
                   <tr>
                     <th scope="row">
                       Position
-                      <div className="border-extension border-visible" />
                     </th>
                     {
                       compareArray.map(c => (
@@ -221,7 +220,6 @@ const CompareList = ({ compare, isLoading, favorites, onToggle }) => {
                   </tr>
                 </tbody>
               </table>
-              <div className="border-bottom-extension" />
             </div>
         }
       </div>
