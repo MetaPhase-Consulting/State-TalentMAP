@@ -213,11 +213,16 @@ $condensed-card-data-padding: 15px 20px 9px;
 @media screen and (max-width: $screen-md-min) {
   .usa-width-one-third.condensed-card {
     display: block;
+
+    &:last-child {
+      margin-right: 4.82916%;
+    }
   }
 }
 
 @media screen and (max-width: $screen-sm-min) {
-  .usa-width-one-third.condensed-card {
+  .usa-width-one-third.condensed-card,
+  .usa-width-one-third.condensed-card:last-child {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -248,14 +253,6 @@ $condensed-card-data-padding: 15px 20px 9px;
   .condensed-card-bottom {
     min-height: 258px;
   }
-}
-
-.condensed-card-second {
-  float: left;
-}
-
-.condensed-card-third {
-  float: left;
 }
 
 .condensed-card:last-child {
