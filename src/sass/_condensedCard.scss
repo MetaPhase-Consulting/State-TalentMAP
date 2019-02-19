@@ -10,6 +10,7 @@ $condensed-card-data-padding: 15px 20px 9px;
   font-size: 16px;
   line-height: 19px;
   margin-bottom: $condensed-card-margin-bottom;
+  width: 350px;
 
   .bid-count-container {
     display: flex;
@@ -212,9 +213,14 @@ $condensed-card-data-padding: 15px 20px 9px;
 @media screen and (max-width: $screen-md-min) {
   .usa-width-one-third.condensed-card {
     display: block;
-    float: left;
-    margin-right: initial;
-    width: 100%;
+  }
+}
+
+@media screen and (max-width: $screen-sm-min) {
+  .usa-width-one-third.condensed-card {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -294,15 +300,3 @@ $condensed-card-data-padding: 15px 20px 9px;
   flex-wrap: wrap;
 }
 
-@media screen and (max-width: $screen-lg-min) and (min-width: $screen-sm-max) {
-  .condensed-card.usa-width-one-fourth {
-    display: block;
-    float: left;
-    margin-right: 2.35765%;
-    width: 30.97857%;
-  }
-
-  .condensed-card.usa-width-one-fourth:nth-child(3n) {
-    margin-right: 0;
-  }
-}
