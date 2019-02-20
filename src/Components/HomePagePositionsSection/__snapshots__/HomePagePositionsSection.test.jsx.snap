@@ -171,7 +171,6 @@ exports[`HomePagePositionsSection matches snapshot 1`] = `
     }
     favorites={Array []}
     isLoading={false}
-    maxLength={3}
     positions={
       Array [
         Object {
@@ -343,12 +342,9 @@ exports[`HomePagePositionsSection matches snapshot 1`] = `
         },
       ]
     }
+    refreshFavorites={false}
     title="Title"
-    toggleBid={[Function]}
-    toggleFavorite={[Function]}
     type="default"
-    userProfileFavoritePositionHasErrored={false}
-    userProfileFavoritePositionIsLoading={false}
   />
 </div>
 `;

@@ -4,11 +4,21 @@ $condensed-card-data-padding: 15px 20px 9px;
 
 .condensed-card {
 
+  background-color: $color-white;
   border: 1px solid $color-gray-light;
   font-family: Roboto;
   font-size: 16px;
   line-height: 19px;
   margin-bottom: $condensed-card-margin-bottom;
+  width: 350px;
+
+  .bid-count-container {
+    display: flex;
+
+    .bid-count-number {
+      font-size: .9em;
+    }
+  }
 
   .new-flag {
     background-color: $color-white;
@@ -30,6 +40,10 @@ $condensed-card-data-padding: 15px 20px 9px;
     margin-bottom: 5px;
     margin-right: 15px;
     padding-left: 1em;
+
+    .fa {
+      padding-right: 10px;
+    }
   }
 
   .link-button-wrapper {
@@ -123,6 +137,11 @@ $condensed-card-data-padding: 15px 20px 9px;
     position: relative;
   }
 
+  .condensed-card-inner {
+    height: 100%;
+    position: relative;
+  }
+
   .condensed-card-bottom {
     font-size: 16px;
   }
@@ -132,17 +151,13 @@ $condensed-card-data-padding: 15px 20px 9px;
   }
 
   .condensed-card-statistics {
-    border-bottom: 1px solid $color-gray-lighter;
     border-top: 0;
+    position: relative;
 
     .bid-count-list-item {
       background: $blue-primary;
       color: $color-white;
       margin-bottom: 0;
-    }
-
-    .bid-count-number {
-      padding: .2em 1em;
     }
 
     .bid-count-list-item:first-child {
@@ -198,9 +213,25 @@ $condensed-card-data-padding: 15px 20px 9px;
 @media screen and (max-width: $screen-md-min) {
   .usa-width-one-third.condensed-card {
     display: block;
-    float: left;
-    margin-right: initial;
-    width: 100%;
+
+    &:last-child {
+      margin-right: 4.82916%;
+    }
+  }
+}
+
+@media screen and (min-width: $screen-lg-min) {
+  .usa-width-one-third.condensed-card {
+    margin-right: 2.35765%;
+  }
+}
+
+@media screen and (max-width: $screen-sm-min) {
+  .usa-width-one-third.condensed-card,
+  .usa-width-one-third.condensed-card:last-child {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -230,16 +261,12 @@ $condensed-card-data-padding: 15px 20px 9px;
   }
 }
 
-.condensed-card-second {
-  float: left;
-}
-
-.condensed-card-third {
-  float: left;
-}
-
 .condensed-card:last-child {
   margin-bottom: $condensed-card-margin-bottom;
+}
+
+.condensed-card-footer-wrapper {
+  position: relative;
 }
 
 .condensed-card-footer {
@@ -270,3 +297,9 @@ $condensed-card-data-padding: 15px 20px 9px;
     }
   }
 }
+
+.condensed-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+

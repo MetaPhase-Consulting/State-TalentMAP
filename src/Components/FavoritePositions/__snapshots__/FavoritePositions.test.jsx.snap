@@ -11,6 +11,7 @@ exports[`FavoritePositionsComponent matches snapshot 1`] = `
       className="favorites-title-container"
     >
       <ProfileSectionTitle
+        icon="star"
         title="Favorites"
       />
     </div>
@@ -557,12 +558,9 @@ exports[`FavoritePositionsComponent matches snapshot 1`] = `
         },
       ]
     }
+    refreshFavorites={true}
     title="favorites"
-    toggleBid={[Function]}
-    toggleFavorite={[Function]}
     type="default"
-    userProfileFavoritePositionHasErrored={false}
-    userProfileFavoritePositionIsLoading={false}
   />
 </div>
 `;

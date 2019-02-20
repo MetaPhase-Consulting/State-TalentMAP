@@ -8,8 +8,7 @@ import PositionDetails from '../../Components/PositionDetails/PositionDetails';
 import { positionDetailsFetchData } from '../../actions/positionDetails';
 import { putHighlightedPosition, deleteHighlightPosition } from '../../actions/highlightPosition';
 import { getLastRouteLink } from '../../actions/routerLocations';
-import { userProfileToggleFavoritePosition } from '../../actions/userProfile';
-import { bidListFetchData, toggleBidPosition } from '../../actions/bidList';
+import { bidListFetchData } from '../../actions/bidList';
 import {
   editDescriptionContent,
   editPocContent,
@@ -53,15 +52,15 @@ class Position extends Component {
   }
 
   editDescriptionContent(content) {
-    this.props.editDescriptionContent(this.props.positionDetails[0].description.id, content);
+    this.props.editDescriptionContent(this.props.positionDetails.description.id, content);
   }
 
   editPocContent(content) {
-    this.props.editPocContent(this.props.positionDetails[0].description.id, content);
+    this.props.editPocContent(this.props.positionDetails.description.id, content);
   }
 
   editWebsiteContent(content) {
-    this.props.editWebsiteContent(this.props.positionDetails[0].description.id, content);
+    this.props.editWebsiteContent(this.props.positionDetails.description.id, content);
   }
 
   render() {
@@ -71,11 +70,7 @@ class Position extends Component {
       hasErrored,
       routerLocations,
       userProfile,
-      toggleFavorite,
-      userProfileFavoritePositionIsLoading,
-      userProfileFavoritePositionHasErrored,
       bidList,
-      toggleBid,
       bidListHasErrored,
       bidListIsLoading,
       bidListToggleHasErrored,
@@ -91,15 +86,11 @@ class Position extends Component {
 
     return (
       <PositionDetails
-        details={positionDetails[0]}
+        details={positionDetails}
         isLoading={isLoading}
         hasErrored={hasErrored}
         goBackLink={getLastRouteLink(routerLocations)}
         userProfile={userProfile}
-        toggleFavorite={toggleFavorite}
-        userProfileFavoritePositionIsLoading={userProfileFavoritePositionIsLoading}
-        userProfileFavoritePositionHasErrored={userProfileFavoritePositionHasErrored}
-        toggleBidPosition={toggleBid}
         bidList={bidList}
         bidListHasErrored={bidListHasErrored}
         bidListIsLoading={bidListIsLoading}
@@ -134,15 +125,11 @@ Position.propTypes = {
   fetchData: PropTypes.func,
   hasErrored: PropTypes.bool,
   isLoading: PropTypes.bool,
-  positionDetails: PropTypes.arrayOf(POSITION_DETAILS),
+  positionDetails: POSITION_DETAILS,
   isAuthorized: PropTypes.func.isRequired,
   routerLocations: ROUTER_LOCATIONS,
   userProfile: USER_PROFILE,
-  toggleFavorite: PropTypes.func.isRequired,
-  userProfileFavoritePositionIsLoading: PropTypes.bool,
-  userProfileFavoritePositionHasErrored: PropTypes.bool,
   fetchBidList: PropTypes.func,
-  toggleBid: PropTypes.func,
   bidListHasErrored: PropTypes.bool,
   bidListIsLoading: PropTypes.bool,
   bidList: BID_LIST,
@@ -161,16 +148,13 @@ Position.propTypes = {
 };
 
 Position.defaultProps = {
-  positionDetails: [],
+  positionDetails: {},
   fetchData: EMPTY_FUNCTION,
   hasErrored: false,
   isLoading: true,
   routerLocations: [],
   userProfile: {},
-  userProfileFavoritePositionIsLoading: true,
-  userProfileFavoritePositionHasErrored: false,
   fetchBidList: EMPTY_FUNCTION,
-  toggleBid: EMPTY_FUNCTION,
   bidList: { results: [] },
   bidListHasErrored: false,
   bidListIsLoading: false,
@@ -194,8 +178,6 @@ const mapStateToProps = (state, ownProps) => ({
   routerLocations: state.routerLocations,
   id: ownProps,
   userProfile: state.userProfile,
-  userProfileFavoritePositionIsLoading: state.userProfileFavoritePositionIsLoading,
-  userProfileFavoritePositionHasErrored: state.userProfileFavoritePositionHasErrored,
   bidListHasErrored: state.bidListHasErrored,
   bidListIsLoading: state.bidListIsLoading,
   bidList: state.bidListFetchDataSuccess,
@@ -211,9 +193,7 @@ const mapStateToProps = (state, ownProps) => ({
 export const mapDispatchToProps = dispatch => ({
   fetchData: id => dispatch(positionDetailsFetchData(id)),
   onNavigateTo: dest => dispatch(push(dest)),
-  toggleFavorite: (id, remove) => dispatch(userProfileToggleFavoritePosition(id, remove)),
   fetchBidList: () => dispatch(bidListFetchData()),
-  toggleBid: (id, remove) => dispatch(toggleBidPosition(id, remove)),
   editDescriptionContent: (id, content) => dispatch(editDescriptionContent(id, content)),
   editPocContent: (id, content) => dispatch(editPocContent(id, content)),
   editWebsiteContent: (id, content) => dispatch(editWebsiteContent(id, content)),

@@ -17,7 +17,7 @@ class HomePagePositionsContainer extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Don't try to pull positions until we've received the user's profile.
     if (this.props.userProfile.id) {
       this.props.homePagePositionsFetchData(this.props.userProfile.skills,
@@ -36,31 +36,21 @@ class HomePagePositionsContainer extends Component {
   }
 
   render() {
-    const { homePagePositions, userProfileIsLoading,
-      homePagePositionsHasErrored, homePagePositionsIsLoading,
-      userProfile, userProfileFavoritePositionIsLoading,
-      userProfileFavoritePositionHasErrored, onNavigateTo,
-      toggleFavorite, toggleBid, bidList } = this.props;
+    const { homePagePositions, userProfileIsLoading, homePagePositionsIsLoading,
+      userProfile, bidList } = this.props;
     return (
       <div className="content-container">
         {
-          (userProfileIsLoading || homePagePositionsIsLoading) &&
+          (userProfileIsLoading || homePagePositionsIsLoading)
+          ?
             <Spinner type="homepage-position-results" size="big" />
-        }
-        {
-          !userProfileIsLoading && !homePagePositionsIsLoading &&
-          <HomePagePositions
-            homePagePositions={homePagePositions}
-            homePagePositionsHasErrored={homePagePositionsHasErrored}
-            homePagePositionsIsLoading={homePagePositionsIsLoading}
-            userProfile={userProfile}
-            userProfileFavoritePositionIsLoading={userProfileFavoritePositionIsLoading}
-            userProfileFavoritePositionHasErrored={userProfileFavoritePositionHasErrored}
-            onNavigateTo={onNavigateTo}
-            toggleFavorite={toggleFavorite}
-            toggleBid={toggleBid}
-            bidList={bidList}
-          />
+          :
+            <HomePagePositions
+              homePagePositions={homePagePositions}
+              homePagePositionsIsLoading={homePagePositionsIsLoading}
+              userProfile={userProfile}
+              bidList={bidList}
+            />
         }
       </div>
     );
@@ -68,16 +58,10 @@ class HomePagePositionsContainer extends Component {
 }
 
 HomePagePositionsContainer.propTypes = {
-  homePagePositionsFetchData: PropTypes.func, // eslint-disable-line
+  homePagePositionsFetchData: PropTypes.func,
   homePagePositions: HOME_PAGE_POSITIONS,
-  homePagePositionsHasErrored: PropTypes.bool,
   homePagePositionsIsLoading: PropTypes.bool,
   userProfile: USER_PROFILE.isRequired,
-  userProfileFavoritePositionIsLoading: PropTypes.bool.isRequired,
-  userProfileFavoritePositionHasErrored: PropTypes.bool.isRequired,
-  onNavigateTo: PropTypes.func.isRequired,
-  toggleFavorite: PropTypes.func.isRequired,
-  toggleBid: PropTypes.func.isRequired,
   bidList: BID_RESULTS.isRequired,
   userProfileIsLoading: PropTypes.bool,
 };
@@ -85,10 +69,7 @@ HomePagePositionsContainer.propTypes = {
 HomePagePositionsContainer.defaultProps = {
   homePagePositionsFetchData: EMPTY_FUNCTION,
   homePagePositions: DEFAULT_HOME_PAGE_POSITIONS,
-  homePagePositionsHasErrored: false,
   homePagePositionsIsLoading: true,
-  userProfileFavoritePositionIsLoading: false,
-  userProfileFavoritePositionHasErrored: false,
   userProfile: {},
   userProfileIsLoading: false,
 };
@@ -96,7 +77,6 @@ HomePagePositionsContainer.defaultProps = {
 const mapStateToProps = state => ({
   userProfile: state.userProfile,
   homePagePositions: state.homePagePositions,
-  homePagePositionsHasErrored: state.homePagePositionsHasErrored,
   homePagePositionsIsLoading: state.homePagePositionsIsLoading,
   userProfileIsLoading: state.userProfileIsLoading,
 });

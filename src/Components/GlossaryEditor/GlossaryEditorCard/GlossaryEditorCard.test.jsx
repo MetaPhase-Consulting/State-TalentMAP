@@ -31,6 +31,13 @@ describe('GlossaryEditorCardComponent', () => {
     expect(instance.state.newTitle).toBe('test');
   });
 
+  it('can call the updateLink function', () => {
+    const wrapper = shallow(<GlossaryEditorCard {...props} />);
+    const instance = wrapper.instance();
+    instance.updateLink('link');
+    expect(instance.state.newLink).toBe('link');
+  });
+
   it('can call the updateDefinition function', () => {
     const wrapper = shallow(<GlossaryEditorCard {...props} />);
     const instance = wrapper.instance();
@@ -60,6 +67,22 @@ describe('GlossaryEditorCardComponent', () => {
     instance.updateTitle('test');
     instance.submitDefinition();
     sinon.assert.calledOnce(spy);
+  });
+
+  it('can call the submitDefinition function no change', () => {
+    const spy = sinon.spy();
+    const cancelSpy = sinon.spy();
+    const wrapper = shallow(
+      <GlossaryEditorCard
+        {...props}
+        submitGlossaryTerm={spy}
+        onCancel={cancelSpy}
+      />);
+    const instance = wrapper.instance();
+    instance.updateTitle(props.term.title);
+    instance.updateDefinition(props.term.definition);
+    instance.submitDefinition();
+    sinon.assert.calledOnce(cancelSpy);
   });
 
   it('can call the hasDefinitionChanged function', () => {

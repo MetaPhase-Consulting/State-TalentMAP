@@ -14,6 +14,7 @@ import positionDetails from './positionDetails';
 import comparisons from './comparisons';
 import homePagePositions from './homePagePositions';
 import userProfile from './userProfile';
+import userProfilePublic from './userProfilePublic';
 import favoritePositions from './favoritePositions';
 import bidList from './bidList';
 import descriptionEdit from './descriptionEdit';
@@ -33,7 +34,8 @@ import bidStatistics from './bidStatistics';
 import selectedSearchbarFilters from './selectedSearchbarFilters';
 import showFeedback from './showFeedback';
 import feedback from './feedback';
-
+import features from './features';
+import toast from './toast';
 
 export default combineReducers({
   ...results,
@@ -45,6 +47,7 @@ export default combineReducers({
   ...share,
   ...savedSearch,
   ...userProfile,
+  ...userProfilePublic,
   ...selectedAccordion,
   ...routerLocations,
   ...favoritePositions,
@@ -64,6 +67,8 @@ export default combineReducers({
   ...selectedSearchbarFilters,
   ...showFeedback,
   ...feedback,
+  ...features,
+  ...toast,
   router,
   form,
   client,

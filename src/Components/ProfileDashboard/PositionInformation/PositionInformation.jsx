@@ -6,16 +6,11 @@ import SectionTitle from '../SectionTitle';
 import InformationDataPoint from '../InformationDataPoint';
 import StartEnd from './StartEnd';
 
-const PositionInformation = ({ assignment }) => {
+const PositionInformation = ({ assignment = {} }) => {
   const assignmentStartDate = assignment.start_date ? formatDate(assignment.start_date) : false;
-  const isActive = assignment.status === 'active';
   let assignmentEndDate;
-  if (isActive) {
-    assignmentEndDate = assignment.estimated_end_date ?
-      formatDate(assignment.estimated_end_date) : '';
-  } else {
-    assignmentEndDate = assignment.end_date ? formatDate(assignment.end_date) : '';
-  }
+  assignmentEndDate = (assignment.status === 'active') ? assignment.estimated_end_date : assignment.end_date;
+  assignmentEndDate = assignmentEndDate ? formatDate(assignmentEndDate) : '';
 
   // format our values
   const formattedAssignmentDates = assignment.start_date && assignment.estimated_end_date ?
@@ -33,7 +28,7 @@ const PositionInformation = ({ assignment }) => {
       <div className="section-padded-inner-container">
         <SectionTitle title="Position Information" icon="flag" />
         <InformationDataPoint
-          title="Start & End of Position"
+          title="Start date to End date"
           content={formattedAssignmentDates}
         />
         <InformationDataPoint
@@ -41,11 +36,11 @@ const PositionInformation = ({ assignment }) => {
           content={formattedBureau}
         />
         <InformationDataPoint
-          title="Position Title"
+          title="Position title"
           content={formattedPosition}
         />
         <InformationDataPoint
-          title="Skill code"
+          title="Skill"
           content={formattedSkill}
         />
       </div>

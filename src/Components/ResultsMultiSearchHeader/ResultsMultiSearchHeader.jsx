@@ -62,20 +62,30 @@ class ResultsMultiSearchHeader extends Component {
     this.setState({ q: e.target.value, qWasUpdated: true }, this.filterChange);
   }
 
+  setupSkills(defaultSkills) {
+    const { skillsWasUpdated } = this.state;
+    // set skills to correct state
+    if (!skillsWasUpdated && defaultSkills) {
+      const mappedDefaultSkills = defaultSkills.length ?
+        // map the skills as either a string or an object property 'code'
+        defaultSkills.slice().map(s => ({ code: s.code || s })) : [];
+      this.setState({ [SKILL_PARAM]: mappedDefaultSkills });
+    }
+  }
+
   // Setup default values only once so that we can mount the component while waiting
   // for async actions to complete. We'll also save state in redux so that the component can be
   // unmounted and remounted and maintain state. This is useful for responsively rendering this
   // component while maintaining the selected filters. We also have to balance that
   // with loading the user's defaults, but only on the initial page load.
   setupDefaultValues(props) {
-    const { skillsWasUpdated, gradeWasUpdated, qWasUpdated, bureauWasUpdated } = this.state;
-    const { userProfile, defaultFilters } = props;
+    const { gradeWasUpdated, qWasUpdated, bureauWasUpdated } = this.state;
+    const { userProfile: { grade, bureau, skills }, defaultFilters } = props;
 
     // set default values for our filters
-    const defaultGrade = defaultFilters[GRADE_PARAM] || userProfile.grade;
-    const defaultBureau = defaultFilters[BUREAU_PARAM] || userProfile.bureau;
+    const defaultGrade = defaultFilters[GRADE_PARAM] || grade;
+    const defaultBureau = defaultFilters[BUREAU_PARAM] || bureau;
     const defaultQuery = defaultFilters.q;
-    const defaultSkills = defaultFilters[SKILL_PARAM] || userProfile.skills;
 
     // set keyword to correct state
     if (!qWasUpdated && defaultQuery) {
@@ -92,13 +102,7 @@ class ResultsMultiSearchHeader extends Component {
       this.setState({ defaultBureau, bureauWasUpdated: true });
     }
 
-    // set skills to correct state
-    if (!skillsWasUpdated && (userProfile.skills || defaultFilters[SKILL_PARAM])) {
-      const mappedDefaultSkills = defaultSkills.length ?
-        // map the skills as either a string or an object property 'code'
-        defaultSkills.slice().map(s => ({ code: s.code || s })) : [];
-      this.setState({ [SKILL_PARAM]: mappedDefaultSkills });
-    }
+    this.setupSkills(skills || defaultFilters[SKILL_PARAM]);
   }
 
   formatQuery() {
@@ -148,7 +152,7 @@ class ResultsMultiSearchHeader extends Component {
     const bureaus = filters.find(f => f.item && f.item.description === 'region');
     const mappedBureaus = bureaus && bureaus.data ?
       bureaus.data.slice().map(g => ({ ...g, value: g.code, text: g.custom_description })) : [];
-    // sort the regional bureaus by their calculated label
+    // sort the Bureaus by their calculated label
     const sortedBureuas = orderBy(mappedBureaus, ['text']);
 
     // set the default skills
@@ -174,11 +178,11 @@ class ResultsMultiSearchHeader extends Component {
                       onChangeText={this.onChangeText}
                       defaultValue={q}
                     />
-                    <div className="search-sub-text">Example: Abuja, Nigeria, Political Affairs (5505), Russian 3/3...</div>
+                    <div className="search-sub-text">Example: Abuja, Nigeria, Political Affairs (5505), Russian...</div>
                   </div>
                   <div className="usa-width-one-fourth search-results-inputs search-keyword">
                     <SkillCodeFilter
-                      label="Skill Code"
+                      label="Skill"
                       isLoading={filtersIsLoading}
                       filters={skillCodesData}
                       onFilterSelect={this.onChangeSkills}
@@ -200,7 +204,7 @@ class ResultsMultiSearchHeader extends Component {
                   <div className="usa-width-one-sixth search-results-inputs search-keyword">
                     <SelectForm
                       id="bureau-searchbar-filter"
-                      label="Regional Bureau"
+                      label="Bureau"
                       options={sortedBureuas}
                       defaultSort={defaultBureau}
                       includeFirstEmptyOption
@@ -240,7 +244,7 @@ ResultsMultiSearchHeader.defaultProps = {
   filters: [],
   defaultFilters: {},
   filtersIsLoading: false,
-  placeholder: 'Location, Skill cone (code), Grade, Language, Position number',
+  placeholder: 'Location, Skill, Grade, Language, Position number',
   userProfile: {},
   onFilterChange: EMPTY_FUNCTION,
 };

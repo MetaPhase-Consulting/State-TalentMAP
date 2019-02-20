@@ -49,6 +49,12 @@
   top: 7px;
 }
 
+.tm-spinner-saved-searches {
+  left: 40%;
+  position: absolute;
+  top: 7px;
+}
+
 .tm-spinner-portfolio-additional {
   left: 45%;
   position: absolute;
@@ -81,7 +87,7 @@
 $favorite-spinner-border-width: 3px;
 $favorite-spinner-size: 14px;
 
-// Favorite's Loading Spinner
+.bid-list-button,
 .favorite-container {
   .ds-c-spinner {
     color: $tm-navy;
@@ -96,7 +102,16 @@ $favorite-spinner-size: 14px;
       width: $favorite-spinner-size;
     }
   }
+}
 
+.bid-list-button {
+  .ds-c-spinner {
+    color: $color-white;
+  }
+}
+
+// Favorite's Loading Spinner
+.favorite-container {
   &.usa-button {
     .ds-c-spinner {
       // scss-lint:disable PseudoElement

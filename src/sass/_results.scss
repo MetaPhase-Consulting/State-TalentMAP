@@ -17,7 +17,15 @@ $results-container-width: 100% - $filter-container-width;
 
   .results-dropdown-sort {
     float: left;
+  }
+
+  .results-download {
+    float: left;
     margin-left: 10px;
+
+    button {
+      margin: 0;
+    }
   }
 
   .no-results {
@@ -31,10 +39,6 @@ $results-container-width: 100% - $filter-container-width;
   pointer-events: none;
 }
 
-.results-card-padded-section {
-  padding-right: 20%;
-}
-
 .results-card {
   background-color: $color-white;
   border: 1px solid $results-card-border;
@@ -42,13 +46,15 @@ $results-container-width: 100% - $filter-container-width;
   margin-bottom: 2rem;
   padding: 1.1rem;
 
-  .bid-count-container {
-    font-size: .95em;
-
-    .bid-count-label {
-      font-weight: normal;
-      padding-top: .4em;
+  dl {
+    dt,
+    dd {
+      vertical-align: bottom;
     }
+  }
+
+  .bid-count-container {
+    font-size: .8em;
   }
 
   .header {
@@ -106,7 +112,7 @@ $results-container-width: 100% - $filter-container-width;
 
         @media screen and (max-width: $screen-sm-min) {
           position: static;
-          width: 100%;
+          width: 50%;
         }
       }
 
@@ -121,8 +127,6 @@ $results-container-width: 100% - $filter-container-width;
       }
 
       .compare-check-box-container {
-        border: 1px solid $color-black;
-        border-radius: 5px;
         font-size: rem(14px);
         line-height: 39px;
         text-align: center;
@@ -136,6 +140,7 @@ $results-container-width: 100% - $filter-container-width;
       }
 
       .fa {
+        padding-right: 10px;
         position: relative;
       }
 
@@ -156,10 +161,6 @@ $results-container-width: 100% - $filter-container-width;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-
-        @media screen and (max-width: $screen-sm-max) {
-          left: 24px;
-        }
       }
     }
 
@@ -196,7 +197,7 @@ $results-container-width: 100% - $filter-container-width;
     }
 
     .favorite-container {
-      border: 1px solid $color-black;
+      border: 1px solid $primary-blue;
       box-shadow: none;
       float: none;
     }
@@ -238,10 +239,6 @@ $results-container-width: 100% - $filter-container-width;
       font-size: rem(12px);
       line-height: rem(14px);
     }
-  }
-
-  .bid-count-container {
-    float: right;
   }
 
   .section-title {
@@ -428,6 +425,11 @@ $results-container-width: 100% - $filter-container-width;
     margin-top: 10px;
   }
 
+  .selections-container,
+  .total-results {
+    font-size: 14px;
+  }
+
   .drop-downs {
     float: right;
     margin-top: 4px;
@@ -495,7 +497,7 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .accordion-checkbox-post,
-  .accordion-checkbox-skill-cone-code {
+  .accordion-checkbox-skill {
     .usa-accordion-button {
       float: left;
       padding-left: 0;
@@ -514,7 +516,7 @@ $results-container-width: 100% - $filter-container-width;
     min-height: 220px;
   }
 
-  .accordion-checkbox-skill-cone-code,
+  .accordion-checkbox-skill,
   .accordion-checkbox-post,
   .accordion-checkbox-bureau {
     padding: 0;

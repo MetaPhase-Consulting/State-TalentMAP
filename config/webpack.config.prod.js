@@ -243,7 +243,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new ExtractTextPlugin('style.css'),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -266,6 +265,11 @@ module.exports = {
         minifyCSS: true,
         minifyURLs: true,
       },
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: paths.loginHtml,
+      filename: 'login.html'
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
@@ -336,6 +340,7 @@ module.exports = {
     new LodashModuleReplacementPlugin({
       collections: true,
       paths: true,
+      shorthands: true,
     }),
   ],
   // Some libraries import Node modules but don't use them in the browser.

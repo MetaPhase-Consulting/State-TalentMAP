@@ -9,7 +9,7 @@ const items =
           title: 'Bid Cycle',
           sort: 100,
           description: 'bidCycle',
-          endpoint: 'bidcycle/',
+          endpoint: 'bidcycle/?ordering=name',
           selectionRef: ENDPOINT_PARAMS.bidCycle,
           text: 'Choose Bid Cycles',
         },
@@ -18,12 +18,12 @@ const items =
       },
       {
         item: {
-          title: 'Skill Cone (Code)',
+          title: 'Skill',
           sort: 200,
           description: 'skill',
           endpoint: 'skill/',
           selectionRef: ENDPOINT_PARAMS.skill,
-          text: 'Choose Skill codes',
+          text: 'Choose Skills',
         },
         data: [
         ],
@@ -142,7 +142,7 @@ const items =
       },
       {
         item: {
-          title: 'Danger pay',
+          title: 'Danger Pay',
           sort: 700,
           description: 'dangerPay',
           selectionRef: ENDPOINT_PARAMS.danger,

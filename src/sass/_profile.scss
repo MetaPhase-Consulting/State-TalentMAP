@@ -5,6 +5,15 @@
   position: relative;
   width: 100%;
 
+  .bid-list-container,
+  .notifications-container {
+    .data-point-title {
+      color: $color-gray;
+      font-size: 1.2rem;
+      font-weight: inherit;
+    }
+  }
+
   .saved-search-parent-container {
     min-height: 300px;
   }
@@ -23,13 +32,18 @@
     font-weight: normal;
     margin-bottom: 10px;
     margin-top: 5px;
+
+    .fa {
+      padding-right: 10px;
+    }
   }
 
   .usa-grid-full {
     max-width: none;
   }
 
-  .favorite-positions-container {
+  .favorite-positions-container,
+  .saved-searches-container {
     position: relative;
 
     .favorites-top-section {
@@ -94,6 +108,17 @@
         padding-left: 1.5rem;
       }
     }
+
+    .search-title {
+      margin-bottom: 5px;
+      text-decoration: underline;
+
+      .fa {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-left: 5px;
+      }
+    }
   }
 
   .saved-searches-container {
@@ -105,10 +130,6 @@
 
     .searches-title-container {
       float: left;
-    }
-
-    .usa-form {
-      float: right;
     }
 
     .scrollarea {
@@ -145,6 +166,21 @@
     float: left;
   }
 
+  .assignments-section {
+    .favorites-list-container {
+      max-height: 410px;
+      overflow-y: scroll;
+    }
+
+    .start-end {
+      display: inline;
+
+      .fa {
+        color: $color-green;
+      }
+    }
+  }
+
   .user-dashboard-section {
     background-color: $color-white;
     border: solid 1px $color-gray-light;
@@ -174,8 +210,11 @@
   }
 
   .current-user-top {
-    border-bottom: 1px solid $color-gray-light;
     text-align: center;
+  }
+
+  .current-user-section-border {
+    border-bottom: 1px solid $color-gray-light;
   }
 
   .current-user-bid-information {
@@ -301,7 +340,6 @@
   .edit-profile-link {
     font-size: 13px;
     margin-bottom: 10px;
-    text-transform: uppercase;
 
     a {
       color: $blue-primary;
@@ -325,6 +363,7 @@
   }
 
   .current-user-name {
+    font-size: 1.6rem;
     margin-bottom: 5px;
   }
 }
@@ -396,6 +435,10 @@ $padding-no-border: $total-padding - $border;
 
   .children-ul {
     margin-top: .5em;
+
+    .fa-container {
+      min-width: 20px;
+    }
 
     .list-item-wrapper {
       padding-left: 50px;
@@ -578,6 +621,7 @@ $padding-no-border: $total-padding - $border;
 .small-link-container-settings {
   a {
     display: inline-block;
+    float: right;
     padding-top: 5px;
   }
 }
@@ -595,6 +639,19 @@ $padding-no-border: $total-padding - $border;
 .saved-search-card {
   position: relative;
 
+  .bid-stats {
+    float: right;
+    font-size: 90%;
+
+    .bid-count-container {
+
+      .bid-count-label {
+        float: none;
+      }
+
+    }
+  }
+
   .bid-list-card-title-position {
     font-weight: bold;
     text-transform: uppercase;
@@ -605,8 +662,6 @@ $padding-no-border: $total-padding - $border;
   }
 
   .bid-list-card-title-status {
-    text-transform: capitalize;
-
     .fa {
       margin-right: 5px;
     }
@@ -665,7 +720,7 @@ $padding-no-border: $total-padding - $border;
 
 .bid-list-container {
   font-size: 1.1em;
-  max-height: 450px;
+  max-height: 420px;
   min-height: 260px;
   overflow-y: auto;
 
@@ -681,10 +736,6 @@ $padding-no-border: $total-padding - $border;
   .button-wrapper {
     display: inline-block;
     text-align: center;
-  }
-
-  a {
-    font-size: .8em;
   }
 }
 
@@ -789,7 +840,9 @@ $padding-no-border: $total-padding - $border;
 
   .link-button {
     float: right;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .saved-search-card {

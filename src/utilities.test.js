@@ -37,6 +37,7 @@ import { validStateEmail,
          mapSavedSearchToDescriptions,
          difference,
          redirectToLoginRedirect,
+         isUrl,
        } from './utilities';
 import { searchObjectParent } from './__mocks__/searchObject';
 
@@ -216,7 +217,8 @@ describe('formQueryString', () => {
 
 describe('existsInNestedObject', () => {
   it('can return true when something exists in a nested object', () => {
-    expect(existsInNestedObject(1, [{ position: { id: 1 } }])).toBe(true);
+    const arr = [{ position: { id: 1 } }];
+    expect(existsInNestedObject(1, arr)).toEqual(arr[0]);
   });
 
   it('can return false when something does not exist in a nested object', () => {
@@ -714,5 +716,17 @@ describe('redirectToLoginRedirect', () => {
     window.location.assign = loc => newLocation = loc;
     redirectToLoginRedirect();
     expect(newLocation).toBe('/test/loginRedirect');
+  });
+});
+
+describe('isUrl', () => {
+  it('returns the expected output for different strings', () => {
+    [
+      ['http', false], ['https', false], ['ftp', false], ['https://www', false], ['http.goo', false], ['goog.com', false],
+      ['http://google.com', true], ['https://www.goo.co', true],
+    ].map((u) => {
+      const output = isUrl(u[0]);
+      return u[1] ? expect(output).toBeTruthy() : expect(output).toBeFalsy();
+    });
   });
 });

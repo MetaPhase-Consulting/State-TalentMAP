@@ -94,11 +94,12 @@ app.use(loggingMiddleware);
 
 // saml2 acs
 app.post(PUBLIC_URL, (request, response) => {
-  response.redirect(307, `${API_ROOT}/saml2/acs/`);
+  response.redirect(307, SAML_LOGIN);
 });
 
 // saml2 login
 app.get(`${PUBLIC_URL}login`, (request, response) => {
+  // check if using SAML auth mode
   // create handler
   // eslint-disable-next-line no-unused-vars
   const loginHandler = (err, loginUrl, requestId) => {
@@ -108,15 +109,8 @@ app.get(`${PUBLIC_URL}login`, (request, response) => {
       response.redirect(loginUrl);
     }
   };
-
   login(loginHandler);
 });
-
-
-app.get(`${PUBLIC_URL}logout`, (request, response) => {
-  response.redirect(`${API_ROOT}/saml2/logout/`);
-});
-
 
 // saml2 metadata
 app.get(`${PUBLIC_URL}metadata`, (request, response) => {

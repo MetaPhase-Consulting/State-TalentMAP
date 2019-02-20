@@ -80,11 +80,9 @@ export const pillSort = (a, b) => {
 };
 
 export const propSort = (propName, nestedPropName) => (a, b) => {
-  let A = a[propName];
-  if (nestedPropName) { A = a[propName][nestedPropName]; }
+  let A = a[propName][nestedPropName] || a[propName];
   A = A.toString().toLowerCase();
-  let B = b[propName];
-  if (nestedPropName) { B = b[propName][nestedPropName]; }
+  let B = b[propName][nestedPropName] || b[propName];
   B = B.toString().toLowerCase();
   if (A < B) { // sort string ascending
     return -1;
@@ -130,7 +128,7 @@ export const formExploreRegionDropdown = (filters) => {
     // also add a placeholder to the top
     regions.unshift(
       {
-        text: 'Select a Regional Bureau',
+        text: 'Select a Bureau',
         value: '',
         disabled: true,
       },
@@ -141,7 +139,7 @@ export const formExploreRegionDropdown = (filters) => {
 
 // see all props at https://github.com/fisshy/react-scroll#propsoptions
 const defaultScrollConfig = {
-  duration: 700,
+  duration: 900,
   delay: 270,
   smooth: 'easeOutQuad',
 };
@@ -194,10 +192,12 @@ export const existsInArray = (ref, array) => {
 // for checking if a position is in the user's bid list
 export const existsInNestedObject = (ref, array, prop = 'position', nestedProp = 'id') => {
   let found = false;
-  array.forEach((i) => {
+  array.some((i) => {
     if (i[prop] && i[prop][nestedProp] === ref) {
-      found = true;
+      found = i;
+      return true;
     }
+    return false;
   });
   return found;
 };
@@ -299,11 +299,9 @@ export const focusById = (id, timeout) => {
 export const focusByFirstOfHeader = (timeout = 1) => {
   setTimeout(() => {
     let element = document.getElementsByTagName('h1');
-    if (element) { element = element[1]; }
-    if (!element) { element = document.getElementsByTagName('h2')[0]; }
-    if (!element) { element = document.getElementsByTagName('h3')[0]; }
-    if (element) { element.setAttribute('tabindex', '-1'); }
+    element = (element && element[1]) || document.getElementsByTagName('h2')[0] || document.getElementsByTagName('h3')[0];
     if (element) {
+      element.setAttribute('tabindex', '-1');
       element.focus();
     }
   }, timeout);
@@ -506,9 +504,15 @@ export const redirectToLogout = () => {
 export const difference = (base, object) => transform(object, (result, value, key) => {
   /* eslint-disable no-param-reassign */
   if (!isEqual(value, base[key])) {
-    result[key] = isObject(value) && isObject(base[key]) ?
-      difference(base[key], value) :
-      value;
+    result[key] = (isObject(value) && isObject(base[key]) && difference(base[key], value)) || value;
   }
   /* eslint-enable no-param-reassign */
 });
+
+/* returns true/false whether url is a valid url that contains http/https/ftp */
+export const isUrl = (url) => {
+  // eslint-disable-next-line no-useless-escape
+  const expression = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+  const regex = new RegExp(expression);
+  return url.match(regex);
+};

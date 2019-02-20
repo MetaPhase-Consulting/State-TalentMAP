@@ -38,7 +38,7 @@ exports[`ResultsMultiSearchHeaderComponent matches snapshot 1`] = `
                 noForm={true}
                 onChangeText={[Function]}
                 onSubmitSearch={[Function]}
-                placeholder="Location, Skill cone (code), Grade, Language, Position number"
+                placeholder="Location, Skill, Grade, Language, Position number"
                 submitDisabled={false}
                 submitText="Search"
                 type="medium"
@@ -46,7 +46,7 @@ exports[`ResultsMultiSearchHeaderComponent matches snapshot 1`] = `
               <div
                 className="search-sub-text"
               >
-                Example: Abuja, Nigeria, Political Affairs (5505), Russian 3/3...
+                Example: Abuja, Nigeria, Political Affairs (5505), Russian...
               </div>
             </div>
             <div
@@ -62,7 +62,7 @@ exports[`ResultsMultiSearchHeaderComponent matches snapshot 1`] = `
                   ]
                 }
                 isLoading={false}
-                label="Skill Code"
+                label="Skill"
                 labelSrOnly={false}
                 onFilterSelect={[Function]}
                 userSkills={
@@ -112,7 +112,7 @@ exports[`ResultsMultiSearchHeaderComponent matches snapshot 1`] = `
                 emptyOptionText="- Select -"
                 id="bureau-searchbar-filter"
                 includeFirstEmptyOption={true}
-                label="Regional Bureau"
+                label="Bureau"
                 languages={Array []}
                 onSelectOption={[Function]}
                 options={

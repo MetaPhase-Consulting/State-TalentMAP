@@ -56,17 +56,9 @@ exports[`PositionTitleComponent matches snapshot 1`] = `
           <div
             className="usa-width-one-half title-actions-section"
           >
-            <Favorite
-              as="div"
-              className=""
-              compareArray={Array []}
-              hasBorder={false}
-              hideText={false}
-              isLoading={false}
-              onToggle={[Function]}
+            <Connect(FavoriteContainer)
               refKey={6}
               useButtonClass={true}
-              useButtonClassSecondary={false}
               useLongText={true}
               useSpinnerWhite={true}
             />
@@ -81,38 +73,18 @@ exports[`PositionTitleComponent matches snapshot 1`] = `
     />
   </div>
   <div
-    className="offset-bid-button-container offset-bid-count-container"
-  >
-    <div
-      className="usa-grid-full position-title-bid-count"
-    >
-      <BidCount
-        altStyle={true}
-        bidStatistics={
-          Object {
-            "at_skill": 0,
-            "bidcycle": 1,
-            "id": 1,
-            "in_grade": 0,
-            "in_grade_at_skill": 0,
-            "total_bids": 3,
-          }
-        }
-        hideLabel={false}
-        label="Bid Count"
-      />
-    </div>
-  </div>
-  <div
     className="offset-bid-button-container"
   >
-    <BidListButton
-      className="bid-list-button"
-      compareArray={Array []}
-      id={6}
-      isLoading={false}
-      toggleBidPosition={[Function]}
-    />
+    <Connect(PermissionsWrapper)
+      permissions="bidder"
+    >
+      <Connect(BidListButtonContainer)
+        compareArray={Array []}
+        disabled={false}
+        id={6}
+        isLoading={false}
+      />
+    </Connect(PermissionsWrapper)>
   </div>
 </div>
 `;
