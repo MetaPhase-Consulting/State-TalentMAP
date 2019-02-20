@@ -55,6 +55,13 @@ class CompareCheck extends Component {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  joinClassNames(className) {
+    return className
+    .join(' ')
+    .trim();
+  }
+
   render() {
     const { className, as: type } = this.props;
     const isChecked = this.getSavedState();
@@ -74,9 +81,7 @@ class CompareCheck extends Component {
       options.disabled = true;
     }
 
-    options.className = options.className
-      .join(' ')
-      .trim();
+    options.className = this.joinClassNames(options.className);
 
     return (
       <InteractiveElement {...options}>
