@@ -6,6 +6,7 @@ import PositionTitle from '../PositionTitle/PositionTitle';
 import PositionDetailsItem from '../PositionDetailsItem/PositionDetailsItem';
 import PositionSimilarPositions from '../../Containers/PositionSimilarPositions';
 import GoBackLink from '../BackButton';
+import Alert from '../Alert';
 
 import { DEFAULT_HIGHLIGHT_POSITION } from '../../Constants/DefaultProps';
 import {
@@ -49,9 +50,14 @@ class PositionDetails extends Component {
       resetDescriptionEditMessages,
       highlightPosition,
       onHighlight,
+      userProfileIsLoading,
     } = this.props;
 
     const isReady = details.id && userProfile.id && !isLoading && !hasErrored;
+
+    const isLoading$ = isLoading || userProfileIsLoading;
+
+    const isError = hasErrored && !isLoading && !userProfileIsLoading;
 
     return (
       <div className="content-container position-details-container">
@@ -86,7 +92,12 @@ class PositionDetails extends Component {
             <PositionSimilarPositions id={details.id} />
           </Row>
         </div>}
-        {!isReady && <Spinner type="position-details" size="big" />}
+        {isLoading$ && <Spinner type="position-details" size="big" />}
+        {isError &&
+          <div className="usa-grid-full position-error">
+            <Alert type="error" title="There was an error loading this position" messages={[{ body: 'Try searching for a different position.' }]} />
+          </div>
+        }
       </div>
     );
   }
@@ -98,6 +109,7 @@ PositionDetails.propTypes = {
   hasErrored: PropTypes.bool,
   goBackLink: GO_BACK_TO_LINK.isRequired,
   userProfile: USER_PROFILE,
+  userProfileIsLoading: PropTypes.bool,
   bidList: BID_LIST.isRequired,
   bidListToggleIsLoading: PropTypes.bool,
   editDescriptionContent: PropTypes.func.isRequired,
@@ -113,6 +125,7 @@ PositionDetails.defaultProps = {
   isLoading: true,
   hasErrored: false,
   userProfile: {},
+  userProfileIsLoading: false,
   bidListToggleIsLoading: false,
   descriptionEditHasErrored: false,
   descriptionEditIsLoading: false,
