@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Row } from '../Layout';
 import Spinner from '../Spinner/Spinner';
 import PositionTitle from '../PositionTitle/PositionTitle';
@@ -95,7 +96,7 @@ class PositionDetails extends Component {
         {isLoading$ && <Spinner type="position-details" size="big" />}
         {isError &&
           <div className="usa-grid-full position-error">
-            <Alert type="error" title="There was an error loading this position" messages={[{ body: 'Try searching for a different position.' }]} />
+            <Alert type="error" title="There was an error loading this position" messages={[{ body: <span><Link to="/results">Return to search</Link> and select filters to look for a similar position.</span> }]} />
           </div>
         }
       </div>
