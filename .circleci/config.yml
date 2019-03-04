@@ -174,7 +174,8 @@ jobs:
        - run:
            name: Run Browserstack
            command: |
-             docker run --network container:web \
+             docker run --name browserstack --network container:web \
+               --volumes-from data -t talentmap/browserstack \
                node /app/src/browserstack/index.js
   push-stable:
     <<: *default-docker-node
@@ -203,7 +204,7 @@ workflows:
             - build
       - browserstack:
           requires:
-            - build
+            - docker-build
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
