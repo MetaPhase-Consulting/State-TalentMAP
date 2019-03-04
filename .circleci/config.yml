@@ -172,9 +172,9 @@ jobs:
            name: Start Server
            command: docker-compose -f $COMPOSE_FILE_NAME up -d
        - run:
-           name: Run Pa11y
+           name: Run Browserstack
            command: |
-             docker run --name browserstack --network container:web \
+             docker run --network container:web \
                node /app/src/browserstack/index.js
   push-stable:
     <<: *default-docker-node
