@@ -172,11 +172,8 @@ jobs:
            name: Start Server
            command: docker-compose -f $COMPOSE_FILE_NAME up -d
        - run:
-           name: Run Container
-           command: |
-             docker run --name browserstack --network container:web \
-               --volumes-from data \
-               /app/src/browserstack/browserstack.sh
+           name: Run Browserstack
+           command: docker exec -it web sh src/browserstack/browserstack.sh
   push-stable:
     <<: *default-docker-node
     steps:
