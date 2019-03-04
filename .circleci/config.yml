@@ -175,7 +175,6 @@ jobs:
            name: Run Pa11y
            command: |
              docker run --name browserstack --network container:web \
-               --volumes-from data -t talentmap/browserstack \
                node /app/src/browserstack/index.js
   push-stable:
     <<: *default-docker-node
