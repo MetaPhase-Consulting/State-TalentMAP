@@ -1,6 +1,11 @@
-// eslint-disable-next-line
+/* eslint-disable */
 const { Builder, By, Key, Keys, until } = require('selenium-webdriver');
 const fs = require('fs');
+const argv = require('yargs').argv;
+/* eslint-enable */
+
+const BS_USERNAME = argv.username || argv.u;
+const BS_AUTHKEY = argv.auth || argv.a || argv.p;
 
 // Input capabilities
 const capabilities = {
@@ -9,8 +14,8 @@ const capabilities = {
   os: 'Windows',
   os_version: '10',
   resolution: '1920x1200',
-  'browserstack.user': process.env.BS_USERNAME,
-  'browserstack.key': process.env.BS_AUTHKEY,
+  'browserstack.user': BS_USERNAME,
+  'browserstack.key': BS_AUTHKEY,
   'browserstack.debug': 'true',
   'browserstack.networkLogs': 'true',
 };

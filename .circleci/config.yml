@@ -173,7 +173,7 @@ jobs:
            command: docker-compose -f $COMPOSE_FILE_NAME up -d
        - run:
            name: Run Browserstack
-           command: docker exec -it web sh src/browserstack/browserstack.sh
+           command: docker exec -it web sh src/browserstack/browserstack.sh --u=$BS_USERNAME --p=$BS_AUTHKEY
   push-stable:
     <<: *default-docker-node
     steps:
