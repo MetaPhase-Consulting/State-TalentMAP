@@ -175,7 +175,7 @@ jobs:
            name: Run Browserstack
            command: |
              docker run --name browserstack --network container:web \
-               --volumes-from data -t talentmap/browserstack \
+               --volumes-from data \
                node /app/src/browserstack/index.js
   push-stable:
     <<: *default-docker-node
