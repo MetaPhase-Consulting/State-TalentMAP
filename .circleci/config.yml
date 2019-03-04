@@ -176,9 +176,9 @@ jobs:
            command: |
              docker run --name browserstack --network container:web \
                --volumes-from data
-      - run:
-          name: Run Browserstack
-          command: docker exec browserstack /bin/sh -c "/app/src/browserstack/browserstack.sh"
+       - run:
+           name: Run Browserstack
+           command: docker exec browserstack /bin/sh -c "/app/src/browserstack/browserstack.sh"
   push-stable:
     <<: *default-docker-node
     steps:
