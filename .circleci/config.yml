@@ -144,6 +144,9 @@ jobs:
      steps:
        - setup_remote_docker
        - checkout
+       - run: wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip"
+       - run: unzip BrowserStackLocal-linux-x64.zip
+       - run: ./BrowserStackLocal --key $BS_AUTHKEY --local-identifier $CC_TEST_REPORTER_ID
        - run:
            name: Replace placeholders in Compose file
            command: |

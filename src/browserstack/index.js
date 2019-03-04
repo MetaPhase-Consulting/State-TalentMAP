@@ -16,6 +16,7 @@ const capabilities = {
   resolution: '1920x1200',
   'browserstack.user': BS_USERNAME,
   'browserstack.key': BS_AUTHKEY,
+  'browserstack.local': 'true',
   'browserstack.debug': 'true',
   'browserstack.networkLogs': 'true',
 };
