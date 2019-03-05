@@ -7,7 +7,6 @@ import PositionTitle from '../PositionTitle/PositionTitle';
 import PositionDetailsItem from '../PositionDetailsItem/PositionDetailsItem';
 import PositionSimilarPositions from '../../Containers/PositionSimilarPositions';
 import GoBackLink from '../BackButton';
-import Alert from '../Alert';
 
 import { DEFAULT_HIGHLIGHT_POSITION } from '../../Constants/DefaultProps';
 import {
@@ -96,7 +95,8 @@ class PositionDetails extends Component {
         {isLoading$ && <Spinner type="position-details" size="big" />}
         {isError &&
           <div className="usa-grid-full position-error">
-            <Alert type="error" title="There was an error loading this position" messages={[{ body: <span><Link to="/results">Return to search</Link> and select filters to look for a similar position.</span> }]} />
+            <h2>There was an error loading this position</h2>
+            <p><Link to="/results">Return to search</Link> and select filters to look for a similar position.</p>
           </div>
         }
       </div>

@@ -104,7 +104,20 @@
   }
 
   .position-error {
+    display: flex;
+    flex-direction: column;
     margin-top: 50px;
+
+    h2 {
+      flex: 1;
+      margin: auto;
+      margin-bottom: 1em;
+    }
+
+    p {
+      flex: 1;
+      margin: auto;
+    }
   }
 
   .data-point-section {
