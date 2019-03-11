@@ -1,4 +1,4 @@
-import { ENDPOINT_PARAMS } from '../../Constants/EndpointParams';
+import { COMMON_PROPERTIES, ENDPOINT_PARAMS } from '../../Constants/EndpointParams';
 
 // Set what filters we want to fetch
 const items =
@@ -49,6 +49,15 @@ const items =
           text: 'Choose languages',
         },
         data: [
+        ],
+        // Allow users to include languages with no code. This option is not supplied from
+        // the endpoint, so we define it here.
+        initialData: [
+          {
+            code: COMMON_PROPERTIES.NULL_LANGUAGE,
+            short_description: 'No language requirement',
+            custom_description: 'No language requirement',
+          },
         ],
       },
       {
@@ -189,21 +198,21 @@ const items =
       },
 
       /* Currently we don't display this as a filter, but will appear
-      as a pill if the query param exists (e.g., the user clicked on Service Needs
+      as a pill if the query param exists (e.g., the user clicked on Featured positions
       positions from the home page). */
       {
         item: {
-          title: 'Service Needs',
+          title: 'Featured',
           sort: 1000,
           bool: true,
           description: 'service_needs',
           selectionRef: ENDPOINT_PARAMS.highlighted,
-          text: 'Include only Service Needs positions',
+          text: 'Include only featured positions',
           choices: [
           ],
         },
         data: [
-          { code: 'true', short_description: 'Service Needs' },
+          { code: 'true', short_description: 'Featured' },
         ],
       },
 
