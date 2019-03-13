@@ -7,7 +7,7 @@ import { SetType } from '../../Constants/PropTypes';
 
 const BidListButtonContainer = ({ toggleBid, isLoading, id, ...rest }) => (
   <BidListButton toggleBidPosition={toggleBid} id={id} isLoading={isLoading.has(id)} {...rest} />
-  );
+);
 
 BidListButtonContainer.propTypes = {
   toggleBid: PropTypes.func.isRequired,
