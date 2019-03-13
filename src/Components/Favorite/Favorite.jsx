@@ -173,7 +173,7 @@ Favorite.propTypes = {
   className: PropTypes.string,
   as: PropTypes.string.isRequired,
   onToggle: PropTypes.func.isRequired,
-  refKey: PropTypes.node.isRequired,
+  refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired]).isRequired,
   hideText: PropTypes.bool,
   compareArray: FAVORITE_POSITIONS_ARRAY.isRequired,
   isLoading: PropTypes.bool,

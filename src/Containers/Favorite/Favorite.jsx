@@ -24,7 +24,7 @@ FavoriteContainer.propTypes = {
   onToggle: PropTypes.func.isRequired,
   isLoading: SetType,
   hasErrored: PropTypes.bool.isRequired,
-  refKey: PropTypes.number.isRequired,
+  refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired]).isRequired,
 };
 
 FavoriteContainer.defaultProps = {
