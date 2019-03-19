@@ -57,7 +57,7 @@ const REACT_APP = /^REACT_APP_/i;
 const ENV = NODE_ENV || 'development';
 const PUBLIC_URL = process.env.PUBLIC_URL || '/talentmap/';
 const ABOUT_URL = `${process.env.PUBLIC_URL}about`;
-const API_URL = process.env.API_URL || 'http://localhost:3000/proxy/api/v1';
+const API_URL = process.env.API_URL || 'http://localhost:8000/api/v1';
 
 function getClientEnvironment(publicUrl) {
   const initial = {
