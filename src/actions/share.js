@@ -1,4 +1,5 @@
 import api from '../api';
+import { propOrDefault } from '../utilities';
 
 export function shareHasErrored(bool) {
   return {
@@ -34,12 +35,11 @@ export function shareSendData(data) {
       })
       .then(share => dispatch(shareSuccess(share)))
       .catch((err) => {
-        dispatch(shareHasErrored(
-          err.response.data.message || 'An error occurred trying to share this position.',
-        ));
+        const error = propOrDefault(err, 'response.data.message', 'An error occurred trying to share this position.');
+        dispatch(shareHasErrored(error));
         dispatch(shareIsSending(false));
         dispatch(shareSuccess(false));
-        return err.response.data.message;
+        return error;
       });
   };
 }

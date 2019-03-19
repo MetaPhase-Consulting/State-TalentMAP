@@ -31,7 +31,7 @@ source setup_environment.sh
 
 # override following env vars
 export API_ROOT=https://dev.talentmap.api.metaphasedev.com/
-export API_URL=https://dev.talentmap.api.metaphasedev.com/api/v1
+export API_URL=https://dev.talentmap.metaphasedev.com/proxy/api/v1
 # needs to match what is in the apache conf
 export STATIC_PATH=/var/www/html/
 # certs generated from the certs.sh script

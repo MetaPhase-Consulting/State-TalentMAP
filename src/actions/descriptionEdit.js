@@ -58,7 +58,7 @@ export function editDescription(id, content, pointOfContact, website) {
         dispatch(descriptionEditHasErrored('An error occurred trying to save this data. Click "edit" and try to save again.'));
         dispatch(descriptionEditIsSending(false));
         dispatch(descriptionEditSuccess(false));
-        if (err && err.response) {
+        if (err && err.response && err.response.data) {
           return err.response.data.message;
         }
         return false;

@@ -16,7 +16,8 @@ export STATIC_PATH=/var/www/html/talentmap/
 # Protocol, hostname and port of API
 # Default - local dev, http://localhost:8000/
 export API_ROOT=http://localhost:8000/
-export API_URL=http://localhost:8000/api/v1
+# Local URL for proxy of API requests
+export API_URL=http://localhost:3000/proxy/api/v1
 
 # Port number for the Express web application
 # This is important in shared environments

@@ -1,4 +1,5 @@
 const express = require('express');
+const proxy = require('express-http-proxy');
 const bodyParser = require('body-parser');
 const bunyan = require('bunyan');
 const helmet = require('helmet');
@@ -91,6 +92,9 @@ app.use(bodyParser.urlencoded({
 
 // middleware for logging
 app.use(loggingMiddleware);
+
+// API requests are proxied
+app.use('/proxy', proxy(API_ROOT));
 
 // saml2 acs
 app.post(PUBLIC_URL, (request, response) => {

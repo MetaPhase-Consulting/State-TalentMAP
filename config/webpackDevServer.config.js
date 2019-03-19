@@ -93,6 +93,10 @@ module.exports = function(proxy, allowedHost) {
       app.get('/', redirectToLogin);
       app.get('/login', redirectToLogin);
       app.get('/logout', redirectToLogin);
+      // Route API calls
+      // app.get('/api/*', (req, res) => {
+      //   res.redirect(`http://localhost:8000${req.path}`);
+      // });
     },
   };
 };

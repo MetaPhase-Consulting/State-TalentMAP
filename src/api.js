@@ -3,7 +3,7 @@ import { fetchUserToken, hasValidToken, propOrDefault, redirectToLoginRedirect }
 import { logoutRequest } from './login/actions';
 
 export const config = {
-  baseURL: process.env.API_URL || 'http://localhost:8000/api/v1',
+  baseURL: process.env.API_URL || 'http://localhost:3000/proxy/api/v1',
 };
 
 const api = axios.create(config);
