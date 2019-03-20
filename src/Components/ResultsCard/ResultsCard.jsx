@@ -11,6 +11,7 @@ import CompareCheck from '../CompareCheck/CompareCheck';
 import LanguageList from '../LanguageList';
 import BidCount from '../BidCount';
 import BoxShadow from '../BoxShadow';
+import Handshake from '../Ribbon/Handshake';
 
 import { formatDate, propOrDefault, getPostName, getBidStatisticsObject } from '../../utilities';
 
@@ -127,8 +128,13 @@ const ResultsCard = (props) => {
               <Column columns="6">
                 <DefinitionList items={sections[0]} />
               </Column>
-              <Column columns="6">
+              <Column columns="4">
                 <DefinitionList items={sections[1]} />
+              </Column>
+              <Column columns="2">
+                {
+                get(stats, 'has_handshake_offered', false) && <Handshake className="ribbon-results-card" />
+              }
               </Column>
             </Row>
             <Row className="footer results-card-padded-section" fluid>
