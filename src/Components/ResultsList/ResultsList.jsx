@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ResultsCard from '../../Components/ResultsCard/ResultsCard';
-import { POSITION_SEARCH_RESULTS, EMPTY_FUNCTION, FAVORITE_POSITIONS_ARRAY, BID_RESULTS } from '../../Constants/PropTypes';
+import { POSITION_SEARCH_RESULTS, FAVORITE_POSITIONS_ARRAY, BID_RESULTS } from '../../Constants/PropTypes';
 import { propOrDefault } from '../../utilities';
 
-const ResultsList = ({ results, onToggle, isLoading, favorites, bidList }) => {
+const ResultsList = ({ results, isLoading, favorites, bidList }) => {
   const mapResults = results.results || [];
   return (
     <div className={isLoading ? 'results-loading' : null}>
@@ -16,7 +16,6 @@ const ResultsList = ({ results, onToggle, isLoading, favorites, bidList }) => {
             favorites={favorites}
             key={key}
             result={result}
-            onToggle={onToggle}
             bidList={bidList}
           />
         );
@@ -27,7 +26,6 @@ const ResultsList = ({ results, onToggle, isLoading, favorites, bidList }) => {
 
 ResultsList.propTypes = {
   results: POSITION_SEARCH_RESULTS,
-  onToggle: PropTypes.func,
   isLoading: PropTypes.bool,
   favorites: FAVORITE_POSITIONS_ARRAY,
   bidList: BID_RESULTS.isRequired,
@@ -35,7 +33,6 @@ ResultsList.propTypes = {
 
 ResultsList.defaultProps = {
   results: { results: [] },
-  onToggle: EMPTY_FUNCTION,
   isLoading: false,
   favorites: [],
 };
