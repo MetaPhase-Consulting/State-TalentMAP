@@ -3,23 +3,18 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { BID_RESULTS } from '../../../Constants/PropTypes';
 import SectionTitle from '../SectionTitle';
-import BorderedList from '../../BorderedList';
-import BidListResultsCard from '../../BidListResultsCard/';
+import BidTrackerCard from '../../BidTracker/BidTrackerCard';
 import BidListHeader from './BidListHeader';
-import { getStatusProperty } from '../../../Constants/BidStatuses';
+// import { getStatusProperty } from '../../../Constants/BidStatuses';
 import StaticDevContent from '../../StaticDevContent';
 
 const BidList = ({ bids, showMoreLink }) => {
-  const bidArray = [];
-  bids.slice().forEach(bid => (
-    bidArray.push(
-      <BidListResultsCard
-        bid={bid}
-        condensedView
-        /* pass a parentClassName that we can use from the BorderedList component */
-        parentClassName={`parent-container-bid-status-${getStatusProperty(bid.status)}`}
-      />,
-    )
+  const bids$ = bids.slice().map(bid => (
+    <BidTrackerCard
+      bid={bid}
+      condensedView
+      showBidCount={false}
+    />
   ));
   return (
     <div className="usa-grid-full">
@@ -33,12 +28,12 @@ const BidList = ({ bids, showMoreLink }) => {
       </div>
       <div className="bid-list-container">
         {
-          bidArray.length === 0 ?
+          bids$.length === 0 ?
             <div className="usa-grid-full section-padded-inner-container">
               You have not added any bids to your bid list.
             </div>
           :
-            <BorderedList contentArray={bidArray} />
+            bids$
         }
       </div>
       {

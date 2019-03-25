@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BID_OBJECT, USER_PROFILE } from '../../../Constants/PropTypes';
 import BidSteps from '../BidStep';
@@ -15,26 +15,32 @@ import {
   DRAFT_PROP,
 } from '../../../Constants/BidData';
 
-const BidTrackerCard = ({ bid, acceptBid, declineBid, submitBid, deleteBid, showBidCount,
-userProfile }) => {
-  // determine whether we render an alert on top of the card
-  const showAlert = shouldShowAlert(bid);
-  // determine whether we should show the contacts section based on the status
-  const showContacts = [APPROVED_PROP, HAND_SHAKE_ACCEPTED_PROP, PRE_PANEL_PROP, IN_PANEL_PROP]
+class BidTrackerCard extends Component {
+  getChildContext() {
+    const { condensedView } = this.props;
+    return { condensedView };
+  }
+  render() {
+    const { bid, acceptBid, condensedView, declineBid, submitBid, deleteBid,
+      showBidCount, userProfile } = this.props;
+    // determine whether we render an alert on top of the card
+    const showAlert = shouldShowAlert(bid);
+    // determine whether we should show the contacts section based on the status
+    const showContacts = [APPROVED_PROP, HAND_SHAKE_ACCEPTED_PROP, PRE_PANEL_PROP, IN_PANEL_PROP]
                         .includes(bid.status);
-  // add class to container for draft since we need to apply an overflow:hidden for drafts only
-  const draftClass = bid.status === DRAFT_PROP ? 'bid-tracker-bid-steps-container--draft' : '';
-  return (
-    <BoxShadow className="bid-tracker">
-      <div>
-        <BidTrackerCardTop
-          bid={bid}
-          deleteBid={deleteBid}
-          showBidCount={showBidCount}
-        />
-        <div className={`usa-grid-full padded-container-inner bid-tracker-bid-steps-container ${draftClass}`}>
-          <BidSteps bid={bid} />
-          {
+    // add class to container for draft since we need to apply an overflow:hidden for drafts only
+    const draftClass = bid.status === DRAFT_PROP ? 'bid-tracker-bid-steps-container--draft' : '';
+    return (
+      <BoxShadow className={`bid-tracker ${condensedView ? 'bid-tracker--condensed' : ''}`}>
+        <div className="bid-tracker-inner-container">
+          <BidTrackerCardTop
+            bid={bid}
+            deleteBid={deleteBid}
+            showBidCount={showBidCount}
+          />
+          <div className={`usa-grid-full padded-container-inner bid-tracker-bid-steps-container ${draftClass}`}>
+            <BidSteps bid={bid} />
+            {
             showAlert &&
               <OverlayAlert
                 bid={bid}
@@ -44,9 +50,9 @@ userProfile }) => {
                 deleteBid={deleteBid}
               />
           }
+          </div>
         </div>
-      </div>
-      {
+        {
         showContacts &&
           <div className="usa-grid-full bid-tracker-card-bottom-container">
             <div className="padded-container-inner">
@@ -58,9 +64,10 @@ userProfile }) => {
             </div>
           </div>
       }
-    </BoxShadow>
-  );
-};
+      </BoxShadow>
+    );
+  }
+}
 
 BidTrackerCard.propTypes = {
   bid: BID_OBJECT.isRequired,
@@ -70,11 +77,16 @@ BidTrackerCard.propTypes = {
   deleteBid: PropTypes.func.isRequired,
   userProfile: USER_PROFILE.isRequired,
   showBidCount: PropTypes.bool,
+  condensedView: PropTypes.bool,
 };
 
 BidTrackerCard.defaultProps = {
   showBidCount: true,
+  condensedView: false,
 };
 
+BidTrackerCard.childContextTypes = {
+  condensedView: PropTypes.bool,
+};
 
 export default BidTrackerCard;

@@ -465,6 +465,235 @@ $draft-icon-offset: 120px;
   }
 }
 
+.bid-tracker--condensed {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  min-width: 0;
+  width: 100%;
+
+  .bid-tracker-alert-container--handshake-offered {
+    display: flex;
+
+    button {
+      margin: 0;
+      padding: .5em;
+    }
+
+    .link-button {
+      font-size: 1.2rem;
+      margin: 0;
+      padding: .75em;
+    }
+
+    .sub-text {
+      display: none;
+    }
+
+    .top-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 1em;
+    }
+
+    .tm-button-no-box {
+      display: none;
+    }
+  }
+
+  .draft-submission-container {
+    display: flex;
+
+    div {
+      flex: 1;
+    }
+  }
+
+  .bid-tracker-alert-container--draft {
+    margin-left: 1.5em;
+
+    .draft-submission-container {
+      border-right: 0;
+    }
+
+    .sub-submission-text {
+      margin-bottom: 0;
+      text-align: left;
+    }
+  }
+
+  .sub-submission-text,
+  .draft-submission-buttons-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      margin: 0;
+    }
+  }
+
+  .step-title-sub-text,
+  .remove-bid-link {
+    display: none;
+  }
+
+  .bid-tracker-overlay-alert {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: 1em;
+    width: 100%;
+
+    .bid-tracker-overlay-alert-content-container {
+      width: 100%;
+    }
+  }
+
+  .bid-tracker--condensed {
+    .bid-tracker-alert-container--draft {
+      top: 0;
+    }
+  }
+
+  .bid-tracker-alert-container {
+    top: 0;
+  }
+
+  .top-text {
+    font-size: 1.2rem;
+  }
+
+  .bid-tracker-overlay-alert-content-container {
+    width: 100%;
+  }
+
+  .draft-position-details {
+    display: none;
+  }
+
+  .bid-tracker-bid-steps-container {
+    padding: 0 1em;
+  }
+
+  .pending-tooltip {
+    display: none;
+  }
+
+  .bid-tracker-title-container {
+    padding: 1em;
+  }
+
+  .rc-steps {
+    padding: 10px 1em 0;
+  }
+
+  .bid-tracker-card-title-text {
+    font-size: 1.5rem;
+  }
+
+  .bid-tracker-card-title-outer-container-right {
+    display: none;
+  }
+
+  .rc-steps-item-content {
+    .step-title-main-text {
+      font-size: 1.2rem;
+      left: -30px;
+      line-height: 1.2rem;
+      position: relative;
+    }
+  }
+
+  .rc-steps-item {
+    left: 0;
+    right: 0;
+  }
+
+  .rc-steps-item:not(.step-current) {
+    .rc-steps-item-content {
+      display: none;
+    }
+  }
+
+  .rc-steps-item:not(.step-complete) {
+    // margin-top: 5px;
+  }
+
+  .rc-steps-item-custom .rc-steps-item-icon > .rc-steps-icon {
+    font-size: 1.2rem;
+  }
+
+  .rc-steps-item-icon {
+    margin-left: 0;
+  }
+
+  .rc-steps-item-tail {
+    margin-left: 15px;
+  }
+
+  .number-icon {
+    font-size: 1.1rem;
+    padding: 1px 5px;
+  }
+
+  .step-current {
+    .number-icon {
+      font-size: 1.5rem;
+      padding: 3px 8px;
+    }
+  }
+
+  .icon-complete {
+    .fa {
+      padding: 1px;
+    }
+  }
+
+  .rc-steps-label-vertical {
+    .rc-steps-item-tail {
+      padding: 0;
+    }
+
+    .rc-steps-item-content {
+      width: initial;
+    }
+  }
+
+  .step-incomplete {
+    .rc-steps-icon {
+      left: 0;
+      top: 7px;
+    }
+  }
+
+  .step-complete {
+    .rc-steps-icon {
+      left: 0;
+      top: -1px;
+    }
+  }
+
+  .bid-tracker-overlay-alert--draft {
+    margin-left: 75px;
+
+    .bid-tracker-overlay-alert-content-container {
+      padding-right: 80px;
+    }
+  }
+
+  .rc-steps-item-tail::after {
+    border-width: 1px;
+  }
+
+  .bid-tracker-overlay-alert--draft::after {
+    top: 13px;
+  }
+}
+
 .bid-tracker-alert-container {
   position: relative;
   top: 65px;

@@ -36,7 +36,7 @@ class BidTrackerCardTop extends Component {
             showBidCount={showBidCount}
           />
         </div>
-        <div>
+        <div className="bid-tracker-card-title-outer-container-right">
           <div className="bid-tracker-card-title-container-right">
             {
               showQuestion &&
