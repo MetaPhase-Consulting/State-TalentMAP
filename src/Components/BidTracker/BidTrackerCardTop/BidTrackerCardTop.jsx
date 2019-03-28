@@ -48,7 +48,7 @@ class BidTrackerCardTop extends Component {
               { bid.can_delete && !hideDelete &&
                 <ConfirmLink
                   className="remove-bid-link"
-                  defaultText="Remove Bid"
+                  defaultText={<span><FontAwesome name="close" />Remove bid</span>}
                   role="link"
                   onClick={this.onDeleteBid}
                 />

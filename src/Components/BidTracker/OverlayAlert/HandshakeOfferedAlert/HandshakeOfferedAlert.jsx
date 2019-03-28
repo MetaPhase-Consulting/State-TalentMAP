@@ -18,7 +18,7 @@ class HandshakeOfferedAlert extends Component {
     declineBid(id);
   }
   render() {
-    const { userName } = this.props;
+    const { userName, id } = this.props;
     const { condensedView } = this.context;
     return (
       <div className="bid-tracker-alert-container bid-tracker-alert-container--handshake-offered">
@@ -26,7 +26,7 @@ class HandshakeOfferedAlert extends Component {
         <div className="usa-grid-full">
           {
             condensedView ?
-              <LinkButton toLink="/profile/bidtracker" className="tm-button-transparent">
+              <LinkButton toLink={`/profile/bidtracker/${id}`} className="tm-button-transparent">
                 Go to Bid Tracker
               </LinkButton>
               :
