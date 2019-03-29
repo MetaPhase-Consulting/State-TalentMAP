@@ -1,4 +1,7 @@
 {
+  "api_config": {
+    "baseURL": "http://localhost:8000/api/v1"
+  },
   "flags": {
     "bidding": true,
     "projected_vacancy": true,
