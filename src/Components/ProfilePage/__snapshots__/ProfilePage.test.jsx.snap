@@ -34,10 +34,6 @@ exports[`ProfilePageComponent matches snapshot 1`] = `
       />
       <Route
         component={[Function]}
-        path="/profile/bidtracker"
-      />
-      <Route
-        component={[Function]}
         path="/profile/statistics"
       />
       <Route
@@ -47,6 +43,10 @@ exports[`ProfilePageComponent matches snapshot 1`] = `
       <Route
         component={[Function]}
         path="/profile/public/:id"
+      />
+      <Flag
+        name="flags.bidding"
+        render={[Function]}
       />
     </Switch>
   </div>
