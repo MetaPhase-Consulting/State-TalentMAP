@@ -724,6 +724,12 @@ $draft-icon-offset: 120px;
         display: block;
       }
     }
+
+    .step-in-panel.step-incomplete {
+      .step-title-main-text {
+        left: -11px;
+      }
+    }
   }
 
   .rc-steps-item-custom .rc-steps-item-icon > .rc-steps-icon {

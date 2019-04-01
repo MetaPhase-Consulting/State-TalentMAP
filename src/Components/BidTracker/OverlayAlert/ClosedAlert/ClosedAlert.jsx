@@ -8,9 +8,12 @@ const ClosedAlert = ({ title, date, id }, { condensedView }) => (
     <div className="top-text">
       {title} has been filled
     </div>
-    <div className="date-text">
-      {date}
-    </div>
+    {
+      date &&
+        <div className="date-text">
+          {date}
+        </div>
+    }
     {
       condensedView &&
       <div className="usa-grid-full">
@@ -24,12 +27,13 @@ const ClosedAlert = ({ title, date, id }, { condensedView }) => (
 
 ClosedAlert.propTypes = {
   title: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  date: PropTypes.string,
   id: PropTypes.number,
 };
 
 ClosedAlert.defaultProps = {
   id: 0,
+  date: '',
 };
 
 ClosedAlert.contextTypes = {

@@ -32,7 +32,7 @@ export function shouldShowAlert(bid, { condensedView = false }) {
     HAND_SHAKE_DECLINED_PROP, DECLINED_PROP];
 
   // alerts we hide in the condensed view
-  const hiddenInCondensedView = [APPROVED_PROP, IN_PANEL_PROP, CLOSED_PROP];
+  const hiddenInCondensedView = [APPROVED_PROP, IN_PANEL_PROP];
 
   // don't show overlay for APPROVED if condensedView === true
   if (condensedView && hiddenInCondensedView.includes(bid.status)) {
