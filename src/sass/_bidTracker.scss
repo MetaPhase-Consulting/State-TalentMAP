@@ -133,6 +133,12 @@ $draft-icon-offset: 120px;
     float: left;
   }
 
+  .bid-tracker-bid-steps-container--prepanel {
+    .bid-tracker-overlay-alert {
+      display: none;
+    }
+  }
+
   .bid-stats {
     .bid-count-list {
       flex: 3;
