@@ -8,6 +8,7 @@ import SuggestionChoicePost from '../../AutoSuggest/SuggestionChoicePost';
 import BureauFilter from '../BureauFilter';
 import PostFilter from '../PostFilter';
 import SkillFilter from '../SkillFilter';
+import ProjectedVacancyFilter from '../ProjectedVacancyFilter';
 import { FILTER_ITEMS_ARRAY, POST_DETAILS_ARRAY } from '../../../Constants/PropTypes';
 import { propSort, sortGrades, getPostName, propOrDefault } from '../../../utilities';
 import { ENDPOINT_PARAMS, COMMON_PROPERTIES } from '../../../Constants/EndpointParams';
@@ -83,7 +84,7 @@ class SearchFiltersContainer extends Component {
           // Push the "NONE" code choice to the bottom. We're already sorting
           // data, and this is readable, so the next line is eslint-disabled.
           // eslint-disable-next-line
-          f.data = sortBy(f.data, item => item.code === COMMON_PROPERTIES.NULL_LANGUAGE ? 1 : 0);
+          f.data = sortBy(f.data, item => item.code === COMMON_PROPERTIES.NULL_LANGUAGE ? -1 : 0);
         }
         // add to Map
         multiSelectFilterMap.set(f.item.description, f);
@@ -205,6 +206,7 @@ class SearchFiltersContainer extends Component {
 
     return (
       <div>
+        <ProjectedVacancyFilter />
         <MultiSelectFilterContainer
           multiSelectFilterList={sortedFilters}
           queryParamToggle={this.props.queryParamToggle}
