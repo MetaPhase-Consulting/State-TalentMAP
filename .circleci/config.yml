@@ -164,12 +164,6 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - deploy:
-          requires:
-            - yarn
-          filters:
-            branches:
-              only: chore/autodeploy_config
       - docker-build:
           requires:
             - build
@@ -179,6 +173,12 @@ workflows:
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
+      - deploy:
+          requires:
+            - yarn
+          filters:
+            branches:
+              only: chore/autodeploy_config
       - zap:
           requires:
             - docker-build
