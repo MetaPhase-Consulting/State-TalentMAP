@@ -178,7 +178,7 @@ workflows:
             - yarn
           filters:
             branches:
-              only: chore/autodeploy_config
+              only: dev
       - zap:
           requires:
             - docker-build
