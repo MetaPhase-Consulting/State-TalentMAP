@@ -155,7 +155,7 @@ jobs:
             docker push talentmap/$DOCKER_HUB_REPO:$BRANCH
   deploy:
     docker:
-      <<: *default-docker-node
+      - *default-docker-node
     steps:
       - add_ssh_keys
       - run:
