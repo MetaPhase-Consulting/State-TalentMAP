@@ -158,7 +158,7 @@ jobs:
     steps:
       - add_ssh_keys
       - run:
-          command: ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-152-5-132.compute-1.amazonaws.com ./deploy.sh
+          command: ssh -o StrictHostKeyChecking=no ec2-user@ec2-52-204-49-159.compute-1.amazonaws.com ./deploy.sh
 workflows:
   version: 2
   build_and_test:
