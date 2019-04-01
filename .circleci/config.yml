@@ -153,11 +153,24 @@ jobs:
             docker pull talentmap/$DOCKER_HUB_REPO:$TAG
             docker tag talentmap/$DOCKER_HUB_REPO:$TAG talentmap/$DOCKER_HUB_REPO:$BRANCH
             docker push talentmap/$DOCKER_HUB_REPO:$BRANCH
+  deploy:
+    docker:
+      <<: *default-docker-node
+    steps:
+      - add_ssh_keys
+      - run:
+          command: ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-152-5-132.compute-1.amazonaws.com ./deploy.sh
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
+      - deploy:
+          requires:
+            - yarn
+          filters:
+            branches:
+              only: chore/autodeploy_config
       - docker-build:
           requires:
             - build
