@@ -4,7 +4,7 @@ import ResultsCard from '../../Components/ResultsCard/ResultsCard';
 import { POSITION_SEARCH_RESULTS, FAVORITE_POSITIONS_ARRAY, BID_RESULTS } from '../../Constants/PropTypes';
 import { propOrDefault } from '../../utilities';
 
-const ResultsList = ({ results, isLoading, favorites, bidList }) => {
+const ResultsList = ({ results, isLoading, favorites, bidList, isProjectedVacancy }) => {
   const mapResults = results.results || [];
   return (
     <div className={isLoading ? 'results-loading' : null}>
@@ -17,6 +17,7 @@ const ResultsList = ({ results, isLoading, favorites, bidList }) => {
             key={key}
             result={result}
             bidList={bidList}
+            isProjectedVacancy={isProjectedVacancy}
           />
         );
       })}
@@ -29,12 +30,14 @@ ResultsList.propTypes = {
   isLoading: PropTypes.bool,
   favorites: FAVORITE_POSITIONS_ARRAY,
   bidList: BID_RESULTS.isRequired,
+  isProjectedVacancy: PropTypes.bool,
 };
 
 ResultsList.defaultProps = {
   results: { results: [] },
   isLoading: false,
   favorites: [],
+  isProjectedVacancy: false,
 };
 
 export default ResultsList;
