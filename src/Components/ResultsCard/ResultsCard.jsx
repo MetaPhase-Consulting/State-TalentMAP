@@ -55,7 +55,6 @@ const ResultsCard = (props) => {
   const {
     id,
     result,
-    onToggle,
     favorites,
     isProjectedVacancy,
   } = props;
@@ -107,7 +106,6 @@ const ResultsCard = (props) => {
   options.compare = {
     as: 'div',
     refKey: position,
-    onToggle,
   };
 
   return (
@@ -188,7 +186,6 @@ const ResultsCard = (props) => {
 ResultsCard.propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   result: POSITION_DETAILS.isRequired,
-  onToggle: PropTypes.func.isRequired,
   favorites: FAVORITE_POSITIONS_ARRAY,
   isProjectedVacancy: PropTypes.bool,
 };

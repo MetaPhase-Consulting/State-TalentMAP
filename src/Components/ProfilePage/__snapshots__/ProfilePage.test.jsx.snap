@@ -34,6 +34,10 @@ exports[`ProfilePageComponent matches snapshot 1`] = `
       />
       <Route
         component={[Function]}
+        path="/profile/bidtracker/:id?"
+      />
+      <Route
+        component={[Function]}
         path="/profile/statistics"
       />
       <Route

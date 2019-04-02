@@ -14,5 +14,10 @@ describe('DashboardContainer', () => {
 });
 
 describe('mapDispatchToProps', () => {
-  testDispatchFunctions(mapDispatchToProps);
+  testDispatchFunctions(
+    mapDispatchToProps,
+    {
+      submitBidPosition: [1],
+      deleteBid: [1],
+    });
 });
