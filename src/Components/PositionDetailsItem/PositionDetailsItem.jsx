@@ -72,7 +72,7 @@ const PositionDetailsItem = (props) => {
   return (
     <div className="usa-grid-full padded-main-content position-details-outer-container">
       <Flag
-        name="flags.bidding"
+        name="bidding"
         render={() => (
           <div className="handshake-offset-container">
             {

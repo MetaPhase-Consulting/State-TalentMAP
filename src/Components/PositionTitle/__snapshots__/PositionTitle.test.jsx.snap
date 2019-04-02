@@ -76,7 +76,7 @@ exports[`PositionTitleComponent matches snapshot 1`] = `
     className="offset-bid-button-container"
   >
     <Flag
-      name="flags.bidding"
+      name="bidding"
       render={[Function]}
     />
   </div>

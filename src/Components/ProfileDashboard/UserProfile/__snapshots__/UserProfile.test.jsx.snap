@@ -37,6 +37,7 @@ exports[`UserProfileComponent matches snapshot 1`] = `
         "id": 1,
         "initials": "JD",
         "is_cdo": false,
+        "permission_groups": Array [],
         "skills": Array [
           Object {
             "code": "6218",
@@ -65,7 +66,7 @@ exports[`UserProfileComponent matches snapshot 1`] = `
     className="current-user-bottom"
   >
     <Flag
-      name="flags.static_content"
+      name="static_content"
       render={[Function]}
     />
     <div
@@ -128,6 +129,7 @@ exports[`UserProfileComponent matches snapshot 1`] = `
           "id": 1,
           "initials": "JD",
           "is_cdo": false,
+          "permission_groups": Array [],
           "skills": Array [
             Object {
               "code": "6218",

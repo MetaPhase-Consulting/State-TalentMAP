@@ -74,7 +74,7 @@ const PositionTitle = ({ details, bidList, userProfile }) => {
             </div>
         }
         <Flag
-          name="flags.bidding"
+          name="bidding"
           render={() => (
             <PermissionsWrapper permissions="bidder">
               <BidListButton

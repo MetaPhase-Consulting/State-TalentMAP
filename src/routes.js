@@ -1,5 +1,5 @@
 const routesArray = [
-  { path: '/login', componentName: 'Login' },
+  { path: '/login', componentName: 'Login', type: 'auth' },
   { path: '/', exact: true, componentName: 'Home', pageTitle: 'Home' },
   { path: '/results', componentName: 'Results', pageTitle: 'Search Results' },
   { path: '/profile', componentName: 'Profile', pageTitle: 'Profile' },
@@ -7,8 +7,8 @@ const routesArray = [
   { path: '/compare/:ids', key: 'compareID', componentName: 'Compare', pageTitle: 'Compare Positions' },
   { path: '/compare', key: 'compareNoID', componentName: 'Compare', pageTitle: 'Compare Positions' },
   { path: '/about', exact: true, componentName: 'About', pageTitle: 'About' },
-  { path: '/tokenValidation', componentName: 'Login', pageTitle: 'Token Validation' },
-  { path: '/loginRedirect', componentName: 'LoginRedirect', pageTitle: 'Login Redirect' },
+  { path: '/tokenValidation', componentName: 'Login', pageTitle: 'Token Validation', type: 'auth' },
+  { path: '/loginRedirect', componentName: 'LoginRedirect', pageTitle: 'Login Redirect', type: 'auth' },
 ];
 
 module.exports = routesArray;

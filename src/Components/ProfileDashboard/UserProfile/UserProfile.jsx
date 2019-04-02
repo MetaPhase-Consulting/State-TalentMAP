@@ -23,7 +23,7 @@ showContactInformation, useGroup, assignment }) => (
       showContactInformation &&
       <div className="current-user-bottom">
         <Flag
-          name="flags.static_content"
+          name="static_content"
           render={() => (
             <div className="current-user-section-border cdo-section">
               <StaticDevContent>

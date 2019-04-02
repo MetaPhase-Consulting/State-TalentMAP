@@ -35,7 +35,7 @@ const ResultsCondensedCardBottom = (
             refresh={refreshFavorites}
           />
           <Flag
-            name="flags.bidding"
+            name="bidding"
             render={() => (
               showBidListButton &&
               <PermissionsWrapper permissions="bidder">

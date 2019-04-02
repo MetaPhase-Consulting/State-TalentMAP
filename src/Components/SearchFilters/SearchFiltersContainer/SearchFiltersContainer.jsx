@@ -15,7 +15,7 @@ import { FILTER_ITEMS_ARRAY, POST_DETAILS_ARRAY } from '../../../Constants/PropT
 import { propSort, sortGrades, getPostName, propOrDefault } from '../../../utilities';
 import { ENDPOINT_PARAMS, COMMON_PROPERTIES } from '../../../Constants/EndpointParams';
 
-const useBidding = () => checkFlag('flags.bidding');
+const useBidding = () => checkFlag('bidding');
 
 class SearchFiltersContainer extends Component {
 
@@ -214,7 +214,7 @@ class SearchFiltersContainer extends Component {
     return (
       <div>
         <Flag
-          name="flags.projected_vacancy"
+          name="projected_vacancy"
           render={() => (
             <ProjectedVacancyFilter />
           )}

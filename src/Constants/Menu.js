@@ -65,7 +65,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         route: '/profile/searches/',
         icon: 'clock-o',
       },
-      checkFlag('flags.bidding') ? {
+      checkFlag('bidding') ? {
         text: 'Bid Tracker',
         route: '/profile/bidtracker/',
         icon: 'clipboard',

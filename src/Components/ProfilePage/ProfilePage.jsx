@@ -34,7 +34,7 @@ const ProfilePage = ({ user }) => (
         <Route path="/profile/glossaryeditor" component={GlossaryEditor} />
         <Route path="/profile/public/:id" component={ProfilePublic} />
         <Flag
-          name="flags.bidding"
+          name="bidding"
           render={() => (
             <Route path="/profile/bidtracker" component={BidTracker} />
           )}

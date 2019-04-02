@@ -7,6 +7,7 @@ exports[`ProfilePageComponent matches snapshot 1`] = `
   <Connect(ProfileMenu)
     isCDO={false}
     isGlossaryEditor={false}
+    roles={Array []}
   />
   <div
     className="usa-grid-full profile-content-container"
@@ -49,7 +50,7 @@ exports[`ProfilePageComponent matches snapshot 1`] = `
         path="/profile/public/:id"
       />
       <Flag
-        name="flags.bidding"
+        name="bidding"
         render={[Function]}
       />
     </Switch>

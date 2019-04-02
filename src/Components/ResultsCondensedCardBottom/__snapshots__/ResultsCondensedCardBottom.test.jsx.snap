@@ -127,7 +127,7 @@ exports[`ResultsCondensedCardBottomComponent matches snapshot 1`] = `
         useLongText={true}
       />
       <Flag
-        name="flags.bidding"
+        name="bidding"
         render={[Function]}
       />
     </div>
@@ -262,7 +262,7 @@ exports[`ResultsCondensedCardBottomComponent matches snapshot with bidlist butto
         useLongText={true}
       />
       <Flag
-        name="flags.bidding"
+        name="bidding"
         render={[Function]}
       />
     </div>

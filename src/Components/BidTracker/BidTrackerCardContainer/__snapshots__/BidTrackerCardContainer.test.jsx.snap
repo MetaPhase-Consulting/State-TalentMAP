@@ -91,6 +91,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
         "id": 1,
         "initials": "JD",
         "is_cdo": false,
+        "permission_groups": Array [],
         "skills": Array [
           Object {
             "code": "6218",
@@ -269,6 +270,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
           "id": 1,
           "initials": "JD",
           "is_cdo": false,
+          "permission_groups": Array [],
           "skills": Array [
             Object {
               "code": "6218",

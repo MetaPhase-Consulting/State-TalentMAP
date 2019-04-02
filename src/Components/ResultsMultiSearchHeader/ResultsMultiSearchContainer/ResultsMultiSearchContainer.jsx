@@ -29,7 +29,7 @@ class ResultsMultiSearchHeaderContainer extends Component {
     // We have a nested Saved Search container that fetches all of the data that this one needs.
     // So we check the user navigated to any route where that's used. If so,
     // we don't need to fecth filters, because they'll get fetched anyways.
-    const shouldBypassFetch = isCurrentPathIn(history.location.pathname, bypassRoutes);
+    const shouldBypassFetch = isCurrentPathIn(history, bypassRoutes);
 
     // Have the filters already been fetched?
     // if so, we'll pass back the saved filters

@@ -272,6 +272,7 @@ exports[`BidTrackerComponent matches snapshot 1`] = `
             "id": 1,
             "initials": "JD",
             "is_cdo": false,
+            "permission_groups": Array [],
             "skills": Array [
               Object {
                 "code": "6218",

@@ -5,7 +5,7 @@ exports[`PositionDetailsItem matches snapshot 1`] = `
   className="usa-grid-full padded-main-content position-details-outer-container"
 >
   <Flag
-    name="flags.bidding"
+    name="bidding"
     render={[Function]}
   />
   <div
@@ -200,7 +200,7 @@ exports[`PositionDetailsItem matches snapshot when there is an obc id 1`] = `
   className="usa-grid-full padded-main-content position-details-outer-container"
 >
   <Flag
-    name="flags.bidding"
+    name="bidding"
     render={[Function]}
   />
   <div
@@ -427,7 +427,7 @@ exports[`PositionDetailsItem matches snapshot when various data is missing from 
   className="usa-grid-full padded-main-content position-details-outer-container"
 >
   <Flag
-    name="flags.bidding"
+    name="bidding"
     render={[Function]}
   />
   <div

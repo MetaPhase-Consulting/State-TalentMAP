@@ -125,7 +125,7 @@ const ResultsCard = (props) => {
                 </Column>
               </Column>
               <Flag
-                name="flags.bidding"
+                name="bidding"
                 render={() => (
                   <Column columns="4">
                     <BidCount bidStatistics={stats} altStyle />
@@ -134,7 +134,7 @@ const ResultsCard = (props) => {
               />
             </Row>
             <Flag
-              name="flags.bidding"
+              name="bidding"
               render={() =>
                 (<Row id={`${id}-inner`} fluid>
                   <Column columns="6">

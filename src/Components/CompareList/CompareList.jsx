@@ -105,7 +105,7 @@ onToggle }) => {
                     }
                   </tr>
                   <Flag
-                    name="flags.static_content"
+                    name="static_content"
                     render={() => (
                       <tr>
                         <th scope="row">
@@ -256,7 +256,7 @@ onToggle }) => {
                     }
                   </tr>
                   <Flag
-                    name="flags.static_content"
+                    name="static_content"
                     render={() => (
                       <tr>
                         <th scope="row">Add to Bid List</th>

@@ -5,7 +5,7 @@ export function shouldShowSearchBar(shouldShow) {
   };
 }
 
-export function toggleSearchBar(show = true) {
+export function toggleSearchBar(show = false) {
   return (dispatch) => {
     dispatch(shouldShowSearchBar(show));
   };

@@ -6,7 +6,6 @@ import { withRouter } from 'react-router';
 import { push } from 'react-router-redux';
 import { Flag } from 'flag';
 import ToggleContent from '../StaticDevContent/ToggleContent';
-import { userProfileFetchData } from '../../actions/userProfile';
 import { setSelectedSearchbarFilters } from '../../actions/selectedSearchbarFilters';
 import { logoutRequest } from '../../login/actions';
 import { toggleSearchBar } from '../../actions/showSearchBar';
@@ -32,9 +31,6 @@ export class Header extends Component {
   }
 
   componentWillMount() {
-    if (this.props.isAuthorized()) {
-      this.props.fetchData();
-    }
     this.matchCurrentPath(this.props.location);
     this.checkPath();
   }
@@ -49,14 +45,16 @@ export class Header extends Component {
   }
 
   matchCurrentPath(historyObject) {
-    this.props.toggleSearchBarVisibility(false);
-    if (isCurrentPathIn(historyObject.pathname, searchBarRoutes)) {
+    if (isCurrentPathIn(historyObject, searchBarRoutes)) {
       this.props.toggleSearchBarVisibility(true);
+    } else {
+      this.props.toggleSearchBarVisibility(false);
     }
   }
 
   checkPath() {
     const { history } = this.props;
+    this.matchCurrentPath(history);
     history.listen((historyObject) => {
       this.matchCurrentPath(historyObject);
     });
@@ -79,13 +77,13 @@ export class Header extends Component {
   // display the header's search bar if we're on the results page
   isOnHasOwnSearchRoute() {
     const { location } = this.props;
-    return isCurrentPathIn(location.pathname, searchBarRoutesForce);
+    return isCurrentPathIn(location, searchBarRoutesForce);
   }
 
   // We want to ensure pages like the login page never display the search bar
   isOnForceHideSearchRoute() {
     const { location } = this.props;
-    return isCurrentPathIn(location.pathname, searchBarRoutesForceHidden);
+    return isCurrentPathIn(location, searchBarRoutesForceHidden);
   }
 
   render() {
@@ -133,7 +131,7 @@ export class Header extends Component {
         </InteractiveElement>
         <header id="header" className="usa-header usa-header-extended tm-header" role="banner">
           <Flag
-            name="flags.static_content"
+            name="static_content"
             render={() => (
               <ToggleContent />
             )}
@@ -188,8 +186,6 @@ Header.propTypes = {
   client: PropTypes.shape({
     token: PropTypes.string,
   }),
-  fetchData: PropTypes.func.isRequired,
-  isAuthorized: PropTypes.func.isRequired,
   userProfile: USER_PROFILE,
   logout: PropTypes.func,
   onNavigateTo: PropTypes.func.isRequired,
@@ -218,7 +214,6 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchData: url => dispatch(userProfileFetchData(url)),
   logout: () => dispatch(logoutRequest()),
   onNavigateTo: dest => dispatch(push(dest)),
   toggleSearchBarVisibility: bool => dispatch(toggleSearchBar(bool)),

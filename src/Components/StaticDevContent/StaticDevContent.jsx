@@ -11,7 +11,7 @@ import { Flag } from 'flag';
 
 const StaticDevContent = ({ children, showStaticContent }) => (
   <Flag
-    name="flags.static_content"
+    name="static_content"
     render={() => (
       showStaticContent ?
         <div style={{ boxShadow: '0px 0px 0px 2px red' }}>

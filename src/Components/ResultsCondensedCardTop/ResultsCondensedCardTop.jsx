@@ -10,7 +10,7 @@ import { NO_POST } from '../../Constants/SystemMessages';
 import { getPostName, getBidStatisticsObject } from '../../utilities';
 import { checkFlag } from '../../flags';
 
-const useProjectedVacancy = () => checkFlag('flags.projected_vacancy');
+const useProjectedVacancy = () => checkFlag('projected_vacancy');
 
 const ResultsCondensedCardTop = ({ position, type, isProjectedVacancy, isRecentlyAvailable }) => {
   let icon = '';
@@ -57,7 +57,7 @@ const ResultsCondensedCardTop = ({ position, type, isProjectedVacancy, isRecentl
           <span><span className="title">Post:</span> <span className="data">{getPostName(position.post, NO_POST)}</span></span>
         </div>
         <Flag
-          name="flags.bidding"
+          name="bidding"
           render={() => (
             hasHandshake &&
               <div>

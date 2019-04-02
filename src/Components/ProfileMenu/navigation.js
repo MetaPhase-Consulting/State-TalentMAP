@@ -1,5 +1,6 @@
 import { matchPath } from 'react-router';
 import queryString from 'query-string';
+import { get } from 'lodash';
 import { propOrDefault } from '../../utilities';
 
 // use the matchPath function to compare router's location.pathname to a pathname to compare against
@@ -12,11 +13,11 @@ export function isCurrentPath(locationPathName, pathNameToCheck) {
 }
 
 // use the matchPath function to compare router's location.pathname to a pathname to compare against
-export function isCurrentPathIn(locationPathName, pathNamesToCheck) {
+export function isCurrentPathIn(historyObject, pathNamesToCheck) {
   let value = null;
   pathNamesToCheck.forEach((pathname) => {
     if (matchPath(pathname, {
-      path: locationPathName,
+      path: get(historyObject, 'location.pathname') || get(historyObject, 'pathname'),
       exact: true,
       strict: false,
     })) {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import { Switch } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
-import { FlagsProvider } from 'flag';
 import Routes from '../../Containers/Routes/Routes';
+import FlagsProvider from '../FlagsProvider';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
 import Glossary from '../../Containers/Glossary';
@@ -12,33 +13,35 @@ import checkIndexAuthentication from '../../lib/check-auth';
 import { store, history } from '../../store';
 import PageMeta from '../../Containers/PageMeta';
 import Toast from '../Toast';
-import getFlags from '../../flags';
 
 const isAuthorized = () => checkIndexAuthentication(store);
 
-const flags = () => getFlags();
-
 const Main = props => (
-  <FlagsProvider flags={flags()}>
-    <Provider store={store} history={history}>
-      <ConnectedRouter history={history}>
+  <Provider store={store} history={history}>
+    <ConnectedRouter history={history}>
+      <div>
+        <Switch {...props}>
+          <Routes {...props} isAuthorized={isAuthorized} type="auth" />
+        </Switch>
         <ScrollContext>
-          <div>
-            <PageMeta history={history} />
-            <Header {...props} isAuthorized={isAuthorized} />
-            <main id="main-content">
-              <Routes {...props} isAuthorized={isAuthorized} />
-            </main>
-            <Footer />
-            <AuthorizedWrapper {...props} isAuthorized={isAuthorized}>
-              <Glossary />
-            </AuthorizedWrapper>
-            <Toast />
-          </div>
+          <FlagsProvider isAuthorized={isAuthorized}>
+            <div>
+              <PageMeta history={history} />
+              <Header {...props} isAuthorized={isAuthorized} />
+              <main id="main-content">
+                <Routes {...props} isAuthorized={isAuthorized} typeIsNot type="auth" />
+              </main>
+              <Footer />
+              <AuthorizedWrapper {...props} isAuthorized={isAuthorized}>
+                <Glossary />
+              </AuthorizedWrapper>
+              <Toast />
+            </div>
+          </FlagsProvider>
         </ScrollContext>
-      </ConnectedRouter>
-    </Provider>
-  </FlagsProvider>
-);
+      </div>
+    </ConnectedRouter>
+  </Provider>
+  );
 
 export default Main;

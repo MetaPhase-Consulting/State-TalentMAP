@@ -3,7 +3,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { get } from 'lodash';
+import { get, isObject } from 'lodash';
 import './sass/styles.scss';
 import App from './Components/App/App';
 import { getAssetPath } from './utilities';
@@ -12,7 +12,9 @@ import '../node_modules/uswds/dist/js/uswds.min';
 
 // function to initialize app, capture feature flags in localStorage
 const init = (config) => {
-  sessionStorage.setItem('config', JSON.stringify(config));
+  if (isObject(config)) {
+    sessionStorage.setItem('config', JSON.stringify(config));
+  }
   ReactDOM.render((
     <App />
   ), document.getElementById('root') || document.createElement('div'));
