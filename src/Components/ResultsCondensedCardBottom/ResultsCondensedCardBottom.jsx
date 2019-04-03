@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import { Flag } from 'flag';
 import CondensedCardData from '../CondensedCardData';
 import { POSITION_DETAILS, FAVORITE_POSITIONS_ARRAY } from '../../Constants/PropTypes';
 import Favorite from '../../Containers/Favorite';
 import BidListButton from '../../Containers/BidListButton';
 import PermissionsWrapper from '../../Containers/PermissionsWrapper';
 import ResultsCondensedCardStats from '../ResultsCondensedCardStats';
+import CompareCheck from '../CompareCheck';
 
 const ResultsCondensedCardBottom = (
   { position,
@@ -15,6 +17,7 @@ const ResultsCondensedCardBottom = (
     showBidListButton,
     showBidCount,
     useShortFavButton,
+    showCompareButton,
   }) => (
     <div className="condensed-card-bottom-container">
       <div className="usa-grid-full condensed-card-bottom">
@@ -31,14 +34,21 @@ const ResultsCondensedCardBottom = (
             useButtonClassSecondary={useShortFavButton}
             refresh={refreshFavorites}
           />
+          <Flag
+            name="flags.bidding"
+            render={() => (
+              showBidListButton &&
+              <PermissionsWrapper permissions="bidder">
+                <BidListButton
+                  id={position.id}
+                  disabled={!get(position, 'availability.availability', true)}
+                />
+              </PermissionsWrapper>
+            )}
+          />
           {
-            showBidListButton &&
-            <PermissionsWrapper permissions="bidder">
-              <BidListButton
-                id={position.id}
-                disabled={!get(position, 'availability.availability', true)}
-              />
-            </PermissionsWrapper>
+            showCompareButton &&
+            <CompareCheck as="div" refKey={position.position_number} />
           }
         </div>
       </div>
@@ -52,6 +62,7 @@ ResultsCondensedCardBottom.propTypes = {
   showBidListButton: PropTypes.bool,
   showBidCount: PropTypes.bool,
   useShortFavButton: PropTypes.bool,
+  showCompareButton: PropTypes.bool,
 };
 
 ResultsCondensedCardBottom.defaultProps = {
@@ -60,6 +71,7 @@ ResultsCondensedCardBottom.defaultProps = {
   showBidListButton: false,
   showBidCount: true,
   useShortFavButton: false,
+  showCompareButton: false,
 };
 
 export default ResultsCondensedCardBottom;
