@@ -7,7 +7,7 @@ import routes from '../../routes';
 import { getApplicationPath, getAssetPath, focusById } from '../../utilities';
 import getBestMatchPath from './helpers';
 
-class PageMetaContainer extends Component {
+export class PageMetaContainer extends Component {
   constructor(props) {
     super(props);
 

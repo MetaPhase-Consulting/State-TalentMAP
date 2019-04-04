@@ -8,7 +8,7 @@ import { mapFlags } from '../../flags';
 import { userProfileFetchData } from '../../actions/userProfile';
 import BASE_FLAGS from './constants';
 
-class Flags extends Component {
+export class Flags extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,7 +62,7 @@ const mapStateToProps = state => ({
   userProfile: state.userProfile,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   fetchUserProfile: () => dispatch(userProfileFetchData()),
 });
 
