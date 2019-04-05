@@ -20,7 +20,7 @@ const BidderPortfolioStatCard = ({ userProfile }) => {
         <div>
           <h3>
             <Link to={`/profile/public/${userProfile.id}`}>
-              {`${userProfile.user.last_name}, ${userProfile.user.first_name}`}
+              {`${userProfile.user.first_name} ${userProfile.user.last_name}`}
               <FA name="angle-right" />
             </Link>
           </h3>

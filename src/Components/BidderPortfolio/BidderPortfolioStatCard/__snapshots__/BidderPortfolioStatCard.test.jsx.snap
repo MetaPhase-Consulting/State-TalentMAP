@@ -21,7 +21,7 @@ exports[`BidderPortfolioStatCard matches snapshot 1`] = `
           replace={false}
           to="/profile/public/5"
         >
-          Batisak, Kara
+          Kara Batisak
           <FontAwesome
             name="angle-right"
           />
