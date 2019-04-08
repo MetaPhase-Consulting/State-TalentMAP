@@ -90,6 +90,25 @@
     }
   }
 
+  > div.client-checkbox-list {
+    display: flex;
+    flex: 200 1 450px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .tm-checkbox {
+      margin: 0 auto;
+      margin-left: 0;
+      margin-right: 2rem;
+      min-width: 10rem;
+
+      label {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+      }
+    }
+  }
+
   .stat-card-data-point--name {
     font-size: 1.1em;
     font-weight: bold;
