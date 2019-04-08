@@ -11,7 +11,7 @@ import LinkButton from '../../LinkButton';
 import Avatar from '../../Avatar';
 import CheckboxList from '../CheckboxList';
 
-const BidderPortfolioStatRow = ({ userProfile, isEditView }) => {
+const BidderPortfolioStatRow = ({ userProfile, showEdit }) => {
   const sortedAssignments = orderBy(userProfile.assignments, 'start_date', 'desc');
   const currentAssignment = get(sortedAssignments, '[0].position.post');
   const currentAssignmentText = getPostName(currentAssignment, NO_POST);
@@ -41,7 +41,7 @@ const BidderPortfolioStatRow = ({ userProfile, isEditView }) => {
         </div>
       </div>
       {
-        !isEditView &&
+        !showEdit &&
         <div className="bidder-portfolio-stat-row-updates">
           <StaticDevContent>
             <ClientBadgeList
@@ -56,13 +56,13 @@ const BidderPortfolioStatRow = ({ userProfile, isEditView }) => {
         </div>
       }
       {
-        !isEditView &&
+        !showEdit &&
         <div>
           <LinkButton className="usa-button-secondary" toLink={`/profile/public/${userProfile.id}`}>View Details</LinkButton>
         </div>
       }
       {
-        isEditView &&
+        showEdit &&
         <CheckboxList id={userProfile.id} />
       }
     </div>
@@ -71,11 +71,11 @@ const BidderPortfolioStatRow = ({ userProfile, isEditView }) => {
 
 BidderPortfolioStatRow.propTypes = {
   userProfile: BIDDER_OBJECT.isRequired,
-  isEditView: PropTypes.bool,
+  showEdit: PropTypes.bool,
 };
 
 BidderPortfolioStatRow.defaultProps = {
-  isEditView: true,
+  showEdit: false,
 };
 
 export default BidderPortfolioStatRow;
