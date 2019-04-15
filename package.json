@@ -139,6 +139,7 @@
       "!src/reducers/showStaticContent.js"
     ],
     "coverageReporters": [
+      "text-summary",
       "lcov"
     ],
     "setupFiles": [
