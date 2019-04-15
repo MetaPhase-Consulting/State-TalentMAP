@@ -4,6 +4,7 @@ import CheckBox from '../../CheckBox';
 import CLIENT_EDITS from '../../../Constants/ClientEdits';
 
 const CheckboxList = ({ id, isDisabled }) => (
+
   <div className="client-checkbox-list">
     {CLIENT_EDITS.map(c => (
       <CheckBox
