@@ -52,6 +52,30 @@ describe('async actions', () => {
     f();
   });
 
+  it('can fetch a client and bypass', (done) => {
+    const store = mockStore({ profile: {} });
+
+    mockAdapter.onGet('http://localhost:8000/api/v1/client/1/').reply(200,
+      profile,
+    );
+
+    mockAdapter.onGet('http://localhost:8000/api/v1/client/1/assignments/').reply(200,
+      { results: assignments },
+    );
+
+    mockAdapter.onGet('http://localhost:8000/api/v1/client/1/bids/').reply(200,
+      { results: bids },
+    );
+
+    const f = () => {
+      setTimeout(() => {
+        store.dispatch(actions.userProfilePublicFetchData(1, true));
+        done();
+      }, 0);
+    };
+    f();
+  });
+
   it('can handle errors', (done) => {
     const store = mockStore({ profile: {} });
 
