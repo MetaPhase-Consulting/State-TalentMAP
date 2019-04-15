@@ -47,7 +47,7 @@ class SearchFiltersContainer extends Component {
     // to change (they're not UI elements).
     const sortedBooleanNames = [];
     // show the 'Available' filter,
-    // but only if flags.bidding === true
+    // but only if flag of bidding === true
     if (useBidding()) {
       sortedBooleanNames.push('available');
     }
