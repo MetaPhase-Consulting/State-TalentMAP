@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FlagsProvider } from 'flag';
+
 // eslint-disable-next-line
 class Flags extends Component {
   render() {

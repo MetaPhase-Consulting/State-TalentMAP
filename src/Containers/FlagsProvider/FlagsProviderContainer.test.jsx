@@ -12,7 +12,7 @@ import FlagsProviderContainer, { Flags, mapDispatchToProps } from './FlagsProvid
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
-describe('FlagsProvider', () => {
+describe('FlagsProviderContainer', () => {
   const props = {
     isAuthorized: () => true,
     fetchUserProfile: () => {},

@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import toJSON from 'enzyme-to-json';
-import ProfilePage from './ProfilePage';
+import ProfilePage, { renderBidTracker } from './ProfilePage';
 import { DEFAULT_USER_PROFILE } from '../../Constants/DefaultProps';
 import resultsObject from '../../__mocks__/resultsObject';
 import searchObjectParent from '../../__mocks__/searchObject';
@@ -56,6 +56,10 @@ describe('ProfilePageComponent', () => {
       />,
     );
     expect(wrapper.find(`${user.user.first_name} ${user.user_last_name}`)).toBeDefined();
+  });
+
+  it('renders the BidTracker', () => {
+    expect(renderBidTracker()).toBeDefined();
   });
 
   it('matches snapshot', () => {

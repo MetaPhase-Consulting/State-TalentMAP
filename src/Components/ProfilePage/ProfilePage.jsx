@@ -15,6 +15,8 @@ import { USER_PROFILE } from '../../Constants/PropTypes';
 import { userHasPermissions } from '../../utilities';
 import ProfileMenu from '../ProfileMenu';
 
+export const renderBidTracker = () => <Route path="/profile/bidtracker" component={BidTracker} />;
+
 const ProfilePage = ({ user }) => (
   <div className="profile-page">
     <ProfileMenu
@@ -33,12 +35,7 @@ const ProfilePage = ({ user }) => (
         <Route path="/profile/statistics" component={BidStatistics} />
         <Route path="/profile/glossaryeditor" component={GlossaryEditor} />
         <Route path="/profile/public/:id" component={ProfilePublic} />
-        <Flag
-          name="bidding"
-          render={() => (
-            <Route path="/profile/bidtracker" component={BidTracker} />
-          )}
-        />
+        <Flag name="bidding" render={renderBidTracker} />
       </Switch>
     </div>
   </div>

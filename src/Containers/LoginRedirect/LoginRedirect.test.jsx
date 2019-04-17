@@ -9,4 +9,12 @@ describe('LoginRedirect', () => {
     );
     expect(wrapper).toBeDefined();
   });
+
+  it('is defined after calling componentDidMount()', () => {
+    const wrapper = shallow(
+      <LoginRedirect />,
+    );
+    wrapper.instance().componentDidMount();
+    expect(wrapper).toBeDefined();
+  });
 });
