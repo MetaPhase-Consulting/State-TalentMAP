@@ -69,7 +69,7 @@ const ProfileDashboard = ({
                         className="user-dashboard-section-container user-dashboard-column-3"
                       >
                         <Flag
-                          name="flags.bidding"
+                          name="bidding"
                           render={() => (
                             <PermissionsWrapper permissions="bidder">
                               <BoxShadow className="usa-width-one-whole user-dashboard-section bidlist-section">

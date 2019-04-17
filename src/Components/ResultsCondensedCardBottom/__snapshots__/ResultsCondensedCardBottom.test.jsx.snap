@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ResultsCondensedCardBottomComponent matches snapshot 1`] = `
+exports['ResultsCondensedCardBottomComponent matches snapshot 1'] = `
 <div
   className="condensed-card-bottom-container"
 >
@@ -125,7 +125,7 @@ exports[`ResultsCondensedCardBottomComponent matches snapshot 1`] = `
 </div>
 `;
 
-exports[`ResultsCondensedCardBottomComponent matches snapshot with bidlist button 1`] = `
+exports['ResultsCondensedCardBottomComponent matches snapshot with bidlist button 1'] = `
 <div
   className="condensed-card-bottom-container"
 >

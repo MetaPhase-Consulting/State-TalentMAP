@@ -1,5 +1,5 @@
 import { omit } from 'lodash';
-import { mapFlags } from './flags';
+import { getFlags, mapFlags } from './flags';
 import { bidderUserObject } from './__mocks__/userObject';
 
 const user = bidderUserObject;
@@ -60,4 +60,9 @@ it('maps flags correctly when flags_overrides is undefined', () => {
   expect(result.bidding).toBe(mock$.flags.bidding);
   expect(result.projected_vacancy).toBe(mock$.flags.projected_vacancy);
   expect(result.static_content).toBe(mock$.flags.static_content);
+});
+
+it('catches errors with the session storage value', () => {
+  sessionStorage.setItem('config', '{');
+  expect(getFlags()).toEqual({});
 });
