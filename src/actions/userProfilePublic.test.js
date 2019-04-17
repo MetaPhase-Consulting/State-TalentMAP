@@ -52,11 +52,11 @@ describe('async actions', () => {
     f();
   });
 
-  it('can fetch a client and bypass', (done) => {
+  it('can fetch a client when user id is undefined', (done) => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onGet('http://localhost:8000/api/v1/client/1/').reply(200,
-      profile,
+      { ...profile, id: null },
     );
 
     mockAdapter.onGet('http://localhost:8000/api/v1/client/1/assignments/').reply(200,
@@ -69,7 +69,7 @@ describe('async actions', () => {
 
     const f = () => {
       setTimeout(() => {
-        store.dispatch(actions.userProfilePublicFetchData(1, true));
+        store.dispatch(actions.userProfilePublicFetchData(1));
         done();
       }, 0);
     };
@@ -95,7 +95,18 @@ describe('async actions', () => {
 
     const f = () => {
       setTimeout(() => {
-        store.dispatch(actions.userProfilePublicFetchData());
+        store.dispatch(actions.userProfilePublicFetchData(1));
+        done();
+      }, 0);
+    };
+    f();
+  });
+
+  it('can unsetUserProfile', (done) => {
+    const store = mockStore({ profile: {} });
+    const f = () => {
+      setTimeout(() => {
+        store.dispatch(actions.unsetUserProfilePublic());
         done();
       }, 0);
     };
