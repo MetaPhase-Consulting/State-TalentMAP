@@ -423,16 +423,7 @@ exports[`ResultsContainerComponent matches snapshot 1`] = `
       subContainerClassName="pages pagination"
       totalResults={0}
     />
-    <ScrollUpButton
-      ContainerClassName="tm-scroll-up-container"
-      style={
-        Object {
-          "backgroundColor": "rgb(0,113,188,.8)",
-          "border": "1px solid white",
-          "padding": "4px 5px 5px",
-        }
-      }
-    />
+    <ScrollUpButton />
   </div>
 </div>
 `;
