@@ -94,7 +94,7 @@ class ResultsContainer extends Component {
              onPageChange={this.onPageChange}
              forcePage={defaultPageNumber}
            />
-           <ScrollUpButton ContainerClassName="tm-scroll-up-container" style={{ backgroundColor: 'rgb(0,113,188,.8)', border: '1px solid white', padding: '4px 5px 5px' }} />
+           <ScrollUpButton />
          </div>
         }
       </div>
