@@ -166,18 +166,16 @@ const ResultsCard = (props, { isProjectedVacancy }) => {
               }
             />
             <Row className="footer results-card-padded-section" fluid>
-              <Column columns="6" as="section">
-                {
-                  !isProjectedVacancy &&
-                    <div>
-                      {
-                        !!favorites &&
-                          <Favorite {...options.favorite} />
-                      }
-                      <CompareCheck {...options.compare} />
-                    </div>
-                }
-              </Column>
+              {
+                !isProjectedVacancy &&
+                <Column columns="6" as="section">
+                  {
+                    !!favorites &&
+                      <Favorite {...options.favorite} />
+                  }
+                  <CompareCheck {...options.compare} />
+                </Column>
+              }
               <Column columns="6" as="section">
                 <div>
                   <DefinitionList items={sections[2]} />

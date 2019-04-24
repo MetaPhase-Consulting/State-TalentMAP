@@ -78,8 +78,7 @@ export function fetchResultData(query) {
   .then((response) => {
     if (isPV) {
       return {
-        count: response.data.length,
-        results: response.data,
+        ...response.data,
         isProjectedVacancy: true,
       };
     }

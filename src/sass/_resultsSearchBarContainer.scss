@@ -47,6 +47,16 @@ $input-height: 40px;
 
       &[disabled] {
         background-color: $bg-gray-dark-3;
+        cursor: not-allowed;
+
+        &::placeholder {
+          color: $color-black;
+          opacity: 1;
+        }
+
+        &:-ms-input-placeholder { // Internet Explorer 10-11
+          color: $color-black;
+        }
       }
     }
   }
