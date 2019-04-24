@@ -56,13 +56,12 @@ export const renderBidCount = stats => (
   </Column>
 );
 
-const ResultsCard = (props) => {
+const ResultsCard = (props, { isProjectedVacancy }) => {
   const options = {};
   const {
     id,
     result,
     favorites,
-    isProjectedVacancy,
   } = props;
 
   const title = propOrDefault(result, 'title');
@@ -123,17 +122,20 @@ const ResultsCard = (props) => {
               <Column columns="8">
                 <Column columns="12" className="results-card-title-link">
                   <h3>{title}</h3>
-                  <Link to={`/details/${result.id}`}>View position</Link>
+                  { !isProjectedVacancy && <Link to={`/details/${result.id}`}>View position</Link> }
                   {recentlyAvailable && <span className="available-alert">Now available!</span>}
                 </Column>
                 <Column columns="12" className="results-card-title-link">
                   <dt>Post:</dt><dd>{post}</dd>
                 </Column>
               </Column>
-              <Flag
-                name="flags.bidding"
-                render={() => renderBidCount(stats)}
-              />
+              {
+                !isProjectedVacancy &&
+                <Flag
+                  name="flags.bidding"
+                  render={() => renderBidCount(stats)}
+                />
+              }
             </Row>
             <Flag
               name="flags.bidding"
@@ -166,10 +168,15 @@ const ResultsCard = (props) => {
             <Row className="footer results-card-padded-section" fluid>
               <Column columns="6" as="section">
                 {
-                !!favorites &&
-                  <Favorite {...options.favorite} />
-              }
-                <CompareCheck {...options.compare} />
+                  !isProjectedVacancy &&
+                    <div>
+                      {
+                        !!favorites &&
+                          <Favorite {...options.favorite} />
+                      }
+                      <CompareCheck {...options.compare} />
+                    </div>
+                }
               </Column>
               <Column columns="6" as="section">
                 <div>
@@ -184,6 +191,9 @@ const ResultsCard = (props) => {
   );
 };
 
+ResultsCard.contextTypes = {
+  isProjectedVacancy: PropTypes.bool,
+};
 
 ResultsCard.propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,

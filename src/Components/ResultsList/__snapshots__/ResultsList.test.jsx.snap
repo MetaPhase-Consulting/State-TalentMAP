@@ -13,7 +13,7 @@ exports[`ResultsListComponent matches a snapshot with results 1`] = `
   <ResultsCard
     bidList={Array []}
     favorites={Array []}
-    id="6-1"
+    id="HkPVbWlAcE"
     isProjectedVacancy={false}
     result={
       Object {
@@ -98,7 +98,7 @@ exports[`ResultsListComponent matches a snapshot with results 1`] = `
   <ResultsCard
     bidList={Array []}
     favorites={Array []}
-    id="60-1"
+    id="BkONb-lA9E"
     isProjectedVacancy={false}
     result={
       Object {

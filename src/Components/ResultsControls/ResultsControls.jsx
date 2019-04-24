@@ -23,6 +23,7 @@ class ResultsControls extends Component {
   render() {
     const { results, hasLoaded, defaultSort, pageSizes,
             defaultPageSize, defaultPageNumber, sortBy } = this.props;
+    const { isProjectedVacancy } = this.context;
     return (
       <div className="usa-grid-full results-controls">
         <div className="usa-width-five-twelfths total-results">
@@ -48,16 +49,19 @@ class ResultsControls extends Component {
                 className="select-blue select-offset select-small"
               />
             </div>
-            <div className="results-dropdown results-dropdown-page-size">
-              <SelectForm
-                id="pageSize"
-                label="Results:"
-                onSelectOption={this.onSelectLimit}
-                options={pageSizes.options}
-                defaultSort={defaultPageSize}
-                className="select-blue select-offset select-small"
-              />
-            </div>
+            {
+              !isProjectedVacancy &&
+              <div className="results-dropdown results-dropdown-page-size">
+                <SelectForm
+                  id="pageSize"
+                  label="Results:"
+                  onSelectOption={this.onSelectLimit}
+                  options={pageSizes.options}
+                  defaultSort={defaultPageSize}
+                  className="select-blue select-offset select-small"
+                />
+              </div>
+            }
             <div className="results-download">
               <SearchResultsExportLink count={results.count} />
             </div>
@@ -67,6 +71,10 @@ class ResultsControls extends Component {
     );
   }
 }
+
+ResultsControls.contextTypes = {
+  isProjectedVacancy: PropTypes.bool,
+};
 
 ResultsControls.propTypes = {
   results: POSITION_SEARCH_RESULTS,

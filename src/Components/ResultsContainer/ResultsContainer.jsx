@@ -31,6 +31,7 @@ class ResultsContainer extends Component {
             newSavedSearchHasErrored, saveSearch, newSavedSearchSuccess,
             currentSavedSearch, newSavedSearchIsSaving, resetSavedSearchAlerts, bidList,
       } = this.props;
+    const { isProjectedVacancy } = this.context;
     return (
       <div className="results-container">
         {
@@ -53,13 +54,18 @@ class ResultsContainer extends Component {
           defaultPageNumber={defaultPageNumber}
           queryParamUpdate={queryParamUpdate}
         />
-        <SaveNewSearchContainer
-          saveSearch={saveSearch}
-          newSavedSearchSuccess={newSavedSearchSuccess}
-          newSavedSearchHasErrored={newSavedSearchHasErrored}
-          currentSavedSearch={currentSavedSearch}
-          newSavedSearchIsSaving={newSavedSearchIsSaving}
-        />
+        {
+          !isProjectedVacancy ?
+            <SaveNewSearchContainer
+              saveSearch={saveSearch}
+              newSavedSearchSuccess={newSavedSearchSuccess}
+              newSavedSearchHasErrored={newSavedSearchHasErrored}
+              currentSavedSearch={currentSavedSearch}
+              newSavedSearchIsSaving={newSavedSearchIsSaving}
+            />
+            :
+            <div style={{ marginBottom: 10 }} />
+        }
         {
           // is not loading, results array exists, but is empty
           !isLoading && results.results && !results.results.length &&
@@ -99,6 +105,10 @@ class ResultsContainer extends Component {
     );
   }
 }
+
+ResultsContainer.contextTypes = {
+  isProjectedVacancy: PropTypes.bool,
+};
 
 ResultsContainer.propTypes = {
   hasErrored: PropTypes.bool,

@@ -44,6 +44,10 @@ $input-height: 40px;
 
     input {
       height: $input-height;
+
+      &[disabled] {
+        background-color: $bg-gray-dark-3;
+      }
     }
   }
 
