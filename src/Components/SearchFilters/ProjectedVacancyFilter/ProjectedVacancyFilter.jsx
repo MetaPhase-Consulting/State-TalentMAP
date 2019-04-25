@@ -4,15 +4,13 @@ import PropTypes from 'prop-types';
 import Toggle from '../../Toggle';
 import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
 
-// This will probably have state in the future
-// eslint-disable-next-line react/prefer-stateless-function
 class ProjectedVacancyFilter extends Component {
   componentWillReceiveProps(nextProps) {
     const item = nextProps.items.find(f => f.isSelected);
-    if (item && item.code) {
+    if (item && item.code && this.toggleRef) {
       this.toggleRef.updateVal(item.code);
     }
-    if (!item && get(nextProps, 'items.[0].code')) {
+    if (!item && get(nextProps, 'items[0].code') && this.toggleRef) {
       this.toggleRef.updateVal(nextProps.items[0].code);
     }
   }

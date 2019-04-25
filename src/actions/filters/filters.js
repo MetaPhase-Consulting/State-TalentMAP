@@ -236,8 +236,10 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
       .then((results) => {
         results.forEach((result) => {
           if (result.state === 'fulfilled') {
+            // if fulfilled, return the formatted data
             responses.filters.push({ data: get(result, 'value.data', []), item: get(result, 'value.item', {}) });
           } else {
+            // Else, return the correct structure, but with no data. Include hasErrored prop.
             responses.filters.push({ data: [], item: {}, hasErrored: true });
           }
           dispatchSuccess();
