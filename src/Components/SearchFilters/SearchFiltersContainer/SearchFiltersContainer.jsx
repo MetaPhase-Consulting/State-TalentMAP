@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { get, includes, sortBy } from 'lodash';
+import { get, includes, indexOf, sortBy } from 'lodash';
 import { checkFlag } from '../../../flags';
 import MultiSelectFilterContainer from '../MultiSelectFilterContainer/MultiSelectFilterContainer';
 import MultiSelectFilter from '../MultiSelectFilter/MultiSelectFilter';
@@ -55,6 +55,8 @@ class SearchFiltersContainer extends Component {
         ...config,
         is_available_in_bidcycle: null,
         is_available_in_current_bidcycle: null,
+        is_domestic: null,
+        post__in: null,
         projectedVacancy: value,
       };
     }
@@ -94,7 +96,7 @@ class SearchFiltersContainer extends Component {
     });
 
     // get our normal multi-select filters
-    const multiSelectFilterNames = ['skill', 'grade', 'region', 'post', 'tod', 'language',
+    const multiSelectFilterNames = ['skill', 'grade', 'region', 'tod', 'language',
       'postDiff', 'dangerPay'];
     const blackList = []; // don't create accordions for these
 
@@ -134,6 +136,8 @@ class SearchFiltersContainer extends Component {
       multiSelectFilterNames.unshift('bidSeason');
     } else {
       multiSelectFilterNames.unshift('bidCycle');
+      // post should come before TOD
+      multiSelectFilterNames.splice(indexOf(multiSelectFilterNames, 'tod'), 0, 'post');
     }
     // END TOGGLE FILTERS
 
