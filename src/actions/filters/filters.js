@@ -1,4 +1,5 @@
-import { isArray, union } from 'lodash';
+import { get, isArray, union } from 'lodash';
+import Q from 'q';
 import api from '../../api';
 import { ASYNC_PARAMS, ENDPOINT_PARAMS } from '../../Constants/EndpointParams';
 import { removeDuplicates } from '../../utilities';
@@ -231,18 +232,19 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
           })
       ));
 
-      Promise.all(queryProms)
-        // Promise.all returns a single array which matches the order of the originating array
-        .then((results) => {
-          results.forEach((result) => {
-            responses.filters.push({ data: result.data, item: result.item });
-          });
+      Q.allSettled(queryProms)
+      .then((results) => {
+        results.forEach((result) => {
+          if (result.state === 'fulfilled') {
+            responses.filters.push({ data: get(result, 'value.data', []), item: get(result, 'value.item', {}) });
+          } else {
+            responses.filters.push({ data: [], item: {}, hasErrored: true });
+          }
           dispatchSuccess();
-        })
-        .catch(() => {
-          dispatch(filtersHasErrored(true));
+          dispatch(filtersHasErrored(false));
           dispatch(filtersIsLoading(false));
         });
+      });
     }
   };
 }
