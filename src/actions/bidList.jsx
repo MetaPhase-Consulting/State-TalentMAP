@@ -1,6 +1,8 @@
+import React from 'react';
 import api from '../api';
 import { toastSuccess, toastError } from './toast';
 import * as SystemMessages from '../Constants/SystemMessages';
+import BidItemSuccess from '../Components/BidListMessages/Success';
 
 export function bidListHasErrored(bool) {
   return {
@@ -226,7 +228,7 @@ export function toggleBidPosition(id, remove) {
     api()(config)
       .then(() => {
         const message = remove ?
-          SystemMessages.DELETE_BID_ITEM_SUCCESS : SystemMessages.ADD_BID_ITEM_SUCCESS;
+          SystemMessages.DELETE_BID_ITEM_SUCCESS : <BidItemSuccess />;
         dispatch(bidListToggleSuccess(message));
         dispatch(toastSuccess(message));
         dispatch(bidListToggleIsLoading(false, id));
