@@ -1,4 +1,5 @@
 import FavoriteSuccess from '../Components/FavoriteMessages/Success';
+import BidAddSuccess from '../Components/BidListMessages/Success';
 
 export const DEFAULT_TEXT = 'None listed';
 
@@ -36,7 +37,7 @@ export const GENERAL_SAVED_SEARCH_ERROR = 'An error occurred trying to save this
 
 export const DELETE_BID_ITEM_SUCCESS = 'Bid successfully removed.';
 export const DELETE_BID_ITEM_ERROR = 'Error trying to delete this bid.';
-export const ADD_BID_ITEM_SUCCESS = 'Bid successfully added.';
+export const ADD_BID_ITEM_SUCCESS = BidAddSuccess();
 export const ADD_BID_ITEM_ERROR = 'Error trying to add this bid.';
 
 export const ADD_FAVORITE_TITLE = 'Favorite Added';
