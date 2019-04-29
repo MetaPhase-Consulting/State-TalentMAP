@@ -101,6 +101,7 @@ exports[`ResultsMultiSearchHeaderComponent matches snapshot 1`] = `
                     },
                   ]
                 }
+                transformValue={[Function]}
               />
             </div>
             <div
@@ -126,6 +127,7 @@ exports[`ResultsMultiSearchHeaderComponent matches snapshot 1`] = `
                     },
                   ]
                 }
+                transformValue={[Function]}
               />
             </div>
             <div
