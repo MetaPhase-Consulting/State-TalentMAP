@@ -1,4 +1,4 @@
-import { get, union } from 'lodash';
+import { get, isArray, union } from 'lodash';
 import Q from 'q';
 import api from '../../api';
 import { ASYNC_PARAMS, ENDPOINT_PARAMS } from '../../Constants/EndpointParams';
@@ -221,8 +221,12 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
           .then((response) => {
             const itemFilter = Object.assign({}, item);
             // We have a mix of server-supplied and hard-coded data, so we combine them with union.
+            // Also determine whether the results array exists,
+            // or if the array is passed at the top-level.
             if (response.data.results) {
               itemFilter.data = union(response.data.results, item.initialData);
+            } else if (isArray(response.data)) {
+              itemFilter.data = union(response.data, item.initialData);
             }
             return itemFilter;
           })
