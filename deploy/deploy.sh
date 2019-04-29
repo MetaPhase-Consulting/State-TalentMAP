@@ -43,8 +43,8 @@ export SSO_LOGOUT_URL=https://dev.talentmap.metaphasedev.com/talentmap/login.htm
 
 export ENTITY_ID=https://dev.talentmap.metaphasedev.com/talentmap/
 
-# change to dev BEFORE install
-export NODE_ENV=dev
+# change to development BEFORE install
+export NODE_ENV=development
 
 # install dependencies
 yarn install
