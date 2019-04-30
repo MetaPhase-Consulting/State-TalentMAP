@@ -9,4 +9,20 @@ describe('ProjectedVacancyFilter', () => {
     );
     expect(wrapper).toBeDefined();
   });
+
+  it('is defined after receiving new props', () => {
+    const wrapper = shallow(
+      <ProjectedVacancyFilter />,
+    );
+    wrapper.setProps({ items: [{ isSelected: true, code: 1 }] });
+    expect(wrapper).toBeDefined();
+  });
+
+  it('is defined after receiving new props when no items have the isSelected prop', () => {
+    const wrapper = shallow(
+      <ProjectedVacancyFilter />,
+    );
+    wrapper.setProps({ items: [{ code: 1 }] });
+    expect(wrapper).toBeDefined();
+  });
 });

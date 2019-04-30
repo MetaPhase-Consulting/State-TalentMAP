@@ -1,6 +1,10 @@
 import { CancelToken } from 'axios';
+import queryString from 'query-string';
+import { checkFlag } from '../flags';
 import api from '../api';
 import { propOrDefault } from '../utilities';
+
+const usePV = () => checkFlag('projected_vacancy');
 
 let cancel;
 
@@ -61,11 +65,28 @@ export function resultsFetchSimilarPositions(id) {
 }
 
 export function fetchResultData(query) {
+  let prefix = '/position';
+  const parsed = queryString.parse(query);
+  const isPV = parsed.projectedVacancy;
+
+  if (isPV) {
+    prefix = '/fsbid/projected_vacancies';
+    delete parsed.projectedVacancy;
+  }
+
   return api()
-  .get(`/position/?${query}`, {
+  .get(`${prefix}/?${query}`, {
     cancelToken: new CancelToken((c) => { cancel = c; }),
   })
-  .then(response => response.data);
+  .then((response) => {
+    if (isPV) {
+      return {
+        ...response.data,
+        isProjectedVacancy: usePV(), // set context that results are PV
+      };
+    }
+    return response.data;
+  });
 }
 
 export function resultsFetchData(query) {
