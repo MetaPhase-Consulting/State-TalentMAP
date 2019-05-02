@@ -29,8 +29,9 @@ class BidderPortfolioPage extends Component {
   render() {
     const { editType } = this.state;
     const { bidderPortfolio, bidderPortfolioIsLoading,
-    bidderPortfolioHasErrored, pageSize, queryParamUpdate, pageNumber,
-    bidderPortfolioCounts } = this.props;
+    bidderPortfolioHasErrored, queryParamUpdate,
+    bidderPortfolioCounts, fetchBiddersInfinite,
+    bidderPortfolioIsLoadingInfinite } = this.props;
     // Here we just want to check that the 'all_clients' prop exists,
     // because we want the nav section to appear
     // even when we reload the counts.
@@ -45,8 +46,13 @@ class BidderPortfolioPage extends Component {
     let viewTypeClass = 'card-view';
     if (isListView) { viewTypeClass = 'list-view'; }
 
+    let isLoading$ = isLoading;
+    if (bidderPortfolioIsLoadingInfinite) {
+      isLoading$ = false;
+    }
+
     let loadingClass = '';
-    if (isLoading) { loadingClass = 'results-loading'; }
+    if (isLoading$) { loadingClass = 'results-loading'; }
 
     const showEdit = editType.show;
     return (
@@ -68,18 +74,17 @@ class BidderPortfolioPage extends Component {
           }
           <div className={`usa-grid-full bidder-portfolio-listing ${loadingClass}`}>
             {
-              isLoading &&
+              isLoading$ &&
                 <Spinner type="homepage-position-results" size="big" />
             }
             {
-              !isLoading &&
+              !isLoading$ &&
                 <BidderPortfolioContainer
                   bidderPortfolio={bidderPortfolio}
-                  pageSize={pageSize}
                   queryParamUpdate={queryParamUpdate}
-                  pageNumber={pageNumber}
                   showListView={isListView}
                   showEdit={showEdit}
+                  fetchBiddersInfinite={fetchBiddersInfinite}
                 />
             }
           </div>
@@ -92,11 +97,11 @@ class BidderPortfolioPage extends Component {
 BidderPortfolioPage.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
+  bidderPortfolioIsLoadingInfinite: PropTypes.bool.isRequired,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
-  pageSize: PropTypes.number.isRequired,
   queryParamUpdate: PropTypes.func.isRequired,
-  pageNumber: PropTypes.number.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
+  fetchBiddersInfinite: PropTypes.func.isRequired,
 };
 
 export default BidderPortfolioPage;

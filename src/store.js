@@ -10,6 +10,8 @@ import createSagaMiddleware from 'redux-saga';
 
 import createHistory from 'history/createBrowserHistory';
 
+import { enableBatching } from 'redux-batched-actions';
+
 import rootReducer from './reducers';
 
 import IndexSagas from './index-sagas';
@@ -37,9 +39,11 @@ const composeEnhancers = (
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+const batchedReducer = enableBatching(persistedReducer);
+
 function configureStore(initialState) {
   return createStore(
-    persistedReducer,
+    batchedReducer,
     initialState,
     composeEnhancers(
       applyMiddleware(thunk, middleware, sagaMiddleware),

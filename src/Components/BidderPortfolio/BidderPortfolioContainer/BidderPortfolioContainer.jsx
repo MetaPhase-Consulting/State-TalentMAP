@@ -4,7 +4,6 @@ import { BIDDER_LIST } from '../../../Constants/PropTypes';
 import { scrollToTop } from '../../../utilities';
 import BidderPortfolioCardList from '../BidderPortfolioCardList';
 import BidderPortfolioGridList from '../BidderPortfolioGridList';
-import PaginationWrapper from '../../PaginationWrapper/PaginationWrapper';
 import Alert from '../../Alert/Alert';
 
 class BidderPortfolioContainer extends Component {
@@ -17,28 +16,23 @@ class BidderPortfolioContainer extends Component {
     this.props.queryParamUpdate(q);
   }
   render() {
-    const { bidderPortfolio, pageSize, pageNumber, showListView, showEdit } = this.props;
+    const { bidderPortfolio, showListView, showEdit,
+      fetchBiddersInfinite } = this.props;
     const noResults = bidderPortfolio.results.length === 0;
     return (
       <div className="usa-grid-full user-dashboard">
         {
           showListView ?
-            <BidderPortfolioGridList showEdit={showEdit} results={bidderPortfolio.results} />
+            <BidderPortfolioGridList
+              showEdit={showEdit}
+              results={bidderPortfolio}
+              fetchBiddersInfinite={fetchBiddersInfinite}
+            />
             :
-            <BidderPortfolioCardList results={bidderPortfolio.results} />
-        }
-        {
-           // if there's no results, don't show pagination
-           !!bidderPortfolio.results && !!bidderPortfolio.results.length &&
-           // finally, render the pagination
-           <div className="usa-grid-full react-paginate">
-             <PaginationWrapper
-               totalResults={bidderPortfolio.count}
-               pageSize={pageSize}
-               onPageChange={this.onPageChange}
-               forcePage={pageNumber}
-             />
-           </div>
+            <BidderPortfolioCardList
+              results={bidderPortfolio}
+              fetchBiddersInfinite={fetchBiddersInfinite}
+            />
         }
         {
           noResults &&
@@ -53,11 +47,10 @@ class BidderPortfolioContainer extends Component {
 
 BidderPortfolioContainer.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
-  pageSize: PropTypes.number.isRequired,
   queryParamUpdate: PropTypes.func.isRequired,
-  pageNumber: PropTypes.number.isRequired,
   showListView: PropTypes.bool,
   showEdit: PropTypes.bool,
+  fetchBiddersInfinite: PropTypes.func.isRequired,
 };
 
 BidderPortfolioContainer.defaultProps = {

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { bidderPortfolioFetchData, bidderPortfolioCountsFetchData } from '../../actions/bidderPortfolio';
+import { bidderPortfolioFetchData,
+  bidderPortfolioCountsFetchData,
+  bidderPortfolioFetchDataInfinite,
+} from '../../actions/bidderPortfolio';
 import { BIDDER_LIST, EMPTY_FUNCTION, BIDDER_PORTFOLIO_COUNTS } from '../../Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from '../../Constants/EndpointParams';
 import queryParamUpdate from '../queryParams';
@@ -16,7 +19,7 @@ class BidderPortfolio extends Component {
     this.state = {
       key: 0,
       query: { value: window.location.search.replace('?', '') || '' },
-      defaultPageSize: { value: 8 },
+      defaultPageSize: { value: 12 },
       defaultPageNumber: { value: 1 },
       defaultKeyword: { value: '' },
     };
@@ -79,20 +82,19 @@ class BidderPortfolio extends Component {
 
   render() {
     const { bidderPortfolio, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
-    bidderPortfolioCounts, bidderPortfolioCountsIsLoading,
-    bidderPortfolioCountsHasErrored } = this.props;
-    const { defaultPageSize, defaultPageNumber } = this.state;
+    bidderPortfolioCounts, bidderPortfolioCountsIsLoading, bidderPortfolioIsLoadingInfinite,
+    bidderPortfolioCountsHasErrored, fetchBiddersInfinite } = this.props;
     return (
       <BidderPortfolioPage
         bidderPortfolio={bidderPortfolio}
         bidderPortfolioIsLoading={bidderPortfolioIsLoading}
+        bidderPortfolioIsLoadingInfinite={bidderPortfolioIsLoadingInfinite}
         bidderPortfolioHasErrored={bidderPortfolioHasErrored}
-        pageSize={defaultPageSize.value}
         queryParamUpdate={this.onQueryParamUpdate}
-        pageNumber={defaultPageNumber.value}
         bidderPortfolioCounts={bidderPortfolioCounts}
         bidderPortfolioCountsIsLoading={bidderPortfolioCountsIsLoading}
         bidderPortfolioCountsHasErrored={bidderPortfolioCountsHasErrored}
+        fetchBiddersInfinite={fetchBiddersInfinite}
       />
     );
   }
@@ -101,17 +103,20 @@ class BidderPortfolio extends Component {
 BidderPortfolio.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
+  bidderPortfolioIsLoadingInfinite: PropTypes.bool,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolioCounts: PropTypes.func.isRequired,
+  fetchBiddersInfinite: PropTypes.func.isRequired,
 };
 
 BidderPortfolio.defaultProps = {
   bidderPortfolio: { results: [] },
   bidderPortfolioIsLoading: false,
+  bidderPortfolioIsLoadingInfinite: false,
   bidderPortfolioHasErrored: false,
   fetchBidderPortfolio: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
@@ -122,6 +127,7 @@ BidderPortfolio.defaultProps = {
 const mapStateToProps = state => ({
   bidderPortfolio: state.bidderPortfolio,
   bidderPortfolioIsLoading: state.bidderPortfolioIsLoading,
+  bidderPortfolioIsLoadingInfinite: state.bidderPortfolioIsLoadingInfinite,
   bidderPortfolioHasErrored: state.bidderPortfolioHasErrored,
   bidderPortfolioCounts: state.bidderPortfolioCounts,
   bidderPortfolioCountsIsLoading: state.bidderPortfolioCountsIsLoading,
@@ -131,6 +137,7 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
   fetchBidderPortfolioCounts: () => dispatch(bidderPortfolioCountsFetchData()),
+  fetchBiddersInfinite: () => dispatch(bidderPortfolioFetchDataInfinite()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BidderPortfolio));

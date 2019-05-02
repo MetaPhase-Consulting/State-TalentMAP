@@ -1,4 +1,5 @@
 import queryString from 'query-string';
+import { unionBy } from 'lodash';
 
 export function bidderPortfolioHasErrored(state = false, action) {
   switch (action.type) {
@@ -16,10 +17,24 @@ export function bidderPortfolioIsLoading(state = false, action) {
       return state;
   }
 }
+export function bidderPortfolioIsLoadingInfinite(state = false, action) {
+  switch (action.type) {
+    case 'BIDDER_PORTFOLIO_IS_LOADING_INFINITE':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
 export function bidderPortfolio(state = { results: [] }, action) {
   switch (action.type) {
-    case 'BIDDER_PORTFOLIO_FETCH_DATA_SUCCESS':
+    case 'BIDDER_PORTFOLIO_FETCH_DATA_SUCCESS': {
+      if (action.shouldMergeData) {
+        const data$ = { ...action.results };
+        data$.results = unionBy(state.results, action.results.results, 'id');
+        return data$;
+      }
       return action.results;
+    }
     default:
       return state;
   }

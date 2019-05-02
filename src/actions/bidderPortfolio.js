@@ -1,3 +1,5 @@
+import { get } from 'lodash';
+import { batchActions } from 'redux-batched-actions';
 import api from '../api';
 
 export function bidderPortfolioHasErrored(bool) {
@@ -12,10 +14,17 @@ export function bidderPortfolioIsLoading(bool) {
     isLoading: bool,
   };
 }
-export function bidderPortfolioFetchDataSuccess(results) {
+export function bidderPortfolioIsLoadingInfinite(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_IS_LOADING_INFINITE',
+    isLoading: bool,
+  };
+}
+export function bidderPortfolioFetchDataSuccess(results, fromFullUrl) {
   return {
     type: 'BIDDER_PORTFOLIO_FETCH_DATA_SUCCESS',
     results,
+    shouldMergeData: fromFullUrl,
   };
 }
 
@@ -82,22 +91,44 @@ export function bidderPortfolioCountsFetchData() {
   };
 }
 
-export function bidderPortfolioFetchData(query = '') {
+export function bidderPortfolioFetchData(query = '', fullUrl = '') {
   return (dispatch) => {
-    const q = `/client/?${query}`;
+    let q = `/client/?${query}`;
+    const fromFullUrl = !!fullUrl;
+    if (fullUrl) {
+      dispatch(bidderPortfolioIsLoadingInfinite(true));
+      q = fullUrl;
+    }
     dispatch(bidderPortfolioIsLoading(true));
     dispatch(bidderPortfolioHasErrored(false));
     api().get(q)
       .then(({ data }) => {
         dispatch(bidderPortfolioLastQuery(query, data.count));
+        dispatch(bidderPortfolioFetchDataSuccess(data, fromFullUrl));
         dispatch(bidderPortfolioHasErrored(false));
-        dispatch(bidderPortfolioIsLoading(false));
-        dispatch(bidderPortfolioFetchDataSuccess(data));
+
+        dispatch(batchActions(
+          [bidderPortfolioIsLoadingInfinite(false), bidderPortfolioIsLoading(false)],
+        ));
       })
       .catch(() => {
         dispatch(bidderPortfolioHasErrored(true));
-        dispatch(bidderPortfolioIsLoading(false));
+
+        dispatch(batchActions(
+          [bidderPortfolioIsLoadingInfinite(false), bidderPortfolioIsLoading(false)],
+        ));
       });
+  };
+}
+
+export function bidderPortfolioFetchDataInfinite() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const next = get(state, 'bidderPortfolio.next');
+    const isLoading = get(state, 'bidderPortfolioIsLoading') || get(state, 'bidderPortfolioIsLoadingInfinite');
+    if (next && !isLoading) {
+      dispatch(bidderPortfolioFetchData(null, next));
+    }
   };
 }
 

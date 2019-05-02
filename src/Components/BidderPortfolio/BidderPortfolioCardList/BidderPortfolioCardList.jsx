@@ -1,11 +1,20 @@
 import React from 'react';
-import { BIDDER_RESULTS } from '../../../Constants/PropTypes';
+import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroller';
+import { BIDDER_LIST } from '../../../Constants/PropTypes';
 import BidderPortfolioStatCard from '../BidderPortfolioStatCard';
 
-const BidderPortfolioCardList = ({ results }) => (
-  <div className="usa-grid-full user-dashboard bidder-portfolio-stat-card-list">
+const BidderPortfolioCardList = ({ results, fetchBiddersInfinite }) => (
+  <InfiniteScroll
+    className="usa-grid-full user-dashboard bidder-portfolio-stat-card-list"
+    pageStart={0}
+    loadMore={fetchBiddersInfinite}
+    hasMore={!!results.next}
+    loader={<div style={{ width: '100%' }} className="loader" key={0}>Loading ...</div>}
+    threshold={650}
+  >
     {
-      results.map(result => (
+      results.results.map(result => (
         <div className="bidder-portfolio-stat-card-container" key={result.id}>
           <BidderPortfolioStatCard
             userProfile={result}
@@ -13,11 +22,12 @@ const BidderPortfolioCardList = ({ results }) => (
         </div>
       ))
     }
-  </div>
+  </InfiniteScroll>
 );
 
 BidderPortfolioCardList.propTypes = {
-  results: BIDDER_RESULTS.isRequired,
+  results: BIDDER_LIST.isRequired,
+  fetchBiddersInfinite: PropTypes.func.isRequired,
 };
 
 export default BidderPortfolioCardList;
