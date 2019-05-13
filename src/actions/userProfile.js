@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { indexOf } from 'lodash';
+import { get, indexOf } from 'lodash';
 
 import api from '../api';
 import { favoritePositionsFetchData } from './favoritePositions';
@@ -63,18 +63,22 @@ export function userProfileFetchData(bypass, cb) {
     const getUserAccount = () => api().get('/profile/');
     // permissions
     const getUserPermissions = () => api().get('/permission/user/');
+    // PV favorites
+    const getPVFavorites = () => api().get('/projected_vacancy/favorites/');
 
     // use api' Promise.all to fetch the profile and permissions, and then combine them
     // into one object
-    axios.all([getUserAccount(), getUserPermissions()])
-      .then(axios.spread((acct, perms) => {
+    axios.all([getUserAccount(), getUserPermissions(), getPVFavorites()])
+      .then(axios.spread((acct, perms, pvFavs) => {
         // form the userProfile object
         const account = acct.data;
         const permissions = perms.data;
+        const pvFavorites = get(pvFavs, 'data.results', []).map(m => ({ id: m.id }));
         const newProfileObject = {
           ...account,
           is_superuser: indexOf(permissions.groups, 'superuser') > -1,
           permission_groups: permissions.groups,
+          favorite_positions_pv: pvFavorites,
         };
 
         // then perform dispatches
@@ -104,12 +108,13 @@ export function userProfileFetchData(bypass, cb) {
 // Since we have to pass the entire array to the API, we want to make sure it's accurate.
 // If we need a full refresh of Favorite Positions, such as for the profile's favorite sub-section,
 // we can pass a third arg, refreshFavorites.
-export function userProfileToggleFavoritePosition(id, remove, refreshFavorites = false) {
+export function userProfileToggleFavoritePosition(id, remove, refreshFavorites = false,
+  isPV = false) {
   const idString = id.toString();
   return (dispatch) => {
     const config = {
       method: remove ? 'delete' : 'put',
-      url: `/position/${idString}/favorite/`,
+      url: isPV ? `/projected_vacancy/${idString}/favorite/` : `/position/${idString}/favorite/`,
     };
 
     /**
@@ -119,7 +124,7 @@ export function userProfileToggleFavoritePosition(id, remove, refreshFavorites =
     const getAction = () => api()(config);
 
     // position
-    const getPosition = () => api().get(`/position/${id}/`);
+    const getPosition = () => api().get(`/position/${id}/`); // TODO - TERNARY BASED ON ISPV - GET SINGLE PV POSITION
 
     dispatch(userProfileFavoritePositionIsLoading(true, id));
     dispatch(userProfileFavoritePositionHasErrored(false));

@@ -7,7 +7,8 @@ import bidListObject from '../../__mocks__/bidListObject';
 
 describe('FavoritePositionsComponent', () => {
   const props = {
-    favorites: resultsObject,
+    favorites: resultsObject.results,
+    favoritesPV: resultsObject.results,
     toggleFavoritePositionIsLoading: false,
     toggleFavoritePositionHasErrored: false,
     favoritePositionsIsLoading: false,
@@ -28,25 +29,19 @@ describe('FavoritePositionsComponent', () => {
     const wrapper = shallow(
       <FavoritePositions {...props} />,
     );
-    expect(wrapper.instance().props.favorites).toBe(resultsObject);
+    expect(wrapper.instance().props.favorites).toBe(props.favorites);
   });
 
   it('displays an alert if there are no positions', () => {
     const wrapper = shallow(
       <FavoritePositions
         {...props}
-        favorites={{ results: [] }}
+        favorites={[]}
+        favoritesPV={[]}
         favoritePositionsIsLoading={false}
       />,
     );
     expect(wrapper.find('NoFavorites').exists()).toBe(true);
-  });
-
-  it('renders the Spinner when loading', () => {
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
-    expect(wrapper.instance().props.favorites).toBe(resultsObject);
   });
 
   it('renders the Spinner when loading', () => {

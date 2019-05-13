@@ -25,10 +25,12 @@ FavoriteContainer.propTypes = {
   isLoading: SetType,
   hasErrored: PropTypes.bool.isRequired,
   refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired]).isRequired,
+  isPV: PropTypes.bool,
 };
 
 FavoriteContainer.defaultProps = {
   isLoading: new Set(),
+  isPV: false,
 };
 
 export const mapStateToProps = state => ({
@@ -36,9 +38,9 @@ export const mapStateToProps = state => ({
   hasErrored: state.userProfileFavoritePositionHasErrored || false,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch, ownProps = {}) => ({
   onToggle: (id, remove, refresh = false) =>
-    dispatch(userProfileToggleFavoritePosition(id, remove, refresh)),
+    dispatch(userProfileToggleFavoritePosition(id, remove, refresh, ownProps.isPV)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoriteContainer);
