@@ -124,14 +124,14 @@ export function userProfileToggleFavoritePosition(id, remove, refreshFavorites =
     const getAction = () => api()(config);
 
     // position
-    const getPosition = () => api().get(`/position/${id}/`); // TODO - TERNARY BASED ON ISPV - GET SINGLE PV POSITION
+    const getPosition = () => api().get(isPV ? `/fsbid/projected_vacancies/position_number__in=${id}/` : `/position/${id}/`);
 
     dispatch(userProfileFavoritePositionIsLoading(true, id));
     dispatch(userProfileFavoritePositionHasErrored(false));
 
     axios.all([getAction(), getPosition()])
       .then(axios.spread((action, position) => {
-        const pos = position.data;
+        const pos = isPV ? get(position, 'data.results[0]', {}) : position.data;
         const message = remove ?
           SystemMessages.DELETE_FAVORITE_SUCCESS(pos) : SystemMessages.ADD_FAVORITE_SUCCESS(pos);
         const title = remove ? SystemMessages.DELETE_FAVORITE_TITLE
