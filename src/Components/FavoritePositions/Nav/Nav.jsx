@@ -9,7 +9,7 @@ class Nav extends Component {
     super(props);
     this.onClick = this.onClick.bind(this);
     this.state = {
-      selected: get(props, 'options[0].title'),
+      selected: props.selected || get(props, 'options[0].title'),
     };
   }
   componentWillReceiveProps(nextProps) {

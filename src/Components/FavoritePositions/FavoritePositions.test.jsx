@@ -25,6 +25,22 @@ describe('FavoritePositionsComponent', () => {
     expect(wrapper).toBeDefined();
   });
 
+  it('is defined when selected === open', () => {
+    const wrapper = shallow(
+      <FavoritePositions {...props} />,
+    );
+    wrapper.setState({ selected: 'open' });
+    expect(wrapper).toBeDefined();
+  });
+
+  it('is defined when selected === pv', () => {
+    const wrapper = shallow(
+      <FavoritePositions {...props} />,
+    );
+    wrapper.setState({ selected: 'pv' });
+    expect(wrapper).toBeDefined();
+  });
+
   it('can receive props', () => {
     const wrapper = shallow(
       <FavoritePositions {...props} />,

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
 
 export const NavItem = ({ title, value, numerator, denominator, isActive, onClick }) => {
@@ -32,4 +31,4 @@ NavItem.defaultProps = {
   onClick: EMPTY_FUNCTION,
 };
 
-export default withRouter(NavItem);
+export default NavItem;
