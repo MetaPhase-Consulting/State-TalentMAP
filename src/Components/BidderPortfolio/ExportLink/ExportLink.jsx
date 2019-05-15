@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
+import { get, mapValues } from 'lodash';
 import { CSVLink } from '../../CSV';
 import { bidderPortfolioFetchDataFromLastQuery } from '../../../actions/bidderPortfolio';
 import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
@@ -24,7 +24,7 @@ const HEADERS = [
 // Processes results before sending to the download component to allow for custom formatting.
 const processData = data => (
   data.map(entry => ({
-    ...entry,
+    ...mapValues(entry, x => !x ? '' : x), // eslint-disable-line no-confusing-arrow
     grade: getFormattedNumCSV(entry.grade),
     // any other processing we may want to do here
   }))
