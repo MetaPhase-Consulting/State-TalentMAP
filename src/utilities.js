@@ -545,7 +545,13 @@ export const getScrollDistanceFromBottom = () => {
 };
 
 // eslint-disable-next-line no-confusing-arrow
-export const getFormattedNumCSV = v => !isNaN(v) ? `=${v}` : v;
+export const getFormattedNumCSV = (v) => {
+  if (v === null || v === undefined) {
+    return '';
+  }
+  // else
+  return !isNaN(v) ? `=${v}` : v;
+};
 
 export const spliceStringForCSV = (v) => {
   if (v[1] === '=') {

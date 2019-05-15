@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, mapValues } from 'lodash';
 import queryString from 'query-string';
 import { CSVLink } from '../CSV';
 import { POSITION_SEARCH_SORTS } from '../../Constants/Sort';
@@ -31,7 +31,7 @@ export const processData = data => (
     const endDate = get(entry, 'current_assignment.estimated_end_date');
     const formattedEndDate = endDate ? formatDate(endDate) : null;
     return {
-      ...entry,
+      ...mapValues(entry, x => !x ? '' : x), // eslint-disable-line no-confusing-arrow
       position_number: getFormattedNumCSV(entry.position_number),
       grade: getFormattedNumCSV(entry.grade),
       estimated_end_date: formattedEndDate,
