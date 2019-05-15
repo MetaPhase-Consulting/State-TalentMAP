@@ -96,6 +96,7 @@ class SearchResultsExportLink extends Component {
           filename={this.props.filename}
           data={data}
           headers={HEADERS}
+          uFEFF={false}
         />
       </div>
     );
