@@ -37,15 +37,15 @@ exports[`FavoritePositionsComponent matches snapshot 1`] = `
             },
             Object {
               "text": "Position title: A-Z",
-              "value": "title",
+              "value": "position__title",
             },
             Object {
               "text": "Grade: Low to high",
-              "value": "-grade",
+              "value": "-position__grade",
             },
             Object {
               "text": "Bureau: A-Z",
-              "value": "-bureau",
+              "value": "-position__bureau",
             },
             Object {
               "text": "Posted date: Most recent",
@@ -53,15 +53,20 @@ exports[`FavoritePositionsComponent matches snapshot 1`] = `
             },
             Object {
               "text": "TED: Soonest",
-              "value": "current_assignment__estimated_end_date",
+              "value": "position__current_assignment__estimated_end_date",
             },
             Object {
               "text": "Position number: Low to high",
-              "value": "position_number",
+              "value": "position__position_number",
             },
             Object {
+<<<<<<< HEAD
               "text": "Service need",
               "value": "-post__has_service_needs_differential",
+=======
+              "text": "Featured positions",
+              "value": "-position__post__has_service_needs_differential",
+>>>>>>> 29844dab... fix: correct search filter names to match cycle position api changes
             },
           ]
         }

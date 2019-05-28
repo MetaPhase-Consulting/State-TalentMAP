@@ -161,7 +161,9 @@ exports[`HomePageComponent matches snapshot when position arrays are filled 1`] 
       positions={
         Array [
           Object {
-            "id": 3,
+            "position": Object {
+              "id": 3,
+            },
           },
         ]
       }
@@ -325,15 +327,17 @@ exports[`HomePageComponent matches snapshot when position arrays are filled 1`] 
       positions={
         Array [
           Object {
-            "id": 1,
-            "skill": "skill 1",
+            "position": Object {
+              "id": 1,
+              "skill": "skill 1",
+            },
           },
         ]
       }
       title="Positions in skill 1"
       type="default"
       useSpinner={false}
-      viewMoreLink="/results?skill__code__in=,"
+      viewMoreLink="/results?position__skill__code__in=,"
       wrapInLink={true}
     />
     <HomePagePositionsSection
@@ -490,15 +494,17 @@ exports[`HomePageComponent matches snapshot when position arrays are filled 1`] 
       positions={
         Array [
           Object {
-            "grade": "03",
-            "id": 2,
+            "position": Object {
+              "grade": "03",
+              "id": 2,
+            },
           },
         ]
       }
       title="Recently Posted Positions in Grade 03"
       type="default"
       useSpinner={false}
-      viewMoreLink="/results?grade__code__in=03&ordering=-posted_date"
+      viewMoreLink="/results?position__grade__code__in=03&ordering=-posted_date"
       wrapInLink={true}
     />
   </div>
@@ -825,7 +831,7 @@ exports[`HomePageComponent matches snapshot when the positions arrays are empty 
       title="Recently Posted Positions in Grade 03"
       type="default"
       useSpinner={false}
-      viewMoreLink="/results?grade__code__in=03&ordering=-posted_date"
+      viewMoreLink="/results?position__grade__code__in=03&ordering=-posted_date"
       wrapInLink={true}
     />
   </div>
