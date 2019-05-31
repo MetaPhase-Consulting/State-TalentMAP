@@ -65,48 +65,53 @@ const ResultsCard = (props) => {
     isProjectedVacancy,
   } = props;
 
-  const title = propOrDefault(result, 'title');
-  const position = getResult(result, 'position_number', NO_POSITION_NUMBER);
-  const languages = getResult(result, 'languages', []);
+  const pos = result.position || result;
+
+  const title = propOrDefault(pos, 'title');
+  const position = getResult(pos, 'position_number', NO_POSITION_NUMBER);
+  const languages = getResult(pos, 'languages', []);
 
   const language = (<LanguageList languages={languages} propToUse="representation" />);
 
-  const post = `${getPostName(result.post, NO_POST)}${result.organization ? `: ${result.organization}` : ''}`;
+  const post = `${getPostName(pos.post, NO_POST)}${pos.organization ? `: ${pos.organization}` : ''}`;
 
-  const stats = getBidStatisticsObject(result.bid_statistics);
+  const stats = getBidStatisticsObject(pos.bid_statistics);
 
   // TODO - update this to a real property once API is updateds
-  const recentlyAvailable = result.recently_available;
+  const recentlyAvailable = pos.recently_available;
+
+  const bidTypeTitle = isProjectedVacancy ? 'Bid season' : 'Bid cycle';
 
   const sections = [
     /* eslint-disable quote-props */
     {
-      'TED': getResult(result, 'current_assignment.estimated_end_date', NO_DATE),
-      'Bid cycle': getResult(result, 'latest_bidcycle.name', NO_BID_CYCLE),
-      'Skill': getResult(result, 'skill', NO_SKILL),
-      'Grade': getResult(result, 'grade', NO_GRADE),
-      'Bureau': getResult(result, 'bureau', NO_BUREAU),
+      'TED': getResult(pos, 'current_assignment.estimated_end_date', NO_DATE),
+      [bidTypeTitle]: getResult(result, 'bidcycle.name', NO_BID_CYCLE),
+      'Skill': getResult(pos, 'skill', NO_SKILL),
+      'Grade': getResult(pos, 'grade', NO_GRADE),
+      'Bureau': getResult(pos, 'bureau', NO_BUREAU),
     },
     {
-      'Tour of duty': getResult(result, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
+      'Tour of duty': getResult(pos, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
       'Language': language,
-      'Post differential': getResult(result, 'post.differential_rate', NO_POST_DIFFERENTIAL, true),
-      'Danger pay': getResult(result, 'post.danger_pay', NO_DANGER_PAY, true),
-      'Incumbent': getResult(result, 'current_assignment.user', NO_USER_LISTED),
+      'Post differential': getResult(pos, 'post.differential_rate', NO_POST_DIFFERENTIAL, true),
+      'Danger pay': getResult(pos, 'post.danger_pay', NO_DANGER_PAY, true),
+      'Incumbent': getResult(pos, 'current_assignment.user', NO_USER_LISTED),
     },
     {
-      'Posted': getResult(result, COMMON_PROPERTIES.posted, NO_UPDATE_DATE),
+      'Posted': getResult(pos, COMMON_PROPERTIES.posted, NO_UPDATE_DATE),
       'Position number': position,
     },
-    /* eslint-enable quote-props */
+  /* eslint-enable quote-props */
   ];
 
   options.favorite = {
     compareArray: favorites,
-    refKey: result.id,
+    refKey: result.position.id,
     hasBorder: true,
     useButtonClass: true,
     useLongText: true,
+    isPV: isProjectedVacancy,
   };
 
   options.compare = {
@@ -118,17 +123,26 @@ const ResultsCard = (props) => {
     <MediaQueryWrapper breakpoint="screenMdMax" widthType="max">
       {() => (
         <BoxShadow>
-          <div id={id} className={`results-card ${isProjectedVacancy ? 'results-card--secondary' : ''}`}>
+          <div
+            id={id}
+            style={{ position: 'relative', overflow: 'hidden' }}
+            className={`results-card ${isProjectedVacancy ? 'results-card--secondary' : ''}`}
+            onMouseOver={() => this.hover.toggleCardHovered(true)}
+            onMouseLeave={() => this.hover.toggleCardHovered(false)}
+          >
             <Row className="header" fluid>
               <Column columns="8">
                 <Column columns="12" className="results-card-title-link">
                   <h3>{title}</h3>
-                  <Link to={`/details/${result.id}`}>View position</Link>
+                  { !isProjectedVacancy && <Link to={`/details/${result.id}`}>View position</Link> }
                   {recentlyAvailable && <span className="available-alert">Now available!</span>}
                 </Column>
                 <Column columns="12" className="results-card-title-link">
                   <dt>Post:</dt><dd>{post}</dd>
                 </Column>
+              </Column>
+              <Column columns="12" className="results-card-title-link">
+                <dt>Post:</dt><dd>{post}</dd>
               </Column>
               <Flag
                 name="flags.bidding"

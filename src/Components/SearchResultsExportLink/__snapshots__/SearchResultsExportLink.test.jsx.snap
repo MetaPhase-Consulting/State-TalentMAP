@@ -17,55 +17,55 @@ exports[`SearchResultsExportLink matches snapshot 1`] = `
     headers={
       Array [
         Object {
-          "key": "title",
+          "key": "position.title",
           "label": "Position",
         },
         Object {
-          "key": "position_number",
+          "key": "position.position_number",
           "label": "Position number",
         },
         Object {
-          "key": "skill",
+          "key": "position.skill",
           "label": "Skill",
         },
         Object {
-          "key": "grade",
+          "key": "position.grade",
           "label": "Grade",
         },
         Object {
-          "key": "bureau",
+          "key": "position.bureau",
           "label": "Bureau",
         },
         Object {
-          "key": "post__location.city",
+          "key": "position.post.location.city",
           "label": "Post city",
         },
         Object {
-          "key": "post__location__country",
+          "key": "position.post.location.country",
           "label": "Post country",
         },
         Object {
-          "key": "post__tour_of_duty",
+          "key": "position.post.tour_of_duty",
           "label": "Tour of duty",
         },
         Object {
-          "key": "languages__0__representation",
+          "key": "position.languages[0].representation",
           "label": "Language",
         },
         Object {
-          "key": "post__differential_rate",
+          "key": "position.post.differential_rate",
           "label": "Post differential",
         },
         Object {
-          "key": "post__danger_pay",
+          "key": "position.post.danger_pay",
           "label": "Danger pay",
         },
         Object {
-          "key": "estimated_end_date",
+          "key": "position.estimated_end_date",
           "label": "TED",
         },
         Object {
-          "key": "current_assignment__user",
+          "key": "position.current_assignment.user",
           "label": "Incumbent",
         },
       ]

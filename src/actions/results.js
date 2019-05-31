@@ -1,4 +1,5 @@
 import { CancelToken } from 'axios';
+import queryString from 'query-string';
 import api from '../api';
 import { propOrDefault } from '../utilities';
 
@@ -46,7 +47,7 @@ export function resultsFetchSimilarPositions(id) {
   return (dispatch) => {
     if (cancel) { cancel(); }
     dispatch(resultsSimilarPositionsIsLoading(true));
-    api().get(`/position/${id}/similar/?limit=3`)
+    api().get(`/cycleposition/${id}/similar/?limit=3`)
       .then(response => response.data)
       .then((results) => {
         dispatch(resultsSimilarPositionsFetchDataSuccess(results));
@@ -61,8 +62,17 @@ export function resultsFetchSimilarPositions(id) {
 }
 
 export function fetchResultData(query) {
+  let prefix = '/cycleposition';
+  const parsed = queryString.parse(query);
+  const isPV = parsed.projectedVacancy;
+
+  if (isPV) {
+    prefix = '/fsbid/projected_vacancies';
+    delete parsed.projectedVacancy;
+  }
+
   return api()
-  .get(`/position/?${query}`, {
+  .get(`${prefix}?${query}`, {
     cancelToken: new CancelToken((c) => { cancel = c; }),
   })
   .then(response => response.data);
