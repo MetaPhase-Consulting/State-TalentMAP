@@ -11,7 +11,7 @@ import StaticDevContent from '../../StaticDevContent';
 const FavoriteList = ({ favorites }) => {
   const positionArray = [];
   favorites.slice(0, 2).forEach((pos) => {
-    const { position } = pos;
+    const position = pos.position || pos;
     return (
       positionArray.push(
         <FavoriteListResultsCard
