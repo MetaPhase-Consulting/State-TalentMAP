@@ -135,7 +135,7 @@ class ResultsCard extends Component {
 
     options.compare = {
       as: 'div',
-      refKey: position,
+      refKey: result.id,
     };
 
     return (
