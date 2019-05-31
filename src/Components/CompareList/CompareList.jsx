@@ -9,7 +9,7 @@ import BackButton from '../BackButton';
 import { BID_LIST, COMPARE_LIST, POSITION_SEARCH_RESULTS } from '../../Constants/PropTypes';
 import { POSITION_RESULTS_OBJECT } from '../../Constants/DefaultProps';
 import COMPARE_LIMIT from '../../Constants/Compare';
-import { NO_POST, NO_TOUR_OF_DUTY, NO_BUREAU, NO_SKILL, NO_DATE, NO_POST_DIFFERENTIAL, NO_DANGER_PAY } from '../../Constants/SystemMessages';
+import { NO_POST, NO_TOUR_OF_DUTY, NO_BUREAU, NO_SKILL, NO_DATE, NO_GRADE, NO_POST_DIFFERENTIAL, NO_DANGER_PAY } from '../../Constants/SystemMessages';
 import Spinner from '../Spinner';
 import LanguageList from '../LanguageList/LanguageList';
 import { propOrDefault, formatDate, getPostName, getDifferentialPercentage, getAccessiblePositionNumber } from '../../utilities';
@@ -27,7 +27,8 @@ export const renderBidCounts = (compareArray, emptyArray) => (
     </th>
     {
         compareArray.map((c) => {
-          const bidStatistics = get(c, 'bid_statistics[0]', {});
+          const { position } = c.position || c;
+          const bidStatistics = get(position, 'bid_statistics[0]', {});
           return (
             <td key={shortId.generate()}>
               <span className="bid-stats">
@@ -60,7 +61,7 @@ class CompareList extends Component {
                 <BidListButton
                   compareArray={bidList.results}
                   id={c.id}
-                  disabled={!get(c, 'availability.availability', true)}
+                  disabled={!get(c.position, 'availability.availability', true)}
                 />
               </PermissionsWrapper>
             </td>
@@ -173,7 +174,7 @@ class CompareList extends Component {
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>
-                            {getPostName(c.post, NO_POST)}
+                            {getPostName(c.position.post, NO_POST)}
                           </td>
                         ))
                       }
@@ -186,7 +187,7 @@ class CompareList extends Component {
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>
-                            {propOrDefault(c, 'current_assignment.estimated_end_date') ? formatDate(c.current_assignment.estimated_end_date) : NO_DATE }
+                            {propOrDefault(c.position, 'current_assignment.estimated_end_date') ? formatDate(c.position.current_assignment.estimated_end_date) : NO_DATE }
                           </td>
                         ))
                       }
@@ -198,7 +199,18 @@ class CompareList extends Component {
                       <th scope="row">Skill</th>
                       {
                         compareArray.map(c => (
-                          <td key={shortId.generate()}>{c.skill || NO_SKILL}</td>
+                          <td key={shortId.generate()}>{c.position.skill || NO_SKILL}</td>
+                        ))
+                      }
+                      {
+                        emptyArray.map(() => <td className="empty" key={shortId.generate()} />)
+                      }
+                    </tr>
+                    <tr>
+                      <th scope="row">Grade</th>
+                      {
+                        compareArray.map(c => (
+                          <td key={shortId.generate()}>{c.position.grade || NO_GRADE}</td>
                         ))
                       }
                       {
@@ -209,7 +221,7 @@ class CompareList extends Component {
                       <th scope="row">Bureau</th>
                       {
                         compareArray.map(c => (
-                          <td key={shortId.generate()}>{c.bureau || NO_BUREAU}</td>
+                          <td key={shortId.generate()}>{c.position.bureau || NO_BUREAU}</td>
                         ))
                       }
                       {
@@ -221,7 +233,11 @@ class CompareList extends Component {
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>
-                            {c.post && c.post.tour_of_duty ? c.post.tour_of_duty : NO_TOUR_OF_DUTY}
+                            {
+                              c.position.post && c.position.post.tour_of_duty
+                                ? c.position.post.tour_of_duty
+                                : NO_TOUR_OF_DUTY
+                              }
                           </td>
                         ))
                       }
@@ -234,7 +250,7 @@ class CompareList extends Component {
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>
-                            <LanguageList languages={c.languages} propToUse="representation" />
+                            <LanguageList languages={c.position.languages} propToUse="representation" />
                           </td>
                         ))
                       }
@@ -247,8 +263,8 @@ class CompareList extends Component {
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>
-                            {getDifferentialPercentage(propOrDefault(c, 'post.differential_rate'), NO_POST_DIFFERENTIAL)}
-                            {propOrDefault(c, 'post.obc_id') ? <span> | <OBCUrl type="post-data" id={c.post.obc_id} label="View OBC Data" /></span> : null }
+                            {getDifferentialPercentage(propOrDefault(c.position, 'post.differential_rate'), NO_POST_DIFFERENTIAL)}
+                            {propOrDefault(c.position, 'post.obc_id') ? <span> | <OBCUrl type="post-data" id={c.position.post.obc_id} label="View OBC Data" /></span> : null }
                           </td>
                         ))
                       }
@@ -263,8 +279,8 @@ class CompareList extends Component {
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>
-                            {getDifferentialPercentage(propOrDefault(c, 'post.danger_pay'), NO_DANGER_PAY)}
-                            {propOrDefault(c, 'post.obc_id') ? <span> | <OBCUrl id={c.post.obc_id} label="View OBC Data" /></span> : null }
+                            {getDifferentialPercentage(propOrDefault(c.position, 'post.danger_pay'), NO_DANGER_PAY)}
+                            {propOrDefault(c.position, 'post.obc_id') ? <span> | <OBCUrl id={c.position.post.obc_id} label="View OBC Data" /></span> : null }
                           </td>
                         ))
                       }
@@ -279,8 +295,8 @@ class CompareList extends Component {
                           <td key={shortId.generate()}>
                             <Favorite
                               hasBorder
-                              refKey={c.id}
-                              compareArray={favorites.results}
+                              refKey={c.position.id}
+                              compareArray={favorites}
                               useButtonClass
                               refresh
                               useButtonClassSecondary

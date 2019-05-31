@@ -116,7 +116,7 @@ const ResultsCard = (props) => {
 
   options.compare = {
     as: 'div',
-    refKey: position,
+    refKey: result.id,
   };
 
   return (
@@ -140,6 +140,9 @@ const ResultsCard = (props) => {
                 <Column columns="12" className="results-card-title-link">
                   <dt>Post:</dt><dd>{post}</dd>
                 </Column>
+              </Column>
+              <Column columns="12" className="results-card-title-link">
+                <dt>Post:</dt><dd>{post}</dd>
               </Column>
               <Column columns="12" className="results-card-title-link">
                 <dt>Post:</dt><dd>{post}</dd>
