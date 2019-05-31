@@ -39,16 +39,12 @@ exports[`CompareListComponent matches snapshot 1`] = `
             <th>
               <div
                 className="column-title-main"
-              >
-                OMS (DCM)
-              </div>
+              />
             </th>
             <th>
               <div
                 className="column-title-main"
-              >
-                SPECIAL AGENT
-              </div>
+              />
             </th>
             <th
               className="empty"
@@ -178,7 +174,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
               >
                 <Link
                   replace={false}
-                  to="/details/6"
+                  to="/details/1"
                 >
                   View position
                 </Link>
@@ -190,7 +186,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
               >
                 <Link
                   replace={false}
-                  to="/details/60"
+                  to="/details/2"
                 >
                   View position
                 </Link>
@@ -217,10 +213,10 @@ exports[`CompareListComponent matches snapshot 1`] = `
               Post
             </th>
             <td>
-              Freetown, Sierra Leone
+              None listed
             </td>
             <td>
-              Chicago, IL
+              None listed
             </td>
             <td
               className="empty"
@@ -242,7 +238,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
               None listed
             </td>
             <td>
-              03/13/2020
+              None listed
             </td>
             <td
               className="empty"
@@ -264,7 +260,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
               None listed
             </td>
             <td>
-              SECURITY (2501)
+              None listed
             </td>
             <td
               className="empty"
@@ -283,10 +279,10 @@ exports[`CompareListComponent matches snapshot 1`] = `
               Grade
             </th>
             <td>
-              06
+              None listed
             </td>
             <td>
-              04
+              None listed
             </td>
             <td
               className="empty"
@@ -308,7 +304,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
               None listed
             </td>
             <td>
-              (WHA) BUREAU OF WESTERN HEMISPHERIC AFFAIRS
+              None listed
             </td>
             <td
               className="empty"
@@ -330,7 +326,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
               None listed
             </td>
             <td>
-              2 YRS (2 R & R)
+              None listed
             </td>
             <td
               className="empty"
@@ -356,24 +352,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
             </td>
             <td>
               <LanguageList
-                languages={
-                  Array [
-                    Object {
-                      "id": 1,
-                      "language": "French (FR)",
-                      "reading_proficiency": "2",
-                      "representation": "French (FR) 2/2",
-                      "spoken_proficiency": "2",
-                    },
-                    Object {
-                      "id": 20,
-                      "language": "Haitian Creole (HC)",
-                      "reading_proficiency": "0",
-                      "representation": "Haitian Creole (HC) 0/0",
-                      "spoken_proficiency": "0",
-                    },
-                  ]
-                }
+                languages={Array []}
                 propToUse="representation"
               />
             </td>
@@ -394,10 +373,10 @@ exports[`CompareListComponent matches snapshot 1`] = `
               Post differential
             </th>
             <td>
-              30%
+              None listed
             </td>
             <td>
-              20%
+              None listed
             </td>
             <td
               className="empty"
@@ -416,10 +395,10 @@ exports[`CompareListComponent matches snapshot 1`] = `
               Danger pay
             </th>
             <td>
-              0%
+              None listed
             </td>
             <td>
-              15%
+              None listed
             </td>
             <td
               className="empty"
@@ -445,7 +424,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
                   }
                 }
                 hasBorder={true}
-                refKey={6}
+                refKey={1}
                 refresh={true}
                 useButtonClass={true}
                 useButtonClassSecondary={true}
@@ -459,7 +438,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
                   }
                 }
                 hasBorder={true}
-                refKey={60}
+                refKey={2}
                 refresh={true}
                 useButtonClass={true}
                 useButtonClassSecondary={true}
@@ -549,16 +528,12 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
             <th>
               <div
                 className="column-title-main"
-              >
-                OMS (DCM)
-              </div>
+              />
             </th>
             <th>
               <div
                 className="column-title-main"
-              >
-                SPECIAL AGENT
-              </div>
+              />
             </th>
             <th
               className="empty"
@@ -688,7 +663,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               >
                 <Link
                   replace={false}
-                  to="/details/6"
+                  to="/details/1"
                 >
                   View position
                 </Link>
@@ -700,7 +675,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               >
                 <Link
                   replace={false}
-                  to="/details/60"
+                  to="/details/2"
                 >
                   View position
                 </Link>
@@ -727,10 +702,10 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               Post
             </th>
             <td>
-              Freetown, Sierra Leone
+              None listed
             </td>
             <td>
-              Chicago, IL
+              None listed
             </td>
             <td
               className="empty"
@@ -752,7 +727,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               None listed
             </td>
             <td>
-              03/13/2020
+              None listed
             </td>
             <td
               className="empty"
@@ -774,7 +749,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               None listed
             </td>
             <td>
-              SECURITY (2501)
+              None listed
             </td>
             <td
               className="empty"
@@ -793,10 +768,10 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               Grade
             </th>
             <td>
-              06
+              None listed
             </td>
             <td>
-              04
+              None listed
             </td>
             <td
               className="empty"
@@ -818,7 +793,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               None listed
             </td>
             <td>
-              (WHA) BUREAU OF WESTERN HEMISPHERIC AFFAIRS
+              None listed
             </td>
             <td
               className="empty"
@@ -840,7 +815,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               None listed
             </td>
             <td>
-              2 YRS (2 R & R)
+              None listed
             </td>
             <td
               className="empty"
@@ -866,24 +841,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
             </td>
             <td>
               <LanguageList
-                languages={
-                  Array [
-                    Object {
-                      "id": 1,
-                      "language": "French (FR)",
-                      "reading_proficiency": "2",
-                      "representation": "French (FR) 2/2",
-                      "spoken_proficiency": "2",
-                    },
-                    Object {
-                      "id": 20,
-                      "language": "Haitian Creole (HC)",
-                      "reading_proficiency": "0",
-                      "representation": "Haitian Creole (HC) 0/0",
-                      "spoken_proficiency": "0",
-                    },
-                  ]
-                }
+                languages={Array []}
                 propToUse="representation"
               />
             </td>
@@ -904,20 +862,10 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               Post differential
             </th>
             <td>
-              30%
-              <span>
-                 | 
-                <OBCUrl
-                  altStyle={false}
-                  id={1}
-                  isButton={false}
-                  label="View OBC Data"
-                  type="post-data"
-                />
-              </span>
+              None listed
             </td>
             <td>
-              20%
+              None listed
             </td>
             <td
               className="empty"
@@ -936,20 +884,10 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
               Danger pay
             </th>
             <td>
-              0%
-              <span>
-                 | 
-                <OBCUrl
-                  altStyle={false}
-                  id={1}
-                  isButton={false}
-                  label="View OBC Data"
-                  type="post"
-                />
-              </span>
+              None listed
             </td>
             <td>
-              15%
+              None listed
             </td>
             <td
               className="empty"
@@ -975,7 +913,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
                   }
                 }
                 hasBorder={true}
-                refKey={6}
+                refKey={1}
                 refresh={true}
                 useButtonClass={true}
                 useButtonClassSecondary={true}
@@ -989,7 +927,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
                   }
                 }
                 hasBorder={true}
-                refKey={60}
+                refKey={2}
                 refresh={true}
                 useButtonClass={true}
                 useButtonClassSecondary={true}

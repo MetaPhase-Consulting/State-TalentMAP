@@ -123,8 +123,8 @@ describe('SearchFiltersContainerComponent', () => {
     // check when value !== 'open'
     wrapper.instance().onProjectedVacancyFilterClick('pv');
     expect(toggleValue.value).toEqual({
-      position__is_available_in_bidcycle: null,
-      position__is_available_in_current_bidcycle: null,
+      is_available_in_bidcycle: null,
+      is_available_in_current_bidcycle: null,
       position__is_domestic: null,
       position__post__in: null,
       projectedVacancy: 'pv',

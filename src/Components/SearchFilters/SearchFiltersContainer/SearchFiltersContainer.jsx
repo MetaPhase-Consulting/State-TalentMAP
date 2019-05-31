@@ -53,8 +53,8 @@ class SearchFiltersContainer extends Component {
     } else {
       config = {
         ...config,
-        position__is_available_in_bidcycle: null,
-        position__is_available_in_current_bidcycle: null,
+        is_available_in_bidcycle: null,
+        is_available_in_current_bidcycle: null,
         position__is_domestic: null,
         position__post__in: null,
         projectedVacancy: value,

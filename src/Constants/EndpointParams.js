@@ -2,7 +2,7 @@
 
 export const ENDPOINT_PARAMS = {
   skill: 'position__skill__code__in',
-  language: 'position__language_codes',
+  language: 'language_codes',
   grade: 'position__grade__code__in',
   tod: 'position__post__tour_of_duty__code__in',
   org: 'position__bureau__code__in',
@@ -13,8 +13,8 @@ export const ENDPOINT_PARAMS = {
   domestic: 'position__is_domestic',
   mission: 'position__post__location__country__in',
   post: 'position__post__in',
-  available: 'position__is_available_in_current_bidcycle',
-  bidCycle: 'position__is_available_in_bidcycle',
+  available: 'is_available_in_current_bidcycle',
+  bidCycle: 'is_available_in_bidcycle',
   bidSeason: 'position__is_available_in_bidseason',
   highlighted: 'position__is_highlighted',
   projectedVacancy: 'projectedVacancy', // this isn't a real query param, but we'll use it to transform the request

@@ -117,24 +117,30 @@ class CompareList extends Component {
                         Position
                       </th>
                       {
-                        compareArray.map(c => (
-                          <td key={shortId.generate()}>
-                            <div className="usa-grid-full">
-                              <div className="column-title-main">{c.title}</div>
-                              <div className="close-button-container">
-                                <CompareCheck
-                                  onToggle={() => onToggle(c.position_number)}
-                                  refKey={c.position_number}
-                                  customElement={<FA name="close" />}
-                                  interactiveElementProps={{ title: 'Remove this comparison' }}
-                                />
+                        compareArray.map((c) => {
+                          const { position } = c;
+                          return (
+                            <td key={shortId.generate()}>
+                              <div className="usa-grid-full">
+                                <div className="column-title-main">{position.title}</div>
+                                <div className="close-button-container">
+                                  <CompareCheck
+                                    onToggle={() => onToggle(position.position_number)}
+                                    refKey={position.position_number}
+                                    customElement={<FA name="close" />}
+                                    interactiveElementProps={{ title: 'Remove this comparison' }}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            <span aria-labelledby={getAccessiblePositionNumber(c.position_number)}>
-                              {c.position_number}
-                            </span>
-                          </td>
-                        ))
+                              <span aria-labelledby={
+                                getAccessiblePositionNumber(position.position_number)
+                                }
+                              >
+                                {position.position_number}
+                              </span>
+                            </td>
+                          );
+                        })
                       }
                       {
                         emptyArray.map(() => (<th className="empty" key={shortId.generate()}>

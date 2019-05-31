@@ -10,30 +10,30 @@ import ExportButton from '../ExportButton';
 
 // Mapping columns to data fields
 const HEADERS = [
-  { label: 'Position', key: 'title' },
-  { label: 'Position number', key: 'position_number' },
-  { label: 'Skill', key: 'skill' },
-  { label: 'Grade', key: 'grade' },
-  { label: 'Bureau', key: 'bureau' },
-  { label: 'Post city', key: 'post.location.city' },
-  { label: 'Post country', key: 'post.location.country' },
-  { label: 'Tour of duty', key: 'post.tour_of_duty' },
-  { label: 'Language', key: 'languages[0].representation' },
-  { label: 'Post differential', key: 'post.differential_rate' },
-  { label: 'Danger pay', key: 'post.danger_pay' },
-  { label: 'TED', key: 'estimated_end_date' },
-  { label: 'Incumbent', key: 'current_assignment.user' },
+  { label: 'Position', key: 'position.title' },
+  { label: 'Position number', key: 'position.position_number' },
+  { label: 'Skill', key: 'position.skill' },
+  { label: 'Grade', key: 'position.grade' },
+  { label: 'Bureau', key: 'position.bureau' },
+  { label: 'Post city', key: 'position.post.location.city' },
+  { label: 'Post country', key: 'position.post.location.country' },
+  { label: 'Tour of duty', key: 'position.post.tour_of_duty' },
+  { label: 'Language', key: 'position.languages[0].representation' },
+  { label: 'Post differential', key: 'position.post.differential_rate' },
+  { label: 'Danger pay', key: 'position.post.danger_pay' },
+  { label: 'TED', key: 'position.estimated_end_date' },
+  { label: 'Incumbent', key: 'position.current_assignment.user' },
 ];
 
 // Processes results before sending to the download component to allow for custom formatting.
 export const processData = data => (
   data.map((entry) => {
-    const endDate = get(entry, 'current_assignment.estimated_end_date');
+    const endDate = get(entry, 'position.current_assignment.estimated_end_date');
     const formattedEndDate = endDate ? formatDate(endDate) : null;
     return {
       ...mapValues(entry, x => !x ? '' : x), // eslint-disable-line no-confusing-arrow
-      position_number: getFormattedNumCSV(entry.position_number),
-      grade: getFormattedNumCSV(entry.grade),
+      position_number: getFormattedNumCSV(entry.position.position_number),
+      grade: getFormattedNumCSV(entry.position.grade),
       estimated_end_date: formattedEndDate,
     };
   })

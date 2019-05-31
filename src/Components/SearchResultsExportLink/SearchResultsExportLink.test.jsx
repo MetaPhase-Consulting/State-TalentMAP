@@ -43,13 +43,18 @@ describe('SearchResultsExportLink', () => {
   });
 
   it('processes data correctly', () => {
-    const data = [{ a: 1, b: 2, current_assignment: { estimated_end_date: '2019-01-08T00:00:00Z' } }];
+    const data = [{ a: 1, b: 2, position: { current_assignment: { estimated_end_date: '2019-01-08T00:00:00Z' } } }];
     const output = processData(data);
     expect(output[0]).toMatchObject(
       { a: 1,
         b: 2,
-        current_assignment: { estimated_end_date: '2019-01-08T00:00:00Z' },
-        estimated_end_date: '01/07/2019' },
+        position: {
+          current_assignment: { estimated_end_date: '2019-01-08T00:00:00Z' },
+        },
+        estimated_end_date: '01/07/2019',
+        grade: '',
+        position_number: '',
+      },
     );
   });
 
