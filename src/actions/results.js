@@ -62,7 +62,7 @@ export function resultsFetchSimilarPositions(id) {
 }
 
 export function fetchResultData(query) {
-  let prefix = '/cycleposition';
+  let prefix = '/cycleposition/';
   const parsed = queryString.parse(query);
   const isPV = parsed.projectedVacancy;
 

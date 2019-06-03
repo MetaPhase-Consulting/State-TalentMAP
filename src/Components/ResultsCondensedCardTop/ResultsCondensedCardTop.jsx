@@ -72,9 +72,12 @@ const ResultsCondensedCardTop = ({ position, type, isProjectedVacancy, isRecentl
 };
 
 ResultsCondensedCardTop.propTypes = {
-  position: PropTypes.shape({
-    position: POSITION_DETAILS.isRequired,
-  }).isRequired,
+  position: PropTypes.oneOfType([
+    PropTypes.shape({
+      position: POSITION_DETAILS.isRequired,
+    }),
+    POSITION_DETAILS.isRequired,
+  ]).isRequired,
   type: HOME_PAGE_CARD_TYPE.isRequired,
   isProjectedVacancy: PropTypes.bool,
   isRecentlyAvailable: PropTypes.bool,

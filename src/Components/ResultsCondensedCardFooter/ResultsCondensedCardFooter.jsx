@@ -28,9 +28,12 @@ const ResultsCondensedCardFooter = ({ position }) => {
 };
 
 ResultsCondensedCardFooter.propTypes = {
-  position: PropTypes.shape({
-    position: POSITION_DETAILS.isRequired,
-  }).isRequired,
+  position: PropTypes.oneOfType([
+    PropTypes.shape({
+      position: POSITION_DETAILS.isRequired,
+    }),
+    POSITION_DETAILS.isRequired,
+  ]).isRequired,
 };
 
 export default ResultsCondensedCardFooter;

@@ -292,9 +292,7 @@ export const POSITION_POST_NESTED_LOCATION = PropTypes.shape({
 
 export const BID_OBJECT = PropTypes.shape({
   id: PropTypes.number,
-  bidcycle: PropTypes.shape({
-    name: PropTypes.string,
-  }),
+  name: PropTypes.string,
   user: PropTypes.string,
   position: PropTypes.shape({
     id: PropTypes.number,

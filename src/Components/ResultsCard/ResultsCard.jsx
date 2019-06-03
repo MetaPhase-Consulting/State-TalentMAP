@@ -107,7 +107,7 @@ const ResultsCard = (props) => {
 
   options.favorite = {
     compareArray: favorites,
-    refKey: result.position.id,
+    refKey: pos.id,
     hasBorder: true,
     useButtonClass: true,
     useLongText: true,
@@ -123,13 +123,7 @@ const ResultsCard = (props) => {
     <MediaQueryWrapper breakpoint="screenMdMax" widthType="max">
       {() => (
         <BoxShadow>
-          <div
-            id={id}
-            style={{ position: 'relative', overflow: 'hidden' }}
-            className={`results-card ${isProjectedVacancy ? 'results-card--secondary' : ''}`}
-            onMouseOver={() => this.hover.toggleCardHovered(true)}
-            onMouseLeave={() => this.hover.toggleCardHovered(false)}
-          >
+          <div id={id} className={`results-card ${isProjectedVacancy ? 'results-card--secondary' : ''}`}>
             <Row className="header" fluid>
               <Column columns="8">
                 <Column columns="12" className="results-card-title-link">
@@ -140,12 +134,6 @@ const ResultsCard = (props) => {
                 <Column columns="12" className="results-card-title-link">
                   <dt>Post:</dt><dd>{post}</dd>
                 </Column>
-              </Column>
-              <Column columns="12" className="results-card-title-link">
-                <dt>Post:</dt><dd>{post}</dd>
-              </Column>
-              <Column columns="12" className="results-card-title-link">
-                <dt>Post:</dt><dd>{post}</dd>
               </Column>
               <Flag
                 name="flags.bidding"

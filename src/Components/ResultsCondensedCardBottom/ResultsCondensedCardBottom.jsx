@@ -80,9 +80,12 @@ class ResultsCondensedCardBottom extends Component {
 }
 
 ResultsCondensedCardBottom.propTypes = {
-  position: PropTypes.shape({
-    position: POSITION_DETAILS.isRequired,
-  }).isRequired,
+  position: PropTypes.oneOfType([
+    PropTypes.shape({
+      position: POSITION_DETAILS.isRequired,
+    }),
+    POSITION_DETAILS.isRequired,
+  ]).isRequired,
   favorites: FAVORITE_POSITIONS_ARRAY.isRequired,
   refreshFavorites: PropTypes.bool,
   showBidListButton: PropTypes.bool,
