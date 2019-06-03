@@ -37,27 +37,27 @@ exports[`SearchResultsExportLink matches snapshot 1`] = `
           "label": "Bureau",
         },
         Object {
-          "key": "position.post.location.city",
+          "key": "post__location.city",
           "label": "Post city",
         },
         Object {
-          "key": "position.post.location.country",
+          "key": "post__location__country",
           "label": "Post country",
         },
         Object {
-          "key": "position.post.tour_of_duty",
+          "key": "post__tour_of_duty",
           "label": "Tour of duty",
         },
         Object {
-          "key": "position.languages[0].representation",
+          "key": "languages__0__representation",
           "label": "Language",
         },
         Object {
-          "key": "position.post.differential_rate",
+          "key": "post__differential_rate",
           "label": "Post differential",
         },
         Object {
-          "key": "position.post.danger_pay",
+          "key": "post__danger_pay",
           "label": "Danger pay",
         },
         Object {
@@ -65,7 +65,7 @@ exports[`SearchResultsExportLink matches snapshot 1`] = `
           "label": "TED",
         },
         Object {
-          "key": "position.current_assignment.user",
+          "key": "current_assignment__user",
           "label": "Incumbent",
         },
       ]
