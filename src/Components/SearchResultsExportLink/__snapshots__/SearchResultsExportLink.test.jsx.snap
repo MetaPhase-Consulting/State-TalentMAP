@@ -17,23 +17,23 @@ exports[`SearchResultsExportLink matches snapshot 1`] = `
     headers={
       Array [
         Object {
-          "key": "position.title",
+          "key": "title",
           "label": "Position",
         },
         Object {
-          "key": "position.position_number",
+          "key": "position_number",
           "label": "Position number",
         },
         Object {
-          "key": "position.skill",
+          "key": "skill",
           "label": "Skill",
         },
         Object {
-          "key": "position.grade",
+          "key": "grade",
           "label": "Grade",
         },
         Object {
-          "key": "position.bureau",
+          "key": "bureau",
           "label": "Bureau",
         },
         Object {
@@ -61,7 +61,7 @@ exports[`SearchResultsExportLink matches snapshot 1`] = `
           "label": "Danger pay",
         },
         Object {
-          "key": "position.estimated_end_date",
+          "key": "estimated_end_date",
           "label": "TED",
         },
         Object {
