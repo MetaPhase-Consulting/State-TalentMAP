@@ -34,7 +34,8 @@ export class Compare extends Component {
 
   onToggle(id) {
     let compareArray = this.props.match.params.ids.split(',');
-    compareArray = compareArray.filter(f => f !== id);
+    console.log(compareArray, String(id));
+    compareArray = compareArray.filter(f => f !== String(id));
     const compareString = compareArray.toString();
     this.props.onNavigateTo(`/compare/${compareString}`);
     this.getComparisons(`${compareString}`);
