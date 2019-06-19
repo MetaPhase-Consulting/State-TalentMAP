@@ -2,7 +2,7 @@
 
 exports[`NavLink matches snapshot when the link does not match location pathname 1`] = `
 <div
-  className="header-nav-link-container is-not-active"
+  className="header-nav-link-container is-not-active "
 >
   <div
     className="header-nav-link"
@@ -14,7 +14,9 @@ exports[`NavLink matches snapshot when the link does not match location pathname
         replace={false}
         to="/"
       >
-        test
+        <span>
+          test
+        </span>
       </Link>
     </div>
   </div>
@@ -23,7 +25,7 @@ exports[`NavLink matches snapshot when the link does not match location pathname
 
 exports[`NavLink matches snapshot when the link matches location pathname 1`] = `
 <div
-  className="header-nav-link-container is-highlighted"
+  className="header-nav-link-container is-highlighted "
 >
   <div
     className="header-nav-link"
@@ -35,7 +37,9 @@ exports[`NavLink matches snapshot when the link matches location pathname 1`] = 
         replace={false}
         to="/"
       >
-        test
+        <span>
+          test
+        </span>
       </Link>
     </div>
   </div>

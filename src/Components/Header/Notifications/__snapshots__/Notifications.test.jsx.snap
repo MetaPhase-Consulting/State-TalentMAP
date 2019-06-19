@@ -3,9 +3,37 @@
 exports[`NotificationsComponent matches snapshot 1`] = `
 <IconAlert
   alt="Notifications"
+  className=""
   disabled={false}
+  fetchNotificationsCount={[Function]}
+  history={
+    Object {
+      "action": "PUSH",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 2,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "ifo1yx",
+        "pathname": "/home",
+        "search": "",
+        "state": undefined,
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
   limit={5}
   link="/profile/notifications/"
+  location={
+    Object {
+      "pathname": "/results",
+    }
+  }
   number={4}
   title="View your notifications"
   type="globe"

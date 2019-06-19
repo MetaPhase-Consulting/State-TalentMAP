@@ -3,21 +3,14 @@
 exports[`HomePageBanner Component matches snapshot 1`] = `
 <div
   className="usa-grid-full homepage-search-banner"
-  style={
-    Object {
-      "color": "white",
-      "maxWidth": "none",
-      "padding": "49px 49px 39px 49px",
-      "textAlign": "center",
-    }
-  }
 >
   <div
     className="usa-grid-full"
   >
-    <h2>
-      TalentMAP Position Search
-    </h2>
+    <img
+      alt="TalentMAP logo"
+      src="/assets/logos/png/horizontal_color_thin.png"
+    />
     <div>
       
               TalentMAP is an enhanced research and bidding tool you can
@@ -26,7 +19,7 @@ exports[`HomePageBanner Component matches snapshot 1`] = `
     </div>
     <div>
       <SkeletonTheme
-        color="#00293F"
+        color="#0071BB"
         highlightColor="#fff"
       >
         <span
@@ -35,7 +28,9 @@ exports[`HomePageBanner Component matches snapshot 1`] = `
           <span>
             There are no positions available for bidding
           </span>
-          <span>
+          <span
+            className="stats-text--position"
+          >
             <span>
               There are more than 
             </span>
