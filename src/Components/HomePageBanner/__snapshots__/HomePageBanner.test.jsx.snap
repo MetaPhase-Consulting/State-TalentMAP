@@ -28,30 +28,6 @@ exports[`HomePageBanner Component matches snapshot 1`] = `
           <span>
             There are no positions available for bidding
           </span>
-          <span
-            className="stats-text--position"
-          >
-            <span>
-              There are more than 
-            </span>
-            <CountUp
-              decimal="."
-              decimals={0}
-              duration={1.4}
-              easingFn={null}
-              end={0}
-              formattingFn={[Function]}
-              prefix=""
-              redraw={false}
-              separator=""
-              start={0}
-              suffix=""
-              useEasing={true}
-            />
-            <span>
-               positions available for bidding.
-            </span>
-          </span>
         </span>
       </SkeletonTheme>
     </div>
