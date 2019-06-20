@@ -46,20 +46,24 @@ class HomePageBanner extends Component {
                   !roundedCount && !isLoading &&
                   <span>There are no positions available for bidding</span>
                 }
-                <span className="stats-text--position">
-                  <span>There are more than&nbsp;</span>
-                  {
-                    isLoading ?
-                      <Skeleton width="25px" duration={1.1} />
-                      :
-                      <CountUp end={roundedCount} duration={1.4} formattingFn={n => numeral(n).format('0,0')}>
-                        {({ countUpRef }) => (
-                          <span ref={countUpRef} />
-                      )}
-                      </CountUp>
-                  }
-                  <span>&nbsp;positions available for bidding.</span>
-                </span>
+                {
+                  !roundedCount && !isLoading ?
+                  null :
+                  <span className="stats-text--position">
+                    <span>There are more than&nbsp;</span>
+                    {
+                      isLoading ?
+                        <Skeleton width="25px" duration={1.1} />
+                        :
+                        <CountUp end={roundedCount} duration={1.4} formattingFn={n => numeral(n).format('0,0')}>
+                          {({ countUpRef }) => (
+                            <span ref={countUpRef} />
+                        )}
+                        </CountUp>
+                    }
+                    <span>&nbsp;positions available for bidding.</span>
+                  </span>
+                }
               </span>
             </SkeletonTheme>
           </div>
