@@ -1,0 +1,29 @@
+import { api, doLogin } from '../utilities';
+
+describe('Position', () => {
+  beforeEach(() => {
+    doLogin();
+
+    cy.visit('/details/221');
+
+    cy.route('GET', `${api}/position/*`).as('getPosition');
+
+    cy.wait('@getPosition');
+  });
+
+  afterEach(() => {
+    cy.visit('/logout');
+  });
+
+  it('navigates to position details', () => {
+    cy.get('.position-details-header-title > h1')
+      .should('exist');
+  });
+
+  it('displays a post differential data as a percent', () => {
+    cy.get(':nth-child(7) > .condensed-card-data-title')
+      .should('have.text', 'Post differential: ');
+    cy.get(':nth-child(7) > .condensed-card-data-content')
+      .contains('%');
+  });
+});

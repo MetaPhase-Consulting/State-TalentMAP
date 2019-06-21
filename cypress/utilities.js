@@ -6,7 +6,9 @@ const doLogin = () => {
   cy.server();
   cy.route('GET', `${api}/profile/`).as('getProfile');
 
-  cy.wait(300);
+  cy.visit('/');
+
+  cy.wait(100);
 
   cy.get(':nth-child(1) > a').click();
 

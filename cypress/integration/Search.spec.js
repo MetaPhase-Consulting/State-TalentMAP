@@ -17,6 +17,9 @@ describe('Search', () => {
   });
 
   it('opens and closes the compare drawer', () => {
+    cy.get('.compare-drawer')
+      .should('have.class', 'drawer-hidden');
+
     cy.get(':nth-child(1) > .results-card > .footer > :nth-child(1) > .compare-check-box-container')
       .click();
 
