@@ -39,6 +39,10 @@ The page will reload if you make edits.  You will see the build errors and lint 
 Runs the test watcher in an interactive mode.<br>
 By default, runs tests related to files changed since the last commit.
 
+#### `yarn cypress` or `npm cypress`
+
+Opens the Cypress Dashboard to run e2e tests.
+
 [Read more about testing.](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests)
 
 #### `yarn build` or `npm run build`
