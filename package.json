@@ -83,6 +83,7 @@
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "2.3.0",
     "css-loader": "0.28.8",
+    "cypress": "^3.3.1",
     "dotenv": "4.0.0",
     "enzyme": "^2.9.1",
     "enzyme-to-json": "^1.6.0",
@@ -137,7 +138,8 @@
     "analyze:eslint": "codeclimate analyze -e eslint:eslint-3 -f html > codeclimate.html",
     "analyze:scss": "codeclimate analyze -e scss-lint -f html > codeclimate.html",
     "stats": "NODE_ENV=production webpack --json --config ./config/webpack.config.prod.js > stats.json",
-    "bundlesize": "bundlesize"
+    "bundlesize": "bundlesize",
+    "cypress": "cypress open"
   },
   "jest": {
     "collectCoverageFrom": [
