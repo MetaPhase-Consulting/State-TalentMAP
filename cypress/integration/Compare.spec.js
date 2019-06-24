@@ -59,6 +59,8 @@ describe('Position', () => {
 
     cy.wait('@getCompare');
 
+    cy.wait(100);
+
     cy.get(':nth-child(6) > .column-title-link > a')
       .should('not.exist');
   });

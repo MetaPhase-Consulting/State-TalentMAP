@@ -45,7 +45,8 @@
       "devDependencies": [
         "**/*.test.js?(x)",
         "**/*.spec.js?(x)",
-        "/src/testUtilities/**/*"
+        "/src/testUtilities/**/*",
+        "cypress/**/*"
       ]
     }]
   }

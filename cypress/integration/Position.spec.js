@@ -26,4 +26,11 @@ describe('Position', () => {
     cy.get(':nth-child(7) > .condensed-card-data-content')
       .contains('%');
   });
+
+  it('matches snapshot of position data points', () => {
+    cy.wait(2000);
+
+    cy.get('.position-details-description-container > .usa-width-two-thirds')
+      .matchImageSnapshot();
+  });
 });

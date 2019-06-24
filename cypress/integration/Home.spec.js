@@ -20,4 +20,17 @@ describe('Search', () => {
     cy.get('#total-results')
       .contains('Viewing');
   });
+
+  it('matches navigation header snapshot', () => {
+    cy.get('.usa-navbar')
+      .matchImageSnapshot();
+  });
+
+  it('matches footer snapshot', () => {
+    cy.get('.usa-footer-primary-section')
+      .matchImageSnapshot('footer-top');
+
+    cy.get('.usa-footer-secondary_section')
+      .matchImageSnapshot('footer-bottom');
+  });
 });
