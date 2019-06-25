@@ -20,6 +20,10 @@ class Results extends Component {
     return { isProjectedVacancy: this.props.isProjectedVacancy };
   }
 
+  getKeywordValue() {
+    return this.keywordRef ? this.keywordRef.getValue() : null;
+  }
+
   render() {
     const { results, isLoading, hasErrored, sortBy, defaultKeyword, defaultLocation, resetFilters,
             pillFilters, defaultSort, pageSizes, defaultPageSize, onQueryParamToggle,
@@ -37,6 +41,7 @@ class Results extends Component {
         {
           shouldShowSearchBar &&
           <ResultsSearchHeader
+            ref={(ref) => { this.keywordRef = ref; }}
             onUpdate={onQueryParamUpdate}
             defaultKeyword={defaultKeyword}
             defaultLocation={defaultLocation}
