@@ -1,13 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditContentButtonComponent matches snapshot 1`] = `
-<FontAwesome
+<InteractiveElement
   className="description-edit"
-  id="description-edit"
-  name="pencil"
   onClick={[Function]}
   onKeyUp={[Function]}
   role="button"
-  tabIndex="0"
-/>
+  title="edit banner content"
+  type="span"
+>
+  <FontAwesome
+    name="pencil"
+  />
+</InteractiveElement>
 `;
