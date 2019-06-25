@@ -174,6 +174,26 @@
     }
   }
 
+  .is-highlighted {
+    background-color: $tm-dark-blue;
+
+    .header-nav-link-text:hover {
+      a {
+        color: $color-white;
+      }
+    }
+
+    a,
+    .fa {
+      color: $color-white;
+
+      &:active,
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+
   @media screen and (min-width: $screen-md-min) {
     .usa-logo {
       line-height: 5.5rem;
@@ -267,8 +287,6 @@
 
 @media screen and (min-width: $screen-md-min) {
   .search-bar-hidden {
-    border-bottom: 1px solid $color-gray-light;
-
     .usa-nav {
       border-top: 1px solid $color-gray-light;
     }
