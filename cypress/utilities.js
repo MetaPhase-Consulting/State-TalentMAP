@@ -15,4 +15,20 @@ const doLogin = () => {
   cy.wait('@getProfile');
 };
 
-export default { api, doLogin };
+const getAxeConfig = ({ rules$ = [], ...rest }) => {
+  const ignoredRules = [
+    'aria-valid-attr-value',
+    'landmark-no-duplicate-banner',
+    'region',
+    'landmark-banner-is-top-level',
+  ];
+  return {
+    rules: [
+      ...ignoredRules.map(r => ({ id: r, enabled: false })),
+      ...rules$,
+    ],
+    ...rest,
+  };
+};
+
+export default { api, doLogin, getAxeConfig };

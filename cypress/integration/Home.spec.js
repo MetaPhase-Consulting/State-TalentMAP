@@ -1,12 +1,33 @@
-import { api, doLogin } from '../utilities';
+import { api, doLogin, getAxeConfig } from '../utilities';
 
 describe('Search', () => {
   beforeEach(() => {
+    cy.server();
+
+    cy.route('GET', `${api}/position/highlighted/*`)
+      .as('getPosition1');
+    cy.route('GET', `${api}/position/?skill__in=*`)
+      .as('getPosition2');
+    cy.route('GET', `${api}/position/?grade__code__in=*`)
+      .as('getPosition3');
+
     doLogin();
   });
 
   afterEach(() => {
     cy.visit('/logout');
+  });
+
+  it('is accessible', () => {
+    cy.injectAxe();
+
+    cy.configureAxe(getAxeConfig({}));
+
+    cy.wait('@getPosition1');
+    cy.wait('@getPosition2');
+    cy.wait('@getPosition3');
+
+    cy.checkA11y();
   });
 
   it('navigates to results', () => {

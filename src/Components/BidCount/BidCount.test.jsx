@@ -40,18 +40,4 @@ describe('BidCountComponent', () => {
     expect(wrapper.find('BidCountNumber').at(2).props().number).toBe(5);
     expect(wrapper.find('BidCountNumber').at(3).props().number).toBe(0);
   });
-
-  it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BidCount {...props} />,
-    );
-    expect(toJSON(wrapper)).toMatchSnapshot();
-  });
-
-  it('matches snapshot when hideLabel is true', () => {
-    const wrapper = shallow(
-      <BidCount {...props} hideLabel />,
-    );
-    expect(toJSON(wrapper)).toMatchSnapshot();
-  });
 });
