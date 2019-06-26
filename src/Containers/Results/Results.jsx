@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
-import { debounce, get, isString } from 'lodash';
+import { debounce, get } from 'lodash';
 import queryParamUpdate from '../queryParams';
 import { scrollToTop, cleanQueryParams, getAssetPath } from '../../utilities';
 import { resultsFetchData } from '../../actions/results';
