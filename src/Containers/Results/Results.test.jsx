@@ -15,7 +15,7 @@ describe('Results', () => {
     isAuthorized: () => true,
     onNavigateTo: () => {},
     setAccordion: () => {},
-    saveSearch: () => {},
+    storeSearch: () => {},
     resetSavedSearchAlerts: () => {},
     fetchMissionAutocomplete: () => {},
     missionSearchResults: [],
@@ -79,28 +79,16 @@ describe('Results', () => {
     sinon.assert.calledOnce(spy);
   });
 
-  it('updates state on componentWillReceiveProps', () => {
+  it('can call the storeSearch function', () => {
+    const value = { newValue: null };
     const wrapper = shallow(
       <Results.WrappedComponent
         {...props}
+        storeSearch={(v) => { value.newValue = v; }}
       />,
     );
-    wrapper.instance().setState({ filtersIsLoading: true });
-    wrapper.setProps({ ...props, filtersIsLoading: false });
-    expect(wrapper.instance().state.filtersIsLoading).toBe(false);
-  });
-
-  it('can call the saveSearch function', () => {
-    const savedSearch = { q: null, id: null };
-    const wrapper = shallow(
-      <Results.WrappedComponent
-        {...props}
-        saveSearch={(q, id) => { savedSearch.q = q; savedSearch.id = id; }}
-      />,
-    );
-    wrapper.instance().saveSearch('test', 1);
-    expect(savedSearch.q.name).toBe('test');
-    expect(savedSearch.id).toBe(1);
+    wrapper.instance().storeSearch();
+    expect(value.newValue).toEqual({ q: 'German' });
   });
 
   it('can call the onQueryParamToggle function when removing a param', (done) => {
