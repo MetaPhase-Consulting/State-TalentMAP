@@ -6,6 +6,7 @@ $ribbon-shadow-color: rgba(112, 112, 112, .5);
   font-family: 'Merriweather';
   font-size: 1.3rem;
   font-weight: bold;
+  justify-content: center;
   padding-bottom: 5px;
   padding-top: 6px;
 
@@ -28,6 +29,10 @@ $ribbon-shadow-color: rgba(112, 112, 112, .5);
   color: $color-white;
 }
 
+.ribbon-tertiary {
+  background-color: $primary-alt-lightest;
+}
+
 .ribbon-outer-container-cut-left {
   box-shadow: 3px 4px 4px -4px $ribbon-shadow-color;
 }
@@ -48,9 +53,13 @@ $ribbon-shadow-color: rgba(112, 112, 112, .5);
   padding-right: 1em;
 }
 
-.ribbon-results-card {
+.ribbon-container {
   position: absolute;
   right: -1px;
+}
+
+.ribbon-results-card {
+  margin-bottom: 10px;
 }
 
 .ribbon-condensed-card {
@@ -58,4 +67,16 @@ $ribbon-shadow-color: rgba(112, 112, 112, .5);
   position: absolute;
   right: 0;
   z-index: $ribbon-z;
+}
+
+.ribbon-wide {
+  min-width: 165px;
+
+  .ribbon-cut-left {
+    padding-left: 2em;
+  }
+
+  .ribbon-cut-right {
+    padding-left: 1.5em;
+  }
 }
