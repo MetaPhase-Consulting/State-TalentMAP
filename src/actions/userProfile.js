@@ -82,8 +82,8 @@ export function userProfileFetchData(bypass, cb) {
     Q.allSettled(promises)
       .then((results) => {
         // form the userProfile object
-        const account = get(results, '[0].value.data', []);
-        const permissions = get(results, '[1].value.data', []);
+        const account = get(results, '[0].value.data', {});
+        const permissions = get(results, '[1].value.data', {});
         const pvFavorites = get(results[2], 'value.data.results', []).map(m => ({ id: m.id }));
         const newProfileObject = {
           ...account,
