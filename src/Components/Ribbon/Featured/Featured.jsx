@@ -1,8 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Ribbon from '../Ribbon';
 
-const Featured = ({ ...props }) => (
-  <Ribbon icon="bolt" text="Featured" type="tertiary" {...props} />
-);
+const Featured = ({ featuredType, ...props }) => {
+  let text;
+  switch (featuredType) {
+    case 'featured':
+      text = 'Featured';
+      break;
+    case 'volunteer':
+      text = 'Volunteer';
+      break;
+    case 'urgentVacancy':
+      text = 'Urgent';
+      break;
+    case 'hardToFill':
+      text = 'Hard to fill';
+      break;
+    default:
+      text = 'Featured';
+      break;
+  }
+  return (
+    <Ribbon icon="bolt" text={text} type="tertiary" {...props} />
+  );
+};
+
+Featured.propTypes = {
+  featuredType: PropTypes.oneOf(['featured', 'volunteer', 'urgentVacancy', 'hardToFill']),
+};
+
+Featured.defaultProps = {
+  featuredType: 'featured',
+};
 
 export default Featured;
