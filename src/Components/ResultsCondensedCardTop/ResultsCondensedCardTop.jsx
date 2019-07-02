@@ -54,14 +54,14 @@ const ResultsCondensedCardTop = ({ position, type, isProjectedVacancy, isRecentl
         </div>
       </div>
       <div className="usa-grid-full post-ribbon-container">
-        <div>
+        <div className="post-container">
           <span><span className="title">Location:</span> <span className="data">{getPostName(p.post, NO_POST)}</span></span>
         </div>
         <Flag
           name="flags.bidding"
           render={() => (
             hasHandshake &&
-              <div>
+              <div className="ribbon-container">
                 <Handshake className="ribbon-condensed-card" />
               </div>
           )}
