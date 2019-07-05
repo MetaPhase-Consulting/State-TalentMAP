@@ -9,7 +9,6 @@ import TimeInput from 'time-input';
 import InteractiveElement from '../../../InteractiveElement';
 import Form from '../../../Form';
 import FieldSet from '../../../FieldSet';
-import RadioList from '../../../RadioList';
 import Spinner from '../../../Spinner';
 import { EMPTY_FUNCTION } from '../../../../Constants/PropTypes';
 import { focusById } from '../../../../utilities';
@@ -45,8 +44,6 @@ class DataSync extends Component {
     super(props);
     this.showForm = this.showForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
-    this.updateOccurrence = this.updateOccurrence.bind(this);
-    this.updateFrequency = this.updateFrequency.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.updateDate = this.updateDate.bind(this);
     this.dateIsValid = this.dateIsValid.bind(this);
@@ -54,8 +51,6 @@ class DataSync extends Component {
     this.state = {
       showForm: false,
       formValues: {
-        recurring: 'once',
-        frequency: 'weekly',
         date: new Date(),
         time: '12:00:00 PM',
       },
@@ -64,24 +59,17 @@ class DataSync extends Component {
 
   showForm() {
     this.setState({ showForm: true });
-    focusById('once', 1);
+    setTimeout(() => {
+      const element = get(document.getElementsByClassName('sync-header'), '[0]');
+      if (element) {
+        element.focus();
+      }
+    }, 1);
   }
 
   closeForm() {
     this.setState({ showForm: false });
     focusById('new-sync-button', 1);
-  }
-
-  updateOccurrence(recurring) {
-    const { formValues } = this.state;
-    formValues.recurring = recurring;
-    this.setState({ formValues });
-  }
-
-  updateFrequency(frequency) {
-    const { formValues } = this.state;
-    formValues.frequency = frequency;
-    this.setState({ formValues });
   }
 
   updateTime(time) {
@@ -102,8 +90,8 @@ class DataSync extends Component {
   }
 
   formIsValid() {
-    const { formValues: { recurring, frequency, time } } = this.state;
-    return recurring && frequency && this.dateIsValid() && time;
+    const { formValues: { time } } = this.state;
+    return this.dateIsValid() && time;
   }
 
   render() {
@@ -140,8 +128,11 @@ class DataSync extends Component {
                           <strong>{n.talentmap_model}: </strong>
                           <span>Next sync at {nextSyncDate}</span>
                         </div>
-                        <FA name="trash-o" />
-                        <FA name="pencil" />
+                        <div>
+                          <InteractiveElement onClick={this.showForm}>
+                            <FA name="pencil" />
+                          </InteractiveElement>
+                        </div>
                       </div>
                     );
                   })
@@ -157,18 +148,8 @@ class DataSync extends Component {
                 showForm &&
                 <div className="usa-grid-full new-sync-container new-sync-container--form">
                   <div className="usa-grid-full new-sync-form">
-                    <h4>Schedule New Sync</h4>
+                    <h4 className="sync-header" tabIndex="-1">Edit Sync</h4>
                     <Form id="sync-form" onFormSubmit={(e) => { e.preventDefault(); }}>
-                      <FieldSet legend="Sync Occurrence" legendSrOnly>
-                        <RadioList
-                          options={[
-                            { id: 'once', label: 'Once' },
-                            { id: 'recurring', label: 'Recurring' },
-                          ]}
-                          value={formValues.recurring}
-                          onChange={this.updateOccurrence}
-                        />
-                      </FieldSet>
                       <FieldSet legend="Starts">
                         <div className="date-time-forms">
                           <div className={`date-time-form date-time-form--date ${dateIsValid ? '' : 'usa-input-error'}`}>
@@ -194,20 +175,6 @@ class DataSync extends Component {
                           </div>
                         </div>
                       </FieldSet>
-                      {
-                        formValues.recurring === 'recurring' &&
-                        <FieldSet legend="Frequency">
-                          <RadioList
-                            options={[
-                              { id: 'daily', label: 'Daily' },
-                              { id: 'weekly', label: 'Weekly' },
-                              { id: 'monthly', label: 'Monthly' },
-                            ]}
-                            value={formValues.frequency}
-                            onChange={this.updateFrequency}
-                          />
-                        </FieldSet>
-                      }
                     </Form>
                     <button disabled={!formIsValid} type="submit" form="sync-form" value="Create sync">Create sync</button>
                     <button

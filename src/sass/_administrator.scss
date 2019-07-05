@@ -159,7 +159,12 @@
     }
 
     > div {
-      flex: 8;
+      flex-grow: 1;
+    }
+
+    .interactive-element {
+      margin: 0 0 0 auto;
+      width: min-content;
     }
 
     .fa {
