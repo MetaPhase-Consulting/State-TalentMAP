@@ -103,12 +103,6 @@ export const GET_PROFILE_MENU = () => MenuConfig([
     isCDO: true,
   },
   {
-    text: 'Glossary Editor',
-    icon: 'book',
-    route: '/profile/glossaryeditor/',
-    isGlossaryEditor: true,
-  },
-  {
     text: 'Administrator',
     route: '/profile/administrator/',
     icon: 'sitemap',
@@ -116,17 +110,32 @@ export const GET_PROFILE_MENU = () => MenuConfig([
     expandedSection: true,
     roles: [
       'superuser',
+      'glossary_editors',
     ],
     children: [
       {
         text: 'Dashboard',
         route: '/profile/administrator/dashboard/',
         icon: 'tachometer',
+        roles: [
+          'superuser',
+        ],
       },
       {
         text: 'Logs',
         route: '/profile/administrator/logs/',
         icon: 'sitemap',
+        roles: [
+          'superuser',
+        ],
+      },
+      {
+        text: 'Glossary Editor',
+        route: '/profile/glossaryeditor/',
+        icon: 'book',
+        roles: [
+          'glossary_editors',
+        ],
       },
     ],
   },
