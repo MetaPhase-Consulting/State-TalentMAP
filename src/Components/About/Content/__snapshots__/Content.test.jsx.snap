@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['Content matches snapshot 1'] = `
+exports[`Content matches snapshot 1`] = `
 <div
   className="usa-grid-full"
 >
@@ -43,7 +43,7 @@ exports['Content matches snapshot 1'] = `
       Array [
         Object {
           "body": <span>
-            For more information, visit
+            For more information, visit 
             <a
               href="/about/more"
               rel="noopener"
