@@ -113,6 +113,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       'glossary_editors',
     ],
     children: [
+      checkFlag('flags.data_sync_admin') ?
       {
         text: 'Dashboard',
         route: '/profile/administrator/dashboard/',
@@ -120,7 +121,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         roles: [
           'superuser',
         ],
-      },
+      } : null,
+      checkFlag('flags.data_sync_admin') ?
       {
         text: 'Logs',
         route: '/profile/administrator/logs/',
@@ -128,7 +130,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         roles: [
           'superuser',
         ],
-      },
+      } : null,
       {
         text: 'Glossary Editor',
         route: '/profile/glossaryeditor/',
