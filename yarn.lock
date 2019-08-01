@@ -767,13 +767,7 @@ async@^1.5.2, async@~1.5:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@^2.1.2, async@^2.1.5, async@^2.2.0, async@^2.4.1, async@^2.5.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.6.0.tgz#61a29abb6fcc026fea77e56d1c6ec53a795951f4"
-  dependencies:
-    lodash "^4.14.0"
-
-async@^2.6.1:
+async@^2.1.2, async@^2.1.5, async@^2.2.0, async@^2.4.1, async@^2.5.0, async@^2.6.1:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.2.tgz#18330ea7e6e313887f5d2f2a904bac6fe4dd5381"
   dependencies:
@@ -9557,9 +9551,10 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-saml2-js@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/saml2-js/-/saml2-js-2.0.2.tgz#5429171e429ef3e82c9b9af9f49ce81c0a163729"
+saml2-js@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/saml2-js/-/saml2-js-2.0.3.tgz#c7d935408d32b2f4b987defc43987d7b838d41bd"
+  integrity sha1-x9k1QI0ysvS5h978Q5h9e4ONQb0=
   dependencies:
     async "^2.5.0"
     debug "^2.6.0"
