@@ -21,11 +21,15 @@ class GlossaryComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.visible && nextProps.visible) {
+    // The listener only needs to exist if the Glossary is visible.
+    if (nextProps.visible) {
+      /* This needs to be in a timeout, otherwise the glossary will immediately
+      close the first time it is opened, since the Glossary link is "outside"
+      of the Glossary div, and that click event will have been registered. */
       setTimeout(() => {
         window.addEventListener('click', this.handleOutsideClick);
       }, 0);
-    } else {
+    } else { // If the Glossary is not visible, remove the event listener.
       window.removeEventListener('click', this.handleOutsideClick);
     }
   }
