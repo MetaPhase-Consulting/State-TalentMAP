@@ -56,9 +56,16 @@ jobs:
           key: dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run: yarn
       - run:
+          name: Install JUnit coverage reporter
+          command: yarn add --dev jest-junit
+      - run:
           name: Jest Test Coverage
-          command: yarn test
+          command: yarn test -- --ci --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/jest/test-results.xml"
       - run: ./cc-test-reporter after-build --exit-code $? < coverage/lcov.info
+      - store_test_results:
+          path: reports
       - store_artifacts:
           path: coverage/lcov.info
           destination: coverage/lcov.info
