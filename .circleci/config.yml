@@ -62,6 +62,23 @@ jobs:
       - store_artifacts:
           path: coverage/lcov.info
           destination: coverage/lcov.info
+  site:
+    <<: *default-docker-node
+    working_directory: ~/talentmap
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - run:
+          name: Build site
+          command: yarn build
+      - run:
+          name: Zip artifact
+          command: zip talentmap.zip -r build/*
+      - store_artifacts:
+          path: talentmap.zip
+          destination: talentmap.zip
  # Disabled see 1368 pa11y:
  #   <<: *default-docker-node
  #   steps:
@@ -173,6 +190,9 @@ workflows:
       - yarn:
           requires:
             - build
+      - site:
+          requires:
+            - setup
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
