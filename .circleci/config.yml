@@ -71,7 +71,6 @@ jobs:
           destination: coverage/lcov.info
   site:
     <<: *default-docker-node
-    working_directory: ~/talentmap
     steps:
       - checkout
       - restore_cache:
