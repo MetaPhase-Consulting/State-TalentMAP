@@ -192,7 +192,7 @@ workflows:
             - build
       - site:
           requires:
-            - setup
+            - build
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
