@@ -22,7 +22,7 @@ jobs:
           - dependency-cache-{{ checksum "yarn.lock" }}
           # fallback to using the latest cache if no exact match is found
           - dependency-cache-
-      - run: yarn
+      - run: yarn --frozen-lockfile
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
