@@ -69,7 +69,7 @@
     "uswds": "~1.6.0"
   },
   "devDependencies": {
-    "@epegzz/sass-vars-loader": "^3.2.0",
+    "@epegzz/sass-vars-loader": "^5.0.0",
     "autoprefixer": "7.2.5",
     "axios-mock-adapter": "^1.17.0",
     "babel-core": "6.26.3",
