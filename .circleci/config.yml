@@ -18,7 +18,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          keys: 
+          - dependency-cache-{{ checksum "yarn.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - dependency-cache-
       - run: yarn
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
