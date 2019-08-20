@@ -3,7 +3,7 @@ import { take, call, put, cancelled, race } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import api from '../api';
 import { unsetNotificationsCount } from '../actions/notifications';
-import { userProfileFetchData, unsetUserProfile, trackLogin } from '../actions/userProfile'; // eslint-disable-line
+import { userProfileFetchData, unsetUserProfile, trackLogin } from '../actions/userProfile';
 import { setClient, unsetClient } from '../client/actions';
 import isCurrentPath from '../Components/ProfileMenu/navigation';
 import { redirectToLogout, redirectToLogin } from '../utilities';
