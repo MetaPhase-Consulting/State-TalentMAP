@@ -60,7 +60,7 @@
     "redux-form": "^7.2.0",
     "redux-persist": "^5.10.0",
     "redux-saga": "^0.16.2",
-    "redux-thunk": "^2.2.0",
+    "redux-thunk": "^2.3.0",
     "saml2-js": "2.0.2",
     "shortid": "^2.2.14",
     "time-input": "^1.6.1",
