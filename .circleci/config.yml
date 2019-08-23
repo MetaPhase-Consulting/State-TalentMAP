@@ -22,7 +22,7 @@ jobs:
           - dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           # fallback to using the latest cache if no exact match is found
           - dependency-cache-
-      - run: yarn --frozen-lockfile
+      - run: yarn install --pure-lockfile
       - save_cache:
           key: dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
@@ -54,7 +54,7 @@ jobs:
       - run: cd ..
       - restore_cache:
           key: dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn --frozen-lockfile
+      - run: yarn install --pure-lockfile
       - run:
           name: Install JUnit coverage reporter
           command: yarn add --dev jest-junit
@@ -75,7 +75,7 @@ jobs:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn --frozen-lockfile
+      - run: yarn install --pure-lockfile
       - run:
           name: Build site
           command: yarn build
