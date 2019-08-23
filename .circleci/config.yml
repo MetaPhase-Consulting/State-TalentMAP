@@ -75,7 +75,10 @@ jobs:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --pure-lockfile
+      - run:
+          name: Rebuild node-sass
+          command: npm rebuild node-sass
       - run:
           name: Build site
           command: yarn build
