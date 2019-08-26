@@ -83,7 +83,7 @@
     "bundlesize": "^0.17.1",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "2.4.2",
-    "css-loader": "0.28.8",
+    "css-loader": "0.28.10",
     "dotenv": "4.0.0",
     "enzyme": "^2.9.1",
     "enzyme-to-json": "^1.6.0",
