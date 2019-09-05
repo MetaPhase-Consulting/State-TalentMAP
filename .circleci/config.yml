@@ -43,6 +43,7 @@ jobs:
             docker push talentmap/$DOCKER_HUB_REPO:$TAG
   yarn:
     <<: *default-docker-node
+    parallelism: 2
     steps:
       - checkout
       - run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -57,6 +58,8 @@ jobs:
       - run:
           name: Install JUnit coverage reporter
           command: yarn add --dev jest-junit
+      - run:
+          command: circleci tests glob "src/**/*.test.jsx" "src/**/*.test.js" | circleci tests split test_filenames.txt
       - run:
           name: Jest Test Coverage
           command: yarn test -- --ci --reporters=default --reporters=jest-junit
