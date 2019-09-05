@@ -220,13 +220,15 @@ workflows:
           requires:
             - docker-build
           filters:
-            tags:
-              only: /^zap.*/
             branches:
-              ignore: /.*/
+              only:
+                - dev
+                - staging
+                - master
       - push-stable:
           requires:
             - yarn
+            - site
             # Disabled see 1368 - pa11y
           filters:
             branches:
