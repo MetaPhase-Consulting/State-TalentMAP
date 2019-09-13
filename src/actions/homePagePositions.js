@@ -3,11 +3,11 @@ import { USER_SKILL_CODE_POSITIONS, SERVICE_NEED_POSITIONS, FAVORITED_POSITIONS 
 import { COMMON_PROPERTIES } from '../Constants/EndpointParams';
 
 // Export our queries so that we can consistently test them.
-export const HIGHLIGHTED_POSITIONS_QUERY = 'highlighted/?limit=3';
-export const GET_SKILL_CODE_POSITIONS_QUERY = skillCodes => `?position__skill__in=${skillCodes}&limit=3`;
-export const FAVORITE_POSITIONS_QUERY = 'favorites/?limit=3';
-export const GET_GRADE_POSITIONS_QUERY = grade => `?position__grade__code__in=${grade}&limit=3&ordering=-${COMMON_PROPERTIES.posted}`;
-export const RECENTLY_POSTED_POSITIONS_QUERY = `?limit=3&ordering=-${COMMON_PROPERTIES.posted}`;
+export const HIGHLIGHTED_POSITIONS_QUERY = '/available_position/highlight/?limit=3';
+export const GET_SKILL_CODE_POSITIONS_QUERY = skillCodes => `/fsbid/available_positions/?position__skill__in=${skillCodes}&limit=3`;
+export const FAVORITE_POSITIONS_QUERY = '/available_position/favorites/?limit=3';
+export const GET_GRADE_POSITIONS_QUERY = grade => `/fsbid/available_positions/?position__grade__code__in=${grade}&limit=3&ordering=-${COMMON_PROPERTIES.posted}`;
+export const RECENTLY_POSTED_POSITIONS_QUERY = `/fsbid/available_positions/?limit=3&ordering=-${COMMON_PROPERTIES.posted}`;
 
 export function homePagePositionsHasErrored(bool) {
   return {
@@ -64,7 +64,7 @@ export function homePagePositionsFetchData(skills = []) {
     }
 
     // create a promise with all the queries we defined
-    const queryProms = queryTypes.map(type => api().get(`/cycleposition/${type.query}`));
+    const queryProms = queryTypes.map(type => api().get(`${type.query}`));
 
     Promise.all(queryProms)
       // Promise.all returns a single array which matches the order of the originating array...
