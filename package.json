@@ -78,7 +78,7 @@
     "babel-loader": "7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-react-app": "^3.1.0",
+    "babel-preset-react-app": "^8.0.0",
     "babel-runtime": "6.26.0",
     "bundlesize": "^0.17.1",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
