@@ -9,14 +9,7 @@ exports[`ResultsCondensedCardStatsComponent matches snapshot 1`] = `
   >
     <BidCount
       altStyle={false}
-      bidStatistics={
-        Object {
-          "at_skill": 5,
-          "in_grade": 5,
-          "in_grade_at_skill": 5,
-          "total_bids": 5,
-        }
-      }
+      bidStatistics={Object {}}
       hideLabel={false}
       isCondensed={false}
       label="Bid count:"
