@@ -97,7 +97,7 @@ class ResultsCard extends Component {
     } = this.props;
     const { isProjectedVacancy } = this.context;
 
-    const pos = result.position || result;
+    const pos = result;
 
     const title = propOrDefault(pos, 'title');
     const position = getResult(pos, 'position_number', NO_POSITION_NUMBER);
