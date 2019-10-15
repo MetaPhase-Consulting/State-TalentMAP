@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Featured, Handshake } from '../Ribbon';
 import { POSITION_DETAILS, HOME_PAGE_CARD_TYPE } from '../../Constants/PropTypes';
 import { NO_POST } from '../../Constants/SystemMessages';
-import { getPostName, getBidStatisticsObject } from '../../utilities';
+import { getPostName } from '../../utilities';
 import { checkFlag } from '../../flags';
 
 const useProjectedVacancy = () => checkFlag('flags.projected_vacancy');
@@ -25,7 +25,7 @@ const ResultsCondensedCardTop = ({ position, isProjectedVacancy, isRecentlyAvail
     vacancyText = 'Now available';
   }
   const p = position.position || position;
-  const stats = getBidStatisticsObject(p.bid_statistics);
+  const stats = p.bid_statistics;
   const hasHandshake = get(stats, 'has_handshake_offered', false);
 
   const title = get(position, 'position.title', '');
