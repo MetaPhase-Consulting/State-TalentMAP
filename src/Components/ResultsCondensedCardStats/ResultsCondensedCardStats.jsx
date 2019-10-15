@@ -1,25 +1,21 @@
 import React from 'react';
-import { BID_STATISTICS_ARRAY } from '../../Constants/PropTypes';
 import BidCount from '../BidCount';
-import { getBidStatisticsObject } from '../../utilities';
+import { BID_STATISTICS_OBJECT } from '../../Constants/PropTypes';
 
-const ResultsCondensedCardStats = ({ bidStatisticsArray }) => {
-  const bidStatistics = getBidStatisticsObject(bidStatisticsArray);
-  return (
-    <div className="condensed-card-footer condensed-card-statistics">
-      <div className="usa-grid-full condensed-card-statistics-inner">
-        <BidCount bidStatistics={bidStatistics} />
-      </div>
+const ResultsCondensedCardStats = ({ bidStatistics }) => (
+  <div className="condensed-card-footer condensed-card-statistics">
+    <div className="usa-grid-full condensed-card-statistics-inner">
+      <BidCount bidStatistics={bidStatistics} />
     </div>
-  );
-};
+  </div>
+);
 
 ResultsCondensedCardStats.propTypes = {
-  bidStatisticsArray: BID_STATISTICS_ARRAY,
+  bidStatistics: BID_STATISTICS_OBJECT,
 };
 
 ResultsCondensedCardStats.defaultProps = {
-  bidStatisticsArray: [],
+  bidStatistics: {},
 };
 
 export default ResultsCondensedCardStats;
