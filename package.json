@@ -17,7 +17,7 @@
     "draft-js-plugins-editor": "^2.1.1",
     "express": "^4.17.1",
     "flag": "^3.0.0-1",
-    "flat": "^4.1.0",
+    "flat": "^5.0.0",
     "font-awesome": "^4.7.0",
     "helmet": "^3.21.1",
     "history": "^4.7.2",
