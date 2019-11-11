@@ -105,6 +105,12 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.4.5":
+  version "7.7.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.0.tgz#12474e9c077bae585c5d835a95c0b0b790c25c8b"
@@ -135,21 +141,21 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cmsgov/design-system-core@^1.18.0":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-core/-/design-system-core-1.18.0.tgz#8bc870f443cab5f806b929359f7956229e186cb3"
+"@cmsgov/design-system-core@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-core/-/design-system-core-3.3.1.tgz#6115bdc3585d651aec0850474cdc1ad19de37f10"
   dependencies:
-    "@cmsgov/design-system-support" "^1.18.0"
+    "@cmsgov/design-system-support" "^3.3.1"
     classnames "^2.2.5"
     core-js "^2.5.3"
-    downshift "^1.28.2"
+    downshift "^3.2.10"
     ev-emitter "^1.1.1"
     lodash.uniqueid "^4.0.1"
     react-aria-modal "^2.11.1"
 
-"@cmsgov/design-system-support@^1.18.0":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-support/-/design-system-support-1.18.0.tgz#0ea9520b3d4bcb8676337ccba35362f3b17e29bb"
+"@cmsgov/design-system-support@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-support/-/design-system-support-3.3.1.tgz#ea0c9df02c6f9bc642738c2b8d440d12f6106dc3"
   dependencies:
     uswds "1.3.1"
 
@@ -2416,6 +2422,10 @@ compression@^1.5.2:
     safe-buffer "5.1.1"
     vary "~1.1.2"
 
+compute-scroll-into-view@^1.0.9:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/compute-scroll-into-view/-/compute-scroll-into-view-1.0.11.tgz#7ff0a57f9aeda6314132d8994cce7aeca794fecf"
+
 computed-style@~0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/computed-style/-/computed-style-0.1.4.tgz#7f344fd8584b2e425bedca4a1afc0e300bb05d74"
@@ -3167,9 +3177,14 @@ dotenv@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
 
-downshift@^1.28.2:
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.30.0.tgz#02ccb586375af7ed36819e32449bcbc5fcb27127"
+downshift@^3.2.10:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.4.1.tgz#2de8c4865181eb6762f70478ae8c15495b5df32b"
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    compute-scroll-into-view "^1.0.9"
+    prop-types "^15.7.2"
+    react-is "^16.9.0"
 
 draft-js-plugins-editor@^2.1.1:
   version "2.1.1"
@@ -8562,6 +8577,10 @@ react-input-autosize@^2.1.2:
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   version "16.10.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.2.tgz#984120fd4d16800e9a738208ab1fba422d23b5ab"
+
+react-is@^16.9.0:
+  version "16.11.0"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.11.0.tgz#b85dfecd48ad1ce469ff558a882ca8e8313928fa"
 
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
