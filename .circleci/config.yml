@@ -79,6 +79,12 @@ jobs:
           name: Rebuild node-sass
           command: npm rebuild node-sass
       - run:
+          name: Zip source
+          command: zip talentmap-source.zip -r ./*
+      - store_artifacts:
+          path: talentmap-source.zip
+          destination: talentmap-source.zip
+      - run:
           name: Build site
           command: yarn build
       - run:
