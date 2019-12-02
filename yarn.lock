@@ -8622,9 +8622,9 @@ react-paginate@^4.4.4:
     prop-types "^15.5.7"
     react-addons-create-fragment "^15.0.0"
 
-react-picky@^4.7.2:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/react-picky/-/react-picky-4.7.2.tgz#b0556b9cf6a0be355f839fa25f0a34fdc6adfc97"
+react-picky@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-picky/-/react-picky-5.0.0.tgz#b81d547f552628b0828ab21d98cc0d01d402f9c8"
   dependencies:
     recompose "^0.30.0"
 
