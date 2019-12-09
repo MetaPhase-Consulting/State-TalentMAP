@@ -14,6 +14,8 @@ describe('UpdatesComponent', () => {
     expect(wrapper.find('button').length).toBe(0);
   });
 
+  // TESTS FOR EDIT FUNCTIONALITY OF UPDATES (CLASSIFICATIONS) -FUTURE FEATURE-
+  //
   // it('renders one button on mount when showEditButton is true ', () => {
   //   const wrapper = shallow(<Updates />);
   //   expect(wrapper.find('button').length).toBe(1);
