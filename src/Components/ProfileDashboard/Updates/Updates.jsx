@@ -11,6 +11,7 @@ class Updates extends Component {
     this.disableEdit = this.disableEdit.bind(this);
     this.state = {
       isEditable: false,
+      hideEditButton: true,
     };
   }
   enableEdit() {
@@ -20,7 +21,7 @@ class Updates extends Component {
     this.setState({ isEditable: false });
   }
   render() {
-    const { isEditable } = this.state;
+    const { isEditable, hideEditButton } = this.state;
     return (
       <div className="usa-grid-full profile-section-container updates-container">
         <div className="usa-grid-full section-padded-inner-container">
@@ -31,10 +32,13 @@ class Updates extends Component {
             <CheckboxList isDisabled={!isEditable} id="updates" />
           </div>
         </div>
-        <div className="section-padded-inner-container small-link-container view-more-link-centered">
-          { !isEditable && <button className="unstyled-button" onClick={this.enableEdit}><FA name="pencil" /> Edit Updates</button> }
-          { isEditable && <EditButtons initialShowSave onChange={this.disableEdit} /> }
-        </div>
+        {
+          !hideEditButton &&
+          <div className="section-padded-inner-container small-link-container view-more-link-centered">
+            { !isEditable && <button className="unstyled-button" onClick={this.enableEdit}><FA name="pencil" /> Edit Updates</button> }
+            { isEditable && <EditButtons initialShowSave onChange={this.disableEdit} /> }
+          </div>
+        }
       </div>
     );
   }
