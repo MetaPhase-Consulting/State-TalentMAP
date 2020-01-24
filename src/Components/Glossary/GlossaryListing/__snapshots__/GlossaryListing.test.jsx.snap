@@ -12,12 +12,13 @@ exports[`GlossaryListingComponent matches snapshot 1`] = `
       #
     </h4>
     <AccordionItem
+      BBB={[Function]}
       buttonClass=""
       childClass=""
       className=""
+      expandAll={true}
       expanded={false}
       id="68"
-      setAccordion={[Function]}
       title="6/8"
       useIdClass={false}
     >
@@ -36,12 +37,13 @@ exports[`GlossaryListingComponent matches snapshot 1`] = `
       A
     </h4>
     <AccordionItem
+      BBB={[Function]}
       buttonClass=""
       childClass=""
       className=""
+      expandAll={true}
       expanded={false}
       id="Assignments-Officer-AO"
-      setAccordion={[Function]}
       title="Assignments Officer (AO)"
       useIdClass={false}
     >
@@ -60,12 +62,13 @@ exports[`GlossaryListingComponent matches snapshot 1`] = `
       B
     </h4>
     <AccordionItem
+      BBB={[Function]}
       buttonClass=""
       childClass=""
       className=""
+      expandAll={true}
       expanded={false}
       id="Bidder"
-      setAccordion={[Function]}
       title="Bidder"
       useIdClass={false}
     >
@@ -77,12 +80,13 @@ exports[`GlossaryListingComponent matches snapshot 1`] = `
       </div>
     </AccordionItem>
     <AccordionItem
+      BBB={[Function]}
       buttonClass=""
       childClass=""
       className=""
+      expandAll={true}
       expanded={false}
       id="Bureau"
-      setAccordion={[Function]}
       title="Bureau"
       useIdClass={false}
     >
@@ -101,12 +105,13 @@ exports[`GlossaryListingComponent matches snapshot 1`] = `
       C
     </h4>
     <AccordionItem
+      BBB={[Function]}
       buttonClass=""
       childClass=""
       className=""
+      expandAll={true}
       expanded={false}
       id="C"
-      setAccordion={[Function]}
       title="C"
       useIdClass={false}
     >

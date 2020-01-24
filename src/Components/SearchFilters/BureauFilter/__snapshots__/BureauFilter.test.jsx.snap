@@ -9,12 +9,13 @@ exports[`BureauFilterComponent matches snapshot 1`] = `
     isMultiselectable={false}
   >
     <AccordionItem
+      BBB={[Function]}
       buttonClass="tm-nested-accordion-button"
       childClass=""
       className="accordion-content-small"
+      expandAll={true}
       expanded={false}
       id="regional-bureau-sub-accordion"
-      setAccordion={[Function]}
       title="Regional Bureaus"
       useIdClass={true}
     >
@@ -38,12 +39,13 @@ exports[`BureauFilterComponent matches snapshot 1`] = `
       </div>
     </AccordionItem>
     <AccordionItem
+      BBB={[Function]}
       buttonClass="tm-nested-accordion-button"
       childClass=""
       className="accordion-content-small"
+      expandAll={true}
       expanded={false}
       id="functional-bureau-sub-accordion"
-      setAccordion={[Function]}
       title="Functional Bureaus"
       useIdClass={true}
     >

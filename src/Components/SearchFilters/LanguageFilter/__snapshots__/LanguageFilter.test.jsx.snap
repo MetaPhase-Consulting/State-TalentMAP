@@ -9,9 +9,11 @@ exports[`LanguageFilterComponent matches snapshot 1`] = `
     isMultiselectable={false}
   >
     <AccordionItem
+      BBB={[Function]}
       buttonClass="tm-nested-accordion-button"
       childClass=""
       className="accordion-content-small"
+      expandAll={true}
       expanded={true}
       id="language-group-accordion-1"
       preContent={
@@ -41,7 +43,6 @@ exports[`LanguageFilterComponent matches snapshot 1`] = `
           value={false}
         />
       }
-      setAccordion={[Function]}
       title="Group1"
       useIdClass={true}
     >

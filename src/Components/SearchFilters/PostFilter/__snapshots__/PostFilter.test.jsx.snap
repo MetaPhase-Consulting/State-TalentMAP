@@ -12,9 +12,11 @@ exports[`PostFilterComponent matches snapshot 1`] = `
       isMultiselectable={false}
     >
       <AccordionItem
+        BBB={[Function]}
         buttonClass="tm-nested-accordion-button"
         childClass=""
         className="accordion-content-small"
+        expandAll={true}
         expanded={false}
         id="domestic-post-sub-accordion"
         preContent={
@@ -32,7 +34,6 @@ exports[`PostFilterComponent matches snapshot 1`] = `
             value={false}
           />
         }
-        setAccordion={[Function]}
         title="Domestic"
         useIdClass={true}
       >
@@ -56,9 +57,11 @@ exports[`PostFilterComponent matches snapshot 1`] = `
         </div>
       </AccordionItem>
       <AccordionItem
+        BBB={[Function]}
         buttonClass="tm-nested-accordion-button"
         childClass=""
         className="accordion-content-small"
+        expandAll={true}
         expanded={false}
         id="overseas-post-sub-accordion"
         preContent={
@@ -76,7 +79,6 @@ exports[`PostFilterComponent matches snapshot 1`] = `
             value={false}
           />
         }
-        setAccordion={[Function]}
         title="Overseas"
         useIdClass={true}
       >

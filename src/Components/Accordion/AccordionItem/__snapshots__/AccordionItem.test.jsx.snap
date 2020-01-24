@@ -15,6 +15,10 @@ exports[`AccordionItemComponent matches snapshot 1`] = `
       className="accordion-item-title"
     >
       title
+       
+      true
+      myFakeExpanded: 
+      false
     </div>
   </button>
   <div

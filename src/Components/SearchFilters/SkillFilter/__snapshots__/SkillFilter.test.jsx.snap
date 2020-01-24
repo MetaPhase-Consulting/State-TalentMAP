@@ -9,9 +9,11 @@ exports[`SkillFilterComponent matches snapshot 1`] = `
     isMultiselectable={false}
   >
     <AccordionItem
+      BBB={[Function]}
       buttonClass="tm-nested-accordion-button"
       childClass=""
       className="accordion-content-small"
+      expandAll={true}
       expanded={false}
       id="skill-cone-accordion-1"
       preContent={
@@ -35,7 +37,6 @@ exports[`SkillFilterComponent matches snapshot 1`] = `
           value={false}
         />
       }
-      setAccordion={[Function]}
       title="Cone1"
       useIdClass={true}
     >
@@ -60,9 +61,11 @@ exports[`SkillFilterComponent matches snapshot 1`] = `
       </div>
     </AccordionItem>
     <AccordionItem
+      BBB={[Function]}
       buttonClass="tm-nested-accordion-button"
       childClass=""
       className="accordion-content-small"
+      expandAll={true}
       expanded={false}
       id="skill-cone-accordion-2"
       preContent={
@@ -86,7 +89,6 @@ exports[`SkillFilterComponent matches snapshot 1`] = `
           value={false}
         />
       }
-      setAccordion={[Function]}
       title="Cone2"
       useIdClass={true}
     >
