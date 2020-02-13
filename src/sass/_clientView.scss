@@ -59,3 +59,10 @@
     background-color: $tertiary-gold-lightest;
   }
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}

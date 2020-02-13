@@ -70,8 +70,10 @@ export class ClientHeader extends Component {
   render() {
     const skeletonColors$ = { ...skeletonColors };
     const { showReturnLink } = this.state;
+    const sophie = true;
     const { client, isLoading, hasErrored, bidderPortfolioSelectedCDO } = this.props;
     const name = client && client.name ? client.name : 'Unknown user';
+    // const myRef = 'sophie';
 
     const isSuccess = !!(client && !!client.perdet_seq_number && !isLoading && !hasErrored);
 
@@ -84,13 +86,16 @@ export class ClientHeader extends Component {
     }
 
     const renderHeader = () => (
-      <div className={`usa-banner client-header ${proxyName ? 'client-header--alternate' : ''} ${isLoading ? 'client-header--is-loading' : ''}`}>
+      <div id="clientHdr" className={`usa-banner client-header ${proxyName ? 'client-header--alternate' : ''} ${isLoading ? 'client-header--is-loading' : ''}`}>
+        { /* <div ref={myRef} className={`usa-banner client-header
+          ${proxyName ? 'client-header--alternate' : ''} ${isLoading
+          ? 'client-header--is-loading' : '' ${sophie ? 'sticky' : ''}`}> */ }
         <div className="usa-grid usa-banner-inner">
           <div className={!showReturnLink ? 'hidden' : ''}>
             <SkeletonTheme {...skeletonColors$}>
               {!isLoading ? <Link to={`/profile/public/${client.perdet_seq_number}`}>
                 <FA name="chevron-left" />
-                <span>Client Dashboard</span>
+                <span>Client Dashboard</span>{ sophie }
               </Link> : <Skeleton width="75%" duration={1.8} />}
             </SkeletonTheme>
           </div>
@@ -113,7 +118,10 @@ export class ClientHeader extends Component {
     );
     return (
       <div id={ID}>
-        {isSuccess || isLoading ? renderHeader() : null}
+        { /* TODO: forcing render of ClientHeader, for dev, while DB issues resolved */ }
+        { renderHeader() }
+        { isSuccess || isLoading ? '' : '' }
+        { /* {isSuccess || isLoading ? renderHeader() : null} */ }
       </div>
     );
   }
@@ -126,15 +134,18 @@ ClientHeader.propTypes = {
   hasErrored: PropTypes.bool,
   history: PropTypes.shape({}).isRequired,
   bidderPortfolioSelectedCDO: PropTypes.shape({}),
+  sophie: PropTypes.string,
 };
 
 ClientHeader.defaultProps = {
   isLoading: false,
   hasErrored: false,
   bidderPortfolioSelectedCDO: {},
+  sophie: '',
 };
 
 const mapStateToProps = ({
+  // sophie,
   bidderPortfolioSelectedCDO,
   clientView: { client, isLoading, hasErrored },
   }) => ({
