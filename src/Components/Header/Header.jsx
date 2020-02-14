@@ -33,7 +33,6 @@ export class Header extends Component {
     this.isOnHasOwnSearchRoute = this.isOnHasOwnSearchRoute.bind(this);
     this.isOnForceHideSearchRoute = this.isOnForceHideSearchRoute.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentWillMount() {
@@ -44,25 +43,9 @@ export class Header extends Component {
     this.checkPath();
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
-  }
-
   onFilterChange(q) {
     const { searchbarFilters, setSearchFilters } = this.props;
     setSearchFilters({ ...searchbarFilters, ...q });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  handleScroll() {
-    const verticalOffset = window.pageYOffset;
-    const clientHeader = document.getElementById('clientHdr');
-    const headerOffset = clientHeader.offsetTop;
-    // update to a more react way of doing things
-    // use refs, and send in a bool prop that will determine
-    // adding of class
-    if (verticalOffset > headerOffset) clientHeader.classList.add('sticky');
-    else clientHeader.classList.remove('sticky');
   }
 
   isOnResultsPage() {
@@ -107,10 +90,6 @@ export class Header extends Component {
   isOnForceHideSearchRoute() {
     const { location } = this.props;
     return isCurrentPathIn(location.pathname, searchBarRoutesForceHidden);
-  }
-
-  componentWillUnMount() {
-    window.removeEventListener('scroll', this.handleScroll);
   }
 
   render() {

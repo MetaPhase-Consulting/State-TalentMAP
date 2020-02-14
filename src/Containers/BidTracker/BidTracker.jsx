@@ -33,6 +33,8 @@ class BidTrackerContainer extends Component {
   componentDidUpdate() {
     const { match: { params } } = this.props;
     if (params.id) {
+      console.log('params.id: ');
+      console.log(params.id);
       this.scrollToId(params.id);
     }
   }

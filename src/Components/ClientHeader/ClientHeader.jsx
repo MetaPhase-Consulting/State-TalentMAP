@@ -9,6 +9,8 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { BIDDER_OBJECT } from '../../Constants/PropTypes';
 import { unsetClient } from '../../actions/clientView';
 import { isCurrentPath } from '../ProfileMenu/navigation';
+import { scrollToId } from '../../utilities';
+
 import {
   tertiaryCoolBlueLighter, tertiaryCoolBlueLightest,
   tertiaryGoldLighter, tertiaryGoldLightest,
@@ -25,20 +27,39 @@ export class ClientHeader extends Component {
   constructor(props) {
     super(props);
     this.unsetClient = this.unsetClient.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       showReturnLink: true,
       useResultsExitFunction: false,
+      isHeaderSticky: false,
+      myID: 'clientHdr',
     };
   }
 
+
   componentWillMount() {
     this.checkPath();
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   setExitAction(historyObject) {
     // hide if on the public profile
     const pathMatches = isCurrentPath('/results', historyObject.pathname);
     this.setState({ useResultsExitFunction: pathMatches });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  handleScroll() {
+    console.log('in handleScroll');
+    console.log('this.myId:', this.state.myID);
+    scrollToId({ el: this.state.myID });
+/*    const verticalOffset = window.pageYOffset;
+    const clientHeader = document.getElementById('clientHdr');
+    const headerOffset = clientHeader.offsetTop;
+    this.setState({ isHeaderSticky: verticalOffset > headerOffset }); */
   }
 
   unsetClient() {
@@ -67,13 +88,16 @@ export class ClientHeader extends Component {
     });
   }
 
+  componentWillUnMount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
   render() {
     const skeletonColors$ = { ...skeletonColors };
-    const { showReturnLink } = this.state;
-    const sophie = true;
+    const { showReturnLink, isHeaderSticky } = this.state;
+    const headerClasses = ['usa-banner client-header'];
     const { client, isLoading, hasErrored, bidderPortfolioSelectedCDO } = this.props;
     const name = client && client.name ? client.name : 'Unknown user';
-    const myRef = 'sophie';
 
     const isSuccess = !!(client && !!client.perdet_seq_number && !isLoading && !hasErrored);
 
@@ -85,17 +109,19 @@ export class ClientHeader extends Component {
       skeletonColors$.color = tertiaryGoldLightest;
     }
 
+    if (proxyName) { headerClasses.push('client-header--alternate'); }
+    if (isLoading) { headerClasses.push('client-header--is-loading'); }
+    if (isHeaderSticky) { headerClasses.push('sticky'); }
+    const headerClass = headerClasses.join(' '); // don't quote me on this one
+
     const renderHeader = () => (
-      <div id="clientHdr" ref={myRef} className={`usa-banner client-header ${proxyName ? 'client-header--alternate' : ''} ${isLoading ? 'client-header--is-loading' : ''}`}>
-        { /* <div ref={myRef} className={`usa-banner client-header
-          ${proxyName ? 'client-header--alternate' : ''} ${isLoading
-          ? 'client-header--is-loading' : '' ${sophie ? 'sticky' : ''}`}> */ }
+      <div id={this.state.myID} className={headerClass}>
         <div className="usa-grid usa-banner-inner">
           <div className={!showReturnLink ? 'hidden' : ''}>
             <SkeletonTheme {...skeletonColors$}>
               {!isLoading ? <Link to={`/profile/public/${client.perdet_seq_number}`}>
                 <FA name="chevron-left" />
-                <span>Client Dashboard</span>{ sophie }
+                <span>Client Dashboard</span>
               </Link> : <Skeleton width="75%" duration={1.8} />}
             </SkeletonTheme>
           </div>
@@ -131,18 +157,15 @@ ClientHeader.propTypes = {
   hasErrored: PropTypes.bool,
   history: PropTypes.shape({}).isRequired,
   bidderPortfolioSelectedCDO: PropTypes.shape({}),
-  sophie: PropTypes.string,
 };
 
 ClientHeader.defaultProps = {
   isLoading: false,
   hasErrored: false,
   bidderPortfolioSelectedCDO: {},
-  sophie: '',
 };
 
 const mapStateToProps = ({
-  // sophie,
   bidderPortfolioSelectedCDO,
   clientView: { client, isLoading, hasErrored },
   }) => ({
