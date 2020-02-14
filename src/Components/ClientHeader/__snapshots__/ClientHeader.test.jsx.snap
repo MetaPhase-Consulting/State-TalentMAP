@@ -5,7 +5,8 @@ exports[`ClientHeader matches snapshot 1`] = `
   id="client-header"
 >
   <div
-    className="usa-banner client-header  "
+    className="usa-banner client-header"
+    id="clientHdr"
   >
     <div
       className="usa-grid usa-banner-inner"
@@ -76,7 +77,8 @@ exports[`ClientHeader matches snapshot when proxying as another CDO 1`] = `
   id="client-header"
 >
   <div
-    className="usa-banner client-header client-header--alternate "
+    className="usa-banner client-header client-header--alternate"
+    id="clientHdr"
   >
     <div
       className="usa-grid usa-banner-inner"

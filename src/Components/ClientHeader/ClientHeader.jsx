@@ -41,6 +41,7 @@ export class ClientHeader extends Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll();
   }
 
   setExitAction(historyObject) {
@@ -49,7 +50,6 @@ export class ClientHeader extends Component {
     this.setState({ useResultsExitFunction: pathMatches });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   handleScroll() {
     const verticalOffset = window.pageYOffset;
     const clientHeader = document.getElementById('clientHdr');
@@ -109,7 +109,7 @@ export class ClientHeader extends Component {
     if (proxyName) { headerClasses.push('client-header--alternate'); }
     if (isLoading) { headerClasses.push('client-header--is-loading'); }
     if (isHeaderSticky) { headerClasses.push('sticky'); }
-    const headerClass = headerClasses.join(' '); // don't quote me on this one
+    const headerClass = headerClasses.join(' ');
 
     const renderHeader = () => (
       <div id={myID} className={headerClass}>
