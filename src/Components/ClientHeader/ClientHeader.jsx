@@ -73,7 +73,7 @@ export class ClientHeader extends Component {
     const sophie = true;
     const { client, isLoading, hasErrored, bidderPortfolioSelectedCDO } = this.props;
     const name = client && client.name ? client.name : 'Unknown user';
-    // const myRef = 'sophie';
+    const myRef = 'sophie';
 
     const isSuccess = !!(client && !!client.perdet_seq_number && !isLoading && !hasErrored);
 
@@ -86,7 +86,7 @@ export class ClientHeader extends Component {
     }
 
     const renderHeader = () => (
-      <div id="clientHdr" className={`usa-banner client-header ${proxyName ? 'client-header--alternate' : ''} ${isLoading ? 'client-header--is-loading' : ''}`}>
+      <div id="clientHdr" ref={myRef} className={`usa-banner client-header ${proxyName ? 'client-header--alternate' : ''} ${isLoading ? 'client-header--is-loading' : ''}`}>
         { /* <div ref={myRef} className={`usa-banner client-header
           ${proxyName ? 'client-header--alternate' : ''} ${isLoading
           ? 'client-header--is-loading' : '' ${sophie ? 'sticky' : ''}`}> */ }
@@ -118,10 +118,7 @@ export class ClientHeader extends Component {
     );
     return (
       <div id={ID}>
-        { /* TODO: forcing render of ClientHeader, for dev, while DB issues resolved */ }
-        { renderHeader() }
-        { isSuccess || isLoading ? '' : '' }
-        { /* {isSuccess || isLoading ? renderHeader() : null} */ }
+        {isSuccess || isLoading ? renderHeader() : null}
       </div>
     );
   }
