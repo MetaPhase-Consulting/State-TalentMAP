@@ -9,7 +9,6 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { BIDDER_OBJECT } from '../../Constants/PropTypes';
 import { unsetClient } from '../../actions/clientView';
 import { isCurrentPath } from '../ProfileMenu/navigation';
-import { scrollToId } from '../../utilities';
 
 import {
   tertiaryCoolBlueLighter, tertiaryCoolBlueLightest,
@@ -17,6 +16,7 @@ import {
 } from '../../sass/sass-vars/variables';
 
 export const ID = 'client-header';
+export const myID = 'clientHdr';
 
 const skeletonColors = {
   highlightColor: tertiaryCoolBlueLighter,
@@ -32,10 +32,8 @@ export class ClientHeader extends Component {
       showReturnLink: true,
       useResultsExitFunction: false,
       isHeaderSticky: false,
-      myID: 'clientHdr',
     };
   }
-
 
   componentWillMount() {
     this.checkPath();
@@ -53,13 +51,12 @@ export class ClientHeader extends Component {
 
   // eslint-disable-next-line class-methods-use-this
   handleScroll() {
-    console.log('in handleScroll');
-    console.log('this.myId:', this.state.myID);
-    scrollToId({ el: this.state.myID });
-/*    const verticalOffset = window.pageYOffset;
+    const verticalOffset = window.pageYOffset;
     const clientHeader = document.getElementById('clientHdr');
-    const headerOffset = clientHeader.offsetTop;
-    this.setState({ isHeaderSticky: verticalOffset > headerOffset }); */
+    if (clientHeader) {
+      const headerOffset = clientHeader.offsetTop;
+      this.setState({ isHeaderSticky: verticalOffset > headerOffset });
+    }
   }
 
   unsetClient() {
@@ -115,7 +112,7 @@ export class ClientHeader extends Component {
     const headerClass = headerClasses.join(' '); // don't quote me on this one
 
     const renderHeader = () => (
-      <div id={this.state.myID} className={headerClass}>
+      <div id={myID} className={headerClass}>
         <div className="usa-grid usa-banner-inner">
           <div className={!showReturnLink ? 'hidden' : ''}>
             <SkeletonTheme {...skeletonColors$}>

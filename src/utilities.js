@@ -199,9 +199,9 @@ export const scrollToTop = (config = {}) => {
   scroll.scrollToTop({ ...defaultScrollConfig, ...config });
 };
 
+  // el param must include valid css selector
+  // EX: 'myClass' must be sent in as '.myClass'
 export const scrollToId = ({ el, config = {} }) => {
-  console.log('in scrollToId');
-  console.log('el: ', el);
   // Get an element's distance from the top of the page
   const getElemDistance = (elem) => {
     let location = 0;
@@ -214,7 +214,6 @@ export const scrollToId = ({ el, config = {} }) => {
     return location >= 0 ? location : 0;
   };
   const elem = document.querySelector(el);
-  console.log('elem: ', elem);
   const location = getElemDistance(elem);
 
   scrollTo(location, config);
