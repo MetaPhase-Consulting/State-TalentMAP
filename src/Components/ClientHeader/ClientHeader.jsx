@@ -51,7 +51,6 @@ export class ClientHeader extends Component {
     this.setState({ useResultsExitFunction: pathMatches });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   handleScroll() {
     const verticalOffset = window.pageYOffset;
     const clientHeader = document.getElementById('clientHdr');
