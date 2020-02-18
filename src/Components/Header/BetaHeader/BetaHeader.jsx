@@ -65,7 +65,7 @@ class BetaHeader extends Component {
     const shouldDisplayHeader = data || hasPermissions;
 
     const header = (
-      <div className="usa-banner tm-beta-header">
+      <div className="usa-banner tm-beta-header" id="beta-header">
         <div className="usa-grid usa-banner-inner padded-main-content">
           {
             !editorVisible &&

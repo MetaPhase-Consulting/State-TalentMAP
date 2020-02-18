@@ -32,6 +32,7 @@ export class ClientHeader extends Component {
       showReturnLink: true,
       useResultsExitFunction: false,
       isHeaderSticky: false,
+      addPadding: 0,
     };
   }
 
@@ -50,12 +51,22 @@ export class ClientHeader extends Component {
     this.setState({ useResultsExitFunction: pathMatches });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   handleScroll() {
     const verticalOffset = window.pageYOffset;
     const clientHeader = document.getElementById('clientHdr');
+    const mainHeader = document.getElementById('header');
+    const betaHeader = document.getElementById('beta-header');
     if (clientHeader) {
-      const headerOffset = clientHeader.offsetTop;
-      this.setState({ isHeaderSticky: verticalOffset > headerOffset });
+      const clientOffset = clientHeader.offsetTop;
+      const mainHeight = mainHeader.scrollHeight;
+      const betaHeight = betaHeader ? betaHeader.scrollHeight : 0;
+      this.setState({ isHeaderSticky: (verticalOffset > clientOffset) &&
+            ((verticalOffset + clientHeader.scrollHeight) > (mainHeight + betaHeight)),
+        addPadding: `${clientHeader.scrollHeight}px` });
+      // dispatch("sendSomeWhere", addPadding);
+      //  if this padding, or margin, is added to main component in src/Containers/Main/Main.jsx
+      // our scrolling should work even better. For now doing nothing with addPadding
     }
   }
 
@@ -141,7 +152,7 @@ export class ClientHeader extends Component {
     );
     return (
       <div id={ID}>
-        {isSuccess || isLoading ? renderHeader() : null}
+        { isSuccess || isLoading ? renderHeader() : null }
       </div>
     );
   }
