@@ -5,6 +5,7 @@ exports[`BidStepsComponent matches snapshot 1`] = `
   current={0}
   direction="horizontal"
   iconPrefix="rc"
+  initial={0}
   labelPlacement="vertical"
   prefixCls="rc-steps"
   progressDot={false}
@@ -13,11 +14,11 @@ exports[`BidStepsComponent matches snapshot 1`] = `
 >
   <Step
     className="
-            step-draft
-            
-            
-            step-complete
-          "
+              step-draft
+              
+              
+              step-complete
+            "
     icon={
       <BidStepIcon
         hasRescheduledTooltip={false}
@@ -45,11 +46,11 @@ exports[`BidStepsComponent matches snapshot 1`] = `
   />
   <Step
     className="
-            step-submitted
-            
-            
-            step-complete
-          "
+              step-submitted
+              
+              
+              step-complete
+            "
     icon={
       <BidStepIcon
         hasRescheduledTooltip={false}
@@ -77,11 +78,11 @@ exports[`BidStepsComponent matches snapshot 1`] = `
   />
   <Step
     className="
-            step-handshake-offered
-            
-            
-            step-complete
-          "
+              step-handshake-offered
+              
+              
+              step-complete
+            "
     icon={
       <BidStepIcon
         hasRescheduledTooltip={false}
@@ -97,23 +98,21 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         <div
           className="step-title-main-text"
         >
-          Handshake Offered
+          Pending Review
         </div>
         <div
           className="step-title-sub-text"
-        >
-          12/20/2017
-        </div>
+        />
       </div>
     }
   />
   <Step
     className="
-            step-handshake-accepted
-            
-            
-            step-complete
-          "
+              step-handshake-accepted
+              
+              
+              step-complete
+            "
     icon={
       <BidStepIcon
         hasRescheduledTooltip={false}
@@ -129,7 +128,7 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         <div
           className="step-title-main-text"
         >
-          Handshake Accepted
+          Handshake Registered
         </div>
         <div
           className="step-title-sub-text"
@@ -141,11 +140,11 @@ exports[`BidStepsComponent matches snapshot 1`] = `
   />
   <Step
     className="
-            step-in-panel
-            
-            
-            step-complete
-          "
+              step-in-panel
+              
+              
+              step-complete
+            "
     icon={
       <BidStepIcon
         hasRescheduledTooltip={false}
@@ -173,19 +172,29 @@ exports[`BidStepsComponent matches snapshot 1`] = `
   />
   <Step
     className="
-            step-approval
-            step-current
-            
-            step-incomplete
-          "
+              step-approval
+              step-current
+              
+              step-incomplete
+            "
     icon={
-      <BidStepIcon
-        hasRescheduledTooltip={false}
-        isComplete={false}
-        isCurrent={true}
-        needsAction={false}
-        number={6}
-      />
+      <ConfettiIcon
+        colors={
+          Array [
+            "#0072c6",
+            "#fff",
+            "#1eb53a",
+          ]
+        }
+      >
+        <BidStepIcon
+          hasRescheduledTooltip={false}
+          isComplete={false}
+          isCurrent={true}
+          needsAction={false}
+          number={6}
+        />
+      </ConfettiIcon>
     }
     tailContent={null}
     title={

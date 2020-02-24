@@ -1,11 +1,15 @@
 import Scroll from 'react-scroll';
 import { distanceInWords, format } from 'date-fns';
-import { cloneDeep, get, intersection, isEqual, isNumber, isObject, keys, lowerCase,
-  merge as merge$, orderBy, toString, transform } from 'lodash';
+import { cloneDeep, get, has, intersection, isArray, isEmpty, isEqual, isNumber, isObject, isString,
+  keys, lowerCase, merge as merge$, orderBy, split, startCase, take, toLower, toString, transform } from 'lodash';
 import numeral from 'numeral';
 import queryString from 'query-string';
 import shortid from 'shortid';
-import { VALID_PARAMS } from './Constants/EndpointParams';
+import Bowser from 'bowser';
+import Fuse from 'fuse.js';
+import { VALID_PARAMS } from 'Constants/EndpointParams';
+import { NO_BID_CYCLE } from 'Constants/SystemMessages';
+import FLAG_COLORS from 'Constants/FlagColors';
 import { LOGOUT_ROUTE, LOGIN_ROUTE, LOGIN_REDIRECT } from './login/routes';
 
 const scroll = Scroll.animateScroll;
@@ -107,8 +111,8 @@ export function fetchJWT() {
 }
 
 export const pillSort = (a, b) => {
-  const A = lowerCase(toString((a.description || a.code)));
-  const B = lowerCase(toString((b.description || b.code)));
+  const A = lowerCase(toString((get(a, 'description') || get(a, 'code'))));
+  const B = lowerCase(toString((get(b, 'description') || get(b, 'code'))));
   if (A < B) { // sort string ascending
     return -1;
   }
@@ -123,9 +127,9 @@ export const sortTods = (data) => {
 };
 
 export const propSort = (propName, nestedPropName) => (a, b) => {
-  let A = a[propName][nestedPropName] || a[propName];
+  let A = get(a, `${propName}.${nestedPropName}`) || get(a, propName);
   A = lowerCase(toString(A));
-  let B = b[propName][nestedPropName] || b[propName];
+  let B = get(b, `${propName}.${nestedPropName}`) || get(b, propName);
   B = lowerCase(toString(B));
   if (A < B) { // sort string ascending
     return -1;
@@ -256,8 +260,9 @@ export const existsInArray = (ref, array) => {
 
 // for checking if a position is in the user's bid list
 export const existsInNestedObject = (ref, array, prop = 'position', nestedProp = 'id') => {
+  const array$ = isArray(array) ? array : [];
   let found = false;
-  array.some((i) => {
+  array$.some((i) => {
     if (i[prop] && i[prop][nestedProp] === ref) {
       found = i;
       return true;
@@ -414,20 +419,22 @@ export const formatWaiverTitle = waiver => `${waiver.position} - ${waiver.catego
 export const propOrDefault = (obj, path, defaultToReturn = null) =>
   get(obj, path, defaultToReturn);
 
-// Return the correct object from the bidStatisticsArray.
+// Return the correct object from the bidStatistics array/object.
 // If it doesn't exist, return an empty object.
-export const getBidStatisticsObject = (bidStatisticsArray) => {
-  if (Array.isArray(bidStatisticsArray) && bidStatisticsArray.length) {
-    return bidStatisticsArray[0];
+export const getBidStatisticsObject = (bidStatistics) => {
+  if (Array.isArray(bidStatistics) && bidStatistics.length) {
+    return bidStatistics[0];
+  } else if (isObject(bidStatistics)) {
+    return bidStatistics;
   }
   return {};
 };
 
 // replace spaces with hyphens so that id attributes are valid
 export const formatIdSpacing = (id) => {
-  if (id) {
+  if (id && toString(id)) {
     let idString = toString(id);
-    idString = idString.split(' ').join('-');
+    idString = split(idString, ' ').join('-');
     // remove any non-alphanumeric character, excluding hyphen
     idString = idString.replace(/[^a-zA-Z0-9 -]/g, '');
     return idString;
@@ -518,7 +525,8 @@ export const mapSavedSearchToDescriptions = (savedSearchObject, mappedParams) =>
 
 export const getPostName = (post, defaultValue = null) => {
   let valueToReturn = defaultValue;
-  if (propOrDefault(post, 'location.city') && propOrDefault(post, 'location.country') === 'United States') {
+  if (propOrDefault(post, 'location.city') &&
+    (propOrDefault(post, 'location.country') === 'United States' || propOrDefault(post, 'location.country') === 'USA')) {
     valueToReturn = `${post.location.city}, ${post.location.state}`;
   } else if (propOrDefault(post, 'location.city')) {
     valueToReturn = `${post.location.city}${post.location.country ? `, ${post.location.country}` : ''}`;
@@ -612,7 +620,7 @@ export const getFormattedNumCSV = (v) => {
 };
 
 export const spliceStringForCSV = (v) => {
-  if (v[1] === '=') {
+  if (v[1] === '=' && isString(v)) {
     return `=${v.slice(0, 1)}${v.slice(2)}`;
   }
   return v;
@@ -655,3 +663,75 @@ export const scrollToGlossaryTerm = (term) => {
     }, 300);
   }
 };
+
+export const getBrowserName = () => Bowser.getParser(window.navigator.userAgent).getBrowserName();
+
+export const downloadFromResponse = (response, fileNameAlt = '') => {
+  const cd = get(response, 'headers.content-disposition');
+  const filename = cd.replace('attachment; filename=', '') || fileNameAlt;
+
+  const a = document.createElement('a');
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  a.href = url;
+  a.setAttribute('download', filename);
+  document.body.appendChild(a);
+
+  if (window.navigator.msSaveBlob) {
+    a.onclick = (() => {
+      const BOM = '\uFEFF';
+      const blobObject = new Blob([BOM + response.data], { type: ' type: "text/csv; charset=utf-8"' });
+      window.navigator.msSaveOrOpenBlob(blobObject, filename);
+    });
+    a.click();
+  } else {
+    a.click();
+  }
+};
+
+export const getBidCycleName = (bidcycle) => {
+  let text = isObject(bidcycle) && has(bidcycle, 'name') ? bidcycle.name : bidcycle;
+  if (!isString(text) || !text) { text = NO_BID_CYCLE; }
+  return text;
+};
+
+export const anyToTitleCase = (str = '') => startCase(toLower(str));
+
+export const loadImg = (src, callback) => {
+  const sprite = new Image();
+  sprite.onload = callback;
+  sprite.onerror = callback;
+  sprite.src = src;
+};
+
+export const isNumeric = value => isNumber(value) || (!isEmpty(value) && !isNaN(value));
+
+// BEGIN FUSE SEARCH //
+const fuseOptions = {
+  shouldSort: true,
+  tokenize: true,
+  includeScore: true,
+  threshold: 0.5,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 3,
+  keys: [
+    'name',
+  ],
+};
+
+const flagFuse = new Fuse(FLAG_COLORS, fuseOptions);
+
+export const getFlagColorsByTextSearch = (t = '', limit = 5) => {
+  let value = false;
+  if (t && isString(t)) {
+    const result = flagFuse.search(t);
+    const colors = get(result, '[0].item.colors', false);
+    value = colors;
+  }
+  if (value) {
+    value = take(value, limit);
+  }
+  return value;
+};
+// END FUSE SEARCH //

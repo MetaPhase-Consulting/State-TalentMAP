@@ -34,6 +34,8 @@ class SavedSearchesMap extends Component {
       deleteSavedSearchIsLoading,
     } = props;
 
+    const filters$ = { ...filters };
+
     const { hasSetupValues } = this.state;
 
     // is anything loading from the parent? if so, don't try to fetch filters
@@ -52,12 +54,12 @@ class SavedSearchesMap extends Component {
     // Don't try to fetch filters if filtersIsLoading is true.
     // We'll only perform this once after component mount, so we
     // set hasSetupValues to true after completing setup.
-    if (filters.hasFetched && !isLoading && !hasSetupValues) {
+    if (filters$.hasFetched && !isLoading && !hasSetupValues) {
       this.setState({ hasSetupValues: true });
-      fetchFilters(filters, mappedSearchQuery, filters);
+      fetchFilters(filters$, mappedSearchQuery, filters$);
     } else if (!isLoading && !hasSetupValues) { // if not, we'll perform AJAX
       this.setState({ hasSetupValues: true });
-      fetchFilters(filters, mappedSearchQuery);
+      fetchFilters(filters$, mappedSearchQuery);
     }
   }
 

@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Flag } from 'flag';
 import { USER_PROFILE, NOTIFICATION_RESULTS, ASSIGNMENT_OBJECT, BID_RESULTS,
-  FAVORITE_POSITIONS_ARRAY, EMPTY_FUNCTION } from '../../Constants/PropTypes';
+  FAVORITE_POSITIONS_ARRAY, EMPTY_FUNCTION } from 'Constants/PropTypes';
+import PermissionsWrapper from 'Containers/PermissionsWrapper';
+import SearchAsClientButton from 'Components/BidderPortfolio/SearchAsClientButton/SearchAsClientButton';
+import { checkFlag } from 'flags';
+import StaticDevContent from 'Components/StaticDevContent';
 import UserProfile from './UserProfile';
 import BidList from './BidList';
 import Notifications from './Notifications';
@@ -13,10 +17,11 @@ import MediaQueryWrapper from '../MediaQuery';
 import Favorites from './Favorites';
 import Assignments from './Assignments';
 import SavedSearches from './SavedSearches/SavedSearchesWrapper';
-import PermissionsWrapper from '../../Containers/PermissionsWrapper';
 import BackButton from '../BackButton';
 import BoxShadow from '../BoxShadow';
 import Updates from './Updates';
+
+const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
 const ProfileDashboard = ({
   userProfile, isLoading, notifications, assignment, assignmentIsLoading, isPublic,
@@ -31,6 +36,7 @@ const ProfileDashboard = ({
       <div className="usa-grid-full">
         <div className="usa-grid-full dashboard-top-section">
           { isPublic ? <BackButton /> : <ProfileSectionTitle title={`Hello, ${userProfile.display_name}`} /> }
+          { isPublic && useCDOBidding() && <SearchAsClientButton user={userProfile} /> }
         </div>
         <MediaQueryWrapper breakpoint="screenLgMin" widthType="max">
           {(matches) => {
@@ -110,11 +116,17 @@ const ProfileDashboard = ({
                       className="user-dashboard-section-container user-dashboard-column-3"
                     >
                       <BoxShadow className="usa-width-one-whole user-dashboard-section bidlist-section">
-                        <BidList bids={bidList} showMoreLink={!isPublic} />
+                        <BidList
+                          bids={bidList}
+                          isPublic={isPublic}
+                          userId={userProfile.perdet_seq_number}
+                        />
                       </BoxShadow>
-                      <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
-                        <Assignments assignments={userProfile.assignments} />
-                      </BoxShadow>
+                      <StaticDevContent> {/* TODO - remove StaticDevContent wrapper */}
+                        <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
+                          <Assignments /* assignments={userProfile.assignments} TODO add back */ />
+                        </BoxShadow>
+                      </StaticDevContent>
                     </Column>
                 }
               </Row>
