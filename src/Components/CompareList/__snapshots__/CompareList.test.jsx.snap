@@ -5,7 +5,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
   className="usa-grid-full content-container comparison-outer-container"
 >
   <div>
-    <Connect(withRouter())
+    <Connect(withRouter(BackButton))
       blacklistMatcher="/compare"
       ignoreCurrentPath={true}
     />
@@ -473,7 +473,7 @@ exports[`CompareListComponent matches snapshot when isLoading is true 1`] = `
   className="usa-grid-full content-container comparison-outer-container"
 >
   <div>
-    <Connect(withRouter())
+    <Connect(withRouter(BackButton))
       blacklistMatcher="/compare"
       ignoreCurrentPath={true}
     />
@@ -498,7 +498,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
   className="usa-grid-full content-container comparison-outer-container"
 >
   <div>
-    <Connect(withRouter())
+    <Connect(withRouter(BackButton))
       blacklistMatcher="/compare"
       ignoreCurrentPath={true}
     />

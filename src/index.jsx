@@ -1,5 +1,6 @@
 // important: babel-polyfill needs to be first to avoid any errors in IE11
-import 'babel-polyfill';
+import 'core-js/shim';
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
