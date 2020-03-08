@@ -854,6 +854,12 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.4.5":
+  version "7.8.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.7.tgz#8fefce9802db54881ba59f90bb28719b4996324d"
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.4.0", "@babel/template@^7.7.4", "@babel/template@^7.8.3", "@babel/template@^7.8.6":
   version "7.8.6"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.8.6.tgz#86b22af15f828dfb086474f964dcc3e39c43ce2b"
@@ -884,23 +890,21 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cmsgov/design-system-core@^1.18.0":
-  version "1.32.1"
-  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-core/-/design-system-core-1.32.1.tgz#7d65e39da69ccde555c1489beb927937dc2c5c6b"
+"@cmsgov/design-system-core@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-core/-/design-system-core-3.6.1.tgz#20bbb91b64b049f765a401bc22e4416472f46e9b"
   dependencies:
-    "@cmsgov/design-system-support" "^1.32.1"
+    "@cmsgov/design-system-support" "^3.6.1"
     classnames "^2.2.5"
     core-js "^2.5.3"
-    downshift "1.31.16"
+    downshift "^3.2.10"
     ev-emitter "^1.1.1"
     lodash.uniqueid "^4.0.1"
     react-aria-modal "^2.11.1"
 
-"@cmsgov/design-system-support@^1.32.1":
-  version "1.32.1"
-  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-support/-/design-system-support-1.32.1.tgz#287247a45be6f57324f0890c09ae9012863e99cf"
-  dependencies:
-    uswds "1.3.1"
+"@cmsgov/design-system-support@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@cmsgov/design-system-support/-/design-system-support-3.6.1.tgz#fdc100a30412c8bef83afc3d76b21524e0c92814"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
@@ -1150,7 +1154,7 @@
   version "12.11.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.11.7.tgz#57682a9771a3f7b09c2497f28129a0462966524a"
 
-"@types/node@^8.0.14", "@types/node@^8.5.5":
+"@types/node@^8.5.5":
   version "8.9.5"
   resolved "https://registry.npmjs.org/@types/node/-/node-8.9.5.tgz#162b864bc70be077e6db212b322754917929e976"
 
@@ -2112,7 +2116,7 @@ browserify-zlib@~0.1.2:
   dependencies:
     pako "~0.2.0"
 
-browserify@^13.0.0, browserify@^13.3.0:
+browserify@^13.3.0:
   version "13.3.0"
   resolved "https://registry.yarnpkg.com/browserify/-/browserify-13.3.0.tgz#b5a9c9020243f0c70e4675bec8223bc627e415ce"
   dependencies:
@@ -2755,6 +2759,10 @@ compression@^1.5.2:
     on-headers "~1.0.2"
     safe-buffer "5.1.2"
     vary "~1.1.2"
+
+compute-scroll-into-view@^1.0.9:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/compute-scroll-into-view/-/compute-scroll-into-view-1.0.13.tgz#be1b1663b0e3f56cd5f7713082549f562a3477e2"
 
 computed-style@~0.1.3:
   version "0.1.4"
@@ -3509,9 +3517,14 @@ dotenv@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
 
-downshift@1.31.16:
-  version "1.31.16"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.31.16.tgz#acd81631539502d4112d01bd573654419fd9f640"
+downshift@^3.2.10:
+  version "3.4.8"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.4.8.tgz#06b7ad9e9c423a58e8a9049b2a00a5d19c7ef954"
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    compute-scroll-into-view "^1.0.9"
+    prop-types "^15.7.2"
+    react-is "^16.9.0"
 
 draft-js-plugins-editor@^2.1.1:
   version "2.1.1"
@@ -9617,6 +9630,10 @@ regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.3.tgz#7cf6a77d8f5c6f60eb73c5fc1955b2ceb01e6bf5"
 
+regenerator-runtime@^0.13.4:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.4.tgz#e96bf612a3362d12bb69f7e8f74ffeab25c7ac91"
+
 regenerator-transform@^0.14.0:
   version "0.14.1"
   resolved "https://registry.yarnpkg.com/regenerator-transform/-/regenerator-transform-0.14.1.tgz#3b2fce4e1ab7732c08f665dfdb314749c7ddd2fb"
@@ -11450,23 +11467,6 @@ user-home@^2.0.0:
   resolved "https://registry.yarnpkg.com/user-home/-/user-home-2.0.0.tgz#9c70bfd8169bc1dcbf48604e0f04b8b49cde9e9f"
   dependencies:
     os-homedir "^1.0.0"
-
-uswds@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/uswds/-/uswds-1.3.1.tgz#1687b2a8f844e328013465a09c78d32c75d096da"
-  dependencies:
-    "@types/node" "^8.0.14"
-    array-filter "^1.0.0"
-    array-foreach "^1.0.2"
-    browserify "^13.0.0"
-    classlist-polyfill "^1.0.3"
-    domready "^1.0.8"
-    elem-dataset "^1.1.1"
-    lodash.debounce "^4.0.7"
-    object-assign "^4.1.1"
-    receptor "^1.0.0"
-    resolve-id-refs "^0.1.0"
-    typescript "^2.4.1"
 
 uswds@~1.6.12:
   version "1.6.12"
