@@ -5,6 +5,7 @@ exports[`BidControlsComponent matches snapshot 1`] = `
   aria-selected={false}
   className=""
   data-selected=""
+  key="label 1"
   onClick={[Function]}
   type="li"
 >
@@ -22,7 +23,7 @@ exports[`BidControlsComponent matches snapshot 1`] = `
     labelSrOnly={false}
     name=""
     onCheckBoxClick={[Function]}
-    onClick={[Function]}
+    overrideLifecycle={true}
     small={true}
     title=""
     value={false}

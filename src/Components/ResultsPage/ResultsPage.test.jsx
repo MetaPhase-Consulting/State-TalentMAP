@@ -20,78 +20,61 @@ describe('ResultsPageComponent', () => {
   },
   ];
 
+  const props = {
+    results: resultsObject,
+    hasErrored: true,
+    isLoading: false,
+    sortBy: POSITION_SEARCH_SORTS,
+    defaultSort,
+    pageSizes: POSITION_PAGE_SIZES,
+    defaultPageSize,
+    onQueryParamUpdate: () => {},
+    resetFilters: () => {},
+    onQueryParamToggle: () => {},
+    setAccordion: () => {},
+    filters: items,
+    onUpdate: () => {},
+    saveSearch: () => {},
+    newSavedSearchSuccess: {},
+    newSavedSearchHasErrored: false,
+    newSavedSearchIsSaving: false,
+    resetSavedSearchAlerts: () => {},
+    fetchMissionAutocomplete: () => {},
+    missionSearchResults: [],
+    missionSearchIsLoading: false,
+    missionSearchHasErrored: false,
+    fetchPostAutocomplete: () => {},
+    postSearchResults: [],
+    postSearchIsLoading: false,
+    postSearchHasErrored: false,
+    shouldShowSearchBar: true,
+    bidList: [],
+    filtersIsLoading: false,
+  };
+
   it('is defined', () => {
-    wrapper = shallow(<ResultsPage
-      results={resultsObject}
-      hasErrored
-      isLoading={false}
-      sortBy={POSITION_SEARCH_SORTS}
-      defaultSort={defaultSort}
-      pageSizes={POSITION_PAGE_SIZES}
-      defaultPageSize={defaultPageSize}
-      onQueryParamUpdate={() => {}}
-      resetFilters={() => {}}
-      onQueryParamToggle={() => {}}
-      setAccordion={() => {}}
-      filters={items}
-      onUpdate={() => {}}
-      saveSearch={() => {}}
-      newSavedSearchSuccess={{}}
-      newSavedSearchHasErrored={false}
-      newSavedSearchIsSaving={false}
-      resetSavedSearchAlerts={() => {}}
-      fetchMissionAutocomplete={() => {}}
-      missionSearchResults={[]}
-      missionSearchIsLoading={false}
-      missionSearchHasErrored={false}
-      fetchPostAutocomplete={() => {}}
-      postSearchResults={[]}
-      postSearchIsLoading={false}
-      postSearchHasErrored={false}
-      shouldShowSearchBar
-      bidList={[]}
-      filtersIsLoading={false}
+    wrapper = shallow(<ResultsPage.WrappedComponent
+      {...props}
     />);
     expect(wrapper).toBeDefined();
   });
 
-  it('can receive props', () => {
-    wrapper = shallow(<ResultsPage
-      results={resultsObject}
-      hasErrored
-      isLoading={false}
-      sortBy={POSITION_SEARCH_SORTS}
-      defaultSort={defaultSort}
-      pageSizes={POSITION_PAGE_SIZES}
-      defaultPageSize={defaultPageSize}
-      onQueryParamUpdate={() => {}}
-      resetFilters={() => {}}
-      onQueryParamToggle={() => {}}
-      setAccordion={() => {}}
-      filters={items}
-      onUpdate={() => {}}
-      saveSearch={() => {}}
-      newSavedSearchSuccess={{}}
-      newSavedSearchHasErrored={false}
-      newSavedSearchIsSaving={false}
-      resetSavedSearchAlerts={() => {}}
-      fetchMissionAutocomplete={() => {}}
-      missionSearchResults={[]}
-      missionSearchIsLoading={false}
-      missionSearchHasErrored={false}
-      fetchPostAutocomplete={() => {}}
-      postSearchResults={[]}
-      postSearchIsLoading={false}
-      postSearchHasErrored={false}
-      shouldShowSearchBar
-      bidList={[]}
-      filtersIsLoading={false}
+  it('updates when props are not equal', () => {
+    wrapper = shallow(<ResultsPage.WrappedComponent
+      {...props}
     />);
-    expect(wrapper.instance().props.results.results[0].id).toBe(6);
+    expect(wrapper.instance().shouldComponentUpdate({})).toBe(true);
   });
 
   it('can receive props', () => {
-    wrapper = shallow(<ResultsPage
+    wrapper = shallow(<ResultsPage.WrappedComponent
+      {...props}
+    />);
+    expect(wrapper.instance().props.results.results[0].position.id).toBe(6);
+  });
+
+  it('can receive props', () => {
+    wrapper = shallow(<ResultsPage.WrappedComponent
       hasErrored={false}
       isLoading={false}
       sortBy={POSITION_SEARCH_SORTS}

@@ -3,7 +3,7 @@
 exports[`SavedSearchesComponent matches snapshot 1`] = `
 <div
   className="usa-grid-full profile-content-inner-container saved-searches-container saved-searches-page
-      "
+        "
 >
   <div
     className="usa-grid-full searches-top-section"
@@ -27,6 +27,7 @@ exports[`SavedSearchesComponent matches snapshot 1`] = `
         id="sort"
         includeFirstEmptyOption={false}
         label="Sort by:"
+        labelSrOnly={false}
         onSelectOption={[Function]}
         options={
           Array [
@@ -49,6 +50,30 @@ exports[`SavedSearchesComponent matches snapshot 1`] = `
       />
     </div>
   </div>
+  <Nav
+    denominator={1}
+    onClick={[Function]}
+    options={
+      Array [
+        Object {
+          "numerator": 1,
+          "title": "All Saved Searches",
+          "value": "all",
+        },
+        Object {
+          "numerator": 1,
+          "title": "Open Positions",
+          "value": "open",
+        },
+        Object {
+          "numerator": 0,
+          "title": "Projected Vacancies",
+          "value": "pv",
+        },
+      ]
+    }
+    selected="all"
+  />
   <SavedSearchesList
     deleteSearch={[Function]}
     goToSavedSearch={[Function]}
@@ -62,13 +87,13 @@ exports[`SavedSearchesComponent matches snapshot 1`] = `
             "date_updated": "2018-03-09T17:47:07.133651Z",
             "endpoint": "/api/v1/position/",
             "filters": Object {
-              "grade__code__in": "02",
               "is_domestic": "true",
-              "post__cost_of_living_adjustment__gt": "0",
-              "post__in": "151",
-              "post__tour_of_duty__code__in": "O,Q",
+              "position__grade__code__in": "02",
+              "position__post__cost_of_living_adjustment__gt": "0",
+              "position__post__in": "151",
+              "position__post__tour_of_duty__code__in": "O,Q",
+              "position__skill__code__in": "6080,2080",
               "q": "german",
-              "skill__code__in": "6080,2080",
             },
             "id": 7,
             "name": "Test 33",

@@ -2,7 +2,8 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import toJSON from 'enzyme-to-json';
 import sinon from 'sinon';
-import ResultsContainer from './ResultsContainer';
+import ResultsContainer, { mapDispatchToProps } from './ResultsContainer';
+import { testDispatchFunctions } from '../../testUtilities/testUtilities';
 import resultsObject from '../../__mocks__/resultsObject';
 
 describe('ResultsContainerComponent', () => {
@@ -24,7 +25,7 @@ describe('ResultsContainerComponent', () => {
 
   it('is defined', () => {
     wrapper = shallow(
-      <ResultsContainer
+      <ResultsContainer.WrappedComponent
         results={resultsObject}
         isLoading={isLoading}
         queryParamUpdate={onQueryParamUpdate}
@@ -46,7 +47,7 @@ describe('ResultsContainerComponent', () => {
   });
 
   it('can receive props', () => {
-    wrapper = shallow(<ResultsContainer
+    wrapper = shallow(<ResultsContainer.WrappedComponent
       results={resultsObject}
       isLoading={isLoading}
       queryParamUpdate={onQueryParamUpdate}
@@ -68,7 +69,7 @@ describe('ResultsContainerComponent', () => {
   });
 
   it('can receive different types of results', () => {
-    wrapper = shallow(<ResultsContainer
+    wrapper = shallow(<ResultsContainer.WrappedComponent
       results={{ results: [] }}
       isLoading={!isLoading}
       queryParamUpdate={onQueryParamUpdate}
@@ -92,7 +93,7 @@ describe('ResultsContainerComponent', () => {
   it('can call the onPageChange function', () => {
     const spy = sinon.spy();
     const scrollSpy = sinon.spy();
-    wrapper = shallow(<ResultsContainer
+    wrapper = shallow(<ResultsContainer.WrappedComponent
       results={{ results: [] }}
       isLoading={!isLoading}
       queryParamUpdate={spy}
@@ -116,8 +117,33 @@ describe('ResultsContainerComponent', () => {
     sinon.assert.calledOnce(scrollSpy);
   });
 
+  it('calls queryParamUpdate on onSelectOrdering()', () => {
+    const spy = sinon.spy();
+    wrapper = shallow(<ResultsContainer.WrappedComponent
+      results={{ results: [] }}
+      isLoading={!isLoading}
+      queryParamUpdate={spy}
+      sortBy={sortBy}
+      pageSizes={pageSizes}
+      pageSize={20}
+      totalResuls={totalResults}
+      hasLoaded={false}
+      onToggle={onToggle}
+      onQueryParamToggle={() => {}}
+      saveSearch={() => {}}
+      newSavedSearchSuccess={{}}
+      newSavedSearchHasErrored={false}
+      newSavedSearchIsSaving={false}
+      scrollToTop={() => {}}
+      resetSavedSearchAlerts={() => {}}
+      bidList={[]}
+    />);
+    wrapper.instance().onSelectOrdering({ target: { value: 1 } });
+    sinon.assert.calledOnce(spy);
+  });
+
   it('matches snapshot', () => {
-    wrapper = shallow(<ResultsContainer
+    wrapper = shallow(<ResultsContainer.WrappedComponent
       results={resultsObject}
       isLoading={isLoading}
       queryParamUpdate={onQueryParamUpdate}
@@ -137,4 +163,8 @@ describe('ResultsContainerComponent', () => {
     />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
+});
+
+describe('mapDispatchToProps', () => {
+  testDispatchFunctions(mapDispatchToProps);
 });

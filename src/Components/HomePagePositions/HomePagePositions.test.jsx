@@ -3,25 +3,22 @@ import toJSON from 'enzyme-to-json';
 import React from 'react';
 import HomePagePositions from './HomePagePositions';
 import bidListObject from '../../__mocks__/bidListObject';
-import { USER_SKILL_CODE_POSITIONS, USER_GRADE_RECENT_POSITIONS, SERVICE_NEED_POSITIONS,
-RECENTLY_POSTED_POSITIONS, FAVORITED_POSITIONS } from '../../Constants/PropTypes';
+import { USER_SKILL_CODE_POSITIONS, SERVICE_NEED_POSITIONS, FAVORITED_POSITIONS } from '../../Constants/PropTypes';
 import { DEFAULT_HOME_PAGE_POSITIONS } from '../../Constants/DefaultProps';
 
 describe('HomePageComponent', () => {
   const props = {
     homePagePositions: {
-      [USER_SKILL_CODE_POSITIONS]: [{ id: 1, skill: 'skill 1' }],
-      [USER_GRADE_RECENT_POSITIONS]: [{ id: 2, grade: '03' }],
-      [SERVICE_NEED_POSITIONS]: [{ id: 3 }],
+      [USER_SKILL_CODE_POSITIONS]: [{ position: { id: 1, skill: 'skill 1' } }],
+      [SERVICE_NEED_POSITIONS]: [{ position: { id: 2, grade: '03' } }],
     },
     bidList: bidListObject.results,
     userProfile: { skills: ['1', '2'], grade: '03' },
   };
 
   const fallBackPositions = {
-    [SERVICE_NEED_POSITIONS]: [{ id: 3 }],
-    [FAVORITED_POSITIONS]: [{ id: 101 }],
-    [RECENTLY_POSTED_POSITIONS]: [{ id: 202 }],
+    [SERVICE_NEED_POSITIONS]: [{ position: { id: 3 } }],
+    [FAVORITED_POSITIONS]: [{ position: { id: 101 } }],
   };
 
   it('is defined', () => {
@@ -35,10 +32,8 @@ describe('HomePageComponent', () => {
     const wrapper = shallow(<HomePagePositions
       {...props}
     />);
-    expect(wrapper.instance().props.bidList).toBe(props.bidList);
     expect(wrapper.find('HomePagePositionsSection').at(0).prop('positions').length).toBeGreaterThan(0);
     expect(wrapper.find('HomePagePositionsSection').at(1).prop('positions').length).toBeGreaterThan(0);
-    expect(wrapper.find('HomePagePositionsSection').at(2).prop('positions').length).toBeGreaterThan(0);
   });
 
   it('does not display the Featured positions section when there are no featured positions', () => {
@@ -47,8 +42,7 @@ describe('HomePageComponent', () => {
       homePagePositions={{ ...props.homePagePositions, [SERVICE_NEED_POSITIONS]: [] }}
     />);
     expect(wrapper.find('HomePagePositionsSection').at(0).prop('title')).toBe('Positions in skill 1');
-    expect(wrapper.find('HomePagePositionsSection').at(1).prop('title')).toBe('Recently Posted Positions in Grade 03');
-    expect(wrapper.find('HomePagePositionsSection')).toHaveLength(2);
+    expect(wrapper.find('HomePagePositionsSection')).toHaveLength(1);
   });
 
   it('sets fallback positions', () => {
@@ -56,8 +50,7 @@ describe('HomePageComponent', () => {
       {...props}
       homePagePositions={fallBackPositions}
     />);
-    expect(wrapper.find('HomePagePositionsSection').at(1).prop('positions')[0].id).toBe(101);
-    expect(wrapper.find('HomePagePositionsSection').at(2).prop('positions')[0].id).toBe(202);
+    expect(wrapper.find('HomePagePositionsSection').at(1).prop('positions')[0].position.id).toBe(101);
   });
 
   it('sets titles correctly for fallback positions', () => {
@@ -66,7 +59,6 @@ describe('HomePageComponent', () => {
       homePagePositions={fallBackPositions}
     />);
     expect(wrapper.find('HomePagePositionsSection').at(1).prop('title')).toBe('Favorited Positions');
-    expect(wrapper.find('HomePagePositionsSection').at(2).prop('title')).toBe('Recently Posted Positions');
   });
 
   it('sets links correctly for fallback positions', () => {
@@ -75,7 +67,6 @@ describe('HomePageComponent', () => {
       homePagePositions={fallBackPositions}
     />);
     expect(wrapper.find('HomePagePositionsSection').at(1).prop('viewMoreLink')).toBe('/profile/favorites/');
-    expect(wrapper.find('HomePagePositionsSection').at(2).prop('viewMoreLink')).toBe('/results?ordering=-posted_date');
   });
 
   it('can set position section titles correctly', () => {
@@ -83,7 +74,6 @@ describe('HomePageComponent', () => {
       {...props}
     />);
     expect(wrapper.find('HomePagePositionsSection').at(1).prop('title')).toBe('Positions in skill 1');
-    expect(wrapper.find('HomePagePositionsSection').at(2).prop('title')).toBe('Recently Posted Positions in Grade 03');
   });
 
   it('matches snapshot when the positions arrays are empty', () => {

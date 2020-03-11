@@ -49,7 +49,6 @@ describe('Home', () => {
       />);
     wrapper.instance().setState({ hasFetched: false });
     wrapper.setProps({});
-    expect(wrapper.instance().state.hasFetched).toBe(true);
     sinon.assert.calledOnce(spy);
   });
 
@@ -64,6 +63,23 @@ describe('Home', () => {
     wrapper.setProps({});
     expect(wrapper.instance().state.hasFetched).toBe(true);
     sinon.assert.notCalled(spy);
+  });
+
+  it('does not fetch data on prop update when hasFetched is true', (done) => {
+    const wrapper = shallow(
+      <HomePagePositionsContainer.WrappedComponent
+        {...props}
+        userProfile={{}}
+        homePagePositionsIsLoading
+      />);
+    wrapper.instance().UNSAFE_componentWillReceiveProps({
+      ...props,
+      homePagePositionsIsLoading: false,
+    });
+    setTimeout(() => {
+      expect(wrapper.instance().state.hasFetched).toBe(true);
+      done();
+    }, 5);
   });
 });
 

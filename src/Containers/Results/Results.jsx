@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
-import { debounce, get, isString } from 'lodash';
+import { debounce, get, keys, isString, omit, pickBy } from 'lodash';
 import queryParamUpdate from '../queryParams';
 import { scrollToTop, cleanQueryParams, getAssetPath } from '../../utilities';
 import { resultsFetchData } from '../../actions/results';
 import { filtersFetchData } from '../../actions/filters/filters';
 import { bidListFetchData } from '../../actions/bidList';
-import { saveSearch } from '../../actions/savedSearch';
+import { storeCurrentSearch } from '../../actions/savedSearch';
 import { missionSearchFetchData } from '../../actions/autocomplete/missionAutocomplete';
 import { postSearchFetchData } from '../../actions/autocomplete/postAutocomplete';
 import { setSelectedAccordion } from '../../actions/selectedAccordion';
@@ -18,25 +18,25 @@ import { toggleSearchBar } from '../../actions/showSearchBar';
 import ResultsPage from '../../Components/ResultsPage/ResultsPage';
 import CompareDrawer from '../../Components/CompareDrawer';
 import { POSITION_SEARCH_RESULTS, FILTERS_PARENT, ACCORDION_SELECTION_OBJECT,
-USER_PROFILE, SAVED_SEARCH_MESSAGE, SAVED_SEARCH_OBJECT, MISSION_DETAILS_ARRAY, POST_DETAILS_ARRAY,
-EMPTY_FUNCTION, BID_LIST } from '../../Constants/PropTypes';
+  USER_PROFILE, MISSION_DETAILS_ARRAY, POST_DETAILS_ARRAY,
+  EMPTY_FUNCTION, BID_LIST, BIDDER_OBJECT } from '../../Constants/PropTypes';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
-import { POSITION_SEARCH_SORTS, POSITION_PAGE_SIZES, POSITION_PAGE_SIZES_TYPE } from '../../Constants/Sort';
+import { POSITION_PAGE_SIZES, POSITION_PAGE_SIZES_TYPE,
+  POSITION_SEARCH_SORTS_DYNAMIC } from '../../Constants/Sort';
 
 const DEFAULT_PAGE_NUMBER = 1;
+
+// eslint-disable-next-line no-confusing-arrow
+const POSITION_SEARCH_SORT$ = () => POSITION_SEARCH_SORTS_DYNAMIC;
 
 class Results extends Component {
   constructor(props) {
     super(props);
-    this.onQueryParamUpdate = this.onQueryParamUpdate.bind(this);
-    this.onQueryParamToggle = this.onQueryParamToggle.bind(this);
-    this.resetFilters = this.resetFilters.bind(this);
-    this.saveSearch = this.saveSearch.bind(this);
     this.state = {
       key: 0,
       query: { value: window.location.search.replace('?', '') || '' },
-      defaultSort: { value: POSITION_SEARCH_SORTS.defaultSort },
+      defaultSort: { value: POSITION_SEARCH_SORT$().defaultSort },
       defaultPageSize: { value: props.defaultPageSize },
       defaultPageNumber: { value: DEFAULT_PAGE_NUMBER },
       defaultKeyword: { value: '' },
@@ -47,8 +47,10 @@ class Results extends Component {
     this.debounced = debounce(() => {});
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { isAuthorized, onNavigateTo } = this.props;
+    // store default search
+    this.storeSearch();
     // check auth
     if (!isAuthorized()) {
       onNavigateTo(LOGIN_REDIRECT);
@@ -58,21 +60,21 @@ class Results extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.filtersIsLoading === false) {
       this.setState({ filtersIsLoading: false });
     }
   }
 
   // for when we need to UPDATE the ENTIRE value of a filter
-  onQueryParamUpdate(q) {
+  onQueryParamUpdate = q => {
     const newQueryString = queryParamUpdate(q, this.state.query.value);
     // and push to history
     this.updateHistory(newQueryString);
-  }
+  };
 
   // for when we need to ADD or DELETE a NESTED value of a filter
-  onQueryParamToggle(param, value, remove) {
+  onQueryParamToggle = (param, value, remove) => {
     const stringifiedValue = value.toString();
     const parsedQuery = queryString.parse(this.state.query.value);
     // was the key found?
@@ -120,17 +122,43 @@ class Results extends Component {
     if (newQueryString !== this.state.query.value) {
       this.updateHistory(newQueryString);
     }
+  };
+
+  // check if there are filters selected so that the clear filters button can be displayed or hidden
+  getQueryExists = () => {
+    const { query: { value } } = this.state;
+    let query = queryString.parse(value);
+    // omit page size and ordering
+    query = omit(query, ['limit', 'ordering']);
+    // remove any falsy props, unless it's a 0
+    query = pickBy(query, v => v || v === 0);
+    // query exists if it has keys
+    return !!keys(query).length;
+  };
+
+  getStringifiedQuery(q) {
+    // ResultsPage is connected so we access the ref's functions slightly differently
+    // https://github.com/reduxjs/react-redux/issues/475#issuecomment-242976693
+    const keyword = get(this, 'resultsPageRef.getWrappedInstance')
+      ? this.resultsPageRef.getWrappedInstance().keywordRef.getValue() : '';
+    if (isString(keyword)) {
+      const parsed$ = queryString.parse(q);
+      parsed$.q = keyword;
+      return queryString.stringify(parsed$);
+    }
+    return false;
   }
 
   createQueryParams() {
     const { query, defaultSort, defaultPageSize, defaultPageNumber, defaultKeyword } = this.state;
     const { filters, fetchFilters } = this.props;
+    const filters$ = { ...filters };
     // set our current query
     const parsedQuery = queryString.parse(query.value);
     const { ordering, limit, page, q } = parsedQuery;
     // set our default ordering
     defaultSort.value =
-      ordering || POSITION_SEARCH_SORTS.defaultSort;
+      ordering || POSITION_SEARCH_SORT$().defaultSort;
     // set our default page size
     defaultPageSize.value =
       parseInt(limit, 10) || this.props.defaultPageSize;
@@ -157,10 +185,10 @@ class Results extends Component {
     // as a param, which tells our filters action
     // to not perform AJAX, and simply compare
     // the query params against the filters
-    if (filters.hasFetched) {
-      fetchFilters(filters, newQuery, filters);
+    if (filters$.hasFetched) {
+      fetchFilters(filters$, newQuery, filters$);
     } else { // if not, we'll perform AJAX
-      fetchFilters(filters, newQuery);
+      fetchFilters(filters$, newQuery);
     }
     // fetch new results
     this.callFetchData(newQueryString);
@@ -172,15 +200,14 @@ class Results extends Component {
 
     // check if the keyword changed
     if (this.resultsPageRef) {
-      const keyword = this.resultsPageRef.getKeywordValue();
-      if (isString(keyword)) {
-        const parsed$ = queryString.parse(q);
-        parsed$.q = keyword;
-        q$ = queryString.stringify(parsed$);
+      const q$$ = this.getStringifiedQuery(q);
+      if (q$$) {
+        q$ = q$$;
       }
     }
 
     this.setState({ query: { value: q$ } }, () => {
+      this.storeSearch();
       window.history.pushState('', '', getAssetPath(`/results?${q$}`));
       this.debounced.cancel();
       // add debounce so that quickly selecting multiple filters is smooth
@@ -190,42 +217,37 @@ class Results extends Component {
   }
 
   // reset to no query params
-  resetFilters() {
+  resetFilters = () => {
     this.context.router.history.push({
       search: '',
     });
-  }
+  };
 
   callFetchData(q) {
     this.props.fetchData(q);
   }
 
-  // When we want to save a search, the child component passes a string for the name (e)
-  // We'll handle the actual "filters" object here
-  // An optional "id" can be passed if we want to patch an existing saved search
-  saveSearch(e, id) {
+  // Store the last search for use in creating a new saved search
+  storeSearch() {
     // parse the string to an object
     const parsedQuery = queryString.parse(this.state.query.value);
     // remove any invalid filters
     const cleanedQuery = cleanQueryParams(parsedQuery);
-    // form our object for the API
-    const queryObject = Object.assign({}, {
-      name: e,
-      endpoint: '/api/v1/position/',
-      filters: cleanedQuery,
-    });
-    // send formed object to our redux action
-    this.props.saveSearch(queryObject, id);
+    // store formed object in redux
+    this.props.storeSearch(cleanedQuery);
   }
 
   render() {
     const { results, hasErrored, isLoading, filters,
-            selectedAccordion, setAccordion, userProfile, fetchMissionAutocomplete,
-            missionSearchResults, missionSearchIsLoading, missionSearchHasErrored,
-            currentSavedSearch, newSavedSearchIsSaving,
-            newSavedSearchHasErrored, fetchPostAutocomplete, postSearchResults, postSearchIsLoading,
-            postSearchHasErrored, shouldShowSearchBar, bidList } = this.props;
+      selectedAccordion, setAccordion, userProfile, fetchMissionAutocomplete,
+      missionSearchResults, missionSearchIsLoading, missionSearchHasErrored,
+      fetchPostAutocomplete, postSearchResults, postSearchIsLoading,
+      postSearchHasErrored, shouldShowSearchBar, bidList,
+      client, clientIsLoading, clientHasErrored } = this.props;
     const { filtersIsLoading } = this.state;
+    const filters$ = { ...filters };
+    const showClear = this.getQueryExists();
+    const isClient = client && !!client.id && !clientIsLoading && !clientHasErrored;
     return (
       <div>
         <ResultsPage
@@ -234,7 +256,7 @@ class Results extends Component {
           hasErrored={hasErrored}
           isLoading={isLoading}
           filtersIsLoading={filtersIsLoading}
-          sortBy={POSITION_SEARCH_SORTS}
+          sortBy={POSITION_SEARCH_SORT$()}
           defaultSort={this.state.defaultSort.value}
           pageSizes={POSITION_PAGE_SIZES}
           defaultPageSize={this.state.defaultPageSize.value}
@@ -243,16 +265,12 @@ class Results extends Component {
           defaultKeyword={this.state.defaultKeyword.value}
           resetFilters={this.resetFilters}
           pillFilters={filters.mappedParams}
-          filters={filters.filters}
+          filters={filters$.filters}
           onQueryParamToggle={this.onQueryParamToggle}
           selectedAccordion={selectedAccordion}
           setAccordion={setAccordion}
           scrollToTop={scrollToTop}
           userProfile={userProfile}
-          newSavedSearchIsSaving={newSavedSearchIsSaving}
-          newSavedSearchHasErrored={newSavedSearchHasErrored}
-          saveSearch={this.saveSearch}
-          currentSavedSearch={currentSavedSearch}
           fetchMissionAutocomplete={fetchMissionAutocomplete}
           missionSearchResults={missionSearchResults}
           missionSearchIsLoading={missionSearchIsLoading}
@@ -264,6 +282,8 @@ class Results extends Component {
           shouldShowSearchBar={shouldShowSearchBar}
           bidList={bidList.results}
           isProjectedVacancy={results.isProjectedVacancy}
+          showClear={showClear}
+          isClient={isClient}
         />
         <CompareDrawer />
       </div>
@@ -283,15 +303,13 @@ Results.propTypes = {
   results: POSITION_SEARCH_RESULTS,
   isAuthorized: PropTypes.func.isRequired,
   filters: FILTERS_PARENT,
+  // Used via nextProps
+  // eslint-disable-next-line react/no-unused-prop-types
   filtersIsLoading: PropTypes.bool,
   fetchFilters: PropTypes.func.isRequired,
   selectedAccordion: ACCORDION_SELECTION_OBJECT,
   setAccordion: PropTypes.func.isRequired,
   userProfile: USER_PROFILE,
-  newSavedSearchIsSaving: PropTypes.bool.isRequired,
-  newSavedSearchHasErrored: SAVED_SEARCH_MESSAGE,
-  saveSearch: PropTypes.func.isRequired,
-  currentSavedSearch: SAVED_SEARCH_OBJECT,
   fetchMissionAutocomplete: PropTypes.func.isRequired,
   missionSearchResults: MISSION_DETAILS_ARRAY.isRequired,
   missionSearchIsLoading: PropTypes.bool.isRequired,
@@ -305,6 +323,10 @@ Results.propTypes = {
   bidList: BID_LIST.isRequired,
   bidListFetchData: PropTypes.func.isRequired,
   defaultPageSize: PropTypes.number.isRequired,
+  storeSearch: PropTypes.func,
+  client: BIDDER_OBJECT,
+  clientIsLoading: PropTypes.bool,
+  clientHasErrored: PropTypes.bool,
 };
 
 Results.defaultProps = {
@@ -316,9 +338,6 @@ Results.defaultProps = {
   filtersIsLoading: true,
   selectedAccordion: ACCORDION_SELECTION,
   userProfile: {},
-  newSavedSearchHasErrored: false,
-  newSavedSearchIsSaving: false,
-  currentSavedSearch: {},
   fetchMissionAutocomplete: EMPTY_FUNCTION,
   missionSearchResults: [],
   missionSearchIsLoading: false,
@@ -330,10 +349,10 @@ Results.defaultProps = {
   shouldShowSearchBar: true,
   debounceTimeInMs: 50,
   bidList: { results: [] },
-};
-
-Results.contextTypes = {
-  router: PropTypes.object,
+  storeSearch: EMPTY_FUNCTION,
+  client: {},
+  clientIsLoading: false,
+  clientHasErrored: false,
 };
 
 const mapStateToProps = state => ({
@@ -346,9 +365,6 @@ const mapStateToProps = state => ({
   selectedAccordion: state.selectedAccordion,
   routerLocations: state.routerLocations,
   userProfile: state.userProfile,
-  newSavedSearchIsSaving: state.newSavedSearchIsSaving,
-  newSavedSearchHasErrored: state.newSavedSearchHasErrored,
-  currentSavedSearch: state.currentSavedSearch,
   missionSearchResults: state.missionSearchSuccess,
   missionSearchIsLoading: state.missionSearchIsLoading,
   missionSearchHasErrored: state.missionSearchHasErrored,
@@ -358,6 +374,9 @@ const mapStateToProps = state => ({
   shouldShowSearchBar: state.shouldShowSearchBar,
   bidList: state.bidListFetchDataSuccess,
   defaultPageSize: get(state, `sortPreferences.${POSITION_PAGE_SIZES_TYPE}.defaultSort`, POSITION_PAGE_SIZES.defaultSort),
+  client: get(state, 'clientView.client'),
+  clientIsLoading: get(state, 'clientView.isLoading'),
+  clientHasErrored: get(state, 'clientView.hasErrored'),
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -366,11 +385,11 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(filtersFetchData(items, queryParams, savedFilters, true)),
   setAccordion: accordion => dispatch(setSelectedAccordion(accordion)),
   onNavigateTo: dest => dispatch(push(dest)),
-  saveSearch: (object, id) => dispatch(saveSearch(object, id)),
   fetchMissionAutocomplete: query => dispatch(missionSearchFetchData(query)),
   fetchPostAutocomplete: query => dispatch(postSearchFetchData(query)),
   toggleSearchBarVisibility: bool => dispatch(toggleSearchBar(bool)),
   bidListFetchData: () => dispatch(bidListFetchData()),
+  storeSearch: obj => dispatch(storeCurrentSearch(obj)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Results));

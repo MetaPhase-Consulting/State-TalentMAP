@@ -2,6 +2,8 @@ $filter-container-width: 24%;
 $results-container-width: 100% - $filter-container-width;
 
 .results {
+  position: relative;
+
   label {
     font-size: .9em;
   }
@@ -62,6 +64,17 @@ $results-container-width: 100% - $filter-container-width;
 
   .bid-count-container {
     font-size: .8em;
+  }
+
+  .compare-check-box-container {
+    border: 1px solid $blue-primary;
+    border-radius: 5px;
+    color: $blue-primary;
+
+    &.compare-checked {
+      background-color: $blue-primary;
+      color: $color-white;
+    }
   }
 
   .header {
@@ -316,6 +329,35 @@ $results-container-width: 100% - $filter-container-width;
       margin: 15px;
     }
   }
+
+  @media screen and (max-width: $screen-sm-max) {
+    .header > h3 {
+      display: inline;
+      margin-right: 0;
+    }
+
+    a {
+      margin-left: 5px;
+    }
+
+    tm-button,
+    .usa-button,
+    .compare-check-box-container {
+      &:not(last-child) {
+        margin-right: 0 !important;
+      }
+    }
+
+    .footer > section {
+      display: block !important;
+    }
+  }
+
+  @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+    .footer > section:nth-child(1) {
+      border-right: 1px solid $color-black;
+    }
+  }
 }
 
 .results-card--secondary {
@@ -345,6 +387,7 @@ $results-container-width: 100% - $filter-container-width;
   height: auto;
   margin-right: 0;
   padding: 0 10px 15px;
+  position: relative;
   width: $filter-container-width;
 
   [type=checkbox],
@@ -357,13 +400,25 @@ $results-container-width: 100% - $filter-container-width;
     position: fixed;
   }
 
+  [type=checkbox] + label::before {
+    float: left;
+  }
+
   label {
     margin-top: 1rem;
+
+    > span {
+      display: table; // IE-11 compatible
+    }
   }
 
   &.is-loading {
     opacity: .5;
     pointer-events: none;
+
+    @media screen and (max-width: $screen-sm-max) {
+      opacity: 1;
+    }
   }
 
   .projected-vacancy-filter-container {
@@ -383,7 +438,7 @@ $results-container-width: 100% - $filter-container-width;
     .fa {
       color: $color-red;
       float: left;
-      margin: 2px 5px 0 0;
+      margin: 1px 5px 0 0;
     }
   }
 
@@ -400,9 +455,76 @@ $results-container-width: 100% - $filter-container-width;
     }
   }
 
+  @media screen and (max-width: $screen-sm-max) {
+    background: $color-white;
+    border: 0;
+    height: 100%;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    z-index: 10000000;
+
+    .filter-container-bottom {
+      padding: 1.5em;
+    }
+
+    .toggle-button {
+      justify-content: center;
+      padding: 1em;
+    }
+
+    .search-filters-container {
+      .usa-accordion-button {
+        padding: 1em;
+      }
+    }
+
+    [type=checkbox] {
+      margin-top: 1em;
+    }
+
+    [type=checkbox] + label::before {
+      margin-right: 1.6em;
+    }
+
+    .filter-control-left {
+      display: none;
+    }
+
+    .filter-control-container > .filter-control-right {
+      display: table;
+      float: initial;
+      margin: 0 auto;
+      padding-bottom: 1em;
+      width: initial;
+    }
+  }
+
   .filter-container-top {
-    color: $color-gray-darkest;
-    margin-bottom: .5em;
+    border-bottom: 1px solid $color-gray-light;
+    display: flex;
+    justify-content: space-around;
+    padding: .25em 1.5em;
+
+    > * {
+      flex: 1;
+      flex-grow: 1;
+      margin: auto 0;
+    }
+
+    > :nth-child(2) {
+      text-align: center;
+    }
+
+    > :nth-child(3) {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    button {
+      font-size: 1.2rem;
+      margin: 0;
+    }
   }
 
   .filter-container-bottom {
@@ -455,9 +577,30 @@ $results-container-width: 100% - $filter-container-width;
     margin-right: .7em;
   }
 
+  .mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: .5em 0;
+
+    > * {
+      flex: 1;
+      margin: auto 0;
+    }
+
+    .filter-button {
+      display: flex;
+      justify-content: center;
+      text-decoration: underline;
+    }
+  }
+
   @media screen and (max-width: $screen-md-min) {
     padding-left: 0;
     width: 100%;
+  }
+
+  @media screen and (max-width: $screen-sm-max) {
+    padding: 0 1.5em;
   }
 
   .favorite-container {
@@ -467,7 +610,11 @@ $results-container-width: 100% - $filter-container-width;
 
   .results-controls {
     @media screen and (max-width: $screen-md-min) {
-      padding: 0 15px;
+      padding: 0;
+    }
+
+    .usa-button {
+      margin: 0 0 0 .5em;
     }
   }
 
@@ -499,6 +646,7 @@ $results-container-width: 100% - $filter-container-width;
 .results-section-container {
   margin-top: 21px;
   max-width: 1140px;
+  min-height: 500px;
 }
 
 .search-filters-container {
@@ -549,7 +697,8 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .accordion-checkbox-post,
-  .accordion-checkbox-skill {
+  .accordion-checkbox-skill,
+  .accordion-checkbox-language {
     .usa-accordion-button {
       float: left;
       padding-left: 0;
@@ -569,6 +718,7 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .accordion-checkbox-skill,
+  .accordion-checkbox-language,
   .accordion-checkbox-post,
   .accordion-checkbox-bureau {
     padding: 0;
@@ -590,22 +740,15 @@ $results-container-width: 100% - $filter-container-width;
   }
 }
 
+.ap-container {
+  .accordion-checkbox-post {
+    min-height: inherit;
+  }
+}
+
 .language-view-all {
   font-size: .8em;
   padding: .4em;
-}
-
-.accordion-checkbox-language {
-  .usa-accordion-content {
-    background-color: $color-white;
-    color: $color-black;
-  }
-
-  .language-accordion-item {
-    background-color: $color-white;
-    color: $color-black;
-  }
-
 }
 
 .save-new-search-container {
@@ -637,10 +780,6 @@ $results-container-width: 100% - $filter-container-width;
     }
    }
 
-  .saved-search-form {
-    margin-top: 10px;
-  }
-
   .saved-search-form-buttons {
     float: left;
     margin-top: 5px;
@@ -658,7 +797,7 @@ $results-container-width: 100% - $filter-container-width;
   .saved-search-form-secondary-button {
     box-shadow: inset 0 0 0 1px $primary-blue;
     float: left;
-    padding: 1rem 2rem;
+    padding: 1rem 3rem;
 
     // Overrides for box-shadow length
     &:hover {
@@ -724,6 +863,10 @@ $results-container-width: 100% - $filter-container-width;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 130px;
+
+    @media screen and (max-width: $screen-sm-max) {
+      float: right;
+    }
   }
 }
 

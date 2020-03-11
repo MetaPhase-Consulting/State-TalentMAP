@@ -28,6 +28,12 @@ exports[`NotificationsComponent matches snapshot 1`] = `
         suffix="notifications"
         total={1}
       />
+    </Column>
+    <Column
+      as="div"
+      className="total-results-container notifications-controls-container"
+      columns={12}
+    >
       <div>
         <button
           onClick={[Function]}
@@ -49,6 +55,7 @@ exports[`NotificationsComponent matches snapshot 1`] = `
           id="mark-notification-dropdown"
           includeFirstEmptyOption={false}
           label="Bulk Actions:"
+          labelSrOnly={false}
           onSelectOption={[Function]}
           options={
             Array [
@@ -86,6 +93,7 @@ exports[`NotificationsComponent matches snapshot 1`] = `
         deleteOne={[Function]}
         id={1}
         isRead={false}
+        key="1"
         message="message"
         onCheck={[Function]}
         tags={Array []}
@@ -103,10 +111,10 @@ exports[`NotificationsComponent matches snapshot 1`] = `
           activeClassName="active"
           containerClassName="pagination"
           forcePage={1}
-          marginPagesDisplayed={0}
+          marginPagesDisplayed={1}
           nextLabel="Next"
           onPageChange={[Function]}
-          pageRangeDisplayed={4}
+          pageRangeDisplayed={2}
           pageSize={10}
           paginationStyle="pagination"
           previousLabel="Previous"

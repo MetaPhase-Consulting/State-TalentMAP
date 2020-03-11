@@ -9,10 +9,6 @@ import getSuggestionValue from './helpers';
 export default class AutoSuggest extends Component {
   constructor(props) {
     super(props);
-    this.onKeyChange = this.onKeyChange.bind(this);
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
-    this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
-    this.renderSuggestion = this.renderSuggestion.bind(this);
 
     // Autosuggest is a controlled component.
     // This means that you need to provide an input value
@@ -28,7 +24,7 @@ export default class AutoSuggest extends Component {
     this.debounced = debounce(() => {});
   }
 
-  onKeyChange(event, { newValue }) {
+  onKeyChange = (event, { newValue }) => {
     const { displayProperty } = this.props;
     let newStateValue;
     // If the user is typing, then newValue is a string,
@@ -43,28 +39,32 @@ export default class AutoSuggest extends Component {
     this.setState({
       value: newStateValue,
     });
-  }
+  };
 
   // Autosuggest will call this function every time you need to update suggestions.
-  onSuggestionsFetchRequested({ value }) {
+  onSuggestionsFetchRequested = ({ value }) => {
     this.debounced.cancel();
     this.debounced = debounce(q => this.props.getSuggestions(q), this.props.debounceMillis);
     this.debounced(value);
-  }
+  };
 
   // when a suggestion is actually selected
-  onSuggestionSelected(event, { suggestion }) {
+  onSuggestionSelected = (event, { suggestion }) => {
+    const { shouldClearOnSelect } = this.props;
     this.props.onSuggestionSelected(
       this.props.queryProperty.length ? suggestion[this.props.queryProperty] : suggestion,
     );
-  }
+    if (shouldClearOnSelect) {
+      this.setState({ value: '' });
+    }
+  };
 
   // Use your imagination to render suggestions.
-  renderSuggestion(suggestion) {
+  renderSuggestion = suggestion => {
     const { templateProps } = this.props;
     const Template = this.props.suggestionTemplate;
     return <Template suggestion={suggestion} {...templateProps} />;
-  }
+  };
 
   render() {
     const { value } = this.state;
@@ -150,6 +150,9 @@ AutoSuggest.propTypes = {
 
   // props to pass to template
   templateProps: PropTypes.shape({}),
+
+  // should the input be cleared upon selection
+  shouldClearOnSelect: PropTypes.bool,
 };
 
 AutoSuggest.defaultProps = {
@@ -168,4 +171,5 @@ AutoSuggest.defaultProps = {
   className: undefined,
   autoSuggestProps: {},
   templateProps: {},
+  shouldClearOnSelect: false,
 };

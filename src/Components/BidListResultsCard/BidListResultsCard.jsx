@@ -9,25 +9,23 @@ import BidActions from './BidActions';
 import { formatDate, getTimeDistanceInWords } from '../../utilities';
 
 class BidListResultsCard extends Component {
-  constructor(props) {
-    super(props);
-    this.removeBidPosition = this.removeBidPosition.bind(this);
-    this.submitBid = this.submitBid.bind(this);
-  }
-  removeBidPosition() {
+  removeBidPosition = () => {
     const { bid, toggleBidPosition } = this.props;
     toggleBidPosition(bid.position.id, true);
-  }
-  submitBid() {
+  };
+
+  submitBid = () => {
     const { bid, submitBid } = this.props;
     submitBid(bid.id);
-  }
+  };
+
   render() {
     const { bid, condensedView } = this.props;
+    const { position } = bid.position;
     const createdDate = formatDate(bid.create_date);
     const timeDistanceInWords = getTimeDistanceInWords(bid.update_date);
     const contentTitle = timeDistanceInWords && createdDate ?
-    `${timeDistanceInWords} | Added to Bid List: ${createdDate}` : null;
+      `${timeDistanceInWords} | Added to Bid List: ${createdDate}` : null;
     const bidStatistics = get(bid, 'position.bid_statistics[0]', {});
     return (
       <div className="usa-grid-full saved-search-card" key={bid.id}>
@@ -38,10 +36,10 @@ class BidListResultsCard extends Component {
               content={
                 <div>
                   <BidContent
-                    id={bid.position.id}
-                    positionTitle={bid.position.title}
+                    id={position.id}
+                    positionTitle={position.title}
                     status={bid.status}
-                    positionNumber={bid.position.position_number}
+                    positionNumber={position.position_number}
                     postName={bid.post || NO_POST}
                     bidStatistics={bidStatistics}
                   />

@@ -7,10 +7,9 @@ import { POSITION_SEARCH_RESULTS, USER_PROFILE, BID_LIST, EMPTY_FUNCTION } from 
 import HomePagePositionsSection from '../../Components/HomePagePositionsSection';
 
 class Position extends Component {
-
-  componentWillMount() {
-    const { fetchSimilarPositions, id } = this.props;
-    fetchSimilarPositions(id);
+  UNSAFE_componentWillMount() {
+    const { fetchSimilarPositions, id, positionDetailsIsLoading } = this.props;
+    if (!positionDetailsIsLoading) { fetchSimilarPositions(id); }
   }
 
   render() {
@@ -40,6 +39,7 @@ Position.propTypes = {
   userProfile: USER_PROFILE,
   bidList: BID_LIST,
   fetchSimilarPositions: PropTypes.func.isRequired,
+  positionDetailsIsLoading: PropTypes.bool,
 };
 
 Position.defaultProps = {
@@ -50,6 +50,7 @@ Position.defaultProps = {
   userProfile: { favorite_positions: [] },
   bidList: { results: [] },
   fetchSimilarPositions: EMPTY_FUNCTION,
+  positionDetailsIsLoading: false,
 };
 
 const mapStateToProps = state => ({
@@ -63,6 +64,7 @@ const mapStateToProps = state => ({
   similarPositions: state.similarPositions,
   similarPositionsIsLoading: state.similarPositionsIsLoading,
   similarPositionsHasErrored: state.similarPositionsHasErrored,
+  positionDetailsIsLoading: state.positionDetailsIsLoading,
 });
 
 export const mapDispatchToProps = dispatch => ({

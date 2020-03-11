@@ -1,8 +1,11 @@
 # United States Department of State TalentMAP
 
-[![Build Status](https://circleci.com/gh/USStateDept/State-TalentMAP.svg?style=shield)](https://circleci.com/gh/USStateDept/State-TalentMAP/)
-[![Test Coverage](https://codeclimate.com/github/USStateDept/State-TalentMAP/badges/coverage.svg)](https://codeclimate.com/github/USStateDept/State-TalentMAP/coverage)
-[![Code Climate](https://codeclimate.com/github/USStateDept/State-TalentMAP/badges/gpa.svg)](https://codeclimate.com/github/USStateDept/State-TalentMAP)
+<a href="https://circleci.com/gh/MetaPhase-Consulting/State-TalentMAP/" alt="Build Status">
+        <img src="https://circleci.com/gh/MetaPhase-Consulting/State-TalentMAP.svg?style=shield" /></a>
+<a href="https://codeclimate.com/github/MetaPhase-Consulting/State-TalentMAP/coverage" alt="Test Coverage">
+        <img src="https://codeclimate.com/github/MetaPhase-Consulting/State-TalentMAP/badges/coverage.svg" /></a>
+<a href="https://codeclimate.com/github/MetaPhase-Consulting/State-TalentMAP" alt="Code Climate">
+        <img src="https://codeclimate.com/github/MetaPhase-Consulting/State-TalentMAP/badges/gpa.svg" /></a>
 
 A comprehensive research, bidding, and matching system to match Foreign Service employees with the right skills to available posts and positions.
 
@@ -66,6 +69,8 @@ There is a brief deployment guide [here](deploy/DEPLOY.md) that discusses deploy
 ## Accessibility
 
 Accessibility tests can be run in a CI environment using `pa11y-ci`. By default, it tests the URL array found in `.pa11yci` using the WCAG 2.0 AA standard. Be sure to update the array of URLs with IDs that exist in your environment's database.
+
+[USWDS Documentation](https://v1.designsystem.digital.gov/components/) 
 
 ## Contributing
 

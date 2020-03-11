@@ -12,11 +12,28 @@ describe('BidTrackerCardTopComponent', () => {
   const props = {
     bid,
     deleteBid,
+    toggle: () => {},
   };
 
   it('is defined', () => {
     const wrapper = shallow(
       <BidTrackerCardTop {...props} />,
+    );
+    expect(wrapper).toBeDefined();
+  });
+
+  it('is defined with questionText', () => {
+    const questionText = { text: 'text', link: 'link', term: 'term' };
+    const wrapper = shallow(
+      <BidTrackerCardTop {...props} questionText={questionText} />,
+    );
+    expect(wrapper).toBeDefined();
+  });
+
+  it('is defined with questionText', () => {
+    const questionText = { text: 'text', link: 'link', term: 'term' };
+    const wrapper = shallow(
+      <BidTrackerCardTop {...props} questionText={questionText} />,
     );
     expect(wrapper).toBeDefined();
   });

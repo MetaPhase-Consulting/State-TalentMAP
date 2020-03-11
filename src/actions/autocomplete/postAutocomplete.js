@@ -29,24 +29,25 @@ export function postSearchFetchData(query) {
     if (cancel) { cancel(); }
     dispatch(postSearchHasErrored(false));
     dispatch(postSearchIsLoading(true));
-    api().get(`/orgpost/?q=${query}&limit=3`, {
+    /* TODO USE AVAILABLE POSITIONS FEATURE FLAG */
+    api().get(`/orgpost/?q=${query}&limit=3&is_available=true`, {
       cancelToken: new CancelToken((c) => {
         cancel = c;
       }),
     })
-    .then(({ data }) => {
-      dispatch(postSearchIsLoading(false));
-      let filteredResults = [];
-      if (data.results) {
+      .then(({ data }) => {
+        dispatch(postSearchIsLoading(false));
+        let filteredResults = [];
+        if (data.results) {
         // results should have a location
-        filteredResults = data.results.filter(post => post.location.city !== null);
-      }
-      return filteredResults;
-    })
-    .then(results => dispatch(postSearchSuccess(results)))
-    .catch(() => {
-      dispatch(postSearchHasErrored(true));
-      dispatch(postSearchIsLoading(false));
-    });
+          filteredResults = data.results.filter(post => post.location.city !== null);
+        }
+        return filteredResults;
+      })
+      .then(results => dispatch(postSearchSuccess(results)))
+      .catch(() => {
+        dispatch(postSearchHasErrored(true));
+        dispatch(postSearchIsLoading(false));
+      });
   };
 }

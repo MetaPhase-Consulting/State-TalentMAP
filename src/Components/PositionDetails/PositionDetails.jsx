@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { get } from 'lodash';
 import { Row } from '../Layout';
 import Spinner from '../Spinner/Spinner';
 import PositionTitle from '../PositionTitle/PositionTitle';
@@ -11,7 +12,6 @@ import GoBackLink from '../BackButton';
 import { DEFAULT_HIGHLIGHT_POSITION } from '../../Constants/DefaultProps';
 import {
   BID_LIST,
-  GO_BACK_TO_LINK,
   POSITION_DETAILS,
   USER_PROFILE,
   HIGHLIGHT_POSITION,
@@ -21,27 +21,29 @@ import {
 class PositionDetails extends Component {
   constructor(props) {
     super(props);
-    this.editDescriptionContent = this.editDescriptionContent.bind(this);
     this.state = {
       newDescriptionContent: { value: null },
     };
   }
 
+  getChildContext() {
+    return { isClient: this.props.isClient };
+  }
+
   // The additional details section should match after edits are made,
   // so we set the content to a value in local state when ever any edits are made.
-  editDescriptionContent(content) {
+  editDescriptionContent = content => {
     this.props.editDescriptionContent(content);
     const { newDescriptionContent } = this.state;
     newDescriptionContent.value = content;
     this.setState({ newDescriptionContent });
-  }
+  };
 
   render() {
     const {
       details,
       isLoading,
       hasErrored,
-      goBackLink,
       userProfile,
       bidList,
       editPocContent,
@@ -50,6 +52,8 @@ class PositionDetails extends Component {
       highlightPosition,
       onHighlight,
       userProfileIsLoading,
+      isProjectedVacancy,
+      isArchived,
     } = this.props;
 
     const isReady = details.id && userProfile.id && !isLoading && !hasErrored;
@@ -57,6 +61,8 @@ class PositionDetails extends Component {
     const isLoading$ = isLoading || userProfileIsLoading;
 
     const isError = hasErrored && !isLoading && !userProfileIsLoading;
+
+    const { position } = details;
 
     return (
       <div className="content-container position-details-container">
@@ -66,14 +72,20 @@ class PositionDetails extends Component {
         { isReady &&
         <div>
           <PositionTitle
-            details={details}
-            goBackLink={goBackLink}
+            details={{
+              ...position,
+              cpId: details.id,
+              availability: get(details, 'availability', {}),
+              bidStatistics: get(details, 'bid_statistics', [{}]),
+            }}
             bidList={bidList}
             editDescriptionContent={this.editDescriptionContent}
             editPocContent={editPocContent}
             editWebsiteContent={editWebsiteContent}
             resetDescriptionEditMessages={resetDescriptionEditMessages}
             userProfile={userProfile}
+            isProjectedVacancy={isProjectedVacancy}
+            isArchived={isArchived}
           />
           <PositionDetailsItem
             details={details}
@@ -84,10 +96,12 @@ class PositionDetails extends Component {
             userProfile={userProfile}
             highlightPosition={highlightPosition}
             onHighlight={onHighlight}
+            isProjectedVacancy={isProjectedVacancy}
+            isArchived={isArchived}
           />
           <hr />
           <Row className="position-details-description-container padded-main-content" fluid>
-            <PositionSimilarPositions id={details.id} />
+            { !isProjectedVacancy && !isArchived && <PositionSimilarPositions id={details.id} /> }
           </Row>
         </div>}
         {isLoading$ && <Spinner type="position-details" size="big" />}
@@ -102,11 +116,14 @@ class PositionDetails extends Component {
   }
 }
 
+PositionDetails.childContextTypes = {
+  isClient: PropTypes.bool,
+};
+
 PositionDetails.propTypes = {
   details: POSITION_DETAILS,
   isLoading: PropTypes.bool,
   hasErrored: PropTypes.bool,
-  goBackLink: GO_BACK_TO_LINK.isRequired,
   userProfile: USER_PROFILE,
   userProfileIsLoading: PropTypes.bool,
   bidList: BID_LIST.isRequired,
@@ -116,6 +133,9 @@ PositionDetails.propTypes = {
   editWebsiteContent: PropTypes.func.isRequired,
   highlightPosition: HIGHLIGHT_POSITION,
   onHighlight: PropTypes.func.isRequired,
+  isProjectedVacancy: PropTypes.bool,
+  isArchived: PropTypes.bool,
+  isClient: PropTypes.bool,
 };
 
 PositionDetails.defaultProps = {
@@ -129,6 +149,9 @@ PositionDetails.defaultProps = {
   descriptionEditSuccess: false,
   highlightPosition: DEFAULT_HIGHLIGHT_POSITION,
   onHighlight: EMPTY_FUNCTION,
+  isProjectedVacancy: false,
+  isArchived: false,
+  isClient: false,
 };
 
 export default PositionDetails;

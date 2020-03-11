@@ -85,29 +85,25 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'bidcycle_admin',
         ],
       },
-      {
-        text: 'Bidder Portfolio',
-        route: '/profile/bidderportfolio',
-        icon: 'users',
-        isCDO: true,
-        params: {
-          type: 'all',
-        },
-      },
+      checkFlag('flags.client_profiles') ?
+        {
+          text: 'Client Profiles', // aka Bidder Portfolio
+          route: '/profile/bidderportfolio',
+          icon: 'users',
+          isCDO: true,
+          params: {
+            type: 'all',
+          },
+        } : null,
     ],
   },
-  {
-    text: 'Statistics',
-    icon: 'pie-chart',
-    route: '/profile/statistics',
-    isCDO: true,
-  },
-  {
-    text: 'Glossary Editor',
-    icon: 'book',
-    route: '/profile/glossaryeditor/',
-    isGlossaryEditor: true,
-  },
+  checkFlag('flags.bid_stats') ?
+    {
+      text: 'Statistics',
+      icon: 'pie-chart',
+      route: '/profile/statistics',
+      isCDO: true,
+    } : null,
   {
     text: 'Administrator',
     route: '/profile/administrator/',
@@ -116,20 +112,59 @@ export const GET_PROFILE_MENU = () => MenuConfig([
     expandedSection: true,
     roles: [
       'superuser',
+      'glossary_editors',
     ],
     children: [
+      checkFlag('flags.data_sync_admin') ?
+        {
+          text: 'Dashboard',
+          route: '/profile/administrator/dashboard/',
+          icon: 'tachometer',
+          roles: [
+            'superuser',
+          ],
+        } : null,
+      checkFlag('flags.data_sync_admin') ?
+        {
+          text: 'Logs',
+          route: '/profile/administrator/logs/',
+          icon: 'sitemap',
+          roles: [
+            'superuser',
+          ],
+        } : null,
       {
-        text: 'Dashboard',
-        route: '/profile/administrator/dashboard/',
-        icon: 'tachometer',
+        text: 'Statistics',
+        route: '/profile/administrator/stats/',
+        icon: 'bar-chart',
+        roles: [
+          'superuser',
+        ],
       },
       {
-        text: 'Logs',
-        route: '/profile/administrator/logs/',
-        icon: 'sitemap',
+        text: 'User Roles',
+        route: '/profile/administrator/userroles/',
+        // icon: 'user-friends',
+        // icon: 'user-shield',
+        // icon: 'user-lock',
+        // icon: 'user-cog',
+        icon: 'users',
+        // icon: 'user-check',
+        // icon: 'users-cog',
+        roles: [
+          'superuser',
+        ],
+      },
+      {
+        text: 'Glossary Editor',
+        route: '/profile/glossaryeditor/',
+        icon: 'book',
+        roles: [
+          'glossary_editors',
+        ],
       },
     ],
   },
-]);
+].filter(x => x));
 
 export default GET_PROFILE_MENU;

@@ -25,8 +25,8 @@ export function positionCountFetchData() {
   return (dispatch) => {
     dispatch(positionCountIsLoading(true));
     dispatch(positionCountHasErrored(false));
-    // TODO - update to cycleposition
-    api().get('/position/?limit=1')
+    const prefix = '/fsbid/available_positions';
+    api().get(`${prefix}/?limit=1`)
       .then((response) => {
         const { count } = response.data;
         dispatch(positionCountHasErrored(false));

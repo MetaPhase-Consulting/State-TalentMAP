@@ -6,30 +6,25 @@ import SearchResultsExportLink from '../SearchResultsExportLink';
 import PreferenceWrapper from '../../Containers/PreferenceWrapper';
 import { POSITION_SEARCH_RESULTS, SORT_BY_PARENT_OBJECT } from '../../Constants/PropTypes';
 import { POSITION_PAGE_SIZES_TYPE } from '../../Constants/Sort';
-import PermissionsWrapper from '../../Containers/PermissionsWrapper';
+import { Trigger } from '../SaveNewSearch';
+import MediaQuery from '../MediaQuery';
 
 class ResultsControls extends Component {
-  constructor(props) {
-    super(props);
-    this.onSelectOrdering = this.onSelectOrdering.bind(this);
-    this.onSelectLimit = this.onSelectLimit.bind(this);
-  }
-
-  onSelectOrdering(e) {
+  onSelectOrdering = e => {
     this.props.queryParamUpdate({ ordering: e.target.value });
-  }
+  };
 
-  onSelectLimit(e) {
+  onSelectLimit = e => {
     this.props.queryParamUpdate({ limit: e.target.value });
-  }
+  };
 
   render() {
     const { results, hasLoaded, defaultSort, pageSizes,
-            defaultPageSize, defaultPageNumber, sortBy } = this.props;
-    const { isProjectedVacancy } = this.context;
+      defaultPageSize, defaultPageNumber, sortBy } = this.props;
+    const { isClient } = this.context;
     return (
       <div className="usa-grid-full results-controls">
-        <div className="usa-width-five-twelfths total-results">
+        <div className="usa-width-one-fifth total-results">
           {
             // if results have loaded, display the total number of results
             hasLoaded &&
@@ -40,50 +35,54 @@ class ResultsControls extends Component {
               />
           }
         </div>
-        <div className="usa-width-seven-twelfths-thirds drop-downs">
-          <div className="dropdowns-container">
-            <div className="results-dropdown results-dropdown-sort">
-              <SelectForm
-                id="sort"
-                label="Sort by:"
-                onSelectOption={this.onSelectOrdering}
-                options={sortBy.options}
-                defaultSort={defaultSort}
-                className="select-blue select-offset select-small"
-              />
-            </div>
-            {
-              !isProjectedVacancy &&
-              <div className="results-dropdown results-dropdown-page-size">
-                <PreferenceWrapper onSelect={this.onSelectLimit} keyRef={POSITION_PAGE_SIZES_TYPE}>
-                  <SelectForm
-                    id="pageSize"
-                    label="Results:"
-                    options={pageSizes.options}
-                    defaultSort={defaultPageSize}
-                    transformValue={n => parseInt(n, 10)}
-                    className="select-blue select-offset select-small"
-                  />
-                </PreferenceWrapper>
-              </div>
-            }
-            <div className="results-download">
-              <PermissionsWrapper
-                permissions="superuser"
-                fallback={
-                  <span>
+        <MediaQuery breakpoint="screenMdMin" widthType="min">
+          {
+            matches => (matches &&
+              (
+                <div className="usa-width-four-fifths drop-downs">
+                  <div className="dropdowns-container">
+                    <div className="results-dropdown results-dropdown-sort">
+                      <SelectForm
+                        id="sort"
+                        label="Sort by:"
+                        onSelectOption={this.onSelectOrdering}
+                        options={sortBy.options}
+                        defaultSort={defaultSort}
+                        className="select-blue select-offset select-small"
+                      />
+                    </div>
                     {
-                      !isProjectedVacancy &&
-                      <SearchResultsExportLink count={results.count} />
+                      <div className="results-dropdown results-dropdown-page-size">
+                        <PreferenceWrapper
+                          onSelect={this.onSelectLimit}
+                          keyRef={POSITION_PAGE_SIZES_TYPE}
+                        >
+                          <SelectForm
+                            id="pageSize"
+                            label="Results:"
+                            options={pageSizes.options}
+                            defaultSort={defaultPageSize}
+                            transformValue={n => parseInt(n, 10)}
+                            className="select-blue select-offset select-small"
+                          />
+                        </PreferenceWrapper>
+                      </div>
                     }
-                  </span>
-                }
-              >
-                <SearchResultsExportLink count={results.count} />
-              </PermissionsWrapper>
-            </div>
-          </div>
-        </div>
+                    <div className="results-download">
+                      <SearchResultsExportLink count={results.count} />
+                    </div>
+                    {
+                      !isClient &&
+                      <Trigger isPrimary>
+                        <button className="usa-button">Save Search</button>
+                      </Trigger>
+                    }
+                  </div>
+                </div>
+              )
+            )
+          }
+        </MediaQuery>
       </div>
     );
   }
@@ -91,6 +90,7 @@ class ResultsControls extends Component {
 
 ResultsControls.contextTypes = {
   isProjectedVacancy: PropTypes.bool,
+  isClient: PropTypes.bool,
 };
 
 ResultsControls.propTypes = {

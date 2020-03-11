@@ -5,6 +5,7 @@ exports[`BidStepsComponent matches snapshot 1`] = `
   current={0}
   direction="horizontal"
   iconPrefix="rc"
+  initial={0}
   labelPlacement="vertical"
   prefixCls="rc-steps"
   progressDot={false}
@@ -27,6 +28,7 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         number={1}
       />
     }
+    key="1"
     tailContent={null}
     title={
       <div>
@@ -59,6 +61,7 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         number={2}
       />
     }
+    key="2"
     tailContent={null}
     title={
       <div>
@@ -91,19 +94,18 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         number={2}
       />
     }
+    key="3"
     tailContent={null}
     title={
       <div>
         <div
           className="step-title-main-text"
         >
-          Handshake Offered
+          Pending Review
         </div>
         <div
           className="step-title-sub-text"
-        >
-          12/20/2017
-        </div>
+        />
       </div>
     }
   />
@@ -123,13 +125,14 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         number={4}
       />
     }
+    key="4"
     tailContent={null}
     title={
       <div>
         <div
           className="step-title-main-text"
         >
-          Handshake Accepted
+          Handshake Registered
         </div>
         <div
           className="step-title-sub-text"
@@ -155,6 +158,7 @@ exports[`BidStepsComponent matches snapshot 1`] = `
         number={5}
       />
     }
+    key="5"
     tailContent={null}
     title={
       <div>
@@ -179,14 +183,25 @@ exports[`BidStepsComponent matches snapshot 1`] = `
             step-incomplete
           "
     icon={
-      <BidStepIcon
-        hasRescheduledTooltip={false}
-        isComplete={false}
-        isCurrent={true}
-        needsAction={false}
-        number={6}
-      />
+      <ConfettiIcon
+        colors={
+          Array [
+            "#0072c6",
+            "#fff",
+            "#1eb53a",
+          ]
+        }
+      >
+        <BidStepIcon
+          hasRescheduledTooltip={false}
+          isComplete={false}
+          isCurrent={true}
+          needsAction={false}
+          number={6}
+        />
+      </ConfettiIcon>
     }
+    key="6"
     tailContent={null}
     title={
       <div>

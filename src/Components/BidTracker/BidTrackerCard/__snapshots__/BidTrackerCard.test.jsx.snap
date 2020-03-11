@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['BidTrackerCardComponent matches snapshot 1'] = `
+exports[`BidTrackerCardComponent matches snapshot 1`] = `
 <BoxShadow
   blurRadius={10}
   className="bid-tracker   bid-tracker--is-not-priority "
@@ -20,7 +20,9 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
       bid={
         Object {
           "approved_date": "2017-12-20",
-          "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+          "bidcycle": Object {
+            "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+          },
           "closed_date": "2017-12-20",
           "create_date": "2017-12-20",
           "declined_date": "2017-12-20",
@@ -35,7 +37,7 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
             "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
             "create_date": "2015-08-05",
             "grade": "03",
-            "id": 226,
+            "id": 11,
             "position_number": "10035561",
             "post": Object {
               "id": 199,
@@ -68,8 +70,10 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
       }
       deleteBid={[Function]}
       hideDelete={false}
+      questionText={Object {}}
       showBidCount={true}
       showQuestion={true}
+      useCDOView={false}
     />
     <div
       className="usa-grid-full padded-container-inner bid-tracker-bid-steps-container bid-tracker-bid-steps-container--draft"
@@ -78,7 +82,9 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
         bid={
           Object {
             "approved_date": "2017-12-20",
-            "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+            "bidcycle": Object {
+              "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+            },
             "closed_date": "2017-12-20",
             "create_date": "2017-12-20",
             "declined_date": "2017-12-20",
@@ -93,7 +99,7 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
               "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
               "create_date": "2015-08-05",
               "grade": "03",
-              "id": 226,
+              "id": 11,
               "position_number": "10035561",
               "post": Object {
                 "id": 199,
@@ -130,7 +136,9 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
         bid={
           Object {
             "approved_date": "2017-12-20",
-            "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+            "bidcycle": Object {
+              "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+            },
             "closed_date": "2017-12-20",
             "create_date": "2017-12-20",
             "declined_date": "2017-12-20",
@@ -145,7 +153,7 @@ exports['BidTrackerCardComponent matches snapshot 1'] = `
               "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
               "create_date": "2015-08-05",
               "grade": "03",
-              "id": 226,
+              "id": 11,
               "position_number": "10035561",
               "post": Object {
                 "id": 199,

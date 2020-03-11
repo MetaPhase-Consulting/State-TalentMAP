@@ -1,46 +1,54 @@
 import sinon from 'sinon';
 import { isEqual } from 'lodash';
 import { validStateEmail,
-         localStorageFetchValue,
-         localStorageToggleValue,
-         fetchUserToken,
-         pillSort,
-         formExploreRegionDropdown,
-         scrollToTop,
-         getItemLabel,
-         shortenString,
-         cleanQueryParams,
-         ifEnter,
-         formQueryString,
-         propSort,
-         existsInNestedObject,
-         removeDuplicates,
-         getTimeDistanceInWords,
-         formatDate,
-         focusById,
-         focusByFirstOfHeader,
-         wrapForMultiSelect,
-         returnObjectsWherePropMatches,
-         numbersToPercentString,
-         formatBidTitle,
-         formatWaiverTitle,
-         propOrDefault,
-         formatIdSpacing,
-         userHasPermissions,
-         getAssetPath,
-         sortGrades,
-         getApplicationPath,
-         getAccessiblePositionNumber,
-         getPostName,
-         getDifferentialPercentage,
-         mapSavedSearchesToSingleQuery,
-         mapSavedSearchToDescriptions,
-         difference,
-         redirectToLoginRedirect,
-         isUrl,
-         hasValidToken,
-         getScrollDistanceFromBottom,
-       } from './utilities';
+  localStorageFetchValue,
+  localStorageToggleValue,
+  fetchUserToken,
+  pillSort,
+  formExploreRegionDropdown,
+  scrollToTop,
+  getItemLabel,
+  shortenString,
+  cleanQueryParams,
+  ifEnter,
+  formQueryString,
+  propSort,
+  existsInNestedObject,
+  removeDuplicates,
+  getTimeDistanceInWords,
+  formatDate,
+  focusById,
+  focusByFirstOfHeader,
+  wrapForMultiSelect,
+  returnObjectsWherePropMatches,
+  numbersToPercentString,
+  formatBidTitle,
+  formatWaiverTitle,
+  propOrDefault,
+  formatIdSpacing,
+  userHasPermissions,
+  getAssetPath,
+  sortGrades,
+  getApplicationPath,
+  getAccessiblePositionNumber,
+  getPostName,
+  getDifferentialPercentage,
+  mapSavedSearchesToSingleQuery,
+  mapSavedSearchToDescriptions,
+  difference,
+  redirectToLoginRedirect,
+  isUrl,
+  hasValidToken,
+  getScrollDistanceFromBottom,
+  getAriaValue,
+  spliceStringForCSV,
+  scrollToGlossaryTerm,
+  getBidCycleName,
+  loadImg,
+  downloadFromResponse,
+  anyToTitleCase,
+  stopProp,
+} from './utilities';
 import { searchObjectParent } from './__mocks__/searchObject';
 
 describe('local storage', () => {
@@ -485,9 +493,9 @@ describe('formatIdSpacing', () => {
   it('can format undefined values', () => {
     // these will be randomly generated shortids, so we just check that they have length
     // greater than 3
-    expect(formatIdSpacing(undefined).length).toBeGreaterThan(3);
-    expect(formatIdSpacing(null).length).toBeGreaterThan(3);
-    expect(formatIdSpacing(false).length).toBeGreaterThan(3);
+    expect(formatIdSpacing(undefined)).toBeDefined();
+    expect(formatIdSpacing(null)).toBeDefined();
+    expect(formatIdSpacing(false)).toBeDefined();
   });
 });
 
@@ -583,6 +591,11 @@ describe('getPostName', () => {
     expect(getPostName(post)).toBe('Arlington, VA');
   });
 
+  it('returns a domestic post name when country === USA', () => {
+    const post = { location: { city: 'Arlington', state: 'VA', country: 'USA' } };
+    expect(getPostName(post)).toBe('Arlington, VA');
+  });
+
   it('returns an overseas post name', () => {
     const post = { location: { city: 'London', state: null, country: 'United Kingdom' } };
     expect(getPostName(post)).toBe('London, United Kingdom');
@@ -626,18 +639,22 @@ describe('mapSavedSearchesToSingleQuery', () => {
   const searches = searchObjectParent;
   it('maps multiple saved searches to a single query', () => {
     const mappedSearch = mapSavedSearchesToSingleQuery(searches);
-    const expected = { grade__code__in: '02', post__tour_of_duty__code__in: 'O', q: 'german', skill__code__in: '6080' };
+    const expected = {
+      position__grade__code__in: '02',
+      position__post__tour_of_duty__code__in: 'O',
+      q: 'german',
+      position__skill__code__in: '6080',
+    };
     expect(isEqual(mappedSearch, expected)).toBe(true);
   });
 });
 
 describe('mapSavedSearchToDescriptions', () => {
   const searches = searchObjectParent;
-  const mappedFilters = [{ selectionRef: 'skill__code__in', description: 'test A', codeRef: '6080' }];
+  const mappedFilters = [{ selectionRef: 'position__skill__code__in', description: 'test A', codeRef: '6080' }];
   it('maps saved searches to descriptions', () => {
     const mappedDescriptions = mapSavedSearchToDescriptions(
-      searches.results[0].filters, mappedFilters,
-    );
+      searches.results[0].filters, mappedFilters);
     const expected = ['german', 'test A'];
     expect(isEqual(mappedDescriptions, expected)).toBe(true);
   });
@@ -772,5 +789,110 @@ describe('getScrollDistanceFromBottom', () => {
     Object.setPrototypeOf(z, { offsetHeight: 3000 });
     document.body = z;
     expect(getScrollDistanceFromBottom()).toBe(2100);
+  });
+});
+
+describe('getAriaValue', () => {
+  [[true, 'true'], [false, 'false'], ['true', 'true'], ['false', 'false'], [null, 'false'], [1, 'true']]
+    .map(m => (
+      it(`returns ${m[1]} for ${m[0]}`, () => {
+        expect(getAriaValue(m[0])).toBe(m[1]);
+      })
+    ));
+});
+
+describe('spliceStringForCSV', () => {
+  it('splices the string correctly when index 1 === "="', () => {
+    expect(spliceStringForCSV('"=jjj"')).toBe('="jjj"');
+  });
+
+  it('returns the value unchanged when index 1 !== "="', () => {
+    expect(spliceStringForCSV('"jjj"')).toBe('"jjj"');
+  });
+});
+
+describe('scrollToGlossaryTerm', () => {
+  it("calls element's functions", (done) => {
+    const scrollSpy = sinon.spy();
+    const clickSpy = sinon.spy();
+
+    window.document.getElementById = () => ({
+      scrollIntoView: scrollSpy, getAttribute: () => false, click: clickSpy, focus: () => {},
+    });
+
+    scrollToGlossaryTerm('term');
+
+    setTimeout(() => {
+      sinon.assert.calledOnce(scrollSpy);
+      sinon.assert.calledOnce(clickSpy);
+      done();
+    }, 500);
+  });
+
+  describe('getBidCycleName', () => {
+    const cyclename = 'Summer 2020';
+
+    it('returns the correct value for strings', () => {
+      expect(getBidCycleName(cyclename)).toBe(cyclename);
+    });
+
+    it('returns the correct value for objects', () => {
+      expect(getBidCycleName({ name: cyclename })).toBe(cyclename);
+    });
+
+    it('returns the correct value when it cannot find a name', () => {
+      expect(getBidCycleName({ a: cyclename })).not.toBe(cyclename);
+      expect(getBidCycleName([])).not.toBe(cyclename);
+      expect(getBidCycleName({ cyclename: 1 })).not.toBe(cyclename);
+    });
+  });
+
+  describe('loadImg', () => {
+    it('does not throw an error', () => {
+      expect(loadImg).not.toThrowError();
+    });
+  });
+
+  describe('downloadFromResponse', () => {
+    let blobSpy;
+    let response;
+
+    beforeEach(() => {
+      blobSpy = sinon.spy();
+      response = {
+        headers: { 'content-disposition': 'attachment; filename=test.csv' },
+        data: 'some data',
+      };
+      global.window.navigator.msSaveOrOpenBlob = blobSpy;
+    });
+
+    it('calls msSaveOrOpenBlob if msSaveBlob exists', () => {
+      downloadFromResponse(response);
+      sinon.assert.calledOnce(blobSpy);
+      blobSpy.reset();
+    });
+
+    it('does not call msSaveOrOpenBlob if msSaveBlob does not exist', () => {
+      global.window.navigator.msSaveBlob = undefined;
+      downloadFromResponse(response);
+      sinon.assert.notCalled(blobSpy);
+    });
+  });
+
+  describe('anyToTitleCase', () => {
+    it('converts a string to title case', () => {
+      const result = 'The Quick Dog';
+      ['tHE qUick Dog', 'THE QUICK DOG', 'the quick dog', 'The Quick Dog', 'tHe Quick dOg']
+        .map(m => expect(anyToTitleCase(m)).toBe(result));
+    });
+  });
+
+  describe('stopProp', () => {
+    it('calls stopPropagation on stopProp', () => {
+      const spy = sinon.spy();
+      const e = { stopPropagation: spy };
+      stopProp(e);
+      sinon.assert.calledOnce(spy);
+    });
   });
 });

@@ -30,7 +30,9 @@ exports[`IsOnStandbyComponent matches snapshot 1`] = `
       bid={
         Object {
           "approved_date": "2017-12-20",
-          "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+          "bidcycle": Object {
+            "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+          },
           "closed_date": "2017-12-20",
           "create_date": "2017-12-20",
           "declined_date": "2017-12-20",
@@ -45,7 +47,7 @@ exports[`IsOnStandbyComponent matches snapshot 1`] = `
             "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
             "create_date": "2015-08-05",
             "grade": "03",
-            "id": 226,
+            "id": 11,
             "position_number": "10035561",
             "post": Object {
               "id": 199,
@@ -78,8 +80,10 @@ exports[`IsOnStandbyComponent matches snapshot 1`] = `
       }
       deleteBid={[Function]}
       hideDelete={true}
+      questionText={Object {}}
       showBidCount={false}
       showQuestion={false}
+      useCDOView={false}
     />
   </div>
 </div>

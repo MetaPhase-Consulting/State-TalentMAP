@@ -1,10 +1,16 @@
 import Scroll from 'react-scroll';
 import { distanceInWords, format } from 'date-fns';
-import { cloneDeep, get, isEqual, isNumber, isObject, keys, merge as merge$, transform } from 'lodash';
+import { cloneDeep, get, has, intersection, isArray, isEmpty, isEqual, isFunction,
+  isNumber, isObject, isString, keys, lowerCase, merge as merge$, orderBy, split,
+  startCase, take, toLower, toString, transform } from 'lodash';
 import numeral from 'numeral';
 import queryString from 'query-string';
 import shortid from 'shortid';
-import { VALID_PARAMS } from './Constants/EndpointParams';
+import Bowser from 'bowser';
+import Fuse from 'fuse.js';
+import { VALID_PARAMS } from 'Constants/EndpointParams';
+import { NO_BID_CYCLE } from 'Constants/SystemMessages';
+import FLAG_COLORS from 'Constants/FlagColors';
 import { LOGOUT_ROUTE, LOGIN_ROUTE, LOGIN_REDIRECT } from './login/routes';
 
 const scroll = Scroll.animateScroll;
@@ -41,19 +47,32 @@ export function localStorageSetKey(key, value) {
 }
 
 // toggling a specific value in an array
-export function localStorageToggleValue(key, value) {
+// useDispatch: only dispatch an event if true.
+// onlyDelete: don't add, only delete from the array
+export function localStorageToggleValue(key, value, useDispatch = true, onlyDelete = false) {
   const existingArray = JSON.parse(localStorage.getItem(key)) || [];
-  const indexOfId = existingArray.indexOf(value);
+  // check if the value matches, either as a string or as a number
+  let indexOfId = existingArray.indexOf(value);
+  if (indexOfId <= -1) {
+    indexOfId = existingArray.indexOf(Number(value));
+  }
+  if (indexOfId <= -1) {
+    indexOfId = existingArray.indexOf(toString(value));
+  }
   if (indexOfId !== -1) {
     existingArray.splice(indexOfId, 1);
     localStorage.setItem(key,
-        JSON.stringify(existingArray));
-    dispatchLs(key);
-  } else {
+      JSON.stringify(existingArray));
+    if (useDispatch) {
+      dispatchLs(key);
+    }
+  } else if (!onlyDelete) {
     existingArray.push(value);
     localStorage.setItem(key,
-        JSON.stringify(existingArray));
-    dispatchLs(key);
+      JSON.stringify(existingArray));
+    if (useDispatch) {
+      dispatchLs(key);
+    }
   }
 }
 
@@ -84,9 +103,17 @@ export function fetchUserToken() {
   return null;
 }
 
+export function fetchJWT() {
+  const key = sessionStorage.getItem('jwt');
+  if (key) {
+    return key;
+  }
+  return null;
+}
+
 export const pillSort = (a, b) => {
-  const A = (a.description || a.code).toString().toLowerCase();
-  const B = (b.description || b.code).toString().toLowerCase();
+  const A = lowerCase(toString((get(a, 'description') || get(a, 'code'))));
+  const B = lowerCase(toString((get(b, 'description') || get(b, 'code'))));
   if (A < B) { // sort string ascending
     return -1;
   }
@@ -94,11 +121,17 @@ export const pillSort = (a, b) => {
   return 0; // default return value (no sorting)
 };
 
+export const sortTods = (data) => {
+  const sortingArray = ['T', 'C', 'H', 'O', 'V', '1', '2', 'U', 'A', 'B', 'E', 'N', 'S', 'G', 'D', 'F', 'R', 'Q', 'J', 'I', 'P', 'W', 'L', 'K', 'M', 'Y', 'Z', 'X'];
+  // eslint-disable-next-line no-confusing-arrow
+  return orderBy(data, o => o ? sortingArray.indexOf(o.code) : sortingArray.length);
+};
+
 export const propSort = (propName, nestedPropName) => (a, b) => {
-  let A = a[propName][nestedPropName] || a[propName];
-  A = A.toString().toLowerCase();
-  let B = b[propName][nestedPropName] || b[propName];
-  B = B.toString().toLowerCase();
+  let A = get(a, `${propName}.${nestedPropName}`) || get(a, propName);
+  A = lowerCase(toString(A));
+  let B = get(b, `${propName}.${nestedPropName}`) || get(b, propName);
+  B = lowerCase(toString(B));
   if (A < B) { // sort string ascending
     return -1;
   }
@@ -219,7 +252,7 @@ export const shortenString = (string, shortenTo = 250, suffix = '...') => {
 export const existsInArray = (ref, array) => {
   let found = false;
   array.forEach((i) => {
-    if (i.id === ref) {
+    if (get(i, 'id') && ref && `${i.id}` === `${ref}`) {
       found = true;
     }
   });
@@ -228,8 +261,9 @@ export const existsInArray = (ref, array) => {
 
 // for checking if a position is in the user's bid list
 export const existsInNestedObject = (ref, array, prop = 'position', nestedProp = 'id') => {
+  const array$ = isArray(array) ? array : [];
   let found = false;
-  array.some((i) => {
+  array$.some((i) => {
     if (i[prop] && i[prop][nestedProp] === ref) {
       found = i;
       return true;
@@ -265,7 +299,7 @@ export const formQueryString = queryObject => queryString.stringify(queryObject)
 
 // remove duplicates from an array by object property
 export const removeDuplicates = (myArr, prop) => (
-    myArr.filter((obj, pos, arr) => arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos)
+  myArr.filter((obj, pos, arr) => arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos)
 );
 
 // Format date for notifications.
@@ -304,7 +338,7 @@ export const filterByProps = (keyword, props = [], array = []) => {
         props.forEach((prop) => {
           if (doesMatch) {
             // if so, doesMatch = true
-            if (data[prop].toString().toLowerCase().indexOf(k.toString().toLowerCase()) !== -1) {
+            if (lowerCase(toString(data[prop])).indexOf(lowerCase(toString(k))) !== -1) {
               doesMatch$ = true;
             }
           }
@@ -321,15 +355,19 @@ export const filterByProps = (keyword, props = [], array = []) => {
 
 // Focus an element on the page based on its ID. Pass an optional, positive timeout number to
 // execute the focus within a timeout.
-export const focusById = (id, timeout) => {
+export const focusById = (id, timeout, config = {}) => {
+  const config$ = {
+    preventScroll: true,
+    ...config,
+  };
   let element = document.getElementById(id);
-  if (!timeout) {
-    if (element) { element.focus(); }
+  if (!isNumber(timeout)) {
+    if (element) { element.focus(config$); }
   } else {
     setTimeout(() => {
       element = document.getElementById(id);
       if (element) {
-        element.focus();
+        element.focus(config$);
       }
     }, timeout);
   }
@@ -382,20 +420,22 @@ export const formatWaiverTitle = waiver => `${waiver.position} - ${waiver.catego
 export const propOrDefault = (obj, path, defaultToReturn = null) =>
   get(obj, path, defaultToReturn);
 
-// Return the correct object from the bidStatisticsArray.
+// Return the correct object from the bidStatistics array/object.
 // If it doesn't exist, return an empty object.
-export const getBidStatisticsObject = (bidStatisticsArray) => {
-  if (Array.isArray(bidStatisticsArray) && bidStatisticsArray.length) {
-    return bidStatisticsArray[0];
+export const getBidStatisticsObject = (bidStatistics) => {
+  if (Array.isArray(bidStatistics) && bidStatistics.length) {
+    return bidStatistics[0];
+  } else if (isObject(bidStatistics)) {
+    return bidStatistics;
   }
   return {};
 };
 
 // replace spaces with hyphens so that id attributes are valid
 export const formatIdSpacing = (id) => {
-  if (id) {
-    let idString = id.toString();
-    idString = idString.split(' ').join('-');
+  if (id && toString(id)) {
+    let idString = toString(id);
+    idString = split(idString, ' ').join('-');
     // remove any non-alphanumeric character, excluding hyphen
     idString = idString.replace(/[^a-zA-Z0-9 -]/g, '');
     return idString;
@@ -407,6 +447,10 @@ export const formatIdSpacing = (id) => {
 // provide an array of permissions to check if they all exist in an array of user permissions
 export const userHasPermissions = (permissionsToCheck = [], userPermissions = []) =>
   permissionsToCheck.every(val => userPermissions.indexOf(val) >= 0);
+
+// provide an array of permissions to check if at least one exists in an array of user permissions
+export const userHasSomePermissions = (permissionsToCheck = [], userPermissions = []) =>
+  !!intersection(permissionsToCheck, userPermissions).length;
 
 // Takes multiple saved search objects and combines them into one object,
 // where the value for each property is an array of all individual values
@@ -482,7 +526,8 @@ export const mapSavedSearchToDescriptions = (savedSearchObject, mappedParams) =>
 
 export const getPostName = (post, defaultValue = null) => {
   let valueToReturn = defaultValue;
-  if (propOrDefault(post, 'location.city') && propOrDefault(post, 'location.country') === 'United States') {
+  if (propOrDefault(post, 'location.city') &&
+    (propOrDefault(post, 'location.country') === 'United States' || propOrDefault(post, 'location.country') === 'USA')) {
     valueToReturn = `${post.location.city}, ${post.location.state}`;
   } else if (propOrDefault(post, 'location.city')) {
     valueToReturn = `${post.location.city}${post.location.country ? `, ${post.location.country}` : ''}`;
@@ -576,7 +621,7 @@ export const getFormattedNumCSV = (v) => {
 };
 
 export const spliceStringForCSV = (v) => {
-  if (v[1] === '=') {
+  if (v[1] === '=' && isString(v)) {
     return `=${v.slice(0, 1)}${v.slice(2)}`;
   }
   return v;
@@ -587,4 +632,128 @@ export const paginate = (array, pageSize, pageNumber) => {
   // because pages logically start with 1, but technically with 0
   const pageNumber$ = pageNumber - 1;
   return array.slice(pageNumber$ * pageSize, (pageNumber$ + 1) * pageSize);
+};
+
+// Looks for duplicates in a data set by property, and adds a "hasDuplicateDescription" property
+// to any objects that are duplicates.
+export const mapDuplicates = (data = [], propToCheck = 'custom_description') => data.slice().map((p) => {
+  const p$ = { ...p };
+  const matching = data.filter(f =>
+    f[propToCheck] === p$[propToCheck],
+  ) || [];
+  if (matching.length >= 2) {
+    p$.hasDuplicateDescription = true;
+  }
+  return p$;
+});
+
+// scroll to a specific glossary term
+export const scrollToGlossaryTerm = (term) => {
+  // id formatting used for glossary accordion buttons
+  const id = `${formatIdSpacing(term)}-button`;
+
+  const el = document.getElementById(id);
+  if (el) {
+    setTimeout(() => {
+      el.scrollIntoView();
+      focusById(id, 0, { preventScroll: false });
+
+      if (el.getAttribute('aria-expanded') !== 'true') {
+        el.click();
+      }
+    }, 300);
+  }
+};
+
+export const getBrowserName = () => Bowser.getParser(window.navigator.userAgent).getBrowserName();
+
+// Convert values used in aria-* attributes to 'true'/'false' string.
+// Perform a string check, if for some reason the value was already a string.
+// https://github.com/cerner/terra-core/wiki/React-16-Migration-Guide#noted-changes
+export const getAriaValue = (e) => {
+  if (e === 'true') {
+    return e;
+  } else if (e === 'false') {
+    return e;
+  } else if (e) {
+    return 'true';
+  }
+  return 'false';
+};
+
+export const downloadFromResponse = (response, fileNameAlt = '') => {
+  const cd = get(response, 'headers.content-disposition');
+  const filename = cd.replace('attachment; filename=', '') || fileNameAlt;
+
+  const a = document.createElement('a');
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  a.href = url;
+  a.setAttribute('download', filename);
+  document.body.appendChild(a);
+
+  if (window.navigator.msSaveBlob) {
+    a.onclick = (() => {
+      const BOM = '\uFEFF';
+      const blobObject = new Blob([BOM + response.data], { type: ' type: "text/csv; charset=utf-8"' });
+      window.navigator.msSaveOrOpenBlob(blobObject, filename);
+    });
+    a.click();
+  } else {
+    a.click();
+  }
+};
+
+export const getBidCycleName = (bidcycle) => {
+  let text = isObject(bidcycle) && has(bidcycle, 'name') ? bidcycle.name : bidcycle;
+  if (!isString(text) || !text) { text = NO_BID_CYCLE; }
+  return text;
+};
+
+export const anyToTitleCase = (str = '') => startCase(toLower(str));
+
+export const loadImg = (src, callback) => {
+  const sprite = new Image();
+  sprite.onload = callback;
+  sprite.onerror = callback;
+  sprite.src = src;
+};
+
+export const isNumeric = value => isNumber(value) || (!isEmpty(value) && !isNaN(value));
+
+// BEGIN FUSE SEARCH //
+const fuseOptions = {
+  shouldSort: true,
+  tokenize: true,
+  includeScore: true,
+  threshold: 0.5,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 3,
+  keys: [
+    'name',
+  ],
+};
+
+const flagFuse = new Fuse(FLAG_COLORS, fuseOptions);
+
+export const getFlagColorsByTextSearch = (t = '', limit = 5) => {
+  let value = false;
+  if (t && isString(t)) {
+    const result = flagFuse.search(t);
+    const colors = get(result, '[0].item.colors', false);
+    value = colors;
+  }
+  if (value) {
+    value = take(value, limit);
+  }
+  return value;
+};
+// END FUSE SEARCH //
+
+export const stopProp = (event) => {
+  const e = get(event, 'target') || event;
+  if (e && e.stopPropagation && isFunction(e.stopPropagation)) {
+    e.stopPropagation();
+  }
 };

@@ -34,15 +34,23 @@ describe('BidTracker', () => {
     expect(wrapper).toBeDefined();
   });
 
+  it('is calls fetchUserData() when isPublic === true', () => {
+    const spy = sinon.spy();
+    const wrapper = shallow(
+      <BidTracker.WrappedComponent {...props} isPublic fetchUserData={spy} />,
+    );
+    sinon.assert.calledOnce(spy);
+    expect(wrapper).toBeDefined();
+  });
+
   it('calls scrollToId when componentDidUpdate is called', () => {
     const wrapper = shallow(<BidTracker.WrappedComponent
       {...props}
       match={{ params: { id: 2 } }}
     />);
     const spy = sinon.spy(wrapper.instance(), 'scrollToId');
-    wrapper.instance().componentDidUpdate();
-    // called once on mount, once after didUpdate()
-    sinon.assert.calledTwice(spy);
+    wrapper.instance().componentDidUpdate({ ...props, match: { params: { id: 2 } } });
+    sinon.assert.calledOnce(spy);
   });
 
   it('calls scrollIntoView when scrollToId is called', () => {

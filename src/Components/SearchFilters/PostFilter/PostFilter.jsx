@@ -1,37 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { orderBy } from 'lodash';
+import { getItemLabel, formatIdSpacing, mapDuplicates } from 'utilities';
 import { FILTER_ITEM } from '../../../Constants/PropTypes';
 import Accordion, { AccordionItem } from '../../Accordion';
 import CheckBox from '../../CheckBox';
-import { getItemLabel, formatIdSpacing, propSort } from '../../../utilities';
-import AutoSuggest from '../../AutoSuggest';
 
 /* eslint-disable react/no-unused-prop-types */
 class PostFilter extends Component {
   constructor(props) {
     super(props);
-    this.onCheckBoxClick = this.onCheckBoxClick.bind(this);
-    this.onSelectAllDomesticPosts = this.onSelectAllDomesticPosts.bind(this);
-    this.onSelectAllOverseasPosts = this.onSelectAllOverseasPosts.bind(this);
     this.state = {
       allDomesticSelected: false,
       allOverseasSelected: false,
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setSelectedStates();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setSelectedStates(nextProps);
   }
 
-  onCheckBoxClick(value, props) {
+  onCheckBoxClick = (value, props) => {
     this.props.queryParamToggle(props.selectionRef, props[this.props.queryProperty], !value);
-  }
+  };
 
-  onSelectAllDomesticPosts(value) {
+  onSelectAllDomesticPosts = value => {
     const { allOverseasSelected } = this.state;
     const { queryParamUpdate, item } = this.props;
     this.setState({ allDomesticSelected: !value },
@@ -40,9 +37,9 @@ class PostFilter extends Component {
         is_domestic: [value ? 'true' : '', allOverseasSelected ? 'false' : ''].filter(n => n).join(),
       }),
     );
-  }
+  };
 
-  onSelectAllOverseasPosts(value) {
+  onSelectAllOverseasPosts = value => {
     const { allDomesticSelected } = this.state;
     const { queryParamUpdate, item } = this.props;
     this.setState({ allOverseasSelected: !value },
@@ -51,7 +48,7 @@ class PostFilter extends Component {
         is_domestic: [allDomesticSelected ? 'true' : '', value ? 'false' : ''].filter(n => n).join(),
       }),
     );
-  }
+  };
 
   setSelectedStates(props = this.props) {
     this.setState({
@@ -61,22 +58,31 @@ class PostFilter extends Component {
   }
 
   getAllDomesticCodes(props = this.props) {
-    return props.item.data.slice().filter(b => (b.location && b.location.country === 'United States'));
+    return props.item.data.slice().filter(b => (
+      b.location &&
+      (b.location.country === 'United States' || b.location.country === 'USA')
+    ));
   }
 
   getAllOverseasCodes(props = this.props) {
-    return props.item.data.slice().filter(b => (b.location && b.location.country !== 'United States'));
+    return props.item.data.slice().filter(b => (
+      b.location &&
+      b.location.country !== 'United States' &&
+      b.location.country !== 'USA'
+    ));
   }
 
   render() {
     const { item, autoSuggestProps } = this.props;
     const { allOverseasSelected, allDomesticSelected } = this.state;
 
-    const domesticPosts = this.getAllDomesticCodes();
-    const overseasPosts = this.getAllOverseasCodes();
+    let domesticPosts = this.getAllDomesticCodes();
+    domesticPosts = mapDuplicates(domesticPosts);
 
-    domesticPosts.sort(propSort('location', 'city'));
-    overseasPosts.sort(propSort('location', 'city'));
+    let overseasPosts = this.getAllOverseasCodes();
+
+    domesticPosts = orderBy(domesticPosts || [], 'location.city');
+    overseasPosts = orderBy(overseasPosts || [], 'location.city');
 
     const postSelectionDisabled = allDomesticSelected || allOverseasSelected;
 
@@ -84,13 +90,19 @@ class PostFilter extends Component {
 
     return (
       <div className="usa-grid-full">
-        <AutoSuggest
-          {...autoSuggestProps}
-          className="post-auto-suggest-container"
-          customInputProps={{
-            disabled: postSelectionDisabled,
-          }}
-        />
+        {/*
+          // No autosuggest from available positions API
+          // Could re-add in future
+          !useAP &&
+          <AutoSuggest
+            {...autoSuggestProps}
+            className="post-auto-suggest-container"
+            customInputProps={{
+              disabled: postSelectionDisabled,
+            }}
+            shouldClearOnSelect
+          />
+        */}
         <div className="usa-grid-full tm-nested-accordions">
           <Accordion>
             <AccordionItem
@@ -112,18 +124,22 @@ class PostFilter extends Component {
               <div className="usa-grid-full">
                 {
                   domesticPosts.map((itemData) => {
-                    const itemLabel = getItemLabel(itemData);
+                    const itemData$ = { ...itemData };
+                    if (itemData$.hasDuplicateDescription) {
+                      itemData$.custom_description = `${itemData$.custom_description} (${itemData.code})`;
+                    }
+                    const itemLabel = getItemLabel(itemData$);
                     const itemLabelNoSpaces = formatIdSpacing(itemLabel);
                     return (
                       <CheckBox
                         _id={itemData.id} /* when we need the original id */
-                        id={`checkbox${itemLabelNoSpaces}-domestic-post-${item.item.description}`}
-                        key={`checkbox${itemLabel}-domestic-post-${item.item.description}`}
+                        id={`checkbox${itemLabelNoSpaces}-domestic-post-${item.item.description}-${itemData$.code}`}
+                        key={`checkbox${itemLabel}-domestic-post-${item.item.description}-${itemData$.code}`}
                         label={itemLabel}
                         title={itemLabel}
                         name={itemLabel}
-                        value={allDomesticSelected ? true : itemData.isSelected || false}
-                        code={itemData.code}
+                        value={allDomesticSelected ? true : itemData$.isSelected || false}
+                        code={itemData$.code}
                         selectionRef={item.item.selectionRef}
                         onCheckBoxClick={this.onCheckBoxClick}
                         className="tm-checkbox-transparent"
@@ -186,7 +202,7 @@ PostFilter.propTypes = {
   item: FILTER_ITEM.isRequired,
   queryParamToggle: PropTypes.func.isRequired,
   queryProperty: PropTypes.string,
-  autoSuggestProps: PropTypes.shape({}).isRequired,
+  autoSuggestProps: PropTypes.shape({ placeholder: PropTypes.string }).isRequired,
   queryParamUpdate: PropTypes.func.isRequired,
   // these props are used by function param, so ignore lines:
   overseasIsSelected: PropTypes.bool, // eslint-disable-line

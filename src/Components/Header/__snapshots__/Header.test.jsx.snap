@@ -21,16 +21,15 @@ exports[`Header matches snapshot when logged in 1`] = `
       name="flags.static_content"
       render={[Function]}
     />
-    <StateBanner />
-    <Connect(BetaHeader) />
-    <Connect(withRouter(ClientHeader)) />
     <div
       className="usa-navbar padded-main-content padded-main-content--header"
     >
       <button
         className="usa-menu-btn"
       >
-        Menu
+        <FontAwesome
+          name="bars"
+        />
       </button>
       <div
         className="usa-logo"
@@ -46,12 +45,12 @@ exports[`Header matches snapshot when logged in 1`] = `
             <img
               alt="Bureau of Human Resources logo"
               className="logo-img-hr"
-              src="/assets/logos/png/hr-logo-white.png"
+              src="/assets/logos/png/hr-logo-white-sm.png"
             />
             <img
               alt="TalentMAP logo"
               className="logo-img-tm"
-              src="/assets/logos/png/horizontal_white_thin.png"
+              src="/assets/logos/png/horizontal_white_thin-sm.png"
             />
           </Link>
         </div>
@@ -89,6 +88,8 @@ exports[`Header matches snapshot when logged in 1`] = `
       className="usa-overlay"
     />
   </header>
+  <Connect(BetaHeader) />
+  <ClientHeaderSticky />
 </div>
 `;
 
@@ -113,16 +114,15 @@ exports[`Header matches snapshot when logged out 1`] = `
       name="flags.static_content"
       render={[Function]}
     />
-    <StateBanner />
-    <Connect(BetaHeader) />
-    <Connect(withRouter(ClientHeader)) />
     <div
       className="usa-navbar padded-main-content padded-main-content--header"
     >
       <button
         className="usa-menu-btn"
       >
-        Menu
+        <FontAwesome
+          name="bars"
+        />
       </button>
       <div
         className="usa-logo"
@@ -138,12 +138,12 @@ exports[`Header matches snapshot when logged out 1`] = `
             <img
               alt="Bureau of Human Resources logo"
               className="logo-img-hr"
-              src="/assets/logos/png/hr-logo-white.png"
+              src="/assets/logos/png/hr-logo-white-sm.png"
             />
             <img
               alt="TalentMAP logo"
               className="logo-img-tm"
-              src="/assets/logos/png/horizontal_white_thin.png"
+              src="/assets/logos/png/horizontal_white_thin-sm.png"
             />
           </Link>
         </div>
@@ -175,5 +175,7 @@ exports[`Header matches snapshot when logged out 1`] = `
       className="usa-overlay"
     />
   </header>
+  <Connect(BetaHeader) />
+  <ClientHeaderSticky />
 </div>
 `;

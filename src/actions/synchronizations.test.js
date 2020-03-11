@@ -5,15 +5,19 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 
 describe('async actions', () => {
   beforeEach(() => {
-    mockAdapter.onGet('http://localhost:8000/api/v1/data_sync/').reply(200,
+    mockAdapter.onGet('/data_sync/').reply(200,
       { data: [{ id: 1 }] },
     );
 
-    mockAdapter.onPut('http://localhost:8000/api/v1/data_sync/run/1/').reply(200,
+    mockAdapter.onPut('/data_sync/run/1/').reply(200,
       null,
     );
 
-    mockAdapter.onPut('http://localhost:8000/api/v1/data_sync/run/2/').reply(404,
+    mockAdapter.onPut('/data_sync/run/2/').reply(404,
+      null,
+    );
+
+    mockAdapter.onPatch('/data_sync/schedule/1/').reply(200,
       null,
     );
   });
@@ -33,7 +37,7 @@ describe('async actions', () => {
   it('handles errors when fetching sync jobs', (done) => {
     const store = mockStore({});
 
-    mockAdapter.onGet('http://localhost:8000/api/v1/data_sync/').reply(404,
+    mockAdapter.onGet('/data_sync/').reply(404,
       null,
     );
 
@@ -61,7 +65,7 @@ describe('async actions', () => {
   it('puts sync jobs when some are invalid', (done) => {
     const store = mockStore({ comparisons: [] });
 
-    mockAdapter.onGet('http://localhost:8000/api/v1/data_sync/').reply(200,
+    mockAdapter.onGet('/data_sync/').reply(200,
       { data: [{ id: 1 }, { id: 2 }] },
     );
 
@@ -77,11 +81,11 @@ describe('async actions', () => {
   it('handles errors when all sync jobs are invalid', (done) => {
     const store = mockStore({ comparisons: [] });
 
-    mockAdapter.onGet('http://localhost:8000/api/v1/data_sync/').reply(200,
+    mockAdapter.onGet('/data_sync/').reply(200,
       { data: [{ id: 1 }] },
     );
 
-    mockAdapter.onPut('http://localhost:8000/api/v1/data_sync/run/1/').reply(404,
+    mockAdapter.onPut('/data_sync/run/1/').reply(404,
       null,
     );
 
@@ -97,7 +101,7 @@ describe('async actions', () => {
   it('handles errors on GET when putting sync jobs', (done) => {
     const store = mockStore({});
 
-    mockAdapter.onGet('http://localhost:8000/api/v1/data_sync/').reply(404,
+    mockAdapter.onGet('/data_sync/').reply(404,
       null,
     );
 
@@ -113,13 +117,41 @@ describe('async actions', () => {
   it('handles errors on PUT when putting sync jobs', (done) => {
     const store = mockStore({});
 
-    mockAdapter.onPut('http://localhost:8000/api/v1/data_sync/run/1/').reply(404,
+    mockAdapter.onPut('/data_sync/run/1/').reply(404,
       null,
     );
 
     const f = () => {
       setTimeout(() => {
         store.dispatch(actions.putAllSyncs());
+        done();
+      }, 0);
+    };
+    f();
+  });
+
+  it('patches sync jobs', (done) => {
+    const store = mockStore({ comparisons: [] });
+
+    const f = () => {
+      setTimeout(() => {
+        store.dispatch(actions.patchSync({ id: 1 }));
+        done();
+      }, 0);
+    };
+    f();
+  });
+
+  it('handles errors when patching sync jobs', (done) => {
+    const store = mockStore({});
+
+    mockAdapter.onPatch('/data_sync/schedule/1/').reply(404,
+      null,
+    );
+
+    const f = () => {
+      setTimeout(() => {
+        store.dispatch(actions.patchSync({ id: 1 }));
         done();
       }, 0);
     };

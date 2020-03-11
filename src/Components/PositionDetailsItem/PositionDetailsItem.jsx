@@ -1,20 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { Flag } from 'flag';
+import Differentials from 'Components/Differentials';
 import { COMMON_PROPERTIES } from '../../Constants/EndpointParams';
 import LanguageList from '../../Components/LanguageList/LanguageList';
 import CondensedCardDataPoint from '../CondensedCardData/CondensedCardDataPoint';
-import OBCUrl from '../OBCUrl';
 import PositionDetailsDescription from './PositionDetailsDescription';
 import PositionDetailsContact from './PositionDetailsContact';
 import ServiceNeededToggle from './ServiceNeededToggle';
-import Handshake from '../Ribbon/Handshake';
+import GlossaryTermTrigger from '../GlossaryTermTrigger';
+import { Featured, Handshake } from '../Ribbon';
 import {
   formatDate,
   propOrDefault,
   getAccessiblePositionNumber,
-  getDifferentialPercentage,
   getBidStatisticsObject,
 } from '../../utilities';
 
@@ -31,18 +30,12 @@ import {
   NO_SKILL,
   NO_END_DATE,
   NO_TOUR_OF_DUTY,
-  NO_POST_DIFFERENTIAL,
-  NO_DANGER_PAY,
   NO_USER_LISTED,
   NO_UPDATE_DATE,
 } from '../../Constants/SystemMessages';
 
 export const renderHandshake = stats => (
-  <div className="handshake-offset-container">
-    {
-      get(stats, 'has_handshake_offered', false) && <Handshake cutSide="right" className="ribbon-position-details" />
-    }
-  </div>
+  get(stats, 'has_handshake_offered', false) && <Handshake cutSide="both" className="ribbon-position-details" />
 );
 
 const PositionDetailsItem = (props) => {
@@ -55,31 +48,29 @@ const PositionDetailsItem = (props) => {
     userProfile,
     highlightPosition,
     onHighlight,
+    isProjectedVacancy,
+    isArchived,
   } = props;
 
+  const { position } = details;
+
   const isHighlightLoading = highlightPosition.loading;
-  const tourEndDate = propOrDefault(details, 'current_assignment.estimated_end_date');
+  const tourEndDate = propOrDefault(details, 'ted');
   const formattedTourEndDate = tourEndDate ? formatDate(tourEndDate) : NO_END_DATE;
 
-  const formattedBureau = details.bureau || NO_BUREAU;
-  const formattedTOD = propOrDefault(details, 'post.tour_of_duty') || NO_TOUR_OF_DUTY;
+  const formattedBureau = get(position, 'bureau', NO_BUREAU);
+  const formattedTOD = propOrDefault(position, 'post.tour_of_duty') || NO_TOUR_OF_DUTY;
 
-  const postDifferential = getDifferentialPercentage(propOrDefault(details, 'post.differential_rate'), NO_POST_DIFFERENTIAL);
-  const dangerPay = getDifferentialPercentage(propOrDefault(details, 'post.danger_pay'), NO_DANGER_PAY);
+  const dangerPay = get(position, 'post.danger_pay');
+  const postDifferential = get(position, 'post.differential_rate');
+  const obcUrl = get(position, 'post.post_bidding_considerations_url');
+  const diffProps = { dangerPay, postDifferential, obcUrl };
+  const differentials = <Differentials {...diffProps} />;
 
-  const OBCId = propOrDefault(details, 'post.obc_id');
-  const getFormattedObcData = (prefix) => {
-    if (OBCId) {
-      return (<span> {prefix} | <OBCUrl id={OBCId} type="post-data" label="View OBC Data" /></span>);
-    }
-
-    return prefix;
-  };
-
-  const incumbent = propOrDefault(details, 'current_assignment.user', NO_USER_LISTED);
+  const incumbent = propOrDefault(position, 'current_assignment.user', NO_USER_LISTED);
 
   const getPostedDate = () => {
-    const posted = get(details, COMMON_PROPERTIES.posted);
+    const posted = get(position, COMMON_PROPERTIES.posted);
     if (posted) {
       return formatDate(posted);
     }
@@ -87,48 +78,69 @@ const PositionDetailsItem = (props) => {
   };
   const postedDate = getPostedDate();
 
-  const stats = getBidStatisticsObject(details.bid_statistics);
+  const stats = getBidStatisticsObject(get(details, 'bid_statistics'));
+
+  const isHighlighted = get(position, 'is_highlighted');
   return (
     <div className="usa-grid-full padded-main-content position-details-outer-container">
-      <Flag
-        name="flags.bidding"
-        render={() => renderHandshake(stats)}
-      />
+      <div className="handshake-offset-container">
+        {renderHandshake(stats, position)}
+        {
+          isHighlighted && <Featured cutSide="both" className="ribbon-position-details" />
+        }
+      </div>
       <div className="usa-grid-full position-details-description-container positions-details-about-position">
         <div className="usa-width-two-thirds about-section-left">
           <h2>About the Position</h2>
           <PositionDetailsDescription
-            details={details}
+            details={position}
             editDescriptionContent={editDescriptionContent}
             resetDescriptionEditMessages={resetDescriptionEditMessages}
           />
+          {
+            isHighlighted &&
+            <div className="featured-description-container">
+              {`
+                This is a featured position. To learn more about the benefits of filling a featured position, click on each term:
+              `}
+              <GlossaryTermTrigger className="featured-description--link" text="volunteer" term="Vol Cable - Volunteer Cable" />
+              {', '}
+              <GlossaryTermTrigger className="featured-description--link" text="hard-to-fill" term="HDS - Historically Difficult to Staff" />
+              {', or '}
+              <GlossaryTermTrigger className="featured-description--link" text="urgent vacancies" term="UV - Urgent Vacancy" />
+              {'.'}
+            </div>
+          }
           <div className="usa-grid-full data-point-section">
-            <CondensedCardDataPoint ariaLabel={getAccessiblePositionNumber(details.position_number)} title="Position number" content={details.position_number} />
-            <CondensedCardDataPoint title="Skill" content={details.skill || NO_SKILL} />
-            <CondensedCardDataPoint title="Grade" content={details.grade || NO_GRADE} />
+            <CondensedCardDataPoint ariaLabel={getAccessiblePositionNumber(position.position_number)} title="Position number" content={position.position_number} />
+            <CondensedCardDataPoint title="Skill" content={position.skill || NO_SKILL} />
+            <CondensedCardDataPoint title="Grade" content={position.grade || NO_GRADE} />
             <CondensedCardDataPoint title="Bureau" content={formattedBureau} />
             <CondensedCardDataPoint title="Tour of duty" content={formattedTOD} />
-            <CondensedCardDataPoint title="Language" content={<LanguageList languages={details.languages} propToUse="representation" />} />
-            <CondensedCardDataPoint title="Post differential" content={getFormattedObcData(postDifferential)} />
-            <CondensedCardDataPoint title="Danger pay" content={getFormattedObcData(dangerPay)} />
+            <CondensedCardDataPoint title="Language" content={<LanguageList languages={position.languages} propToUse="representation" />} />
+            <CondensedCardDataPoint title="Post differential | Danger Pay" content={differentials} />
             <CondensedCardDataPoint title="TED" content={formattedTourEndDate} />
             <CondensedCardDataPoint title="Incumbent" content={incumbent} />
-            <CondensedCardDataPoint title="Posted" content={postedDate} />
+            { !isProjectedVacancy && <CondensedCardDataPoint title="Posted" content={postedDate} />}
           </div>
         </div>
         <div className="usa-width-one-third position-details-contact-container">
           <PositionDetailsContact
-            details={details}
+            details={position}
             editWebsiteContent={editWebsiteContent}
             editPocContent={editPocContent}
             resetDescriptionEditMessages={resetDescriptionEditMessages}
+            isProjectedVacancy={isProjectedVacancy}
           />
-          <ServiceNeededToggle
-            userProfile={userProfile}
-            position={details}
-            loading={isHighlightLoading}
-            onChange={onHighlight}
-          />
+          {
+            !isProjectedVacancy && !isArchived &&
+            <ServiceNeededToggle
+              userProfile={userProfile}
+              position={details}
+              loading={isHighlightLoading}
+              onChange={onHighlight}
+            />
+          }
         </div>
       </div>
     </div>
@@ -144,6 +156,8 @@ PositionDetailsItem.propTypes = {
   userProfile: USER_PROFILE,
   highlightPosition: HIGHLIGHT_POSITION,
   onHighlight: PropTypes.func.isRequired,
+  isProjectedVacancy: PropTypes.bool,
+  isArchived: PropTypes.bool,
 };
 
 PositionDetailsItem.defaultProps = {
@@ -151,6 +165,8 @@ PositionDetailsItem.defaultProps = {
   userProfile: {},
   highlightPosition: DEFAULT_HIGHLIGHT_POSITION,
   onHighlight: EMPTY_FUNCTION,
+  isProjectedVacancy: false,
+  isArchived: false,
 };
 
 export default PositionDetailsItem;

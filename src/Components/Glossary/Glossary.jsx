@@ -1,33 +1,80 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
+import Fuse from 'fuse.js';
+import { isEqual } from 'lodash';
 import GlossarySearch from './GlossarySearch';
 import GlossaryListing from './GlossaryListing';
 import Spinner from '../Spinner';
 import BoxShadow from '../BoxShadow';
 import { GLOSSARY_ARRAY } from '../../Constants/PropTypes';
-import { filterByProps } from '../../utilities';
+
+const ID = 'glossary-click-container';
+
+const fuseOptions = {
+  shouldSort: false,
+  findAllMatches: true,
+  tokenize: true,
+  includeScore: false,
+  threshold: 0.25,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: [
+    'title', 'definition', 'link',
+  ],
+};
 
 class GlossaryComponent extends Component {
   constructor(props) {
     super(props);
-    this.changeText = this.changeText.bind(this);
     this.state = {
       searchText: { value: '' },
     };
+    this.fuse = new Fuse([], fuseOptions);
   }
 
-  changeText(text) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    // The listener only needs to exist if the Glossary is visible.
+    if (nextProps.visible) {
+      /* This needs to be in a timeout, otherwise the glossary will immediately
+      close the first time it is opened, since the Glossary link is "outside"
+      of the Glossary div, and that click event will have been registered. */
+      setTimeout(() => {
+        window.addEventListener('click', this.handleOutsideClick);
+      }, 0);
+    } else { // If the Glossary is not visible, remove the event listener.
+      window.removeEventListener('click', this.handleOutsideClick);
+    }
+
+    // re-instantiate the search index if glossaryItems changes
+    if (!isEqual(this.props.glossaryItems, nextProps.glossaryItems)) {
+      this.fuse = new Fuse(nextProps.glossaryItems, fuseOptions);
+    }
+  }
+
+  handleOutsideClick = e => {
+    const { toggleVisibility, visible } = this.props;
+    if (visible && !document.getElementById(ID).contains(e.target)) {
+      toggleVisibility();
+    }
+  };
+
+  changeText = text => {
     const { searchText } = this.state;
     searchText.value = text;
     this.setState({ searchText });
-  }
+  };
 
   filteredGlossary() {
     const { searchText } = this.state;
     const { glossaryItems } = this.props;
-    // filter where the keyword matches part of the title or definition
-    return filterByProps(searchText.value, ['title', 'definition'], glossaryItems);
+    // filter where the keyword matches part of the title, definition, or link
+    if (searchText.value) {
+      return this.fuse.search(searchText.value);
+    }
+    return glossaryItems;
   }
 
   render() {
@@ -35,7 +82,7 @@ class GlossaryComponent extends Component {
     const { searchText } = this.state;
     const filteredGlossary = this.filteredGlossary();
     return (
-      <div className="tm-glossary">
+      <div id={ID} className="tm-glossary">
         <BoxShadow
           offsetX={-4}
           offsetY={0}

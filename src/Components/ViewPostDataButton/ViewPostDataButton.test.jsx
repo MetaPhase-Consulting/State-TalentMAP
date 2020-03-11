@@ -5,7 +5,7 @@ import ViewPostDataButton from './ViewPostDataButton';
 
 describe('ViewPostDataButtonComponent', () => {
   const props = {
-    id: 1,
+    url: 'https://google.com/1',
     type: 'post',
   };
   it('is defined', () => {
@@ -13,13 +13,6 @@ describe('ViewPostDataButtonComponent', () => {
       <ViewPostDataButton {...props} />,
     );
     expect(wrapper).toBeDefined();
-  });
-
-  it('can take props', () => {
-    const wrapper = shallow(
-      <ViewPostDataButton {...props} />,
-    );
-    expect(wrapper.instance().props.id).toBe(1);
   });
 
   it('matches snapshot', () => {

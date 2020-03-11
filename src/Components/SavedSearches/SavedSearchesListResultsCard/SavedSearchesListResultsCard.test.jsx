@@ -21,15 +21,6 @@ describe('SavedSearchesListResultsCardComponent', () => {
     expect(wrapper).toBeDefined();
   });
 
-  it('can receive props', () => {
-    const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-      />,
-    );
-    expect(wrapper.instance().props.savedSearch.id).toBe(searchObject.id);
-  });
-
   it('can click the delete button', () => {
     const spy = sinon.spy();
     const wrapper = mount(
@@ -38,7 +29,7 @@ describe('SavedSearchesListResultsCardComponent', () => {
         deleteSearch={spy}
       />,
     );
-    wrapper.find('button').at(0).simulate('click');
+    wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
@@ -51,7 +42,7 @@ describe('SavedSearchesListResultsCardComponent', () => {
       />,
     );
 
-    wrapper.find('button').at(1).simulate('click');
+    wrapper.find('button').at(0).simulate('click');
     sinon.assert.calledOnce(spy);
   });
 

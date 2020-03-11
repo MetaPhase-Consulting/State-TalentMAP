@@ -7,29 +7,26 @@ import ReactPaginate from 'react-paginate';
 // wrapper performs reconciliation for react-paginate's zero-based pagination
 
 class PaginationWrapper extends Component {
-  constructor(props) {
-    super(props);
-    this.onPageChange = this.onPageChange.bind(this);
-  }
   // reconciles zero-base
-  onPageChange(e) {
+  onPageChange = e => {
     const selected = e.selected + 1;
     this.props.onPageChange({ page: selected });
-  }
+  };
+
   render() {
     const {
-        previousLabel,
-        nextLabel,
-        pageSize,
-        marginPagesDisplayed,
-        pageRangeDisplayed,
-        paginationStyle,
-        containerClassName,
-        subContainerClassName,
-        totalResults,
-        forcePage,
-        activeClassName,
-      } = this.props;
+      previousLabel,
+      nextLabel,
+      pageSize,
+      marginPagesDisplayed,
+      pageRangeDisplayed,
+      paginationStyle,
+      containerClassName,
+      subContainerClassName,
+      totalResults,
+      forcePage,
+      activeClassName,
+    } = this.props;
     // calculate how many pages there are
     const count = Math.ceil(totalResults / pageSize);
     return (
@@ -75,8 +72,8 @@ PaginationWrapper.propTypes = {
 PaginationWrapper.defaultProps = {
   previousLabel: 'Previous',
   nextLabel: 'Next',
-  marginPagesDisplayed: 0,
-  pageRangeDisplayed: 4,
+  marginPagesDisplayed: 1,
+  pageRangeDisplayed: 2,
   containerClassName: 'pagination',
   subContainerClassName: 'pages pagination',
   activeClassName: 'active',

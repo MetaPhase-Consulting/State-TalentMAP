@@ -9,7 +9,9 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
     bid={
       Object {
         "approved_date": "2017-12-20",
-        "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+        "bidcycle": Object {
+          "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+        },
         "closed_date": "2017-12-20",
         "create_date": "2017-12-20",
         "declined_date": "2017-12-20",
@@ -24,7 +26,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
           "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
           "create_date": "2015-08-05",
           "grade": "03",
-          "id": 226,
+          "id": 11,
           "position_number": "10035561",
           "post": Object {
             "id": 199,
@@ -59,8 +61,10 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
     declineBid={[Function]}
     deleteBid={[Function]}
     priorityExists={false}
+    readOnly={false}
     showBidCount={true}
     submitBid={[Function]}
+    useCDOView={false}
     userProfile={
       Object {
         "bid_statistics": Array [
@@ -134,7 +138,9 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
     bid={
       Object {
         "approved_date": "2017-12-20",
-        "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+        "bidcycle": Object {
+          "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+        },
         "closed_date": "2017-12-20",
         "create_date": "2017-12-20",
         "declined_date": "2017-12-20",
@@ -149,7 +155,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
           "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
           "create_date": "2015-08-05",
           "grade": "03",
-          "id": 226,
+          "id": 11,
           "position_number": "10035561",
           "post": Object {
             "id": 199,
@@ -197,7 +203,9 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
       bid={
         Object {
           "approved_date": "2017-12-20",
-          "bidcycle": "Demo BidCycle 2017-10-31 16:00:51.254762",
+          "bidcycle": Object {
+            "name": "Demo BidCycle 2017-10-31 16:00:51.254762",
+          },
           "closed_date": "2017-12-20",
           "create_date": "2017-12-20",
           "declined_date": "2017-12-20",
@@ -212,7 +220,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
             "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
             "create_date": "2015-08-05",
             "grade": "03",
-            "id": 226,
+            "id": 11,
             "position_number": "10035561",
             "post": Object {
               "id": 199,
@@ -247,8 +255,10 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
       declineBid={[Function]}
       deleteBid={[Function]}
       priorityExists={false}
+      readOnly={false}
       showBidCount={false}
       submitBid={[Function]}
+      useCDOView={false}
       userProfile={
         Object {
           "bid_statistics": Array [

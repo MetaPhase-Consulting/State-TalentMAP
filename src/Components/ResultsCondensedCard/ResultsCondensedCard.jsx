@@ -20,35 +20,37 @@ const ResultsCondensedCard = (
     useShortFavButton,
     showCompareButton,
   }) => (
-    <BoxShadow className="usa-grid-full condensed-card-inner">
-      <ResultsCondensedCardTop
-        favorites={favorites}
-        position={position}
-        type={type}
-        isProjectedVacancy={isProjectedVacancy}
-        isRecentlyAvailable={isRecentlyAvailable}
-      />
-      <ResultsCondensedCardBottom
-        position={position}
-        favorites={favorites}
-        favoritesPV={favoritesPV}
-        bidList={bidList}
-        refreshFavorites={refreshFavorites}
-        showBidListButton={showBidListButton && !isProjectedVacancy}
-        showBidCount={!isProjectedVacancy}
-        useShortFavButton={useShortFavButton}
-        showCompareButton={showCompareButton}
-        isProjectedVacancy={isProjectedVacancy}
-      />
-      <ResultsCondensedCardFooter
-        position={position}
-        isProjectedVacancy={isProjectedVacancy}
-      />
-    </BoxShadow>
+  <BoxShadow className="usa-grid-full condensed-card-inner">
+    <ResultsCondensedCardTop
+      favorites={favorites}
+      position={position}
+      type={type}
+      isProjectedVacancy={isProjectedVacancy}
+      isRecentlyAvailable={isRecentlyAvailable}
+    />
+    <ResultsCondensedCardBottom
+      position={position}
+      favorites={favorites}
+      favoritesPV={favoritesPV}
+      bidList={bidList}
+      refreshFavorites={refreshFavorites}
+      showBidListButton={showBidListButton && !isProjectedVacancy}
+      showBidCount={!isProjectedVacancy}
+      useShortFavButton={useShortFavButton}
+      showCompareButton={showCompareButton}
+      isProjectedVacancy={isProjectedVacancy}
+    />
+    <ResultsCondensedCardFooter
+      position={position}
+      isProjectedVacancy={isProjectedVacancy}
+    />
+  </BoxShadow>
 );
 
 ResultsCondensedCard.propTypes = {
-  position: POSITION_DETAILS.isRequired,
+  position: PropTypes.shape({
+    position: POSITION_DETAILS.isRequired,
+  }).isRequired,
   favorites: FAVORITE_POSITIONS_ARRAY,
   favoritesPV: FAVORITE_POSITIONS_ARRAY,
   bidList: BID_RESULTS.isRequired,

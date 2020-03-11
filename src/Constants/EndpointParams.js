@@ -1,29 +1,30 @@
 // valid query params to filter positions against
 
 export const ENDPOINT_PARAMS = {
-  skill: 'skill__code__in',
+  skill: 'position__skill__code__in',
   language: 'language_codes',
-  grade: 'grade__code__in',
-  tod: 'post__tour_of_duty__code__in',
-  org: 'bureau__code__in',
+  grade: 'position__grade__code__in',
+  tod: 'position__post__tour_of_duty__code__in',
+  org: 'position__bureau__code__in',
   functionalOrg: 'org_has_groups',
-  cola: 'post__cost_of_living_adjustment__gt',
-  postDiff: 'post__differential_rate__in',
-  danger: 'post__danger_pay__in',
+  cola: 'position__post__cost_of_living_adjustment__gt',
+  postDiff: 'position__post__differential_rate__in',
+  danger: 'position__post__danger_pay__in',
   domestic: 'is_domestic',
-  mission: 'post__location__country__in',
-  post: 'post__in',
+  mission: 'position__post__location__country__in',
+  post: 'position__post__in',
+  postAP: 'position__post__code__in',
   available: 'is_available_in_current_bidcycle',
   bidCycle: 'is_available_in_bidcycle',
   bidSeason: 'is_available_in_bidseason',
-  highlighted: 'is_highlighted',
+  highlighted: 'position__is_highlighted',
   projectedVacancy: 'projectedVacancy', // this isn't a real query param, but we'll use it to transform the request
 };
 
 // any properties that we want to abstract to a common name
 export const COMMON_PROPERTIES = {
   posted: 'posted_date',
-  NULL_LANGUAGE: 'NONE',
+  NULL_LANGUAGE: 'NLR',
 };
 
 // Take our custom query param from the Bidder Portfolio navigation and convert them to queries
@@ -40,7 +41,9 @@ export const VALID_PARAMS = [
   'q',
 ];
 
+// Params that need their data fetched on-the-fly in order to populate pill text
 export const ASYNC_PARAMS = [
   ENDPOINT_PARAMS.mission,
   ENDPOINT_PARAMS.post,
+  ENDPOINT_PARAMS.postAP,
 ];

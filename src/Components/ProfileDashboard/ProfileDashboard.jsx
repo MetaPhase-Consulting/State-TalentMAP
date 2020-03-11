@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Flag } from 'flag';
-import { USER_PROFILE, NOTIFICATION_RESULTS, ASSIGNMENT_OBJECT, BID_RESULTS,
-  FAVORITE_POSITIONS_ARRAY, EMPTY_FUNCTION } from '../../Constants/PropTypes';
+import { USER_PROFILE, NOTIFICATION_RESULTS, BID_RESULTS,
+  FAVORITE_POSITIONS_ARRAY, EMPTY_FUNCTION, CLIENT_CLASSIFICATIONS, CLASSIFICATIONS } from 'Constants/PropTypes';
+import PermissionsWrapper from 'Containers/PermissionsWrapper';
+import SearchAsClientButton from 'Components/BidderPortfolio/SearchAsClientButton/SearchAsClientButton';
+import { checkFlag } from 'flags';
 import UserProfile from './UserProfile';
 import BidList from './BidList';
 import Notifications from './Notifications';
@@ -13,45 +16,47 @@ import MediaQueryWrapper from '../MediaQuery';
 import Favorites from './Favorites';
 import Assignments from './Assignments';
 import SavedSearches from './SavedSearches/SavedSearchesWrapper';
-import PermissionsWrapper from '../../Containers/PermissionsWrapper';
 import BackButton from '../BackButton';
 import BoxShadow from '../BoxShadow';
-import Updates from './Updates';
+import Classifications from './Classifications';
+
+const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
 const ProfileDashboard = ({
-  userProfile, isLoading, notifications, assignment, assignmentIsLoading, isPublic,
+  userProfile, isLoading, notifications, isPublic,
   notificationsIsLoading, bidList, bidListIsLoading, favoritePositions, favoritePositionsIsLoading,
-  submitBidPosition, deleteBid,
+  submitBidPosition, deleteBid, classifications, clientClassifications,
 }) => (
   <div className="usa-grid-full user-dashboard user-dashboard-main profile-content-inner-container">
-    {isLoading || favoritePositionsIsLoading || assignmentIsLoading ||
+    {isLoading || favoritePositionsIsLoading ||
       notificationsIsLoading ? (
         <Spinner type="homepage-position-results" size="big" />
-    ) : (
-      <div className="usa-grid-full">
-        <div className="usa-grid-full dashboard-top-section">
-          { isPublic ? <BackButton /> : <ProfileSectionTitle title={`Hello, ${userProfile.display_name}`} /> }
-        </div>
-        <MediaQueryWrapper breakpoint="screenLgMin" widthType="max">
-          {(matches) => {
-            let columns = !matches ? [3, 4, 5] : [6, 6, 12];
-            if (isPublic) { columns = !matches ? [3, 4, 5] : [12, 12, 12]; }
-            return (
-              <Row className="usa-grid-full">
-                <Column
-                  columns={columns[0]}
-                  className={'user-dashboard-section-container user-dashboard-column-1'}
-                >
-                  <BoxShadow className="usa-width-one-whole user-dashboard-section current-user-section">
-                    <UserProfile
-                      userProfile={userProfile}
-                      assignment={assignment}
-                      showEditLink={!isPublic}
-                    />
-                  </BoxShadow>
-                </Column>
-                {
-                  !isPublic &&
+      ) : (
+        <div className="usa-grid-full">
+          <div className="usa-grid-full dashboard-top-section">
+            { isPublic ? <BackButton /> : <ProfileSectionTitle title={`Hello, ${userProfile.display_name}`} /> }
+            { isPublic && useCDOBidding() && <SearchAsClientButton user={userProfile} /> }
+          </div>
+          <MediaQueryWrapper breakpoint="screenLgMin" widthType="max">
+            {(matches) => {
+              let columns = !matches ? [3, 4, 5] : [6, 6, 12];
+              if (isPublic) { columns = !matches ? [3, 4, 5] : [12, 12, 12]; }
+              return (
+                <Row className="usa-grid-full">
+                  <Column
+                    columns={columns[0]}
+                    className={'user-dashboard-section-container user-dashboard-column-1'}
+                  >
+                    <BoxShadow className="usa-width-one-whole user-dashboard-section current-user-section">
+                      <UserProfile
+                        userProfile={userProfile}
+                        showEditLink={!isPublic}
+                        isPublic={isPublic}
+                      />
+                    </BoxShadow>
+                  </Column>
+                  {
+                    !isPublic &&
                     <div>
                       <Column
                         columns={columns[1]}
@@ -91,46 +96,51 @@ const ProfileDashboard = ({
                         </BoxShadow>
                       </Column>
                     </div>
-                }
-                {
-                  isPublic &&
+                  }
+                  {
+                    isPublic &&
                     <Column
                       columns={columns[1]}
                       className="user-dashboard-section-container user-dashboard-column-2"
                     >
                       <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
-                        <Updates />
+                        <Classifications
+                          classifications={classifications}
+                          clientClassifications={clientClassifications}
+                        />
                       </BoxShadow>
                     </Column>
-                }
-                {
-                  isPublic &&
+                  }
+                  {
+                    isPublic &&
                     <Column
                       columns={columns[2]}
                       className="user-dashboard-section-container user-dashboard-column-3"
                     >
                       <BoxShadow className="usa-width-one-whole user-dashboard-section bidlist-section">
-                        <BidList bids={bidList} showMoreLink={!isPublic} />
+                        <BidList
+                          bids={bidList}
+                          isPublic={isPublic}
+                          userId={userProfile.perdet_seq_number}
+                        />
                       </BoxShadow>
                       <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
                         <Assignments assignments={userProfile.assignments} />
                       </BoxShadow>
                     </Column>
-                }
-              </Row>
-            );
-          }}
-        </MediaQueryWrapper>
-      </div>
-    )}
+                  }
+                </Row>
+              );
+            }}
+          </MediaQueryWrapper>
+        </div>
+      )}
   </div>
 );
 
 ProfileDashboard.propTypes = {
   userProfile: USER_PROFILE.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  assignment: ASSIGNMENT_OBJECT,
-  assignmentIsLoading: PropTypes.bool,
   notifications: NOTIFICATION_RESULTS,
   notificationsIsLoading: PropTypes.bool,
   bidList: BID_RESULTS,
@@ -140,14 +150,14 @@ ProfileDashboard.propTypes = {
   isPublic: PropTypes.bool,
   submitBidPosition: PropTypes.func,
   deleteBid: PropTypes.func,
+  classifications: CLASSIFICATIONS,
+  clientClassifications: CLIENT_CLASSIFICATIONS,
 };
 
 ProfileDashboard.defaultProps = {
   favoritePositions: [],
   isLoading: false,
-  assignment: {},
   favoritePositionsIsLoading: false,
-  assignmentIsLoading: false,
   notifications: [],
   notificationsIsLoading: false,
   bidList: [],
@@ -155,6 +165,8 @@ ProfileDashboard.defaultProps = {
   isPublic: false,
   submitBidPosition: EMPTY_FUNCTION,
   deleteBid: EMPTY_FUNCTION,
+  classifications: [],
+  clientClassifications: [],
 };
 
 export default ProfileDashboard;

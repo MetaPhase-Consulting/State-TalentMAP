@@ -2,7 +2,9 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import toJSON from 'enzyme-to-json';
 import PositionDetailsItem, { renderHandshake } from './PositionDetailsItem';
-import detailsObject from '../../__mocks__/detailsObject';
+import resultsObject from '../../__mocks__/resultsObject';
+
+const detailsObject = resultsObject.results[0];
 
 describe('PositionDetailsItem', () => {
   const props = {
@@ -13,15 +15,15 @@ describe('PositionDetailsItem', () => {
     editWebsiteContent: () => {},
   };
 
-  it('can receive props', () => {
+  it('renders handshake', () => {
+    expect(renderHandshake({ has_handshake_offered: true })).toBeDefined();
+  });
+
+  it('is defined', () => {
     const wrapper = shallow(
       <PositionDetailsItem {...props} />,
     );
-    expect(wrapper.instance().props.details.id).toBe(6);
-  });
-
-  it('renders handshake', () => {
-    expect(renderHandshake({ has_handshake_offered: true })).toBeDefined();
+    expect(wrapper).toBeDefined();
   });
 
   it('handles different props and different position objects', () => {
@@ -30,7 +32,7 @@ describe('PositionDetailsItem', () => {
     const wrapper = shallow(
       <PositionDetailsItem {...props} details={details} />,
     );
-    expect(wrapper.instance().props.details.languages.length).toBe(0);
+    expect(wrapper).toBeDefined();
   });
 
   it('handles different types of position objects', () => {
@@ -40,7 +42,7 @@ describe('PositionDetailsItem', () => {
     const wrapper = shallow(
       <PositionDetailsItem {...props} details={details} />,
     );
-    expect(wrapper.instance().props.details.languages.length).toBe(0);
+    expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {

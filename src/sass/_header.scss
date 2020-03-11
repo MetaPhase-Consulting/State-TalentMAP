@@ -3,6 +3,11 @@
   background-color: $dos-blue;
   border-bottom: 3px solid $dos-red;
 
+  .usa-menu-btn {
+    background-color: transparent;
+    font-size: 1.4em;
+  }
+
   .usa-navbar {
     border-bottom: 0;
   }
@@ -85,6 +90,7 @@
     padding-left: $header-link-padding;
   }
 
+  .dropdown.notifications-dropdown,
   .header-nav-link-text,
   .icon-alert-container {
     position: relative;
@@ -98,8 +104,13 @@
     padding-left: 15px;
   }
 
-  .account-dropdown {
+  .account-dropdown,
+  .notifications-dropdown {
     top: inherit;
+  }
+
+  .notifications-icon-trigger {
+    display: contents;
   }
 
   .account-container {

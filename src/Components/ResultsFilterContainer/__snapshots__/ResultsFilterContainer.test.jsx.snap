@@ -4,6 +4,7 @@ exports[`ResultsFilterContainerComponent matches snapshot 1`] = `
 <div
   className="filter-container "
 >
+  <Connect(MobileControls) />
   <div
     className="filter-container-bottom"
   >
@@ -26,7 +27,7 @@ exports[`ResultsFilterContainerComponent matches snapshot 1`] = `
     <div
       className="usa-grid-full search-filters-container"
     >
-      <SearchFiltersContainer
+      <SearchFiltersContainerLoadable
         fetchMissionAutocomplete={[Function]}
         fetchPostAutocomplete={[Function]}
         filters={
@@ -62,6 +63,12 @@ exports[`ResultsFilterContainerComponent matches snapshot when isLoading === tru
 <div
   className="filter-container is-loading"
 >
+  <Spinner
+    size="small"
+    style={Object {}}
+    type="results-filter"
+  />
+  <Connect(MobileControls) />
   <div
     className="filter-container-bottom"
   >
@@ -84,7 +91,7 @@ exports[`ResultsFilterContainerComponent matches snapshot when isLoading === tru
     <div
       className="usa-grid-full search-filters-container"
     >
-      <SearchFiltersContainer
+      <SearchFiltersContainerLoadable
         fetchMissionAutocomplete={[Function]}
         fetchPostAutocomplete={[Function]}
         filters={

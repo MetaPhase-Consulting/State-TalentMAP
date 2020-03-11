@@ -10,16 +10,20 @@ import StaticDevContent from '../../StaticDevContent';
 
 const FavoriteList = ({ favorites }) => {
   const positionArray = [];
-  favorites.slice(0, 2).forEach(position => (
-    positionArray.push(
-      <FavoriteListResultsCard
-        position={position}
-        condensedView
-        /* pass a parentClassName that we can use from the BorderedList component */
-        parentClassName="parent-list-container"
-      />,
-    )
-  ));
+  favorites.slice(0, 2).forEach((pos) => {
+    const position = pos.position || pos;
+    return (
+      positionArray.push(
+        <FavoriteListResultsCard
+          position={{ ...position, cpId: pos.id }}
+          isPV={pos.isPV}
+          condensedView
+          /* pass a parentClassName that we can use from the BorderedList component */
+          parentClassName="parent-list-container"
+        />,
+      )
+    );
+  });
   return (
     <div className="usa-grid-full profile-section-container">
       <StaticDevContent>
@@ -36,7 +40,7 @@ const FavoriteList = ({ favorites }) => {
             <div className="usa-grid-full section-padded-inner-container">
               <NoFavorites />
             </div>
-          :
+            :
             <BorderedList contentArray={positionArray} />
         }
       </div>

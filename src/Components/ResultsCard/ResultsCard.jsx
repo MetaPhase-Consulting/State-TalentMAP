@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { get, isNumber } from 'lodash';
+import { get, isNull, isNumber } from 'lodash';
 import { Flag } from 'flag';
+import Differentials from 'Components/Differentials';
 import { COMMON_PROPERTIES } from '../../Constants/EndpointParams';
 import { Row, Column } from '../Layout';
 import DefinitionList from '../DefinitionList';
@@ -12,32 +13,46 @@ import CompareCheck from '../CompareCheck/CompareCheck';
 import LanguageList from '../LanguageList';
 import BidCount from '../BidCount';
 import BoxShadow from '../BoxShadow';
-import Handshake from '../Ribbon/Handshake';
+import { Featured, Handshake } from '../Ribbon';
+import InBidListContainer from './InBidList';
 import HoverDescription from './HoverDescription';
 import OBCUrl from '../OBCUrl';
+import BidListButton from '../../Containers/BidListButton';
 
-import { formatDate, propOrDefault, getPostName, getBidStatisticsObject, shortenString,
-getDifferentialPercentage } from '../../utilities';
+import { formatDate, propOrDefault, getPostName, shortenString,
+  getDifferentialPercentage, getBidStatisticsObject } from '../../utilities';
 
 import { POSITION_DETAILS, FAVORITE_POSITIONS_ARRAY } from '../../Constants/PropTypes';
 import {
-  NO_BUREAU, NO_BID_CYCLE, NO_DANGER_PAY, NO_GRADE, NO_POST_DIFFERENTIAL, NO_POSITION_NUMBER,
+  NO_BUREAU, NO_BID_CYCLE, NO_GRADE, NO_POSITION_NUMBER,
   NO_POST, NO_SKILL, NO_TOUR_OF_DUTY, NO_UPDATE_DATE, NO_DATE, NO_USER_LISTED,
 } from '../../Constants/SystemMessages';
+
+const getPostNameText = pos => `${getPostName(pos.post, NO_POST)}${pos.organization ? `: ${pos.organization}` : ''}`;
+
+const getBidStatsToUse = (result, pos) => result.bid_statistics || pos.bid_statistics;
+
+const getDifferentials = (result) => {
+  const dangerPay = get(result, 'post.danger_pay');
+  const postDifferential = get(result, 'post.differential_rate');
+  const obcUrl = get(result, 'post.post_bidding_considerations_url');
+  const props = { dangerPay, postDifferential, obcUrl };
+  return <Differentials {...props} />;
+};
 
 const getResult = (result, path, defaultValue, isRate = false) => {
   let value = get(result, path, defaultValue);
 
-  if ((/_date|date_/i).test(path) && value !== defaultValue) {
+  if ((/_date|date_|ted/i).test(path) && value !== defaultValue) {
     value = formatDate(value);
   }
 
   if (path === 'post.differential_rate' || path === 'post.danger_pay') {
     const value$ = getDifferentialPercentage(value);
 
-    const OBCId = get(result, 'post.obc_id');
-    if (OBCId) {
-      return (<span> {value$} | <OBCUrl id={OBCId} type="post-data" label="View OBC Data" /></span>);
+    const OBCUrl$ = get(result, 'post.post_bidding_considerations_url');
+    if (OBCUrl$) {
+      return (<span> {value$} | <OBCUrl url={OBCUrl$} type="post-data" label="View OBC Data" /></span>);
     }
 
     return value$;
@@ -60,19 +75,17 @@ export const renderBidCount = stats => (
   </Column>
 );
 
-class ResultsCard extends Component {
-  constructor(props) {
-    super(props);
-    this.getOffsetPx = this.getOffsetPx.bind(this);
-    this.getInnerId = this.getInnerId.bind(this);
-  }
+export const renderBidCountMobile = stats => (
+  <BidCount bidStatistics={stats} altStyle />
+);
 
-  getInnerId() {
+class ResultsCard extends Component {
+  getInnerId = () => {
     const { id } = this.props;
     return `${id}-inner`;
-  }
+  };
 
-  getOffsetPx() {
+  getOffsetPx = () => {
     const { id } = this.props;
     const innerId = this.getInnerId();
     const maxHeightOffset = document.getElementById(innerId).offsetTop;
@@ -81,7 +94,7 @@ class ResultsCard extends Component {
     const offset = cardHeight - maxHeightOffset;
 
     return `${offset}px`;
-  }
+  };
 
   render() {
     const options = {};
@@ -91,42 +104,45 @@ class ResultsCard extends Component {
       favorites,
       favoritesPV,
     } = this.props;
-    const { isProjectedVacancy } = this.context;
+    const { isProjectedVacancy, isClient } = this.context;
 
-    const title = propOrDefault(result, 'title');
-    const position = getResult(result, 'position_number', NO_POSITION_NUMBER);
-    const languages = getResult(result, 'languages', []);
+    const pos = result.position || result;
+
+    const title = propOrDefault(pos, 'title');
+    const position = getResult(pos, 'position_number', NO_POSITION_NUMBER);
+    const languages = getResult(pos, 'languages', []);
 
     const language = (<LanguageList languages={languages} propToUse="representation" />);
 
-    const post = `${getPostName(result.post, NO_POST)}${result.organization ? `: ${result.organization}` : ''}`;
+    const post = getPostNameText(pos);
 
-    const stats = getBidStatisticsObject(result.bid_statistics);
+    const bidStatsToUse = getBidStatsToUse(result, pos);
+    const stats = getBidStatisticsObject(bidStatsToUse);
 
-    const description = shortenString(get(result, 'description.content') || 'No description.', 750);
+    const description = shortenString(get(pos, 'description.content') || 'No description.', 750);
+    const descriptionMobile = shortenString(get(pos, 'description.content') || 'No description.', 500);
 
     const innerId = this.getInnerId();
 
-  // TODO - update this to a real property once API is updateds
-    const recentlyAvailable = result.recently_available;
+    // TODO - update this to a real property once API is updateds
+    const recentlyAvailable = pos.recently_available;
 
     const bidTypeTitle = isProjectedVacancy ? 'Bid season' : 'Bid cycle';
 
     const sections = [
     /* eslint-disable quote-props */
       {
-        'TED': getResult(result, 'current_assignment.estimated_end_date', NO_DATE),
-        [bidTypeTitle]: getResult(result, 'latest_bidcycle.name', NO_BID_CYCLE),
-        'Skill': getResult(result, 'skill', NO_SKILL),
-        'Grade': getResult(result, 'grade', NO_GRADE),
-        'Bureau': getResult(result, 'bureau', NO_BUREAU),
+        'TED': getResult(result, 'ted', NO_DATE),
+        [bidTypeTitle]: getResult(result, 'bidcycle.name', NO_BID_CYCLE),
+        'Skill': getResult(pos, 'skill', NO_SKILL),
+        'Grade': getResult(pos, 'grade', NO_GRADE),
+        'Bureau': getResult(pos, 'bureau', NO_BUREAU),
       },
       {
-        'Tour of duty': getResult(result, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
+        'Tour of duty': getResult(pos, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
         'Language': language,
-        'Post differential': getResult(result, 'post.differential_rate', NO_POST_DIFFERENTIAL, true),
-        'Danger pay': getResult(result, 'post.danger_pay', NO_DANGER_PAY, true),
-        'Incumbent': getResult(result, 'current_assignment.user', NO_USER_LISTED),
+        'Post differential | Danger Pay': getDifferentials(pos),
+        'Incumbent': getResult(pos, 'current_assignment.user', NO_USER_LISTED),
       },
       {
         'Posted': getResult(result, COMMON_PROPERTIES.posted, NO_UPDATE_DATE),
@@ -148,12 +164,24 @@ class ResultsCard extends Component {
 
     options.compare = {
       as: 'div',
-      refKey: position,
+      refKey: result.id,
     };
 
+    const detailsLink = <Link to={`/${isProjectedVacancy ? 'vacancy' : 'details'}/${result.id}`}>View position</Link>;
+
+    const availability = get(result, 'availability.availability');
+    const availableToBid = isNull(availability) || !!availability;
+
+    const renderBidListButton = () => (
+      <BidListButton
+        id={result.id}
+        disabled={!availableToBid}
+      />
+    );
+
     return (
-      <MediaQueryWrapper breakpoint="screenMdMax" widthType="max">
-        {() => (
+      <MediaQueryWrapper breakpoint="screenSmMax" widthType="max">
+        {matches => (
           <BoxShadow>
             <div
               id={id}
@@ -162,62 +190,81 @@ class ResultsCard extends Component {
               onMouseOver={() => this.hover.toggleCardHovered(true)}
               onMouseLeave={() => this.hover.toggleCardHovered(false)}
             >
-              <Row className="header" fluid>
-                <Column columns="8">
-                  <Column columns="12" className="results-card-title-link">
-                    <h3>{title}</h3>
-                    { !isProjectedVacancy && <Link to={`/details/${result.id}`}>View position</Link> }
-                    {recentlyAvailable && <span className="available-alert">Now available!</span>}
-                  </Column>
-                  <Column columns="12" className="results-card-title-link">
-                    <dt>Location:</dt><dd>{post}</dd>
-                  </Column>
+              {
+                matches ?
+                  <Row className="header" fluid>
+                    <h3>{title}</h3>: {post}
+                    {detailsLink}
+                    {
+                      !isProjectedVacancy &&
+                      <Flag
+                        name="flags.bid_count"
+                        render={() => renderBidCountMobile(stats)}
+                      />
+                    }
+                  </Row>
+                  :
+                  <Row className="header" fluid>
+                    <Column columns="8">
+                      <Column columns="12" className="results-card-title-link">
+                        <h3>{title}</h3>
+                        {detailsLink}
+                        {recentlyAvailable && <span className="available-alert">Now available!</span>}
+                      </Column>
+                      <Column columns="12" className="results-card-title-link">
+                        <dt>Location:</dt><dd>{post}</dd>
+                      </Column>
+                    </Column>
+                    {
+                      !isProjectedVacancy &&
+                      <Flag
+                        name="flags.bid_count"
+                        render={() => renderBidCount(stats)}
+                      />
+                    }
+                  </Row>
+              }
+              <Row id={innerId} fluid>
+                <Column columns="5">
+                  <DefinitionList items={sections[0]} />
                 </Column>
                 {
-                  !isProjectedVacancy &&
-                  <Flag
-                    name="flags.bidding"
-                    render={() => renderBidCount(stats)}
-                  />
+                  !matches &&
+                  <Column columns="5">
+                    <DefinitionList items={sections[1]} />
+                  </Column>
                 }
-              </Row>
-              <Flag
-                name="flags.bidding"
-                render={() =>
-                (<Row id={innerId} fluid>
-                  <Column columns="6">
-                    <DefinitionList items={sections[0]} />
-                  </Column>
-                  <Column columns="4">
-                    <DefinitionList items={sections[1]} />
-                  </Column>
-                  <Column columns="2">
+                <Column columns="2">
+                  <div className="ribbon-container">
                     {
-                      get(stats, 'has_handshake_offered', false) && <Handshake className="ribbon-results-card" />
+                      get(stats, 'has_handshake_offered', false) && <Handshake isWide className="ribbon-results-card" />
                     }
-                  </Column>
-                </Row>)
-              }
-                fallbackRender={() =>
-                (<Row id={`${id}-inner`} fluid>
-                  <Column columns="6">
-                    <DefinitionList items={sections[0]} />
-                  </Column>
-                  <Column columns="6">
-                    <DefinitionList items={sections[1]} />
-                  </Column>
-                </Row>)
-              }
-              />
+                    {
+                      get(result, 'position.is_highlighted') && <Featured isWide className="ribbon-results-card" />
+                    }
+                    {
+                      // conditional rendering occurs inside the container
+                      <InBidListContainer id={result.id} isWide className="ribbon-results-card" />
+                    }
+                  </div>
+                </Column>
+              </Row>
               <Row className="footer results-card-padded-section" fluid>
-                <Column columns="6" as="section">
+                <Column columns={matches ? 8 : 6} as="section">
                   {
-                    !!favorites &&
+                    !!favorites && !isClient &&
                       <Favorite {...options.favorite} />
                   }
-                  {!isProjectedVacancy && <CompareCheck {...options.compare} />}
+                  {
+                    isClient && !isProjectedVacancy &&
+                      <Flag
+                        name="flags.bidding"
+                        render={renderBidListButton}
+                      />
+                  }
+                  {!isProjectedVacancy && !isClient && <CompareCheck {...options.compare} />}
                 </Column>
-                <Column columns="6" as="section">
+                <Column columns={matches ? 4 : 6} as="section">
                   <div>
                     <DefinitionList items={sections[2]} />
                   </div>
@@ -225,13 +272,13 @@ class ResultsCard extends Component {
               </Row>
               <HoverDescription
                 ref={(x) => { this.hover = x; }}
-                text={description}
+                text={matches ? descriptionMobile : description}
                 getOffsetPx={this.getOffsetPx}
                 id={result.id}
               />
             </div>
           </BoxShadow>
-      )}
+        )}
       </MediaQueryWrapper>
     );
   }
@@ -239,6 +286,7 @@ class ResultsCard extends Component {
 
 ResultsCard.contextTypes = {
   isProjectedVacancy: PropTypes.bool,
+  isClient: PropTypes.bool,
 };
 
 ResultsCard.propTypes = {

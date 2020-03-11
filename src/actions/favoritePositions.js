@@ -1,8 +1,25 @@
+import { batch } from 'react-redux';
 import { get } from 'lodash';
+import { downloadFromResponse } from 'utilities';
+import { toastError } from './toast';
 import api from '../api';
 import { checkFlag } from '../flags';
 
 const getUsePV = () => checkFlag('flags.projected_vacancy');
+
+export function downloadPositionData(excludeAP = false, excludePV = false) {
+  const url = `/available_position/favorites/export/?exclude_available=${excludeAP}&exclude_projected=${excludePV}`;
+  return api().get(url, {
+    responseType: 'stream',
+  })
+    .then((response) => {
+      downloadFromResponse(response, 'TalentMap_favorites_export');
+    })
+    .catch(() => {
+    // eslint-disable-next-line global-require
+      require('../store').store.dispatch(toastError('Export unsuccessful. Please try again.', 'Error exporting'));
+    });
+}
 
 export function favoritePositionsHasErrored(bool) {
   return {
@@ -28,10 +45,12 @@ export function favoritePositionsFetchDataSuccess(results) {
 export function favoritePositionsFetchData(sortType) {
   const usePV = getUsePV();
   return (dispatch) => {
-    dispatch(favoritePositionsIsLoading(true));
-    dispatch(favoritePositionsHasErrored(false));
+    batch(() => {
+      dispatch(favoritePositionsIsLoading(true));
+      dispatch(favoritePositionsHasErrored(false));
+    });
     const data$ = { favorites: [], favoritesPV: [] };
-    let url = '/position/favorites/';
+    let url = '/available_position/favorites/';
     let urlPV = '/projected_vacancy/favorites/';
     if (sortType) {
       const append = `?ordering=${sortType}`;
@@ -56,32 +75,38 @@ export function favoritePositionsFetchData(sortType) {
     }
 
     Promise.all(queryProms)
-    .then((results) => {
+      .then((results) => {
       // if any promise returned with errors, return the error
-      let err;
-      results.forEach((result) => {
-        if (result instanceof Error) {
-          err = result;
-        }
-      });
-      if (err) {
-        dispatch(favoritePositionsHasErrored(true));
-        dispatch(favoritePositionsIsLoading(false));
-      } else {
+        let err;
+        results.forEach((result) => {
+          if (result instanceof Error) {
+            err = result;
+          }
+        });
+        if (err) {
+          batch(() => {
+            dispatch(favoritePositionsHasErrored(true));
+            dispatch(favoritePositionsIsLoading(false));
+          });
+        } else {
         // object 0 is favorites
-        data$.favorites = get(results, '[0].results', []);
-        data$.results = get(results, '[0].results', []);
-        // object 1 is PV favorites
-        // add PV property
-        data$.favoritesPV = get(results, '[1].results', []).map(m => ({ ...m, isPV: true }));
-        dispatch(favoritePositionsFetchDataSuccess(data$));
-        dispatch(favoritePositionsHasErrored(false));
-        dispatch(favoritePositionsIsLoading(false));
-      }
-    })
-    .catch(() => {
-      dispatch(favoritePositionsHasErrored(true));
-      dispatch(favoritePositionsIsLoading(false));
-    });
+          data$.favorites = get(results, '[0].results', []);
+          data$.results = get(results, '[0].results', []);
+          // object 1 is PV favorites
+          // add PV property
+          data$.favoritesPV = get(results, '[1].results', []).map(m => ({ ...m, isPV: true }));
+          batch(() => {
+            dispatch(favoritePositionsFetchDataSuccess(data$));
+            dispatch(favoritePositionsHasErrored(false));
+            dispatch(favoritePositionsIsLoading(false));
+          });
+        }
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(favoritePositionsHasErrored(true));
+          dispatch(favoritePositionsIsLoading(false));
+        });
+      });
   };
 }

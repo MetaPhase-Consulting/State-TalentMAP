@@ -1,38 +1,69 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { isEqual } from 'lodash';
+import { connect } from 'react-redux';
 import ScrollUpButton from '../ScrollUpButton';
 import PaginationWrapper from '../PaginationWrapper/PaginationWrapper';
 import ResultsList from '../ResultsList/ResultsList';
-import { POSITION_SEARCH_RESULTS, EMPTY_FUNCTION, SAVED_SEARCH_MESSAGE, SAVED_SEARCH_OBJECT,
-         SORT_BY_PARENT_OBJECT, PILL_ITEM_ARRAY, USER_PROFILE,
-         BID_RESULTS } from '../../Constants/PropTypes';
+import { POSITION_SEARCH_RESULTS, EMPTY_FUNCTION,
+  SORT_BY_PARENT_OBJECT, PILL_ITEM_ARRAY, USER_PROFILE,
+  BID_RESULTS } from '../../Constants/PropTypes';
 import Spinner from '../Spinner';
 import Alert from '../Alert/Alert';
 import ResultsControls from '../ResultsControls/ResultsControls';
 import ResultsPillContainer from '../ResultsPillContainer/ResultsPillContainer';
-import SaveNewSearchContainer from '../SaveNewSearchContainer';
+import { SaveNewSearchDialog, Trigger } from '../SaveNewSearch';
+import MediaQuery from '../MediaQuery';
+import SelectForm from '../SelectForm/SelectForm';
+import InteractiveElement from '../InteractiveElement';
+import { toggleMobileFilter } from '../../actions/showMobileFilter';
 
 class ResultsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.onPageChange = this.onPageChange.bind(this);
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(nextProps, this.props);
   }
 
-  onPageChange(q) {
+  onPageChange = q => {
     this.props.queryParamUpdate(q);
     this.props.scrollToTop();
-  }
+  };
+
+  onSelectOrdering = e => {
+    this.props.queryParamUpdate({ ordering: e.target.value });
+  };
 
   render() {
     const { results, isLoading, hasErrored, sortBy, pageSize, hasLoaded, totalResults,
-            defaultSort, pageSizes, defaultPageSize, refreshKey, pillFilters, userProfile,
-            defaultPageNumber, queryParamUpdate, onQueryParamToggle,
-            newSavedSearchHasErrored, saveSearch,
-            currentSavedSearch, newSavedSearchIsSaving, bidList,
-      } = this.props;
-    const { isProjectedVacancy } = this.context;
+      defaultSort, pageSizes, defaultPageSize, refreshKey, pillFilters, userProfile,
+      defaultPageNumber, queryParamUpdate, onQueryParamToggle, bidList, toggle,
+    } = this.props;
     return (
       <div className="results-container">
+        <MediaQuery breakpoint="screenSmMax" widthType="max">
+          {
+            matches => (matches &&
+              (
+                <div className="usa-width-one-whole mobile-controls">
+                  <Trigger isPrimary>
+                    <button className="usa-button-secondary">Save Search</button>
+                  </Trigger>
+                  <InteractiveElement onClick={toggle} className="filter-button">Filter</InteractiveElement>
+                  <div className="results-dropdown results-dropdown-sort">
+                    <SelectForm
+                      id="sort"
+                      label="Sort by:"
+                      labelSrOnly
+                      onSelectOption={this.onSelectOrdering}
+                      options={sortBy.options}
+                      defaultSort={defaultSort}
+                      className="select-blue select-offset select-small"
+                    />
+                  </div>
+                </div>
+              )
+            )
+          }
+        </MediaQuery>
         <ResultsPillContainer
           items={pillFilters}
           onPillClick={onQueryParamToggle}
@@ -47,22 +78,19 @@ class ResultsContainer extends Component {
           defaultPageNumber={defaultPageNumber}
           queryParamUpdate={queryParamUpdate}
         />
-        {
-          !isProjectedVacancy ?
-            <SaveNewSearchContainer
-              saveSearch={saveSearch}
-              newSavedSearchHasErrored={newSavedSearchHasErrored}
-              currentSavedSearch={currentSavedSearch}
-              newSavedSearchIsSaving={newSavedSearchIsSaving}
-            />
-            :
-            <div style={{ marginBottom: 10 }} />
-        }
+        <SaveNewSearchDialog />
         {
           // is not loading, results array exists, but is empty
-          !isLoading && results.results && !results.results.length &&
+          !isLoading && results.results && !results.results.length && !hasErrored &&
             <div className="usa-grid-full no-results">
               <Alert title="No results found" messages={[{ body: 'Try broadening your search criteria' }]} />
+            </div>
+        }
+        {
+          // is not loading and has errored
+          !isLoading && hasErrored &&
+            <div className="usa-grid-full no-results">
+              <Alert type="error" title="An error has occurred" messages={[{ body: 'Try performing another search' }]} />
             </div>
         }
         {
@@ -82,27 +110,23 @@ class ResultsContainer extends Component {
           </div>
         }
         {
-         // if there's no results, don't show pagination
-         !!results.results && !!results.results.length &&
-         // finally, render the pagination
-         <div className="usa-grid-full react-paginate">
-           <PaginationWrapper
-             totalResults={totalResults}
-             pageSize={pageSize}
-             onPageChange={this.onPageChange}
-             forcePage={defaultPageNumber}
-           />
-           <ScrollUpButton />
-         </div>
+          // if there's no results, don't show pagination
+          !!results.results && !!results.results.length &&
+          // finally, render the pagination
+          <div className="usa-grid-full react-paginate">
+            <PaginationWrapper
+              totalResults={totalResults}
+              pageSize={pageSize}
+              onPageChange={this.onPageChange}
+              forcePage={defaultPageNumber}
+            />
+            <ScrollUpButton />
+          </div>
         }
       </div>
     );
   }
 }
-
-ResultsContainer.contextTypes = {
-  isProjectedVacancy: PropTypes.bool,
-};
 
 ResultsContainer.propTypes = {
   hasErrored: PropTypes.bool,
@@ -121,12 +145,9 @@ ResultsContainer.propTypes = {
   pillFilters: PILL_ITEM_ARRAY,
   scrollToTop: PropTypes.func,
   userProfile: USER_PROFILE,
-  saveSearch: PropTypes.func.isRequired,
-  newSavedSearchHasErrored: SAVED_SEARCH_MESSAGE.isRequired,
-  newSavedSearchIsSaving: PropTypes.bool.isRequired,
-  currentSavedSearch: SAVED_SEARCH_OBJECT,
   totalResults: PropTypes.number,
   bidList: BID_RESULTS.isRequired,
+  toggle: PropTypes.func,
 };
 
 ResultsContainer.defaultProps = {
@@ -143,6 +164,11 @@ ResultsContainer.defaultProps = {
   userProfile: {},
   currentSavedSearch: {},
   totalResults: 0,
+  toggle: EMPTY_FUNCTION,
 };
 
-export default ResultsContainer;
+export const mapDispatchToProps = dispatch => ({
+  toggle: () => dispatch(toggleMobileFilter(true)),
+});
+
+export default connect(null, mapDispatchToProps)(ResultsContainer);
