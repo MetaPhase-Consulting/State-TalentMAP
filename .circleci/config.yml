@@ -154,11 +154,11 @@ jobs:
       - run:
           name: Run Yarn
           command: |
-            docker-compose -f $COMPOSE_FILE_NAME \
+            docker-compose -f "$COMPOSE_FILE_NAME" \
               run web yarn
       - run:
           name: Start Server
-          command: docker-compose -f $COMPOSE_FILE_NAME up -d
+          command: docker-compose -f "$COMPOSE_FILE_NAME" up -d
       - run:
           name: Run Cypress
           command: |
