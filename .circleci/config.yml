@@ -152,8 +152,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yarn install \
-              npm install -g wait-on
+            yarn install && yarn global add wait-on
       - run:
           name: Start server
           command: yarn start & wait-on http://localhost:3000
