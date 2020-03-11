@@ -1,6 +1,4 @@
-version: 2.1
-orbs:
-  cypress: cypress-io/cypress@1
+version: 2
 default-docker-node: &default-docker-node
   docker:
     - image: circleci/node:12.13.0
@@ -152,18 +150,16 @@ jobs:
               run app bash -c \
               "./wait-for-postgres.sh db && python manage.py migrate"
       - run:
-          name: Run Yarn
+          name: Install dependencies
           command: |
-            docker-compose -f "$COMPOSE_FILE_NAME" \
-              run web yarn
+            yarn install \
+              npm install -g wait-on
       - run:
-          name: Start Server
-          command: docker-compose -f "$COMPOSE_FILE_NAME" up -d
+          name: Start server
+          command: yarn start & wait-on http://localhost:3000
       - run:
           name: Run Cypress
-          command: |
-            docker run --name cypress --network container:web \
-            --volumes-from data
+          command: yarn cypress
   zap:
     <<: *default-docker-node
     steps:
@@ -249,9 +245,6 @@ workflows:
       - cypress:
           requires:
             - docker-build
-      - cypress/run:
-          requires:
-            - cypress
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build

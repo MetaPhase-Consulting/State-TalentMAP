@@ -171,7 +171,7 @@
     "analyze:scss": "codeclimate analyze -e scss-lint -f html > codeclimate.html",
     "stats": "NODE_ENV=production webpack --json --config ./config/webpack.config.prod.js > stats.json",
     "bundlesize": "bundlesize",
-    "cypress": "cypress open"
+    "cypress": "cypress run"
   },
   "engines": {
     "node": ">=12"
