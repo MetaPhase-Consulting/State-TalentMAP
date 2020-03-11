@@ -83,7 +83,6 @@
     "uswds": "~1.6.12"
   },
   "devDependencies": {
-    "axe-core": "^3.2.2",
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-syntax-dynamic-import": "7.8.3",
@@ -92,6 +91,7 @@
     "@babel/runtime-corejs2": "^7.8.7",
     "@epegzz/sass-vars-loader": "^6.0.0",
     "autoprefixer": "^9.7.4",
+    "axe-core": "^3.2.2",
     "axios-mock-adapter": "^1.17.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10",
@@ -102,8 +102,8 @@
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "chalk": "2.4.2",
     "css-loader": "^3.4.2",
-    "cypress": "^3.3.1",
-    "cypress-axe": "^0.5.1",
+    "cypress": "^3.8.3",
+    "cypress-axe": "^0.5.3",
     "cypress-image-snapshot": "2.3.5",
     "dotenv": "4.0.0",
     "enzyme": "^3.11.0",

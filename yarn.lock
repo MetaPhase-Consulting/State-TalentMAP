@@ -3367,7 +3367,7 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
 
-cypress-axe@^0.5.1:
+cypress-axe@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/cypress-axe/-/cypress-axe-0.5.3.tgz#420a0d12b9a514f3ca57dd828bd96ce17117f0d2"
 
@@ -3381,7 +3381,7 @@ cypress-image-snapshot@2.3.5:
     jest-image-snapshot "2.7.0"
     term-img "^2.1.0"
 
-cypress@^3.3.1:
+cypress@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.8.3.tgz#e921f5482f1cbe5814891c878f26e704bbffd8f4"
   dependencies:
