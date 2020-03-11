@@ -233,12 +233,12 @@ workflows:
       - docker-build:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - dev
-                - staging
-                - master
+          # filters:
+            # branches:
+              # only:
+                # - dev
+                # - staging
+                # - master
       - yarn:
           requires:
             - build
