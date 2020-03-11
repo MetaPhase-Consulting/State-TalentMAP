@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  cypress: cypress-io/cypress@1
 default-docker-node: &default-docker-node
   docker:
     - image: circleci/node:12.13.0
@@ -161,8 +163,7 @@ jobs:
           name: Run Cypress
           command: |
             docker run --name cypress --network container:web \
-            --volumes-from data -t talentmap/cypress \
-            cypress
+            --volumes-from data
   zap:
     <<: *default-docker-node
     steps:
@@ -248,6 +249,9 @@ workflows:
       - cypress:
           requires:
             - docker-build
+      - cypress/run:
+          requires:
+            - cypress
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
