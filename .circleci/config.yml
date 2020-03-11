@@ -244,8 +244,10 @@ workflows:
             - build
       - site:
           requires:
-            - cypress
             - build
+      - cypress:
+          requires:
+            - docker-build
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
