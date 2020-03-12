@@ -1,7 +1,7 @@
 version: 2
 default-docker-node: &default-docker-node
   docker:
-    - image: cypress/base:12.13.0
+    - image: circleci/node:12.13.0
       environment:
         TZ: "/usr/share/zoneinfo/America/New_York"
         CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
@@ -152,6 +152,9 @@ jobs:
       - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
+      - run:
+          name: Install cypress dependencies
+          command: apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
           name: Start server and run Cypress
           command: yarn cypress:ci
