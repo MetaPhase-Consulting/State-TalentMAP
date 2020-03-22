@@ -100,7 +100,7 @@
     "babel-eslint": "^10",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.0",
-    "babel-preset-react-app": "^9.1.1",
+    "babel-preset-react-app": "^9.1.2",
     "bundlesize": "^0.17.1",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "chalk": "2.4.2",
