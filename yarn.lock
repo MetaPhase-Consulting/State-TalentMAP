@@ -8915,7 +8915,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@>=15.5.10, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@>=15.7.2, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -9414,11 +9414,11 @@ react-spring@4.0.0:
   dependencies:
     normalize-css-color "^1.0.2"
 
-react-sticky-el@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-1.1.0.tgz#641658f1fc038902862e3ee8c262e2dcdb902032"
+react-sticky-el@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-1.1.1.tgz#bbbb37c353dd65522eac1ccf6795aa206a30bba1"
   dependencies:
-    prop-types ">=15.5.10"
+    prop-types ">=15.7.2"
 
 react-sticky@^6.0.3:
   version "6.0.3"
