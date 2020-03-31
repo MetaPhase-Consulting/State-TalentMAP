@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { NO_GRADE } from 'Constants/SystemMessages';
-import { USER_PROFILE } from '../../../../Constants/PropTypes';
+import { NO_GRADE, NO_SKILL } from 'Constants/SystemMessages';
+import { USER_PROFILE } from 'Constants/PropTypes';
 import SectionTitle from '../../SectionTitle';
 import InformationDataPoint from '../../InformationDataPoint';
 import EditProfile from '../EditProfile';
@@ -26,12 +26,10 @@ const UserProfileGeneralInformation = ({ userProfile, showEditLink, useGroup, is
       className={infoDataPointClassName}
     />)
     :
-    (<StaticDevContent>
-      <InformationDataPoint
-        content="Generalist • F2"
-        className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
-      />
-    </StaticDevContent>);
+    (<InformationDataPoint
+      content={`${get(userProfile, 'user.skill', NO_SKILL)} • ${get(userProfile, 'user.grade', NO_GRADE)}`}
+      className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
+    />);
   return (
     <div className="current-user-top current-user-section-border current-user-section-container">
       <div className="section-padded-inner-container">

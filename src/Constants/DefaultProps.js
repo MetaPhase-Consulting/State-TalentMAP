@@ -15,6 +15,12 @@ export const DEFAULT_USER_PROFILE = {
     username: '',
     first_name: '',
     last_name: '',
+    email: '',
+    address: '',
+    office_number: '',
+    personal_number: '',
+    grade: '',
+    skill: '',
   },
   display_name: '...', // show '...' when loading
   initials: '',

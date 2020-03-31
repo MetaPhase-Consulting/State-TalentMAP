@@ -6,6 +6,7 @@ import SavedSearchSuccess from '../Components/SavedSearchMessages/Success';
 
 export const DEFAULT_TEXT = 'None listed';
 
+export const NO_ADDRESS = DEFAULT_TEXT;
 export const NO_ASSIGNMENT_DATE = DEFAULT_TEXT;
 export const NO_ASSIGNMENT_POSITION = DEFAULT_TEXT;
 export const NO_BID_CYCLE = DEFAULT_TEXT;
@@ -21,12 +22,14 @@ export const NO_FAVORITES = 'You do not have any favorited positions.';
 export const NO_GRADE = DEFAULT_TEXT;
 export const NO_LANGUAGES = 'None';
 export const NO_UPDATE_DATE = 'Unknown';
+export const NO_OFFICE_NUMBER = DEFAULT_TEXT;
 export const NO_ORG = DEFAULT_TEXT;
+export const NO_PERSONAL_NUMBER = DEFAULT_TEXT;
 export const NO_POSITION_DESCRIPTION = 'There is no description for this position.';
 export const NO_POSITION_NUMBER = '';
-export const NO_POSITION_POC = 'None listed';
+export const NO_POSITION_POC = DEFAULT_TEXT;
 export const NO_POSITION_TITLE = DEFAULT_TEXT;
-export const NO_POSITION_WEB_SITE = 'None listed';
+export const NO_POSITION_WEB_SITE = DEFAULT_TEXT;
 export const NO_POST = DEFAULT_TEXT;
 export const NO_POST_DIFFERENTIAL = DEFAULT_TEXT;
 export const NO_REST_RELAXATION = DEFAULT_TEXT;

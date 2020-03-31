@@ -193,6 +193,11 @@ export const USER_NESTED_OBJECT = PropTypes.shape({
   email: PropTypes.string,
   first_name: PropTypes.string,
   last_name: PropTypes.string,
+  address: PropTypes.string,
+  office_number: PropTypes.string,
+  personal_number: PropTypes.string,
+  grade: PropTypes.string,
+  skill: PropTypes.string,
 });
 
 export const USER_PROFILE = PropTypes.shape({

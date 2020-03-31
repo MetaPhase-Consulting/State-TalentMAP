@@ -90,6 +90,15 @@ export function userProfileFetchData(bypass, cb) {
         const apFavorites = get(results, '[1].value.data', []).map(id => ({ id }));
         const pvFavorites = get(results, '[2].value.data', []).map(id => ({ id }));
         const account = get(results, '[3].value.data', {});
+        // ToDo: remove when endpoint completed
+        const tempUserData = {
+          address: '1234 Washington St. NW, Washington, DC 20009',
+          office_number: '202-123-4567',
+          personal_number: '301-765-4321',
+          grade: '07',
+          skill: 'ECON RESOURCES & COMMODITIES (5050)',
+        };
+        account.user = { ...account.user, ...tempUserData };
         let newProfileObject = {
           is_superuser: indexOf(permissions.groups, 'superuser') > -1,
           permission_groups: permissions.groups,
