@@ -103,7 +103,7 @@
     "babel-preset-react-app": "^9.1.1",
     "bundlesize": "^0.17.1",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
-    "chalk": "2.4.2",
+    "chalk": "4.0.0",
     "css-loader": "^3.4.2",
     "dotenv": "4.0.0",
     "enzyme": "^3.11.0",
