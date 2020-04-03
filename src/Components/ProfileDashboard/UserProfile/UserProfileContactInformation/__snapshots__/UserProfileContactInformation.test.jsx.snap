@@ -17,7 +17,7 @@ exports[`UserProfileContactInformationComponent matches snapshot 1`] = `
       className=""
       content="doej@state.gov"
       sideBySide={false}
-      title="Email Address"
+      title="Email address"
       titleOnBottom={false}
     />
     <Connect(StaticDevContent)>
@@ -25,7 +25,7 @@ exports[`UserProfileContactInformationComponent matches snapshot 1`] = `
         className=""
         content="None listed"
         sideBySide={false}
-        title="Office Number"
+        title="Office number"
         titleOnBottom={false}
       />
     </Connect(StaticDevContent)>
@@ -34,7 +34,7 @@ exports[`UserProfileContactInformationComponent matches snapshot 1`] = `
         className=""
         content="None listed"
         sideBySide={false}
-        title="Personal Contact Number"
+        title="Personal contact number"
         titleOnBottom={false}
       />
     </Connect(StaticDevContent)>
@@ -43,7 +43,7 @@ exports[`UserProfileContactInformationComponent matches snapshot 1`] = `
         className=""
         content="None listed"
         sideBySide={false}
-        title="Post/Office Address"
+        title="Post/Office address"
         titleOnBottom={false}
       />
     </Connect(StaticDevContent)>

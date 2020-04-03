@@ -106,7 +106,7 @@ exports[`PositionDetailsItem matches snapshot 1`] = `
           ariaLabel="1 0 0 3 4 0 0 1"
           content="10034001"
           hasFixedTitleWidth={false}
-          title="Position Number"
+          title="Position number"
         />
         <CondensedCardDataPoint
           content="OFFICE MANAGEMENT (9017)"
@@ -126,7 +126,7 @@ exports[`PositionDetailsItem matches snapshot 1`] = `
         <CondensedCardDataPoint
           content="2 YRS (2 R & R)"
           hasFixedTitleWidth={false}
-          title="Tour of Duty"
+          title="Tour of duty"
         />
         <CondensedCardDataPoint
           content={
@@ -147,7 +147,7 @@ exports[`PositionDetailsItem matches snapshot 1`] = `
             />
           }
           hasFixedTitleWidth={false}
-          title="Post Differential | Danger Pay"
+          title="Post differential | Danger Pay"
         />
         <CondensedCardDataPoint
           content="None listed"
@@ -462,7 +462,7 @@ exports[`PositionDetailsItem matches snapshot when there is an obc id 1`] = `
           ariaLabel="1 0 0 3 4 0 0 1"
           content="10034001"
           hasFixedTitleWidth={false}
-          title="Position Number"
+          title="Position number"
         />
         <CondensedCardDataPoint
           content="OFFICE MANAGEMENT (9017)"
@@ -482,7 +482,7 @@ exports[`PositionDetailsItem matches snapshot when there is an obc id 1`] = `
         <CondensedCardDataPoint
           content="2 YRS (2 R & R)"
           hasFixedTitleWidth={false}
-          title="Tour of Duty"
+          title="Tour of duty"
         />
         <CondensedCardDataPoint
           content={
@@ -503,7 +503,7 @@ exports[`PositionDetailsItem matches snapshot when there is an obc id 1`] = `
             />
           }
           hasFixedTitleWidth={false}
-          title="Post Differential | Danger Pay"
+          title="Post differential | Danger Pay"
         />
         <CondensedCardDataPoint
           content="None listed"
@@ -820,7 +820,7 @@ exports[`PositionDetailsItem matches snapshot when various data is missing from 
           ariaLabel="1 0 0 3 4 0 0 1"
           content="10034001"
           hasFixedTitleWidth={false}
-          title="Position Number"
+          title="Position number"
         />
         <CondensedCardDataPoint
           content="OFFICE MANAGEMENT (9017)"
@@ -840,7 +840,7 @@ exports[`PositionDetailsItem matches snapshot when various data is missing from 
         <CondensedCardDataPoint
           content="2 YRS (2 R & R)"
           hasFixedTitleWidth={false}
-          title="Tour of Duty"
+          title="Tour of duty"
         />
         <CondensedCardDataPoint
           content={
@@ -861,7 +861,7 @@ exports[`PositionDetailsItem matches snapshot when various data is missing from 
             />
           }
           hasFixedTitleWidth={false}
-          title="Post Differential | Danger Pay"
+          title="Post differential | Danger Pay"
         />
         <CondensedCardDataPoint
           content="None listed"

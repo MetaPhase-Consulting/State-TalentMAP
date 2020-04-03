@@ -228,7 +228,7 @@ class CompareList extends Component {
                       }
                     </tr>
                     <tr>
-                      <th scope="row">Tour of Duty</th>
+                      <th scope="row">Tour of duty</th>
                       {
                         compareArray.map(c => (
                           <td key={shortId.generate()}>

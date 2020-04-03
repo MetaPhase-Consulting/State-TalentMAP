@@ -12,7 +12,7 @@ const AssignmentsContent = ({ assignment }) => (
       <span className="bid-list-card-title-post">{get(assignment, 'position.title')} </span>
     </div>
     <div>
-      <span className="usa-sr-only">Position Number: </span>
+      <span className="usa-sr-only">Position number: </span>
       <span className="bid-list-card-title-post bid-list-card-title-lg">
         {
           get(assignment, 'position.position_number') ?
@@ -34,7 +34,7 @@ const AssignmentsContent = ({ assignment }) => (
       {get(assignment, 'position.language', NO_LANGUAGES)}
     </div>
     <div>
-      <span className="bid-list-card-title-post">Start Date to End Date: </span>
+      <span className="bid-list-card-title-post">Start date and End date: </span>
       <StartEnd
         start={formatDate(assignment.start_date)}
         end={formatDate(assignment.end_date)}

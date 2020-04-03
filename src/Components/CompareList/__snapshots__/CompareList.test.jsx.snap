@@ -376,7 +376,7 @@ exports[`CompareListComponent matches snapshot 1`] = `
             <th
               scope="row"
             >
-              Tour of Duty
+              Tour of duty
             </th>
             <td
               key="41"
@@ -945,7 +945,7 @@ exports[`CompareListComponent matches snapshot when there is an obc id 1`] = `
             <th
               scope="row"
             >
-              Tour of Duty
+              Tour of duty
             </th>
             <td
               key="41"

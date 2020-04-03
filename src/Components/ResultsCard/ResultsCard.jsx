@@ -127,7 +127,7 @@ class ResultsCard extends Component {
     // TODO - update this to a real property once API is updateds
     const recentlyAvailable = pos.recently_available;
 
-    const bidTypeTitle = isProjectedVacancy ? 'Bid Season' : 'Bid Cycle';
+    const bidTypeTitle = isProjectedVacancy ? 'Bid season' : 'Bid cycle';
 
     const sections = [
     /* eslint-disable quote-props */
@@ -139,14 +139,14 @@ class ResultsCard extends Component {
         'Bureau': getResult(pos, 'bureau', NO_BUREAU),
       },
       {
-        'Tour of Duty': getResult(pos, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
+        'Tour of duty': getResult(pos, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
         'Language': language,
-        'Post Differential | Danger Pay': getDifferentials(pos),
+        'Post differential | Danger Pay': getDifferentials(pos),
         'Incumbent': getResult(pos, 'current_assignment.user', NO_USER_LISTED),
       },
       {
         'Posted': getResult(result, COMMON_PROPERTIES.posted, NO_UPDATE_DATE),
-        'Position Number': position,
+        'Position number': position,
       },
     /* eslint-enable quote-props */
     ];
