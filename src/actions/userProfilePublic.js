@@ -57,6 +57,12 @@ export function userProfilePublicFetchData(id, bypass) {
           dispatch(userProfilePublicHasErrored(true));
           dispatch(userProfilePublicIsLoading(false));
         } else {
+          // ToDo: remove when GET_USER endpoint completed
+          const tempUserData = {
+            address: '1234 Washington St. NW, Washington, DC 20009',
+            office_number: '+301-779-0379 ext. 3',
+            personal_number: '+240-331-7189',
+          };
           const newProfileObject = {
             ...acct$,
             user: {
@@ -64,6 +70,7 @@ export function userProfilePublicFetchData(id, bypass) {
               email: null,
               first_name: acct$.name,
               last_name: null,
+              ...tempUserData,
             },
             bidList: get(bids, 'data.results', []),
             // any other profile info we want to add in the future

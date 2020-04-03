@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { NO_GRADE, NO_SKILL } from 'Constants/SystemMessages';
+import { NO_GRADE } from 'Constants/SystemMessages';
 import { USER_PROFILE } from 'Constants/PropTypes';
 import SectionTitle from '../../SectionTitle';
 import InformationDataPoint from '../../InformationDataPoint';
@@ -22,14 +22,17 @@ const UserProfileGeneralInformation = ({ userProfile, showEditLink, useGroup, is
   const infoDataPointClassName = 'skill-code-data-point-container skill-code-data-point-container-gen-spec';
   const conditionalStaticDevContent = isPublic ?
     (<InformationDataPoint
-      content={`Grade: ${get(userProfile, 'grade', NO_GRADE)}`}
+      content={`Grade: ${get(userProfile, 'grade') || NO_GRADE}`}
       className={infoDataPointClassName}
     />)
     :
-    (<InformationDataPoint
-      content={`${get(userProfile, 'user.skill', NO_SKILL)} • ${get(userProfile, 'user.grade', NO_GRADE)}`}
-      className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
-    />);
+    (<StaticDevContent>
+      <InformationDataPoint
+        content={`${get(userProfile, 'user.skill') || 'Generalist'} • ${get(userProfile, 'grade') || 'F2'}`}
+        className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
+      />
+    </StaticDevContent>);
+
   return (
     <div className="current-user-top current-user-section-border current-user-section-container">
       <div className="section-padded-inner-container">

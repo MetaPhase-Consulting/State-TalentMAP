@@ -103,7 +103,7 @@ class PositionDetailsContact extends Component {
         <div className="contact-container">
           <div className="usa-grid-full contact-section website-section">
             <PositionTitleSubDescription
-              title="Post website"
+              title="Post Website"
               formattedContent={formattedPostWebsite}
               plainContent={plainTextPostWebsite}
               shouldShowEditor={shouldShowWebsiteEditor.value}

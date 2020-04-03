@@ -90,13 +90,11 @@ export function userProfileFetchData(bypass, cb) {
         const apFavorites = get(results, '[1].value.data', []).map(id => ({ id }));
         const pvFavorites = get(results, '[2].value.data', []).map(id => ({ id }));
         const account = get(results, '[3].value.data', {});
-        // ToDo: remove when endpoint completed
+        // ToDo: remove when GET_USER endpoint completed
         const tempUserData = {
           address: '1234 Washington St. NW, Washington, DC 20009',
-          office_number: '202-123-4567',
-          personal_number: '301-765-4321',
-          grade: '07',
-          skill: 'ECON RESOURCES & COMMODITIES (5050)',
+          office_number: '+301-779-0379 ext. 3',
+          personal_number: get(account, 'phone_number', '+240-331-7189'),
         };
         account.user = { ...account.user, ...tempUserData };
         let newProfileObject = {

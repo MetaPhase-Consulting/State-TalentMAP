@@ -17,33 +17,33 @@ exports[`UserProfileContactInformationComponent matches snapshot 1`] = `
       className=""
       content="doej@state.gov"
       sideBySide={false}
-      title="Email address"
+      title="Email Address"
       titleOnBottom={false}
     />
     <Connect(StaticDevContent)>
       <InformationDataPoint
         className=""
-        content="+301-779-0379 ext. 3"
+        content="None listed"
         sideBySide={false}
-        title="Office number"
+        title="Office Number"
         titleOnBottom={false}
       />
     </Connect(StaticDevContent)>
     <Connect(StaticDevContent)>
       <InformationDataPoint
         className=""
-        content="+240-331-7189"
+        content="None listed"
         sideBySide={false}
-        title="Personal contact number"
+        title="Personal Contact Number"
         titleOnBottom={false}
       />
     </Connect(StaticDevContent)>
     <Connect(StaticDevContent)>
       <InformationDataPoint
         className=""
-        content="1234 Washington St. NW, Washington, DC 20009"
+        content="None listed"
         sideBySide={false}
-        title="Post/Office address"
+        title="Post/Office Address"
         titleOnBottom={false}
       />
     </Connect(StaticDevContent)>

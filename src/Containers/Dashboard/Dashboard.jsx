@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { assignmentFetchData } from '../../actions/assignment';
-import { notificationsFetchData } from '../../actions/notifications';
-import { bidListFetchData, toggleBidPosition, submitBid } from '../../actions/bidList';
-import { favoritePositionsFetchData } from '../../actions/favoritePositions';
-import { USER_PROFILE, NOTIFICATION_LIST, ASSIGNMENT_OBJECT, BID_LIST, FAVORITE_POSITIONS } from '../../Constants/PropTypes';
-import { DEFAULT_USER_PROFILE, DEFAULT_FAVORITES } from '../../Constants/DefaultProps';
-import ProfileDashboard from '../../Components/ProfileDashboard';
+import { assignmentFetchData } from 'actions/assignment';
+import { notificationsFetchData } from 'actions/notifications';
+import { bidListFetchData, toggleBidPosition, submitBid } from 'actions/bidList';
+import { favoritePositionsFetchData } from 'actions/favoritePositions';
+import { USER_PROFILE, NOTIFICATION_LIST, ASSIGNMENT_OBJECT, BID_LIST, FAVORITE_POSITIONS } from 'Constants/PropTypes';
+import { DEFAULT_USER_PROFILE, DEFAULT_FAVORITES } from 'Constants/DefaultProps';
+import ProfileDashboard from 'Components/ProfileDashboard';
 
 class DashboardContainer extends Component {
   UNSAFE_componentWillMount() {

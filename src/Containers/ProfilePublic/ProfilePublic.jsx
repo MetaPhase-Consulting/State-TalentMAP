@@ -7,9 +7,9 @@ import { get } from 'lodash';
 import ProfileDashboard from 'Components/ProfileDashboard';
 import { fetchClassifications } from 'actions/classifications';
 import { userProfilePublicFetchData } from 'actions/userProfilePublic';
-import { USER_PROFILE, EMPTY_FUNCTION, CLASSIFICATIONS } from '../../Constants/PropTypes';
-import { DEFAULT_USER_PROFILE } from '../../Constants/DefaultProps';
-import Alert from '../../Components/Alert';
+import { USER_PROFILE, EMPTY_FUNCTION, CLASSIFICATIONS } from 'Constants/PropTypes';
+import { DEFAULT_USER_PROFILE } from 'Constants/DefaultProps';
+import Alert from 'Components/Alert';
 
 class ProfilePublic extends Component {
   UNSAFE_componentWillMount() {

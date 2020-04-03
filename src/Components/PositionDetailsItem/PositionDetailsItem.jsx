@@ -112,13 +112,13 @@ const PositionDetailsItem = (props) => {
             </div>
           }
           <div className="usa-grid-full data-point-section">
-            <CondensedCardDataPoint ariaLabel={getAccessiblePositionNumber(position.position_number)} title="Position number" content={position.position_number} />
+            <CondensedCardDataPoint ariaLabel={getAccessiblePositionNumber(position.position_number)} title="Position Number" content={position.position_number} />
             <CondensedCardDataPoint title="Skill" content={position.skill || NO_SKILL} />
             <CondensedCardDataPoint title="Grade" content={position.grade || NO_GRADE} />
             <CondensedCardDataPoint title="Bureau" content={formattedBureau} />
-            <CondensedCardDataPoint title="Tour of duty" content={formattedTOD} />
+            <CondensedCardDataPoint title="Tour of Duty" content={formattedTOD} />
             <CondensedCardDataPoint title="Language" content={<LanguageList languages={position.languages} propToUse="representation" />} />
-            <CondensedCardDataPoint title="Post differential | Danger Pay" content={differentials} />
+            <CondensedCardDataPoint title="Post Differential | Danger Pay" content={differentials} />
             <CondensedCardDataPoint title="TED" content={formattedTourEndDate} />
             <CondensedCardDataPoint title="Incumbent" content={incumbent} />
             { !isProjectedVacancy && <CondensedCardDataPoint title="Posted" content={postedDate} />}

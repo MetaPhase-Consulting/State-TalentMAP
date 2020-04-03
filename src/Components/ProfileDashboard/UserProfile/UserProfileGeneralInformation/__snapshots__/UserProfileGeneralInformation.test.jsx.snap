@@ -43,7 +43,7 @@ exports[`UserProfileGeneralInformationComponent matches snapshot 1`] = `
       <Connect(StaticDevContent)>
         <InformationDataPoint
           className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
-          content="Generalist • F2"
+          content="Generalist • 03"
           sideBySide={false}
           title=""
           titleOnBottom={false}
@@ -123,7 +123,7 @@ exports[`UserProfileGeneralInformationComponent matches snapshot when showEditLi
       <Connect(StaticDevContent)>
         <InformationDataPoint
           className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
-          content="Generalist • F2"
+          content="Generalist • 03"
           sideBySide={false}
           title=""
           titleOnBottom={false}
@@ -203,7 +203,7 @@ exports[`UserProfileGeneralInformationComponent matches snapshot when useGroup i
       <Connect(StaticDevContent)>
         <InformationDataPoint
           className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
-          content="Generalist • F2"
+          content="Generalist • 03"
           sideBySide={false}
           title=""
           titleOnBottom={false}

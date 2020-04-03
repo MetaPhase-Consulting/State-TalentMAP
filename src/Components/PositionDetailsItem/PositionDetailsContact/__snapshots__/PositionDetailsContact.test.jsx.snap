@@ -21,7 +21,7 @@ exports[`PositionDetailsContact matches snapshot 1`] = `
         onSubmitText={[Function]}
         plainContent=""
         shouldShowEditor={false}
-        title="Post website"
+        title="Post Website"
         toggleEditor={[Function]}
       />
     </div>
