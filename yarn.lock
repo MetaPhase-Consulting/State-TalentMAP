@@ -4846,6 +4846,10 @@ flatted@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
 
+flow-bin@^0.120.1:
+  version "0.120.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.120.1.tgz#ab051d6df71829b70a26a2c90bb81f9d43797cae"
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
@@ -8938,7 +8942,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@>=15.5.10, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@>=15.7.2, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -9437,11 +9441,13 @@ react-spring@4.0.0:
   dependencies:
     normalize-css-color "^1.0.2"
 
-react-sticky-el@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-1.1.0.tgz#641658f1fc038902862e3ee8c262e2dcdb902032"
+react-sticky-el@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-2.0.1.tgz#842667bcc2d9888478ed617c3a2fa20f11b7f6b2"
   dependencies:
-    prop-types ">=15.5.10"
+    eslint-plugin-react "^7.19.0"
+    flow-bin "^0.120.1"
+    prop-types ">=15.7.2"
 
 react-sticky@^6.0.3:
   version "6.0.3"
