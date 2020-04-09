@@ -7,7 +7,7 @@ const url = require('url');
 const https = require('https');
 const pem = require('pem');
 const routesArray = require('./routes.js');
-const { metadata, login, loginAlt } = require('./saml2-config');
+const { metadata, login, loginAlt, postAssert } = require('./saml2-config');
 
 // middleware to override helmet.noCache
 const removeCacheControl = (req, res, next) => {
@@ -113,7 +113,17 @@ app.use(loggingMiddleware);
 
 // saml2 acs
 app.post(PUBLIC_URL, (request, response) => {
-  response.redirect(307, SAML_LOGIN);
+  // capture request body
+  const options = { request_body: request.body };
+  const assertHandler = (err, data) => {
+    if (err) {
+      response.sendStatus(500);
+    } else {
+      console.log(data); // eslint-disable-line no-console
+      response.redirect(307, SAML_LOGIN);
+    }
+  };
+  return postAssert(options, assertHandler);
 });
 
 // saml2 login

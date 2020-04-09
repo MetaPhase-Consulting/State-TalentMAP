@@ -65,4 +65,8 @@ const logout = (handler) => {
   serviceProvider.create_logout_request_url(identityProvider, {}, handler);
 };
 
-module.exports = { metadata, login, loginAlt, logout };
+const postAssert = (options, handler) => {
+  serviceProvider.post_assert(identityProvider, options, handler);
+};
+
+module.exports = { metadata, login, loginAlt, logout, postAssert };
