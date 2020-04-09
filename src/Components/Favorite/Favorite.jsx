@@ -45,13 +45,12 @@ const getText$ = (state, type) => Texts[state][type];
 class Favorite extends Component {
   constructor(props) {
     super(props);
-    this.toggleSaved = this.toggleSaved.bind(this);
     this.state = {
       loading: props.isLoading,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.state.loading && !nextProps.isLoading) {
       // Only update the loading state if current state.loading
       // and prop change detected is turning it off
@@ -69,8 +68,8 @@ class Favorite extends Component {
     const newState = existsInArray(refKey, compareArray);
 
     isUpdate = (oldState !== newState) ||
-               (this.state.loading !== nextState.isLoading) ||
-               nextProps.hasErrored;
+    (this.state.loading !== nextState.isLoading) ||
+    nextProps.hasErrored;
 
     return isUpdate;
   }
@@ -91,7 +90,7 @@ class Favorite extends Component {
   }
 
   get icon() {
-    return this.getSavedState() ? 'star' : 'star-o';
+    return this.getSavedState() ? 'trash' : 'star-o';
   }
 
   get title() {
@@ -135,9 +134,8 @@ class Favorite extends Component {
     return spinnerClass;
   }
 
-  toggleSaved() {
+  toggleSaved = () => {
     const { onToggle, refKey, refresh } = this.props;
-
     this.setState({
       loading: true,
       alertMessage: `You have ${this.getSavedState() ? 'removed' : 'added'}
@@ -146,7 +144,7 @@ class Favorite extends Component {
 
     // pass the key and the "remove" param
     onToggle(refKey, this.getSavedState(), refresh);
-  }
+  };
 
   render() {
     const { loading } = this.state;
@@ -203,6 +201,7 @@ Favorite.propTypes = {
   useButtonClassSecondary: PropTypes.bool,
   useSpinnerWhite: PropTypes.bool,
   refresh: PropTypes.bool.isRequired,
+  hasErrored: PropTypes.bool,
 };
 
 Favorite.defaultProps = {
@@ -217,6 +216,7 @@ Favorite.defaultProps = {
   useButtonClassSecondary: false,
   useSpinnerWhite: false,
   refresh: false,
+  hasErrored: false,
 };
 
 export default Favorite;

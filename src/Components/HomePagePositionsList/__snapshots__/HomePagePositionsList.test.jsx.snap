@@ -9,6 +9,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
   >
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -29,27 +30,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -175,6 +173,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -264,12 +264,14 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
     </div>
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -290,27 +292,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -436,6 +435,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -525,12 +526,14 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
     </div>
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -551,27 +554,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -697,6 +697,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -786,12 +788,14 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
     </div>
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -812,27 +816,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -958,6 +959,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1047,12 +1050,14 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
     </div>
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -1073,27 +1078,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -1219,6 +1221,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1308,12 +1312,14 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
     </div>
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -1334,27 +1340,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -1480,6 +1483,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1569,12 +1574,14 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
     </div>
     <div
       className="usa-width-one-third condensed-card"
+      key="title-row-1-undefined"
     >
       <ResultsCondensedCard
         bidList={
@@ -1595,27 +1602,24 @@ exports[`HomePagePositionsList displays two rows 1`] = `
               "in_panel_date": "2017-12-20",
               "is_priority": false,
               "position": Object {
+                "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
+                "create_date": "2015-08-05",
+                "grade": "03",
                 "id": 11,
-                "position": Object {
-                  "bureau": "(AF) BUREAU OF AFRICAN AFFAIRS",
-                  "create_date": "2015-08-05",
-                  "grade": "03",
-                  "id": 226,
-                  "position_number": "10035561",
-                  "post": Object {
-                    "id": 199,
-                    "location": Object {
-                      "city": "Freetown",
-                      "code": "00A",
-                      "country": "Sierra Leone",
-                      "id": 103,
-                      "state": "",
-                    },
+                "position_number": "10035561",
+                "post": Object {
+                  "id": 199,
+                  "location": Object {
+                    "city": "Freetown",
+                    "code": "00A",
+                    "country": "Sierra Leone",
+                    "id": 103,
+                    "state": "",
                   },
-                  "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
-                  "title": "POLITICAL/ECONOMIC OFFICER",
-                  "update_date": "2017-06-08",
                 },
+                "skill": "POLITICAL AND ECONOMIC AFFAIRS (6050)",
+                "title": "POLITICAL/ECONOMIC OFFICER",
+                "update_date": "2017-06-08",
               },
               "reviewer": Object {
                 "email": "woodwardw@state.gov",
@@ -1741,6 +1745,8 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         favoritesPV={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1830,6 +1836,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />

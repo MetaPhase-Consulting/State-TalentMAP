@@ -14,8 +14,8 @@ const items = {
       selectionRef: 'skill__code__in',
       text: 'Choose Skill',
     },
-      data: [
-      ],
+    data: [
+    ],
     },
     {
       item: {
@@ -41,7 +41,7 @@ const items = {
         ],
       },
       data: [
-      { code: '0', description: 'Yes' }, // use a code of 0 to specify we want to return results where COLA > 0
+        { code: '0', description: 'Yes' }, // use a code of 0 to specify we want to return results where COLA > 0
       ],
     },
     {
@@ -191,6 +191,23 @@ describe('async actions', () => {
   };
 
   it('can fetch filters', (done) => {
+    const store = mockStore({ filters: [] });
+
+    const f = () => {
+      setTimeout(() => {
+        store.dispatch(actions.filtersFetchData(items));
+        store.dispatch(actions.filtersIsLoading());
+        done();
+      }, 0);
+    };
+    f();
+  });
+
+  it('can fetch filters when some filters do not have data nested within the results property', (done) => {
+    mockAdapter.onGet('http://localhost:8000/api/v1/grade/').reply(200,
+      [{ id: 1 }],
+    );
+
     const store = mockStore({ filters: [] });
 
     const f = () => {

@@ -2,7 +2,7 @@
 // The react-picky module uses two underscores in its class names.
 .picky {
 
-  width: 135px;
+  width: 160px;
 
   * {
     font-size: 1.3rem;
@@ -15,6 +15,14 @@
     width: 100%;
   }
 
+  .picky--sublabel {
+    font-size: .8em;
+  }
+
+  .picky--bold {
+    font-weight: bold;
+  }
+
   .picky__input {
     border: 1px solid $bg-gray-dark-2;
     border-radius: 0;
@@ -22,6 +30,19 @@
     display: flex;
     height: 28px;
     padding: 0 1.5em 0 .7em;
+
+    > span {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 81%;
+
+      // fix offset in IE11
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        margin-top: 4px;
+      }
+    }
 
     &::after {
       background-image: $angle-down-black;
@@ -50,14 +71,6 @@
     li:hover {
       background-color: $color-botticelli-blue;
     }
-  }
-
-  .picky__placeholder {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 80%;
   }
 
   .tm-checkbox {

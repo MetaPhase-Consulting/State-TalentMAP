@@ -1,5 +1,8 @@
+import { batch } from 'react-redux';
 import { CancelToken } from 'axios';
+import { toNumber } from 'lodash';
 import api from '../api';
+import { localStorageToggleValue } from '../utilities';
 
 let cancel;
 
@@ -25,18 +28,32 @@ export function comparisonsFetchDataSuccess(comparisons) {
 }
 
 export function comparisonsFetchData(query) {
+  const idArr = query.split(',');
   return (dispatch) => {
     if (cancel) { cancel(); }
+
+    const url = `/fsbid/available_positions/?id=${query}`;
+
     dispatch(comparisonsIsLoading(true));
     if (!query) {
-      dispatch(comparisonsFetchDataSuccess([]));
-      dispatch(comparisonsIsLoading(false));
+      batch(() => {
+        dispatch(comparisonsFetchDataSuccess([]));
+        dispatch(comparisonsIsLoading(false));
+      });
     } else {
-      api().get(`/cycleposition/?has_id=${query}`, {
+      api().get(url, {
         cancelToken: new CancelToken((c) => { cancel = c; }),
       })
         .then((response) => {
           dispatch(comparisonsIsLoading(false));
+          // Try removing any compare IDs that no longer exist
+          try {
+            const responseIds = response.data.results.map(m => `${m.id}`);
+            const noMatches = idArr.filter(f => responseIds.indexOf(f) <= -1);
+            noMatches.forEach((f) => {
+              localStorageToggleValue('compare', toNumber(f), true, true);
+            });
+          } catch (e) {} // eslint-disable-line no-empty
           return response.data.results;
         })
         .then(comparisons => dispatch(comparisonsFetchDataSuccess(comparisons)))

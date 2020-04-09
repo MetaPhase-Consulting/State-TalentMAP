@@ -5,12 +5,11 @@ import { localStorageFetchValue, localStorageToggleValue } from '../../utilities
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 import COMPARE_LIMIT from '../../Constants/Compare';
 import InteractiveElement from '../InteractiveElement';
+import Icon from './Icon';
 
 class CompareCheck extends Component {
   constructor(props) {
     super(props);
-    this.toggleSaved = this.toggleSaved.bind(this);
-    this.eventListener = this.eventListener.bind(this);
     this.state = {
       saved: false,
       localStorageKey: null,
@@ -18,7 +17,7 @@ class CompareCheck extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const localStorageKey = this.props.type;
     this.setState({ localStorageKey });
 
@@ -55,23 +54,23 @@ class CompareCheck extends Component {
     return this.exceedsLimit() && !this.state.saved;
   }
 
-  toggleSaved() {
+  toggleSaved = () => {
     if (!this.isDisabled()) {
       localStorageToggleValue(this.state.localStorageKey, this.props.refKey);
       this.setState({ saved: !this.state.saved });
       this.onToggle();
     }
-  }
+  };
 
-  eventListener() {
+  eventListener = () => {
     this.getSaved();
-  }
+  };
 
   // eslint-disable-next-line class-methods-use-this
   joinClassNames(className) {
     return className
-    .join(' ')
-    .trim();
+      .join(' ')
+      .trim();
   }
 
   render() {
@@ -79,17 +78,17 @@ class CompareCheck extends Component {
     const isChecked = this.getSavedState();
     const options = {
       type,
-      className: [className, 'compare-check-box-container'],
+      className: [className, 'compare-check-box-container', isChecked ? 'compare-checked' : 'compare-not-checked'],
       onClick: this.toggleSaved,
       ...interactiveElementProps,
     };
 
     let text = 'Compare';
-    let icon = 'square-o';
+    let icon = <FontAwesome name="square-o" />;
 
     if (isChecked) {
       options.className.push('usa-button-active');
-      icon = 'check-square-o';
+      icon = <Icon />;
     }
 
     if (this.isDisabled()) {
@@ -107,9 +106,9 @@ class CompareCheck extends Component {
         :
         <InteractiveElement {...options}>
           {
-          !this.isDisabled() &&
-            <FontAwesome name={icon} />
-        } {text}
+            !this.isDisabled() &&
+            icon
+          } {text}
         </InteractiveElement>
     );
   }

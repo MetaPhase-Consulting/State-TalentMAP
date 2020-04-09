@@ -1,26 +1,31 @@
 // important: babel-polyfill needs to be first to avoid any errors in IE11
-import 'babel-polyfill';
+import 'core-js/shim'; // included < Stage 4 proposals
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { get } from 'lodash';
 import './sass/styles.scss';
 import App from './Components/App/App';
+import Splash from './Components/Splash';
 import { getAssetPath } from './utilities';
+import { checkFlag } from './flags';
 
 import '../node_modules/uswds/dist/js/uswds.min';
 import './polyfills';
 
-const render = () => {
+const isPersonaAuth = () => checkFlag('flags.persona_auth');
+
+export const render = () => {
   ReactDOM.render((
     <App />
   ), document.getElementById('root') || document.createElement('div'));
 };
 
 // Because the JWT request could be slow.
-const renderLoading = () => {
+export const renderLoading = () => {
   ReactDOM.render((
-    <div>Loading...</div>
+    <Splash />
   ), document.getElementById('root') || document.createElement('div'));
 };
 
@@ -30,15 +35,22 @@ export const init = (config) => {
 
   const auth = get(config, 'hrAuthUrl');
 
+  const headers = {
+    Accept: 'application/json',
+  };
+
+  // Only needed for local development
+  if (isPersonaAuth()) { headers.tmusrname = sessionStorage.getItem('tmusrname'); }
+
   if (auth) {
     renderLoading();
     axios
-    .get(auth, { headers: { Accept: 'application/json' } })
-    .then((response) => {
-      sessionStorage.setItem('jwt', response.data);
-      render();
-    })
-    .catch(() => render());
+      .get(auth, { headers })
+      .then((response) => {
+        sessionStorage.setItem('jwt', response.data);
+        render();
+      })
+      .catch(() => render());
   } else {
     render();
   }
@@ -49,10 +61,10 @@ export const getConfig = () => {
   sessionStorage.removeItem('config');
 
   axios
-  .get(getAssetPath('/config/config.json'))
-  .then((response) => {
-    init(get(response, 'data', {}));
-  })
-  .catch(() => init({}));
+    .get(getAssetPath('/config/config.json'))
+    .then((response) => {
+      init(get(response, 'data', {}));
+    })
+    .catch(() => init({}));
 };
 getConfig();

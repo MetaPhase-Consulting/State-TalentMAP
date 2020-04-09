@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer as router } from 'react-router-redux';
-import { reducer as form } from 'redux-form';
+import { connectRouter } from 'connected-react-router';
 import client from '../client/reducer';
 import login from '../login/reducer';
 import { reducer as bidCycles } from './bidCycles';
@@ -37,15 +36,19 @@ import feedback from './feedback';
 import features from './features';
 import toast from './toast';
 import clientView from './clientView';
-import sortPreferences from './sortPreferences';
+import preferences from './preferences';
 import aboutContent from './aboutContent';
 import homeBannerContent from './homeBannerContent';
 import logs from './logs';
 import synchronizations from './synchronizations';
 import positionCount from './positionCount';
 import showMobileFilter from './showMobileFilter';
+import stats from './stats';
+import clientSuggestions from './clientSuggestions';
+import userRoles from './userRoles';
+import classifications from './classifications';
 
-export default combineReducers({
+export default (history) => combineReducers({
   ...results,
   ...filters,
   ...post,
@@ -78,15 +81,18 @@ export default combineReducers({
   ...features,
   ...toast,
   ...clientView,
-  ...sortPreferences,
+  ...preferences,
   ...aboutContent,
   ...homeBannerContent,
   ...logs,
   ...synchronizations,
   ...positionCount,
   ...showMobileFilter,
-  router,
-  form,
+  ...stats,
+  ...clientSuggestions,
+  ...userRoles,
+  ...classifications,
+  router: connectRouter(history),
   client,
   login,
   bidCycles,

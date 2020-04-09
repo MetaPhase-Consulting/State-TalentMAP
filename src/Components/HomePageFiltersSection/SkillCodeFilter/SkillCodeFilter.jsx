@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import { orderBy } from 'lodash';
 import { FILTERS } from '../../../Constants/PropTypes';
-import { propSort, wrapForMultiSelect, returnObjectsWherePropMatches } from '../../../utilities';
+import { wrapForMultiSelect, returnObjectsWherePropMatches } from '../../../utilities';
 
 const SKILL_CODE = 'code';
 const SKILL_DESCRIPTION = 'custom_description';
@@ -11,13 +12,12 @@ export const wrapFilters = filters => wrapForMultiSelect(filters, SKILL_CODE, SK
 class SkillCodeFilter extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.state = {
       selectedOptions: { value: [], hasBeenUpdated: false },
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setupValues(this.props);
   }
 
@@ -25,7 +25,7 @@ class SkillCodeFilter extends Component {
   // the process on every update. So if userSkills exist and we didn't already set them as defaults,
   // this will compare them against all Skill codes and add the ones that are present in userSkills,
   // based on a matching 'code' prop found in both arrays.
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     this.setupValues(props);
   }
 
@@ -43,7 +43,7 @@ class SkillCodeFilter extends Component {
   // Set local state with new selected options, and also return them via the prop function.
   // we also update the hasBeenUpdated property to true ao that we don't try to re-set userSkills.
   // We set bypass to true when inorganic/programatic calls to this function are made.
-  handleChange(selectedOptions, bypass = false) {
+  handleChange = (selectedOptions, bypass = false) => {
     // set state with new values
     const { selectedOptions: selectedOptionsState } = this.state;
     this.setState({ selectedOptions: Object.assign(
@@ -56,13 +56,13 @@ class SkillCodeFilter extends Component {
         selectedOptionsState, { hasBeenUpdated: true }) });
       this.props.onFilterSelect(selectedOptions);
     }
-  }
+  };
 
   render() {
     const { filters, isLoading, label, labelSrOnly } = this.props;
     const { selectedOptions } = this.state;
     const options = wrapFilters(filters);
-    const sortedOptions = options.sort(propSort('custom_description'));
+    const sortedOptions = orderBy(options, 'custom_description');
     const labelClass = labelSrOnly ? 'usa-sr-only' : '';
     return (
       <div>

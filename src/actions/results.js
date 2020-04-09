@@ -1,9 +1,16 @@
+import { batch } from 'react-redux';
 import { CancelToken } from 'axios';
 import queryString from 'query-string';
 import { get } from 'lodash';
+import numeral from 'numeral';
+import shortid from 'shortid';
+import { downloadFromResponse } from 'utilities';
+import { store } from '../store';
+import { toastSuccess, toastError, toastInfo } from './toast';
 import api from '../api';
 
 let cancel;
+let cancelSimilar;
 
 export function resultsHasErrored(bool) {
   return {
@@ -45,48 +52,83 @@ export function resultsSimilarPositionsFetchDataSuccess(results) {
 
 export function resultsFetchSimilarPositions(id) {
   return (dispatch) => {
-    if (cancel) { cancel(); }
+    if (cancelSimilar) { cancelSimilar(); }
+    const prefix = '/fsbid/available_positions';
+
     dispatch(resultsSimilarPositionsIsLoading(true));
-    api().get(`/cycleposition/${id}/similar/?limit=3`)
+    api().get(`${prefix}/${id}/similar/?limit=3`, {
+      cancelToken: new CancelToken((c) => {
+        cancelSimilar = c;
+      }),
+    })
       .then(response => response.data)
       .then((results) => {
-        dispatch(resultsSimilarPositionsFetchDataSuccess(results));
-        dispatch(resultsSimilarPositionsIsLoading(false));
-        dispatch(resultsSimilarPositionsHasErrored(false));
+        batch(() => {
+          dispatch(resultsSimilarPositionsFetchDataSuccess(results));
+          dispatch(resultsSimilarPositionsHasErrored(false));
+          dispatch(resultsSimilarPositionsIsLoading(false));
+        });
       })
       .catch(() => {
-        dispatch(resultsSimilarPositionsIsLoading(false));
-        dispatch(resultsSimilarPositionsHasErrored(true));
+        batch(() => {
+          dispatch(resultsSimilarPositionsFetchDataSuccess({}));
+          dispatch(resultsSimilarPositionsHasErrored(true));
+          dispatch(resultsSimilarPositionsIsLoading(false));
+        });
       });
   };
 }
 
+export function downloadPositionData(query, isPV) {
+  const prefix = `/fsbid${isPV ? '/projected_vacancies' : '/available_positions'}/export/`;
+  // generate a unique ID to track the notification
+  const id = shortid.generate();
+  store.dispatch(toastInfo('Please wait while we process your position export.', 'Loading...', id));
+  return api()
+    .get(`${prefix}?${query}`, {
+      cancelToken: new CancelToken((c) => { cancel = c; }),
+      responseType: 'stream',
+    })
+    .then((response) => {
+      downloadFromResponse(response, 'TalentMap_search_export');
+      // display the position limit, if any, to the user
+      let limit = response.headers['position-limit'];
+      // format the number to include commas
+      if (limit) { limit = numeral(limit).format('0,0'); }
+      const text = `Your position export is complete.${limit ? ` Results have been limited to the first ${limit}.` : ''}`;
+      store.dispatch(toastSuccess(text, 'Success', id, true));
+    })
+    .catch(() => {
+      const text = 'Sorry, an error has occurred while processing your position export. Please try again.';
+      store.dispatch(toastError(text, 'Error', id, true));
+    });
+}
+
 export function fetchResultData(query) {
-  let prefix = '/cycleposition';
+  let prefix = '/fsbid/available_positions';
   const parsed = queryString.parse(query);
   const isPV = parsed.projectedVacancy;
 
   if (isPV) {
     prefix = '/fsbid/projected_vacancies';
     delete parsed.projectedVacancy;
-    delete parsed.q; // TODO remove this once we have PV free text search
   }
 
   const query$ = queryString.stringify(parsed);
 
   return api()
-  .get(`${prefix}/?${query$}`, {
-    cancelToken: new CancelToken((c) => { cancel = c; }),
-  })
-  .then((response) => {
-    if (isPV) {
-      return {
-        ...response.data,
-        isProjectedVacancy: true,
-      };
-    }
-    return response.data;
-  });
+    .get(`${prefix}/?${query$}`, {
+      cancelToken: new CancelToken((c) => { cancel = c; }),
+    })
+    .then((response) => {
+      if (isPV) {
+        return {
+          ...response.data,
+          isProjectedVacancy: true,
+        };
+      }
+      return response.data;
+    });
 }
 
 export function resultsFetchData(query) {
@@ -96,18 +138,24 @@ export function resultsFetchData(query) {
     dispatch(resultsHasErrored(false));
     fetchResultData(query)
       .then((results) => {
-        dispatch(resultsFetchDataSuccess(results));
-        dispatch(resultsHasErrored(false));
-        dispatch(resultsIsLoading(false));
+        batch(() => {
+          dispatch(resultsFetchDataSuccess(results));
+          dispatch(resultsHasErrored(false));
+          dispatch(resultsIsLoading(false));
+        });
       })
       .catch((err) => {
         if (get(err, 'message') === 'cancel') {
-          dispatch(resultsHasErrored(false));
-          dispatch(resultsIsLoading(true));
+          batch(() => {
+            dispatch(resultsHasErrored(false));
+            dispatch(resultsIsLoading(true));
+          });
         } else {
-          dispatch(resultsFetchDataSuccess({ results: [] }));
-          dispatch(resultsHasErrored(true));
-          dispatch(resultsIsLoading(false));
+          batch(() => {
+            dispatch(resultsFetchDataSuccess({ results: [] }));
+            dispatch(resultsHasErrored(true));
+            dispatch(resultsIsLoading(false));
+          });
         }
       });
   };

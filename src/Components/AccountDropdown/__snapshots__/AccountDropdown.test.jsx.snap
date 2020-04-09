@@ -13,12 +13,21 @@ exports[`AccountDropdown matches snapshot 1`] = `
   >
     <Avatar
       className="account-dropdown--avatar"
+      colorString=""
       displayName="John Doe"
+      externalSource={Object {}}
+      externalSourceToUse="s"
+      fallback={
+        <FontAwesome
+          name="user-o"
+        />
+      }
       firstName="John"
       initials=""
       lastName="Doe"
       onClick={[Function]}
       small={false}
+      useExternalImg={false}
     />
   </DropdownTrigger>
   <div
@@ -46,6 +55,9 @@ exports[`AccountDropdown matches snapshot 1`] = `
       >
         Dashboard
       </Link>
+      <Connect(DarkModeToggle)
+        className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link account-dropdown-link--button"
+      />
       <Link
         className="account-dropdown--identity account-dropdown--segment account-dropdown-link"
         onClick={[Function]}
@@ -72,12 +84,21 @@ exports[`AccountDropdown matches snapshot when shouldDisplayName is true 1`] = `
   >
     <Avatar
       className="account-dropdown--avatar"
+      colorString=""
       displayName="John Doe"
+      externalSource={Object {}}
+      externalSourceToUse="s"
+      fallback={
+        <FontAwesome
+          name="user-o"
+        />
+      }
       firstName="John"
       initials=""
       lastName="Doe"
       onClick={[Function]}
       small={false}
+      useExternalImg={false}
     />
     <span
       className="account-dropdown--name"
@@ -111,6 +132,9 @@ exports[`AccountDropdown matches snapshot when shouldDisplayName is true 1`] = `
       >
         Dashboard
       </Link>
+      <Connect(DarkModeToggle)
+        className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link account-dropdown-link--button"
+      />
       <Link
         className="account-dropdown--identity account-dropdown--segment account-dropdown-link"
         onClick={[Function]}

@@ -14,7 +14,9 @@
     "document": true,
     "localStorage": true,
     "sessionStorage": true,
-    "Blob": true
+    "Blob": true,
+    "Image": true,
+    "System": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -27,6 +29,7 @@
   "settings": {
     "import/resolver": {
       "node": {
+        "paths": ["src"],
         "moduleDirectory": [
           "node_modules",
           "src/js"
@@ -36,6 +39,15 @@
   },
   // overrides to the Airbnb style follow
   "rules": {
+    "arrow-parens": [0],
+    "camelcase": [0], // only because of UNSAFE_ react lifecycle methods
+    "react/jsx-no-target-blank": [0],
+    "react/prop-types": ["warn"],
+    "indent": ["error", 2, { "ignoredNodes": ["JSXAttribute", "JSXSpreadAttribute"], "SwitchCase": 1 }],
+    "react/jsx-indent": [0],
+    "react/jsx-indent-props": ["error", 2],
+    "complexity": ["warn", { "max": 30 }],
+    "no-confusing-arrow": [0],
     // allow names to be the same as the default for Redux container testing
     "import/no-named-as-default": [0],
     // allow test files to import packages in devDependencies

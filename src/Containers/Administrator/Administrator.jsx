@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AdministratorPage from '../../Components/AdministratorPage';
 import { getLogs, getLogsList, getLog, getLogToDownload } from '../../actions/logs';
+import { getUsers, getTableStats } from '../../actions/userRoles';
 import { syncsFetchData, putAllSyncs, patchSync } from '../../actions/synchronizations';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 
@@ -25,59 +26,59 @@ export const downloadFile = (text) => {
 class AdministratorContainer extends Component {
   constructor(props) {
     super(props);
-    this.onDownloadClick = this.onDownloadClick.bind(this);
-    this.getLogById = this.getLogById.bind(this);
-    this.onDownloadOne = this.onDownloadOne.bind(this);
-    this.runAllJobs = this.runAllJobs.bind(this);
     this.state = {};
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getLogsList();
+    this.props.getUsers();
+    this.props.getTableStats();
     this.props.getSyncJobs();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.logsIsLoading && !nextProps.logsIsLoading && nextProps.logs) {
       downloadFile(nextProps.log);
     }
     if (this.props.logToDownloadIsLoading && !nextProps.logToDownloadIsLoading
-      && nextProps.logToDownload) {
+            && nextProps.logToDownload) {
       downloadFile(nextProps.logToDownload);
     }
     if (this.props.patchSyncIsLoading && !nextProps.patchSyncIsLoading
-      && !nextProps.patchSyncHasErrored) {
+            && !nextProps.patchSyncHasErrored) {
       this.props.getSyncJobs();
     }
   }
 
-  onDownloadClick() {
+  onDownloadClick = () => {
     if (!this.props.isLoading) {
       this.props.getLogs();
     }
-  }
+  };
 
-  onDownloadOne(id) {
+  onDownloadOne = id => {
     if (!this.props.logToDownloadIsLoading) {
       this.props.getLogToDownload(id);
     }
-  }
+  };
 
-  getLogById(id) {
+  getLogById = id => {
     this.props.getLog(id);
-  }
+  };
 
-  runAllJobs() {
+  runAllJobs = () => {
     const { putAllSyncJobs, putAllSyncsIsLoading } = this.props;
     if (!putAllSyncsIsLoading) {
       putAllSyncJobs();
     }
-  }
+  };
 
   render() {
-    const { logs, logsIsLoading, logsHasErrored, patchSyncJob, patchSyncIsLoading,
-    logsList, logsListIsLoading, logsListHasErrored,
-    log, logIsLoading, logHasErrored, syncJobs, syncJobsIsLoading } = this.props;
+    const {
+      logs, logsIsLoading, logsHasErrored, patchSyncJob, patchSyncIsLoading,
+      logsList, logsListIsLoading, logsListHasErrored,
+      log, logIsLoading, logHasErrored, syncJobs, syncJobsIsLoading, totalUsers,
+    } = this.props;
     const props = {
       logs,
       logsIsLoading,
@@ -91,11 +92,14 @@ class AdministratorContainer extends Component {
       logHasErrored,
       getLog: this.getLogById,
       onDownloadOne: this.onDownloadOne,
+      getUserPermissions: this.getUserPermissions,
+      onUpdatePermission: this.onUpdatePermission,
       syncJobs,
       syncJobsIsLoading,
       runAllJobs: this.runAllJobs,
       patchSyncJob,
       patchSyncIsLoading,
+      totalUsers: totalUsers.count,
     };
     return (
       <AdministratorPage {...props} />
@@ -124,12 +128,14 @@ AdministratorContainer.propTypes = {
   getSyncJobs: PropTypes.func,
   syncJobs: PropTypes.arrayOf(PropTypes.shape({})),
   syncJobsIsLoading: PropTypes.bool,
-  syncsJobsHasErrored: PropTypes.bool,
   putAllSyncJobs: PropTypes.func,
   putAllSyncsIsLoading: PropTypes.bool,
   patchSyncIsLoading: PropTypes.bool,
   patchSyncJob: PropTypes.func,
   patchSyncHasErrored: PropTypes.bool,
+  getUsers: PropTypes.func,
+  getTableStats: PropTypes.func,
+  totalUsers: PropTypes.shape({ count: PropTypes.number }),
 };
 
 AdministratorContainer.defaultProps = {
@@ -153,12 +159,14 @@ AdministratorContainer.defaultProps = {
   getSyncJobs: EMPTY_FUNCTION,
   syncJobs: [],
   syncJobsIsLoading: false,
-  syncsJobsHasErrored: false,
   putAllSyncsIsLoading: false,
   putAllSyncJobs: EMPTY_FUNCTION,
   patchSyncIsLoading: false,
   patchSyncJob: EMPTY_FUNCTION,
   patchSyncHasErrored: false,
+  getUsers: EMPTY_FUNCTION,
+  getTableStats: EMPTY_FUNCTION,
+  totalUsers: {},
 };
 
 const mapStateToProps = state => ({
@@ -176,10 +184,10 @@ const mapStateToProps = state => ({
   logToDownloadHasErrored: state.logToDownloadHasErrored,
   syncJobs: state.syncs,
   syncJobsIsLoading: state.syncsIsLoading,
-  syncsJobsHasErrored: state.syncsHasErrored,
   putAllSyncsIsLoading: state.putAllSyncsIsLoading,
   patchSyncIsLoading: state.patchSyncIsLoading,
   patchSyncHasErrored: state.patchSyncHasErrored,
+  totalUsers: state.usersSuccess,
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -190,6 +198,8 @@ export const mapDispatchToProps = dispatch => ({
   getSyncJobs: () => dispatch(syncsFetchData()),
   putAllSyncJobs: () => dispatch(putAllSyncs()),
   patchSyncJob: data => dispatch(patchSync(data)),
+  getUsers: () => dispatch(getUsers()),
+  getTableStats: () => dispatch(getTableStats()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)((AdministratorContainer));

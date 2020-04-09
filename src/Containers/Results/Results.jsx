@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
 import { debounce, get, keys, isString, omit, pickBy } from 'lodash';
@@ -18,25 +18,25 @@ import { toggleSearchBar } from '../../actions/showSearchBar';
 import ResultsPage from '../../Components/ResultsPage/ResultsPage';
 import CompareDrawer from '../../Components/CompareDrawer';
 import { POSITION_SEARCH_RESULTS, FILTERS_PARENT, ACCORDION_SELECTION_OBJECT,
-USER_PROFILE, MISSION_DETAILS_ARRAY, POST_DETAILS_ARRAY,
-EMPTY_FUNCTION, BID_LIST } from '../../Constants/PropTypes';
+  USER_PROFILE, MISSION_DETAILS_ARRAY, POST_DETAILS_ARRAY,
+  EMPTY_FUNCTION, BID_LIST, BIDDER_OBJECT } from '../../Constants/PropTypes';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
-import { POSITION_SEARCH_SORTS, POSITION_PAGE_SIZES, POSITION_PAGE_SIZES_TYPE } from '../../Constants/Sort';
+import { POSITION_PAGE_SIZES, POSITION_PAGE_SIZES_TYPE,
+  POSITION_SEARCH_SORTS_DYNAMIC } from '../../Constants/Sort';
 
 const DEFAULT_PAGE_NUMBER = 1;
+
+// eslint-disable-next-line no-confusing-arrow
+const POSITION_SEARCH_SORT$ = () => POSITION_SEARCH_SORTS_DYNAMIC;
 
 class Results extends Component {
   constructor(props) {
     super(props);
-    this.onQueryParamUpdate = this.onQueryParamUpdate.bind(this);
-    this.onQueryParamToggle = this.onQueryParamToggle.bind(this);
-    this.resetFilters = this.resetFilters.bind(this);
-    this.getQueryExists = this.getQueryExists.bind(this);
     this.state = {
       key: 0,
       query: { value: window.location.search.replace('?', '') || '' },
-      defaultSort: { value: POSITION_SEARCH_SORTS.defaultSort },
+      defaultSort: { value: POSITION_SEARCH_SORT$().defaultSort },
       defaultPageSize: { value: props.defaultPageSize },
       defaultPageNumber: { value: DEFAULT_PAGE_NUMBER },
       defaultKeyword: { value: '' },
@@ -47,7 +47,7 @@ class Results extends Component {
     this.debounced = debounce(() => {});
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { isAuthorized, onNavigateTo } = this.props;
     // store default search
     this.storeSearch();
@@ -60,21 +60,21 @@ class Results extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.filtersIsLoading === false) {
       this.setState({ filtersIsLoading: false });
     }
   }
 
   // for when we need to UPDATE the ENTIRE value of a filter
-  onQueryParamUpdate(q) {
+  onQueryParamUpdate = q => {
     const newQueryString = queryParamUpdate(q, this.state.query.value);
     // and push to history
     this.updateHistory(newQueryString);
-  }
+  };
 
   // for when we need to ADD or DELETE a NESTED value of a filter
-  onQueryParamToggle(param, value, remove) {
+  onQueryParamToggle = (param, value, remove) => {
     const stringifiedValue = value.toString();
     const parsedQuery = queryString.parse(this.state.query.value);
     // was the key found?
@@ -122,10 +122,10 @@ class Results extends Component {
     if (newQueryString !== this.state.query.value) {
       this.updateHistory(newQueryString);
     }
-  }
+  };
 
   // check if there are filters selected so that the clear filters button can be displayed or hidden
-  getQueryExists() {
+  getQueryExists = () => {
     const { query: { value } } = this.state;
     let query = queryString.parse(value);
     // omit page size and ordering
@@ -134,7 +134,7 @@ class Results extends Component {
     query = pickBy(query, v => v || v === 0);
     // query exists if it has keys
     return !!keys(query).length;
-  }
+  };
 
   getStringifiedQuery(q) {
     // ResultsPage is connected so we access the ref's functions slightly differently
@@ -152,12 +152,13 @@ class Results extends Component {
   createQueryParams() {
     const { query, defaultSort, defaultPageSize, defaultPageNumber, defaultKeyword } = this.state;
     const { filters, fetchFilters } = this.props;
+    const filters$ = { ...filters };
     // set our current query
     const parsedQuery = queryString.parse(query.value);
     const { ordering, limit, page, q } = parsedQuery;
     // set our default ordering
     defaultSort.value =
-      ordering || POSITION_SEARCH_SORTS.defaultSort;
+      ordering || POSITION_SEARCH_SORT$().defaultSort;
     // set our default page size
     defaultPageSize.value =
       parseInt(limit, 10) || this.props.defaultPageSize;
@@ -184,10 +185,10 @@ class Results extends Component {
     // as a param, which tells our filters action
     // to not perform AJAX, and simply compare
     // the query params against the filters
-    if (filters.hasFetched) {
-      fetchFilters(filters, newQuery, filters);
+    if (filters$.hasFetched) {
+      fetchFilters(filters$, newQuery, filters$);
     } else { // if not, we'll perform AJAX
-      fetchFilters(filters, newQuery);
+      fetchFilters(filters$, newQuery);
     }
     // fetch new results
     this.callFetchData(newQueryString);
@@ -216,11 +217,11 @@ class Results extends Component {
   }
 
   // reset to no query params
-  resetFilters() {
+  resetFilters = () => {
     this.context.router.history.push({
       search: '',
     });
-  }
+  };
 
   callFetchData(q) {
     this.props.fetchData(q);
@@ -238,12 +239,15 @@ class Results extends Component {
 
   render() {
     const { results, hasErrored, isLoading, filters,
-            selectedAccordion, setAccordion, userProfile, fetchMissionAutocomplete,
-            missionSearchResults, missionSearchIsLoading, missionSearchHasErrored,
-            fetchPostAutocomplete, postSearchResults, postSearchIsLoading,
-            postSearchHasErrored, shouldShowSearchBar, bidList } = this.props;
+      selectedAccordion, setAccordion, userProfile, fetchMissionAutocomplete,
+      missionSearchResults, missionSearchIsLoading, missionSearchHasErrored,
+      fetchPostAutocomplete, postSearchResults, postSearchIsLoading,
+      postSearchHasErrored, shouldShowSearchBar, bidList,
+      client, clientIsLoading, clientHasErrored } = this.props;
     const { filtersIsLoading } = this.state;
+    const filters$ = { ...filters };
     const showClear = this.getQueryExists();
+    const isClient = client && !!client.id && !clientIsLoading && !clientHasErrored;
     return (
       <div>
         <ResultsPage
@@ -252,7 +256,7 @@ class Results extends Component {
           hasErrored={hasErrored}
           isLoading={isLoading}
           filtersIsLoading={filtersIsLoading}
-          sortBy={POSITION_SEARCH_SORTS}
+          sortBy={POSITION_SEARCH_SORT$()}
           defaultSort={this.state.defaultSort.value}
           pageSizes={POSITION_PAGE_SIZES}
           defaultPageSize={this.state.defaultPageSize.value}
@@ -261,7 +265,7 @@ class Results extends Component {
           defaultKeyword={this.state.defaultKeyword.value}
           resetFilters={this.resetFilters}
           pillFilters={filters.mappedParams}
-          filters={filters.filters}
+          filters={filters$.filters}
           onQueryParamToggle={this.onQueryParamToggle}
           selectedAccordion={selectedAccordion}
           setAccordion={setAccordion}
@@ -279,6 +283,7 @@ class Results extends Component {
           bidList={bidList.results}
           isProjectedVacancy={results.isProjectedVacancy}
           showClear={showClear}
+          isClient={isClient}
         />
         <CompareDrawer />
       </div>
@@ -298,6 +303,8 @@ Results.propTypes = {
   results: POSITION_SEARCH_RESULTS,
   isAuthorized: PropTypes.func.isRequired,
   filters: FILTERS_PARENT,
+  // Used via nextProps
+  // eslint-disable-next-line react/no-unused-prop-types
   filtersIsLoading: PropTypes.bool,
   fetchFilters: PropTypes.func.isRequired,
   selectedAccordion: ACCORDION_SELECTION_OBJECT,
@@ -317,6 +324,9 @@ Results.propTypes = {
   bidListFetchData: PropTypes.func.isRequired,
   defaultPageSize: PropTypes.number.isRequired,
   storeSearch: PropTypes.func,
+  client: BIDDER_OBJECT,
+  clientIsLoading: PropTypes.bool,
+  clientHasErrored: PropTypes.bool,
 };
 
 Results.defaultProps = {
@@ -340,6 +350,9 @@ Results.defaultProps = {
   debounceTimeInMs: 50,
   bidList: { results: [] },
   storeSearch: EMPTY_FUNCTION,
+  client: {},
+  clientIsLoading: false,
+  clientHasErrored: false,
 };
 
 const mapStateToProps = state => ({
@@ -361,6 +374,9 @@ const mapStateToProps = state => ({
   shouldShowSearchBar: state.shouldShowSearchBar,
   bidList: state.bidListFetchDataSuccess,
   defaultPageSize: get(state, `sortPreferences.${POSITION_PAGE_SIZES_TYPE}.defaultSort`, POSITION_PAGE_SIZES.defaultSort),
+  client: get(state, 'clientView.client'),
+  clientIsLoading: get(state, 'clientView.isLoading'),
+  clientHasErrored: get(state, 'clientView.hasErrored'),
 });
 
 export const mapDispatchToProps = dispatch => ({

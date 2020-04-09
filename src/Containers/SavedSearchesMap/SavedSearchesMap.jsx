@@ -19,7 +19,7 @@ class SavedSearchesMap extends Component {
     };
   }
 
-  componentWillReceiveProps({ fetchFilters, ...rest }) {
+  UNSAFE_componentWillReceiveProps({ fetchFilters, ...rest }) {
     // To resolve eslint error no-unused-prop-types for `fetchFilters`
     const props = merge({ fetchFilters }, rest);
     this.setupValues(props);
@@ -33,6 +33,8 @@ class SavedSearchesMap extends Component {
       savedSearchesIsLoading,
       deleteSavedSearchIsLoading,
     } = props;
+
+    const filters$ = { ...filters };
 
     const { hasSetupValues } = this.state;
 
@@ -52,12 +54,12 @@ class SavedSearchesMap extends Component {
     // Don't try to fetch filters if filtersIsLoading is true.
     // We'll only perform this once after component mount, so we
     // set hasSetupValues to true after completing setup.
-    if (filters.hasFetched && !isLoading && !hasSetupValues) {
+    if (filters$.hasFetched && !isLoading && !hasSetupValues) {
       this.setState({ hasSetupValues: true });
-      fetchFilters(filters, mappedSearchQuery, filters);
+      fetchFilters(filters$, mappedSearchQuery, filters$);
     } else if (!isLoading && !hasSetupValues) { // if not, we'll perform AJAX
       this.setState({ hasSetupValues: true });
-      fetchFilters(filters, mappedSearchQuery);
+      fetchFilters(filters$, mappedSearchQuery);
     }
   }
 

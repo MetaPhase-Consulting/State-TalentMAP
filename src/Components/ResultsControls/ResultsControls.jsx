@@ -6,29 +6,22 @@ import SearchResultsExportLink from '../SearchResultsExportLink';
 import PreferenceWrapper from '../../Containers/PreferenceWrapper';
 import { POSITION_SEARCH_RESULTS, SORT_BY_PARENT_OBJECT } from '../../Constants/PropTypes';
 import { POSITION_PAGE_SIZES_TYPE } from '../../Constants/Sort';
-import PermissionsWrapper from '../../Containers/PermissionsWrapper';
 import { Trigger } from '../SaveNewSearch';
 import MediaQuery from '../MediaQuery';
 
 class ResultsControls extends Component {
-  constructor(props) {
-    super(props);
-    this.onSelectOrdering = this.onSelectOrdering.bind(this);
-    this.onSelectLimit = this.onSelectLimit.bind(this);
-  }
-
-  onSelectOrdering(e) {
+  onSelectOrdering = e => {
     this.props.queryParamUpdate({ ordering: e.target.value });
-  }
+  };
 
-  onSelectLimit(e) {
+  onSelectLimit = e => {
     this.props.queryParamUpdate({ limit: e.target.value });
-  }
+  };
 
   render() {
     const { results, hasLoaded, defaultSort, pageSizes,
-            defaultPageSize, defaultPageNumber, sortBy } = this.props;
-    const { isProjectedVacancy } = this.context;
+      defaultPageSize, defaultPageNumber, sortBy } = this.props;
+    const { isClient } = this.context;
     return (
       <div className="usa-grid-full results-controls">
         <div className="usa-width-one-fifth total-results">
@@ -59,7 +52,6 @@ class ResultsControls extends Component {
                       />
                     </div>
                     {
-                      !isProjectedVacancy &&
                       <div className="results-dropdown results-dropdown-page-size">
                         <PreferenceWrapper
                           onSelect={this.onSelectLimit}
@@ -77,23 +69,14 @@ class ResultsControls extends Component {
                       </div>
                     }
                     <div className="results-download">
-                      <PermissionsWrapper
-                        permissions="superuser"
-                        fallback={
-                          <span>
-                            {
-                              !isProjectedVacancy &&
-                              <SearchResultsExportLink count={results.count} />
-                            }
-                          </span>
-                        }
-                      >
-                        <SearchResultsExportLink count={results.count} />
-                      </PermissionsWrapper>
+                      <SearchResultsExportLink count={results.count} />
                     </div>
-                    <Trigger isPrimary>
-                      <button className="usa-button">Save Search</button>
-                    </Trigger>
+                    {
+                      !isClient &&
+                      <Trigger isPrimary>
+                        <button className="usa-button">Save Search</button>
+                      </Trigger>
+                    }
                   </div>
                 </div>
               )
@@ -107,6 +90,7 @@ class ResultsControls extends Component {
 
 ResultsControls.contextTypes = {
   isProjectedVacancy: PropTypes.bool,
+  isClient: PropTypes.bool,
 };
 
 ResultsControls.propTypes = {

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { get, mapValues } from 'lodash';
 import { CSVLink } from '../../CSV';
-import { bidderPortfolioFetchDataFromLastQuery } from '../../../actions/bidderPortfolio';
-import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
+import { downloadClientData } from '../../../actions/bidderPortfolio';
 import ExportButton from '../../ExportButton';
 import { getFormattedNumCSV, spliceStringForCSV } from '../../../utilities';
 
@@ -33,15 +32,13 @@ const processData = data => (
 export class ExportLink extends Component {
   constructor(props) {
     super(props);
-    this.onClick = this.onClick.bind(this);
-    this.setCsvRef = this.setCsvRef.bind(this);
     this.state = {
       data: '',
       isLoading: false,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.isLoading) {
       this.setState({ isLoading: false });
     }
@@ -55,21 +52,25 @@ export class ExportLink extends Component {
     }
   }
 
-  onClick() {
+  onClick = () => {
+    const { bidderPortfolioLastQuery } = this.props;
     const { isLoading } = this.state;
-    const { fetchData } = this.props;
     if (!isLoading) {
-      this.setState({
-        isLoading: true,
-      }, () => {
-        fetchData();
-      });
+      // reset the state to support multiple clicks
+      this.setState({ data: '', isLoading: true });
+      downloadClientData(bidderPortfolioLastQuery)
+        .then(() => {
+          this.setState({ isLoading: false });
+        })
+        .catch(() => {
+          this.setState({ isLoading: false });
+        });
     }
-  }
+  };
 
-  setCsvRef(ref) {
+  setCsvRef = ref => {
     this.csvLink = ref;
-  }
+  };
 
   render() {
     const { data, isLoading } = this.state;
@@ -93,10 +94,12 @@ export class ExportLink extends Component {
 
 ExportLink.propTypes = {
   filename: PropTypes.string,
+  // Used via nextProps
+  // eslint-disable-next-line react/no-unused-prop-types
   hasErrored: PropTypes.bool,
   isLoading: PropTypes.bool,
   data: PropTypes.shape({ results: PropTypes.arrayOf(PropTypes.shape({})) }),
-  fetchData: PropTypes.func,
+  bidderPortfolioLastQuery: PropTypes.shape({}),
 };
 
 ExportLink.defaultProps = {
@@ -104,17 +107,16 @@ ExportLink.defaultProps = {
   hasErrored: false,
   isLoading: false,
   data: {},
-  fetchData: EMPTY_FUNCTION,
+  bidderPortfolioLastQuery: {},
 };
 
 const mapStateToProps = state => ({
   hasErrored: state.lastBidderPortfolioHasErrored,
   isLoading: state.lastBidderPortfolioIsLoading,
   data: state.lastBidderPortfolio,
+  bidderPortfolioLastQuery: state.bidderPortfolioLastQuery,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: () => dispatch(bidderPortfolioFetchDataFromLastQuery()),
-});
+export const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExportLink);

@@ -18,7 +18,9 @@ exports[`ProfileDashboardComponent matches snapshot when loaded 1`] = `
     <MediaQueryWrapper
       breakpoint="screenLgMin"
       widthType="max"
-    />
+    >
+      <Component />
+    </MediaQueryWrapper>
   </div>
 </div>
 `;
@@ -29,6 +31,7 @@ exports[`ProfileDashboardComponent matches snapshot when loading 1`] = `
 >
   <Spinner
     size="big"
+    style={Object {}}
     type="homepage-position-results"
   />
 </div>

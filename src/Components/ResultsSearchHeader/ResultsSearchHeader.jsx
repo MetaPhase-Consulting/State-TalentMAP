@@ -7,34 +7,28 @@ import SearchBar from '../SearchBar/SearchBar';
 class ResultsSearchHeader extends Component {
   constructor(props) {
     super(props);
-    this.onChangeQueryText = this.onChangeQueryText.bind(this);
-    this.submitSearch = this.submitSearch.bind(this);
-    this.onClear = this.onClear.bind(this);
-    this.getValue = this.getValue.bind(this);
     this.state = {
       q: { value: this.props.defaultKeyword || '' },
     };
   }
 
-  onChangeQueryText(e) {
+  onChangeQueryText = e => {
     this.changeText('q', e);
-  }
+  };
 
-  onClear() {
+  onClear = () => {
     this.changeText('q', { target: { value: '' } }, () => this.submitSearch());
-  }
+  };
 
-  getValue() {
-    return this.state.q.value;
-  }
+  getValue = () => this.state.q.value;
 
-  submitSearch(e) {
+  submitSearch = e => {
     // resolves “Form submission canceled because the form is not connected” warning
     if (e && e.preventDefault) { e.preventDefault(); }
     const { q } = this.state;
     // send any updates to q and location back to the Results container, and reset our page number
     this.props.onUpdate({ q: q.value });
-  }
+  };
 
   changeText(type, e, cb = EMPTY_FUNCTION) {
     const { q } = this.state;
@@ -46,14 +40,14 @@ class ResultsSearchHeader extends Component {
 
   render() {
     const { defaultKeyword, isHomePage, placeholder, searchBarDisabled,
-    searchBarDisabledPlaceholder } = this.props;
+      searchBarDisabledPlaceholder, legend, legendSrOnly } = this.props;
     return (
       <div className={`results-search-bar padded-main-content results-single-search ${!isHomePage ? 'homepage-offset' : ''}`}>
         <div className="usa-grid-full results-search-bar-container">
           <form className="usa-grid-full" onSubmit={this.submitSearch} >
             <fieldset className="usa-width-five-sixths">
               <div className="usa-width-one-whole search-results-inputs search-keyword">
-                <legend className="usa-grid-full homepage-search-legend">Find your next position</legend>
+                <legend className={`usa-grid-full homepage-search-legend ${legendSrOnly ? 'usa-sr-only' : ''}`}>{legend}</legend>
                 <SearchBar
                   id="search-keyword-field"
                   label="Keywords"
@@ -92,6 +86,8 @@ ResultsSearchHeader.propTypes = {
   isHomePage: PropTypes.bool,
   searchBarDisabled: PropTypes.bool,
   searchBarDisabledPlaceholder: PropTypes.string,
+  legend: PropTypes.string,
+  legendSrOnly: PropTypes.bool,
 };
 
 ResultsSearchHeader.defaultProps = {
@@ -103,6 +99,8 @@ ResultsSearchHeader.defaultProps = {
   isHomePage: false,
   searchBarDisabled: false,
   searchBarDisabledPlaceholder: 'Free text search is unavailable when searching Projected Vacancies',
+  legend: 'Find your next position',
+  legendSrOnly: false,
 };
 
 export default ResultsSearchHeader;

@@ -28,10 +28,13 @@ export function positionDetailsPatchState(positionDetails) {
   };
 }
 
-export function positionDetailsFetchData(id) {
+export function positionDetailsFetchData(id, isPV = false, isUP = false) {
   return (dispatch) => {
     dispatch(positionDetailsIsLoading(true));
-    api().get(`/cycleposition/${id}/`)
+    let prefix = '/fsbid/available_positions';
+    if (isPV) { prefix = '/fsbid/projected_vacancies'; }
+    if (isUP) { prefix = '/fsbid/available_positions/archived'; }
+    api().get(`${prefix}/${id}/`)
       .then(response => response.data)
       .then((positionDetails) => {
         dispatch(positionDetailsFetchDataSuccess(positionDetails));

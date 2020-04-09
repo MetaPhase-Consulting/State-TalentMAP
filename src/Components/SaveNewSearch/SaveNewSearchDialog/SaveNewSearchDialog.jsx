@@ -16,15 +16,12 @@ export const INPUT_ID = 'saved-search';
 export class SaveNewSearchDialog extends Component {
   constructor(props) {
     super(props);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.changeNewSearchName = this.changeNewSearchName.bind(this);
-    this.onCancel = this.onCancel.bind(this);
     this.state = {
       newSearchName: '',
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // close after successful save
     if (this.props.isLoading && !nextProps.isLoading && !nextProps.hasErrored) {
       this.onCancel();
@@ -32,28 +29,31 @@ export class SaveNewSearchDialog extends Component {
     }
   }
 
-  onSubmit(e) {
+  onSubmit = e => {
     if (e && e.preventDefault) { e.preventDefault(); }
     const { currentSearch } = this.props;
     const hasPV = get(currentSearch, 'projectedVacancy') === 'projected';
     const endpoint = hasPV ? '/api/v1/fsbid/projected_vacancies/' : '/api/v1/cycleposition/';
     let filters = omit(currentSearch, ['projectedVacancy']);
-    if (hasPV) { filters = omit(filters, ['q']); } // q does not exist on PV
+
+    // any filters we want to omit for PV. currently none.
+    if (hasPV) { filters = omit(filters, []); }
+
     this.props.saveSearch({
       name: this.state.newSearchName,
       endpoint,
       filters,
     });
-  }
+  };
 
-  onCancel() {
+  onCancel = () => {
     this.props.toggle(false);
     focusById(ID, 0);
-  }
+  };
 
-  changeNewSearchName(e) {
+  changeNewSearchName = e => {
     this.setState({ newSearchName: e });
-  }
+  };
 
   render() {
     const { isLoading, isOpen, hasErrored } = this.props;
@@ -100,7 +100,7 @@ export class SaveNewSearchDialog extends Component {
             </div>
           </Form>
         </div>
-      :
+        :
         <div className="usa-grid-full" style={{ marginTop: '20px' }} />
     );
   }

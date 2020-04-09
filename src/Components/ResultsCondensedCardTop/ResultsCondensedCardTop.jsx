@@ -1,38 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { Flag } from 'flag';
 import { Link } from 'react-router-dom';
 import { Featured, Handshake } from '../Ribbon';
 import { POSITION_DETAILS, HOME_PAGE_CARD_TYPE } from '../../Constants/PropTypes';
 import { NO_POST } from '../../Constants/SystemMessages';
 import { getPostName, getBidStatisticsObject } from '../../utilities';
-import { checkFlag } from '../../flags';
-
-const useProjectedVacancy = () => checkFlag('flags.projected_vacancy');
 
 const ResultsCondensedCardTop = ({ position, isProjectedVacancy, isRecentlyAvailable }) => {
   let cardTopClass = '';
   let vacancyClass;
   let vacancyText;
 
-  if (isProjectedVacancy && useProjectedVacancy()) {
+  if (isProjectedVacancy) {
     vacancyClass = 'vacancy--projected';
     vacancyText = 'Projected Vacancy';
     cardTopClass = 'card-top-vacancy';
-  } else if (isRecentlyAvailable && useProjectedVacancy()) {
+  } else if (isRecentlyAvailable) {
     vacancyClass = 'vacancy--recent';
     vacancyText = 'Now available';
   }
   const p = position.position || position;
-  const stats = getBidStatisticsObject(p.bid_statistics);
+  const stats = getBidStatisticsObject(position.bid_statistics);
   const hasHandshake = get(stats, 'has_handshake_offered', false);
 
   const title = get(position, 'position.title', '');
 
   const titleHeader = <h3>{title}</h3>;
 
-  const link = `/details/${position.id}`;
+  const link = `/${isProjectedVacancy ? 'vacancy' : 'details'}/${position.id}`;
 
   const innerContent = (
     <div>
@@ -61,12 +57,9 @@ const ResultsCondensedCardTop = ({ position, isProjectedVacancy, isRecentlyAvail
           </span></span>
         </div>
         <div className="ribbon-container">
-          <Flag
-            name="flags.bidding"
-            render={() => (
-              hasHandshake && <Handshake className="ribbon-condensed-card" />
-            )}
-          />
+          {
+            hasHandshake && <Handshake className="ribbon-condensed-card" />
+          }
           {
             get(position, 'position.is_highlighted') && <Featured className="ribbon-results-card" />
           }
@@ -76,18 +69,13 @@ const ResultsCondensedCardTop = ({ position, isProjectedVacancy, isRecentlyAvail
   );
 
   const containerProps = {
-    className: `usa-grid-full condensed-card-top ${cardTopClass} ${isProjectedVacancy ? '' : 'condensed-card-top--clickable'}`,
+    className: `usa-grid-full condensed-card-top ${cardTopClass} condensed-card-top--clickable`,
   };
 
   return (
-    isProjectedVacancy ?
-      <div {...containerProps} >
-        {innerContent}
-      </div>
-    :
-      <Link to={link} {...containerProps} title="View details for this position">
-        {innerContent}
-      </Link>
+    <Link to={link} {...containerProps} title="View details for this position">
+      {innerContent}
+    </Link>
   );
 };
 

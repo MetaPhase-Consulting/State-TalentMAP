@@ -1,50 +1,48 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import { get } from 'lodash';
 import { Tooltip } from 'react-tippy';
+import { Link } from 'react-router-dom';
+import { checkFlag } from 'flags';
 import { BID_OBJECT } from '../../../Constants/PropTypes';
 import BidTrackerCardTitle from '../BidTrackerCardTitle';
-import ConfirmLink from '../../ConfirmLink';
-import InteractiveElement from '../../InteractiveElement';
-import { toggleGlossary } from '../../../actions/showGlossary';
-import { scrollToGlossaryTerm } from '../../../utilities';
+// import ConfirmLink from '../../ConfirmLink';
+// import GlossaryTermTrigger from '../../GlossaryTermTrigger';
+// Note that all glossary logic is commented out for tooltip
+
+const useBiddingTips = () => checkFlag('flags.bidding_tips');
+
 
 class BidTrackerCardTop extends Component {
   constructor(props) {
     super(props);
-    this.onDeleteBid = this.onDeleteBid.bind(this);
-    this.onClickLink = this.onClickLink.bind(this);
     this.state = {
       confirm: false,
     };
   }
 
-  onDeleteBid() {
+  onDeleteBid = () => {
     const { deleteBid, bid } = this.props;
     deleteBid(bid.position.id);
-  }
-
-  onClickLink() {
-    const { toggle, questionText: { term } } = this.props;
-    toggle();
-    scrollToGlossaryTerm(term);
-  }
+  };
 
   render() {
-    const { bid, hideDelete, showBidCount, questionText } = this.props;
-    const { position } = bid.position;
-    const bidStatistics = get(position, 'bid_statistics[0]', {});
+    const { bid, hideDelete, showBidCount, useCDOView /* , questionText */ } = this.props;
+    const { readOnly } = this.context;
+    const { position } = bid;
+    // const showQuestion = !!(questionText && questionText.text);
+    const bidStatistics = get(bid, 'bid_statistics[0]', {});
     const post = get(position, 'post', {});
-    const showQuestion = !!(questionText && questionText.text);
+    const positionNumber = get(position, 'position_number');
+    const biddingTips = useBiddingTips();
 
     const getQuestionElement = () => (
+      // <span>{questionText.text} </span>
+      // eslint-disable-next-line max-len
+      // <GlossaryTermTrigger className="tooltip-link" text={questionText.link} term={questionText.term} />
       <span>
-        <span>{questionText.text} </span>
-        <InteractiveElement className="tooltip-link" type="span" onClick={this.onClickLink}>
-          {questionText.link}
-        </InteractiveElement>
+        Your bid is likely in one of several steps in the process. <Link className="tooltip-link" to="/biddingProcess">Learn more here.</Link>
       </span>
     );
     return (
@@ -52,39 +50,36 @@ class BidTrackerCardTop extends Component {
         <div className="bid-tracker-title-content-container">
           <BidTrackerCardTitle
             title={position.title}
+            positionNumber={positionNumber}
             id={bid.position.id}
             status={bid.status}
             bidStatistics={bidStatistics}
             post={post}
             showBidCount={showBidCount}
+            bidCycle={bid.bidcycle}
           />
         </div>
         <div className="bid-tracker-card-title-outer-container-right">
           <div className="bid-tracker-card-title-container-right">
-            {
-              showQuestion &&
-                <div className="bid-tracker-question-text-container">
-                  <Tooltip
-                    html={getQuestionElement()}
-                    arrow
-                    tabIndex="0"
-                    interactive
-                    interactiveBorder={5}
-                  >
-                    <span>
-                      <FontAwesome name="question-circle" /> Why is it taking so long?
-                    </span>
-                  </Tooltip>
-                </div>
-            }
+            {biddingTips &&
+            <div className="bid-tracker-question-text-container">
+              <Tooltip
+                html={getQuestionElement()}
+                arrow
+                tabIndex="0"
+                interactive
+                interactiveBorder={5}
+                useContext
+              >
+                <span>
+                  <FontAwesome name="question-circle" /> Why is it taking so long?
+                </span>
+              </Tooltip>
+            </div>}
             <div className="bid-tracker-actions-container">
-              { bid.can_delete && !hideDelete &&
-                <ConfirmLink
-                  className="remove-bid-link"
-                  defaultText={<span><FontAwesome name="close" />Remove bid</span>}
-                  role="link"
-                  onClick={this.onDeleteBid}
-                />
+              {bid.can_delete && !hideDelete && (!readOnly || useCDOView) &&
+                <button className="unstyled-button" onClick={this.onDeleteBid}>
+                  <FontAwesome name="trash" />Remove from Bid List</button>
               }
             </div>
           </div>
@@ -94,17 +89,21 @@ class BidTrackerCardTop extends Component {
   }
 }
 
+BidTrackerCardTop.contextTypes = {
+  readOnly: PropTypes.bool,
+};
+
 BidTrackerCardTop.propTypes = {
   bid: BID_OBJECT.isRequired,
-  questionText: PropTypes.shape({
-    text: PropTypes.string,
-    link: PropTypes.string,
-    term: PropTypes.string,
-  }),
+  // questionText: PropTypes.shape({
+  //   text: PropTypes.string,
+  //   link: PropTypes.string,
+  //   term: PropTypes.string,
+  // }),
   deleteBid: PropTypes.func.isRequired,
   showBidCount: PropTypes.bool,
   hideDelete: PropTypes.bool,
-  toggle: PropTypes.func.isRequired,
+  useCDOView: PropTypes.bool,
 };
 
 BidTrackerCardTop.defaultProps = {
@@ -112,10 +111,7 @@ BidTrackerCardTop.defaultProps = {
   showQuestion: true,
   showBidCount: true,
   hideDelete: false,
+  useCDOView: false,
 };
 
-export const mapDispatchToProps = dispatch => ({
-  toggle: () => dispatch(toggleGlossary(true)),
-});
-
-export default connect(null, mapDispatchToProps)(BidTrackerCardTop);
+export default BidTrackerCardTop;

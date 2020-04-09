@@ -14,10 +14,19 @@ describe('BidderPortfolioPageComponent', () => {
     queryParamUpdate: () => {},
     pageNumber: 1,
     bidderPortfolioCounts: bidderPortfolioCountsObject,
+    defaultHandshake: '',
+    defaultOrdering: '',
+    classificationsIsLoading: false,
+    classificationsHasErrored: false,
   };
 
   it('is defined', () => {
     const wrapper = shallow(<BidderPortfolioPage {...props} />);
+    expect(wrapper).toBeDefined();
+  });
+
+  it('is defined when navDataIsLoading === true', () => {
+    const wrapper = shallow(<BidderPortfolioPage {...props} navDataIsLoading />);
     expect(wrapper).toBeDefined();
   });
 

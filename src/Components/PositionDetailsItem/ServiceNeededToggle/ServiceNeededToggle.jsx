@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
-
+import { get } from 'lodash';
 import InteractiveElement from '../../InteractiveElement';
 
 import {
@@ -11,19 +11,15 @@ import {
 } from '../../../Constants/PropTypes';
 
 export default class ServiceNeededToggle extends Component {
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onClick() {
+  onClick = () => {
     const { position, onChange } = this.props;
-    onChange(position.id, !this.checked);
-  }
+    const id = position.id;
+    onChange(id, !this.checked);
+  };
 
   get checked() {
     const { position } = this.props;
-    return (position.is_highlighted || false);
+    return get(position, 'position.is_highlighted', false);
   }
 
   get text() {

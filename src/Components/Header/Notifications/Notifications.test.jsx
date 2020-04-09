@@ -5,20 +5,19 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import { shallow } from 'enzyme';
-import toJSON from 'enzyme-to-json';
 import { testDispatchFunctions } from '../../../testUtilities/testUtilities';
 import Notifications, { mapDispatchToProps } from './Notifications';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
-const history = createHistory();
+const history = createBrowserHistory();
 
 describe('NotificationsComponent', () => {
   it('is defined', () => {
     const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Notifications history={history} notificationsCount={4} fetchNotificationsCount={() => {}} location={{ pathname: '/results' }} />
+      <Notifications history={history} fetchNotifications={() => {}} notificationsCount={4} fetchNotificationsCount={() => {}} location={{ pathname: '/results' }} />
     </MemoryRouter></Provider>);
     expect(wrapper).toBeDefined();
   });
@@ -31,6 +30,7 @@ describe('NotificationsComponent', () => {
         notificationsCount={4}
         fetchNotificationsCount={spy}
         location={{ pathname: '/results' }}
+        fetchNotifications={() => {}}
       />,
     );
     wrapper.instance().props.history.push('/home');

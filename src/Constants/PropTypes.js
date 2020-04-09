@@ -172,7 +172,19 @@ export const FAVORITE_POSITION = PropTypes.shape({
   representation: PropTypes.string,
 });
 
+export const FAVORITE_POSITION_COUNTS = PropTypes.shape({
+  favorites: PropTypes.number,
+  favoritesPV: PropTypes.number,
+  all: PropTypes.number,
+});
+
 export const FAVORITE_POSITIONS_ARRAY = PropTypes.arrayOf(FAVORITE_POSITION);
+
+export const FAVORITE_POSITIONS = PropTypes.shape({
+  favorites: PropTypes.arrayOf(FAVORITE_POSITION),
+  favoritesPV: PropTypes.arrayOf(FAVORITE_POSITION),
+  counts: FAVORITE_POSITION_COUNTS,
+});
 
 export const USER_SKILL_CODE = PropTypes.shape({
   id: PropTypes.number,
@@ -290,11 +302,16 @@ export const POSITION_POST_NESTED_LOCATION = PropTypes.shape({
   state: PropTypes.string,
 });
 
-export const BID_OBJECT = PropTypes.shape({
-  id: PropTypes.number,
-  bidcycle: PropTypes.shape({
+export const BID_CYCLE_NAME_TYPE = PropTypes.oneOfType([
+  PropTypes.shape({
     name: PropTypes.string,
   }),
+  PropTypes.string,
+]);
+
+export const BID_OBJECT = PropTypes.shape({
+  id: PropTypes.number,
+  bidcycle: BID_CYCLE_NAME_TYPE,
   user: PropTypes.string,
   position: PropTypes.shape({
     id: PropTypes.number,
@@ -551,3 +568,20 @@ export const HIGHLIGHT_POSITION = PropTypes.shape({
 });
 
 export { SetType };
+
+export const CLASSIFICATION = PropTypes.shape({
+  id: PropTypes.string,
+  show: PropTypes.string,
+  text: PropTypes.string,
+});
+
+export const CLASSIFICATIONS = PropTypes.arrayOf(CLASSIFICATION);
+
+export const CLIENT_CLASSIFICATION = PropTypes.string;
+
+export const CLIENT_CLASSIFICATIONS = PropTypes.arrayOf(CLIENT_CLASSIFICATION);
+
+export const HISTORY_OBJECT = PropTypes.shape({
+  push: PropTypes.func,
+  listen: PropTypes.func,
+});

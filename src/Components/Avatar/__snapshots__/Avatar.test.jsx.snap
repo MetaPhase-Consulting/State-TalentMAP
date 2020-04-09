@@ -6,7 +6,10 @@ exports[`Avatar matches snapshot 1`] = `
   className="tm-avatar  special-class"
   onClick={[Function]}
   role="img"
+  style={Object {}}
 >
-  JD
+  <span>
+    JD
+  </span>
 </div>
 `;
