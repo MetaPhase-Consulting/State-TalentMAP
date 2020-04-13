@@ -211,7 +211,7 @@ workflows:
             - build
       - site:
           requires:
-            - build
+            - yarn
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
