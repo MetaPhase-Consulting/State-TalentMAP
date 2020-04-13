@@ -59,10 +59,12 @@ jobs:
           name: Install JUnit coverage reporter
           command: yarn add --dev jest-junit@8.0.0
       - run:
-          command: JEST_TESTS=$(circleci tests glob "src/**/*.test.jsx" "src/**/*.test.js" | circleci tests split | tr '\n' ' ')
+          command: echo $(circleci tests glob "src/**/*.test.jsx" "src/**/*.test.js")
+      - run:
+          command: circleci tests glob "src/**/*.test.jsx" "src/**/*.test.js" | circleci tests split > /tmp/tests_to_run
       - run:
           name: Jest Test Coverage
-          command: yarn test $JEST_TESTS -- --ci --reporters=default --reporters=jest-junit
+          command: yarn test /tmp/tests_to_run -- --ci --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT_NAME: "reports/jest/test-results.xml"
       - run: ./cc-test-reporter after-build --exit-code $? < coverage/lcov.info
