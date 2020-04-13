@@ -64,7 +64,7 @@ jobs:
           command: circleci tests glob "src/**/*.test.jsx" "src/**/*.test.js" | circleci tests split > /tmp/tests_to_run
       - run:
           name: Jest Test Coverage
-          command: yarn test /tmp/tests_to_run -- --ci --reporters=default --reporters=jest-junit
+          command: yarn test -- $(cat /tmp/tests-to-run) --ci --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT_NAME: "reports/jest/test-results.xml"
       - run: ./cc-test-reporter after-build --exit-code $? < coverage/lcov.info
