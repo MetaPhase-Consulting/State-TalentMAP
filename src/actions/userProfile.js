@@ -107,7 +107,6 @@ export function userProfileFetchData(bypass, cb) {
             ...newProfileObject,
           };
         }
-
         // function to success perform dispatches
         const dispatchSuccess = () => {
           if (cb) {

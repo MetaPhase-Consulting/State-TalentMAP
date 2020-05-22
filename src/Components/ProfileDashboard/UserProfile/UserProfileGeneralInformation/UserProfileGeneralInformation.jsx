@@ -36,9 +36,10 @@ const UserProfileGeneralInformation = ({ userProfile, showEditLink, useGroup,
         <div className="name-group">
           <SectionTitle small title={`${userProfile.user.last_name ? `${userProfile.user.last_name}, ` : ''}${userProfile.user.first_name}`} className="current-user-name" />
           {
-            get(userProfile, 'employee_profile_url') &&
+            get(userProfile, 'employee_info.employee_profile_url') &&
               <InformationDataPoint
-                content={<a href={userProfile.employee_profile_url}>Employee Profile</a>}
+                content={<a href={userProfile.employee_info.employee_profile_url}>
+                  Employee Profile</a>}
               />
           }
           <InformationDataPoint
