@@ -18,6 +18,7 @@ import InBidListContainer from './InBidList';
 import HoverDescription from './HoverDescription';
 import OBCUrl from '../OBCUrl';
 import BidListButton from '../../Containers/BidListButton';
+import bannerImg from '../../assets/svg/card-flag.svg';
 
 import { formatDate, propOrDefault, getPostName, shortenString,
   getDifferentialPercentage, getBidStatisticsObject } from '../../utilities';
@@ -115,6 +116,7 @@ class ResultsCard extends Component {
     const language = (<LanguageList languages={languages} propToUse="representation" />);
 
     const post = getPostNameText(pos);
+    const postShort = getPostName(pos.post, NO_POST);
 
     const bidStatsToUse = getBidStatsToUse(result, pos);
     const stats = getBidStatisticsObject(bidStatsToUse);
@@ -124,10 +126,13 @@ class ResultsCard extends Component {
 
     const innerId = this.getInnerId();
 
-    // TODO - update this to a real property once API is updateds
-    const recentlyAvailable = pos.recently_available;
-
     const bidTypeTitle = isProjectedVacancy ? 'Bid season' : 'Bid cycle';
+
+    const isTandem1 = result.tandem_nbr === 1;
+    const isTandem2 = result.tandem_nbr === 2;
+
+    const commuterPost = get(pos, 'commuterPost.description');
+    const commuterPostFreq = get(pos, 'commuterPost.frequency');
 
     const sections = [
     /* eslint-disable quote-props */
@@ -167,7 +172,7 @@ class ResultsCard extends Component {
       refKey: result.id,
     };
 
-    const detailsLink = <Link to={`/${isProjectedVacancy ? 'vacancy' : 'details'}/${result.id}`}>View position</Link>;
+    const detailsLink = <Link to={`/${isProjectedVacancy ? 'vacancy' : 'details'}/${result.id}${isTandem2 ? '?tandem=true' : ''}`}>View position</Link>;
 
     const availability = get(result, 'availability.availability');
     const availableToBid = isNull(availability) || !!availability;
@@ -179,6 +184,36 @@ class ResultsCard extends Component {
       />
     );
 
+    const isTandem = isTandem1 || isTandem2;
+
+    const cardClassArray = ['results-card'];
+    if (isProjectedVacancy) cardClassArray.push('results-card--secondary');
+    if (isTandem) cardClassArray.push('results-card--tandem');
+    if (isTandem2) cardClassArray.push('results-card--tandem-two');
+    const cardClass = cardClassArray.join(' ');
+
+    const headingTop =
+      !isTandem ?
+        (<>
+          <h3>{title}</h3>
+          {detailsLink}
+        </>)
+        :
+        (
+          <Row className="usa-grid-full commuter-header">
+            <Column columns={commuterPostFreq ? 7 : 12}><h3>Post: {postShort}</h3></Column>
+            {!!commuterPostFreq && <Column className="commute-frequency" columns={5}>Commute Frequency: {commuterPostFreq}</Column>}
+          </Row>
+        );
+
+    const headingBottom = !isTandem ?
+      <><dt>Location:</dt><dd>{post}</dd></>
+      :
+      (<>
+        <div>{title}</div>
+        <div className="tandem-details-link">{detailsLink}</div>
+      </>);
+
     return (
       <MediaQueryWrapper breakpoint="screenSmMax" widthType="max">
         {matches => (
@@ -186,10 +221,18 @@ class ResultsCard extends Component {
             <div
               id={id}
               style={{ position: 'relative', overflow: 'hidden' }}
-              className={`results-card ${isProjectedVacancy ? 'results-card--secondary' : ''}`}
+              className={cardClass}
               onMouseOver={() => this.hover.toggleCardHovered(true)}
               onMouseLeave={() => this.hover.toggleCardHovered(false)}
             >
+              {
+                !!commuterPost &&
+                <img
+                  src={bannerImg}
+                  alt="banner"
+                  className="commuter-banner"
+                />
+              }
               {
                 matches ?
                   <Row className="header" fluid>
@@ -207,12 +250,10 @@ class ResultsCard extends Component {
                   <Row className="header" fluid>
                     <Column columns="8">
                       <Column columns="12" className="results-card-title-link">
-                        <h3>{title}</h3>
-                        {detailsLink}
-                        {recentlyAvailable && <span className="available-alert">Now available!</span>}
+                        {headingTop}
                       </Column>
                       <Column columns="12" className="results-card-title-link">
-                        <dt>Location:</dt><dd>{post}</dd>
+                        {headingBottom}
                       </Column>
                     </Column>
                     {
@@ -226,6 +267,12 @@ class ResultsCard extends Component {
               }
               <Row id={innerId} fluid>
                 <Column columns="5">
+                  {
+                    !!isTandem &&
+                    <div className="tandem-identifier">
+                      <div>{`Tandem User ${isTandem1 ? 1 : 2}`}</div>
+                    </div>
+                  }
                   <DefinitionList items={sections[0]} />
                 </Column>
                 {

@@ -8,6 +8,18 @@ $results-container-width: 100% - $filter-container-width;
     font-size: .9em;
   }
 
+  .tandem-filter-header {
+    border-bottom: 1px solid $color-black;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 1em;
+    padding: 2.5em 0 .5em;
+  }
+
+  .tandem-filter-header--first {
+    padding-top: 1em;
+  }
+
   .results-dropdown-page-size {
     float: left;
     margin-left: 20px;
@@ -46,13 +58,47 @@ $results-container-width: 100% - $filter-container-width;
   border: 1px solid $results-card-border;
   border-left: 8px solid $results-card-accent;
   margin-bottom: 2rem;
-  padding: 1.1rem 1.1rem 3.3rem;
+  padding: 1.1rem 1.1rem 3.3rem 1.9rem;
 
   dl {
     dt,
     dd {
       vertical-align: top;
     }
+  }
+
+  .commuter-banner {
+    height: 35px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+  }
+
+  .commuter-header {
+    margin: 0;
+    width: 100%;
+
+    .commute-frequency {
+      font-size: .8em;
+    }
+  }
+
+  &.results-card--tandem-two {
+    background-color: $color-purple-light;
+
+    .compare-not-checked {
+      background-color: $color-white;
+    }
+  }
+
+  .tandem-identifier {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .tandem-details-link {
+    padding-left: .5rem;
   }
 
   .available-alert {
@@ -421,7 +467,8 @@ $results-container-width: 100% - $filter-container-width;
     }
   }
 
-  .projected-vacancy-filter-container {
+  .projected-vacancy-filter-container,
+  .tandem-filter-container {
     margin-bottom: .8em;
     margin-top: .2em;
 
@@ -573,6 +620,13 @@ $results-container-width: 100% - $filter-container-width;
     display: inline;
   }
 
+  .pill-ribbon-icon {
+    padding-left: 6px;
+    padding-right: 6px;
+    position: relative;
+    top: 2px;
+  }
+
   .selections-container {
     margin-right: .7em;
   }
@@ -681,10 +735,22 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .usa-accordion-button {
-    background-color: $bg-blue-dark-1;
     color: $color-white;
     font-weight: normal;
     padding: .7em;
+  }
+  .accordion-ap {
+    //background-color: $blue-primary;
+    background-color: $bg-blue-dark-1;
+  }
+  .accordion-pv {
+    background-color: $bg-blue-dark-1;
+  }
+  .accordion-tandem-1 {
+    background-color: $color-blue-chill;
+  }
+  .accordion-tandem-2 {
+    background-color: $color-purple;
   }
 
   .usa-accordion-content {
@@ -698,7 +764,9 @@ $results-container-width: 100% - $filter-container-width;
 
   .accordion-checkbox-post,
   .accordion-checkbox-skill,
-  .accordion-checkbox-language {
+  .accordion-checkbox-skill-tandem,
+  .accordion-checkbox-language,
+  .accordion-checkbox-language-tandem {
     .usa-accordion-button {
       float: left;
       padding-left: 0;
@@ -718,9 +786,13 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .accordion-checkbox-skill,
+  .accordion-checkbox-skill-tandem,
   .accordion-checkbox-language,
+  .accordion-checkbox-language-tandem,
   .accordion-checkbox-post,
-  .accordion-checkbox-bureau {
+  .accordion-checkbox-post-tandem,
+  .accordion-checkbox-bureau,
+  .accordion-checkbox-bureau-tandem {
     padding: 0;
 
     .tm-nested-accordions {
@@ -733,7 +805,8 @@ $results-container-width: 100% - $filter-container-width;
     }
   }
 
-  .accordion-checkbox-grade {
+  .accordion-checkbox-grade,
+  .accordion-checkbox-grade-tandem {
     .tm-checkbox {
       float: left;
     }
@@ -903,4 +976,10 @@ $results-container-width: 100% - $filter-container-width;
     font-size: .8em;
     padding: 7px;
   }
+}
+
+.commuter-post-filter-ribbon {
+  padding-right: 4px;
+  position: relative;
+  top: 1px;
 }

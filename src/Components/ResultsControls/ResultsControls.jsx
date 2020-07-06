@@ -21,7 +21,7 @@ class ResultsControls extends Component {
   render() {
     const { results, hasLoaded, defaultSort, pageSizes,
       defaultPageSize, defaultPageNumber, sortBy } = this.props;
-    const { isClient } = this.context;
+    const { isClient, isTandemSearch } = this.context;
     return (
       <div className="usa-grid-full results-controls">
         <div className="usa-width-one-fifth total-results">
@@ -42,37 +42,37 @@ class ResultsControls extends Component {
                 <div className="usa-width-four-fifths drop-downs">
                   <div className="dropdowns-container">
                     <div className="results-dropdown results-dropdown-sort">
-                      <SelectForm
-                        id="sort"
-                        label="Sort by:"
-                        onSelectOption={this.onSelectOrdering}
-                        options={sortBy.options}
-                        defaultSort={defaultSort}
-                        className="select-blue select-offset select-small"
-                      />
+                      { !isTandemSearch &&
+                        <SelectForm
+                          id="sort"
+                          label="Sort by:"
+                          onSelectOption={this.onSelectOrdering}
+                          options={sortBy.options}
+                          defaultSort={defaultSort}
+                          className="select-blue select-offset select-small"
+                        />
+                      }
                     </div>
-                    {
-                      <div className="results-dropdown results-dropdown-page-size">
-                        <PreferenceWrapper
-                          onSelect={this.onSelectLimit}
-                          keyRef={POSITION_PAGE_SIZES_TYPE}
-                        >
-                          <SelectForm
-                            id="pageSize"
-                            label="Results:"
-                            options={pageSizes.options}
-                            defaultSort={defaultPageSize}
-                            transformValue={n => parseInt(n, 10)}
-                            className="select-blue select-offset select-small"
-                          />
-                        </PreferenceWrapper>
-                      </div>
-                    }
+                    <div className="results-dropdown results-dropdown-page-size">
+                      <PreferenceWrapper
+                        onSelect={this.onSelectLimit}
+                        keyRef={POSITION_PAGE_SIZES_TYPE}
+                      >
+                        <SelectForm
+                          id="pageSize"
+                          label="Results:"
+                          options={pageSizes.options}
+                          defaultSort={defaultPageSize}
+                          transformValue={n => parseInt(n, 10)}
+                          className="select-blue select-offset select-small"
+                        />
+                      </PreferenceWrapper>
+                    </div>
                     <div className="results-download">
                       <SearchResultsExportLink count={results.count} />
                     </div>
                     {
-                      !isClient &&
+                      !isClient && !isTandemSearch &&
                       <Trigger isPrimary>
                         <button className="usa-button">Save Search</button>
                       </Trigger>
@@ -91,6 +91,7 @@ class ResultsControls extends Component {
 ResultsControls.contextTypes = {
   isProjectedVacancy: PropTypes.bool,
   isClient: PropTypes.bool,
+  isTandemSearch: PropTypes.bool,
 };
 
 ResultsControls.propTypes = {
