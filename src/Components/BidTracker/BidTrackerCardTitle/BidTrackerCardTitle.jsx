@@ -44,6 +44,10 @@ const BidTrackerCardTitle = ({
       <div className="usa-grid-full bid-tracker-bottom-link-container">
         <div className={`bid-tracker-card-title-bottom ${!condensedView ? 'bid-tracker-card-title-bottom--full-width' : ''}`}>
           <strong>Location:</strong> {getPostName(post)}
+          <strong> | Posted:</strong> 07/02/2020
+        </div>
+        <div className={`bid-tracker-card-title-bottom ${!condensedView ? 'bid-tracker-card-title-bottom--full-width' : ''}`}>
+          <strong>Bureau: </strong>(INR) BUREAU OF INTELLIGENCE AND RESEARCH
         </div>
         {
           !condensedView &&

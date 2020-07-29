@@ -3,7 +3,7 @@ import StaticDevContent from 'Components/StaticDevContent';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 import { BID_OBJECT } from '../../../../Constants/PropTypes';
-import { NO_POST, NO_SKILL, NO_GRADE } from '../../../../Constants/SystemMessages';
+import { NO_POST, NO_SKILL, NO_GRADE, NO_LANGUAGES } from '../../../../Constants/SystemMessages';
 import { getPostName, formatDate } from '../../../../utilities';
 
 class DraftAlert extends Component {
@@ -23,6 +23,10 @@ class DraftAlert extends Component {
     const ted = formatDate('2020-07-02T05:00:00Z');
     // const ted = position.bid.ted ? formatDate(position.bid.ted) : NO_TOUR_END_DATE;
     // modify line 6: import NO_TOUR_END_DATE from SystemMessages
+    const tod = formatDate('2020-07-02T05:00:00Z');
+    // const tod = position.tod ? formatDate(position.tod) : NO_TOUR_OF_DUTY;
+    // modify line 6: import NO_TOUR_OF_DUTY from SystemMessages
+    const language = position.language ? position.language : NO_LANGUAGES;
     return (
       <div className="bid-tracker-alert-container bid-tracker-alert-container--draft">
         <div className="usa-grid-full" style={{ display: 'flex' }}>
@@ -47,11 +51,12 @@ class DraftAlert extends Component {
           </div>
           <div className="draft-position-details" style={{ flex: 1 }}>
             <div>
-              {positionTitle}
+              {<span className="title">Tour of duty: </span>}
+              {tod}
             </div>
             <div>
-              <span className="title">Location: </span>
-              {post}
+              {<span className="title">Language: </span>}
+              {language}
             </div>
             <div>
               <StaticDevContent>
