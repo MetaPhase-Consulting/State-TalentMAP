@@ -19,8 +19,8 @@ class ResultsControls extends Component {
   };
 
   render() {
-    const { results, hasLoaded, defaultSort, pageSizes,
-      defaultPageSize, defaultPageNumber, sortBy } = this.props;
+    const { results, hasLoaded, defaultSort, pageSizes, defaultPageSize,
+      defaultPageNumber, sortBy, containerClass, pageSizeClass, hideSaveSearch } = this.props;
     const { isClient, isTandemSearch } = this.context;
     return (
       <div className="usa-grid-full results-controls">
@@ -40,20 +40,18 @@ class ResultsControls extends Component {
             matches => (matches &&
               (
                 <div className="usa-width-four-fifths drop-downs">
-                  <div className="dropdowns-container">
+                  <div className={`dropdowns-container ${containerClass}`}>
                     <div className="results-dropdown results-dropdown-sort">
-                      { !isTandemSearch &&
-                        <SelectForm
-                          id="sort"
-                          label="Sort by:"
-                          onSelectOption={this.onSelectOrdering}
-                          options={sortBy.options}
-                          defaultSort={defaultSort}
-                          className="select-blue select-offset select-small"
-                        />
-                      }
+                      <SelectForm
+                        id="sort"
+                        label="Sort by:"
+                        onSelectOption={this.onSelectOrdering}
+                        options={sortBy.options}
+                        defaultSort={defaultSort}
+                        className="select-blue select-offset select-small"
+                      />
                     </div>
-                    <div className="results-dropdown results-dropdown-page-size">
+                    <div className={`results-dropdown results-dropdown-page-size ${pageSizeClass}`}>
                       <PreferenceWrapper
                         onSelect={this.onSelectLimit}
                         keyRef={POSITION_PAGE_SIZES_TYPE}
@@ -72,9 +70,9 @@ class ResultsControls extends Component {
                       <SearchResultsExportLink count={results.count} />
                     </div>
                     {
-                      !isClient && !isTandemSearch &&
+                      !isClient && !hideSaveSearch &&
                       <Trigger isPrimary>
-                        <button className="usa-button">Save Search</button>
+                        <button className="usa-button">{`Save ${isTandemSearch ? 'Tandem ' : ''}Search`}</button>
                       </Trigger>
                     }
                   </div>
@@ -103,6 +101,9 @@ ResultsControls.propTypes = {
   hasLoaded: PropTypes.bool,
   defaultPageNumber: PropTypes.number,
   queryParamUpdate: PropTypes.func.isRequired,
+  containerClass: PropTypes.string,
+  pageSizeClass: PropTypes.string,
+  hideSaveSearch: PropTypes.bool,
 };
 
 ResultsControls.defaultProps = {
@@ -113,6 +114,9 @@ ResultsControls.defaultProps = {
   defaultPageSize: 10,
   defaultPageNumber: 0,
   hasLoaded: false,
+  containerClass: '',
+  pageSizeClass: '',
+  hideSaveSearch: false,
 };
 
 export default ResultsControls;
