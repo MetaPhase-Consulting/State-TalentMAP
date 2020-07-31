@@ -34,6 +34,18 @@ exports[`BidTrackerCardTitleComponent matches snapshot when condensedView is tru
       </strong>
        
       Maseru, Lesotho
+      <strong>
+         | Posted:
+      </strong>
+       07/02/2020
+    </div>
+    <div
+      className="bid-tracker-card-title-bottom bid-tracker-card-title-bottom--full-width"
+    >
+      <strong>
+        Bureau: 
+      </strong>
+      (INR) BUREAU OF INTELLIGENCE AND RESEARCH
     </div>
     <div
       className="bid-tracker-card-title-bottom"
@@ -107,6 +119,18 @@ exports[`BidTrackerCardTitleComponent matches snapshot when status is "approved"
       </strong>
        
       Maseru, Lesotho
+      <strong>
+         | Posted:
+      </strong>
+       07/02/2020
+    </div>
+    <div
+      className="bid-tracker-card-title-bottom bid-tracker-card-title-bottom--full-width"
+    >
+      <strong>
+        Bureau: 
+      </strong>
+      (INR) BUREAU OF INTELLIGENCE AND RESEARCH
     </div>
     <div
       className="bid-tracker-card-title-bottom"
@@ -180,6 +204,18 @@ exports[`BidTrackerCardTitleComponent matches snapshot when status is "submitted
       </strong>
        
       Maseru, Lesotho
+      <strong>
+         | Posted:
+      </strong>
+       07/02/2020
+    </div>
+    <div
+      className="bid-tracker-card-title-bottom bid-tracker-card-title-bottom--full-width"
+    >
+      <strong>
+        Bureau: 
+      </strong>
+      (INR) BUREAU OF INTELLIGENCE AND RESEARCH
     </div>
     <div
       className="bid-tracker-card-title-bottom"
@@ -253,6 +289,18 @@ exports[`BidTrackerCardTitleComponent matches snapshot when status is "submitted
       </strong>
        
       Maseru, Lesotho
+      <strong>
+         | Posted:
+      </strong>
+       07/02/2020
+    </div>
+    <div
+      className="bid-tracker-card-title-bottom bid-tracker-card-title-bottom--full-width"
+    >
+      <strong>
+        Bureau: 
+      </strong>
+      (INR) BUREAU OF INTELLIGENCE AND RESEARCH
     </div>
     <div
       className="bid-tracker-card-title-bottom"
@@ -326,6 +374,18 @@ exports[`BidTrackerCardTitleComponent matches snapshot when status is not "submi
       </strong>
        
       Maseru, Lesotho
+      <strong>
+         | Posted:
+      </strong>
+       07/02/2020
+    </div>
+    <div
+      className="bid-tracker-card-title-bottom bid-tracker-card-title-bottom--full-width"
+    >
+      <strong>
+        Bureau: 
+      </strong>
+      (INR) BUREAU OF INTELLIGENCE AND RESEARCH
     </div>
     <div
       className="bid-tracker-card-title-bottom"
