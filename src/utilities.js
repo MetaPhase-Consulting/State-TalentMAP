@@ -1,14 +1,14 @@
 import Scroll from 'react-scroll';
 import { distanceInWords, format } from 'date-fns';
-import { cloneDeep, get, has, intersection, isArray, isEmpty, isEqual, isFunction,
-  isNumber, isObject, isString, keys, lowerCase, merge as merge$, orderBy, split,
-  startCase, take, toLower, toString, transform } from 'lodash';
+import { cloneDeep, get, has, includes, intersection, isArray, isEmpty, isEqual, isFunction,
+  isNumber, isObject, isString, keys, lowerCase, merge as merge$, orderBy, pick, split,
+  startCase, take, toLower, toString, transform, uniqBy } from 'lodash';
 import numeral from 'numeral';
 import queryString from 'query-string';
 import shortid from 'shortid';
 import Bowser from 'bowser';
 import Fuse from 'fuse.js';
-import { VALID_PARAMS } from 'Constants/EndpointParams';
+import { VALID_PARAMS, VALID_TANDEM_PARAMS } from 'Constants/EndpointParams';
 import { NO_BID_CYCLE } from 'Constants/SystemMessages';
 import FLAG_COLORS from 'Constants/FlagColors';
 import { LOGOUT_ROUTE, LOGIN_ROUTE, LOGIN_REDIRECT } from './login/routes';
@@ -110,16 +110,6 @@ export function fetchJWT() {
   }
   return null;
 }
-
-export const pillSort = (a, b) => {
-  const A = lowerCase(toString((get(a, 'description') || get(a, 'code'))));
-  const B = lowerCase(toString((get(b, 'description') || get(b, 'code'))));
-  if (A < B) { // sort string ascending
-    return -1;
-  }
-  if (A > B) { return 1; }
-  return 0; // default return value (no sorting)
-};
 
 export const sortTods = (data) => {
   const sortingArray = ['T', 'C', 'H', 'O', 'V', '1', '2', 'U', 'A', 'B', 'E', 'N', 'S', 'G', 'D', 'F', 'R', 'Q', 'J', 'I', 'P', 'W', 'L', 'K', 'M', 'Y', 'Z', 'X'];
@@ -287,6 +277,16 @@ export const cleanQueryParams = (q) => {
   return object;
 };
 
+export const cleanTandemQueryParams = (q) => {
+  const object = Object.assign({}, q);
+  Object.keys(object).forEach((key) => {
+    if (VALID_TANDEM_PARAMS.indexOf(key) <= -1 && VALID_PARAMS.indexOf(key) <= -1) {
+      delete object[key];
+    }
+  });
+  return object;
+};
+
 export const ifEnter = (e) => {
   if (e.keyCode === 13) {
     return true;
@@ -298,8 +298,8 @@ export const ifEnter = (e) => {
 export const formQueryString = queryObject => queryString.stringify(queryObject);
 
 // remove duplicates from an array by object property
-export const removeDuplicates = (myArr, prop) => (
-  myArr.filter((obj, pos, arr) => arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos)
+export const removeDuplicates = (myArr, props = ['']) => (
+  uniqBy(myArr, elem => props.map(m => elem[m]).join())
 );
 
 // Format date for notifications.
@@ -502,25 +502,29 @@ export const mapSavedSearchesToSingleQuery = (savedSearchesObject) => {
 export const mapSavedSearchToDescriptions = (savedSearchObject, mappedParams) => {
   const clonedSearchObject = cloneDeep(savedSearchObject);
   const searchKeys = Object.keys(clonedSearchObject);
-
   searchKeys.forEach((s) => { clonedSearchObject[s] = clonedSearchObject[s].split(','); });
 
   const arrayToReturn = [];
 
   // Push the keyword search, since it won't match up with a real filter
   if (savedSearchObject.q) {
-    arrayToReturn.push(savedSearchObject.q);
+    arrayToReturn.push(
+      {
+        description: savedSearchObject.q,
+        isTandem: undefined,
+        isCommon: true,
+        isToggle: undefined,
+      });
   }
 
   searchKeys.forEach((s) => {
     clonedSearchObject[s].forEach((c) => {
       const foundParam = mappedParams.find(m => m.selectionRef === s && m.codeRef === c);
       if (foundParam && foundParam.description) {
-        arrayToReturn.push(foundParam.description);
+        arrayToReturn.push(pick(foundParam, ['description', 'isTandem', 'isCommon', 'isToggle']));
       }
     });
   });
-
   return arrayToReturn;
 };
 
@@ -681,8 +685,8 @@ export const getAriaValue = (e) => {
   return 'false';
 };
 
-export const downloadFromResponse = (response, fileNameAlt = '') => {
-  const cd = get(response, 'headers.content-disposition');
+export const downloadFromResponse = (response, fileNameAlt = '', type = 'text/csv') => {
+  const cd = get(response, 'headers.content-disposition', '');
   const filename = cd.replace('attachment; filename=', '') || fileNameAlt;
 
   const a = document.createElement('a');
@@ -694,12 +698,26 @@ export const downloadFromResponse = (response, fileNameAlt = '') => {
   if (window.navigator.msSaveBlob) {
     a.onclick = (() => {
       const BOM = '\uFEFF';
-      const blobObject = new Blob([BOM + response.data], { type: ' type: "text/csv; charset=utf-8"' });
+      const blobObject = new Blob([BOM + response.data], { type: ` type: "${type}; charset=utf-8"` });
       window.navigator.msSaveOrOpenBlob(blobObject, filename);
     });
     a.click();
   } else {
     a.click();
+  }
+};
+
+export const downloadPdfBlob = (response, filename = 'employee-profile.pdf') => {
+  if (window.navigator.msSaveBlob) {
+    // const BOM = '\uFEFF';
+    const blobObject = new Blob([response], { type: ' type: "application/pdf; charset=utf-8' });
+    window.navigator.msSaveOrOpenBlob(blobObject, filename);
+  } else {
+    const blob = new Blob([response], { type: 'application/pdf' });
+    const win = window.open('', '_blank');
+    const URL = window.URL || window.webkitURL;
+    const dataUrl = URL.createObjectURL(blob);
+    win.location = dataUrl;
   }
 };
 
@@ -757,3 +775,39 @@ export const stopProp = (event) => {
     e.stopPropagation();
   }
 };
+
+export const getContrastYIQ = hexcolor => {
+  const r = parseInt(hexcolor.substr(0, 2), 16);
+  const g = parseInt(hexcolor.substr(2, 2), 16);
+  const b = parseInt(hexcolor.substr(4, 2), 16);
+  const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+  return (yiq >= 128) ? 'black' : 'white';
+};
+
+// Supply a user's full name
+// Returns background color and text color
+export const getAvatarColor = str => {
+  if (str) {
+    let hash = 0;
+    [...str].forEach((s, i) => {
+      if (i) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line
+      }
+    });
+
+    const c = (hash & 0x00FFFFFF) // eslint-disable-line
+      .toString(16)
+      .toUpperCase();
+
+    const backgroundColor = '00000'.substring(0, 6 - c.length) + c;
+    const color = getContrastYIQ(backgroundColor);
+
+    const backgroundColorWithHash = `#${backgroundColor}`;
+
+    return { backgroundColor: backgroundColorWithHash, color };
+  }
+
+  return null;
+};
+
+export const isOnProxy = () => !!includes(get(window, 'location.host'), 'msappproxy');

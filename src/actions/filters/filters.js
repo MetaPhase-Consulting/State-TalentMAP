@@ -1,14 +1,11 @@
 import { batch } from 'react-redux';
-import { get, isArray, orderBy, union } from 'lodash';
+import { cloneDeep, get, isArray, keys, orderBy, union, uniqBy } from 'lodash';
 import Q from 'q';
 import api from '../../api';
 import { ASYNC_PARAMS, ENDPOINT_PARAMS } from '../../Constants/EndpointParams';
 import { mapDuplicates, removeDuplicates } from '../../utilities';
-import { checkFlag } from '../../flags';
 import { getFilterCustomDescription, getPillDescription, getPostOrMissionDescription,
   doesCodeOrIdMatch, isBooleanFilter, isPercentageFilter, getFilterCustomAttributes } from './helpers';
-
-const getUsePV = () => checkFlag('flags.projected_vacancy');
 
 export function filtersHasErrored(bool) {
   return {
@@ -146,7 +143,7 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
           // Remove duplicates by this new property
           responses$.mappedParams = removeDuplicates(
             responses$.mappedParams,
-            'descCode',
+            ['descCode', 'isTandem'],
           );
           // Determine which objects duplicates by description,
           // and give them with a new prop to identify them
@@ -212,13 +209,22 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
       if (queryParamObject) {
         responses.filters.forEach((response) => {
           const filterRef = response.item.selectionRef;
+          const isTandem = response.item.isTandem;
+          const isCommon = response.item.isCommon;
+          const isToggle = response.item.isToggle;
           Object.keys(queryParamObject).forEach((key) => {
             if (key === filterRef) {
               // convert the string to an array
               const paramArray = queryParamObject[key].split(',');
               paramArray.forEach((paramArrayItem) => {
                 // create a base config object
-                const mappedObject = { selectionRef: filterRef, codeRef: paramArrayItem };
+                const mappedObject = {
+                  selectionRef: filterRef,
+                  codeRef: paramArrayItem,
+                  isTandem,
+                  isCommon,
+                  isToggle,
+                };
                 responses.filters.forEach((filterItem, i) => {
                   filterItem.data.forEach((filterItemObject, j) => {
                     // Check if code or ID matches, since we use both.
@@ -269,14 +275,30 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
       const staticFilters = items.filters.slice().filter(item => (!item.item.endpoint));
 
       // our dynamic filters
-      let dynamicFilters = items.filters.slice().filter(item => (item.item.endpoint));
-      if (!getUsePV()) {
-        dynamicFilters = dynamicFilters.filter(f => !get(f, 'item.onlyProjectedVacancy'));
-      }
-      const queryProms = dynamicFilters.map(item => (
-        api().get(`/${item.item.endpoint}`)
-          .then((response) => {
+      const dynamicFilters = items.filters.slice().filter(item => (item.item.endpoint));
+      const endpointResponses = {};
+
+      const uniqueEndpoints = uniqBy(dynamicFilters, 'item.endpoint').map(m => m.item.endpoint);
+      const uniqueFilters = uniqueEndpoints.map(m => api().get(`/${m}`).then(res => {
+        endpointResponses[m] = res;
+        return res;
+      })
+        .catch(() => {
+          endpointResponses[m] = { data: [], state: 'err' };
+          return endpointResponses[m];
+        }));
+
+      Q.allSettled(uniqueFilters)
+        .then((settledRes) => {
+          settledRes.forEach((r, i) => {
+            const keys$ = keys(endpointResponses);
+            const property = keys$[i];
+            endpointResponses[property].state = r.state;
+          });
+          const mappedDyanmicFilters = dynamicFilters.map(item => {
+            const response = ({ ...endpointResponses[item.item.endpoint] });
             const itemFilter = Object.assign({}, item);
+            itemFilter.state = response.state;
             const data$ = item.initialDataAP;
             let results$ = response.data.results;
             if (item.item.description === 'post') {
@@ -318,26 +340,40 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
               skillObject.data = [...skills];
             }
 
-            return itemFilter;
-          })
-      ));
+            if (item.item.description === 'skillCone-tandem') {
+              const skills = [];
+              itemFilter.data = response.data.map(m => ({ name: m.category, id: m.category }));
+              itemFilter.data = orderBy(itemFilter.data, 'name');
+              response.data.forEach((m) => {
+                m.skills.forEach(s => skills.push({
+                  ...s,
+                  cone: m.category,
+                }));
+              });
+              const skillObject = staticFilters.find(f => f.item.description === 'skill-tandem');
+              skillObject.data = [...skills];
+            }
 
-      Q.allSettled(queryProms)
-        .then((results) => {
+            return cloneDeep(itemFilter);
+          });
+          return mappedDyanmicFilters;
+        })
+        .then(results => {
           results.forEach((result) => {
-            if (result.state === 'fulfilled') {
+            if (result.state === 'fulfilled' && get(result, 'data', []).length) {
             // if fulfilled, return the formatted data
-              responses.filters.push({ data: get(result, 'value.data', []), item: get(result, 'value.item', {}) });
+              responses.filters.push({ data: get(result, 'data', []),
+                item: get(result, 'item', {}) });
             } else {
             // Else, return the correct structure, but with no data. Include hasErrored prop.
               responses.filters.push({ data: [], item: {}, hasErrored: true });
             }
-            responses.filters.push(...staticFilters);
-            dispatchSuccess();
-            batch(() => {
-              dispatch(filtersHasErrored(false));
-              dispatch(filtersIsLoading(false));
-            });
+          });
+          responses.filters.push(...staticFilters);
+          dispatchSuccess();
+          batch(() => {
+            dispatch(filtersHasErrored(false));
+            dispatch(filtersIsLoading(false));
           });
         });
     }

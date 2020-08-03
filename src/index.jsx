@@ -16,14 +16,14 @@ import './polyfills';
 
 const isPersonaAuth = () => checkFlag('flags.persona_auth');
 
-const render = () => {
+export const render = () => {
   ReactDOM.render((
     <App />
   ), document.getElementById('root') || document.createElement('div'));
 };
 
 // Because the JWT request could be slow.
-const renderLoading = () => {
+export const renderLoading = () => {
   ReactDOM.render((
     <Splash />
   ), document.getElementById('root') || document.createElement('div'));
@@ -60,10 +60,23 @@ export const init = (config) => {
 export const getConfig = () => {
   sessionStorage.removeItem('config');
 
-  axios
-    .get(getAssetPath('/config/config.json'))
+  // fetch config.json to get API URL
+  axios.get(getAssetPath('/config/config.json'))
     .then((response) => {
-      init(get(response, 'data', {}));
+      const url = get(response, 'data.api_config.baseURL');
+      if (url) {
+        // use baseURL from config.json to form featureflags endpoint
+        axios
+          .get(`${url}/featureflags/`)
+          // use that response if valid
+          .then((response$) => {
+            init(get(response$, 'data', {}));
+          })
+          // otherwise fallback and use the config.json
+          .catch(() => init(get(response, 'data', {})));
+      } else {
+        init(get(response, 'data', {}));
+      }
     })
     .catch(() => init({}));
 };

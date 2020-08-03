@@ -7,6 +7,8 @@ const propTypes = {
   positions: POSITION_DETAILS_ARRAY,
   favorites: FAVORITE_POSITIONS_ARRAY,
   favoritesPV: FAVORITE_POSITIONS_ARRAY,
+  favoritesTandem: FAVORITE_POSITIONS_ARRAY,
+  favoritesPVTandem: FAVORITE_POSITIONS_ARRAY,
   isLoading: PropTypes.bool,
   bidList: BID_RESULTS.isRequired,
   type: HOME_PAGE_CARD_TYPE,
@@ -15,22 +17,33 @@ const propTypes = {
   showBidListButton: PropTypes.bool,
   useShortFavButton: PropTypes.bool,
   showCompareButton: PropTypes.bool,
+  sortType: PropTypes.string,
+  limit: PropTypes.number,
+  page: PropTypes.number,
+  isTandem: PropTypes.bool,
 };
 
 const defaultProps = {
   positions: [],
   favorites: [],
   favoritesPV: [],
+  favoritesTandem: [],
+  favoritesPVTandem: [],
   isLoading: false,
   type: 'default',
   refreshFavorites: false,
   showBidListButton: false,
   useShortFavButton: false,
   showCompareButton: false,
+  sortType: null,
+  limit: 15,
+  page: 1,
+  isTandem: false,
 };
 
-const HomePagePositionsList = ({ positions, favorites, favoritesPV, isLoading, bidList, type,
-  refreshFavorites, title, showBidListButton, useShortFavButton, showCompareButton }) => (
+const HomePagePositionsList = ({ positions, favorites, favoritesTandem, favoritesPV,
+  favoritesPVTandem, isLoading, bidList, type, refreshFavorites, title, showBidListButton,
+  useShortFavButton, showCompareButton, sortType, limit, page, isTandem }) => (
   <div className={`condensed-card-highlighted ${isLoading ? 'results-loading' : ''}`}>
     <div className="usa-grid-full condensed-card-grid">
       {positions.map((p) => {
@@ -40,6 +53,8 @@ const HomePagePositionsList = ({ positions, favorites, favoritesPV, isLoading, b
             <ResultsCondensedCard
               favorites={favorites}
               favoritesPV={favoritesPV}
+              favoritesTandem={favoritesTandem}
+              favoritesPVTandem={favoritesPVTandem}
               position={{ ...p, cpId: p.id }}
               bidList={bidList}
               type={type}
@@ -48,6 +63,10 @@ const HomePagePositionsList = ({ positions, favorites, favoritesPV, isLoading, b
               useShortFavButton={useShortFavButton}
               showCompareButton={showCompareButton}
               isProjectedVacancy={position.isPV || p.isPV}
+              isTandem={isTandem}
+              sortType={sortType}
+              limit={limit}
+              page={page}
             />
           </div>
         );

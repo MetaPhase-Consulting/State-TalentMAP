@@ -14,7 +14,6 @@ import { checkFlag } from '../flags';
  *    toggleMenuSection?: boolean;
  *    expandedSection?: boolean;
  *    roles?: Array<string>;
- *    isCDO?: boolean;
  *    isGlossaryEditor?: boolean;
  *    children?: Array<MenuItem>;
  *  }
@@ -25,7 +24,6 @@ function MenuConfig(config) {
       toggleMenuSection: false,
       expandedSection: false,
       roles: [],
-      isCDO: false,
       isGlossaryEditor: false,
     }, item);
 
@@ -36,7 +34,6 @@ function MenuConfig(config) {
     if (item$.children) {
       item$.children = MenuConfig(item$.children);
     }
-
     return item$;
   });
 }
@@ -90,7 +87,9 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           text: 'Client Profiles', // aka Bidder Portfolio
           route: '/profile/bidderportfolio',
           icon: 'users',
-          isCDO: true,
+          roles: [
+            'cdo',
+          ],
           params: {
             type: 'all',
           },
@@ -102,7 +101,9 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       text: 'Statistics',
       icon: 'pie-chart',
       route: '/profile/statistics',
-      isCDO: true,
+      roles: [
+        'cdo',
+      ],
     } : null,
   {
     text: 'Administrator',
@@ -144,13 +145,15 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       {
         text: 'User Roles',
         route: '/profile/administrator/userroles/',
-        // icon: 'user-friends',
-        // icon: 'user-shield',
-        // icon: 'user-lock',
-        // icon: 'user-cog',
         icon: 'users',
-        // icon: 'user-check',
-        // icon: 'users-cog',
+        roles: [
+          'superuser',
+        ],
+      },
+      {
+        text: 'Feature Flags',
+        route: '/profile/administrator/featureflags/',
+        icon: 'flag',
         roles: [
           'superuser',
         ],
@@ -163,6 +166,58 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'glossary_editors',
         ],
       },
+    ],
+  },
+  {
+    text: 'Bureau',
+    route: '/profile/bureau/positionlists/',
+    icon: 'building',
+    toggleMenuSection: true,
+    expandedSection: true,
+    roles: [
+      'superuser',
+      'bureau_user',
+    ],
+    children: [
+      checkFlag('flags.static_content') ?
+        {
+          text: 'Dashboard',
+          route: '/profile/bureau/dashboard/',
+          icon: 'tachometer',
+          roles: [
+            'superuser',
+            'bureau_user',
+          ],
+        } : null,
+      checkFlag('flags.static_content') ?
+        {
+          text: 'Statistics',
+          route: '/profile/bureau/stats/',
+          icon: 'bar-chart',
+          roles: [
+            'superuser',
+            'bureau_user',
+          ],
+        } : null,
+      {
+        text: 'Position Lists',
+        route: '/profile/bureau/positionlists',
+        icon: 'list-ol',
+        roles: [
+          'superuser',
+          'bureau_user',
+        ],
+      },
+      checkFlag('flags.static_content') ?
+        {
+          text: 'Position Manager',
+          route: '/profile/bureau/positionmanager',
+          icon: 'map',
+          roles: [
+            'superuser',
+            'bureau_user',
+          ],
+        } : null,
     ],
   },
 ].filter(x => x));

@@ -40,12 +40,15 @@ class AccordionItem extends Component {
   }
 
   render() {
-    const { expanded } = this.state;
-    const { id, title, children, className, useIdClass,
+    const { expanded: expandedState } = this.state;
+    const { id, title, children, className, controlled, expanded: expandedProp, useIdClass,
       buttonClass, childClass, preContent, disabled } = this.props;
     const formattedId = formatIdSpacing(id);
     const idClass = useIdClass ? `accordion-${(formattedId || 'accordion').toLowerCase()}` : '';
-    const expanded$ = !disabled && expanded;
+    let expanded$ = expandedProp;
+    if (controlled) {
+      expanded$ = !disabled && expandedState;
+    }
     return (
       <li className={className}>
         {preContent}
@@ -69,7 +72,7 @@ class AccordionItem extends Component {
 
 AccordionItem.propTypes = {
   id: PropTypes.string.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.node,
   expanded: PropTypes.bool,
   setAccordion: PropTypes.func,
   children: PropTypes.node,
@@ -79,6 +82,7 @@ AccordionItem.propTypes = {
   childClass: PropTypes.string,
   preContent: PropTypes.node,
   disabled: PropTypes.bool,
+  controlled: PropTypes.bool,
 };
 
 AccordionItem.defaultProps = {
@@ -92,6 +96,7 @@ AccordionItem.defaultProps = {
   childClass: '',
   preContent: undefined,
   disabled: false,
+  controlled: false,
 };
 
 export default AccordionItem;

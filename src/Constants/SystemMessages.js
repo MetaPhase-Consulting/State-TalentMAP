@@ -1,8 +1,9 @@
-import FavoriteSuccess from '../Components/FavoriteMessages/Success';
-import RemoveSuccess from '../Components/FavoriteMessages/RemoveSuccess';
-import BidAddSuccess from '../Components/BidListMessages/Success';
-import BidRemoveSuccess from '../Components/BidListMessages/RemoveSuccess';
-import SavedSearchSuccess from '../Components/SavedSearchMessages/Success';
+import RegisterHandshakeSuccess from 'Components/BidListMessages/RegisterSuccess';
+import FavoriteSuccess from 'Components/FavoriteMessages/Success';
+import RemoveSuccess from 'Components/FavoriteMessages/RemoveSuccess';
+import BidAddSuccess from 'Components/BidListMessages/Success';
+import BidRemoveSuccess from 'Components/BidListMessages/RemoveSuccess';
+import SavedSearchSuccess from 'Components/SavedSearchMessages/Success';
 
 export const DEFAULT_TEXT = 'None listed';
 
@@ -24,9 +25,9 @@ export const NO_UPDATE_DATE = 'Unknown';
 export const NO_ORG = DEFAULT_TEXT;
 export const NO_POSITION_DESCRIPTION = 'There is no description for this position.';
 export const NO_POSITION_NUMBER = '';
-export const NO_POSITION_POC = 'None listed';
+export const NO_POSITION_POC = DEFAULT_TEXT;
 export const NO_POSITION_TITLE = DEFAULT_TEXT;
-export const NO_POSITION_WEB_SITE = 'None listed';
+export const NO_POSITION_WEB_SITE = DEFAULT_TEXT;
 export const NO_POST = DEFAULT_TEXT;
 export const NO_POST_DIFFERENTIAL = DEFAULT_TEXT;
 export const NO_REST_RELAXATION = DEFAULT_TEXT;
@@ -51,6 +52,9 @@ export const DELETE_FAVORITE_SUCCESS = (pos, onToggle) => RemoveSuccess({ pos, o
 export const DELETE_FAVORITE_ERROR = () => "We're experiencing an error attempting to remove this position from your Favorites. Please try again.";
 export const ADD_FAVORITE_SUCCESS = pos => FavoriteSuccess({ pos });
 export const ADD_FAVORITE_ERROR = () => "We're experiencing an error attempting to add this position to your Favorites. Please try again.";
+export const ADD_FAVORITE_LIMIT_ERROR_AP = limit => `You have reached the limit of ${limit} for Open Position favorites. Please remove a favorite and try again.`;
+export const ADD_FAVORITE_LIMIT_ERROR_PV = limit => `You have reached the limit of ${limit} for Projected Vacancy favorites. Please remove a favorite and try again.`;
+export const TANDEM_FAVORITE_MISSING = () => 'Please add at least 1 favorite for both user and tandem within tandem search.';
 
 export const ACCEPT_BID_SUCCESS = 'Bid successfully accepted.';
 export const ACCEPT_BID_ERROR = 'Error trying to accept this bid.';
@@ -58,6 +62,11 @@ export const DECLINE_BID_SUCCESS = 'Bid successfully declined.';
 export const DECLINE_BID_ERROR = 'Error trying to decline this bid.';
 export const SUBMIT_BID_SUCCESS = 'Bid successfully submitted.';
 export const SUBMIT_BID_ERROR = 'Error trying to submit this bid.';
+
+export const REGISTER_HANDSHAKE_SUCCESS = undo => RegisterHandshakeSuccess({ undo });
+export const REGISTER_HANDSHAKE_ERROR = 'Error trying to register handshake.';
+export const UNREGISTER_HANDSHAKE_SUCCESS = 'Handshake successfully unregistered.';
+export const UNREGISTER_HANDSHAKE_ERROR = 'Error trying to unregister handshake.';
 
 export const NEW_SAVED_SEARCH_SUCCESS_TITLE = 'Success';
 export const UPDATED_SAVED_SEARCH_SUCCESS_TITLE = 'Saved search updated';
@@ -82,4 +91,8 @@ export const GET_CLIENT_SUCCESS_MESSAGE = user => `You are now searching as ${us
 export const UNSET_CLIENT_SUCCESS = SET_CLIENT_SUCCESS;
 export const UNSET_CLIENT_SUCCESS_MESSAGE = 'You have exited client view.';
 
+export const POST_FEATURE_FLAGS_SUCCESS = 'Config File successfully updated.';
+export const POST_FEATURE_FLAGS_ERROR = 'Error updating Config File. Please try again.';
+
 export const COMING_SOON = 'Coming Soon';
+

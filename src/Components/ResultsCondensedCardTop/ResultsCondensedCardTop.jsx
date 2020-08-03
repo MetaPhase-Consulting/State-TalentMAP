@@ -6,20 +6,22 @@ import { Featured, Handshake } from '../Ribbon';
 import { POSITION_DETAILS, HOME_PAGE_CARD_TYPE } from '../../Constants/PropTypes';
 import { NO_POST } from '../../Constants/SystemMessages';
 import { getPostName, getBidStatisticsObject } from '../../utilities';
-import { checkFlag } from '../../flags';
 
-const useProjectedVacancy = () => checkFlag('flags.projected_vacancy');
-
-const ResultsCondensedCardTop = ({ position, isProjectedVacancy, isRecentlyAvailable }) => {
+const ResultsCondensedCardTop = ({
+  position,
+  isProjectedVacancy,
+  isRecentlyAvailable,
+  isTandem,
+}) => {
   let cardTopClass = '';
   let vacancyClass;
   let vacancyText;
 
-  if (isProjectedVacancy && useProjectedVacancy()) {
+  if (isProjectedVacancy) {
     vacancyClass = 'vacancy--projected';
     vacancyText = 'Projected Vacancy';
     cardTopClass = 'card-top-vacancy';
-  } else if (isRecentlyAvailable && useProjectedVacancy()) {
+  } else if (isRecentlyAvailable) {
     vacancyClass = 'vacancy--recent';
     vacancyText = 'Now available';
   }
@@ -31,7 +33,7 @@ const ResultsCondensedCardTop = ({ position, isProjectedVacancy, isRecentlyAvail
 
   const titleHeader = <h3>{title}</h3>;
 
-  const link = `/${isProjectedVacancy ? 'vacancy' : 'details'}/${position.id}`;
+  const link = `/${isProjectedVacancy ? 'vacancy' : 'details'}/${position.id}${isTandem ? '?tandem=true' : ''}`;
 
   const innerContent = (
     <div>
@@ -87,12 +89,14 @@ ResultsCondensedCardTop.propTypes = {
   type: HOME_PAGE_CARD_TYPE,
   isProjectedVacancy: PropTypes.bool,
   isRecentlyAvailable: PropTypes.bool,
+  isTandem: PropTypes.bool,
 };
 
 ResultsCondensedCardTop.defaultProps = {
   type: 'default',
   isProjectedVacancy: false,
   isRecentlyAvailable: false,
+  isTandem: false,
 };
 
 export default ResultsCondensedCardTop;

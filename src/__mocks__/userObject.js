@@ -1,20 +1,21 @@
 export const bidderUserObject = {
+  emp_id: '1',
+  employee_info: {
+    skills: [
+      {
+        code: '6218',
+        description: 'CONSTRUCTION ENGINEERING',
+      },
+      {
+        code: '6211',
+        description: 'COMPUTER SCIENCE',
+      },
+    ],
+    grade: '00',
+  },
   id: 1,
   grade: '03',
-  skills: [
-    {
-      id: 63,
-      cone: null,
-      code: '6218',
-      description: 'CONSTRUCTION ENGINEERING',
-    },
-    {
-      id: 40,
-      cone: null,
-      code: '6211',
-      description: 'COMPUTER SCIENCE',
-    },
-  ],
+  skills: [63, 40],
   user: {
     initials: 'JD',
     first_name: 'John',
@@ -49,6 +50,24 @@ export const bidderUserObject = {
     },
   ],
   favorite_positions_pv: [
+    {
+      id: 10,
+    },
+    {
+      id: 20,
+    },
+  ],
+  favorite_tandem_positions: [
+    {
+      id: 1,
+      representation: '[00003026] OMS (COM) (Freetown, Sierra Leone)',
+    },
+    {
+      id: 4,
+      representation: '[00180000] OMS (DCM) (Addis Ababa, Ethiopia)',
+    },
+  ],
+  favorite_tandem_positions_pv: [
     {
       id: 10,
     },

@@ -2,11 +2,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import CheckBox from '../../../../CheckBox';
-import InteractiveElement from '../../../../InteractiveElement';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
+import CheckBox from 'Components/CheckBox';
+import InteractiveElement from 'Components/InteractiveElement';
 
-const ListItem = ({ item, selectValue, getIsSelected, queryProp }) => {
+
+const ListItem = ({ item, selectValue, getIsSelected, queryProp, customLabel }) => {
   const item$ = queryProp ? item[queryProp] : item;
+  const label = customLabel || item$;
   const isSelected = getIsSelected(item);
   const onClick = () => {
     selectValue(item);
@@ -22,7 +25,7 @@ const ListItem = ({ item, selectValue, getIsSelected, queryProp }) => {
       <CheckBox
         small
         id={item$}
-        label={item$}
+        label={label}
         value={isSelected}
         overrideLifecycle
         checkboxProps={{ readOnly: true, tabIndex: '-1' }}
@@ -32,14 +35,17 @@ const ListItem = ({ item, selectValue, getIsSelected, queryProp }) => {
 };
 
 ListItem.propTypes = {
-  item: PropTypes.string.isRequired,
-  selectValue: PropTypes.func.isRequired,
+  item: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
+  selectValue: PropTypes.func,
   getIsSelected: PropTypes.func.isRequired,
   queryProp: PropTypes.string,
+  customLabel: PropTypes.node,
 };
 
 ListItem.defaultProps = {
+  selectValue: EMPTY_FUNCTION,
   queryProp: '',
+  customLabel: '',
 };
 
 export default ListItem;

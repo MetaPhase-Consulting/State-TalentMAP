@@ -147,6 +147,7 @@
     padding-left: 14px;
     padding-right: 14px;
     padding-top: 11.5px;
+    background-color: $color-white;
 
     .spinner-white,
     .spinner-blue {
@@ -280,4 +281,8 @@
   height: 10px;
   margin-right: 1px;
   width: 4px;
+}
+
+.toggle-button-label-inline {
+  display: inline;
 }

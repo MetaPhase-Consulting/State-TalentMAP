@@ -38,6 +38,10 @@ function getSkillCustomDescription(description, code) {
   return `${description} (${code})`;
 }
 
+function getCommuterPostDescription(filterItemObject = {}) {
+  return `${filterItemObject.description}`;
+}
+
 // create a custom description based on the filter type
 // eslint-disable-next-line complexity
 export function getFilterCustomDescription(filterItem, filterItemObject) {
@@ -46,20 +50,28 @@ export function getFilterCustomDescription(filterItem, filterItemObject) {
     code, name } = filterItemObject;
   switch (descriptionPrimary) {
     case 'region':
+    case 'region-tandem':
       return getRegionCustomDescription(shortDescription, longDescription);
     case 'functionalRegion':
+    case 'functionalRegion-tandem':
       return getFuncRegionCustomDescription(shortDescription, longDescription);
     case 'skill':
+    case 'skill-tandem':
       return getSkillCustomDescription(description, code);
     case 'post':
       return getPostName(filterItemObject);
     case 'bidCycle':
+    case 'bidCycle-tandem':
       return name;
     case 'language':
+    case 'language-tandem':
     // language code NONE gets displayed differently
       return getLanguageNameByIfNull(filterItemObject);
     case 'grade':
+    case 'grade-tandem':
       return getCustomGradeDescription(code);
+    case 'commuterPosts':
+      return getCommuterPostDescription(filterItemObject);
     case 'postDiff': case 'dangerPay': case 'bidSeason':
       return description;
     default:
@@ -74,6 +86,7 @@ export function getFilterCustomAttributes(filterItem, filterItemObject) {
   const { code } = filterItemObject;
   switch (descriptionPrimary) {
     case 'language':
+    case 'language-tandem':
       if (code === 'NLR') {
         return { group: 'no-language' };
       }
@@ -103,6 +116,7 @@ export function getPillDescription(filterItemObject, customType) {
     case 'postDiff':
       return `Post differential: ${filterItemObject.description}`;
     case 'language':
+    case 'language-tandem':
       return filterItemObject.custom_description;
     default:
       return defaultText;

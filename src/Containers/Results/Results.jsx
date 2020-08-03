@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
-import { debounce, get, keys, isString, omit, pickBy } from 'lodash';
+import { debounce, get, keys, isString, omit, pickBy, has } from 'lodash';
 import queryParamUpdate from '../queryParams';
-import { scrollToTop, cleanQueryParams, getAssetPath } from '../../utilities';
+import { scrollToTop, cleanQueryParams, cleanTandemQueryParams, getAssetPath } from '../../utilities';
 import { resultsFetchData } from '../../actions/results';
 import { filtersFetchData } from '../../actions/filters/filters';
 import { bidListFetchData } from '../../actions/bidList';
@@ -45,6 +45,14 @@ class Results extends Component {
 
     // Create an instance attribute for storing a reference to debounced requests
     this.debounced = debounce(() => {});
+  }
+
+  getChildContext() {
+    const { tandem } = queryString.parse(get(this.state, 'query.value', ''));
+    const isTandemSearch = tandem === 'tandem';
+    return {
+      isTandemSearch,
+    };
   }
 
   UNSAFE_componentWillMount() {
@@ -139,8 +147,8 @@ class Results extends Component {
   getStringifiedQuery(q) {
     // ResultsPage is connected so we access the ref's functions slightly differently
     // https://github.com/reduxjs/react-redux/issues/475#issuecomment-242976693
-    const keyword = get(this, 'resultsPageRef.getWrappedInstance')
-      ? this.resultsPageRef.getWrappedInstance().keywordRef.getValue() : '';
+    const keyword = get(this, 'resultsPageRef.keywordRef')
+      ? this.resultsPageRef.keywordRef.getValue() : '';
     if (isString(keyword)) {
       const parsed$ = queryString.parse(q);
       parsed$.q = keyword;
@@ -231,8 +239,11 @@ class Results extends Component {
   storeSearch() {
     // parse the string to an object
     const parsedQuery = queryString.parse(this.state.query.value);
+    // does parsedQuery have tandem filter
+    const tandemSearch = has(parsedQuery, 'tandem');
     // remove any invalid filters
-    const cleanedQuery = cleanQueryParams(parsedQuery);
+    const cleanedQuery = tandemSearch ? cleanTandemQueryParams(parsedQuery)
+      : cleanQueryParams(parsedQuery);
     // store formed object in redux
     this.props.storeSearch(cleanedQuery);
   }
@@ -293,6 +304,10 @@ class Results extends Component {
 
 Results.contextTypes = {
   router: PropTypes.object,
+};
+
+Results.childContextTypes = {
+  isTandemSearch: PropTypes.bool,
 };
 
 Results.propTypes = {

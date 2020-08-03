@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get, find, orderBy, reverse } from 'lodash';
 import Alert from 'Components/Alert';
+import ExportButton from 'Components/ExportButton';
 import SearchAsClientButton from 'Components/BidderPortfolio/SearchAsClientButton/SearchAsClientButton';
 import SelectForm from 'Components/SelectForm';
 import { BID_STATUS_ORDER } from 'Constants/BidStatuses';
+import { downloadBidlistData } from 'actions/bidList';
 import { BID_LIST, NOTIFICATION_LIST, USER_PROFILE } from '../../Constants/PropTypes';
 import BidTrackerCardList from './BidTrackerCardList';
 import ProfileSectionTitle from '../ProfileSectionTitle';
@@ -30,11 +32,16 @@ class BidTracker extends Component {
     super(props);
     this.state = {
       sortValue: find(SORT_OPTIONS, f => f.defaultSort).value,
+      exportIsLoading: false,
     };
   }
 
   onSelectOption = e => {
     this.setState({ sortValue: get(e, 'target.value') });
+  };
+
+  setIsLoading = exportIsLoading => {
+    this.setState({ exportIsLoading });
   };
 
   getSortedBids() {
@@ -58,11 +65,23 @@ class BidTracker extends Component {
     return results$;
   }
 
+  exportBidlistData = () => {
+    const { isPublic, userProfile: { perdet_seq_number } } = this.props;
+    this.setIsLoading(true);
+    downloadBidlistData(isPublic, perdet_seq_number)
+      .then(() => {
+        this.setIsLoading(false);
+      })
+      .catch(() => {
+        this.setIsLoading(false);
+      });
+  }
+
   render() {
-    const { sortValue } = this.state;
+    const { exportIsLoading, sortValue } = this.state;
     const { bidList, bidListIsLoading, acceptBid, declineBid, submitBid, deleteBid,
       notifications, notificationsIsLoading, markBidTrackerNotification, userProfile,
-      userProfileIsLoading, isPublic, useCDOView } = this.props;
+      userProfileIsLoading, isPublic, useCDOView, registerHandshake } = this.props;
     const isLoading = bidListIsLoading || userProfileIsLoading;
     const title = isPublic && get(userProfile, 'name') && !userProfileIsLoading ?
       `${userProfile.name}'s Bid Tracker` : 'Bid Tracker';
@@ -113,6 +132,9 @@ class BidTracker extends Component {
               onSelectOption={this.onSelectOption}
             />
           </div>
+          <div className="export-button-container">
+            <ExportButton onClick={this.exportBidlistData} isLoading={exportIsLoading} />
+          </div>
         </div>
         <div className="bid-tracker-content-container">
           {
@@ -125,6 +147,7 @@ class BidTracker extends Component {
                   declineBid={declineBid}
                   submitBid={submitBid}
                   deleteBid={deleteBid}
+                  registerHandshake={registerHandshake}
                   userProfile={userProfile}
                   useCDOView={useCDOView}
                 />
@@ -147,6 +170,7 @@ BidTracker.propTypes = {
   declineBid: PropTypes.func.isRequired,
   submitBid: PropTypes.func.isRequired,
   deleteBid: PropTypes.func.isRequired,
+  registerHandshake: PropTypes.func.isRequired,
   notifications: NOTIFICATION_LIST.isRequired,
   notificationsIsLoading: PropTypes.bool.isRequired,
   markBidTrackerNotification: PropTypes.func.isRequired,

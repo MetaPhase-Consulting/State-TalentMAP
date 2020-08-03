@@ -171,8 +171,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -262,6 +267,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
@@ -430,8 +436,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -521,6 +532,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
@@ -689,8 +701,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -780,6 +797,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
@@ -948,8 +966,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1039,6 +1062,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
@@ -1207,8 +1231,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1298,6 +1327,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
@@ -1466,8 +1496,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1557,6 +1592,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />
@@ -1725,8 +1761,13 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         }
         favorites={Array []}
         favoritesPV={Array []}
+        favoritesPVTandem={Array []}
+        favoritesTandem={Array []}
         isProjectedVacancy={false}
         isRecentlyAvailable={false}
+        isTandem={false}
+        limit={15}
+        page={1}
         position={
           Object {
             "bidcycle": Object {
@@ -1816,6 +1857,7 @@ exports[`HomePagePositionsList displays two rows 1`] = `
         refreshFavorites={false}
         showBidListButton={false}
         showCompareButton={false}
+        sortType={null}
         type="default"
         useShortFavButton={false}
       />

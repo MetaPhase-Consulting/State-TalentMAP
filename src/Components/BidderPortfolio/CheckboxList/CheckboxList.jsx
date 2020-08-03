@@ -16,12 +16,11 @@ const CheckboxList = ({ list, clientClassifications }) => (
       checked
       className="tm-checkbox-disabled-alternate"
     />
-    <hr />
     {list.map((c) => {
       const checked = indexOf(clientClassifications, c.code) > -1;
       return (
         <CheckBox
-          id={c.id}
+          id={c.code}
           label={c.text}
           small
           value={checked}

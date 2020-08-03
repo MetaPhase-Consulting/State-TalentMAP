@@ -39,6 +39,7 @@ exports[`BidderPortfolioPageComponent matches snapshot 1`] = `
         changeViewType={[Function]}
         defaultHandshake=""
         defaultOrdering=""
+        pageSize={8}
         queryParamUpdate={[Function]}
         viewType="card"
       />
@@ -47,6 +48,7 @@ exports[`BidderPortfolioPageComponent matches snapshot 1`] = `
       className="usa-grid-full bidder-portfolio-listing "
     >
       <ErrorBoundary
+        fallback=""
         onCatch={[Function]}
       >
         <BidderPortfolioContainer

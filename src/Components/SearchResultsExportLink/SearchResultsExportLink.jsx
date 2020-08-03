@@ -23,7 +23,7 @@ class SearchResultsExportLink extends Component {
 
   onClick = () => {
     const { isLoading } = this.state;
-    const { isProjectedVacancy } = this.context;
+    const { isProjectedVacancy, isTandemSearch } = this.context;
     if (!isLoading) {
       this.setState({ isLoading: true }, () => {
         const query = {
@@ -32,7 +32,7 @@ class SearchResultsExportLink extends Component {
           limit: this.props.count,
           page: 1,
         };
-        downloadPositionData(queryString.stringify(query), isProjectedVacancy)
+        downloadPositionData(queryString.stringify(query), isProjectedVacancy, isTandemSearch)
           .then(() => {
             this.setState({ isLoading: false });
           })
@@ -45,9 +45,11 @@ class SearchResultsExportLink extends Component {
 
   render() {
     const { isLoading } = this.state;
+    const { count } = this.props;
+    const disabled = !count;
     return (
       <div className="export-button-container">
-        <ExportButton onClick={this.onClick} isLoading={isLoading} />
+        <ExportButton onClick={this.onClick} isLoading={isLoading} disabled={disabled} />
       </div>
     );
   }
@@ -55,6 +57,7 @@ class SearchResultsExportLink extends Component {
 
 SearchResultsExportLink.contextTypes = {
   isProjectedVacancy: PropTypes.bool,
+  isTandemSearch: PropTypes.bool,
 };
 
 SearchResultsExportLink.propTypes = {

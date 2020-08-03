@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefinitionList matches snapshot 1`] = `
+<div>
+  <span>
+    N/A
+     | 
+  </span>
+  <span>
+    N/A
+  </span>
+  <span
+    style={
+      Object {
+        "paddingLeft": 5,
+        "position": "absolute",
+      }
+    }
+  >
+    <OBCUrl
+      altStyle={false}
+      isButton={false}
+      label="OBC Details"
+      type="post-data"
+      url={Object {}}
+    />
+  </span>
+</div>
+`;

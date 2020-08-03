@@ -13,6 +13,7 @@ import SavedSearchesWrapper from '../../Components/SavedSearches/SavedSearchesWr
 import ProfilePublic from '../../Containers/ProfilePublic';
 import Notifications from './Notifications';
 import Administrator from '../../Containers/Administrator';
+import Bureau from '../../Containers/Bureau';
 import GLOSSARY_EDITOR_PERM from '../../Constants/Permissions';
 import { USER_PROFILE } from '../../Constants/PropTypes';
 import { userHasPermissions } from '../../utilities';
@@ -23,7 +24,6 @@ const ProfilePage = ({ user, isLoading }) => (
   <div className="profile-page">
     <ProfileMenu
       roles={user.permission_groups}
-      isCDO={user.is_cdo}
       isGlossaryEditor={userHasPermissions([GLOSSARY_EDITOR_PERM], user.permission_groups)}
     />
     <div className="usa-grid-full profile-content-container">
@@ -37,15 +37,16 @@ const ProfilePage = ({ user, isLoading }) => (
           <Route path="/profile/favorites" component={FavoritePositionsContainer} />
           <Route path="/profile/searches" component={SavedSearchesWrapper} />
           <Route
-            path="/profile/bidtracker/public/:id"
+            path="/profile/bidtracker/public/:id/:bid?"
             render={props => <BidTracker {...props} isPublic />}
           />
-          <Route path="/profile/bidtracker/:id?" component={BidTracker} />
+          <Route path="/profile/bidtracker/:bid?" component={BidTracker} />
           <Route path="/profile/statistics" component={BidStatistics} />
           <Route path="/profile/glossaryeditor" component={GlossaryEditor} />
           <Route path="/profile/public/:id" component={ProfilePublic} />
           <Route path="/profile/notifications" component={Notifications} />
           <Route path="/profile/administrator" component={Administrator} />
+          <Route path="/profile/bureau" component={Bureau} />
           <Flag
             name="flags.bidding"
             render={() => (
