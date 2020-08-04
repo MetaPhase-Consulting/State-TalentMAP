@@ -167,7 +167,7 @@ jobs:
           name: Serve app
           command: nohup serve -s ./build -p 3000 &
       - run:
-          name: Start server and run Cypress
+          name: Run Cypress
           command: yarn cypress:ci
   zap:
     <<: *default-docker-node
@@ -252,7 +252,6 @@ workflows:
           requires:
             - yarn
             - build
-      # Disabled
       - cypress
       - server:
           requires:
