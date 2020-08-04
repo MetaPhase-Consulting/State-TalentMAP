@@ -157,22 +157,17 @@ jobs:
             sed -i "s#@@API_REPO_NAME@@#${API_REPO_NAME}#g" $COMPOSE_FILE_NAME
             sed -i "s#@@API_REPO_BRANCH@@#${API_REPO_BRANCH}#g" $COMPOSE_FILE_NAME
       - run:
-          name: Initialize Dummy Data Container
-          command: |
-            docker-compose -f $COMPOSE_FILE_NAME create data
-            docker cp . data:/app
-      - run:
-          name: Migrate DB
-          command: |
-            docker-compose -f $COMPOSE_FILE_NAME \
-              run app bash -c \
-              "./wait-for-postgres.sh db && python manage.py migrate"
-      - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
       - run:
+          name: Replace config.json
+          command: cp ${STATIC_PATH}/config_dev.json ${STATIC_PATH/config.json}
+      - run:
           name: Install cypress dependencies
           command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
+          name: Run server
+          command: yarn run server
       - run:
           name: Start server and run Cypress
           command: yarn cypress:ci
@@ -262,7 +257,7 @@ workflows:
       # Disabled
       - cypress:
           requires:
-            - docker-build
+            - yarn
       - server:
           requires:
             - yarn
