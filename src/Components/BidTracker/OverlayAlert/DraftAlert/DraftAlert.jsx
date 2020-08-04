@@ -3,8 +3,8 @@ import StaticDevContent from 'Components/StaticDevContent';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 import { BID_OBJECT } from '../../../../Constants/PropTypes';
-import { NO_POST, NO_SKILL, NO_GRADE, NO_LANGUAGES } from '../../../../Constants/SystemMessages';
-import { getPostName, formatDate } from '../../../../utilities';
+import { NO_SKILL, NO_GRADE, NO_LANGUAGES } from '../../../../Constants/SystemMessages';
+import { formatDate } from '../../../../utilities';
 
 class DraftAlert extends Component {
   onSubmitBid = () => {
@@ -16,8 +16,6 @@ class DraftAlert extends Component {
     const { bid } = this.props;
     const { readOnly } = this.context;
     const { position } = bid;
-    const positionTitle = position.title;
-    const post = getPostName(position.post, NO_POST);
     const skillCode = position.skill ? position.skill : NO_SKILL;
     const grade = position.grade ? position.grade : NO_GRADE;
     const ted = formatDate('2020-07-02T05:00:00Z');
@@ -51,8 +49,10 @@ class DraftAlert extends Component {
           </div>
           <div className="draft-position-details" style={{ flex: 1 }}>
             <div>
-              {<span className="title">Tour of duty: </span>}
-              {tod}
+              <StaticDevContent>
+                {<span className="title">Tour of duty: </span>}
+                {tod}
+              </StaticDevContent>
             </div>
             <div>
               {<span className="title">Language: </span>}

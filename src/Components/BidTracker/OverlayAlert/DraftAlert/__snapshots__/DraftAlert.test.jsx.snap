@@ -48,15 +48,22 @@ exports[`DraftAlertComponent matches snapshot 1`] = `
       }
     >
       <div>
-        POLITICAL/ECONOMIC OFFICER
+        <Connect(StaticDevContent)>
+          <span
+            className="title"
+          >
+            Tour of duty: 
+          </span>
+          07/02/2020
+        </Connect(StaticDevContent)>
       </div>
       <div>
         <span
           className="title"
         >
-          Location: 
+          Language: 
         </span>
-        Freetown, Sierra Leone
+        None
       </div>
       <div>
         <Connect(StaticDevContent)>
