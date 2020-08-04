@@ -149,25 +149,17 @@ jobs:
       - setup_remote_docker
       - checkout
       - run:
-          name: Replace placeholders in Compose file
-          command: |
-            TAG=$CIRCLE_BRANCH-$CIRCLE_SHA1
-            sed -i "s#@@LABEL@@#${TAG}#g" $COMPOSE_FILE_NAME
-            sed -i "s#@@REPO_NAME@@#${CIRCLE_PROJECT_REPONAME}#g" $COMPOSE_FILE_NAME
-            sed -i "s#@@API_REPO_NAME@@#${API_REPO_NAME}#g" $COMPOSE_FILE_NAME
-            sed -i "s#@@API_REPO_BRANCH@@#${API_REPO_BRANCH}#g" $COMPOSE_FILE_NAME
+          name: Replace config.json
+          command: cp ${STATIC_PATH}/config/config_dev.json ${STATIC_PATH}/config/config.json
       - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
-      - run:
-          name: Replace config.json
-          command: cp ${STATIC_PATH}/config_dev.json ${STATIC_PATH/config.json}
       - run:
           name: Install cypress dependencies
           command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
           name: Run server
-          command: yarn run server
+          command: yarn start
       - run:
           name: Start server and run Cypress
           command: yarn cypress:ci
