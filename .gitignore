@@ -16,6 +16,7 @@ certs/**/*
 !certs/certs.sh
 !certs/*.cnf
 **/*/videos
+**/*/screenshots
 
 # misc
 .DS_Store

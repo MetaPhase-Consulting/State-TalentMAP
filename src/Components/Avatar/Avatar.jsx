@@ -55,7 +55,7 @@ const Avatar = ({ initials, firstName, lastName, className, small, onClick, fall
   }
   if (small) { style.borderRadius = 30; }
   return (
-    <div style={containerStyle} className={`tm-avatar ${small ? 'tm-avatar--small' : ''} ${className}`} onClick={onClick} role="img" aria-label={`${firstName} ${lastName}`}>
+    <div style={containerStyle} className={`tm-avatar ${small ? 'tm-avatar--small' : ''} ${className}`} onClick={onClick} role="img" aria-label={`${firstName} ${lastName}`} alt="avatar">
       {
         get(externalSource, externalSourceToUse) ?
           <ImageFallback

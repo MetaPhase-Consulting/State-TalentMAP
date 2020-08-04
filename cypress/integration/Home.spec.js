@@ -1,8 +1,32 @@
 import { api, doLogin, getAxeConfig } from '../utilities';
 
-describe('Search', () => {
+// Define at the top of the spec file or just import it
+function terminalLog(violations) {
+  cy.task(
+    'log',
+    `${violations.length} accessibility violation${
+      violations.length === 1 ? '' : 's'
+    } ${violations.length === 1 ? 'was' : 'were'} detected`,
+  );
+  // pluck specific keys to keep the table readable
+  const violationData = violations.map(
+    ({ id, impact, description, nodes }) => ({
+      id,
+      impact,
+      description,
+      nodes: nodes.length,
+    }),
+  );
+
+  cy.task('table', violationData);
+}
+
+describe('Home', () => {
   beforeEach(() => {
     cy.server();
+
+    cy.route('GET', `${api}/permission/user/`)
+      .as('getPermission');
 
     /* cy.route('GET', `${api}/position/highlighted/*`)
       .as('getPosition1');
@@ -28,7 +52,11 @@ describe('Search', () => {
     cy.wait('@getPosition2');
     cy.wait('@getPosition3'); */
 
-    cy.checkA11y();
+    cy.wait(4000);
+
+    cy.wait('@getPermission');
+
+    cy.checkA11y(null, null, terminalLog);
   });
 
   it('navigates to results', () => {
@@ -48,11 +76,11 @@ describe('Search', () => {
       .matchImageSnapshot();
   });
 
-  it('matches footer snapshot', () => {
+  /* it('matches footer snapshot', () => {
     cy.get('.usa-footer-primary-section')
       .matchImageSnapshot('footer-top');
 
     cy.get('.usa-footer-secondary_section')
       .matchImageSnapshot('footer-bottom');
-  });
+  }); */
 });

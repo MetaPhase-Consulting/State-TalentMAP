@@ -1,15 +1,17 @@
 import { api, doLogin } from '../utilities';
 
 const addCompares = () => {
-  [1, 2, 3, 4, 5].map(n => (
+  // cy.clearLocalStorage('compare');
+  [1, 2, 3, 4, 5, 6].map(n => { // eslint-disable-line
+    cy.wait(1000);
     cy.get(`:nth-child(${n}) > .results-card > .footer > :nth-child(1) > .compare-check-box-container`)
-      .click()
-  ));
+      .click();
+  });
 };
 
 const navToCompare = () => cy.get('.button-container > .usa-button').click();
 
-describe('Position', () => {
+describe('Compare', () => {
   beforeEach(() => {
     doLogin();
 
@@ -29,6 +31,8 @@ describe('Position', () => {
     addCompares();
 
     cy.wait('@getCompare');
+
+    cy.wait(1000);
 
     cy.get(':nth-child(6) > .results-card > .footer > :nth-child(1) > .compare-check-box-container')
       .contains('Limit Reached');

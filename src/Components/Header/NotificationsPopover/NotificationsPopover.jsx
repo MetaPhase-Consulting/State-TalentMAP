@@ -13,7 +13,7 @@ export class NotificationsPopover extends Component {
         ref={(dropdown) => { this.dropdown = dropdown; }}
         removeElement
       >
-        <DropdownTrigger href="/#">
+        <DropdownTrigger href="/#" title="Notifications">
           <NotificationsIcon className="notifications-icon-trigger" />
         </DropdownTrigger>
         <div className="dropdown-content-outer-container">

@@ -1,6 +1,6 @@
 import { doLogin } from '../utilities';
 
-describe('Search', () => {
+describe('Dashboard', () => {
   beforeEach(() => {
     doLogin();
   });

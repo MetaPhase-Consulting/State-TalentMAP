@@ -111,7 +111,7 @@
     "chalk": "2.4.2",
     "css-loader": "^3.6.0",
     "cypress": "^3.8.3",
-    "cypress-axe": "^0.5.3",
+    "cypress-axe": "^0.8.1",
     "cypress-image-snapshot": "2.3.5",
     "dotenv": "4.0.0",
     "enzyme": "^3.11.0",
@@ -177,6 +177,7 @@
     "stats": "NODE_ENV=production webpack --json --config ./config/webpack.config.prod.js > stats.json",
     "bundlesize": "bundlesize",
     "cypress": "cypress run",
+    "cypress:open": "cypress open",
     "cypress:ci": "start-server-and-test start http://localhost:3000 cypress"
   },
   "engines": {
