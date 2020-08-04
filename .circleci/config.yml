@@ -8,7 +8,7 @@ default-docker-node: &default-docker-node
         COMPOSE_FILE_NAME: circleci-docker-compose.yml
         API_REPO_NAME: state-talentmap-api
         API_REPO_BRANCH: staging
-        PUBLIC_URL: /talentmap/
+        PUBLIC_URL: /
         STATIC_PATH: /home/circleci/project/public
         API_ROOT: http://app:8000/
 jobs:
@@ -158,8 +158,14 @@ jobs:
           name: Install cypress dependencies
           command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
-          name: Run server
-          command: yarn start
+          name: Build app
+          command: yarn build
+      - run:
+          name: Install serve
+          command: sudo npm install -g serve
+      - run:
+          name: Serve app
+          command: nohup serve -s ./build -p 3000 &
       - run:
           name: Start server and run Cypress
           command: yarn cypress:ci
