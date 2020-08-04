@@ -255,9 +255,7 @@ workflows:
             - yarn
             - build
       # Disabled
-      - cypress:
-          requires:
-            - yarn
+      - cypress
       - server:
           requires:
             - yarn
