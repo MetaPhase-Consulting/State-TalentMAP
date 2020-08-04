@@ -260,9 +260,9 @@ workflows:
             - yarn
             - build
       # Disabled
-      #- cypress:
-      #    requires:
-      #      - docker-build
+      - cypress:
+          requires:
+            - docker-build
       - server:
           requires:
             - yarn
