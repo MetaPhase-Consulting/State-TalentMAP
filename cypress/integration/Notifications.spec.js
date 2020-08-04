@@ -10,7 +10,10 @@ describe('Notifications', () => {
   });
 
   it('navigates notifications by clicking on the icon', () => {
-    cy.get('a > .fa')
+    cy.get('.fa-globe')
+      .click();
+
+    cy.get('#view-all-notifications')
       .click();
 
     cy.get('.favorites-title-container > .usa-grid-full')

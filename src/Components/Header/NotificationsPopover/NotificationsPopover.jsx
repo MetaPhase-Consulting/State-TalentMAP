@@ -27,7 +27,7 @@ export class NotificationsPopover extends Component {
                   isLoading={props.isLoadingPopover}
                 />))}
             </Notifications>
-            <Link onClick={() => this.dropdown.hide()} className="account-dropdown--identity account-dropdown--segment account-dropdown-link" to="/profile/notifications"><span>See all</span></Link>
+            <Link onClick={() => this.dropdown.hide()} id="view-all-notifications" className="account-dropdown--identity account-dropdown--segment account-dropdown-link" to="/profile/notifications"><span>See all</span></Link>
           </DropdownContent>
         </div>
       </Dropdown>

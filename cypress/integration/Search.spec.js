@@ -7,8 +7,8 @@ describe('Search', () => {
 
     cy.visit('/results');
 
-    cy.route('GET', `${api}/position/*`).as('getPosition');
-    cy.route('GET', `${api}/position/?position_number__in=*`).as('getCompare');
+    cy.route('GET', `${api}/fsbid/available_positions/*`).as('getPosition');
+    cy.route('GET', `${api}/fsbid/available_positions/?id=*`).as('getCompare');
 
     cy.wait('@getPosition');
   });

@@ -15,6 +15,7 @@ certs/**/*
 !certs/README.md
 !certs/certs.sh
 !certs/*.cnf
+**/*/videos
 
 # misc
 .DS_Store
