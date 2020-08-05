@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import StaticDevContent from 'Components/StaticDevContent';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
-import { BID_OBJECT } from '../../../../Constants/PropTypes';
-import { NO_SKILL, NO_GRADE, NO_LANGUAGES } from '../../../../Constants/SystemMessages';
-import { formatDate } from '../../../../utilities';
+import { NO_SKILL, NO_GRADE, NO_LANGUAGES } from 'Constants/SystemMessages';
+import { formatDate } from 'utilities';
+import { BID_OBJECT } from 'Constants/PropTypes';
 
 class DraftAlert extends Component {
   onSubmitBid = () => {

@@ -54,12 +54,6 @@ const BidTrackerCardTitle = ({
           </div>
         }
         {condensedView && viewPosition}
-        {/* {
-          showBidCount && !condensedView &&
-            <span className="bid-stats">
-              <BidCount bidStatistics={bidStatistics} altStyle />
-            </span>
-        } */}
       </div>
       <div className="usa-grid-full bid-tracker-bottom-link-container">
         {
