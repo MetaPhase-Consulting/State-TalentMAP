@@ -13,6 +13,8 @@ const POSITION_SEARCH_SORTS$ = {
     { value: '-ted', text: 'TED: Latest' },
     { value: 'position__position_number', text: 'Position number: Low to high' }, // numbers first, then A-Z
     { value: '-position__post__has_service_needs_differential', text: 'Featured positions', availableOnly: true }, // sort by service needs first
+    { value: 'location', text: 'Location: A-Z', nonTandemOnly: true },
+    { value: '-location', text: 'Location: Z-A', nonTandemOnly: true },
   ],
 };
 
@@ -39,6 +41,12 @@ export const POSITION_SEARCH_SORTS_DYNAMIC = {
 export const filterPVSorts = (sorts) => {
   const v = { ...sorts };
   v.options = filter(v.options, f => !f.availableOnly);
+  return v;
+};
+
+export const filterTandemSorts = (sorts) => {
+  const v = { ...sorts };
+  v.options = filter(v.options, f => !f.nonTandemOnly);
   return v;
 };
 
@@ -140,5 +148,22 @@ export const BUREAU_POSITION_SORT = {
     { value: '-ted', text: 'TED: Latest' },
     { value: 'position__position_number', text: 'Position number: Low to high' },
     { value: '-position__post__has_service_needs_differential', text: 'Featured positions', availableOnly: true },
+  ],
+};
+
+export const BUREAU_BIDDER_SORT = {
+  options: [
+    { value: '', text: 'Sort option', disabled: true },
+    { value: 'bidder_grade', text: "Bidder's Grade" },
+    { value: 'bidder_skill', text: "Bidder's Skill" },
+    { value: 'bidder_hs', text: 'Handshake' },
+  ],
+};
+
+export const BUREAU_BIDDER_FILTERS = {
+  options: [
+    { value: '', text: 'All' },
+    { value: 'HS', text: 'Handshake' },
+    { value: 'OP', text: 'No Handshake' },
   ],
 };
