@@ -31,7 +31,7 @@
     "font-awesome": "^4.7.0",
     "fuse.js": "^3.6.1",
     "helmet": "^3.21.3",
-    "history": "^4.7.2",
+    "history": "^5.0.0",
     "imagediff": "^1.0.8",
     "immutable": "^3.8.2",
     "jsoneditor": "^9.1.1",
