@@ -22,7 +22,6 @@ import SelectForm from '../../SelectForm';
 
 
 const PositionManager = props => {
-  // Props
   const {
     bureauPermissions,
     bureauFilters,
