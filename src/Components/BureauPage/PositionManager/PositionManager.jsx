@@ -395,7 +395,8 @@ const PositionManager = props => {
                       defaultSort={limit}
                       onSelectOption={value => setLimit(value.target.value)}
                       disabled={bureauPositionsIsLoading}
-                    />                      </div>
+                    />
+                  </div>
                   <div className="export-button-container">
                     <ExportButton
                       onClick={exportPositions}
