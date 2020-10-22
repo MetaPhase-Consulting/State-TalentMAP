@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { QueryParamProvider } from 'use-query-params';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import PositionManager from './PositionManager';
 
@@ -126,7 +127,8 @@ describe('BureauPage', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(<PositionManager.WrappedComponent {...props} />);
+    const wrapper = shallow(<QueryParamProvider>
+      <PositionManager.WrappedComponent {...props} /></QueryParamProvider>);
     expect(wrapper).toBeDefined();
   });
 });
