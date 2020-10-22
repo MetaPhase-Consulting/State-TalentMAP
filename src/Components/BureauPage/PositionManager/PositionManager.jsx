@@ -369,59 +369,58 @@ const PositionManager = props => {
           </div>
           {
             getOverlay() ||
-                <>
-                  <div className="usa-width-one-whole results-dropdown bureau-controls-container">
-                    <TotalResults
-                      total={bureauPositions.count}
-                      pageNumber={page}
-                      pageSize={limit}
-                      suffix="Results"
-                      isHidden={bureauPositionsIsLoading}
+            <>
+              <div className="usa-width-one-whole results-dropdown bureau-controls-container">
+                <TotalResults
+                  total={bureauPositions.count}
+                  pageNumber={page}
+                  pageSize={limit}
+                  suffix="Results"
+                  isHidden={bureauPositionsIsLoading}
+                />
+                <div className="bureau-controls-right">
+                  <div className="bureau-results-controls">
+                    <SelectForm
+                      id="position-manager-num-results"
+                      options={sorts.options}
+                      label="Sort by:"
+                      defaultSort={ordering}
+                      onSelectOption={value => setOrdering(value.target.value)}
+                      disabled={bureauPositionsIsLoading}
                     />
-                    <div className="bureau-controls-right">
-                      <div className="bureau-results-controls">
-                        <SelectForm
-                          id="position-manager-num-results"
-                          options={sorts.options}
-                          label="Sort by:"
-                          defaultSort={ordering}
-                          onSelectOption={value => setOrdering(value.target.value)}
-                          disabled={bureauPositionsIsLoading}
-                        />
-                        <SelectForm
-                          id="position-manager-num-results"
-                          options={pageSizes.options}
-                          label="Results:"
-                          defaultSort={limit}
-                          onSelectOption={value => setLimit(value.target.value)}
-                          disabled={bureauPositionsIsLoading}
-                        />
-                      </div>
-                      <div className="export-button-container">
-                        <ExportButton
-                          onClick={exportPositions}
-                          isLoading={isLoading}
-                          disabled={noBureausSelected}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="usa-width-one-whole position-manager-lower-section results-dropdown">
-                    <div className="usa-grid-full position-list">
-                      {bureauPositions.results.map((result) => (
-                        <BureauResultsCard result={result} key={result.id} />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="usa-grid-full react-paginate bureau-pagination-controls">
-                    <PaginationWrapper
-                      pageSize={limit}
-                      onPageChange={onPageChange}
-                      forcePage={page}
-                      totalResults={bureauPositions.count}
+                    <SelectForm
+                      id="position-manager-num-results"
+                      options={pageSizes.options}
+                      label="Results:"
+                      defaultSort={limit}
+                      onSelectOption={value => setLimit(value.target.value)}
+                      disabled={bureauPositionsIsLoading}
+                    />                      </div>
+                  <div className="export-button-container">
+                    <ExportButton
+                      onClick={exportPositions}
+                      isLoading={isLoading}
+                      disabled={noBureausSelected}
                     />
                   </div>
-                </>
+                </div>
+              </div>
+              <div className="usa-width-one-whole position-manager-lower-section results-dropdown">
+                <div className="usa-grid-full position-list">
+                  {bureauPositions.results.map((result) => (
+                    <BureauResultsCard result={result} key={result.id} />
+                  ))}
+                </div>
+              </div>
+              <div className="usa-grid-full react-paginate bureau-pagination-controls">
+                <PaginationWrapper
+                  pageSize={limit}
+                  onPageChange={onPageChange}
+                  forcePage={page}
+                  totalResults={bureauPositions.count}
+                />
+              </div>
+            </>
           }
         </div>
       </>
