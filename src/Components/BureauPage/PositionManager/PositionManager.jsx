@@ -10,7 +10,7 @@ import {
   EMPTY_FUNCTION,
 } from 'Constants/PropTypes';
 import Picky from 'react-picky';
-import { get, sortBy, uniqBy, throttle } from 'lodash';
+import { get, sortBy, throttle, uniqBy } from 'lodash';
 import { withDefault, withQueryParams, NumberParam } from 'use-query-params';
 import { bureauPositionsFetchData, downloadBureauPositionsData, saveBureauUserSelections } from 'actions/bureauPositions';
 import Spinner from 'Components/Spinner';
@@ -123,11 +123,11 @@ const PositionManager = props => {
 
   // Rerender and action on user selections
   useEffect(() => {
-    if (page === 1 && prevPage) {
+    if (prevPage) {
+      setPage(1);
       props.fetchBureauPositions(query$);
       props.saveSelections(currentInputs);
     }
-    setPage(1);
   }, [
     selectedGrades,
     selectedSkills,
