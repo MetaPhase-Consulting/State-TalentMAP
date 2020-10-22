@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { BUREAU_POSITION_SORT, POSITION_MANAGER_PAGE_SIZES } from 'Constants/Sort';
-import { FILTERS_PARENT, POSITION_SEARCH_RESULTS, BUREAU_PERMISSIONS, BUREAU_USER_SELECTIONS } from 'Constants/PropTypes';
+import {
+  FILTERS_PARENT,
+  POSITION_SEARCH_RESULTS,
+  BUREAU_PERMISSIONS,
+  BUREAU_USER_SELECTIONS,
+  EMPTY_FUNCTION,
+} from 'Constants/PropTypes';
 import Picky from 'react-picky';
 import { get, sortBy, uniqBy, throttle } from 'lodash';
+import { withDefault, withQueryParams, NumberParam } from 'use-query-params';
 import { bureauPositionsFetchData, downloadBureauPositionsData, saveBureauUserSelections } from 'actions/bureauPositions';
 import Spinner from 'Components/Spinner';
 import ExportButton from 'Components/ExportButton';
@@ -22,6 +29,7 @@ import SelectForm from '../../SelectForm';
 
 
 const PositionManager = props => {
+  // Props
   const {
     bureauPermissions,
     bureauFilters,
@@ -30,10 +38,13 @@ const PositionManager = props => {
     bureauPositionsIsLoading,
     bureauPositionsHasErrored,
     userSelections,
+    query,
+    setQuery,
   } = props;
+  const { page } = query;
 
   // Local state populating with defaults from previous user selections stored in redux
-  const [page, setPage] = useState(userSelections.page || 1);
+  const setPage = e => setQuery({ page: e });
   const [limit, setLimit] = useState(userSelections.limit || 10);
   const [ordering, setOrdering] =
     useState(userSelections.ordering || BUREAU_POSITION_SORT.options[0].value);
@@ -74,7 +85,6 @@ const PositionManager = props => {
 
   // Local state inputs to push to redux state
   const currentInputs = {
-    page,
     limit,
     ordering,
     selectedGrades,
@@ -90,7 +100,7 @@ const PositionManager = props => {
 
   // Query is passed to action which stringifies
   // key and values into sensible request url
-  const query = {
+  const query$ = {
     [grades.item.selectionRef]: selectedGrades.map(gradeObject => (get(gradeObject, 'code'))),
     [skills.item.selectionRef]: selectedSkills.map(skillObject => (get(skillObject, 'code'))),
     [posts.item.selectionRef]: selectedPosts.map(postObject => (get(postObject, 'code'))),
@@ -107,14 +117,14 @@ const PositionManager = props => {
   // Initial render
   useEffect(() => {
     props.fetchFilters(bureauFilters, {});
-    props.fetchBureauPositions(query);
+    props.fetchBureauPositions(query$);
     props.saveSelections(currentInputs);
   }, []);
 
   // Rerender and action on user selections
   useEffect(() => {
     if (page === 1 && prevPage) {
-      props.fetchBureauPositions(query);
+      props.fetchBureauPositions(query$);
       props.saveSelections(currentInputs);
     }
     setPage(1);
@@ -136,7 +146,7 @@ const PositionManager = props => {
   useEffect(() => {
     scrollToTop({ delay: 0, duration: 400 });
     if (prevPage) {
-      props.fetchBureauPositions(query);
+      props.fetchBureauPositions(query$);
       props.saveSelections(currentInputs);
     }
   }, [page]);
@@ -186,7 +196,7 @@ const PositionManager = props => {
   const exportPositions = () => {
     if (!isLoading) {
       setIsLoading(true);
-      downloadBureauPositionsData(query)
+      downloadBureauPositionsData(query$)
         .then(() => {
           setIsLoading(false);
         })
@@ -211,6 +221,12 @@ const PositionManager = props => {
     }
     return false;
   };
+
+  function onPageChange(e) {
+    if (e.page !== page) {
+      setPage(e.page);
+    }
+  }
 
   return (
     bureauFiltersIsLoading ?
@@ -353,59 +369,59 @@ const PositionManager = props => {
           </div>
           {
             getOverlay() ||
-              <>
-                <div className="usa-width-one-whole results-dropdown bureau-controls-container">
-                  <TotalResults
-                    total={bureauPositions.count}
-                    pageNumber={page}
-                    pageSize={limit}
-                    suffix="Results"
-                    isHidden={bureauPositionsIsLoading}
-                  />
-                  <div className="bureau-controls-right">
-                    <div className="bureau-results-controls">
-                      <SelectForm
-                        id="position-manager-num-results"
-                        options={sorts.options}
-                        label="Sort by:"
-                        defaultSort={ordering}
-                        onSelectOption={value => setOrdering(value.target.value)}
-                        disabled={bureauPositionsIsLoading}
-                      />
-                      <SelectForm
-                        id="position-manager-num-results"
-                        options={pageSizes.options}
-                        label="Results:"
-                        defaultSort={limit}
-                        onSelectOption={value => setLimit(value.target.value)}
-                        disabled={bureauPositionsIsLoading}
-                      />
-                    </div>
-                    <div className="export-button-container">
-                      <ExportButton
-                        onClick={exportPositions}
-                        isLoading={isLoading}
-                        disabled={noBureausSelected}
-                      />
+                <>
+                  <div className="usa-width-one-whole results-dropdown bureau-controls-container">
+                    <TotalResults
+                      total={bureauPositions.count}
+                      pageNumber={page}
+                      pageSize={limit}
+                      suffix="Results"
+                      isHidden={bureauPositionsIsLoading}
+                    />
+                    <div className="bureau-controls-right">
+                      <div className="bureau-results-controls">
+                        <SelectForm
+                          id="position-manager-num-results"
+                          options={sorts.options}
+                          label="Sort by:"
+                          defaultSort={ordering}
+                          onSelectOption={value => setOrdering(value.target.value)}
+                          disabled={bureauPositionsIsLoading}
+                        />
+                        <SelectForm
+                          id="position-manager-num-results"
+                          options={pageSizes.options}
+                          label="Results:"
+                          defaultSort={limit}
+                          onSelectOption={value => setLimit(value.target.value)}
+                          disabled={bureauPositionsIsLoading}
+                        />
+                      </div>
+                      <div className="export-button-container">
+                        <ExportButton
+                          onClick={exportPositions}
+                          isLoading={isLoading}
+                          disabled={noBureausSelected}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="usa-width-one-whole position-manager-lower-section results-dropdown">
-                  <div className="usa-grid-full position-list">
-                    {bureauPositions.results.map((result) => (
-                      <BureauResultsCard result={result} key={result.id} />
-                    ))}
+                  <div className="usa-width-one-whole position-manager-lower-section results-dropdown">
+                    <div className="usa-grid-full position-list">
+                      {bureauPositions.results.map((result) => (
+                        <BureauResultsCard result={result} key={result.id} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="usa-grid-full react-paginate bureau-pagination-controls">
-                  <PaginationWrapper
-                    pageSize={limit}
-                    onPageChange={p => setPage(p.page)}
-                    forcePage={page}
-                    totalResults={bureauPositions.count}
-                  />
-                </div>
-              </>
+                  <div className="usa-grid-full react-paginate bureau-pagination-controls">
+                    <PaginationWrapper
+                      pageSize={limit}
+                      onPageChange={onPageChange}
+                      forcePage={page}
+                      totalResults={bureauPositions.count}
+                    />
+                  </div>
+                </>
           }
         </div>
       </>
@@ -423,6 +439,10 @@ PositionManager.propTypes = {
   bureauPositionsHasErrored: PropTypes.bool,
   bureauPermissions: BUREAU_PERMISSIONS,
   userSelections: BUREAU_USER_SELECTIONS,
+  query: PropTypes.shape({
+    page: PropTypes.number,
+  }),
+  setQuery: PropTypes.func,
 };
 
 PositionManager.defaultProps = {
@@ -433,6 +453,8 @@ PositionManager.defaultProps = {
   bureauPositionsHasErrored: false,
   bureauPermissions: [],
   userSelections: {},
+  query: {},
+  setQuery: EMPTY_FUNCTION,
 };
 
 const mapStateToProps = state => ({
@@ -453,4 +475,9 @@ export const mapDispatchToProps = dispatch => ({
   saveSelections: (selections) => dispatch(saveBureauUserSelections(selections)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PositionManager);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withQueryParams({
+    page: withDefault(NumberParam, 1),
+  }, (PositionManager),
+  ),
+);
