@@ -82,6 +82,7 @@ describe('FavoritePositionsComponent', () => {
     expect(wrapper.instance().props.favorites).toBe(props.favorites);
   });
 
+  // it('displays an alert if there are no AP Favorites and AP Favorites Nav is Selected', () => {
   it('displays an alert if there are no positions', () => {
     const wrapper = shallow(
       <FavoritePositions
