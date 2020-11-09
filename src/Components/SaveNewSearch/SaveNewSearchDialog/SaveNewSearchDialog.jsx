@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { connect } from 'react-redux';
@@ -34,7 +34,7 @@ export class SaveNewSearchDialog extends Component {
     const { currentSearch } = this.props;
     const hasPV = get(currentSearch, 'projectedVacancy') === 'projected';
     const hasTandem = get(currentSearch, 'tandem') === 'tandem';
-    let endpoint = hasPV ? '/api/v1/fsbid/projected_vacancies/' : '/api/v1/cycleposition/';
+    let endpoint = hasPV ? '/api/v1/fsbid/projected_vacancies/' : '/api/v1/fsbid/available_positions/';
     if (hasTandem) {
       endpoint = hasPV ? '/api/v1/fsbid/projected_vacancies/tandem/' : '/api/v1/fsbid/available_positions/tandem/';
     }

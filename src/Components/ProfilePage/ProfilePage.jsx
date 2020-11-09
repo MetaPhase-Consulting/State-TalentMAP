@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Flag } from 'flag';
@@ -49,6 +48,7 @@ const ProfilePage = ({ user, isLoading }) => (
           <Route path="/profile/notifications" component={Notifications} />
           <Route path="/profile/administrator" component={Administrator} />
           <Route path="/profile/bureau" component={Bureau} />
+          <Route path="/profile/ao" component={Bureau} />
           <Flag
             name="flags.bidding"
             render={() => (

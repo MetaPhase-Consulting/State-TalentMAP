@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Stats from './Stats';
@@ -22,11 +21,11 @@ const BureauPage = () => {
   return (
     <div className="usa-grid-full profile-content-container">
       <Switch>
-        <Route path="/profile/bureau/dashboard" render={() => <Dashboard {...dashboardProps} />} />
-        <Route path="/profile/bureau/stats" render={() => <Stats {...statsProps} />} />
-        <Route path="/profile/bureau/positionlists" render={() => <PositionLists {...posListsProps} />} />
-        <Route path="/profile/bureau/positionmanager/:type/:id" render={() => <PositionManagerDetails />} />
-        <Route path="/profile/bureau/positionmanager" render={() => <PositionManager />} />
+        <Route path="/profile/(bureau|ao)/dashboard" render={() => <Dashboard {...dashboardProps} />} />
+        <Route path="/profile/(bureau|ao)/stats" render={() => <Stats {...statsProps} />} />
+        <Route path="/profile/(bureau|ao)/positionlists" render={() => <PositionLists {...posListsProps} />} />
+        <Route path="/profile/(bureau|ao)/positionmanager/:type/:id" render={() => <PositionManagerDetails />} />
+        <Route path="/profile/(bureau|ao)/positionmanager" render={() => <PositionManager />} />
       </Switch>
     </div>
   );

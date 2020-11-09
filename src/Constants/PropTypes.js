@@ -96,14 +96,19 @@ export const POST_SEARCH_RESULTS = PropTypes.shape({
 });
 
 export const RECOMMENDED_GRADE_AND_SKILL_POSITIONS = 'recommendedGradeAndSkillPositions';
+export const RECOMMENDED_GRADE_AND_SKILL_CONE_POSITIONS = 'recommendedGradeAndSkillConePositions';
 export const RECOMMENDED_GRADE_POSITIONS = 'recommendedGradePositions';
 export const FAVORITED_POSITIONS = 'favoritedPositions';
 export const FEATURED_GRADE_AND_SKILL_POSITIONS = 'featuredGradeAndSkillPositions';
+export const FEATURED_GRADE_AND_SKILL_CONE_POSITIONS = 'featuredGradeAndSkillConePositions';
 export const FEATURED_GRADE_POSITIONS = 'featuredGradePositions';
 export const FEATURED_POSITIONS = 'featuredPositions';
 
 export const FILTER = PropTypes.shape({
-  id: PropTypes.number,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   code: PropTypes.string,
   description: PropTypes.string,
   long_description: PropTypes.string,
@@ -200,6 +205,10 @@ export const USER_PROFILE = PropTypes.shape({
   employee_info: PropTypes.shape({
     grade: PropTypes.string,
     skills: USER_SKILL_CODE_ARRAY,
+  }),
+  user_info: PropTypes.shape({
+    office_address: PropTypes.string,
+    office_phone: PropTypes.string,
   }),
   id: PropTypes.number,
   skill_code: USER_SKILL_CODE_ARRAY,
@@ -597,6 +606,30 @@ export const OBC_URLS = PropTypes.shape({
   external: PropTypes.string,
 });
 
+export const BUREAU_PERMISSIONS = PropTypes.arrayOf(
+  PropTypes.shape({
+    code: PropTypes.string,
+    long_description: PropTypes.string,
+    short_description: PropTypes.string,
+  }),
+);
+
+export const FILTER_SELECTION = PropTypes.arrayOf(PropTypes.string);
+
+export const BUREAU_USER_SELECTIONS = PropTypes.shape({
+  page: PropTypes.number,
+  limit: PropTypes.number,
+  ordering: PropTypes.string,
+  selectedGrades: FILTER_SELECTION,
+  selectedSkills: FILTER_SELECTION,
+  selectedPosts: FILTER_SELECTION,
+  selectedTEDs: FILTER_SELECTION,
+  selectedBureaus: FILTER_SELECTION,
+  isLoading: PropTypes.bool,
+  textSearch: PropTypes.string,
+  textInput: PropTypes.string,
+});
+
 export const HOME_PAGE_FEATURED_POSITIONS = PropTypes.shape({
   positions: PropTypes.arrayOf(POSITION_DETAILS),
   name: PropTypes.string,
@@ -606,4 +639,3 @@ export const HOME_PAGE_RECOMMENDED_POSITIONS = PropTypes.shape({
   positions: PropTypes.arrayOf(POSITION_DETAILS),
   name: PropTypes.string,
 });
-

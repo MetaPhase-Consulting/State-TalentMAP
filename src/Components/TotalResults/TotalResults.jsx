@@ -1,10 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
 
 const format = n => numeral(n).format('0,0');
 
-const TotalResults = ({ total, pageNumber, pageSize, suffix }) => {
+const TotalResults = ({ total, pageNumber, pageSize, suffix, isHidden }) => {
   let showTotal;
   let beginning;
   let through;
@@ -20,7 +19,7 @@ const TotalResults = ({ total, pageNumber, pageSize, suffix }) => {
   const total$ = format(total);
 
   return (
-    <span id="total-results">
+    <span id="total-results" className={isHidden ? 'hide-total-results' : ''}>
       {
         isAllResults &&
           <div>
@@ -42,10 +41,12 @@ TotalResults.propTypes = {
   pageNumber: PropTypes.number.isRequired, // current page number
   pageSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   suffix: PropTypes.string,
+  isHidden: PropTypes.bool,
 };
 
 TotalResults.defaultProps = {
   suffix: 'Results',
+  isHidden: false,
 };
 
 export default TotalResults;

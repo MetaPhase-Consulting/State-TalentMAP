@@ -52,6 +52,7 @@ exports[`FavoritePositionsComponent matches snapshot 1`] = `
       className="total-results-container"
     >
       <TotalResults
+        isHidden={false}
         pageNumber={1}
         pageSize={12}
         suffix="Results"
@@ -1106,7 +1107,7 @@ exports[`FavoritePositionsComponent matches snapshot 1`] = `
         },
       ]
     }
-    refreshFavorites={true}
+    refreshFavorites={false}
     showBidListButton={true}
     showCompareButton={true}
     sortType=""

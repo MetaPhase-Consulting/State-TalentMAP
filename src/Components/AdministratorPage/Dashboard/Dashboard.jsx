@@ -1,23 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { Link } from 'react-router-dom';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import Spinner from '../../Spinner';
 import { Row, Column } from '../../Layout';
-import DataSync from './DataSync';
 import LinkButton from '../../LinkButton';
 import MediaQueryWrapper from '../../MediaQuery';
-import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
+import SystemMonitor from '../SystemMonitor';
 
 const AdministratorPage = (props) => {
   const {
     isLoading,
-    syncJobs,
-    syncJobsIsLoading,
-    runAllJobs,
-    patchSyncJob,
-    patchSyncIsLoading,
   } = props;
 
   const getLink = (link, title) => (
@@ -51,13 +44,7 @@ const AdministratorPage = (props) => {
                       columns={columns[0]}
                     >
                       <div className="usa-width-one-whole section no-padding">
-                        <DataSync
-                          syncJobs={syncJobs}
-                          isLoading={syncJobsIsLoading}
-                          runAllJobs={runAllJobs}
-                          patchSyncJob={patchSyncJob}
-                          patchSyncIsLoading={patchSyncIsLoading}
-                        />
+                        <SystemMonitor />
                         <div className="usa-grid-full padding-section button-container">
                           <LinkButton className="unstyled-button" toLink="/profile/administrator/logs">Review Logs</LinkButton>
                         </div>
@@ -89,20 +76,10 @@ const AdministratorPage = (props) => {
 
 AdministratorPage.propTypes = {
   isLoading: PropTypes.bool,
-  syncJobs: PropTypes.arrayOf(PropTypes.shape({})),
-  syncJobsIsLoading: PropTypes.bool,
-  runAllJobs: PropTypes.func,
-  patchSyncIsLoading: PropTypes.bool,
-  patchSyncJob: PropTypes.func,
 };
 
 AdministratorPage.defaultProps = {
   isLoading: false,
-  syncJobs: [],
-  syncJobsIsLoading: false,
-  runAllJobs: EMPTY_FUNCTION,
-  patchSyncIsLoading: false,
-  patchSyncJob: EMPTY_FUNCTION,
 };
 
 export default AdministratorPage;
