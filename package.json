@@ -104,6 +104,7 @@
     "@babel/runtime-corejs2": "^7.12.5",
     "@epegzz/sass-vars-loader": "^6.0.0",
     "autoprefixer": "^9.8.6",
+    "axe-core": "^3.2.2",
     "axios-mock-adapter": "^1.19.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10",
@@ -114,6 +115,9 @@
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "chalk": "2.4.2",
     "css-loader": "^3.6.0",
+    "cypress": "^3.8.3",
+    "cypress-axe": "^0.12.0",
+    "cypress-image-snapshot": "2.3.5",
     "dotenv": "4.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
@@ -155,6 +159,7 @@
     "sass-lint": "^1.13.1",
     "sass-loader": "^10.1.0",
     "sinon": "^2.4.1",
+    "start-server-and-test": "^1.10.9",
     "style-loader": "2.0.0",
     "supertest": "^6.0.1",
     "sw-precache-webpack-plugin": "^1.0.0",
@@ -178,7 +183,10 @@
     "analyze:eslint": "codeclimate analyze -e eslint:eslint-3 -f html > codeclimate.html",
     "analyze:scss": "codeclimate analyze -e scss-lint -f html > codeclimate.html",
     "stats": "NODE_ENV=production webpack --json --config ./config/webpack.config.prod.js > stats.json",
-    "bundlesize": "bundlesize"
+    "bundlesize": "bundlesize",
+    "cypress": "cypress run",
+    "cypress:open": "cypress open",
+    "cypress:ci": "start-server-and-test start http://localhost:3000 cypress"
   },
   "engines": {
     "node": ">=12"

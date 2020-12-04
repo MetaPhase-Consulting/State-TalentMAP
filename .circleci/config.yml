@@ -8,7 +8,7 @@ default-docker-node: &default-docker-node
         COMPOSE_FILE_NAME: circleci-docker-compose.yml
         API_REPO_NAME: state-talentmap-api
         API_REPO_BRANCH: staging
-        PUBLIC_URL: /talentmap/
+        PUBLIC_URL: /
         STATIC_PATH: /home/circleci/project/public
         API_ROOT: http://app:8000/
 jobs:
@@ -143,6 +143,35 @@ jobs:
  #           docker run --name pa11y --network container:web \
  #             --volumes-from data -t talentmap/pa11y-ci \
  #             pa11y-ci -c /app/.pa11yci
+  cypress:
+    <<: *default-docker-node
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Replace config.json
+          command: cp ${STATIC_PATH}/config/config_dev.json ${STATIC_PATH}/config/config.json
+      - run:
+          name: Install dependencies
+          command: yarn install --pure-lockfile
+      - run:
+          name: sudo apt-get update
+          command: sudo apt-get update
+      - run:
+          name: Install cypress dependencies
+          command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run:
+          name: Build app
+          command: yarn build
+      - run:
+          name: Install serve
+          command: sudo npm install -g serve
+      - run:
+          name: Serve app
+          command: nohup serve -s ./build -p 3000 &
+      - run:
+          name: Run Cypress
+          command: yarn cypress:ci
   zap:
     <<: *default-docker-node
     steps:
@@ -213,18 +242,20 @@ workflows:
       - docker-build:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - dev
-                - staging
-                - master
+          # filters:
+            # branches:
+              # only:
+                # - dev
+                # - staging
+                # - master
       - yarn:
           requires:
             - build
       - site:
           requires:
             - yarn
+            - build
+      - cypress
       - server:
           requires:
             - yarn

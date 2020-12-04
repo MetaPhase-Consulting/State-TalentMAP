@@ -18,6 +18,8 @@ certs/**/*
 !certs/README.md
 !certs/certs.sh
 !certs/*.cnf
+**/*/videos
+**/*/screenshots
 
 # misc
 .DS_Store
@@ -26,6 +28,9 @@ certs/**/*
 .env.test.local
 .env.production.local
 stats.json
+
+# cypress snapshot diffs
+**/*/__diff_output__
 
 npm-debug.log*
 yarn-debug.log*

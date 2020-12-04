@@ -1,18 +1,21 @@
 import PropTypes from 'prop-types';
+import shortid from 'shortid';
 import BidCountNumber from './BidCountNumber';
 import { BID_STATISTICS_OBJECT } from '../../Constants/PropTypes';
 
 const BidCount = ({ bidStatistics, hideLabel, label, altStyle, isCondensed, isTandemTwo }) => {
   let labelClass = 'bid-count-label';
   if (hideLabel) { labelClass = `${labelClass} usa-sr-only`; }
+  const id = shortid.generate();
+  const id$ = `bid-counts-${id}`;
   const bidStatistics$ = bidStatistics || {};
   return (
     <div className={`usa-grid-full bid-count-container ${altStyle ? 'bid-count-secondary' : ''} ${isCondensed ? 'bid-count-condensed' : ''}`}>
-      <div className={labelClass} id="bid-counts">{label}</div>
+      <div className={labelClass} id={id$}>{label}</div>
       {/* set an aria-labelledby so that screen readers understand the purpose of the list */}
       <ul
         className={`bid-count-list ${isTandemTwo ? 'bid-count-list-tandem' : ''}`}
-        aria-labelledby="bid-counts"
+        aria-labelledby={id$}
       >
         <BidCountNumber type="totalBids" number={bidStatistics$.total_bids || 0} />
         <BidCountNumber type="atGradeBids" number={bidStatistics$.in_grade || 0} />

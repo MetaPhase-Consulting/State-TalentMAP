@@ -2,6 +2,7 @@
 
 exports[`Avatar matches snapshot 1`] = `
 <div
+  alt="avatar"
   aria-label="John Doe"
   className="tm-avatar  special-class"
   onClick={[Function]}

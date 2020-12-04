@@ -59,6 +59,10 @@
 
   .glossary-hidden {
     right: -30rem;
+
+    * {
+      display: none;
+    }
   }
 
   ul {

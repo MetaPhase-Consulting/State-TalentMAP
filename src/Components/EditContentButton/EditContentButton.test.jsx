@@ -16,7 +16,7 @@ describe('EditContentButtonComponent', () => {
     const wrapper = shallow(
       <EditContentButton onToggle={spy} />,
     );
-    wrapper.find('FontAwesome').simulate('click');
+    wrapper.find('InteractiveElement').simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
@@ -26,8 +26,8 @@ describe('EditContentButtonComponent', () => {
       <EditContentButton onToggle={spy} />,
     );
     // should only respond to 13
-    wrapper.find('FontAwesome').simulate('keyUp', { keyCode: 13 });
-    wrapper.find('FontAwesome').simulate('keyUp', { keyCode: 14 });
+    wrapper.find('InteractiveElement').simulate('keyUp', { keyCode: 13 });
+    wrapper.find('InteractiveElement').simulate('keyUp', { keyCode: 14 });
     sinon.assert.calledOnce(spy);
   });
 
