@@ -54,7 +54,7 @@ describe('Search', () => {
       .contains('View position');
   });
 
-  it('matches filter snapshots', () => {
+  xit('matches filter snapshots', () => {
     cy.get('.filter-container')
       .matchImageSnapshot('filter-container');
 

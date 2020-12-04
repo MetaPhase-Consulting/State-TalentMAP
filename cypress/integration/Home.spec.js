@@ -52,7 +52,7 @@ describe('Home', () => {
     cy.wait('@getPosition2');
     cy.wait('@getPosition3'); */
 
-    cy.wait(4000);
+    cy.wait(10000);
 
     cy.wait('@getPermission');
 
@@ -71,16 +71,16 @@ describe('Home', () => {
       .contains('Viewing');
   });
 
-  it('matches navigation header snapshot', () => {
+  xit('matches navigation header snapshot', () => {
     cy.get('.usa-navbar')
       .matchImageSnapshot();
   });
 
-  /* it('matches footer snapshot', () => {
+  xit('matches footer snapshot', () => {
     cy.get('.usa-footer-primary-section')
       .matchImageSnapshot('footer-top');
 
     cy.get('.usa-footer-secondary_section')
       .matchImageSnapshot('footer-bottom');
-  }); */
+  });
 });

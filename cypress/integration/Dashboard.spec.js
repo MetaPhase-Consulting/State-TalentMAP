@@ -14,7 +14,7 @@ describe('Dashboard', () => {
 
     cy.wait('@getProfile');
 
-    cy.wait(4000);
+    cy.wait(10000);
 
     cy.get('.name-group > .dashboard-section-title > h2')
       .should('have.text', 'TalentMAP, Administrator');
