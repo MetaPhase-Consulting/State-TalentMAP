@@ -50,6 +50,7 @@
     "react/jsx-indent": [0],
     "react/jsx-indent-props": ["error", 2],
     "jsx-a11y/heading-has-content": [0],
+    "jsx-a11y/anchor-has-content": [0],
     "complexity": ["warn", { "max": 30 }],
     "no-confusing-arrow": [0],
     // allow names to be the same as the default for Redux container testing
