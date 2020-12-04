@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import React from 'react';
 import sinon from 'sinon';
 import toJSON from 'enzyme-to-json';
 import RegisterHandshakeAlert from './HandshakeRegisterAlert';
@@ -10,6 +9,7 @@ describe('HandshakeRegisterAlert', () => {
     id: 1,
     bid: bidListObject.results[0],
     registerHandshake: () => {},
+    unregisterHandshake: () => {},
   };
 
   it('is defined', () => {

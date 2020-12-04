@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get, includes, indexOf, remove, sortBy } from 'lodash';
 import ToggleButton from 'Components/ToggleButton';
@@ -77,6 +77,7 @@ class SearchFiltersContainer extends Component {
     } else {
       config = {
         ...config,
+        ordering: 'ted',
         tandem: 'tandem',
       };
       this.setState({ showTandem2: false }); // reset showTandem2 to false

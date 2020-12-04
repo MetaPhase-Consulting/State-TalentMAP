@@ -65,6 +65,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
     registerHandshake={[Function]}
     showBidCount={true}
     submitBid={[Function]}
+    unregisterHandshake={[Function]}
     useCDOView={false}
     userId=""
     userProfile={
@@ -96,6 +97,10 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
               "description": "COMPUTER SCIENCE",
             },
           ],
+        },
+        "employee_profile_url": Object {
+          "external": "https://external.com",
+          "internal": "https://internal.com",
         },
         "favorite_positions": Array [
           Object {
@@ -147,6 +152,10 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
           "initials": "JD",
           "last_name": "Doe",
           "username": "jdoe",
+        },
+        "user_info": Object {
+          "office_address": "1234 Apple St. NW Washington, DC 20010",
+          "office_phone": "202-876-5432",
         },
       }
     }
@@ -283,6 +292,7 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
       registerHandshake={[Function]}
       showBidCount={false}
       submitBid={[Function]}
+      unregisterHandshake={[Function]}
       useCDOView={false}
       userId=""
       userProfile={
@@ -314,6 +324,10 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
                 "description": "COMPUTER SCIENCE",
               },
             ],
+          },
+          "employee_profile_url": Object {
+            "external": "https://external.com",
+            "internal": "https://internal.com",
           },
           "favorite_positions": Array [
             Object {
@@ -365,6 +379,10 @@ exports[`BidTrackerCardContainerComponent matches snapshot when priorityExists i
             "initials": "JD",
             "last_name": "Doe",
             "username": "jdoe",
+          },
+          "user_info": Object {
+            "office_address": "1234 Apple St. NW Washington, DC 20010",
+            "office_phone": "202-876-5432",
           },
         }
       }

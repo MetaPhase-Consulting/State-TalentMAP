@@ -67,6 +67,7 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
     priorityExists={true}
     registerHandshake={[Function]}
     submitBid={[Function]}
+    unregisterHandshake={[Function]}
     useCDOView={false}
     userProfile={
       Object {
@@ -97,6 +98,10 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
               "description": "COMPUTER SCIENCE",
             },
           ],
+        },
+        "employee_profile_url": Object {
+          "external": "https://external.com",
+          "internal": "https://internal.com",
         },
         "favorite_positions": Array [
           Object {
@@ -148,6 +153,10 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
           "initials": "JD",
           "last_name": "Doe",
           "username": "jdoe",
+        },
+        "user_info": Object {
+          "office_address": "1234 Apple St. NW Washington, DC 20010",
+          "office_phone": "202-876-5432",
         },
       }
     }
@@ -212,6 +221,7 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
     priorityExists={true}
     registerHandshake={[Function]}
     submitBid={[Function]}
+    unregisterHandshake={[Function]}
     useCDOView={false}
     userProfile={
       Object {
@@ -242,6 +252,10 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
               "description": "COMPUTER SCIENCE",
             },
           ],
+        },
+        "employee_profile_url": Object {
+          "external": "https://external.com",
+          "internal": "https://internal.com",
         },
         "favorite_positions": Array [
           Object {
@@ -293,6 +307,10 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
           "initials": "JD",
           "last_name": "Doe",
           "username": "jdoe",
+        },
+        "user_info": Object {
+          "office_address": "1234 Apple St. NW Washington, DC 20010",
+          "office_phone": "202-876-5432",
         },
       }
     }
@@ -360,6 +378,7 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
     priorityExists={true}
     registerHandshake={[Function]}
     submitBid={[Function]}
+    unregisterHandshake={[Function]}
     useCDOView={false}
     userProfile={
       Object {
@@ -390,6 +409,10 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
               "description": "COMPUTER SCIENCE",
             },
           ],
+        },
+        "employee_profile_url": Object {
+          "external": "https://external.com",
+          "internal": "https://internal.com",
         },
         "favorite_positions": Array [
           Object {
@@ -441,6 +464,10 @@ exports[`BidTrackerCardListComponent matches snapshot 1`] = `
           "initials": "JD",
           "last_name": "Doe",
           "username": "jdoe",
+        },
+        "user_info": Object {
+          "office_address": "1234 Apple St. NW Washington, DC 20010",
+          "office_phone": "202-876-5432",
         },
       }
     }

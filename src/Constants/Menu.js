@@ -78,6 +78,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       {
         text: 'Bid Cycles',
         route: '/profile/cycles/',
+        icon: 'hourglass-start',
         roles: [
           'bidcycle_admin',
         ],
@@ -93,6 +94,12 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           params: {
             type: 'all',
           },
+        } : null,
+      checkFlag('flags.static_content') ?
+        {
+          text: 'Settings',
+          route: '/profile/settings/',
+          icon: 'cogs',
         } : null,
     ],
   },
@@ -168,15 +175,16 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       },
     ],
   },
-  {
+  checkFlag('flags.bureau') ? {
     text: 'Bureau',
-    route: '/profile/bureau/positionlists/',
+    route: '/profile/bureau/positionmanager/',
     icon: 'building',
     toggleMenuSection: true,
     expandedSection: true,
     roles: [
       'superuser',
       'bureau_user',
+      'post_user',
     ],
     children: [
       checkFlag('flags.static_content') ?
@@ -199,27 +207,60 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'bureau_user',
           ],
         } : null,
-      {
-        text: 'Position Lists',
-        route: '/profile/bureau/positionlists',
-        icon: 'list-ol',
-        roles: [
-          'superuser',
-          'bureau_user',
-        ],
-      },
       checkFlag('flags.static_content') ?
         {
-          text: 'Position Manager',
-          route: '/profile/bureau/positionmanager',
-          icon: 'map',
+          text: 'Position Lists',
+          route: '/profile/bureau/positionlists',
+          icon: 'list-ol',
           roles: [
             'superuser',
             'bureau_user',
           ],
         } : null,
+      {
+        text: 'Position Manager',
+        route: '/profile/bureau/positionmanager',
+        icon: 'map',
+        roles: [
+          'superuser',
+          'bureau_user',
+          'post_user',
+        ],
+      },
     ],
-  },
+  } : null,
+  checkFlag('flags.ao') ? {
+    text: 'AO',
+    route: '/profile/ao/positionmanager/',
+    icon: 'building-o',
+    toggleMenuSection: true,
+    expandedSection: true,
+    roles: [
+      'ao_user',
+      'superuser',
+    ],
+    children: [
+      checkFlag('flags.static_content') ?
+        {
+          text: 'Dashboard',
+          route: '/profile/ao/dashboard/',
+          icon: 'tachometer',
+          roles: [
+            'superuser',
+            'bureau_user',
+          ],
+        } : null,
+      {
+        text: 'Position Manager',
+        route: '/profile/ao/positionmanager',
+        icon: 'map-o',
+        roles: [
+          'ao_user',
+          'superuser',
+        ],
+      },
+    ],
+  } : null,
 ].filter(x => x));
 
 export default GET_PROFILE_MENU;

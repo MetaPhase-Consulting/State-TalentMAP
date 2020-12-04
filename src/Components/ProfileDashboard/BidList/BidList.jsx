@@ -1,15 +1,18 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { BID_RESULTS, EMPTY_FUNCTION } from '../../../Constants/PropTypes';
+import { get } from 'lodash';
+import { BID_RESULTS, EMPTY_FUNCTION, USER_PROFILE } from 'Constants/PropTypes';
+import { DEFAULT_USER_PROFILE } from 'Constants/DefaultProps';
 import SectionTitle from '../SectionTitle';
 import BidTrackerCard from '../../BidTracker/BidTrackerCard';
+import BidStatusStats from '../../BidTracker/BidStatusStats';
 import BidListHeader from './BidListHeader';
 import StaticDevContent from '../../StaticDevContent';
 import Spinner from '../../Spinner';
 
 const BidList = ({ bids, submitBidPosition, deleteBid, registerHandshake, isLoading, isPublic,
-  userId }) => {
+  userId, userProfile, userProfileIsLoading, unregisterHandshake }) => {
   // Push the priority bid to the top. There should only be one priority bid.
   // eslint rules seem to step over themselves here between using "return" and a ternary
   // eslint-disable-next-line no-confusing-arrow
@@ -17,6 +20,7 @@ const BidList = ({ bids, submitBidPosition, deleteBid, registerHandshake, isLoad
   // Then we check if the first object of the array is priority. We need this to define
   // whether or not to pass priorityExists.
   const doesPriorityExist = sortedBids.length && sortedBids[0] && sortedBids[0].is_priority;
+  const useCDOView = get(userProfile, 'is_cdo') && isPublic && !userProfileIsLoading;
   const bids$ = sortedBids.map(bid => (
     <BidTrackerCard
       key={bid.id}
@@ -25,10 +29,12 @@ const BidList = ({ bids, submitBidPosition, deleteBid, registerHandshake, isLoad
       showBidCount
       submitBid={submitBidPosition}
       registerHandshake={registerHandshake}
+      unregisterHandshake={unregisterHandshake}
       deleteBid={deleteBid}
       priorityExists={doesPriorityExist}
       readOnly={isPublic}
       userId={userId}
+      useCDOView={useCDOView}
     />
   ));
   return (
@@ -38,8 +44,9 @@ const BidList = ({ bids, submitBidPosition, deleteBid, registerHandshake, isLoad
           <BidListHeader />
         </StaticDevContent>
         <div className="usa-grid-full section-padded-inner-container">
-          <div className="usa-width-one-whole">
+          <div className="usa-width-one-whole bid-tracker-title--condensed">
             <SectionTitle title="Bid List" len={bids.length} icon="clipboard" />
+            <BidStatusStats bidList={bids} condensed />
           </div>
         </div>
         <div className="bid-list-container">
@@ -68,9 +75,12 @@ BidList.propTypes = {
   submitBidPosition: PropTypes.func,
   deleteBid: PropTypes.func,
   registerHandshake: PropTypes.func,
+  unregisterHandshake: PropTypes.func,
   isLoading: PropTypes.bool,
   isPublic: PropTypes.bool,
   userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  userProfile: USER_PROFILE.isRequired,
+  userProfileIsLoading: PropTypes.bool.isRequired,
 };
 
 BidList.defaultProps = {
@@ -78,9 +88,17 @@ BidList.defaultProps = {
   submitBidPosition: EMPTY_FUNCTION,
   deleteBid: EMPTY_FUNCTION,
   registerHandshake: EMPTY_FUNCTION,
+  unregisterHandshake: EMPTY_FUNCTION,
   isLoading: false,
   isPublic: false,
   userId: '',
+  userProfile: DEFAULT_USER_PROFILE,
+  userProfileIsLoading: false,
 };
 
-export default BidList;
+const mapStateToProps = state => ({
+  userProfile: state.userProfile,
+  userProfileIsLoading: state.userProfileIsLoading,
+});
+
+export default connect(mapStateToProps, null)(BidList);

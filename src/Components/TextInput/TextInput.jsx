@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { usePrevious } from 'hooks';
@@ -18,6 +18,13 @@ const TextInput = props => {
       props.changeText(input);
     }
   }, [input]);
+
+  useEffect(() => {
+    const shouldUpdate = props.value !== input;
+    if (shouldUpdate) {
+      changeText({ target: { value: props.value } });
+    }
+  }, [props.value]);
 
   const { id, labelSrOnly, type, label, labelMessage, placeholder, inputProps } = props;
   let labelClass;

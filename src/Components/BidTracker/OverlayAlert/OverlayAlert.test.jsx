@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import React from 'react';
 import toJSON from 'enzyme-to-json';
 import OverlayAlert from './OverlayAlert';
 import { APPROVED_PROP, CLOSED_PROP, HAND_SHAKE_OFFERED_PROP, DRAFT_PROP,
@@ -15,6 +14,7 @@ describe('OverlayAlertComponent', () => {
     submitBid: () => {},
     deleteBid: () => {},
     registerHandshake: () => {},
+    unregisterHandshake: () => {},
   };
 
   // All possible props, plus  fake prop to test the default case of the switch

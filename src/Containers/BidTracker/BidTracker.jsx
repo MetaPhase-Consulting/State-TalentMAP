@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -289,7 +289,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
       acceptBidPosition: id => dispatch(acceptBid(id, id$)),
       declineBidPosition: id => dispatch(declineBid(id, id$)),
       registerHandshakePosition: id => dispatch(registerHandshake(id, id$)),
-      unregisterHanadshakePosition: id => dispatch(unregisterHandshake(id, id$)),
+      unregisterHandshakePosition: id => dispatch(unregisterHandshake(id, id$)),
       deleteBid: id => dispatch(toggleBidPosition(id, true, false, id$, true)),
     };
   }

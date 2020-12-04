@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ExportButton from 'Components/ExportButton';
 import { downloadPositionData } from 'actions/favoritePositions';
 import { FAVORITE_POSITIONS_ARRAY, BID_RESULTS, FAVORITE_POSITION_COUNTS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { DEFAULT_FAVORITES_COUNTS } from 'Constants/DefaultProps';
-import { POSITION_SEARCH_SORTS_DYNAMIC, filterPVSorts } from 'Constants/Sort';
+import { POSITION_SEARCH_SORTS_DYNAMIC, filterPVSorts, filterTandemSorts } from 'Constants/Sort';
 import TotalResults from '../TotalResults';
 import ProfileSectionTitle from '../ProfileSectionTitle';
 import Spinner from '../Spinner';
@@ -20,7 +20,7 @@ const TYPE_PV_TANDEM = 'pvTandem';
 const TYPE_OPEN_TANDEM = 'openTandem';
 
 const FavoritePositions = props => {
-  const [selected, setSelected] = useState(TYPE_OPEN);
+  const [selected, setSelected] = useState(props.navType || TYPE_OPEN);
   const [isLoading, setIsLoading] = useState(false);
 
   const { favorites, favoritesTandem, favoritesPV,
@@ -43,12 +43,9 @@ const FavoritePositions = props => {
     }
   }
 
-  useEffect(() => {
-    props.selectedNav(selected);
-  }, [selected]);
-
   function navSelected(s) {
     setSelected(s);
+    props.selectedNav(s);
   }
 
   function exportPositionData() {
@@ -85,6 +82,9 @@ const FavoritePositions = props => {
   let selectOptions$ = POSITION_SEARCH_SORTS_DYNAMIC;
   if (selected === TYPE_PV || selected === TYPE_PV_TANDEM) {
     selectOptions$ = filterPVSorts(selectOptions$);
+  }
+  if (selected === TYPE_OPEN_TANDEM || selected === TYPE_PV_TANDEM) {
+    selectOptions$ = filterTandemSorts(selectOptions$);
   }
   selectOptions$ = selectOptions$.options;
 
@@ -127,6 +127,7 @@ const FavoritePositions = props => {
               onSelectOption={onSortChange}
               options={selectOptions$}
               disabled={favoritePositionsIsLoading}
+              defaultSort={sortType}
             />
           </div>
           <div className="export-button-container">
@@ -156,7 +157,7 @@ const FavoritePositions = props => {
         bidList={bidList}
         title="favorites"
         maxLength={300}
-        refreshFavorites
+        refreshFavorites={false}
         showBidListButton
         useShortFavButton
         showCompareButton
@@ -192,6 +193,7 @@ FavoritePositions.propTypes = {
   counts: FAVORITE_POSITION_COUNTS,
   onPageChange: PropTypes.func,
   selectedNav: PropTypes.func,
+  navType: PropTypes.string,
 };
 
 FavoritePositions.defaultProps = {
@@ -207,6 +209,7 @@ FavoritePositions.defaultProps = {
   counts: DEFAULT_FAVORITES_COUNTS,
   onPageChange: EMPTY_FUNCTION,
   selectedNav: EMPTY_FUNCTION,
+  navType: TYPE_OPEN,
 };
 
 export default FavoritePositions;

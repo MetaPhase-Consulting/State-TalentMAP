@@ -1,7 +1,7 @@
 // NOTE: We've comments some things out around showing contact information for bids,
 // since we don't have that information yet.
 // Information needed for the glossary tooltip for bid tracker card top is commented out.
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { BID_OBJECT, /* USER_PROFILE, */ EMPTY_FUNCTION } from '../../../Constants/PropTypes';
@@ -28,7 +28,8 @@ class BidTrackerCard extends Component {
   }
   render() {
     const { bid, acceptBid, condensedView, declineBid, priorityExists, submitBid, deleteBid,
-      registerHandshake, showBidCount, /* userProfile, */ useCDOView, userId } = this.props;
+      registerHandshake, showBidCount, /* userProfile, */ useCDOView, userId,
+      unregisterHandshake } = this.props;
     // determine whether we render an alert on top of the card
     const showAlert = shouldShowAlert(bid, { condensedView });
     // determine whether we should show the contacts section based on the status
@@ -70,6 +71,8 @@ class BidTrackerCard extends Component {
                   deleteBid={deleteBid}
                   userId={userId}
                   registerHandshake={registerHandshake}
+                  unregisterHandshake={unregisterHandshake}
+                  useCDOView={useCDOView}
                 />
             }
           </div>
@@ -107,6 +110,7 @@ BidTrackerCard.propTypes = {
   submitBid: PropTypes.func.isRequired,
   deleteBid: PropTypes.func.isRequired,
   registerHandshake: PropTypes.func.isRequired,
+  unregisterHandshake: PropTypes.func.isRequired,
   // userProfile: USER_PROFILE,
   showBidCount: PropTypes.bool,
   condensedView: PropTypes.bool,

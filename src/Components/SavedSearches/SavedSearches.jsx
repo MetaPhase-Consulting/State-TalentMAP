@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ProfileSectionTitle from '../ProfileSectionTitle';
 import SelectForm from '../SelectForm';
@@ -27,6 +27,7 @@ const SavedSearches = props => {
   const getSearches = useType => {
     const cycle = '/api/v1/cycleposition/';
     const pos = '/api/v1/position/';
+    const ap = '/api/v1/fsbid/available_positions/';
     const pv = '/api/v1/fsbid/projected_vacancies/';
     const apts = '/api/v1/fsbid/available_positions/tandem/';
     const pvts = '/api/v1/fsbid/projected_vacancies/tandem/';
@@ -34,7 +35,8 @@ const SavedSearches = props => {
     const checkBy = useType || selected;
     switch (checkBy) {
       case 'open':
-        return savedSearches.results.filter(f => f.endpoint === cycle || f.endpoint === pos);
+        return savedSearches.results.filter(f => f.endpoint === cycle ||
+          f.endpoint === pos || f.endpoint === ap);
       case 'pv':
         return savedSearches.results.filter(f => f.endpoint === pv);
       case 'open-ts':
@@ -43,7 +45,7 @@ const SavedSearches = props => {
         return savedSearches.results.filter(f => f.endpoint === pvts);
       default:
         return savedSearches.results
-          .filter(f => f.endpoint === cycle || f.endpoint === pos ||
+          .filter(f => f.endpoint === cycle || f.endpoint === pos || f.endpoint === ap ||
               f.endpoint === pv || f.endpoint === apts || f.endpoint === pvts);
     }
   };
@@ -51,11 +53,11 @@ const SavedSearches = props => {
   const isLoading = (filtersIsLoading || savedSearchesIsLoading);
 
   const options = [
-    { title: 'All Saved Searches', value: 'all', numerator: getSearches('all').length },
-    { title: 'Open Positions', value: 'open', numerator: getSearches('open').length },
-    { title: 'Projected Vacancies', value: 'pv', numerator: getSearches('pv').length },
-    { title: 'Tandem Open Positions', value: 'open-ts', numerator: getSearches('open-ts').length },
-    { title: 'Tandem Projected Vacancies', value: 'pv-ts', numerator: getSearches('pv-ts').length },
+    { title: 'All Saved Searches ', value: 'all', numerator: getSearches('all').length },
+    { title: 'Open Positions ', value: 'open', numerator: getSearches('open').length },
+    { title: 'Projected Vacancies ', value: 'pv', numerator: getSearches('pv').length },
+    { title: 'Tandem Open Positions ', value: 'open-ts', numerator: getSearches('open-ts').length },
+    { title: 'Tandem Projected Vacancies ', value: 'pv-ts', numerator: getSearches('pv-ts').length },
   ];
 
   const searches = { results: getSearches() };

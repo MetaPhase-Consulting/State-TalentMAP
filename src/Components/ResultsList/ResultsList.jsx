@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { get } from 'lodash';
@@ -13,22 +12,30 @@ export const getIsGroupEnd = (results, i) => {
   const currentCity = get(results, `[${i}].position.post.location.city`);
   const nextCity = get(nextResult, 'position.post.location.city');
   let isGroupEnd = false;
-  if (currentCommuterPost && nextCommuterPost && currentCommuterPost !== nextCommuterPost) {
+  const commuterPostsNonMatch = currentCommuterPost && nextCommuterPost &&
+    currentCommuterPost !== nextCommuterPost;
+  if (commuterPostsNonMatch) {
     isGroupEnd = true;
-  } else if (currentCity && nextCity && currentCity !== nextCity) {
+  }
+  if (commuterPostsNonMatch && currentCity &&
+    nextCity && currentCity !== nextCity) {
+    isGroupEnd = true;
+  }
+  if (!currentCommuterPost && !nextCommuterPost && currentCity !== nextCity) {
     isGroupEnd = true;
   }
   return isGroupEnd;
 };
 
 const ResultsList = ({ results, isLoading, favorites, favoritesPV,
-  favoritesTandem, favoritesPVTandem, bidList }, { isTandemSearch }) => {
+  favoritesTandem, favoritesPVTandem, bidList }, { isTandemSearch, newResultsCount }) => {
   const mapResults = results.results || [];
   return (
     <div className={isLoading ? 'results-loading' : null}>
       { mapResults.map((result, i) => {
         const key = shortid.generate();
         const useGroupEnd = getIsGroupEnd(mapResults, i) && isTandemSearch;
+        const isNew = newResultsCount > i;
         return (
           <ResultsCard
             id={key}
@@ -40,6 +47,7 @@ const ResultsList = ({ results, isLoading, favorites, favoritesPV,
             result={result}
             bidList={bidList}
             isGroupEnd={useGroupEnd}
+            isNew={isNew}
           />
         );
       })}
@@ -49,6 +57,7 @@ const ResultsList = ({ results, isLoading, favorites, favoritesPV,
 
 ResultsList.contextTypes = {
   isTandemSearch: PropTypes.bool,
+  newResultsCount: PropTypes.number,
 };
 
 ResultsList.propTypes = {

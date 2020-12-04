@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import React from 'react';
 import toJSON from 'enzyme-to-json';
 import BidTracker from './BidTracker';
 import bidListObject from '../../__mocks__/bidListObject';
@@ -15,6 +14,7 @@ describe('BidTrackerComponent', () => {
     submitBid: () => {},
     deleteBid: () => {},
     registerHandshake: () => {},
+    unregisterHandshake: () => {},
     notifications: notificationsObject,
     notificationsIsLoading: false,
     markBidTrackerNotification: () => {},
