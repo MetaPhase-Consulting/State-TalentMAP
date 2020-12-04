@@ -42,7 +42,7 @@ describe('Home', () => {
     cy.visit('/logout');
   });
 
-  it('is accessible', () => {
+  xit('is accessible', () => {
     cy.injectAxe();
 
     cy.configureAxe(getAxeConfig({}));
