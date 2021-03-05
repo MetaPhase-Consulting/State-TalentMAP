@@ -237,9 +237,10 @@ workflows:
                 - dev
                 - staging
                 - master
-      - yarn:
-          requires:
-            - build
+      - yarn
+ #     - yarn:
+ #         requires:
+ #           - build
       - site:
           requires:
             - yarn
