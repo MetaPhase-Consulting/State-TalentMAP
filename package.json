@@ -208,10 +208,6 @@
       "!src/polyfills/**/*.{js,jsx}",
       "!src/testUtilities/**/*"
     ],
-    "reporters": [
-      "default",
-      "jest-junit"
-    ],
     "coverageReporters": [
       "text-summary",
       "lcov"
