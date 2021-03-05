@@ -73,13 +73,6 @@ jobs:
           # command: yarn test -- --ci --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT_NAME: "reports/jest/test-results.xml"
-      - run:
-          command: cp junit.xml ~/junit/
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
       - run: ./cc-test-reporter after-build --exit-code $? < coverage/lcov.info
       - store_test_results:
           path: reports
