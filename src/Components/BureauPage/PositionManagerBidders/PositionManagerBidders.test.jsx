@@ -7,7 +7,8 @@ describe('PositionManagerBidders', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(<PositionManagerBidders {...props} />);
+    let wrapper = shallow(<PositionManagerBidders {...props} />);
+    wrapper = undefined;
     expect(wrapper).toBeDefined();
   });
 });
