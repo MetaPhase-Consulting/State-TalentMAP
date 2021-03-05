@@ -67,7 +67,7 @@ jobs:
       - run:
           name: Jest Test Coverage
           command: |
-                    TEST=$(circleci tests glob "src/**/[a-bA-B0-9]*.test.{js,jsx}" "src/**/[c-jC-J]*.test.{js,jsx}" "src/**/[k-rK-R]*.test.{js,jsx}" "src/**/[s-zS-Z]*.test.{js,jsx}")
+                    TEST=$(circleci tests glob "src/**/[a-bA-B0-9]*.test.{js,jsx}" "src/**/[c-jC-J]*.test.{js,jsx}")
                     yarn test $TEST -- --ci --reporters=default --reporters=jest-junit
           # command: yarn test -- --ci --reporters=default --reporters=jest-junit
           environment:
