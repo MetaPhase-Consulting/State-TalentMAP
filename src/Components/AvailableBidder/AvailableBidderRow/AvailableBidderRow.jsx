@@ -27,7 +27,7 @@ const AvailableBidderRow = (props) => {
   const ted = get(bidder, 'current_assignment.end_date');
   const formattedTed = ted ? formatDate(ted) : NO_END_DATE;
   const id = get(bidder, 'bidder_perdet') || get(bidder, 'perdet_seq_number');
-  const name = get(bidder, 'ab_name');
+  const name = get(bidder, 'name');
   const ocBureau = get(bidder, 'available_bidder_details.oc_bureau') || NO_BUREAU;
   const ocReason = get(bidder, 'available_bidder_details.oc_reason') || NO_OC_REASON;
   const status = get(bidder, 'available_bidder_details.status') || NO_STATUS;
