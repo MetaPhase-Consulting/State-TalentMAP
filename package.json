@@ -154,7 +154,7 @@
     "react-router-test-context": "^0.1.0",
     "react-styleguidist": "^11.1.6",
     "redux-mock-store": "^1.5.3",
-    "redux-saga-test-plan": "^3.7.0",
+    "redux-saga-test-plan": "^4.0.1",
     "redux-testkit": "^1.0.6",
     "resolve-url-loader": "3.1.1",
     "sass-lint": "^1.13.1",
