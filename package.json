@@ -125,6 +125,7 @@
     "eslint": "^6",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-react-app": "^5.2.1",
+    "eslint-formatter-github": "^1.0.11",
     "eslint-loader": "4.0.2",
     "eslint-plugin-flowtype": "2.41.0",
     "eslint-plugin-import": "2.22.1",
