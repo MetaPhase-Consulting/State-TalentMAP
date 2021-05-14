@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { EMPTY_FUNCTION, GLOSSARY_ERROR_OBJECT, GLOSSARY_SUCCESS_OBJECT } from '../../../Constants/PropTypes';
 import GlossaryEditorCard from '../GlossaryEditorCard';
 import Alert from '../../Alert';
+import BackButton from '../../BackButton';
 
 class GlossaryEditorPage extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class GlossaryEditorPage extends Component {
 
     return (
       <div className="profile-content-inner-container glossary-editor-page-header">
+        <BackButton />
         <div className="usa-grid-full glossary-header-container">
           <div>
             <h2 className="hello-greeting">Glossary Editor</h2>

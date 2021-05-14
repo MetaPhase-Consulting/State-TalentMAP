@@ -8,6 +8,7 @@ import CountUp from 'react-countup';
 import LinkButton from '../LinkButton';
 import { positionCountFetchData } from '../../actions/positionCount';
 import { getAssetPath } from '../../utilities';
+import BackButton from '../BackButton';
 
 const logo = getAssetPath('/assets/logos/png/horizontal_color_thin-sm.png');
 
@@ -37,6 +38,7 @@ class HomePageBanner extends Component {
     return (
       <div className="usa-grid-full homepage-search-banner">
         <div className="usa-grid-full">
+          <BackButton />
           <img src={logo} alt="TalentMAP logo" />
           <div>
             {`

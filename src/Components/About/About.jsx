@@ -10,6 +10,7 @@ import Editor from './Editor';
 import Spinner from '../Spinner';
 import Alert from '../Alert';
 import { SUBMIT_BUTTON_ID } from './Editor/Editor';
+import BackButton from '../BackButton';
 
 const EDIT_BUTTON_ID = 'edit-about-content';
 
@@ -39,6 +40,7 @@ class About extends Component {
     return (
       <div className="usa-grid-full content-container padded-main-content">
         <div className="usa-grid-full about-page">
+          <BackButton />
           <MediaQuery breakpoint="screenSmMax" widthType="min">
             {matches => (
               <div>
