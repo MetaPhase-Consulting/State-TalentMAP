@@ -229,7 +229,7 @@ jobs:
       - run: yarn add eslint
       - run:
           name: eslint-formatter-github
-          command: node ./node_modules/eslint/bin/eslint.js --format github ./src/Components/About/About.jsx
+          command: node ./node_modules/eslint/bin/eslint.js --format github --ext .jsx --ext .js ./src/**
 workflows:
   version: 2
   build_and_test:
