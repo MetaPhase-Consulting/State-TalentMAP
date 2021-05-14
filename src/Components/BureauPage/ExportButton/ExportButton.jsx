@@ -30,9 +30,7 @@ class ExportButtonBureau extends Component {
   render() {
     const { isLoading } = this.state;
 
-    return (
-      <ExportButton onClick={this.exportBidders} isLoading={isLoading} />
-    );
+    return <ExportButton onClick={this.exportBidders} isLoading={isLoading} />;
   }
 }
 

@@ -8,20 +8,13 @@ describe('AuthorizedWrapper', () => {
     children: <span>test</span>,
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <AuthorizedWrapper
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<AuthorizedWrapper {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('it does not render children if isAuthorized returns false', () => {
     const wrapper = shallow(
-      <AuthorizedWrapper
-        {...props}
-        isAuthorized={() => false}
-      />,
+      <AuthorizedWrapper {...props} isAuthorized={() => false} />,
     );
     expect(wrapper).toBeDefined();
     expect(wrapper.find('span').exists()).toBe(false);
@@ -29,10 +22,7 @@ describe('AuthorizedWrapper', () => {
 
   it('it renders children if isAuthorized returns true', () => {
     const wrapper = shallow(
-      <AuthorizedWrapper
-        {...props}
-        isAuthorized={() => true}
-      />,
+      <AuthorizedWrapper {...props} isAuthorized={() => true} />,
     );
     expect(wrapper).toBeDefined();
     expect(wrapper.find('span').exists()).toBe(true);
@@ -40,20 +30,14 @@ describe('AuthorizedWrapper', () => {
 
   it('matches snapshot when isAuthorized returns true', () => {
     const wrapper = shallow(
-      <AuthorizedWrapper
-        {...props}
-        isAuthorized={() => true}
-      />,
+      <AuthorizedWrapper {...props} isAuthorized={() => true} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when isAuthorized returns false', () => {
     const wrapper = shallow(
-      <AuthorizedWrapper
-        {...props}
-        isAuthorized={() => false}
-      />,
+      <AuthorizedWrapper {...props} isAuthorized={() => false} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

@@ -17,7 +17,9 @@ describe('HomePagePositionsSection', () => {
   });
 
   it('displays the error message when hasErrored is true and isLoading is false', () => {
-    const wrapper = shallow(<HomePagePositionsSection {...props} hasErrored isLoading={false} />);
+    const wrapper = shallow(
+      <HomePagePositionsSection {...props} hasErrored isLoading={false} />,
+    );
     expect(wrapper.find('Alert').props().type).toBe('error');
   });
 

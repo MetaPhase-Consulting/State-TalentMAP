@@ -2,7 +2,11 @@ import { Component, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { difference, get, intersection } from 'lodash';
-import { markNotification, markNotifications, notificationsFetchData } from '../../actions/notifications';
+import {
+  markNotification,
+  markNotifications,
+  notificationsFetchData,
+} from '../../actions/notifications';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 import { scrollToTop } from '../../utilities';
 
@@ -20,7 +24,9 @@ class NotificationsContainer extends Component {
 
   UNSAFE_componentWillMount() {
     const { useCached } = this.props;
-    if (!useCached) { this.getNotifications(); }
+    if (!useCached) {
+      this.getNotifications();
+    }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -48,7 +54,7 @@ class NotificationsContainer extends Component {
     this.setState({ selectedNotifications });
   };
 
-  getCheckedValueById = id => {
+  getCheckedValueById = (id) => {
     const { selectedNotifications } = this.state;
     return selectedNotifications.has(id);
   };
@@ -71,26 +77,39 @@ class NotificationsContainer extends Component {
     const { selectedNotifications } = this.state;
     const results = this.getCurrentResults();
     // does it contain all from results page?
-    if (difference(results.map(r => r.id), [...selectedNotifications]).length === 0) {
+    if (
+      difference(
+        results.map((r) => r.id),
+        [...selectedNotifications],
+      ).length === 0
+    ) {
       // remove all from results page
-      results.forEach(r => selectedNotifications.delete(r.id));
+      results.forEach((r) => selectedNotifications.delete(r.id));
     } else {
       // add all from results page
-      results.forEach(r => selectedNotifications.add(r.id));
+      results.forEach((r) => selectedNotifications.add(r.id));
     }
     this.setState({ selectedNotifications });
   };
 
-  markNotificationsByType = type => {
+  markNotificationsByType = (type) => {
     const { selectedNotifications } = this.state;
 
     const results = this.getCurrentResults();
 
-    const ids = intersection(results.map(r => r.id), [...selectedNotifications]);
+    const ids = intersection(
+      results.map((r) => r.id),
+      [...selectedNotifications],
+    );
 
     const cb = this.getCallback();
 
-    const config = { ids, markAsRead: false, shouldDelete: false, cb };
+    const config = {
+      ids,
+      markAsRead: false,
+      shouldDelete: false,
+      cb,
+    };
 
     if (type === 'delete') {
       this.onPageChange({ page: 1 });
@@ -101,10 +120,10 @@ class NotificationsContainer extends Component {
       this.props.markNotifications({ ...config, markAsRead: false });
     }
 
-    results.forEach(r => selectedNotifications.delete(r.id));
+    results.forEach((r) => selectedNotifications.delete(r.id));
   };
 
-  delete = id => {
+  delete = (id) => {
     const cb = this.getCallback();
     this.props.delete(id, cb);
     this.onPageChange({ page: 1 });
@@ -134,7 +153,8 @@ class NotificationsContainer extends Component {
 
     const props = {
       notifications,
-      isLoading: isLoading || markNotificationIsLoading || markNotificationsIsLoading,
+      isLoading:
+        isLoading || markNotificationIsLoading || markNotificationsIsLoading,
       hasErrored,
       notificationsPopover,
       isLoadingPopover,
@@ -193,7 +213,7 @@ NotificationsContainer.defaultProps = {
   useCached: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   notifications: state.notifications,
   hasErrored: state.notificationsHasErrored,
   isLoading: state.notificationsIsLoading,
@@ -204,10 +224,13 @@ const mapStateToProps = state => ({
   markNotificationsIsLoading: state.markNotificationsIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: page => dispatch(notificationsFetchData(PAGE_SIZE, page)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (page) => dispatch(notificationsFetchData(PAGE_SIZE, page)),
   delete: (id, cb) => dispatch(markNotification(id, false, true, true, cb)),
-  markNotifications: config => dispatch(markNotifications(config)),
+  markNotifications: (config) => dispatch(markNotifications(config)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NotificationsContainer);

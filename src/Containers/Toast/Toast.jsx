@@ -13,34 +13,53 @@ export class Toast extends Component {
     }
   }
 
-  notify = ({ type = 'success', message = 'Message', title = '', id, isUpdate, options }) => {
+  notify = ({
+    type = 'success',
+    message = 'Message',
+    title = '',
+    id,
+    isUpdate,
+    options,
+  }) => {
     let options$ = {
       autoClose: true,
     };
     let title$;
-    if (type === 'success') { title$ = 'Success'; }
-    if (type === 'error') { title$ = 'Error'; }
-    if (title) { title$ = title; }
+    if (type === 'success') {
+      title$ = 'Success';
+    }
+    if (type === 'error') {
+      title$ = 'Error';
+    }
+    if (title) {
+      title$ = title;
+    }
 
     if (isUpdate && this[id]) {
       toast.dismiss(this[id]);
     }
 
-    if (id && !isUpdate) { options$.autoClose = false; }
+    if (id && !isUpdate) {
+      options$.autoClose = false;
+    }
 
     options$ = { ...options$, ...options };
 
     const id$ = id || shortid.generate();
 
     this[id$] = toast[type](
-      <Alert type={type} title={title$} messages={[{ body: message }]} isDivided />, options$,
+      <Alert
+        type={type}
+        title={title$}
+        messages={[{ body: message }]}
+        isDivided
+      />,
+      options$,
     );
   };
 
   render() {
-    return (
-      <ToastContainer />
-    );
+    return <ToastContainer />;
   }
 }
 
@@ -62,7 +81,7 @@ Toast.defaultProps = {
   },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   toastData: state.toast,
 });
 

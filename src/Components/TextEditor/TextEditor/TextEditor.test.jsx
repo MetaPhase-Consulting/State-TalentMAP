@@ -14,54 +14,32 @@ describe('TextEditorComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <TextEditor
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<TextEditor {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when the readOnly prop is true', () => {
-    const wrapper = shallow(
-      <TextEditor
-        {...props}
-        readOnly
-      />,
-    );
+    const wrapper = shallow(<TextEditor {...props} readOnly />);
     expect(wrapper).toBeDefined();
   });
 
   it('hides buttons when hideButtons is true', () => {
     const wrapper = shallow(
-      <TextEditor
-        {...props}
-        hideButtons
-        readOnly={false}
-      />,
+      <TextEditor {...props} hideButtons readOnly={false} />,
     );
     expect(wrapper.find('TextEditorSubmit').exists()).toBe(false);
   });
 
   it('displays buttons when hideButtons is false', () => {
     const wrapper = shallow(
-      <TextEditor
-        {...props}
-        hideButtons={false}
-        readOnly={false}
-      />,
+      <TextEditor {...props} hideButtons={false} readOnly={false} />,
     );
     expect(wrapper.find('TextEditorSubmit').exists()).toBe(true);
   });
 
   it('can submit text', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <TextEditor
-        id={id}
-        onSubmitText={spy}
-      />,
-    );
+    const wrapper = shallow(<TextEditor id={id} onSubmitText={spy} />);
     wrapper.instance().submit();
     sinon.assert.calledOnce(spy);
   });
@@ -69,11 +47,7 @@ describe('TextEditorComponent', () => {
   it('can call the cancel function', () => {
     const cancelSpy = sinon.spy();
     const wrapper = shallow(
-      <TextEditor
-        {...props}
-        id={id}
-        cancel={cancelSpy}
-      />,
+      <TextEditor {...props} id={id} cancel={cancelSpy} />,
     );
     wrapper.instance().cancel();
     expect(wrapper.instance().state.editorState).toBeDefined();
@@ -81,12 +55,7 @@ describe('TextEditorComponent', () => {
   });
 
   it('can call the onChange function', () => {
-    const wrapper = shallow(
-      <TextEditor
-        {...props}
-        id={id}
-      />,
-    );
+    const wrapper = shallow(<TextEditor {...props} id={id} />);
     // create an editorState like we'd use in TextEditor
     const editorState = createEditorStateWithText('test');
     // make a change
@@ -94,34 +63,32 @@ describe('TextEditorComponent', () => {
     // it should be defined
     expect(wrapper.instance().state.editorState).toBeDefined();
     // it should be able to return the original text using its functions
-    expect(wrapper.instance().state.editorState.getCurrentContent().getPlainText()).toBe('test');
+    expect(
+      wrapper.instance().state.editorState.getCurrentContent().getPlainText(),
+    ).toBe('test');
   });
 
   it('can properly set editorState and editorStateCopy', () => {
     const wrapper = shallow(
-      <TextEditor
-        {...props}
-        id={id}
-        initialText="test"
-      />,
+      <TextEditor {...props} id={id} initialText="test" />,
     );
     // get our "normal" and "copy" states, then use the plain text
     // function to check for equality, as the root object is a nested immutable
     // object with different keys.
-    const originalEditorState = wrapper.instance().state.editorState
-      .getCurrentContent().getPlainText();
-    const instanceEditorStateCopy = wrapper.instance().state.editorStateCopy
-      .getCurrentContent().getPlainText();
+    const originalEditorState = wrapper
+      .instance()
+      .state.editorState.getCurrentContent()
+      .getPlainText();
+    const instanceEditorStateCopy = wrapper
+      .instance()
+      .state.editorStateCopy.getCurrentContent()
+      .getPlainText();
     expect(originalEditorState).toBe(instanceEditorStateCopy);
   });
 
   it('properly maintains the value of the editorState and editorStateCopy after canceling', () => {
     const wrapper = shallow(
-      <TextEditor
-        {...props}
-        id={id}
-        initialText="test"
-      />,
+      <TextEditor {...props} id={id} initialText="test" />,
     );
     // regular and copied state should initialize as different objects
     let originalEditorState = wrapper.instance().state.editorState;
@@ -136,16 +103,14 @@ describe('TextEditorComponent', () => {
     expect(originalEditorState).toEqual(copiedEditorState);
     // Draftjs changes the name of Editor to PluginEditor.
     // We'll ensure that the correct prop is passed here as well.
-    expect(wrapper.find('PluginEditor').prop('editorState')).toBe(originalEditorState);
+    expect(wrapper.find('PluginEditor').prop('editorState')).toBe(
+      originalEditorState,
+    );
   });
 
   it('properly maintains the value of the editorState and editorStateCopy after submitting', () => {
     const wrapper = shallow(
-      <TextEditor
-        {...props}
-        id={id}
-        initialText="test"
-      />,
+      <TextEditor {...props} id={id} initialText="test" />,
     );
     // regular and copied state should initialize as different objects
     let originalEditorState = wrapper.instance().state.editorState;
@@ -160,6 +125,8 @@ describe('TextEditorComponent', () => {
     expect(originalEditorState).toEqual(copiedEditorState);
     // Draftjs changes the name of Editor to PluginEditor.
     // We'll ensure that the correct prop is passed here as well.
-    expect(wrapper.find('PluginEditor').prop('editorState')).toBe(copiedEditorState);
+    expect(wrapper.find('PluginEditor').prop('editorState')).toBe(
+      copiedEditorState,
+    );
   });
 });

@@ -27,7 +27,7 @@ describe('PositionDetailsDataPoint', () => {
   });
 
   it('handles element props', () => {
-    const description = (<span>test</span>);
+    const description = <span>test</span>;
     wrapper = shallow(
       <PositionDetailsDataPoint title="Title" description={description} />,
     );
@@ -35,7 +35,7 @@ describe('PositionDetailsDataPoint', () => {
   });
 
   it('handles an array of different prop types', () => {
-    const description = ['test', 100, (<span key="a">test</span>)];
+    const description = ['test', 100, <span key="a">test</span>];
     wrapper = shallow(
       <PositionDetailsDataPoint title="Title" description={description} />,
     );

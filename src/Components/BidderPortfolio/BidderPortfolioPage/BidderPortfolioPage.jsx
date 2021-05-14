@@ -1,7 +1,11 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS } from 'Constants/PropTypes';
+import {
+  BIDDER_LIST,
+  BIDDER_PORTFOLIO_COUNTS,
+  CLASSIFICATIONS,
+} from 'Constants/PropTypes';
 import StaticDevContent from 'Components/StaticDevContent';
 import TotalResults from 'Components/TotalResults/TotalResults';
 import ErrorBoundary from 'Components/ErrorBoundary';
@@ -26,23 +30,35 @@ class BidderPortfolioPage extends Component {
     };
   }
 
-  changeViewType = value => {
+  changeViewType = (value) => {
     const { viewType } = this.state;
     viewType.value = value;
     this.setState({ viewType });
   };
 
-  changeEditType = value => {
+  changeEditType = (value) => {
     this.setState({ editType: value });
   };
 
   render() {
     const useClientCounts = getUseClientCounts();
     const { editType } = this.state;
-    const { bidderPortfolio, bidderPortfolioIsLoading, cdosLength,
-      bidderPortfolioHasErrored, pageSize, queryParamUpdate, pageNumber,
-      bidderPortfolioCounts, bidderPortfolioCountsIsLoading, classificationsIsLoading,
-      classificationsHasErrored, classifications, defaultHandshake, defaultOrdering } = this.props;
+    const {
+      bidderPortfolio,
+      bidderPortfolioIsLoading,
+      cdosLength,
+      bidderPortfolioHasErrored,
+      pageSize,
+      queryParamUpdate,
+      pageNumber,
+      bidderPortfolioCounts,
+      bidderPortfolioCountsIsLoading,
+      classificationsIsLoading,
+      classificationsHasErrored,
+      classifications,
+      defaultHandshake,
+      defaultOrdering,
+    } = this.props;
     // Here we just want to check that the 'all_clients' prop exists,
     // because we want the nav section to appear
     // even when we reload the counts.
@@ -51,24 +67,29 @@ class BidderPortfolioPage extends Component {
       navDataIsLoading = bidderPortfolioCountsIsLoading && !bidderPortfolioCounts.all_clients;
     }
     // for bidder results, however, we'll wait until everything is loaded
-    const bidderPortfolioIsLoadingNotErrored = (bidderPortfolioIsLoading ||
-      classificationsIsLoading) && !bidderPortfolioHasErrored && !classificationsHasErrored;
+    const bidderPortfolioIsLoadingNotErrored = (bidderPortfolioIsLoading || classificationsIsLoading)
+      && !bidderPortfolioHasErrored
+      && !classificationsHasErrored;
     const isLoading = bidderPortfolioIsLoadingNotErrored || navDataIsLoading;
     // whether or not we should use the list view
     const isListView = this.state.viewType.value === 'grid';
 
     let viewTypeClass = 'card-view';
-    if (isListView) { viewTypeClass = 'list-view'; }
+    if (isListView) {
+      viewTypeClass = 'list-view';
+    }
 
     let loadingClass = '';
-    if (isLoading) { loadingClass = 'results-loading'; }
+    if (isLoading) {
+      loadingClass = 'results-loading';
+    }
 
     const showEdit = editType.show;
 
     const hideControls = get(bidderPortfolio, 'results', []).length === 0 || !cdosLength;
 
     const total = get(bidderPortfolio, 'count');
-    const disableLink = (cdosLength === 0 || total === 0);
+    const disableLink = cdosLength === 0 || total === 0;
     return (
       <div className={`bidder-portfolio-page ${viewTypeClass}`}>
         <BidderPortfolioSearch onUpdate={queryParamUpdate} />
@@ -77,19 +98,23 @@ class BidderPortfolioPage extends Component {
             <div className="usa-width-one-half">
               <ProfileSectionTitle title="Clients" icon="users" />
             </div>
-            <div className="usa-width-one-half" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div
+              className="usa-width-one-half"
+              style={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
               <StaticDevContent>
-                {isListView && !hideControls && <EditButtons onChange={this.changeEditType} />}
+                {isListView && !hideControls && (
+                  <EditButtons onChange={this.changeEditType} />
+                )}
               </StaticDevContent>
               <ExportLink disabled={disableLink} />
             </div>
           </div>
-          {
-            !navDataIsLoading &&
+          {!navDataIsLoading && (
             <div>
-              { useClientCounts &&
+              {useClientCounts && (
                 <TopNav bidderPortfolioCounts={bidderPortfolioCounts} />
-              }
+              )}
               <BidControls
                 queryParamUpdate={queryParamUpdate}
                 viewType={this.state.viewType.value}
@@ -99,39 +124,38 @@ class BidderPortfolioPage extends Component {
                 defaultOrdering={defaultOrdering}
               />
             </div>
-          }
-          <div className={`usa-grid-full bidder-portfolio-listing ${loadingClass}`}>
-            {
-              !isLoading && !hideControls &&
-                <div className="total-results-container">
-                  <TotalResults
-                    total={get(bidderPortfolio, 'count')}
-                    pageNumber={pageNumber}
-                    pageSize={pageSize}
-                  />
-                </div>
-            }
-            {
-              isLoading &&
-                <Spinner type="homepage-position-results" size="big" />
-            }
-            {
-              !isLoading &&
-                <ErrorBoundary>
-                  <BidderPortfolioContainer
-                    bidderPortfolio={bidderPortfolio}
-                    pageSize={pageSize}
-                    queryParamUpdate={queryParamUpdate}
-                    pageNumber={pageNumber}
-                    showListView={isListView}
-                    showEdit={showEdit}
-                    classifications={classifications}
-                    isLoading={bidderPortfolioIsLoading}
-                    cdosLength={cdosLength}
-                    hideControls={hideControls}
-                  />
-                </ErrorBoundary>
-            }
+          )}
+          <div
+            className={`usa-grid-full bidder-portfolio-listing ${loadingClass}`}
+          >
+            {!isLoading && !hideControls && (
+              <div className="total-results-container">
+                <TotalResults
+                  total={get(bidderPortfolio, 'count')}
+                  pageNumber={pageNumber}
+                  pageSize={pageSize}
+                />
+              </div>
+            )}
+            {isLoading && (
+              <Spinner type="homepage-position-results" size="big" />
+            )}
+            {!isLoading && (
+              <ErrorBoundary>
+                <BidderPortfolioContainer
+                  bidderPortfolio={bidderPortfolio}
+                  pageSize={pageSize}
+                  queryParamUpdate={queryParamUpdate}
+                  pageNumber={pageNumber}
+                  showListView={isListView}
+                  showEdit={showEdit}
+                  classifications={classifications}
+                  isLoading={bidderPortfolioIsLoading}
+                  cdosLength={cdosLength}
+                  hideControls={hideControls}
+                />
+              </ErrorBoundary>
+            )}
           </div>
         </div>
       </div>

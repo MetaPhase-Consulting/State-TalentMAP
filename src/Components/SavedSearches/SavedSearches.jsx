@@ -11,7 +11,7 @@ import {
 import { SAVED_SEARCH_SORTS } from '../../Constants/Sort';
 import Nav from '../FavoritePositions/Nav';
 
-const SavedSearches = props => {
+const SavedSearches = (props) => {
   const [selected, setSelected] = useState('all');
 
   const {
@@ -24,7 +24,7 @@ const SavedSearches = props => {
     filtersIsLoading,
   } = props;
 
-  const getSearches = useType => {
+  const getSearches = (useType) => {
     const cycle = '/api/v1/cycleposition/';
     const pos = '/api/v1/position/';
     const ap = '/api/v1/fsbid/available_positions/';
@@ -35,29 +35,55 @@ const SavedSearches = props => {
     const checkBy = useType || selected;
     switch (checkBy) {
       case 'open':
-        return savedSearches.results.filter(f => f.endpoint === cycle ||
-          f.endpoint === pos || f.endpoint === ap);
+        return savedSearches.results.filter(
+          (f) => f.endpoint === cycle || f.endpoint === pos || f.endpoint === ap,
+        );
       case 'pv':
-        return savedSearches.results.filter(f => f.endpoint === pv);
+        return savedSearches.results.filter((f) => f.endpoint === pv);
       case 'open-ts':
-        return savedSearches.results.filter(f => f.endpoint === apts);
+        return savedSearches.results.filter((f) => f.endpoint === apts);
       case 'pv-ts':
-        return savedSearches.results.filter(f => f.endpoint === pvts);
+        return savedSearches.results.filter((f) => f.endpoint === pvts);
       default:
-        return savedSearches.results
-          .filter(f => f.endpoint === cycle || f.endpoint === pos || f.endpoint === ap ||
-              f.endpoint === pv || f.endpoint === apts || f.endpoint === pvts);
+        return savedSearches.results.filter(
+          (f) => f.endpoint === cycle
+            || f.endpoint === pos
+            || f.endpoint === ap
+            || f.endpoint === pv
+            || f.endpoint === apts
+            || f.endpoint === pvts,
+        );
     }
   };
 
-  const isLoading = (filtersIsLoading || savedSearchesIsLoading);
+  const isLoading = filtersIsLoading || savedSearchesIsLoading;
 
   const options = [
-    { title: 'All Saved Searches ', value: 'all', numerator: getSearches('all').length },
-    { title: 'Open Positions ', value: 'open', numerator: getSearches('open').length },
-    { title: 'Projected Vacancies ', value: 'pv', numerator: getSearches('pv').length },
-    { title: 'Tandem Open Positions ', value: 'open-ts', numerator: getSearches('open-ts').length },
-    { title: 'Tandem Projected Vacancies ', value: 'pv-ts', numerator: getSearches('pv-ts').length },
+    {
+      title: 'All Saved Searches ',
+      value: 'all',
+      numerator: getSearches('all').length,
+    },
+    {
+      title: 'Open Positions ',
+      value: 'open',
+      numerator: getSearches('open').length,
+    },
+    {
+      title: 'Projected Vacancies ',
+      value: 'pv',
+      numerator: getSearches('pv').length,
+    },
+    {
+      title: 'Tandem Open Positions ',
+      value: 'open-ts',
+      numerator: getSearches('open-ts').length,
+    },
+    {
+      title: 'Tandem Projected Vacancies ',
+      value: 'pv-ts',
+      numerator: getSearches('pv-ts').length,
+    },
   ];
 
   const searches = { results: getSearches() };
@@ -65,7 +91,7 @@ const SavedSearches = props => {
   return (
     <div
       className={`usa-grid-full profile-content-inner-container saved-searches-container saved-searches-page
-        ${(isLoading) ? 'results-loading' : ''}`}
+        ${isLoading ? 'results-loading' : ''}`}
     >
       <div className="usa-grid-full searches-top-section">
         <div className="searches-title-container">
@@ -89,19 +115,15 @@ const SavedSearches = props => {
           denominator={getSearches('all').length}
         />
       }
-      {
-        isLoading &&
-            <Spinner type="homepage-position-results" size="big" />
-      }
-      {
-        !isLoading &&
-          <SavedSearchesList
-            savedSearches={searches}
-            goToSavedSearch={goToSavedSearch}
-            deleteSearch={deleteSearch}
-            mappedParams={mappedParams}
-          />
-      }
+      {isLoading && <Spinner type="homepage-position-results" size="big" />}
+      {!isLoading && (
+        <SavedSearchesList
+          savedSearches={searches}
+          goToSavedSearch={goToSavedSearch}
+          deleteSearch={deleteSearch}
+          mappedParams={mappedParams}
+        />
+      )}
     </div>
   );
 };

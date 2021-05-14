@@ -6,7 +6,8 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 describe('async actions', () => {
   beforeEach(() => {
     const results = [
-      { id: 6,
+      {
+        id: 6,
         grade: '05',
         skill: 'OFFICE MANAGEMENT (9017)',
         bureau: '150000',
@@ -15,12 +16,26 @@ describe('async actions', () => {
         is_overseas: true,
         create_date: '2006-09-20',
         update_date: '2017-06-08',
-        post: { id: 162, tour_of_duty: '2YRR', code: 'LT6000000', location: 'MASERU, LESOTHO', cost_of_living_adjustment: 0, differential_rate: 15, danger_pay: 0, rest_relaxation_point: 'London', has_consumable_allowance: false, has_service_needs_differential: false },
+        post: {
+          id: 162,
+          tour_of_duty: '2YRR',
+          code: 'LT6000000',
+          location: 'MASERU, LESOTHO',
+          cost_of_living_adjustment: 0,
+          differential_rate: 15,
+          danger_pay: 0,
+          rest_relaxation_point: 'London',
+          has_consumable_allowance: false,
+          has_service_needs_differential: false,
+        },
         languages: [
-          { id: 1, language: 'French (FR)', reading_proficiency: '2', spoken_proficiency: '2', representation: 'French (FR) 2/2' },
+          {
+            id: 1, language: 'French (FR)', reading_proficiency: '2', spoken_proficiency: '2', representation: 'French (FR) 2/2',
+          },
         ],
       },
-      { id: 60,
+      {
+        id: 60,
         grade: '03',
         skill: 'OFFICE MANAGEMENT (9017)',
         bureau: '150000',
@@ -35,17 +50,14 @@ describe('async actions', () => {
     ];
 
     mockAdapter.onGet('/fsbid/available_positions/?').reply(200,
-      results,
-    );
+      results);
 
     mockAdapter.onGet('/fsbid/available_positions/1/similar/?limit=3').reply(200,
-      results,
-    );
+      results);
 
     // We'll use this mock to provide coverage in /src/api.js
     mockAdapter.onGet('/fsbid/available_positions/2/similar/?limit=3').reply(401,
-      'Invalid token',
-    );
+      'Invalid token');
   });
 
   it('can fetch positions', (done) => {
@@ -93,8 +105,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/cycleposition/?').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

@@ -57,7 +57,13 @@ describe('BureauPage', () => {
               id: 'MX1150000',
               isSelected: false,
               is_domestic: true,
-              location: { code: 'MX1150000', city: 'Ripley', state: 'Oklahoma', country: 'USA', is_domestic: true },
+              location: {
+                code: 'MX1150000',
+                city: 'Ripley',
+                state: 'Oklahoma',
+                country: 'USA',
+                is_domestic: true,
+              },
               state: 'Oklahoma',
             },
           ],
@@ -139,4 +145,3 @@ describe('BureauPage', () => {
     expect(wrapper).toBeDefined();
   });
 });
-

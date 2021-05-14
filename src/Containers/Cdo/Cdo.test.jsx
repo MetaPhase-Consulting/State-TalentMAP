@@ -10,10 +10,13 @@ const mockStore = configureStore(middlewares);
 
 describe('Cdo', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Cdo />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Cdo />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 });
-

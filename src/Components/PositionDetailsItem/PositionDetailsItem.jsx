@@ -5,13 +5,18 @@ import BidCount from 'Components/BidCount';
 import PositionSkillCodeList from 'Components/PositionSkillCodeList';
 import StaticDevContent from 'Components/StaticDevContent';
 import { COMMON_PROPERTIES } from '../../Constants/EndpointParams';
-import LanguageList from '../../Components/LanguageList/LanguageList';
+import LanguageList from '../LanguageList/LanguageList';
 import CondensedCardDataPoint from '../CondensedCardData/CondensedCardDataPoint';
 import PositionDetailsDescription from './PositionDetailsDescription';
 import PositionDetailsContact from './PositionDetailsContact';
 import ServiceNeededToggle from './ServiceNeededToggle';
 import GlossaryTermTrigger from '../GlossaryTermTrigger';
-import { CriticalNeed, Handshake, HardToFill, ServiceNeedDifferential } from '../Ribbon';
+import {
+  CriticalNeed,
+  Handshake,
+  HardToFill,
+  ServiceNeedDifferential,
+} from '../Ribbon';
 import {
   formatDate,
   getAccessiblePositionNumber,
@@ -35,8 +40,8 @@ import {
   NO_USER_LISTED,
 } from '../../Constants/SystemMessages';
 
-export const renderHandshake = stats => (
-  get(stats, 'has_handshake_offered', false) && <Handshake cutSide="both" className="ribbon-position-details" />
+export const renderHandshake = (stats) => get(stats, 'has_handshake_offered', false) && (
+  <Handshake cutSide="both" className="ribbon-position-details" />
 );
 
 export const renderCriticalNeed = () => (
@@ -45,20 +50,20 @@ export const renderCriticalNeed = () => (
   </StaticDevContent>
 );
 
-export const renderHardToFill = details => (
-  get(details, 'isDifficultToStaff', false) &&
+export const renderHardToFill = (details) => get(details, 'isDifficultToStaff', false) && (
   <StaticDevContent>
     <HardToFill cutSide="both" className="ribbon-position-details" />
   </StaticDevContent>
 );
 
-export const renderServiceNeedDifferential = details => (
-  get(details, 'isServiceNeedDifferential', false) &&
+export const renderServiceNeedDifferential = (details) => get(details, 'isServiceNeedDifferential', false) && (
   <StaticDevContent>
-    <ServiceNeedDifferential cutSide="both" className="ribbon-position-details" />
+    <ServiceNeedDifferential
+      cutSide="both"
+      className="ribbon-position-details"
+    />
   </StaticDevContent>
 );
-
 
 const PositionDetailsItem = (props) => {
   const {
@@ -80,7 +85,9 @@ const PositionDetailsItem = (props) => {
 
   const isHighlightLoading = highlightPosition.loading;
   const tourEndDate = propOrDefault(details, 'ted');
-  const formattedTourEndDate = tourEndDate ? formatDate(tourEndDate) : NO_END_DATE;
+  const formattedTourEndDate = tourEndDate
+    ? formatDate(tourEndDate)
+    : NO_END_DATE;
 
   const formattedBureau = get(position, 'bureau', NO_BUREAU);
   const formattedTOD = propOrDefault(position, 'post.tour_of_duty') || NO_TOUR_OF_DUTY;
@@ -105,7 +112,9 @@ const PositionDetailsItem = (props) => {
 
   const stats = getBidStatisticsObject(get(details, 'bid_statistics', [{}]));
 
-  const formattedDate = formatDate(get(details, 'position.description.date_updated'));
+  const formattedDate = formatDate(
+    get(details, 'position.description.date_updated'),
+  );
 
   const isHighlighted = get(position, 'is_highlighted');
   return (
@@ -117,45 +126,100 @@ const PositionDetailsItem = (props) => {
         {renderServiceNeedDifferential(details)}
       </div>
       <div className="usa-grid-full position-details-description-container positions-details-about-position">
-        <div className={`usa-width-${hideContact ? 'one-whole' : 'two-thirds'} about-section-left`}>
-          { !hideHeader && <h2>About the Position</h2> }
+        <div
+          className={`usa-width-${
+            hideContact ? 'one-whole' : 'two-thirds'
+          } about-section-left`}
+        >
+          {!hideHeader && <h2>About the Position</h2>}
           <PositionDetailsDescription
             details={position}
             editDescriptionContent={editDescriptionContent}
             resetDescriptionEditMessages={resetDescriptionEditMessages}
             updatedDate={hideContact ? formattedDate : null}
           />
-          {
-            isHighlighted &&
+          {isHighlighted && (
             <div className="featured-description-container">
               {`
                 This is a featured position. To learn more about the benefits of filling a featured position, click on each term:
               `}
-              <GlossaryTermTrigger className="featured-description--link" text="volunteer" term="Vol Cable - Volunteer Cable" />
+              <GlossaryTermTrigger
+                className="featured-description--link"
+                text="volunteer"
+                term="Vol Cable - Volunteer Cable"
+              />
               {', '}
-              <GlossaryTermTrigger className="featured-description--link" text="hard-to-fill" term="HDS - Historically Difficult to Staff" />
+              <GlossaryTermTrigger
+                className="featured-description--link"
+                text="hard-to-fill"
+                term="HDS - Historically Difficult to Staff"
+              />
               {', or '}
-              <GlossaryTermTrigger className="featured-description--link" text="urgent vacancies" term="UV - Urgent Vacancy" />
-              {'.'}
+              <GlossaryTermTrigger
+                className="featured-description--link"
+                text="urgent vacancies"
+                term="UV - Urgent Vacancy"
+              />
+              .
             </div>
-          }
+          )}
           <div className="usa-grid-full data-point-section">
-            {hideContact && <BidCount bidStatistics={stats} altStyle isCondensed />}
-            <CondensedCardDataPoint ariaLabel={getAccessiblePositionNumber(get(position, 'position_number'))} title="Position number" content={get(position, 'position_number')} />
-            <CondensedCardDataPoint title="Skill" content={<PositionSkillCodeList primarySkill={get(position, 'skill')} secondarySkill={get(position, 'skill_secondary')} />} />
-            <CondensedCardDataPoint title="Grade" content={get(position, 'grade', NO_GRADE)} />
+            {hideContact && (
+              <BidCount bidStatistics={stats} altStyle isCondensed />
+            )}
+            <CondensedCardDataPoint
+              ariaLabel={getAccessiblePositionNumber(
+                get(position, 'position_number'),
+              )}
+              title="Position number"
+              content={get(position, 'position_number')}
+            />
+            <CondensedCardDataPoint
+              title="Skill"
+              content={(
+                <PositionSkillCodeList
+                  primarySkill={get(position, 'skill')}
+                  secondarySkill={get(position, 'skill_secondary')}
+                />
+              )}
+            />
+            <CondensedCardDataPoint
+              title="Grade"
+              content={get(position, 'grade', NO_GRADE)}
+            />
             <CondensedCardDataPoint title="Bureau" content={formattedBureau} />
-            <CondensedCardDataPoint title="Tour of duty" content={formattedTOD} />
-            <CondensedCardDataPoint title="Language" content={<LanguageList languages={get(position, 'languages')} propToUse="representation" />} />
-            <CondensedCardDataPoint title="Post differential | Danger Pay" content={differentials} />
-            <CondensedCardDataPoint title={isProjectedVacancy ? 'Bid Season' : 'Bid Cycle'} content={cycle} />
-            <CondensedCardDataPoint title="TED" content={formattedTourEndDate} />
+            <CondensedCardDataPoint
+              title="Tour of duty"
+              content={formattedTOD}
+            />
+            <CondensedCardDataPoint
+              title="Language"
+              content={(
+                <LanguageList
+                  languages={get(position, 'languages')}
+                  propToUse="representation"
+                />
+              )}
+            />
+            <CondensedCardDataPoint
+              title="Post differential | Danger Pay"
+              content={differentials}
+            />
+            <CondensedCardDataPoint
+              title={isProjectedVacancy ? 'Bid Season' : 'Bid Cycle'}
+              content={cycle}
+            />
+            <CondensedCardDataPoint
+              title="TED"
+              content={formattedTourEndDate}
+            />
             <CondensedCardDataPoint title="Incumbent" content={incumbent} />
-            { !isProjectedVacancy && <CondensedCardDataPoint title="Posted" content={postedDate} />}
+            {!isProjectedVacancy && (
+              <CondensedCardDataPoint title="Posted" content={postedDate} />
+            )}
           </div>
         </div>
-        {
-          !hideContact &&
+        {!hideContact && (
           <div className="usa-width-one-third position-details-contact-container">
             <PositionDetailsContact
               details={{
@@ -167,17 +231,16 @@ const PositionDetailsItem = (props) => {
               resetDescriptionEditMessages={resetDescriptionEditMessages}
               isProjectedVacancy={isProjectedVacancy}
             />
-            {
-              !isProjectedVacancy && !isArchived &&
+            {!isProjectedVacancy && !isArchived && (
               <ServiceNeededToggle
                 userProfile={userProfile}
                 position={details}
                 loading={isHighlightLoading}
                 onChange={onHighlight}
               />
-            }
+            )}
           </div>
-        }
+        )}
       </div>
     </div>
   );

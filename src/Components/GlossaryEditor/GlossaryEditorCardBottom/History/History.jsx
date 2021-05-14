@@ -2,15 +2,28 @@ import PropTypes from 'prop-types';
 import { formatDate } from '../../../../utilities';
 import ArchiveIcon from '../../ArchiveIcon';
 
-const History = ({ dateUpdated, updatedBy, isArchived, id, submitGlossaryTerm, hasErrored }) => {
+const History = ({
+  dateUpdated,
+  updatedBy,
+  isArchived,
+  id,
+  submitGlossaryTerm,
+  hasErrored,
+}) => {
   let date = false;
-  if (dateUpdated) { date = formatDate(dateUpdated); }
+  if (dateUpdated) {
+    date = formatDate(dateUpdated);
+  }
 
   let dateString = 'Date updated unknown';
-  if (date) { dateString = `Updated on ${date}`; }
+  if (date) {
+    dateString = `Updated on ${date}`;
+  }
 
   let formattedUpdatedBy = 'None listed';
-  if (updatedBy) { formattedUpdatedBy = updatedBy; }
+  if (updatedBy) {
+    formattedUpdatedBy = updatedBy;
+  }
 
   return (
     <div className="usa-grid-full glossary-editor-card-bottom">

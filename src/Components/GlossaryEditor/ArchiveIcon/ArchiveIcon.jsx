@@ -39,8 +39,13 @@ class ArchiveIcon extends Component {
     }
 
     return (
-      <InteractiveElement role="link" className={`archive-link ${className}`} onClick={this.submitOption}>
-        <FontAwesome name={icon} />{text}
+      <InteractiveElement
+        role="link"
+        className={`archive-link ${className}`}
+        onClick={this.submitOption}
+      >
+        <FontAwesome name={icon} />
+        {text}
       </InteractiveElement>
     );
   }

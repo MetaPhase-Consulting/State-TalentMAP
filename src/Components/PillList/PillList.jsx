@@ -14,21 +14,23 @@ const PillList = ({ items, onPillClick }, { isTandemSearch }) => {
     <div className="pill-list-container">
       {
         // order items in their correct context
-        (orderBy(items.slice(), ordering, orders))
+        orderBy(items.slice(), ordering, orders)
           // do not display toggles as pills
-          .filter(f => !f.isToggle)
+          .filter((f) => !f.isToggle)
           // display pills in their correct context
-          .filter(f => !isTandemSearch ? !f.isTandem : true)
+          .filter((f) => (!isTandemSearch ? !f.isTandem : true))
           // map items
-          .map(item => (<Pill
-            key={`${item.codeRef}-${item.description}-${item.isTandem}`}
-            description={item.description}
-            codeRef={item.codeRef}
-            selectionRef={item.selectionRef}
-            onPillClick={onPillClick}
-            isTandem2={isTandemSearch && item.isTandem}
-            isCommon={isTandemSearch && item.isCommon}
-          />))
+          .map((item) => (
+            <Pill
+              key={`${item.codeRef}-${item.description}-${item.isTandem}`}
+              description={item.description}
+              codeRef={item.codeRef}
+              selectionRef={item.selectionRef}
+              onPillClick={onPillClick}
+              isTandem2={isTandemSearch && item.isTandem}
+              isCommon={isTandemSearch && item.isCommon}
+            />
+          ))
       }
     </div>
   );

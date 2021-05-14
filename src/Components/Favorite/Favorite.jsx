@@ -27,17 +27,9 @@ const States = {
  * }
  */
 const Texts = {
-  checked: [
-    'Remove',
-    'Remove from Favorites',
-    'Remove from Favorites',
-  ],
+  checked: ['Remove', 'Remove from Favorites', 'Remove from Favorites'],
 
-  unchecked: [
-    'Favorite',
-    'Add to Favorites',
-    'Add to Favorites',
-  ],
+  unchecked: ['Favorite', 'Add to Favorites', 'Add to Favorites'],
 };
 
 const getText$ = (state, type) => Texts[state][type];
@@ -66,9 +58,9 @@ class Favorite extends Component {
     const oldState = this.getSavedState();
     const newState = existsInArray(refKey, compareArray);
 
-    isUpdate = (oldState !== newState) ||
-    (this.state.loading !== nextState.isLoading) ||
-    nextProps.hasErrored;
+    isUpdate = oldState !== newState
+      || this.state.loading !== nextState.isLoading
+      || nextProps.hasErrored;
 
     return isUpdate;
   }
@@ -83,7 +75,7 @@ class Favorite extends Component {
     const { hideText, useLongText } = this.props;
     const checked = this.getSavedState();
     const state = checked ? States.CHECKED : States.UNCHECKED;
-    const type = (useLongText || !enforceShort) ? Types.LONG : Types.SHORT;
+    const type = useLongText || !enforceShort ? Types.LONG : Types.SHORT;
 
     return hideText ? null : getText$(state, type);
   }
@@ -98,7 +90,13 @@ class Favorite extends Component {
   }
 
   get classNames() {
-    const { hasBorder, useButtonClass, useButtonClassSecondary, hideText, className } = this.props;
+    const {
+      hasBorder,
+      useButtonClass,
+      useButtonClassSecondary,
+      hideText,
+      className,
+    } = this.props;
 
     const classNames = ['favorite-container'];
 
@@ -128,17 +126,23 @@ class Favorite extends Component {
     const { useButtonClass, useSpinnerWhite, useButtonClassSecondary } = this.props;
     let spinnerClass = 'ds-c-spinner';
     if (useButtonClass || useSpinnerWhite) {
-      spinnerClass = `${spinnerClass} ${useButtonClassSecondary ? 'spinner-blue' : 'spinner-white'}`;
+      spinnerClass = `${spinnerClass} ${
+        useButtonClassSecondary ? 'spinner-blue' : 'spinner-white'
+      }`;
     }
     return spinnerClass;
   }
 
   toggleSaved = () => {
-    const { onToggle, refKey, refresh, isTandem } = this.props;
+    const {
+      onToggle, refKey, refresh, isTandem,
+    } = this.props;
     this.setState({
       loading: true,
       alertMessage: `You have ${this.getSavedState() ? 'removed' : 'added'}
-        this position ${this.getSavedState() ? 'from' : 'to'} your favorites list.`,
+        this position ${
+          this.getSavedState() ? 'from' : 'to'
+        } your favorites list.`,
     });
 
     // pass the key and the "remove" param
@@ -149,8 +153,8 @@ class Favorite extends Component {
     const { loading } = this.state;
     const { as: type } = this.props;
 
-    const icon = this.icon;
-    const title = this.title;
+    const { icon } = this;
+    const { title } = this;
     const onClick = this.toggleSaved;
     const style = {
       pointerEvents: loading ? 'none' : 'inherit',
@@ -167,18 +171,19 @@ class Favorite extends Component {
 
     return (
       <span>
-        {
-          this.state.alertMessage &&
-          <span className="usa-sr-only" aria-live="polite" aria-atomic="true">{this.state.alertMessage}</span>
-        }
+        {this.state.alertMessage && (
+          <span className="usa-sr-only" aria-live="polite" aria-atomic="true">
+            {this.state.alertMessage}
+          </span>
+        )}
         <InteractiveElement {...options}>
-          {loading ?
-            (<span className={this.spinnerClass} />) :
-            (<FontAwesome name={icon} />)}
+          {loading ? (
+            <span className={this.spinnerClass} />
+          ) : (
+            <FontAwesome name={icon} />
+          )}
           <MediaQueryWrapper breakpoint="screenMdMax" widthType="max">
-            {matches => (
-              <span>{this.getText(matches)}</span>
-            )}
+            {(matches) => <span>{this.getText(matches)}</span>}
           </MediaQueryWrapper>
         </InteractiveElement>
       </span>
@@ -190,7 +195,8 @@ Favorite.propTypes = {
   className: PropTypes.string,
   as: PropTypes.string.isRequired,
   onToggle: PropTypes.func.isRequired,
-  refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired]).isRequired,
+  refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired])
+    .isRequired,
   hideText: PropTypes.bool,
   compareArray: FAVORITE_POSITIONS_ARRAY.isRequired,
   isLoading: PropTypes.bool,

@@ -48,11 +48,23 @@ const AdministratorPage = (props) => {
   return (
     <div className="usa-grid-full profile-content-container">
       <Switch>
-        <Route path="/profile/administrator/dashboard" render={() => <Dashboard {...dashboardProps} />} />
-        <Route path="/profile/administrator/logs" render={() => <Logs {...logsProps} />} />
+        <Route
+          path="/profile/administrator/dashboard"
+          render={() => <Dashboard {...dashboardProps} />}
+        />
+        <Route
+          path="/profile/administrator/logs"
+          render={() => <Logs {...logsProps} />}
+        />
         <Route path="/profile/administrator/stats" render={() => <Stats />} />
-        <Route path="/profile/administrator/userroles" render={() => <UserRoles {...userProps} />} />
-        <Route path="/profile/administrator/featureflags" render={() => <FeatureFlags {...featureFlagsProps} />} />
+        <Route
+          path="/profile/administrator/userroles"
+          render={() => <UserRoles {...userProps} />}
+        />
+        <Route
+          path="/profile/administrator/featureflags"
+          render={() => <FeatureFlags {...featureFlagsProps} />}
+        />
       </Switch>
     </div>
   );

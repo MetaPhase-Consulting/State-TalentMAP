@@ -5,26 +5,21 @@ import { FILTER_ITEMS_ARRAY } from '../../../Constants/PropTypes';
 
 const shortid = require('shortid');
 
-const BooleanFilterContainer = ({ filters, onBooleanFilterClick, legendTitle }) => (
+const BooleanFilterContainer = ({
+  filters,
+  onBooleanFilterClick,
+  legendTitle,
+}) => (
   <FieldSet legend={legendTitle} legendSrOnly>
-    {
-      filters
-        .map((item, i) =>
-          (
-            <BooleanFilter
-              key={shortid.generate()}
-              item={item}
-              onBooleanFilterClick={
-                (e, code, ref, isSelected) => {
-                  onBooleanFilterClick(
-                    e, code, ref, i, isSelected,
-                  );
-                }
-              }
-            />
-          ),
-        )
-    }
+    {filters.map((item, i) => (
+      <BooleanFilter
+        key={shortid.generate()}
+        item={item}
+        onBooleanFilterClick={(e, code, ref, isSelected) => {
+          onBooleanFilterClick(e, code, ref, i, isSelected);
+        }}
+      />
+    ))}
   </FieldSet>
 );
 

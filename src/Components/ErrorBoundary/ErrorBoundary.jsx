@@ -23,14 +23,15 @@ class ErrorBoundary extends Component {
     const { hasError } = this.state;
     if (hasError) {
       return (
-        fallback ||
-        <Alert
-          type="error"
-          title="An unexpected error has occurred"
-          messages={[
-            { body: 'Please try refreshing the page or try again later.' },
-          ]}
-        />
+        fallback || (
+          <Alert
+            type="error"
+            title="An unexpected error has occurred"
+            messages={[
+              { body: 'Please try refreshing the page or try again later.' },
+            ]}
+          />
+        )
       );
     }
 

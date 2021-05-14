@@ -25,12 +25,17 @@ class EditButtons extends Component {
   changeSaveState(val) {
     this.setState({ showSave: val });
   }
+
   render() {
     const { showSave } = this.state;
     return (
       <div className="edit-buttons-container">
         {!showSave && <button onClick={this.onShow}>Edit</button>}
-        {showSave && <button onClick={this.onCancel} className="usa-button-secondary">{'Don\'t Save'}</button>}
+        {showSave && (
+          <button onClick={this.onCancel} className="usa-button-secondary">
+            Don't Save
+          </button>
+        )}
         {showSave && <button onClick={this.onSave}>Save</button>}
       </div>
     );

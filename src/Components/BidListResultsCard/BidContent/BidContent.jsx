@@ -4,7 +4,14 @@ import BidStatus from '../BidStatus';
 import BidCount from '../../BidCount';
 import { BID_STATISTICS_OBJECT } from '../../../Constants/PropTypes';
 
-const BidContent = ({ id, status, positionNumber, postName, positionTitle, bidStatistics }) => (
+const BidContent = ({
+  id,
+  status,
+  positionNumber,
+  postName,
+  positionTitle,
+  bidStatistics,
+}) => (
   <div className="usa-grid-full bid-content-container">
     <BidStatus status={status} positionTitle={positionTitle} />
     <span className="bid-stats">
@@ -12,13 +19,11 @@ const BidContent = ({ id, status, positionNumber, postName, positionTitle, bidSt
     </span>
     <div>
       <span className="bid-list-card-title-position">Position number </span>
-      <Link to={`/details/${id}`}>
-        {positionNumber}
-      </Link>
+      <Link to={`/details/${id}`}>{positionNumber}</Link>
     </div>
     <div>
       <span className="bid-list-card-title-post">Post </span>
-      { postName }
+      {postName}
     </div>
   </div>
 );
@@ -35,6 +40,5 @@ BidContent.propTypes = {
 BidContent.defaultProps = {
   bidStatistics: null,
 };
-
 
 export default BidContent;

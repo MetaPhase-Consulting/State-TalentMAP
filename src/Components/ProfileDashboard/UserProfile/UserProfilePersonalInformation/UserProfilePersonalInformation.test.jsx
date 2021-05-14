@@ -5,12 +5,16 @@ import UserProfilePersonalInformation from './UserProfilePersonalInformation';
 
 describe('UserProfilePersonalInformationComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(<UserProfilePersonalInformation userProfile={bidderUserObject} />);
+    const wrapper = shallow(
+      <UserProfilePersonalInformation userProfile={bidderUserObject} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<UserProfilePersonalInformation userProfile={bidderUserObject} />);
+    const wrapper = shallow(
+      <UserProfilePersonalInformation userProfile={bidderUserObject} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

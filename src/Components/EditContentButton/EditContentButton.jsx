@@ -7,7 +7,11 @@ const EditContentButton = ({ onToggle, ...rest }) => (
     className="description-edit"
     role="button"
     onClick={onToggle}
-    onKeyUp={(e) => { if (ifEnter(e)) { onToggle(); } }}
+    onKeyUp={(e) => {
+      if (ifEnter(e)) {
+        onToggle();
+      }
+    }}
     name="pencil"
     id="description-edit"
     tabIndex="0"

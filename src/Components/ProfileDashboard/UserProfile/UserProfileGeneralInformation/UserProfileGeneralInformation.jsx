@@ -24,30 +24,41 @@ class UserProfileGeneralInformation extends Component {
       hasErrored: false,
     };
   }
+
   getEmployeeProfile = () => {
     const id = shortid.generate();
-    const { onToastError, onToastInfo, onToastSuccess, userProfile } = this.props;
+    const {
+      onToastError, onToastInfo, onToastSuccess, userProfile,
+    } = this.props;
     let url$ = get(userProfile, 'employee_profile_url.internal');
     if (isOnProxy()) {
       url$ = get(userProfile, 'employee_profile_url.external');
     }
     onToastInfo(id);
-    axios.get(url$, {
-      withCredentials: true,
-      headers: { JWTAuthorization: fetchJWT() },
-      responseType: 'arraybuffer' },
-    )
-      .then(response => {
+    axios
+      .get(url$, {
+        withCredentials: true,
+        headers: { JWTAuthorization: fetchJWT() },
+        responseType: 'arraybuffer',
+      })
+      .then((response) => {
         downloadPdfStream(response.data);
         onToastSuccess(id);
       })
       .catch(() => {
         onToastError(id);
       });
-  }
+  };
+
   render() {
-    const { userProfile, showEditLink, useGroup,
-      colorProp, useColor, isPublic } = this.props;
+    const {
+      userProfile,
+      showEditLink,
+      useGroup,
+      colorProp,
+      useColor,
+      isPublic,
+    } = this.props;
     const avatar = {
       firstName: get(userProfile, 'user.first_name'),
       lastName: get(userProfile, 'user.last_name'),
@@ -65,45 +76,52 @@ class UserProfileGeneralInformation extends Component {
       <div className="current-user-top current-user-section-border current-user-section-container">
         <div className="section-padded-inner-container">
           <div className="avatar-group">
-            <Avatar
-              className="dashboard-user-profile-picture"
-              {...avatar}
-            />
+            <Avatar className="dashboard-user-profile-picture" {...avatar} />
           </div>
-          { showEditLink && <StaticDevContent><EditProfile /></StaticDevContent> }
+          {showEditLink && (
+            <StaticDevContent>
+              <EditProfile />
+            </StaticDevContent>
+          )}
           <div className="name-group">
-            <SectionTitle small title={`${userProfile.user.last_name ? `${userProfile.user.last_name}, ` : ''}${userProfile.user.first_name}`} className="current-user-name" />
-            {
-              get(userProfile, 'employee_profile_url') &&
-                <InformationDataPoint
-                  content={
-                    <InteractiveElement
-                      onClick={this.getEmployeeProfile}
-                      type="a"
-                      title="Download Employee Profile PDF"
-                    >
-                      Employee Profile
-                    </InteractiveElement>
-                  }
-                />
-            }
-            { isPublic &&
+            <SectionTitle
+              small
+              title={`${
+                userProfile.user.last_name
+                  ? `${userProfile.user.last_name}, `
+                  : ''
+              }${userProfile.user.first_name}`}
+              className="current-user-name"
+            />
+            {get(userProfile, 'employee_profile_url') && (
+              <InformationDataPoint
+                content={(
+                  <InteractiveElement
+                    onClick={this.getEmployeeProfile}
+                    type="a"
+                    title="Download Employee Profile PDF"
+                  >
+                    Employee Profile
+                  </InteractiveElement>
+                )}
+              />
+            )}
+            {isPublic && (
               <InformationDataPoint
                 content={`Employee ID: ${userID}`}
                 className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
               />
-            }
+            )}
             <InformationDataPoint
               content={`Grade: ${userGrade}`}
               className="skill-code-data-point-container skill-code-data-point-container-gen-spec"
             />
-            {
-              !useGroup &&
-                <InformationDataPoint
-                  content={<SkillCodeList skillCodes={userSkills} />}
-                  className="skill-code-data-point-container skill-code-data-point-container-skill"
-                />
-            }
+            {!useGroup && (
+              <InformationDataPoint
+                content={<SkillCodeList skillCodes={userSkills} />}
+                className="skill-code-data-point-container skill-code-data-point-container-skill"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -134,10 +152,26 @@ UserProfileGeneralInformation.defaultProps = {
   isPublic: false,
 };
 
-export const mapDispatchToProps = dispatch => ({
-  onToastError: (id) => dispatch(toastError('We were unable to process your Employee Profile download. Please try again later.', 'An error has occurred', id, true)),
-  onToastInfo: (id) => dispatch(toastInfo('Please wait while we process your request.', 'Loading...', id)),
-  onToastSuccess: (id) => dispatch(toastSuccess('Employee profile succesfully downloaded.', 'Success', id, true)),
+export const mapDispatchToProps = (dispatch) => ({
+  onToastError: (id) => dispatch(
+    toastError(
+      'We were unable to process your Employee Profile download. Please try again later.',
+      'An error has occurred',
+      id,
+      true,
+    ),
+  ),
+  onToastInfo: (id) => dispatch(
+    toastInfo('Please wait while we process your request.', 'Loading...', id),
+  ),
+  onToastSuccess: (id) => dispatch(
+    toastSuccess(
+      'Employee profile succesfully downloaded.',
+      'Success',
+      id,
+      true,
+    ),
+  ),
 });
 
 export default connect(null, mapDispatchToProps)(UserProfileGeneralInformation);

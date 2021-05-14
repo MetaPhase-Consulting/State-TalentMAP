@@ -4,8 +4,6 @@ export const path = () => import('./BureauPage');
 
 const BureauPage = createLoader({ path, shouldPreload: false });
 
-const BureauPageLoadable = ({ ...rest }) => (
-  <BureauPage {...rest} />
-);
+const BureauPageLoadable = ({ ...rest }) => <BureauPage {...rest} />;
 
 export default BureauPageLoadable;

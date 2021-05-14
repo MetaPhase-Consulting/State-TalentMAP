@@ -28,27 +28,23 @@ class DraftAlert extends Component {
         <div className="usa-grid-full" style={{ display: 'flex' }}>
           <div className="draft-submission-container" style={{ flex: 1 }}>
             <div className="sub-submission-text">
-              { readOnly ?
-                'This bid is in draft' :
-                'Would you like to submit your bid?'
-              }
+              {readOnly
+                ? 'This bid is in draft'
+                : 'Would you like to submit your bid?'}
             </div>
             <div className="usa-grid-full draft-submission-buttons-container">
-              {
-                !readOnly &&
-                  <button
-                    className="tm-button-transparent tm-button-submit-bid"
-                    onClick={this.onSubmitBid}
-                  >
-                    <FontAwesome name="paper-plane-o" /> Submit Bid
-                  </button>
-              }
+              {!readOnly && (
+                <button
+                  className="tm-button-transparent tm-button-submit-bid"
+                  onClick={this.onSubmitBid}
+                >
+                  <FontAwesome name="paper-plane-o" /> Submit Bid
+                </button>
+              )}
             </div>
           </div>
           <div className="draft-position-details" style={{ flex: 1 }}>
-            <div>
-              {positionTitle}
-            </div>
+            <div>{positionTitle}</div>
             <div>
               <span className="title">Location: </span>
               {post}

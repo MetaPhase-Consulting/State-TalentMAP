@@ -60,7 +60,9 @@ describe('GlossaryEditorCardComponent', () => {
 
   it('can call the submitDefinition function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<GlossaryEditorCard {...props} submitGlossaryTerm={spy} />);
+    const wrapper = shallow(
+      <GlossaryEditorCard {...props} submitGlossaryTerm={spy} />,
+    );
     const instance = wrapper.instance();
     instance.updateDefinition('def');
     instance.updateTitle('test');
@@ -76,7 +78,8 @@ describe('GlossaryEditorCardComponent', () => {
         {...props}
         submitGlossaryTerm={spy}
         onCancel={cancelSpy}
-      />);
+      />,
+    );
     const instance = wrapper.instance();
     instance.updateTitle(props.term.title);
     instance.updateDefinition(props.term.definition);
@@ -86,7 +89,9 @@ describe('GlossaryEditorCardComponent', () => {
 
   it('can call the hasDefinitionChanged function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<GlossaryEditorCard {...props} submitGlossaryTerm={spy} />);
+    const wrapper = shallow(
+      <GlossaryEditorCard {...props} submitGlossaryTerm={spy} />,
+    );
     const instance = wrapper.instance();
     instance.state.newDefinition = 'a term';
     wrapper.setProps({ ...props, term: { definition: 'brand new term' } });
@@ -95,7 +100,9 @@ describe('GlossaryEditorCardComponent', () => {
 
   it('can display the zero length alert', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<GlossaryEditorCard {...props} submitGlossaryTerm={spy} />);
+    const wrapper = shallow(
+      <GlossaryEditorCard {...props} submitGlossaryTerm={spy} />,
+    );
     const instance = wrapper.instance();
     // definition has length, but not title
     instance.updateDefinition('def');

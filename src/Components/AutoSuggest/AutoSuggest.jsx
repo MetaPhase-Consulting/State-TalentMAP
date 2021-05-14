@@ -33,8 +33,9 @@ export default class AutoSuggest extends Component {
     if (typeof newValue !== 'string' && typeof displayProperty === 'function') {
       newStateValue = displayProperty(newValue);
     } else {
-      newStateValue = newValue[this.props.displayProperty] ?
-        newValue[this.props.displayProperty] : newValue;
+      newStateValue = newValue[this.props.displayProperty]
+        ? newValue[this.props.displayProperty]
+        : newValue;
     }
     this.setState({
       value: newStateValue,
@@ -44,7 +45,10 @@ export default class AutoSuggest extends Component {
   // Autosuggest will call this function every time you need to update suggestions.
   onSuggestionsFetchRequested = ({ value }) => {
     this.debounced.cancel();
-    this.debounced = debounce(q => this.props.getSuggestions(q), this.props.debounceMillis);
+    this.debounced = debounce(
+      (q) => this.props.getSuggestions(q),
+      this.props.debounceMillis,
+    );
     this.debounced(value);
   };
 
@@ -52,7 +56,9 @@ export default class AutoSuggest extends Component {
   onSuggestionSelected = (event, { suggestion }) => {
     const { shouldClearOnSelect } = this.props;
     this.props.onSuggestionSelected(
-      this.props.queryProperty.length ? suggestion[this.props.queryProperty] : suggestion,
+      this.props.queryProperty.length
+        ? suggestion[this.props.queryProperty]
+        : suggestion,
     );
     if (shouldClearOnSelect) {
       this.setState({ value: '' });
@@ -60,7 +66,7 @@ export default class AutoSuggest extends Component {
   };
 
   // Use your imagination to render suggestions.
-  renderSuggestion = suggestion => {
+  renderSuggestion = (suggestion) => {
     const { templateProps } = this.props;
     const Template = this.props.suggestionTemplate;
     return <Template suggestion={suggestion} {...templateProps} />;
@@ -68,8 +74,18 @@ export default class AutoSuggest extends Component {
 
   render() {
     const { value } = this.state;
-    const { placeholder, suggestions, onSuggestionsClearRequested, id,
-      customInputProps, inputId, label, labelSrOnly, className, autoSuggestProps } = this.props;
+    const {
+      placeholder,
+      suggestions,
+      onSuggestionsClearRequested,
+      id,
+      customInputProps,
+      inputId,
+      label,
+      labelSrOnly,
+      className,
+      autoSuggestProps,
+    } = this.props;
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
@@ -83,7 +99,12 @@ export default class AutoSuggest extends Component {
     // Finally, render it.
     return (
       <div className={`usa-grid-full ${className}`}>
-        <label htmlFor={inputId} className={labelSrOnly ? 'usa-sr-only' : undefined}>{label}</label>
+        <label
+          htmlFor={inputId}
+          className={labelSrOnly ? 'usa-sr-only' : undefined}
+        >
+          {label}
+        </label>
         <AutoSuggestComponent
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -113,9 +134,7 @@ AutoSuggest.propTypes = {
     // https://github.com/moroshko/react-autosuggest#inputprops-required
   }),
 
-  suggestions: PropTypes.arrayOf(
-    PropTypes.shape({}),
-  ).isRequired,
+  suggestions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   placeholder: PropTypes.string,
 
   // We should always add an input id for accessibility.

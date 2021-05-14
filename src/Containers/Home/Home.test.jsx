@@ -12,33 +12,43 @@ const mockStore = configureStore(middlewares);
 
 describe('Home', () => {
   it('is defined', () => {
-    const home = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Home
-        isAuthorized={() => true}
-        bidListFetchData={() => {}}
-        onNavigateTo={() => {}}
-      />
-    </MemoryRouter></Provider>);
+    const home = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Home
+            isAuthorized={() => true}
+            bidListFetchData={() => {}}
+            onNavigateTo={() => {}}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(home).toBeDefined();
   });
 
   it('can handle authentication redirects', () => {
-    const home = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Home
-        isAuthorized={() => false}
-        bidListFetchData={() => {}}
-        onNavigateTo={() => {}}
-      />
-    </MemoryRouter></Provider>);
+    const home = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Home
+            isAuthorized={() => false}
+            bidListFetchData={() => {}}
+            onNavigateTo={() => {}}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(home).toBeDefined();
   });
 
   it('can call the onChildSubmit function', () => {
-    const wrapper = shallow(<Home.WrappedComponent
-      isAuthorized={() => true}
-      onNavigateTo={() => {}}
-      bidListFetchData={() => {}}
-    />);
+    const wrapper = shallow(
+      <Home.WrappedComponent
+        isAuthorized={() => true}
+        onNavigateTo={() => {}}
+        bidListFetchData={() => {}}
+      />,
+    );
     wrapper.instance().onChildSubmit();
   });
 });

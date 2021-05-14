@@ -16,7 +16,11 @@ class BureauFilter extends Component {
   }
 
   onCheckBoxClick = (value, props) => {
-    this.props.queryParamToggle(props.selectionRef, props[this.props.queryProperty], !value);
+    this.props.queryParamToggle(
+      props.selectionRef,
+      props[this.props.queryProperty],
+      !value,
+    );
   };
 
   // Click handler for cone check box.
@@ -28,7 +32,9 @@ class BureauFilter extends Component {
     // expand the accordion if the user selects that cone
     const coneId = get(props, 'cone.id');
     if (value && coneId) {
-      const el = document.getElementById(`skill-cone-accordion-${coneId}-button`);
+      const el = document.getElementById(
+        `skill-cone-accordion-${coneId}-button`,
+      );
       if (el) {
         const isOpen = el.getAttribute('aria-expanded') === 'true';
         if (!isOpen) {
@@ -52,9 +58,9 @@ class BureauFilter extends Component {
 
     // clean up any duplicate codes from a removed cone that are in other cones
     if (shouldRemoveChildren) {
-      const filteredCodes = [...item.data].filter(f => f.cone === cone.name) || [];
-      const mappedCodes = filteredCodes.map(f => f.code);
-      qArr = qArr.filter(f => !mappedCodes.includes(f));
+      const filteredCodes = [...item.data].filter((f) => f.cone === cone.name) || [];
+      const mappedCodes = filteredCodes.map((f) => f.code);
+      qArr = qArr.filter((f) => !mappedCodes.includes(f));
     }
 
     // ensure the array has no duplicate values
@@ -86,7 +92,7 @@ class BureauFilter extends Component {
 
   doSkillConeChildrenExists(cone) {
     const { item } = this.props;
-    if (item.data.find(s => s.cone === cone.name)) {
+    if (item.data.find((s) => s.cone === cone.name)) {
       return true;
     }
     return false;
@@ -97,19 +103,24 @@ class BureauFilter extends Component {
     return (
       <div className="usa-grid-full tm-nested-accordions">
         <Accordion>
-          {
-            skillCones.data.map(cone => (
-              this.doSkillConeChildrenExists(cone) &&
+          {skillCones.data.map(
+            (cone) => this.doSkillConeChildrenExists(cone) && (
               <AccordionItem
                 key={cone.id}
                 className="accordion-content-small"
-                id={`skill-cone-accordion-${cone.id}${item.item.isTandem ? '-tandem' : ''}`}
+                id={`skill-cone-accordion-${cone.id}${
+                  item.item.isTandem ? '-tandem' : ''
+                }`}
                 title={cone.name}
                 buttonClass="tm-nested-accordion-button"
                 preContent={(
                   <CheckBox
-                    cone={cone /* pass cone to reference in onClick handler */}
-                    id={`select-all-cone-${cone.id}${item.item.isTandem ? '-tandem' : ''}`}
+                    cone={
+                      cone /* pass cone to reference in onClick handler */
+                    }
+                    id={`select-all-cone-${cone.id}${
+                      item.item.isTandem ? '-tandem' : ''
+                    }`}
                     onCheckBoxClick={this.onConeCheckBoxClick}
                     className="tm-checkbox-transparent"
                     value={this.state[cone.id] || false}
@@ -119,34 +130,35 @@ class BureauFilter extends Component {
                 )}
               >
                 <div className="usa-grid-full">
-                  {
-                    item.data.map((itemData) => {
-                      const itemLabel = getItemLabel(itemData);
-                      const itemLabelNoSpaces = formatIdSpacing(itemLabel);
-                      const matchesCone = itemData.cone === cone.name;
-                      if (matchesCone) {
-                        return (
-                          <CheckBox
-                            _id={itemData.id} /* when we need the original id */
-                            id={`checkbox${itemLabelNoSpaces}-skill-${cone.id}${item.item.isTandem ? '-tandem' : ''}`}
-                            key={`checkbox${itemLabel}-skill-${cone.id}`}
-                            label={itemLabel}
-                            title={itemLabel}
-                            name={itemLabel}
-                            value={itemData.isSelected || false}
-                            code={itemData.code}
-                            selectionRef={item.item.selectionRef}
-                            onCheckBoxClick={this.onCheckBoxClick}
-                            className="tm-checkbox-transparent"
-                          />);
-                      }
-                      return null;
-                    })
-                  }
+                  {item.data.map((itemData) => {
+                    const itemLabel = getItemLabel(itemData);
+                    const itemLabelNoSpaces = formatIdSpacing(itemLabel);
+                    const matchesCone = itemData.cone === cone.name;
+                    if (matchesCone) {
+                      return (
+                        <CheckBox
+                          _id={itemData.id} /* when we need the original id */
+                          id={`checkbox${itemLabelNoSpaces}-skill-${cone.id}${
+                            item.item.isTandem ? '-tandem' : ''
+                          }`}
+                          key={`checkbox${itemLabel}-skill-${cone.id}`}
+                          label={itemLabel}
+                          title={itemLabel}
+                          name={itemLabel}
+                          value={itemData.isSelected || false}
+                          code={itemData.code}
+                          selectionRef={item.item.selectionRef}
+                          onCheckBoxClick={this.onCheckBoxClick}
+                          className="tm-checkbox-transparent"
+                        />
+                      );
+                    }
+                    return null;
+                  })}
                 </div>
               </AccordionItem>
-            ))
-          }
+            ),
+          )}
         </Accordion>
       </div>
     );

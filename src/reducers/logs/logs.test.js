@@ -13,7 +13,6 @@ describe('logs reducers', () => {
     expect(reducers.logsSuccess('', { type: 'LOGS_SUCCESS', success: 'a' })).toBe('a');
   });
 
-
   it('can set reducer LOGS_LIST_HAS_ERRORED', () => {
     expect(reducers.logsListHasErrored(false, { type: 'LOGS_LIST_HAS_ERRORED', hasErrored: false })).toBe(false);
   });
@@ -26,7 +25,6 @@ describe('logs reducers', () => {
     expect(reducers.logsListSuccess([], { type: 'LOGS_LIST_SUCCESS', success: ['a'] })).toEqual(['a']);
   });
 
-
   it('can set reducer LOG_HAS_ERRORED', () => {
     expect(reducers.logHasErrored(false, { type: 'LOG_HAS_ERRORED', hasErrored: false })).toBe(false);
   });
@@ -38,7 +36,6 @@ describe('logs reducers', () => {
   it('can set reducer LOG_SUCCESS', () => {
     expect(reducers.logSuccess([], { type: 'LOG_SUCCESS', success: ['a'] })).toEqual(['a']);
   });
-
 
   it('can set reducer LOG_TO_DOWNLOAD_HAS_ERRORED', () => {
     expect(reducers.logToDownloadHasErrored(false, { type: 'LOG_TO_DOWNLOAD_HAS_ERRORED', hasErrored: false })).toBe(false);

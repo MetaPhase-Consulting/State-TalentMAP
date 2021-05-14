@@ -4,20 +4,12 @@ import GlossaryEditorSearch from './GlossaryEditorSearch';
 
 describe('GlossaryEditorSearchComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <GlossaryEditorSearch
-        onUpdate={() => {}}
-      />,
-    );
+    const wrapper = shallow(<GlossaryEditorSearch onUpdate={() => {}} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <GlossaryEditorSearch
-        onUpdate={() => {}}
-      />,
-    );
+    const wrapper = shallow(<GlossaryEditorSearch onUpdate={() => {}} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

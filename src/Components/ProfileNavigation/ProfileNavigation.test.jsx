@@ -4,16 +4,12 @@ import ProfileNavigation from './ProfileNavigation';
 
 describe('ProfileNavigationComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <ProfileNavigation />,
-    );
+    const wrapper = shallow(<ProfileNavigation />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ProfileNavigation />,
-    );
+    const wrapper = shallow(<ProfileNavigation />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

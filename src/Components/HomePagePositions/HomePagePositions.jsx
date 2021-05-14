@@ -1,14 +1,22 @@
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { SPECIAL_NEEDS } from 'Constants/EndpointParams';
-import { BID_RESULTS, HOME_PAGE_FEATURED_POSITIONS, HOME_PAGE_RECOMMENDED_POSITIONS, USER_PROFILE } from 'Constants/PropTypes';
+import {
+  BID_RESULTS,
+  HOME_PAGE_FEATURED_POSITIONS,
+  HOME_PAGE_RECOMMENDED_POSITIONS,
+  USER_PROFILE,
+} from 'Constants/PropTypes';
 import HomePagePositionsSection from '../HomePagePositionsSection';
 
-const HomePagePositions = ({ homePageFeaturedPositions,
+const HomePagePositions = ({
+  homePageFeaturedPositions,
   homePageFeaturedPositionsIsLoading,
   homePageRecommendedPositions,
   homePageRecommendedPositionsIsLoading,
-  userProfile, bidList }) => {
+  userProfile,
+  bidList,
+}) => {
   const featuredPositions = homePageFeaturedPositions.positions;
   const recommendedPositions = homePageRecommendedPositions.positions;
   let featuredTitle;
@@ -20,23 +28,28 @@ const HomePagePositions = ({ homePageFeaturedPositions,
 
   const specialNeedsParams = SPECIAL_NEEDS.join(',');
 
-  const ids = get(userProfile, 'employee_info.skills', []).map(s => s.code);
+  const ids = get(userProfile, 'employee_info.skills', []).map((s) => s.code);
   const coneIds = get(userProfile, 'employee_info.skills_additional', []);
 
   switch (homePageFeaturedPositions.name) {
     case 'featuredGradeAndSkillPositions':
       featuredTitle = 'Featured Positions That Match Your Grade And Skill(s)';
-      featuredLink = `/results?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${ids.join(',')}&position__grade__code__in=${userProfile.employee_info.grade}`;
+      featuredLink = `/results?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${ids.join(
+        ',',
+      )}&position__grade__code__in=${userProfile.employee_info.grade}`;
       featuredIcon = 'bolt';
       break;
     case 'featuredGradeAndSkillConePositions':
       featuredTitle = 'Featured Positions That Match Your Grade And Skill Cone(s)';
-      featuredLink = `/results?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${coneIds.join(',')}&position__grade__code__in=${userProfile.employee_info.grade}`;
+      featuredLink = `/results?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${coneIds.join(
+        ',',
+      )}&position__grade__code__in=${userProfile.employee_info.grade}`;
       featuredIcon = 'bolt';
       break;
     case 'featuredGradePositions':
       featuredTitle = 'Featured Positions That Match Your Grade';
-      featuredLink = `/results?position__post_indicator__in=${specialNeedsParams}&position__grade__code__in=${userProfile.employee_info.grade}`;
+      featuredLink = `/results?position__post_indicator__in=${specialNeedsParams}`
+        + `&position__grade__code__in=${userProfile.employee_info.grade}`;
       featuredIcon = 'bolt';
       break;
     default:
@@ -49,12 +62,16 @@ const HomePagePositions = ({ homePageFeaturedPositions,
   switch (homePageRecommendedPositions.name) {
     case 'recommendedGradeAndSkillPositions':
       recommendedTitle = 'Positions That Match Your Grade And Skill(s)';
-      recommendedLink = `/results?position__skill__code__in=${ids.join(',')}&position__grade__code__in=${userProfile.employee_info.grade}`;
+      recommendedLink = `/results?position__skill__code__in=${ids.join(
+        ',',
+      )}&position__grade__code__in=${userProfile.employee_info.grade}`;
       recommendedIcon = 'briefcase';
       break;
     case 'recommendedGradeAndSkillConePositions':
       recommendedTitle = 'Positions That Match Your Grade And Skill Cone(s)';
-      recommendedLink = `/results?position__skill__code__in=${coneIds.join(',')}&position__grade__code__in=${userProfile.employee_info.grade}`;
+      recommendedLink = `/results?position__skill__code__in=${coneIds.join(
+        ',',
+      )}&position__grade__code__in=${userProfile.employee_info.grade}`;
       recommendedIcon = 'briefcase';
       break;
     case 'recommendedGradePositions':
@@ -71,11 +88,8 @@ const HomePagePositions = ({ homePageFeaturedPositions,
 
   return (
     <div className="homepage-positions-section-container">
-      <div
-        className="usa-grid-full homepage-positions-section-container-inner padded-main-content"
-      >
-        {
-          featuredPositions &&
+      <div className="usa-grid-full homepage-positions-section-container-inner padded-main-content">
+        {featuredPositions && (
           <HomePagePositionsSection
             title={featuredTitle}
             maxLength="3"
@@ -87,7 +101,7 @@ const HomePagePositions = ({ homePageFeaturedPositions,
             bidList={bidList}
             type="default"
           />
-        }
+        )}
         <HomePagePositionsSection
           title={recommendedTitle}
           maxLength="3"

@@ -1,10 +1,24 @@
 import PropTypes from 'prop-types';
 import Switch from 'react-switch';
 
-const ToggleButton = props => {
-  const { labelTextLeft, labelTextRight, labelSameLine, checked,
-    onChange, height, width, onColor, offColor, checkedIcon, uncheckedIcon,
-    onHandleColor, offHandleColor, boxShadow, activeBoxShadow } = props;
+const ToggleButton = (props) => {
+  const {
+    labelTextLeft,
+    labelTextRight,
+    labelSameLine,
+    checked,
+    onChange,
+    height,
+    width,
+    onColor,
+    offColor,
+    checkedIcon,
+    uncheckedIcon,
+    onHandleColor,
+    offHandleColor,
+    boxShadow,
+    activeBoxShadow,
+  } = props;
 
   const style = {
     display: 'flex',
@@ -13,11 +27,31 @@ const ToggleButton = props => {
 
   const labelStyle = {
     margin: '0 10px 0 10px',
-    fontSize: height - (height / 5),
+    fontSize: height - height / 5,
   };
 
-  const labelLeft = labelTextLeft ? <label style={labelStyle} className={labelSameLine ? 'toggle-button-label-inline' : ''} htmlFor={'toggleSwitch'}>{labelTextLeft}</label> : '';
-  const labelRight = labelTextRight ? <label style={labelStyle} className={labelSameLine ? 'toggle-button-label-inline' : ''} htmlFor={'toggleSwitch'}>{labelTextRight}</label> : '';
+  const labelLeft = labelTextLeft ? (
+    <label
+      style={labelStyle}
+      className={labelSameLine ? 'toggle-button-label-inline' : ''}
+      htmlFor="toggleSwitch"
+    >
+      {labelTextLeft}
+    </label>
+  ) : (
+    ''
+  );
+  const labelRight = labelTextRight ? (
+    <label
+      style={labelStyle}
+      className={labelSameLine ? 'toggle-button-label-inline' : ''}
+      htmlFor="toggleSwitch"
+    >
+      {labelTextRight}
+    </label>
+  ) : (
+    ''
+  );
 
   return (
     <div style={style}>

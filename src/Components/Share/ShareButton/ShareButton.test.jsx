@@ -17,22 +17,30 @@ describe('ShareButton', () => {
 
   it('can enter a state.gov email', () => {
     const email = 'test@state.gov';
-    wrapper.find('#share-input').simulate('change', { target: { value: email } });
+    wrapper
+      .find('#share-input')
+      .simulate('change', { target: { value: email } });
     expect(wrapper.instance().state.recipient).toBe(email);
   });
 
   it('can enter a non-state.gov email', () => {
     const email = 'test@foobar.com';
-    wrapper.find('#share-input').simulate('change', { target: { value: email } });
+    wrapper
+      .find('#share-input')
+      .simulate('change', { target: { value: email } });
     expect(wrapper.instance().state.recipient).toBe(email);
   });
 
   it('can alert the user of sharing with a non-state.gov email', () => {
     const stateEmail = 'test@state.gov';
-    wrapper.find('#share-input').simulate('change', { target: { value: stateEmail } });
+    wrapper
+      .find('#share-input')
+      .simulate('change', { target: { value: stateEmail } });
     expect(wrapper.contains(alertText)).toBe(false);
     const otherEmail = 'test@foobar.com';
-    wrapper.find('#share-input').simulate('change', { target: { value: otherEmail } });
+    wrapper
+      .find('#share-input')
+      .simulate('change', { target: { value: otherEmail } });
     expect(wrapper.contains(alertText)).toBe(true);
   });
 
@@ -54,7 +62,7 @@ describe('ShareButton', () => {
       setTimeout(() => {
         expect(wrapper.instance().state.timeout).toBe(false);
         done();
-      }, (ms + 50));
+      }, ms + 50);
     };
     f(50);
   });
@@ -62,7 +70,9 @@ describe('ShareButton', () => {
   it('can submit an external share', () => {
     expect(wrapper.instance().state.timeout).toBe(false);
     const email = 'test@state.gov';
-    wrapper.find('#share-input').simulate('change', { target: { value: email } });
+    wrapper
+      .find('#share-input')
+      .simulate('change', { target: { value: email } });
     wrapper.find('form').simulate('submit', { preventDefault: () => {} });
     expect(wrapper.instance().state.timeout).toBe(true);
   });
@@ -70,7 +80,9 @@ describe('ShareButton', () => {
   it('can submit an internal share', () => {
     expect(wrapper.instance().state.timeout).toBe(false);
     const email = 'test@state.gov';
-    wrapper.find('#share-input').simulate('change', { target: { value: email } });
+    wrapper
+      .find('#share-input')
+      .simulate('change', { target: { value: email } });
     wrapper.find('form').simulate('submit', { preventDefault: () => {} });
     expect(wrapper.instance().state.timeout).toBe(true);
   });

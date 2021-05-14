@@ -2,9 +2,18 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
 import { connect } from 'react-redux';
-import { ACCORDION_SELECTION_OBJECT, BID_RESULTS, EMPTY_FUNCTION,
-  FILTER_ITEMS_ARRAY, MISSION_DETAILS_ARRAY, PILL_ITEM_ARRAY, POSITION_SEARCH_RESULTS,
-  POST_DETAILS_ARRAY, SORT_BY_PARENT_OBJECT, USER_PROFILE } from '../../Constants/PropTypes';
+import {
+  ACCORDION_SELECTION_OBJECT,
+  BID_RESULTS,
+  EMPTY_FUNCTION,
+  FILTER_ITEMS_ARRAY,
+  MISSION_DETAILS_ARRAY,
+  PILL_ITEM_ARRAY,
+  POSITION_SEARCH_RESULTS,
+  POST_DETAILS_ARRAY,
+  SORT_BY_PARENT_OBJECT,
+  USER_PROFILE,
+} from '../../Constants/PropTypes';
 import { filterPVSorts, filterTandemSorts } from '../../Constants/Sort';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
 import ResultsContainer from '../ResultsContainer/ResultsContainer';
@@ -36,15 +45,41 @@ class Results extends Component {
   }
 
   render() {
-    const { results, isLoading, hasErrored, sortBy, defaultKeyword, defaultLocation, resetFilters,
-      pillFilters, defaultSort, pageSizes, defaultPageSize, onQueryParamToggle,
-      defaultPageNumber, onQueryParamUpdate, filters, userProfile,
-      selectedAccordion, setAccordion, scrollToTop,
-      fetchMissionAutocomplete, missionSearchResults, missionSearchIsLoading,
-      missionSearchHasErrored, fetchPostAutocomplete,
-      postSearchResults, postSearchIsLoading, postSearchHasErrored, shouldShowSearchBar,
-      bidList, isProjectedVacancy, filtersIsLoading, showClear, shouldShowMobileFilter }
-      = this.props;
+    const {
+      results,
+      isLoading,
+      hasErrored,
+      sortBy,
+      defaultKeyword,
+      defaultLocation,
+      resetFilters,
+      pillFilters,
+      defaultSort,
+      pageSizes,
+      defaultPageSize,
+      onQueryParamToggle,
+      defaultPageNumber,
+      onQueryParamUpdate,
+      filters,
+      userProfile,
+      selectedAccordion,
+      setAccordion,
+      scrollToTop,
+      fetchMissionAutocomplete,
+      missionSearchResults,
+      missionSearchIsLoading,
+      missionSearchHasErrored,
+      fetchPostAutocomplete,
+      postSearchResults,
+      postSearchIsLoading,
+      postSearchHasErrored,
+      shouldShowSearchBar,
+      bidList,
+      isProjectedVacancy,
+      filtersIsLoading,
+      showClear,
+      shouldShowMobileFilter,
+    } = this.props;
     const { isTandemSearch } = this.context;
     const hasLoaded = !isLoading && results.results && !!results.results.length;
 
@@ -75,19 +110,24 @@ class Results extends Component {
     return (
       <div className="results content-container">
         <h2 className="sr-only">Search results</h2>
-        {
-          shouldShowSearchBar &&
+        {shouldShowSearchBar && (
           <ResultsSearchHeader
-            ref={(ref) => { this.keywordRef = ref; }}
+            ref={(ref) => {
+              this.keywordRef = ref;
+            }}
             onUpdate={onQueryParamUpdate}
             defaultKeyword={defaultKeyword}
             defaultLocation={defaultLocation}
           />
-        }
+        )}
         <div className="usa-grid-full results-section-container">
           <MediaQuery breakpoint="screenMdMin" widthType="min">
             {/* eslint-disable */}
-            {matches => matches ? filterContainer : shouldShowMobileFilter && filterContainer}
+            {(matches) =>
+              matches
+                ? filterContainer
+                : shouldShowMobileFilter && filterContainer
+            }
             {/* eslint-enable */}
           </MediaQuery>
           <ResultsContainer
@@ -185,8 +225,10 @@ Results.childContextTypes = {
   isClient: PropTypes.bool,
 };
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   shouldShowMobileFilter: state.shouldShowMobileFilter,
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(Results);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(
+  Results,
+);

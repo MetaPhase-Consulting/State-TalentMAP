@@ -129,7 +129,8 @@ describe('BidListButtonComponent', () => {
         toggleBidPosition={() => {}}
         compareArray={bidList}
         isLoading={false}
-      />, { context: { isClient: true } },
+      />,
+      { context: { isClient: true } },
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

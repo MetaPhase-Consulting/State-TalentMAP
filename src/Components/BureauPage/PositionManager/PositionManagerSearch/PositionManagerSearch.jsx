@@ -1,9 +1,10 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import {
+  forwardRef, useImperativeHandle, useRef, useState,
+} from 'react';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import SearchBar from 'Components/SearchBar/SearchBar';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
-
 
 const PositionManagerSearch = forwardRef((props, ref) => {
   const [q, setQ] = useState('');
@@ -20,24 +21,25 @@ const PositionManagerSearch = forwardRef((props, ref) => {
 
   function submitForm(e) {
     // resolves “Form submission canceled because the form is not connected” warning
-    if (e && e.preventDefault) { e.preventDefault(); }
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     props.submitSearch(q);
   }
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      clearText() {
-        childRef.current.clearSearch();
-      },
-    }),
-  );
+  useImperativeHandle(ref, () => ({
+    clearText() {
+      childRef.current.clearSearch();
+    },
+  }));
 
   return (
     <form className="usa-grid-full">
       <fieldset className="usa-width-five-sixths">
         <div className="usa-width-one-whole search-results-inputs search-keyword">
-          <legend className="usa-grid-full homepage-search-legend">Search for a position</legend>
+          <legend className="usa-grid-full homepage-search-legend">
+            Search for a position
+          </legend>
           <SearchBar
             id="bureau-search-keyword-field"
             defaultValue={props.textSearch || props.defaultValue}
@@ -58,7 +60,7 @@ const PositionManagerSearch = forwardRef((props, ref) => {
       <div className="usa-width-one-sixth search-submit-button">
         <button className="usa-button" type="submit" onClick={submitForm}>
           <FontAwesome name="search" className="label-icon" />
-                Search
+          Search
         </button>
       </div>
     </form>

@@ -7,17 +7,16 @@ describe('async actions', () => {
   beforeEach(() => {
     // limit = 3 is the default param in the function
     mockAdapter.onGet('/logs/').reply(200,
-      { data: [
-        'permissions.log',
-        'test.log',
-      ] },
-    );
+      {
+        data: [
+          'permissions.log',
+          'test.log',
+        ],
+      });
     mockAdapter.onGet('/logs/permissions/').reply(200,
-      { data: 'log text' },
-    );
+      { data: 'log text' });
     mockAdapter.onGet('/logs/test.log/?').reply(200,
-      { data: 'more log text' },
-    );
+      { data: 'more log text' });
   });
 
   afterEach(() => {
@@ -38,8 +37,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching logs', (done) => {
     mockAdapter.onGet('/logs/').reply(404,
-      null,
-    );
+      null);
 
     const store = mockStore({});
 
@@ -66,8 +64,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching the logs list', (done) => {
     mockAdapter.onGet('/logs/').reply(404,
-      null,
-    );
+      null);
 
     const store = mockStore({});
 
@@ -94,8 +91,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching a log by id', (done) => {
     mockAdapter.onGet('/logs/test.log/?').reply(404,
-      null,
-    );
+      null);
 
     const store = mockStore({});
 
@@ -122,8 +118,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching a log by id, formatted to download', (done) => {
     mockAdapter.onGet('/logs/test.log/?').reply(404,
-      null,
-    );
+      null);
 
     const store = mockStore({});
 

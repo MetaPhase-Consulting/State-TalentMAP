@@ -38,7 +38,7 @@ class LogsPage extends Component {
     this.setState({ page });
   };
 
-  selectLog = selected => {
+  selectLog = (selected) => {
     const { logSize, logOffset } = this.state;
     this.setState({ selected }, () => {
       this.props.getLog(selected, logSize, logOffset);
@@ -55,7 +55,9 @@ class LogsPage extends Component {
       logHasErrored,
       onDownloadOne,
     } = this.props;
-    const { page, range, selected, logSize } = this.state;
+    const {
+      page, range, selected, logSize,
+    } = this.state;
 
     const logsLen = logsList.length;
 
@@ -64,21 +66,29 @@ class LogsPage extends Component {
     return (
       <div
         className={`usa-grid-full profile-content-inner-container administrator-page
-        ${(logsListIsLoading) ? 'results-loading' : ''}`}
+        ${logsListIsLoading ? 'results-loading' : ''}`}
       >
-        {
-          logsListIsLoading && !logsListHasErrored &&
-            <Spinner type="homepage-position-results" size="big" />
-        }
+        {logsListIsLoading && !logsListHasErrored && (
+          <Spinner type="homepage-position-results" size="big" />
+        )}
         <div className="usa-grid-full">
           <ProfileSectionTitle title="Logs" icon="sitemap" />
         </div>
-        {
-          !logsListIsLoading && !logsListHasErrored &&
+        {!logsListIsLoading && !logsListHasErrored && (
           <div>
-            <TextInput inputProps={{ type: 'number' }} id="logSize" label="Log size (lines)" value={logSize} changeText={e => this.setState({ logSize: e })} />
+            <TextInput
+              inputProps={{ type: 'number' }}
+              id="logSize"
+              label="Log size (lines)"
+              value={logSize}
+              changeText={(e) => this.setState({ logSize: e })}
+            />
             <div className="usa-grid-full total-results">
-              <TotalResults total={logsLen} pageNumber={page} pageSize={range} />
+              <TotalResults
+                total={logsLen}
+                pageNumber={page}
+                pageSize={range}
+              />
             </div>
             <div className="usa-grid-full">
               {paginate(logsList, range, page).map((m) => {
@@ -88,7 +98,7 @@ class LogsPage extends Component {
                     key={m}
                     name={m}
                     onClick={this.selectLog}
-                    onDownloadClick={e => onDownloadOne(e, logSize)}
+                    onDownloadClick={(e) => onDownloadOne(e, logSize)}
                     isSelected={isSelected}
                   />
                 );
@@ -105,30 +115,39 @@ class LogsPage extends Component {
             <div className="usa-grid-full log-contents-container">
               <h3>Log Contents</h3>
               <div id={LOG_CONTAINER} className="log-container">
-                {
-                  logSuccess &&
-                  (log || []).map(m => <div key={shortid.generate()} className="log-line-item"><code>{m}</code></div>)
-                }
-                {
-                  selected && !logIsLoading && !logHasErrored && log.length <= 1 && !log[0] && 'This log file is empty.'
-                }
-                {
-                  selected && logIsLoading && !logHasErrored && 'Log file loading...'
-                }
-                {
-                  selected && !logIsLoading && logHasErrored && 'An error occurred while loading this log file.'
-                }
-                {
-                  !selected && 'Please choose a log file above.'
-                }
+                {logSuccess
+                  && (log || []).map((m) => (
+                    <div key={shortid.generate()} className="log-line-item">
+                      <code>{m}</code>
+                    </div>
+                  ))}
+                {selected
+                  && !logIsLoading
+                  && !logHasErrored
+                  && log.length <= 1
+                  && !log[0]
+                  && 'This log file is empty.'}
+                {selected
+                  && logIsLoading
+                  && !logHasErrored
+                  && 'Log file loading...'}
+                {selected
+                  && !logIsLoading
+                  && logHasErrored
+                  && 'An error occurred while loading this log file.'}
+                {!selected && 'Please choose a log file above.'}
               </div>
-              {
-                logSuccess &&
-                <button onClick={() => onDownloadOne(this.state.selected, logSize)} className="usa-button">Download</button>
-              }
+              {logSuccess && (
+                <button
+                  onClick={() => onDownloadOne(this.state.selected, logSize)}
+                  className="usa-button"
+                >
+                  Download
+                </button>
+              )}
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

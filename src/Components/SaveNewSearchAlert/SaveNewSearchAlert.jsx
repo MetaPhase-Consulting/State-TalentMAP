@@ -3,7 +3,12 @@ import Alert from '../Alert/Alert';
 
 const SaveNewSearchAlert = ({ newSavedSearchSuccess }) => (
   <div className="usa-grid-full saved-search-alert">
-    <Alert type="success" title={newSavedSearchSuccess.title} messages={[{ body: newSavedSearchSuccess.message }]} isAriaLive />
+    <Alert
+      type="success"
+      title={newSavedSearchSuccess.title}
+      messages={[{ body: newSavedSearchSuccess.message }]}
+      isAriaLive
+    />
   </div>
 );
 

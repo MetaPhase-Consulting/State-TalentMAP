@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-const LoadingError = ({ children }) => (
-  <div role="alert">{children}</div>
-);
+const LoadingError = ({ children }) => <div role="alert">{children}</div>;
 
 LoadingError.propTypes = {
   children: PropTypes.string,

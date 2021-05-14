@@ -24,26 +24,35 @@ const ProfilePage = ({ user, isLoading }) => (
   <div className="profile-page">
     <ProfileMenu
       roles={user.permission_groups}
-      isGlossaryEditor={userHasPermissions([GLOSSARY_EDITOR_PERM], user.permission_groups)}
+      isGlossaryEditor={userHasPermissions(
+        [GLOSSARY_EDITOR_PERM],
+        user.permission_groups,
+      )}
     />
     <div className="usa-grid-full profile-content-container">
-      {isLoading ?
+      {isLoading ? (
         <Spinner size="small" type="homepage-positions-results" />
-        :
+      ) : (
         <Switch>
           <Route path="/profile/dashboard" component={Dashboard} />
           <Route path="/profile/cycles" component={BidCycles} />
-          <Route path="/profile/favorites" component={FavoritePositionsContainer} />
+          <Route
+            path="/profile/favorites"
+            component={FavoritePositionsContainer}
+          />
           <Route path="/profile/searches" component={SavedSearchesWrapper} />
           <Route path="/profile/settings" component={Settings} />
           <Route
             path="/profile/bidtracker/public/:id/:bid?"
-            render={props => <BidTracker {...props} isPublic />}
+            render={(props) => <BidTracker {...props} isPublic />}
           />
           <Route path="/profile/bidtracker/:bid?" component={BidTracker} />
           <Route path="/profile/statistics" component={BidStatistics} />
           <Route path="/profile/glossaryeditor" component={GlossaryEditor} />
-          <Route path="/profile/public/:id/:viewType?" component={ProfilePublic} />
+          <Route
+            path="/profile/public/:id/:viewType?"
+            component={ProfilePublic}
+          />
           <Route path="/profile/notifications" component={Notifications} />
           <Route path="/profile/administrator" component={Administrator} />
           <Route path="/profile/bureau" component={Bureau} />
@@ -56,7 +65,7 @@ const ProfilePage = ({ user, isLoading }) => (
             )}
           />
         </Switch>
-      }
+      )}
     </div>
   </div>
 );

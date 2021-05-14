@@ -13,7 +13,7 @@ class SearchBar extends Component {
     };
   }
 
-  changeText = e => {
+  changeText = (e) => {
     const { searchText } = this.state;
     searchText.value = e.target.value;
     this.setState({ searchText }, this.props.onChangeText(e));
@@ -30,15 +30,31 @@ class SearchBar extends Component {
     const hidden = {
       display: 'none',
     };
-    const { id, type, submitDisabled, submitText, placeholder, inputDisabled,
-      alertText, onSubmitSearch, label, labelSrOnly, noForm, noButton, showClear }
-      = this.props;
+    const {
+      id,
+      type,
+      submitDisabled,
+      submitText,
+      placeholder,
+      inputDisabled,
+      alertText,
+      onSubmitSearch,
+      label,
+      labelSrOnly,
+      noForm,
+      noButton,
+      showClear,
+    } = this.props;
     const { searchText } = this.state;
     let showSubmitText = true; // do not hide submit text initially
-    if (type === 'small') { showSubmitText = false; } // small search class should not have text
+    if (type === 'small') {
+      showSubmitText = false;
+    } // small search class should not have text
 
     let labelClass = '';
-    if (labelSrOnly) { labelClass = 'usa-sr-only'; }
+    if (labelSrOnly) {
+      labelClass = 'usa-sr-only';
+    }
 
     let formattedSubmitText = '';
     let formattedSubmitTextSr = 'Search';
@@ -70,38 +86,43 @@ class SearchBar extends Component {
         <label className={labelClass} htmlFor={id}>
           {label}
         </label>
-        {
-          showClear ?
-            <span className="text-input-wrapper">
-              {input}
-              {
-                hasValue ? (
-                  <InteractiveElement onClick={this.clearSearch} type="span" role="button" title="Clear keyword">
-                    <FA name="times-circle" />
-                  </InteractiveElement>
-                ) : <FA name="search" />
-              }
-            </span>
-            :
-            input
-        }
+        {showClear ? (
+          <span className="text-input-wrapper">
+            {input}
+            {hasValue ? (
+              <InteractiveElement
+                onClick={this.clearSearch}
+                type="span"
+                role="button"
+                title="Clear keyword"
+              >
+                <FA name="times-circle" />
+              </InteractiveElement>
+            ) : (
+              <FA name="search" />
+            )}
+          </span>
+        ) : (
+          input
+        )}
         <div id={`enabled-search-${id}`}>
-          { !noButton &&
-          <button
-            id={`enabled-search-button-${id}`}
-            className={submitDisabledClass}
-            disabled={submitDisabled}
-            type="submit"
-            title="submit search"
-          >
-            <span className="usa-search-submit-text">{formattedSubmitText}</span>
-            <span className="usa-sr-only">{formattedSubmitTextSr}</span>
-          </button>
-          }
+          {!noButton && (
+            <button
+              id={`enabled-search-button-${id}`}
+              className={submitDisabledClass}
+              disabled={submitDisabled}
+              type="submit"
+              title="submit search"
+            >
+              <span className="usa-search-submit-text">
+                {formattedSubmitText}
+              </span>
+              <span className="usa-sr-only">{formattedSubmitTextSr}</span>
+            </button>
+          )}
         </div>
         <div id={`disabled-search-${id}`} style={hidden}>
-          {
-            !noButton &&
+          {!noButton && (
             <button
               className="usa-button-disabled"
               disabled="true"
@@ -113,7 +134,7 @@ class SearchBar extends Component {
                 {formattedSubmitText}
               </span>
             </button>
-          }
+          )}
           <span className="alert-text">{alertText}</span>
         </div>
       </div>
@@ -121,15 +142,8 @@ class SearchBar extends Component {
     return (
       <div className={`usa-search usa-search-${type} searchbar`}>
         <div role="search" className="usa-grid-full">
-          { !noForm &&
-            <form onSubmit={onSubmitSearch}>
-              {child}
-            </form>
-          }
-          {
-            noForm &&
-            child
-          }
+          {!noForm && <form onSubmit={onSubmitSearch}>{child}</form>}
+          {noForm && child}
         </div>
       </div>
     );

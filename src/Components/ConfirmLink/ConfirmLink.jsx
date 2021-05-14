@@ -20,7 +20,9 @@ class ConfirmLink extends Component {
 
   render() {
     const { confirm } = this.state;
-    const { defaultText, className, role, type } = this.props;
+    const {
+      defaultText, className, role, type,
+    } = this.props;
     return (
       <InteractiveElement
         className={className}
@@ -28,8 +30,9 @@ class ConfirmLink extends Component {
         role={role}
         onClick={this.onClick}
       >
-        { confirm ? 'Are you sure?' : defaultText }
-      </InteractiveElement>);
+        {confirm ? 'Are you sure?' : defaultText}
+      </InteractiveElement>
+    );
   }
 }
 
@@ -37,7 +40,8 @@ ConfirmLink.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
   role: PropTypes.string,
-  defaultText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  defaultText: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+    .isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

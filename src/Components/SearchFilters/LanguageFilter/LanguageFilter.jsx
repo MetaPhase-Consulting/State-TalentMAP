@@ -18,7 +18,11 @@ class LanguageFilter extends Component {
   }
 
   onCheckBoxClick = (value, props) => {
-    this.props.queryParamToggle(props.selectionRef, props[this.props.queryProperty], !value);
+    this.props.queryParamToggle(
+      props.selectionRef,
+      props[this.props.queryProperty],
+      !value,
+    );
   };
 
   // Click handler for group check box.
@@ -31,7 +35,9 @@ class LanguageFilter extends Component {
     const groupId = get(props, 'cone.id');
     const groupCode = get(props, 'cone.code');
     if (value && groupId && !includes(hiddenGroups, groupCode)) {
-      const el = document.getElementById(`language-group-accordion-${groupId}-button`);
+      const el = document.getElementById(
+        `language-group-accordion-${groupId}-button`,
+      );
       if (el) {
         const isOpen = el.getAttribute('aria-expanded') === 'true';
         if (!isOpen) {
@@ -46,7 +52,7 @@ class LanguageFilter extends Component {
     const qArr = [];
     item.data.forEach((itemData) => {
       if (!shouldRemoveChildren) {
-        if ((itemData.group === cone.code) && !shouldRemoveChildren) {
+        if (itemData.group === cone.code && !shouldRemoveChildren) {
           qArr.push(itemData.code);
         } else if (itemData.group !== cone.code && itemData.isSelected) {
           qArr.push(itemData.code);
@@ -68,7 +74,7 @@ class LanguageFilter extends Component {
     props.languageGroups.data.forEach((group) => {
       let allGroupChildrenSelected = true;
       props.item.data.some((itemData) => {
-        if ((itemData.group === group.code) && !itemData.isSelected) {
+        if (itemData.group === group.code && !itemData.isSelected) {
           allGroupChildrenSelected = false;
           return true;
         }
@@ -83,68 +89,75 @@ class LanguageFilter extends Component {
     const { item, languageGroups, isTandem } = this.props;
     let languageGroups$ = (languageGroups.data || []).map((m) => {
       const m$ = { ...m };
-      m$.languages = item.data.map(n => n.long_description);
+      m$.languages = item.data.map((n) => n.long_description);
       return m$;
     });
     languageGroups$ = orderBy(languageGroups$, 'code', 'desc');
     return (
       <div className="usa-grid-full tm-nested-accordions">
         <Accordion>
-          {
-            languageGroups$.map(group => {
-              const isGroupHidden = includes(hiddenGroups, group.code);
-              return (
-                <AccordionItem
-                  key={group.id}
-                  className={`accordion-content-small ${isGroupHidden ? 'accordion-unclickable' : ''}`}
-                  id={`language-group-accordion-${group.id}${isTandem ? '-tandem' : ''}`}
-                  title={group.name}
-                  buttonClass="tm-nested-accordion-button"
-                  disabled={isGroupHidden}
-                  expanded
-                  preContent={(
-                    <CheckBox
-                      cone={group /* pass group to reference in onClick handler */}
-                      id={`select-all-group-${group.id}${isTandem ? '-tandem' : ''}`}
-                      onCheckBoxClick={this.onGroupCheckBoxClick}
-                      className="tm-checkbox-transparent"
-                      value={this.state[group.id] || false}
-                      label={`Toggle filter by all positions with group name ${group.name}`}
-                      labelSrOnly
-                    />
-                  )}
-                >
-                  <div className="usa-grid-full">
-                    {
-                      !isGroupHidden &&
-                      item.data.map((itemData) => {
-                        const itemLabel = getItemLabel(itemData);
-                        const itemLabelNoSpaces = formatIdSpacing(itemLabel);
-                        const matchesCone = itemData.group === group.code;
-                        if (matchesCone) {
-                          return (
-                            <CheckBox
-                              _id={itemData.id} /* when we need the original id */
-                              id={`checkbox${itemLabelNoSpaces}-language-${group.id}${isTandem ? '-tandem' : ''}`}
-                              key={`checkbox${itemLabel}-language-${group.id}`}
-                              label={itemLabel}
-                              title={itemLabel}
-                              name={itemLabel}
-                              value={itemData.isSelected || false}
-                              code={itemData.code}
-                              selectionRef={item.item.selectionRef}
-                              onCheckBoxClick={this.onCheckBoxClick}
-                              className="tm-checkbox-transparent"
-                            />);
-                        }
-                        return null;
-                      })
+          {languageGroups$.map((group) => {
+            const isGroupHidden = includes(hiddenGroups, group.code);
+            return (
+              <AccordionItem
+                key={group.id}
+                className={`accordion-content-small ${
+                  isGroupHidden ? 'accordion-unclickable' : ''
+                }`}
+                id={`language-group-accordion-${group.id}${
+                  isTandem ? '-tandem' : ''
+                }`}
+                title={group.name}
+                buttonClass="tm-nested-accordion-button"
+                disabled={isGroupHidden}
+                expanded
+                preContent={(
+                  <CheckBox
+                    cone={
+                      group /* pass group to reference in onClick handler */
                     }
-                  </div>
-                </AccordionItem>
-              );
-            })
-          }
+                    id={`select-all-group-${group.id}${
+                      isTandem ? '-tandem' : ''
+                    }`}
+                    onCheckBoxClick={this.onGroupCheckBoxClick}
+                    className="tm-checkbox-transparent"
+                    value={this.state[group.id] || false}
+                    label={`Toggle filter by all positions with group name ${group.name}`}
+                    labelSrOnly
+                  />
+                )}
+              >
+                <div className="usa-grid-full">
+                  {!isGroupHidden
+                    && item.data.map((itemData) => {
+                      const itemLabel = getItemLabel(itemData);
+                      const itemLabelNoSpaces = formatIdSpacing(itemLabel);
+                      const matchesCone = itemData.group === group.code;
+                      if (matchesCone) {
+                        return (
+                          <CheckBox
+                            _id={itemData.id} /* when we need the original id */
+                            id={`checkbox${itemLabelNoSpaces}-language-${
+                              group.id
+                            }${isTandem ? '-tandem' : ''}`}
+                            key={`checkbox${itemLabel}-language-${group.id}`}
+                            label={itemLabel}
+                            title={itemLabel}
+                            name={itemLabel}
+                            value={itemData.isSelected || false}
+                            code={itemData.code}
+                            selectionRef={item.item.selectionRef}
+                            onCheckBoxClick={this.onCheckBoxClick}
+                            className="tm-checkbox-transparent"
+                          />
+                        );
+                      }
+                      return null;
+                    })}
+                </div>
+              </AccordionItem>
+            );
+          })}
         </Accordion>
       </div>
     );

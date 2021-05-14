@@ -11,8 +11,7 @@ export default function bidClassesFromCurrentStatus(bid = { status: 'draft' }) {
   const DRAFT_TOOLTIP = BID_TRACKER_TOOLTIP_TEXT[DRAFT_PROP];
   const SUBMITTED_TOOLTIP = BID_TRACKER_TOOLTIP_TEXT[SUBMITTED_PROP];
   const HAND_SHAKE_OFFERED_TOOLTIP = BID_TRACKER_TOOLTIP_TEXT[HAND_SHAKE_OFFERED_PROP];
-  const HAND_SHAKE_ACCEPTED_TOOLTIP =
-      BID_TRACKER_TOOLTIP_TEXT[HAND_SHAKE_ACCEPTED_PROP];
+  const HAND_SHAKE_ACCEPTED_TOOLTIP = BID_TRACKER_TOOLTIP_TEXT[HAND_SHAKE_ACCEPTED_PROP];
   const PANEL_TOOLTIP = BID_TRACKER_TOOLTIP_TEXT[PRE_PANEL_PROP];
   const APPROVED_TOOLTIP = BID_TRACKER_TOOLTIP_TEXT[APPROVED_PROP];
 
@@ -20,7 +19,7 @@ export default function bidClassesFromCurrentStatus(bid = { status: 'draft' }) {
 
   // This is the base object we'll return. The stages prop will be filled with prop names
   // that correspond to each stage of the bid tracker.
-  const bidClassObject$ = Object.assign({}, { stages: {} }, bidClassObject);
+  const bidClassObject$ = { stages: {}, ...bidClassObject };
 
   if (!keys(bidClassObject$.stages).length) {
     return false;
@@ -41,39 +40,50 @@ export default function bidClassesFromCurrentStatus(bid = { status: 'draft' }) {
     case DECLINED_PROP:
       bidClassObject$.stages[DRAFT_PROP] = {
         ...bidClassObject$.stages[DRAFT_PROP],
-        tooltip: DRAFT_TOOLTIP };
+        tooltip: DRAFT_TOOLTIP,
+      };
       bidClassObject$.stages[SUBMITTED_PROP] = {
         ...bidClassObject$.stages[SUBMITTED_PROP],
-        tooltip: SUBMITTED_TOOLTIP };
+        tooltip: SUBMITTED_TOOLTIP,
+      };
       bidClassObject$.stages[HAND_SHAKE_OFFERED_PROP] = {
         ...bidClassObject$.stages[HAND_SHAKE_OFFERED_PROP],
-        tooltip: HAND_SHAKE_OFFERED_TOOLTIP };
+        tooltip: HAND_SHAKE_OFFERED_TOOLTIP,
+      };
       bidClassObject$.stages[HAND_SHAKE_ACCEPTED_PROP] = {
         ...bidClassObject$.stages[HAND_SHAKE_ACCEPTED_PROP],
-        tooltip: HAND_SHAKE_ACCEPTED_TOOLTIP };
+        tooltip: HAND_SHAKE_ACCEPTED_TOOLTIP,
+      };
       bidClassObject$.stages[IN_PANEL_PROP] = {
         ...bidClassObject$.stages[IN_PANEL_PROP],
-        tooltip: PANEL_TOOLTIP };
+        tooltip: PANEL_TOOLTIP,
+      };
       bidClassObject$.stages[APPROVED_PROP] = {
         ...bidClassObject$.stages[APPROVED_PROP],
-        tooltip: APPROVED_TOOLTIP };
+        tooltip: APPROVED_TOOLTIP,
+      };
       return bidClassObject$;
     case APPROVED_PROP:
       bidClassObject$.stages[DRAFT_PROP] = {
         ...bidClassObject$.stages[DRAFT_PROP],
-        tooltip: DRAFT_TOOLTIP };
+        tooltip: DRAFT_TOOLTIP,
+      };
       bidClassObject$.stages[SUBMITTED_PROP] = {
         ...bidClassObject$.stages[SUBMITTED_PROP],
-        tooltip: SUBMITTED_TOOLTIP };
+        tooltip: SUBMITTED_TOOLTIP,
+      };
       bidClassObject$.stages[HAND_SHAKE_OFFERED_PROP] = {
         ...bidClassObject$.stages[HAND_SHAKE_OFFERED_PROP],
-        tooltip: HAND_SHAKE_OFFERED_TOOLTIP };
+        tooltip: HAND_SHAKE_OFFERED_TOOLTIP,
+      };
       bidClassObject$.stages[HAND_SHAKE_ACCEPTED_PROP] = {
         ...bidClassObject$.stages[HAND_SHAKE_ACCEPTED_PROP],
-        tooltip: HAND_SHAKE_ACCEPTED_TOOLTIP };
+        tooltip: HAND_SHAKE_ACCEPTED_TOOLTIP,
+      };
       bidClassObject$.stages[IN_PANEL_PROP] = {
         ...bidClassObject$.stages[IN_PANEL_PROP],
-        tooltip: PANEL_TOOLTIP };
+        tooltip: PANEL_TOOLTIP,
+      };
       return bidClassObject$;
     default:
       return bidClassObject$;

@@ -11,13 +11,14 @@ class Nav extends Component {
       selected: props.selected || get(props, 'options[0].title'),
     };
   }
+
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.selected !== this.state.selected) {
       this.setState({ selected: nextProps.selected });
     }
   }
 
-  onClick = selected => {
+  onClick = (selected) => {
     const { onClick } = this.props;
     this.setState({ selected }, () => onClick(selected));
   };

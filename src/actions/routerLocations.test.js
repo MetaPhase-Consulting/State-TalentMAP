@@ -20,7 +20,8 @@ describe('routerLocations', () => {
 
   it('returns false if there is only one item in history', () => {
     expect(actions.getLastRoute(
-      [routerLocations[0]], last(routerLocations)))
+      [routerLocations[0]], last(routerLocations),
+    ))
       .toBe(false);
   });
 

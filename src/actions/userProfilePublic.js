@@ -85,8 +85,8 @@ export function userProfilePublicFetchData(id, bypass, includeBids = true) {
           const clientView = get(getState(), 'clientView');
           const selectedEmpId = get(clientView, 'client.employee_id');
           const empId = get(newProfileObject, 'employee_id');
-          if (empId && selectedEmpId &&
-            empId === selectedEmpId && isArray(newProfileObject.bidList)) {
+          if (empId && selectedEmpId
+            && empId === selectedEmpId && isArray(newProfileObject.bidList)) {
             dispatch(clientBidListFetchDataSuccess({ results: newProfileObject.bidList }));
           }
         }

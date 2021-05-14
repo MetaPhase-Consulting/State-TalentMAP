@@ -10,16 +10,12 @@ describe('NavLinksContainerComponent', () => {
     </NavLinksContainer>
   );
   it('is defined', () => {
-    const wrapper = shallow(
-      element,
-    );
+    const wrapper = shallow(element);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      element,
-    );
+    const wrapper = shallow(element);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

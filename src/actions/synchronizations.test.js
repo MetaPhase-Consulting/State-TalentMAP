@@ -6,20 +6,16 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 describe('async actions', () => {
   beforeEach(() => {
     mockAdapter.onGet('/data_sync/').reply(200,
-      { data: [{ id: 1 }] },
-    );
+      { data: [{ id: 1 }] });
 
     mockAdapter.onPut('/data_sync/run/1/').reply(200,
-      null,
-    );
+      null);
 
     mockAdapter.onPut('/data_sync/run/2/').reply(404,
-      null,
-    );
+      null);
 
     mockAdapter.onPatch('/data_sync/schedule/1/').reply(200,
-      null,
-    );
+      null);
   });
 
   it('fetches sync jobs', (done) => {
@@ -38,8 +34,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onGet('/data_sync/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -66,8 +61,7 @@ describe('async actions', () => {
     const store = mockStore({ comparisons: [] });
 
     mockAdapter.onGet('/data_sync/').reply(200,
-      { data: [{ id: 1 }, { id: 2 }] },
-    );
+      { data: [{ id: 1 }, { id: 2 }] });
 
     const f = () => {
       setTimeout(() => {
@@ -82,12 +76,10 @@ describe('async actions', () => {
     const store = mockStore({ comparisons: [] });
 
     mockAdapter.onGet('/data_sync/').reply(200,
-      { data: [{ id: 1 }] },
-    );
+      { data: [{ id: 1 }] });
 
     mockAdapter.onPut('/data_sync/run/1/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -102,8 +94,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onGet('/data_sync/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -118,8 +109,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPut('/data_sync/run/1/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -146,8 +136,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/data_sync/schedule/1/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

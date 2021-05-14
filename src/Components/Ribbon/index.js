@@ -5,6 +5,8 @@ import HardToFill from './HardToFill';
 import ServiceNeedDifferential from './ServiceNeedDifferential';
 import InBidList from './InBidList';
 
-export { Handshake, CriticalNeed, HardToFill, ServiceNeedDifferential, Featured, InBidList };
+export {
+  Handshake, CriticalNeed, HardToFill, ServiceNeedDifferential, Featured, InBidList,
+};
 
 export { default } from './Ribbon';

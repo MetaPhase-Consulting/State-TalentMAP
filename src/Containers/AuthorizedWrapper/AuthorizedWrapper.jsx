@@ -8,21 +8,25 @@ class AuthorizedWrapper extends Component {
       isAuthorized: { value: false },
     };
   }
+
   UNSAFE_componentWillMount() {
     this.setAuthorization();
   }
+
   UNSAFE_componentWillReceiveProps() {
     this.setAuthorization();
   }
+
   setAuthorization() {
     const isAuthorized = { value: this.props.isAuthorized() };
     this.setState({ isAuthorized });
   }
+
   render() {
     const { isAuthorized } = this.state;
     return (
       <div className="authorized-wrapper">
-        { isAuthorized.value && this.props.children }
+        {isAuthorized.value && this.props.children}
       </div>
     );
   }

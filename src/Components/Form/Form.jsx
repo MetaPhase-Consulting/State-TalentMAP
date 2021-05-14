@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 
-const Form = ({ children, className, onFormSubmit, ...rest }) => (
+const Form = ({
+  children, className, onFormSubmit, ...rest
+}) => (
   <form className={className} onSubmit={onFormSubmit} {...rest}>
     {children}
   </form>

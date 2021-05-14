@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { setSortPreference } from '../../actions/preferences';
 
 export class PreferenceWrapper extends Component {
-  cb = e => {
+  cb = (e) => {
     const { keyRef, onSelect, setPreference } = this.props;
     onSelect(e);
     setPreference(keyRef, e.target.value);
@@ -31,10 +31,13 @@ PreferenceWrapper.defaultProps = {
 };
 
 export const mapStateToProps = (state, ownProps) => ({
-  sortPreference: get(state, `sortPreferences[${ownProps.keyRef}].defaultValue`),
+  sortPreference: get(
+    state,
+    `sortPreferences[${ownProps.keyRef}].defaultValue`,
+  ),
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   setPreference: (key, value) => dispatch(setSortPreference(key, value)),
 });
 

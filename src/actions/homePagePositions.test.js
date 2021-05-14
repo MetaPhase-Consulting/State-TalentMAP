@@ -34,11 +34,8 @@ describe('async actions', () => {
   beforeEach(() => {
     mockAdapter.reset();
 
-    queries.forEach(query =>
-      mockAdapter.onGet(`${query}`).reply(200,
-        resultsObject,
-      ),
-    );
+    queries.forEach(query => mockAdapter.onGet(`${query}`).reply(200,
+      resultsObject));
   });
 
   it('fetches positions when skill and grade are not defined', (done) => {
@@ -76,11 +73,8 @@ describe('async actions', () => {
 
     mockAdapter.reset();
 
-    queries.forEach(query =>
-      mockAdapter.onGet(`/cycleposition/${query}`).reply(404,
-        null,
-      ),
-    );
+    queries.forEach(query => mockAdapter.onGet(`/cycleposition/${query}`).reply(404,
+      null));
 
     const f = () => {
       setTimeout(() => {
@@ -99,11 +93,8 @@ describe('async actions', () => {
 
     mockAdapter.reset();
 
-    queries.forEach(query =>
-      mockAdapter.onGet(`/cycleposition/${query}`).reply(404,
-        null,
-      ),
-    );
+    queries.forEach(query => mockAdapter.onGet(`/cycleposition/${query}`).reply(404,
+      null));
 
     const f = () => {
       setTimeout(() => {

@@ -15,14 +15,22 @@ describe('BidTrackerCardBottomComponent', () => {
   };
   it('is defined', () => {
     const wrapper = shallow(
-      <BidTrackerCardBottom bureau="bureau" reviewer={reviewer} userProfile={bidderUserObject} />,
+      <BidTrackerCardBottom
+        bureau="bureau"
+        reviewer={reviewer}
+        userProfile={bidderUserObject}
+      />,
     );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <BidTrackerCardBottom bureau="bureau" reviewer={reviewer} userProfile={bidderUserObject} />,
+      <BidTrackerCardBottom
+        bureau="bureau"
+        reviewer={reviewer}
+        userProfile={bidderUserObject}
+      />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

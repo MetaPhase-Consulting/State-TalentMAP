@@ -11,9 +11,13 @@ const mockStore = configureStore(middlewares);
 
 describe('BureauPage', () => {
   it('mounts', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <PositionLists />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <PositionLists />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 

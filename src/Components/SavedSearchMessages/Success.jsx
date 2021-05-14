@@ -9,7 +9,10 @@ const Success = ({ name, isUpdated }) => {
     suffix = 'updated';
   }
   return (
-    <span>{prefix} search with the name {name} has been {suffix}! <Link to="/profile/searches/">Go to Saved Searches</Link>.</span>
+    <span>
+      {prefix} search with the name {name} has been {suffix}!{' '}
+      <Link to="/profile/searches/">Go to Saved Searches</Link>.
+    </span>
   );
 };
 

@@ -1,6 +1,9 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SAVED_SEARCH_MESSAGE, SAVED_SEARCH_OBJECT } from '../../Constants/PropTypes';
+import {
+  SAVED_SEARCH_MESSAGE,
+  SAVED_SEARCH_OBJECT,
+} from '../../Constants/PropTypes';
 import Form from '../Form';
 import FieldSet from '../FieldSet/FieldSet';
 import TextInput from '../TextInput';
@@ -13,7 +16,7 @@ class SaveNewSearchDialog extends Component {
     };
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     if (this.isExisting) {
       this.submitSavedSearch(e, this.props.currentSavedSearch.id);
     } else {
@@ -23,16 +26,16 @@ class SaveNewSearchDialog extends Component {
 
   get isExisting() {
     const id = this.props.currentSavedSearch.id || 0;
-    return (id > 0);
+    return id > 0;
   }
 
-  changeNewSearchName = e => {
+  changeNewSearchName = (e) => {
     const { newSearchName } = this.state;
     newSearchName.value = e;
     this.setState({ newSearchName });
   };
 
-  updateSavedSearch = e => {
+  updateSavedSearch = (e) => {
     this.submitSavedSearch(e, this.props.currentSavedSearch.id);
   };
 
@@ -57,7 +60,10 @@ class SaveNewSearchDialog extends Component {
     }
 
     return (
-      <Form className="usa-grid-full saved-search-form" onFormSubmit={this.onSubmit}>
+      <Form
+        className="usa-grid-full saved-search-form"
+        onFormSubmit={this.onSubmit}
+      >
         <FieldSet
           className="saved-search-fieldset usa-width-one-half"
           legend="Add a new saved search"
@@ -85,17 +91,16 @@ class SaveNewSearchDialog extends Component {
             className="saved-search-form-primary-button"
             onClick={this.submitSavedSearch}
           >
-            { this.isExisting ? 'Save As' : 'Save' }
+            {this.isExisting ? 'Save As' : 'Save'}
           </button>
-          {
-            this.isExisting ?
-              <button
-                className="saved-search-form-secondary-button"
-                onClick={this.updateSavedSearch}
-              >
-                Save
-              </button> : null
-          }
+          {this.isExisting ? (
+            <button
+              className="saved-search-form-secondary-button"
+              onClick={this.updateSavedSearch}
+            >
+              Save
+            </button>
+          ) : null}
         </div>
       </Form>
     );

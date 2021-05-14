@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate';
 
 class PaginationWrapper extends Component {
   // reconciles zero-base
-  onPageChange = e => {
+  onPageChange = (e) => {
     const selected = e.selected + 1;
     this.props.onPageChange({ page: selected });
   };
@@ -31,24 +31,22 @@ class PaginationWrapper extends Component {
     const count = Math.ceil(totalResults / pageSize);
     return (
       <div>
-        {
-          count > 0 ?
-            <nav className={paginationStyle} aria-label="Pagination">
-              <ReactPaginate
-                previousLabel={previousLabel}
-                nextLabel={nextLabel}
-                pageCount={count}
-                marginPagesDisplayed={marginPagesDisplayed}
-                pageRangeDisplayed={pageRangeDisplayed}
-                onPageChange={this.onPageChange}
-                containerClassName={containerClassName}
-                subContainerClassName={subContainerClassName}
-                forcePage={forcePage - 1/* reconciles zero-based pagination */}
-                activeClassName={activeClassName}
-              />
-            </nav>
-            : null
-        }
+        {count > 0 ? (
+          <nav className={paginationStyle} aria-label="Pagination">
+            <ReactPaginate
+              previousLabel={previousLabel}
+              nextLabel={nextLabel}
+              pageCount={count}
+              marginPagesDisplayed={marginPagesDisplayed}
+              pageRangeDisplayed={pageRangeDisplayed}
+              onPageChange={this.onPageChange}
+              containerClassName={containerClassName}
+              subContainerClassName={subContainerClassName}
+              forcePage={forcePage - 1 /* reconciles zero-based pagination */}
+              activeClassName={activeClassName}
+            />
+          </nav>
+        ) : null}
       </div>
     );
   }

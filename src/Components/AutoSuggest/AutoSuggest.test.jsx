@@ -50,7 +50,9 @@ describe('AutoSuggestComponent', () => {
         label="label"
       />,
     );
-    expect(wrapper.instance().props.suggestions[0].short_name).toBe(suggestions[0].short_name);
+    expect(wrapper.instance().props.suggestions[0].short_name).toBe(
+      suggestions[0].short_name,
+    );
   });
 
   it('can call the onKeyChange function', () => {
@@ -82,7 +84,7 @@ describe('AutoSuggestComponent', () => {
   });
 
   it('can call the displayProperty function from onKeyChange', () => {
-    const displayProperty = jest.fn(obj => obj.short_name);
+    const displayProperty = jest.fn((obj) => obj.short_name);
     const wrapper = shallow(
       <AutoSuggest
         suggestions={suggestions}
@@ -98,7 +100,6 @@ describe('AutoSuggestComponent', () => {
     expect(displayProperty).toHaveBeenCalled();
   });
 
-
   it('can call the onSuggestionSelected function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
@@ -110,7 +111,9 @@ describe('AutoSuggestComponent', () => {
         label="label"
       />,
     );
-    wrapper.instance().onSuggestionSelected(null, { suggestion: suggestions[0] });
+    wrapper
+      .instance()
+      .onSuggestionSelected(null, { suggestion: suggestions[0] });
     sinon.assert.calledOnce(spy);
   });
 
@@ -126,7 +129,9 @@ describe('AutoSuggestComponent', () => {
         queryProperty="custom_prop"
       />,
     );
-    wrapper.instance().onSuggestionSelected(null, { suggestion: suggestions[0] });
+    wrapper
+      .instance()
+      .onSuggestionSelected(null, { suggestion: suggestions[0] });
     sinon.assert.calledOnce(spy);
   });
 
@@ -140,7 +145,9 @@ describe('AutoSuggestComponent', () => {
         label="label"
       />,
     );
-    const template = wrapper.instance().renderSuggestion({ short_name: 'test', code: '01a' });
+    const template = wrapper
+      .instance()
+      .renderSuggestion({ short_name: 'test', code: '01a' });
     expect(template).toBeDefined();
   });
 
@@ -197,7 +204,9 @@ describe('AutoSuggestComponent', () => {
       />,
     );
     wrapper.instance().setState({ value: 'text' });
-    wrapper.instance().onSuggestionSelected(null, { suggestion: suggestions[0] });
+    wrapper
+      .instance()
+      .onSuggestionSelected(null, { suggestion: suggestions[0] });
     expect(wrapper.instance().state.value).toBe('');
   });
 
@@ -213,7 +222,9 @@ describe('AutoSuggestComponent', () => {
       />,
     );
     wrapper.instance().setState({ value: 'text' });
-    wrapper.instance().onSuggestionSelected(null, { suggestion: suggestions[0] });
+    wrapper
+      .instance()
+      .onSuggestionSelected(null, { suggestion: suggestions[0] });
     expect(wrapper.instance().state.value).not.toBe('');
   });
 });

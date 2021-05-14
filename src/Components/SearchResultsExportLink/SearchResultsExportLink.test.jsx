@@ -8,7 +8,9 @@ describe('SearchResultsExportLink', () => {
   let fetchResultDataStub;
 
   beforeEach(() => {
-    fetchResultDataStub = sinon.stub(actions, 'downloadPositionData').returns(Promise.resolve(''));
+    fetchResultDataStub = sinon
+      .stub(actions, 'downloadPositionData')
+      .returns(Promise.resolve(''));
   });
 
   afterEach(() => {

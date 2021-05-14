@@ -32,7 +32,8 @@ class ViewMoreLink extends Component {
 
     return (
       <InteractiveElement onClick={this.toggleValue} className="view-more-link">
-        {text}<FontAwesome name={icon} />
+        {text}
+        <FontAwesome name={icon} />
       </InteractiveElement>
     );
   }

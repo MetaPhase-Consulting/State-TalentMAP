@@ -9,11 +9,7 @@ const SkillCodeList = ({ skillCodes }) => {
     else skillCodeList.push(`${skill.description} (${skill.code})`);
   });
   skillCodeList = skillCodeList.join(', ') || NO_USER_SKILL_CODE;
-  return (
-    <span>
-      {skillCodeList}
-    </span>
-  );
+  return <span>{skillCodeList}</span>;
 };
 
 SkillCodeList.propTypes = {

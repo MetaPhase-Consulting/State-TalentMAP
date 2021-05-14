@@ -41,21 +41,23 @@ class PageMetaContainer extends Component {
   }
 
   render() {
-    return (
-      (this.state.pageTitle != null) ?
-        <div>
-          <PageTitle pageTitle={this.state.pageTitle} srOnly />
-          <Helmet titleTemplate="%s - TalentMAP" defaultTitle="TalentMAP">
-            <title tabIndex="-1">{this.state.pageTitle}</title>
-            <meta property="og:title" content={this.state.pageTitle} />
-            <meta property="og:url" content={window.location.href} />
-            <meta property="og:type" content="website" />
-            <meta property="og:image" content={`${getApplicationPath()}${getAssetPath('/assets/logos/png/logo_color.png')}`} />
-          </Helmet>
-        </div>
-        :
-        null
-    );
+    return this.state.pageTitle != null ? (
+      <div>
+        <PageTitle pageTitle={this.state.pageTitle} srOnly />
+        <Helmet titleTemplate="%s - TalentMAP" defaultTitle="TalentMAP">
+          <title tabIndex="-1">{this.state.pageTitle}</title>
+          <meta property="og:title" content={this.state.pageTitle} />
+          <meta property="og:url" content={window.location.href} />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:image"
+            content={`${getApplicationPath()}${getAssetPath(
+              '/assets/logos/png/logo_color.png',
+            )}`}
+          />
+        </Helmet>
+      </div>
+    ) : null;
   }
 }
 

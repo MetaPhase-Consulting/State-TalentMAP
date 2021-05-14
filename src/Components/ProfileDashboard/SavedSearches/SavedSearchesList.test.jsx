@@ -1,7 +1,10 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import SavedSearchesList from './SavedSearchesList';
-import { mappedParams, searchObjectParent } from '../../../__mocks__/searchObject';
+import {
+  mappedParams,
+  searchObjectParent,
+} from '../../../__mocks__/searchObject';
 
 describe('SavedSearchesListComponent', () => {
   const props = {
@@ -26,7 +29,9 @@ describe('SavedSearchesListComponent', () => {
   });
 
   it('matches snapshot when there are no saved searches', () => {
-    const wrapper = shallow(<SavedSearchesList {...props} savedSearches={{ results: [] }} />);
+    const wrapper = shallow(
+      <SavedSearchesList {...props} savedSearches={{ results: [] }} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -190,7 +190,6 @@ export function unregisterHandshakeSuccess(response) {
   };
 }
 
-
 // to reset state
 export function routeChangeResetState() {
   return (dispatch) => {
@@ -514,9 +513,9 @@ export function toggleBidPosition(id, remove, isClient, clientId, fromTracker) {
         const undo = () => dispatch(toggleBidPosition(
           id, !remove, isClient, clientId, fromTracker,
         ));
-        const message = remove ?
-          SystemMessages.DELETE_BID_ITEM_SUCCESS(pos.position, undo) :
-          SystemMessages.ADD_BID_ITEM_SUCCESS(pos.position, { client, hideLink: !!fromTracker });
+        const message = remove
+          ? SystemMessages.DELETE_BID_ITEM_SUCCESS(pos.position, undo)
+          : SystemMessages.ADD_BID_ITEM_SUCCESS(pos.position, { client, hideLink: !!fromTracker });
         batch(() => {
           dispatch(bidListToggleSuccess(message));
           dispatch(toastSuccess(message));
@@ -533,8 +532,8 @@ export function toggleBidPosition(id, remove, isClient, clientId, fromTracker) {
         }
       }))
       .catch(() => {
-        const message = remove ?
-          SystemMessages.DELETE_BID_ITEM_ERROR : SystemMessages.ADD_BID_ITEM_ERROR;
+        const message = remove
+          ? SystemMessages.DELETE_BID_ITEM_ERROR : SystemMessages.ADD_BID_ITEM_ERROR;
         batch(() => {
           dispatch(bidListToggleHasErrored(message));
           dispatch(toastError(message));

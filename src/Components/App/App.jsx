@@ -1,6 +1,6 @@
 import Main from '../../Containers/Main/Main';
 
-const App = props => (
+const App = (props) => (
   <div>
     <Main {...props} />
   </div>

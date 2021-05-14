@@ -45,15 +45,15 @@ GlossaryContainer.defaultProps = {
   glossaryIsLoading: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   shouldShowGlossary: state.shouldShowGlossary,
   glossaryItems: state.glossary,
   glossaryHasErrored: state.glossaryHasErrored,
   glossaryIsLoading: state.glossaryIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  toggleGlossaryVisibility: shouldDisplay => dispatch(toggleGlossary(shouldDisplay)),
+export const mapDispatchToProps = (dispatch) => ({
+  toggleGlossaryVisibility: (shouldDisplay) => dispatch(toggleGlossary(shouldDisplay)),
   fetchGlossary: () => dispatch(glossaryFetchData()),
 });
 

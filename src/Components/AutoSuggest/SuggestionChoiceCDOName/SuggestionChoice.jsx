@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const SuggestionChoice = ({ suggestion }) => {
   const name = `${suggestion.first_name} ${suggestion.last_name}`;
   return (
-    <div className="render-suggestion" style={{ position: 'relative' }} >
+    <div className="render-suggestion" style={{ position: 'relative' }}>
       {`${name}${suggestion.isCurrentUser ? ' (me)' : ''}`}
     </div>
   );

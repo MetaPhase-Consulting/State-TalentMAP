@@ -5,24 +5,28 @@ import notificationsObject from '../../../__mocks__/notificationsObject';
 
 describe('NotificationsComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(<Notifications notifications={notificationsObject.results} />);
+    const wrapper = shallow(
+      <Notifications notifications={notificationsObject.results} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('can render with one notification', () => {
     const wrapper = shallow(
-      <Notifications notifications={notificationsObject.results.slice(0, 1)} />);
+      <Notifications notifications={notificationsObject.results.slice(0, 1)} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('can render with zero notifications', () => {
-    const wrapper = shallow(
-      <Notifications notifications={[]} />);
+    const wrapper = shallow(<Notifications notifications={[]} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<Notifications notifications={notificationsObject.results} />);
+    const wrapper = shallow(
+      <Notifications notifications={notificationsObject.results} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

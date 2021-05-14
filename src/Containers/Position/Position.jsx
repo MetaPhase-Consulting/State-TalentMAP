@@ -11,7 +11,10 @@ import PermissionsWrapper from 'Containers/PermissionsWrapper';
 // Actions
 import { getViewStats, postPositionView } from 'actions/positionStats';
 import { positionDetailsFetchData } from 'actions/positionDetails';
-import { deleteHighlightPosition, putHighlightedPosition } from 'actions/highlightPosition';
+import {
+  deleteHighlightPosition,
+  putHighlightedPosition,
+} from 'actions/highlightPosition';
 import { bidListFetchData } from 'actions/bidList';
 import {
   editDescriptionContent,
@@ -43,6 +46,7 @@ class Position extends Component {
       type: null,
     };
   }
+
   getChildContext() {
     const { tandem } = queryString.parse(this.props.location.search);
     const isTandemTwo = tandem === 'true';
@@ -50,6 +54,7 @@ class Position extends Component {
       isTandemTwo,
     };
   }
+
   UNSAFE_componentWillMount() {
     const { isArchived, isProjectedVacancy } = this.props;
     const id = get(this.props, 'match.params.id');
@@ -85,16 +90,25 @@ class Position extends Component {
     this.props.fetchUPData(id);
   }
 
-  editDescriptionContent = content => {
-    this.props.editDescriptionContent(this.props.positionDetails.description.id, content);
+  editDescriptionContent = (content) => {
+    this.props.editDescriptionContent(
+      this.props.positionDetails.description.id,
+      content,
+    );
   };
 
-  editPocContent = content => {
-    this.props.editPocContent(this.props.positionDetails.description.id, content);
+  editPocContent = (content) => {
+    this.props.editPocContent(
+      this.props.positionDetails.description.id,
+      content,
+    );
   };
 
-  editWebsiteContent = content => {
-    this.props.editWebsiteContent(this.props.positionDetails.description.id, content);
+  editWebsiteContent = (content) => {
+    this.props.editWebsiteContent(
+      this.props.positionDetails.description.id,
+      content,
+    );
   };
 
   render() {
@@ -155,7 +169,9 @@ class Position extends Component {
           isClient={isClient}
         />
         {/* Use a component to run our Permission check and then call a function to fetch stats */}
-        <PermissionsWrapper permissions="superuser" onMount={onMount}><></></PermissionsWrapper>
+        <PermissionsWrapper permissions="superuser" onMount={onMount}>
+          <></>
+        </PermissionsWrapper>
       </>
     );
   }
@@ -267,19 +283,21 @@ const mapStateToProps = (state, ownProps) => ({
   clientHasErrored: get(state, 'clientView.hasErrored'),
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: id => dispatch(positionDetailsFetchData(id)),
-  fetchPVData: id => dispatch(positionDetailsFetchData(id, true)),
-  fetchUPData: id => dispatch(positionDetailsFetchData(id, false, true)),
-  onNavigateTo: dest => dispatch(push(dest)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (id) => dispatch(positionDetailsFetchData(id)),
+  fetchPVData: (id) => dispatch(positionDetailsFetchData(id, true)),
+  fetchUPData: (id) => dispatch(positionDetailsFetchData(id, false, true)),
+  onNavigateTo: (dest) => dispatch(push(dest)),
   fetchBidList: () => dispatch(bidListFetchData()),
   editDescriptionContent: (id, content) => dispatch(editDescriptionContent(id, content)),
   editPocContent: (id, content) => dispatch(editPocContent(id, content)),
   editWebsiteContent: (id, content) => dispatch(editWebsiteContent(id, content)),
   resetDescriptionEditMessages: () => dispatch(resetMessages()),
-  onHighlight: (id, checked) =>
-    dispatch((checked ? putHighlightedPosition : deleteHighlightPosition)(id)),
+  onHighlight: (id, checked) => dispatch((checked ? putHighlightedPosition : deleteHighlightPosition)(id)),
   getViews: (id, type) => dispatch(getViewStats(id, type)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Position));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Position));

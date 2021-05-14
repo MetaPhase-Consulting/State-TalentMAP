@@ -23,27 +23,18 @@ describe('RadioListComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <RadioList {...props} />,
-    );
+    const wrapper = shallow(<RadioList {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('receives props', () => {
-    const wrapper = shallow(
-      <RadioList {...props} />,
-    );
+    const wrapper = shallow(<RadioList {...props} />);
     expect(wrapper.instance().props.value).toEqual(props.value);
   });
 
   it('handles the onChange event', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <RadioList
-        {...props}
-        onChange={spy}
-      />,
-    );
+    const wrapper = shallow(<RadioList {...props} onChange={spy} />);
 
     const input = wrapper.find('input').at(0);
     input.simulate('change', { target: { value: input.props().value } });
@@ -53,23 +44,14 @@ describe('RadioListComponent', () => {
 
   it('sets new props', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <RadioList
-        {...props}
-        onChange={spy}
-      />,
-    );
+    const wrapper = shallow(<RadioList {...props} onChange={spy} />);
 
     wrapper.setProps({ ...props, value: 'a-value' });
     expect(wrapper.instance().state.value).toBe('a-value');
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <RadioList
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<RadioList {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

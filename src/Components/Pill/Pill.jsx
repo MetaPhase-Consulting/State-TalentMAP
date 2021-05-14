@@ -3,8 +3,12 @@ import FontAwesome from 'react-fontawesome';
 import { ENDPOINT_PARAMS } from 'Constants/EndpointParams';
 import bannerImg from '../../assets/svg/pill-flag.svg';
 
-const Pill = ({ description, codeRef, selectionRef, onPillClick,
-  isTandem2, isCommon }, { isProjectedVacancy, isTandemSearch }) => {
+const Pill = (
+  {
+    description, codeRef, selectionRef, onPillClick, isTandem2, isCommon,
+  },
+  { isProjectedVacancy, isTandemSearch },
+) => {
   const classes = ['pill'];
   const lastIndex = classes.length;
   let titleSuffix = '';
@@ -28,7 +32,10 @@ const Pill = ({ description, codeRef, selectionRef, onPillClick,
       title={`Remove ${description} filter${titleSuffix}`}
       onClick={() => onPillClick(selectionRef, codeRef, true)}
     >
-      {!!showFlag && <img src={bannerImg} alt="banner" className="pill-ribbon-icon" />}{description} <FontAwesome name="times" />
+      {!!showFlag && (
+        <img src={bannerImg} alt="banner" className="pill-ribbon-icon" />
+      )}
+      {description} <FontAwesome name="times" />
     </button>
   );
 };
@@ -41,7 +48,8 @@ Pill.contextTypes = {
 Pill.propTypes = {
   description: PropTypes.string.isRequired,
   codeRef: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  selectionRef: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectionRef: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   onPillClick: PropTypes.func.isRequired,
   isTandem2: PropTypes.bool,
   isCommon: PropTypes.bool,

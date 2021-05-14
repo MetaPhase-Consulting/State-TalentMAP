@@ -2,9 +2,18 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ExportButton from 'Components/ExportButton';
 import { downloadPositionData } from 'actions/favoritePositions';
-import { BID_RESULTS, EMPTY_FUNCTION, FAVORITE_POSITIONS_ARRAY, FAVORITE_POSITION_COUNTS } from 'Constants/PropTypes';
+import {
+  BID_RESULTS,
+  EMPTY_FUNCTION,
+  FAVORITE_POSITIONS_ARRAY,
+  FAVORITE_POSITION_COUNTS,
+} from 'Constants/PropTypes';
 import { DEFAULT_FAVORITES_COUNTS } from 'Constants/DefaultProps';
-import { POSITION_SEARCH_SORTS_DYNAMIC, filterPVSorts, filterTandemSorts } from 'Constants/Sort';
+import {
+  POSITION_SEARCH_SORTS_DYNAMIC,
+  filterPVSorts,
+  filterTandemSorts,
+} from 'Constants/Sort';
 import TotalResults from '../TotalResults';
 import ProfileSectionTitle from '../ProfileSectionTitle';
 import Spinner from '../Spinner';
@@ -19,14 +28,25 @@ const TYPE_OPEN = 'open';
 const TYPE_PV_TANDEM = 'pvTandem';
 const TYPE_OPEN_TANDEM = 'openTandem';
 
-const FavoritePositions = props => {
+const FavoritePositions = (props) => {
   const [selected, setSelected] = useState(props.navType || TYPE_OPEN);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { favorites, favoritesTandem, favoritesPV,
-    favoritesPVTandem, favoritePositionsIsLoading,
-    favoritePositionsHasErrored, bidList, onSortChange, sortType,
-    page, pageSize, counts, onPageChange } = props;
+  const {
+    favorites,
+    favoritesTandem,
+    favoritesPV,
+    favoritesPVTandem,
+    favoritePositionsIsLoading,
+    favoritePositionsHasErrored,
+    bidList,
+    onSortChange,
+    sortType,
+    page,
+    pageSize,
+    counts,
+    onPageChange,
+  } = props;
 
   function getPositions() {
     switch (selected) {
@@ -68,14 +88,26 @@ const FavoritePositions = props => {
   const positions = getPositions();
   const options = [
     { title: 'Open Positions ', value: TYPE_OPEN, numerator: counts.favorites },
-    { title: 'Projected Vacancies ', value: TYPE_PV, numerator: counts.favoritesPV },
+    {
+      title: 'Projected Vacancies ',
+      value: TYPE_PV,
+      numerator: counts.favoritesPV,
+    },
   ];
 
   // Only show options if the user has favorites for tandem
   if (counts.favoritesTandem || counts.favoritesPVTandem) {
     options.push(
-      { title: 'Tandem Open Positions ', value: TYPE_OPEN_TANDEM, numerator: counts.favoritesTandem },
-      { title: 'Tandem Projected Vacancies ', value: TYPE_PV_TANDEM, numerator: counts.favoritesPVTandem },
+      {
+        title: 'Tandem Open Positions ',
+        value: TYPE_OPEN_TANDEM,
+        numerator: counts.favoritesTandem,
+      },
+      {
+        title: 'Tandem Projected Vacancies ',
+        value: TYPE_PV_TANDEM,
+        numerator: counts.favoritesPVTandem,
+      },
     );
   }
 
@@ -96,7 +128,11 @@ const FavoritePositions = props => {
   };
 
   return (
-    <div className={`usa-grid-full favorite-positions-container profile-content-inner-container ${favoritePositionsIsLoading ? 'results-loading' : ''}`}>
+    <div
+      className={`usa-grid-full favorite-positions-container profile-content-inner-container ${
+        favoritePositionsIsLoading ? 'results-loading' : ''
+      }`}
+    >
       <div className="usa-grid-full favorites-top-section">
         <div className="favorites-title-container">
           <ProfileSectionTitle title="Favorites" icon="star" />
@@ -110,14 +146,13 @@ const FavoritePositions = props => {
       />
       <div className="usa-grid-full favorites-top-section">
         <div className="total-results-container">
-          {
-            !favoritePositionsIsLoading &&
+          {!favoritePositionsIsLoading && (
             <TotalResults
               total={paginationTotal[selected]}
               pageNumber={page}
               pageSize={pageSize}
             />
-          }
+          )}
         </div>
         <div className="favorites-top-section--controls">
           <div className="results-dropdown results-dropdown-sort">
@@ -135,19 +170,14 @@ const FavoritePositions = props => {
           </div>
         </div>
       </div>
-      {
-        favoritePositionsIsLoading && !favoritePositionsHasErrored &&
-            <Spinner type="homepage-position-results" size="big" />
-      }
-      {
-        (
-          (!favorites.length && selected === TYPE_OPEN) ||
-          (!favoritesPV.length && selected === TYPE_PV) ||
-          (!favoritesTandem.length && selected === TYPE_OPEN_TANDEM) ||
-          (!favoritesPVTandem.length && selected === TYPE_PV_TANDEM)
-        ) && !favoritePositionsIsLoading &&
-        <NoFavorites />
-      }
+      {favoritePositionsIsLoading && !favoritePositionsHasErrored && (
+        <Spinner type="homepage-position-results" size="big" />
+      )}
+      {((!favorites.length && selected === TYPE_OPEN)
+        || (!favoritesPV.length && selected === TYPE_PV)
+        || (!favoritesTandem.length && selected === TYPE_OPEN_TANDEM)
+        || (!favoritesPVTandem.length && selected === TYPE_PV_TANDEM))
+        && !favoritePositionsIsLoading && <NoFavorites />}
       <HomePagePositionsList
         positions={positions}
         favorites={favorites}

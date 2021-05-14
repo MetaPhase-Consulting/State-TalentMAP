@@ -18,7 +18,7 @@ class RadioList extends Component {
     }
   }
 
-  updateValue = e => {
+  updateValue = (e) => {
     const { onChange } = this.props;
     const value = get(e, 'target.value', null);
     if (value) {
@@ -30,32 +30,34 @@ class RadioList extends Component {
 
   render() {
     const { value: selectedValue } = this.state;
-    const { options, ulProps, liProps, inputProps, labelProps } = this.props;
+    const {
+      options, ulProps, liProps, inputProps, labelProps,
+    } = this.props;
     return (
       <ul className="usa-unstyled-list" {...ulProps}>
-        {
-          options.map((o) => {
-            const id = o.id;
-            const name = o.name || id;
-            const value = o.value || id;
-            const label = o.label || id;
-            const isChecked = selectedValue === value;
-            return (
-              <li key={id} {...liProps}>
-                <input
-                  onChange={this.updateValue}
-                  id={id}
-                  type="radio"
-                  checked={isChecked}
-                  name={name}
-                  value={value}
-                  {...inputProps}
-                />
-                <label htmlFor={id} {...labelProps}>{label}</label>
-              </li>
-            );
-          })
-        }
+        {options.map((o) => {
+          const { id } = o;
+          const name = o.name || id;
+          const value = o.value || id;
+          const label = o.label || id;
+          const isChecked = selectedValue === value;
+          return (
+            <li key={id} {...liProps}>
+              <input
+                onChange={this.updateValue}
+                id={id}
+                type="radio"
+                checked={isChecked}
+                name={name}
+                value={value}
+                {...inputProps}
+              />
+              <label htmlFor={id} {...labelProps}>
+                {label}
+              </label>
+            </li>
+          );
+        })}
       </ul>
     );
   }

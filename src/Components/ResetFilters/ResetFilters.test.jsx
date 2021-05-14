@@ -7,13 +7,14 @@ describe('ResetFilters', () => {
   let resetButton = null;
 
   beforeEach(() => {
-    resetButton = TestUtils.renderIntoDocument(<ResetFilters resetFilters={() => {}} />);
+    resetButton = TestUtils.renderIntoDocument(
+      <ResetFilters resetFilters={() => {}} />,
+    );
   });
 
   it('is defined', () => {
     expect(resetButton).toBeDefined();
   });
-
 
   it('can call resetFilters function', () => {
     const propSpy = sinon.spy();

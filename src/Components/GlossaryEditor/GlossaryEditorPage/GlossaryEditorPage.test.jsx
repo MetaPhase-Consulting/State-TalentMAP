@@ -18,7 +18,9 @@ describe('GlossaryEditorPageComponent', () => {
   });
 
   it('is defined when glossaryIsLoading is true', () => {
-    const wrapper = shallow(<GlossaryEditorPage {...props} glossaryIsLoading />);
+    const wrapper = shallow(
+      <GlossaryEditorPage {...props} glossaryIsLoading />,
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -81,7 +83,9 @@ describe('GlossaryEditorPageComponent', () => {
   });
 
   it('matches snapshot when glossaryIsLoading is true', () => {
-    const wrapper = shallow(<GlossaryEditorPage {...props} glossaryIsLoading />);
+    const wrapper = shallow(
+      <GlossaryEditorPage {...props} glossaryIsLoading />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

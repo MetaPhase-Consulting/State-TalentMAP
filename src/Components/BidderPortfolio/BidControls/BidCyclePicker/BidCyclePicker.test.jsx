@@ -9,38 +9,32 @@ describe('BidControlsComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidCyclePicker.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<BidCyclePicker.WrappedComponent {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('sets state when selectMultipleOption() is called', () => {
-    const wrapper = shallow(
-      <BidCyclePicker.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<BidCyclePicker.WrappedComponent {...props} />);
     const val = [1];
     wrapper.instance().selectMultipleOption(val);
     expect(wrapper.instance().state.arrayValue).toEqual(val);
   });
 
   it('returns an array of items when renderList() is called', () => {
-    const output = renderList(
-      { items: [
+    const output = renderList({
+      items: [
         { id: 1, description: 'a' },
         { id: 2, description: 'b' },
         { id: 3, description: 'c' },
       ],
       selectValue: () => {},
-      getIsSelected: () => false },
-    );
+      getIsSelected: () => false,
+    });
     expect(output.length).toBe(3);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BidCyclePicker.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<BidCyclePicker.WrappedComponent {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

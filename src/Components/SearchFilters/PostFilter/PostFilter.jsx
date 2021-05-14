@@ -27,36 +27,49 @@ class PostFilter extends Component {
   }
 
   onCheckBoxClick = (value, props) => {
-    this.props.queryParamToggle(props.selectionRef, props[this.props.queryProperty], !value);
+    this.props.queryParamToggle(
+      props.selectionRef,
+      props[this.props.queryProperty],
+      !value,
+    );
   };
 
-  onSelectAllDomesticPosts = value => {
+  onSelectAllDomesticPosts = (value) => {
     const { allOverseasSelected } = this.state;
     const { queryParamUpdate, item } = this.props;
-    this.setState({ allDomesticSelected: !value },
+    this.setState(
+      { allDomesticSelected: !value },
       queryParamUpdate({
         [item.item.selectionRef]: '',
-        is_domestic: [value ? 'true' : '', allOverseasSelected ? 'false' : ''].filter(n => n).join(),
+        is_domestic: [value ? 'true' : '', allOverseasSelected ? 'false' : '']
+          .filter((n) => n)
+          .join(),
       }),
     );
   };
 
-  onSelectAllOverseasPosts = value => {
+  onSelectAllOverseasPosts = (value) => {
     const { allDomesticSelected } = this.state;
     const { queryParamUpdate, item } = this.props;
-    this.setState({ allOverseasSelected: !value },
+    this.setState(
+      { allOverseasSelected: !value },
       queryParamUpdate({
         [item.item.selectionRef]: '',
-        is_domestic: [allDomesticSelected ? 'true' : '', value ? 'false' : ''].filter(n => n).join(),
+        is_domestic: [allDomesticSelected ? 'true' : '', value ? 'false' : '']
+          .filter((n) => n)
+          .join(),
       }),
     );
   };
 
-  onSelectAllCommuterPosts = value => {
+  onSelectAllCommuterPosts = (value) => {
     const { queryParamUpdate, commuterPosts } = this.props;
-    this.setState({ allCommuterPostsSelected: !value },
+    this.setState(
+      { allCommuterPostsSelected: !value },
       queryParamUpdate({
-        [commuterPosts.item.selectionRef]: value ? commuterPosts.data.map(m => m.code).join(',') : '',
+        [commuterPosts.item.selectionRef]: value
+          ? commuterPosts.data.map((m) => m.code).join(',')
+          : '',
       }),
     );
   };
@@ -70,18 +83,23 @@ class PostFilter extends Component {
   }
 
   getAllDomesticCodes(props = this.props) {
-    return props.item.data.slice().filter(b => (
-      b.location &&
-      (b.location.country === 'United States' || b.location.country === 'USA')
-    ));
+    return props.item.data
+      .slice()
+      .filter(
+        (b) => b.location
+          && (b.location.country === 'United States'
+            || b.location.country === 'USA'),
+      );
   }
 
   getAllOverseasCodes(props = this.props) {
-    return props.item.data.slice().filter(b => (
-      get(b, 'location') &&
-      get(b, 'location.country') !== 'United States' &&
-      get(b, 'location.country') !== 'USA'
-    ));
+    return props.item.data
+      .slice()
+      .filter(
+        (b) => get(b, 'location')
+          && get(b, 'location.country') !== 'United States'
+          && get(b, 'location.country') !== 'USA',
+      );
   }
 
   isAllCommuterPostsSelected(props = this.props) {
@@ -111,7 +129,9 @@ class PostFilter extends Component {
 
     const postSelectionDisabled = allDomesticSelected || allOverseasSelected;
 
-    if (postSelectionDisabled) { autoSuggestProps.placeholder = 'Remove regional filters'; }
+    if (postSelectionDisabled) {
+      autoSuggestProps.placeholder = 'Remove regional filters';
+    }
 
     const commuterPosts$ = get(commuterPosts, 'data', []);
 
@@ -151,32 +171,34 @@ class PostFilter extends Component {
               buttonClass="tm-nested-accordion-button"
             >
               <div className="usa-grid-full">
-                {
-                  domesticPosts.map((itemData) => {
-                    const itemData$ = { ...itemData };
-                    if (itemData$.hasDuplicateDescription) {
-                      itemData$.custom_description = `${itemData$.custom_description} (${itemData.code})`;
-                    }
-                    const itemLabel = getItemLabel(itemData$);
-                    const itemLabelNoSpaces = formatIdSpacing(itemLabel);
-                    return (
-                      <CheckBox
-                        _id={itemData.id} /* when we need the original id */
-                        id={`checkbox${itemLabelNoSpaces}-domestic-post-${item.item.description}-${itemData$.code}`}
-                        key={`checkbox${itemLabel}-domestic-post-${item.item.description}-${itemData$.code}`}
-                        label={itemLabel}
-                        title={itemLabel}
-                        name={itemLabel}
-                        value={allDomesticSelected ? true : itemData$.isSelected || false}
-                        code={itemData$.code}
-                        selectionRef={item.item.selectionRef}
-                        onCheckBoxClick={this.onCheckBoxClick}
-                        className="tm-checkbox-transparent"
-                        disabled={allDomesticSelected || allOverseasSelected}
-                      />
-                    );
-                  })
-                }
+                {domesticPosts.map((itemData) => {
+                  const itemData$ = { ...itemData };
+                  if (itemData$.hasDuplicateDescription) {
+                    itemData$.custom_description = `${itemData$.custom_description} (${itemData.code})`;
+                  }
+                  const itemLabel = getItemLabel(itemData$);
+                  const itemLabelNoSpaces = formatIdSpacing(itemLabel);
+                  return (
+                    <CheckBox
+                      _id={itemData.id} /* when we need the original id */
+                      id={`checkbox${itemLabelNoSpaces}-domestic-post-${item.item.description}-${itemData$.code}`}
+                      key={`checkbox${itemLabel}-domestic-post-${item.item.description}-${itemData$.code}`}
+                      label={itemLabel}
+                      title={itemLabel}
+                      name={itemLabel}
+                      value={
+                        allDomesticSelected
+                          ? true
+                          : itemData$.isSelected || false
+                      }
+                      code={itemData$.code}
+                      selectionRef={item.item.selectionRef}
+                      onCheckBoxClick={this.onCheckBoxClick}
+                      className="tm-checkbox-transparent"
+                      disabled={allDomesticSelected || allOverseasSelected}
+                    />
+                  );
+                })}
               </div>
             </AccordionItem>
             <AccordionItem
@@ -196,41 +218,46 @@ class PostFilter extends Component {
               )}
             >
               <div className="usa-grid-full">
-                {
-                  overseasPosts.map((itemData) => {
-                    const itemLabel = getItemLabel(itemData);
-                    const itemLabelNoSpaces = formatIdSpacing(itemLabel);
-                    return (
-                      <CheckBox
-                        _id={itemData.id} /* when we need the original id */
-                        id={`checkbox${itemLabelNoSpaces}-overseas-post-${item.item.description}`}
-                        key={`checkbox${itemLabel}-overseas-post-${item.item.description}`}
-                        label={itemLabel}
-                        title={itemLabel}
-                        name={itemLabel}
-                        value={allOverseasSelected ? true : itemData.isSelected || false}
-                        code={itemData.code}
-                        selectionRef={item.item.selectionRef}
-                        onCheckBoxClick={this.onCheckBoxClick}
-                        className="tm-checkbox-transparent"
-                        disabled={allOverseasSelected || allDomesticSelected}
-                      />
-                    );
-                  })
-                }
+                {overseasPosts.map((itemData) => {
+                  const itemLabel = getItemLabel(itemData);
+                  const itemLabelNoSpaces = formatIdSpacing(itemLabel);
+                  return (
+                    <CheckBox
+                      _id={itemData.id} /* when we need the original id */
+                      id={`checkbox${itemLabelNoSpaces}-overseas-post-${item.item.description}`}
+                      key={`checkbox${itemLabel}-overseas-post-${item.item.description}`}
+                      label={itemLabel}
+                      title={itemLabel}
+                      name={itemLabel}
+                      value={
+                        allOverseasSelected
+                          ? true
+                          : itemData.isSelected || false
+                      }
+                      code={itemData.code}
+                      selectionRef={item.item.selectionRef}
+                      onCheckBoxClick={this.onCheckBoxClick}
+                      className="tm-checkbox-transparent"
+                      disabled={allOverseasSelected || allDomesticSelected}
+                    />
+                  );
+                })}
               </div>
             </AccordionItem>
-            {
-              !!commuterPosts$.length && isTandemSearch &&
+            {!!commuterPosts$.length && isTandemSearch && (
               <AccordionItem
                 className="accordion-content-small"
                 id="commuter-post-sub-accordion"
-                title={
+                title={(
                   <span>
-                    <img src={bannerImg} alt="banner" className="commuter-post-filter-ribbon" />
+                    <img
+                      src={bannerImg}
+                      alt="banner"
+                      className="commuter-post-filter-ribbon"
+                    />
                     Commuter Posts
                   </span>
-                }
+                )}
                 buttonClass="tm-nested-accordion-button"
                 preContent={(
                   <CheckBox
@@ -244,30 +271,28 @@ class PostFilter extends Component {
                 )}
               >
                 <div className="usa-grid-full">
-                  {
-                    orderBy(commuterPosts$, 'description').map((itemData) => {
-                      const itemLabel = getItemLabel(itemData);
-                      const itemLabelNoSpaces = formatIdSpacing(itemLabel);
-                      return (
-                        <CheckBox
-                          _id={itemData.code} /* when we need the original id */
-                          id={`checkbox${itemLabelNoSpaces}-commuter-post-${item.item.description}`}
-                          key={`checkbox${itemLabel}-commuter-post-${item.item.description}`}
-                          label={itemLabel}
-                          title={itemLabel}
-                          name={itemLabel}
-                          value={itemData.isSelected || false}
-                          code={itemData.code}
-                          selectionRef={commuterPosts.item.selectionRef}
-                          onCheckBoxClick={this.onCheckBoxClick}
-                          className="tm-checkbox-transparent"
-                        />
-                      );
-                    })
-                  }
+                  {orderBy(commuterPosts$, 'description').map((itemData) => {
+                    const itemLabel = getItemLabel(itemData);
+                    const itemLabelNoSpaces = formatIdSpacing(itemLabel);
+                    return (
+                      <CheckBox
+                        _id={itemData.code} /* when we need the original id */
+                        id={`checkbox${itemLabelNoSpaces}-commuter-post-${item.item.description}`}
+                        key={`checkbox${itemLabel}-commuter-post-${item.item.description}`}
+                        label={itemLabel}
+                        title={itemLabel}
+                        name={itemLabel}
+                        value={itemData.isSelected || false}
+                        code={itemData.code}
+                        selectionRef={commuterPosts.item.selectionRef}
+                        onCheckBoxClick={this.onCheckBoxClick}
+                        className="tm-checkbox-transparent"
+                      />
+                    );
+                  })}
                 </div>
               </AccordionItem>
-            }
+            )}
           </Accordion>
         </div>
       </div>
@@ -283,7 +308,8 @@ PostFilter.propTypes = {
   item: FILTER_ITEM.isRequired,
   queryParamToggle: PropTypes.func.isRequired,
   queryProperty: PropTypes.string,
-  autoSuggestProps: PropTypes.shape({ placeholder: PropTypes.string }).isRequired,
+  autoSuggestProps: PropTypes.shape({ placeholder: PropTypes.string })
+    .isRequired,
   queryParamUpdate: PropTypes.func.isRequired,
   commuterPosts: FILTER_ITEM,
   // these props are used by function param, so ignore lines:

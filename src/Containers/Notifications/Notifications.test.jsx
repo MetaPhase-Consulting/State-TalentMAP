@@ -22,19 +22,24 @@ describe('NotificationsContainer', () => {
     markNotificationHasErrored: false,
   };
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <NotificationsContainer {...props}>{() => <div /> }</NotificationsContainer>
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <NotificationsContainer {...props}>
+            {() => <div />}
+          </NotificationsContainer>
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('calls fetchData on this.getNotifications()', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <NotificationsContainer.WrappedComponent
-        {...props}
-        fetchData={spy}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      <NotificationsContainer.WrappedComponent {...props} fetchData={spy}>
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
     wrapper.instance().getNotifications();
 
@@ -45,10 +50,9 @@ describe('NotificationsContainer', () => {
   it('calls delete on this.delete()', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <NotificationsContainer.WrappedComponent
-        {...props}
-        delete={spy}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      <NotificationsContainer.WrappedComponent {...props} delete={spy}>
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
     wrapper.instance().delete();
     sinon.assert.calledOnce(spy);
@@ -56,9 +60,9 @@ describe('NotificationsContainer', () => {
 
   it('updates state on this.onPageChange()', () => {
     const wrapper = shallow(
-      <NotificationsContainer.WrappedComponent
-        {...props}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      <NotificationsContainer.WrappedComponent {...props}>
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
     wrapper.instance().onPageChange({ page: 5 });
     expect(wrapper.instance().state.page).toBe(5);
@@ -66,9 +70,9 @@ describe('NotificationsContainer', () => {
 
   it('updates state on this.onCheck()', () => {
     const wrapper = shallow(
-      <NotificationsContainer.WrappedComponent
-        {...props}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      <NotificationsContainer.WrappedComponent {...props}>
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
     wrapper.instance().onCheck(true, { _id: 2 });
     expect(wrapper.instance().state.selectedNotifications.has(2)).toBe(true);
@@ -76,9 +80,9 @@ describe('NotificationsContainer', () => {
 
   it('returns the correct value on this.getCheckedValueById()', () => {
     const wrapper = shallow(
-      <NotificationsContainer.WrappedComponent
-        {...props}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      <NotificationsContainer.WrappedComponent {...props}>
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
     expect(wrapper.instance().getCheckedValueById(2)).toBe(false);
     wrapper.instance().setState({ selectedNotifications: new Set([2]) });
@@ -91,9 +95,13 @@ describe('NotificationsContainer', () => {
       <NotificationsContainer.WrappedComponent
         {...props}
         notifications={notifications}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      >
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
-    expect(wrapper.instance().getCurrentResults()).toEqual(notifications.results);
+    expect(wrapper.instance().getCurrentResults()).toEqual(
+      notifications.results,
+    );
   });
 
   it('sets state correctly on this.selectAll()', () => {
@@ -102,7 +110,9 @@ describe('NotificationsContainer', () => {
       <NotificationsContainer.WrappedComponent
         {...props}
         notifications={notifications}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      >
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
     wrapper.instance().selectAll();
     const { selectedNotifications } = wrapper.instance().state;
@@ -122,8 +132,10 @@ describe('NotificationsContainer', () => {
       <NotificationsContainer.WrappedComponent
         {...props}
         notifications={notifications}
-        markNotifications={a => output = a} // eslint-disable-line
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+        markNotifications={(a) => (output = a)} // eslint-disable-line
+      >
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
 
     // contains id from another page (3)
@@ -141,8 +153,10 @@ describe('NotificationsContainer', () => {
       <NotificationsContainer.WrappedComponent
         {...props}
         notifications={notifications}
-        markNotifications={a => output = a} // eslint-disable-line
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+        markNotifications={(a) => (output = a)} // eslint-disable-line
+      >
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
 
     // contains id from another page (3)
@@ -161,8 +175,10 @@ describe('NotificationsContainer', () => {
       <NotificationsContainer.WrappedComponent
         {...props}
         notifications={notifications}
-        markNotifications={a => output = a} // eslint-disable-line
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+        markNotifications={(a) => (output = a)} // eslint-disable-line
+      >
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
 
     // contains id from another page (3)
@@ -176,9 +192,9 @@ describe('NotificationsContainer', () => {
 
   it('returns the correct value for selectionsExist()', () => {
     const wrapper = shallow(
-      <NotificationsContainer.WrappedComponent
-        {...props}
-      >{() => <div /> }</NotificationsContainer.WrappedComponent>,
+      <NotificationsContainer.WrappedComponent {...props}>
+        {() => <div />}
+      </NotificationsContainer.WrappedComponent>,
     );
 
     wrapper.instance().setState({ selectedNotifications: new Set([1, 2, 3]) });

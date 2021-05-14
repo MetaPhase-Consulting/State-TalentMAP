@@ -13,9 +13,7 @@ describe('HandshakeRegisterAlert', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <RegisterHandshakeAlert {...props} />,
-    );
+    const wrapper = shallow(<RegisterHandshakeAlert {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -23,7 +21,10 @@ describe('HandshakeRegisterAlert', () => {
     const wrapper = shallow(
       <RegisterHandshakeAlert
         {...props}
-        bid={{ ...props.bid, position: { ...props.bid.position, skill: null, grade: null } }}
+        bid={{
+          ...props.bid,
+          position: { ...props.bid.position, skill: null, grade: null },
+        }}
       />,
     );
     expect(wrapper).toBeDefined();
@@ -39,9 +40,7 @@ describe('HandshakeRegisterAlert', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <RegisterHandshakeAlert {...props} />,
-    );
+    const wrapper = shallow(<RegisterHandshakeAlert {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

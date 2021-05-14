@@ -15,11 +15,14 @@ class DarkModeToggle extends Component {
 
   render() {
     const { isDarkMode, set, ...rest } = this.props;
-    return (
-      isDarkMode ?
-        <button className="unstyled-button" onClick={this.onClickUnset} {...rest}>Disable Dark Mode</button>
-        :
-        <button className="unstyled-button" onClick={this.onClickSet} {...rest}>Enable Dark Mode</button>
+    return isDarkMode ? (
+      <button className="unstyled-button" onClick={this.onClickUnset} {...rest}>
+        Disable Dark Mode
+      </button>
+    ) : (
+      <button className="unstyled-button" onClick={this.onClickSet} {...rest}>
+        Enable Dark Mode
+      </button>
     );
   }
 }
@@ -34,12 +37,12 @@ DarkModeToggle.defaultProps = {
   set: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isDarkMode: state.darkModePreference,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  set: bool => dispatch(setDarkModePreference(bool)),
+export const mapDispatchToProps = (dispatch) => ({
+  set: (bool) => dispatch(setDarkModePreference(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DarkModeToggle);

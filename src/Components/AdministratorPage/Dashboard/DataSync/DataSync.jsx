@@ -7,9 +7,13 @@ out with "TODO server-side".
 
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { get, isNull, omit, orderBy, startsWith, toString } from 'lodash';
+import {
+  get, isNull, omit, orderBy, startsWith, toString,
+} from 'lodash';
 import FA from 'react-fontawesome';
-import { addHours, format, parse, subHours } from 'date-fns';
+import {
+  addHours, format, parse, subHours,
+} from 'date-fns';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { DateUtils } from 'react-day-picker';
 import TimeInput from 'react-keyboard-time-input';
@@ -37,14 +41,21 @@ export const parseDate = (str, format$, locale) => {
   return undefined;
 };
 
-const getScheduledJob = (jobs = [], prop = 'next_synchronization', ordering = 'desc') => {
+const getScheduledJob = (
+  jobs = [],
+  prop = 'next_synchronization',
+  ordering = 'desc',
+) => {
   let sync;
   if (jobs.length) {
     const orderedJobs = orderBy(jobs, prop, ordering);
     sync = get(orderedJobs, '[0]');
   }
   if (sync) {
-    return { ...sync, next_synchronization: formatDate(sync.next_synchronization) };
+    return {
+      ...sync,
+      next_synchronization: formatDate(sync.next_synchronization),
+    };
   }
   return null;
 };
@@ -67,7 +78,7 @@ class DataSync extends Component {
     };
   }
 
-  setJob = job => {
+  setJob = (job) => {
     const job$ = {
       ...job,
       last_synchronization: parseDate(new Date(job.last_synchronization)),
@@ -112,7 +123,10 @@ class DataSync extends Component {
 
     const formValues$ = {
       ...omit(f, ['next_synchronization', 'last_synchronization_time']), // TODO - server-side
-      last_synchronization: parseDateTime(f.last_synchronization, f.last_synchronization_time),
+      last_synchronization: parseDateTime(
+        f.last_synchronization,
+        f.last_synchronization_time,
+      ),
       running: f.running === 'true',
       use_last_date_updated: f.use_last_date_updated === 'true',
     };
@@ -160,15 +174,20 @@ class DataSync extends Component {
   };
 
   dateIsValid = (field = 'next_synchronization') => {
-    const { formValues: { [field]: field$ } } = this.state;
+    const {
+      formValues: { [field]: field$ },
+    } = this.state;
     return !!field$;
   };
 
-  formIsValid = () => this.dateIsValid('next_synchronization') && this.dateIsValid('last_synchronization');
+  formIsValid = () => this.dateIsValid('next_synchronization')
+    && this.dateIsValid('last_synchronization');
 
   render() {
     const { showForm, formValues } = this.state;
-    const { syncJobs, isLoading, patchSyncIsLoading, runAllJobs } = this.props;
+    const {
+      syncJobs, isLoading, patchSyncIsLoading, runAllJobs,
+    } = this.props;
     const formIsValid = this.formIsValid();
     // const dateIsValid = this.dateIsValid('next_synchronization'); TODO server-side
     const dateLastIsValid = this.dateIsValid('last_synchronization');
@@ -177,83 +196,110 @@ class DataSync extends Component {
     return (
       <div className="usa-grid-full padded-section data-sync-section">
         <h3>TalentMAP Data Sync</h3>
-        {
-          isLoading &&
-            <Spinner type="homepage-position-results" size="big" />
-        }
-        {!isLoading &&
+        {isLoading && <Spinner type="homepage-position-results" size="big" />}
+        {!isLoading && (
           <div>
             <div className="usa-grid-full top-section">
-              {
-                nextScheduled &&
+              {nextScheduled && (
                 <div>
                   <strong>Next sync scheduled: </strong>
-                  <span>{nextScheduled.talentmap_model}: {nextScheduled.next_synchronization}</span>
+                  <span>
+                    {nextScheduled.talentmap_model}:{' '}
+                    {nextScheduled.next_synchronization}
+                  </span>
                 </div>
-              }
+              )}
               <div className="usa-grid-full sync-job-container">
-                {
-                  syncJobs.map((n) => {
-                    const nextSyncDate = format(n.next_synchronization, FORMAT);
-                    return (
-                      <div key={n.id} className="usa-grid-full sync-job-item">
-                        <div>
-                          <strong>{n.talentmap_model}: </strong>
-                          <span>Next sync at {nextSyncDate}</span>
-                        </div>
-                        <InteractiveElement title="Edit details for this job" type="span" onClick={() => this.setJob(n)}>
-                          <FA name="pencil" />
-                        </InteractiveElement>
+                {syncJobs.map((n) => {
+                  const nextSyncDate = format(n.next_synchronization, FORMAT);
+                  return (
+                    <div key={n.id} className="usa-grid-full sync-job-item">
+                      <div>
+                        <strong>{n.talentmap_model}: </strong>
+                        <span>Next sync at {nextSyncDate}</span>
                       </div>
-                    );
-                  })
-                }
+                      <InteractiveElement
+                        title="Edit details for this job"
+                        type="span"
+                        onClick={() => this.setJob(n)}
+                      >
+                        <FA name="pencil" />
+                      </InteractiveElement>
+                    </div>
+                  );
+                })}
               </div>
-              {
-                !showForm &&
-                  <div className="usa-grid-full new-sync-container">
-                    Click the pencil next to one of the jobs above to edit its details.
-                  </div>
-              }
-              {
-                showForm &&
+              {!showForm && (
+                <div className="usa-grid-full new-sync-container">
+                  Click the pencil next to one of the jobs above to edit its
+                  details.
+                </div>
+              )}
+              {showForm && (
                 <div className="usa-grid-full new-sync-container new-sync-container--form">
                   <div className="usa-grid-full new-sync-form">
-                    <h4 id="form-header" tabIndex="-1">Update Sync Details</h4>
-                    <Form id="sync-form" onFormSubmit={(e) => { e.preventDefault(); }}>
+                    <h4 id="form-header" tabIndex="-1">
+                      Update Sync Details
+                    </h4>
+                    <Form
+                      id="sync-form"
+                      onFormSubmit={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
                       <FieldSet legend="Last Synchronization">
                         <div className="date-time-forms">
-                          <div className={`date-time-form date-time-form--date ${dateLastIsValid ? '' : 'usa-input-error'}`}>
+                          <div
+                            className={`date-time-form date-time-form--date ${
+                              dateLastIsValid ? '' : 'usa-input-error'
+                            }`}
+                          >
                             <label
-                              htmlFor={`day-picker-input ${dateLastIsValid ? 'input-type-text' : 'usa-input-error-label'}`}
+                              htmlFor={`day-picker-input ${
+                                dateLastIsValid
+                                  ? 'input-type-text'
+                                  : 'usa-input-error-label'
+                              }`}
                               className="label"
                             >
                               Date:
                             </label>
-                            {!dateLastIsValid && <span className="usa-input-error-message usa-sr-only" id="input-error-message" role="alert">Must be a valid, present or future date</span>}
+                            {!dateLastIsValid && (
+                              <span
+                                className="usa-input-error-message usa-sr-only"
+                                id="input-error-message"
+                                role="alert"
+                              >
+                                Must be a valid, present or future date
+                              </span>
+                            )}
                             <DayPickerInput
-                              containerProps={{ id: 'day-picker-input', ariaDescribedBy: 'input-error-message' }}
-                              onDayChange={e => this.updateDate(e, 'last_synchronization')}
+                              containerProps={{
+                                id: 'day-picker-input',
+                                ariaDescribedBy: 'input-error-message',
+                              }}
+                              onDayChange={(e) => this.updateDate(e, 'last_synchronization')}
                               value={formValues.last_synchronization}
-                              format={'MM/DD/YYYY'}
+                              format="MM/DD/YYYY"
                               formatDate={formatDate}
                               parseDate={parseDate}
                             />
                           </div>
                           <div className="date-time-form date-time-form--time">
-                            <label htmlFor="time-input" className="label">Time:</label>
+                            <label htmlFor="time-input" className="label">
+                              Time:
+                            </label>
                             <TimeInput
                               id="time-input"
                               value={formValues.last_synchronization_time}
-                              onChange={e => this.updateTime(e, 'last_synchronization_time')}
+                              onChange={(e) => this.updateTime(e, 'last_synchronization_time')}
                             />
                           </div>
                         </div>
                       </FieldSet>
 
-                      {
-                        /* eslint-disable */
-                       /* TODO - server-side
+                      {/* eslint-disable */
+                      /* TODO - server-side
                       <FieldSet legend="Next Synchronization">
                         <div className="date-time-forms">
                           <div className={`date-time-form date-time-form--date ${dateIsValid ? '' : 'usa-input-error'}`}>
@@ -284,36 +330,63 @@ class DataSync extends Component {
                         </div>
                       </FieldSet>
                       */
-                      /* eslint-enable */
-                      }
+                      /* eslint-enable */}
 
                       <FieldSet legend="TalentMAP Model">
-                        <input type="string" value={formValues.talentmap_model} onChange={e => this.updateVal(e, 'talentmap_model')} />
+                        <input
+                          type="string"
+                          value={formValues.talentmap_model}
+                          onChange={(e) => this.updateVal(e, 'talentmap_model')}
+                        />
                       </FieldSet>
                       <FieldSet legend="Priority">
-                        <input type="number" value={formValues.priority} onChange={e => this.updateVal(e, 'priority')} />
+                        <input
+                          type="number"
+                          value={formValues.priority}
+                          onChange={(e) => this.updateVal(e, 'priority')}
+                        />
                       </FieldSet>
                       <FieldSet legend="Delta">
-                        <input type="number" value={formValues.delta_synchronization} onChange={e => this.updateVal(e, 'delta_synchronization')} />
+                        <input
+                          type="number"
+                          value={formValues.delta_synchronization}
+                          onChange={(e) => this.updateVal(e, 'delta_synchronization')}
+                        />
                       </FieldSet>
                       <FieldSet legend="Use last updated date">
                         <RadioList
                           options={[
-                            { id: 'lastdate-true', value: 'true', label: 'True' },
-                            { id: 'lastdate-false', value: 'false', label: 'False' },
+                            {
+                              id: 'lastdate-true',
+                              value: 'true',
+                              label: 'True',
+                            },
+                            {
+                              id: 'lastdate-false',
+                              value: 'false',
+                              label: 'False',
+                            },
                           ]}
                           value={formValues.use_last_date_updated}
-                          onChange={e => this.updateBool(e, 'use_last_date_updated')}
+                          onChange={(e) => this.updateBool(e, 'use_last_date_updated')}
                         />
                       </FieldSet>
                       <FieldSet legend="Running">
                         <RadioList
                           options={[
-                            { id: 'running-true', value: 'true', label: 'True' },
-                            { id: 'running-false', value: 'false', label: 'False' },
+                            {
+                              id: 'running-true',
+                              value: 'true',
+                              label: 'True',
+                            },
+                            {
+                              id: 'running-false',
+                              value: 'false',
+                              label: 'False',
+                            },
                           ]}
                           value={formValues.running}
-                          onChange={e => this.updateBool(e, 'running')}
+                          onChange={(e) => this.updateBool(e, 'running')}
                         />
                       </FieldSet>
                     </Form>
@@ -338,19 +411,26 @@ class DataSync extends Component {
                     </button>
                   </div>
                 </div>
-              }
+              )}
             </div>
             <div className="usa-grid-full status-container">
               <div className="usa-grid-full status-container--inner">
-                { lastRun && <div>
-                  <strong>Last sync: </strong>
-                  <span>{nextScheduled.talentmap_model}: {nextScheduled.next_synchronization}</span>
-                </div> }
+                {lastRun && (
+                  <div>
+                    <strong>Last sync: </strong>
+                    <span>
+                      {nextScheduled.talentmap_model}:{' '}
+                      {nextScheduled.next_synchronization}
+                    </span>
+                  </div>
+                )}
               </div>
-              <button className="usa-button-secondary" onClick={runAllJobs}>Run sync now</button>
+              <button className="usa-button-secondary" onClick={runAllJobs}>
+                Run sync now
+              </button>
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

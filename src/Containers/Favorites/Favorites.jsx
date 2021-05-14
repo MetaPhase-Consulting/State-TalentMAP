@@ -4,39 +4,62 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { get, isEqual, keys } from 'lodash';
-import { NumberParam, StringParam, withDefault, withQueryParams } from 'use-query-params';
+import {
+  NumberParam,
+  StringParam,
+  withDefault,
+  withQueryParams,
+} from 'use-query-params';
 import { favoritePositionsFetchData } from 'actions/favoritePositions';
 import { bidListFetchData } from 'actions/bidList';
 import { userProfileToggleFavoritePosition } from 'actions/userProfile';
-import { BID_LIST, EMPTY_FUNCTION, FAVORITE_POSITIONS, SetType } from 'Constants/PropTypes';
+import {
+  BID_LIST,
+  EMPTY_FUNCTION,
+  FAVORITE_POSITIONS,
+  SetType,
+} from 'Constants/PropTypes';
 import { DEFAULT_FAVORITES } from 'Constants/DefaultProps';
 import FavoritePositions from 'Components/FavoritePositions';
 import CompareDrawer from 'Components/CompareDrawer';
 import { scrollToTop } from 'utilities';
 
-const FavoritePositionsContainer = props => {
-  const { favoritePositions, favoritePositionsIsLoading, query, setQuery,
-    favoritePositionsHasErrored, bidList, userProfileFavoritePositionIsLoading } = props;
+const FavoritePositionsContainer = (props) => {
+  const {
+    favoritePositions,
+    favoritePositionsIsLoading,
+    query,
+    setQuery,
+    favoritePositionsHasErrored,
+    bidList,
+    userProfileFavoritePositionIsLoading,
+  } = props;
 
   const [called, setCalled] = useState(false);
 
   const { page, sortType, navType } = query;
   const PAGE_SIZE = 15;
 
-  const prevUserProfileFavoritePositionIsLoading =
-    usePrevious(userProfileFavoritePositionIsLoading);
+  const prevUserProfileFavoritePositionIsLoading = usePrevious(
+    userProfileFavoritePositionIsLoading,
+  );
 
   function getFavorites(nav = navType) {
     props.fetchData(sortType, PAGE_SIZE, page, nav);
   }
 
-  const setPage$ = e => setQuery({ page: e });
-  const setSortType$ = e => setQuery({ sortType: e, page: 1 });
-  const setNavType$ = e => setQuery({ navType: e, page: 1 });
+  const setPage$ = (e) => setQuery({ page: e });
+  const setSortType$ = (e) => setQuery({ sortType: e, page: 1 });
+  const setNavType$ = (e) => setQuery({ navType: e, page: 1 });
 
   useEffect(() => {
-    if (!called ||
-      !isEqual(userProfileFavoritePositionIsLoading, prevUserProfileFavoritePositionIsLoading)) {
+    if (
+      !called
+      || !isEqual(
+        userProfileFavoritePositionIsLoading,
+        prevUserProfileFavoritePositionIsLoading,
+      )
+    ) {
       // Only fetch all if counts doesn't exist; otherwise fetch selected navType
       let type = 'all';
       if (keys(favoritePositions.counts).length) {
@@ -128,17 +151,17 @@ FavoritePositionsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   favoritePositions: state.favoritePositions,
   favoritePositionsHasErrored: state.favoritePositionsHasErrored,
   favoritePositionsIsLoading: state.favoritePositionsIsLoading,
   bidList: state.bidListFetchDataSuccess,
-  userProfileFavoritePositionIsLoading: state.userProfileFavoritePositionIsLoading,
+  userProfileFavoritePositionIsLoading:
+    state.userProfileFavoritePositionIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: (sortType, PAGE_SIZE, page, navType) =>
-    dispatch(favoritePositionsFetchData(sortType, PAGE_SIZE, page, navType)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (sortType, PAGE_SIZE, page, navType) => dispatch(favoritePositionsFetchData(sortType, PAGE_SIZE, page, navType)),
   bidListFetchData: () => dispatch(bidListFetchData()),
   toggleFavorite: (id, remove, isTandem) => {
     // Since this page references the full Favorites route, pass true to explicitly refresh them
@@ -146,12 +169,16 @@ export const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withQueryParams({
-    page: withDefault(NumberParam, 1),
-    sortType: StringParam,
-    navType: withDefault(StringParam, 'open'),
-  }, withRouter(
-    FavoritePositionsContainer,
-  )),
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(
+  withQueryParams(
+    {
+      page: withDefault(NumberParam, 1),
+      sortType: StringParam,
+      navType: withDefault(StringParam, 'open'),
+    },
+    withRouter(FavoritePositionsContainer),
+  ),
 );

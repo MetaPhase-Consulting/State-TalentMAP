@@ -7,7 +7,9 @@ describe('AddToInternalListButton', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(<AddToInternalListButton.WrappedComponent {...props} />);
+    const wrapper = shallow(
+      <AddToInternalListButton.WrappedComponent {...props} />,
+    );
     expect(wrapper).toBeDefined();
   });
 });

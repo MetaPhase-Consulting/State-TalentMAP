@@ -6,14 +6,13 @@ const DeclinedAlert = ({ bureau, bidIdUrl }, { condensedView }) => (
     <div className="top-text">
       {bureau || 'The bureau'} has <strong>declined</strong> the bid
     </div>
-    {
-      condensedView &&
+    {condensedView && (
       <div className="usa-grid-full">
         <LinkButton toLink={bidIdUrl} className="tm-button-transparent">
           Go to Bid Tracker
         </LinkButton>
       </div>
-    }
+    )}
   </div>
 );
 

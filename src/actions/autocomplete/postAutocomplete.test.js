@@ -24,12 +24,10 @@ const results = [
 ];
 
 mockAdapter.onGet('/orgpost/?q=Dubai&limit=3&is_available=true').reply(200,
-  { results },
-);
+  { results });
 
 mockAdapter.onGet('/v1/orgpost/?q=fake&limit=3&is_available=true').reply(404,
-  null,
-);
+  null);
 
 describe('async actions', () => {
   it('can fetch post reuslts', (done) => {
@@ -49,12 +47,12 @@ describe('async actions', () => {
     const store = mockStore({ posts: [] });
 
     mockAdapter.onGet('/api/v1/orgpost/?q=Dubai&limit=3&is_available=true').reply(200,
-      { results: [
-        Object.assign({}, results[0]),
-        Object.assign(results[0], { location: null }),
-      ],
-      },
-    );
+      {
+        results: [
+          { ...results[0] },
+          Object.assign(results[0], { location: null }),
+        ],
+      });
 
     const f = () => {
       setTimeout(() => {

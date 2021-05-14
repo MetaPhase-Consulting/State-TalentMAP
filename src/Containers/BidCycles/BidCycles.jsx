@@ -38,11 +38,11 @@ BidCycles.defaultProps = {
   cycles: [],
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cycles: state.bidCycles,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ fetchCycles: fetchBidCycles }, dispatch),
 });
 

@@ -1,7 +1,11 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { authError, authSuccess, logoutRequest, tokenValidationRequest } from './actions';
-import { LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT_ERROR, LOGOUT_REQUESTING, TOKEN_VALIDATION_REQUESTING } from './constants';
+import {
+  authError, authSuccess, logoutRequest, tokenValidationRequest,
+} from './actions';
+import {
+  LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT_ERROR, LOGOUT_REQUESTING, TOKEN_VALIDATION_REQUESTING,
+} from './constants';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

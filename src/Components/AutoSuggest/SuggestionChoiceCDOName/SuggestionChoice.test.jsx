@@ -9,20 +9,12 @@ describe('SuggestionChoiceCDONameComponent', () => {
     last_name: 'Smith',
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <SuggestionChoice
-        suggestion={suggestion}
-      />,
-    );
+    const wrapper = shallow(<SuggestionChoice suggestion={suggestion} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <SuggestionChoice
-        suggestion={suggestion}
-      />,
-    );
+    const wrapper = shallow(<SuggestionChoice suggestion={suggestion} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

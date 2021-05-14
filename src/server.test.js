@@ -1,7 +1,7 @@
 const request = require('supertest');
 const httpMocks = require('node-mocks-http');
 const proxyServer = require('./server').server;
-const removeCacheControl = require('./server').removeCacheControl;
+const { removeCacheControl } = require('./server');
 
 describe('proxy server routes', () => {
   let server;

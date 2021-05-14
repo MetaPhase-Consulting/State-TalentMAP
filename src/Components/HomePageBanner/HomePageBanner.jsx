@@ -11,7 +11,7 @@ import { getAssetPath } from '../../utilities';
 
 const logo = getAssetPath('/assets/logos/png/horizontal_color_thin-sm.png');
 
-export const formatNum = n => numeral(n).format('0,0');
+export const formatNum = (n) => numeral(n).format('0,0');
 
 class HomePageBanner extends Component {
   constructor(props) {
@@ -30,9 +30,13 @@ class HomePageBanner extends Component {
     // Round to nearest ten, but only if there are more than 50 positions.
     // Subtract the count by 6 to ensure that it will always be rounded down to the nearest 10 (-1)
     const shouldRound = positionCount > 50;
-    const roundedCount = shouldRound ? round(positionCount - 6, -1) : positionCount;
+    const roundedCount = shouldRound
+      ? round(positionCount - 6, -1)
+      : positionCount;
     let preText = shouldRound ? 'There are more than' : 'There are';
-    if (positionCount === 1) { preText = 'There is'; }
+    if (positionCount === 1) {
+      preText = 'There is';
+    }
     const positionTextPlural = positionCount === 1 ? 'position' : 'positions';
     return (
       <div className="usa-grid-full homepage-search-banner">
@@ -47,28 +51,28 @@ class HomePageBanner extends Component {
           <div>
             <SkeletonTheme color="#0071BB" highlightColor="#fff">
               <span className="stats-text">
-                {
-                  !roundedCount && !isLoading &&
+                {!roundedCount && !isLoading && (
                   <span>There are no positions available for bidding</span>
-                }
-                {
-                  !roundedCount && !isLoading ?
-                    null :
-                    <span className="stats-text--position">
-                      <span>{preText}&nbsp;</span>
-                      {
-                        isLoading ?
-                          <Skeleton width="25px" duration={1.1} />
-                          :
-                          <CountUp end={roundedCount} duration={1.4} formattingFn={formatNum}>
-                            {({ countUpRef }) => (
-                              <span ref={countUpRef} />
-                            )}
-                          </CountUp>
-                      }
-                      <span>&nbsp;{positionTextPlural} available for bidding.</span>
+                )}
+                {!roundedCount && !isLoading ? null : (
+                  <span className="stats-text--position">
+                    <span>{preText}&nbsp;</span>
+                    {isLoading ? (
+                      <Skeleton width="25px" duration={1.1} />
+                    ) : (
+                      <CountUp
+                        end={roundedCount}
+                        duration={1.4}
+                        formattingFn={formatNum}
+                      >
+                        {({ countUpRef }) => <span ref={countUpRef} />}
+                      </CountUp>
+                    )}
+                    <span>
+                      &nbsp;{positionTextPlural} available for bidding.
                     </span>
-                }
+                  </span>
+                )}
               </span>
             </SkeletonTheme>
           </div>
@@ -90,12 +94,12 @@ HomePageBanner.defaultProps = {
   isLoading: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   positionCount: state.positionCount,
   isLoading: state.positionCountIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchCount: () => dispatch(positionCountFetchData()),
 });
 

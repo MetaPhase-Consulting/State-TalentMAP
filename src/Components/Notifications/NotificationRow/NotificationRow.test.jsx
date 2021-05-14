@@ -13,9 +13,7 @@ describe('NotificationRowComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <NotificationRow {...props} />,
-    );
+    const wrapper = shallow(<NotificationRow {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -25,32 +23,24 @@ describe('NotificationRowComponent', () => {
     );
     expect(wrapper).toBeDefined();
 
-    wrapper = shallow(
-      <NotificationRow {...props} tags={['bureau_bidding']} />,
-    );
+    wrapper = shallow(<NotificationRow {...props} tags={['bureau_bidding']} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when there are no tags', () => {
-    const wrapper = shallow(
-      <NotificationRow {...props} tags={[]} />,
-    );
+    const wrapper = shallow(<NotificationRow {...props} tags={[]} />);
     expect(wrapper).toBeDefined();
   });
 
   it('responds to deleteOne', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <NotificationRow {...props} deleteOne={spy} />,
-    );
+    const wrapper = shallow(<NotificationRow {...props} deleteOne={spy} />);
     wrapper.find('#delete-notification-button').simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <NotificationRow {...props} />,
-    );
+    const wrapper = shallow(<NotificationRow {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

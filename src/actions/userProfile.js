@@ -197,8 +197,7 @@ export function userProfileToggleFavoritePosition(id, remove, refreshFavorites =
   isPV = false, sortType, isTandem = false) {
   const idString = id.toString();
   return (dispatch) => {
-    const apiURL =
-    `/${isPV ? 'projected_vacancy' : 'available_position'}/${isTandem ? 'tandem/' : ''}${idString}/favorite/`;
+    const apiURL = `/${isPV ? 'projected_vacancy' : 'available_position'}/${isTandem ? 'tandem/' : ''}${idString}/favorite/`;
     const config = {
       method: remove ? 'delete' : 'put',
       url: apiURL,
@@ -228,9 +227,9 @@ export function userProfileToggleFavoritePosition(id, remove, refreshFavorites =
         const undo = () => dispatch(userProfileToggleFavoritePosition(
           id, !remove, refreshFavorites, isPV, sortType, isTandem,
         ));
-        const message = remove ?
-          SystemMessages.DELETE_FAVORITE_SUCCESS(pos.position, undo) :
-          SystemMessages.ADD_FAVORITE_SUCCESS(pos.position);
+        const message = remove
+          ? SystemMessages.DELETE_FAVORITE_SUCCESS(pos.position, undo)
+          : SystemMessages.ADD_FAVORITE_SUCCESS(pos.position);
         const title = remove ? SystemMessages.DELETE_FAVORITE_TITLE
           : SystemMessages.ADD_FAVORITE_TITLE;
         const cb = () => userProfileFavoritePositionIsLoading(false, id);

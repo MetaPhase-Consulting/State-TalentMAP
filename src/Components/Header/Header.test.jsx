@@ -31,21 +31,14 @@ describe('Header', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <Header
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Header {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('can call the toggleSearchVisibility function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <Header
-        {...props}
-        toggleSearchBarVisibility={spy}
-      />,
+      <Header {...props} toggleSearchBarVisibility={spy} />,
     );
     wrapper.instance().toggleSearchVisibility();
     sinon.assert.calledTwice(spy);
@@ -53,46 +46,27 @@ describe('Header', () => {
 
   it('can call the submitSearch function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Header
-        {...props}
-        onNavigateTo={spy}
-      />,
-    );
+    const wrapper = shallow(<Header {...props} onNavigateTo={spy} />);
     wrapper.instance().submitSearch({ q: 'search' });
     sinon.assert.calledOnce(spy);
   });
 
   it('can call the onFilterChange function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Header
-        {...props}
-        setSearchFilters={spy}
-      />,
-    );
+    const wrapper = shallow(<Header {...props} setSearchFilters={spy} />);
     wrapper.instance().onFilterChange({ q: 'search' });
     sinon.assert.calledOnce(spy);
   });
 
   it('refreshes data on history change', () => {
-    const wrapper = shallow(
-      <Header
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Header {...props} />);
     const spy = sinon.spy(wrapper.instance(), 'matchCurrentPath');
     wrapper.instance().props.history.push('/home');
     sinon.assert.calledOnce(spy);
   });
 
   it('applies a visibility class when it is on a route that should not hide the search bar by default', () => {
-    const wrapper = shallow(
-      <Header
-        {...props}
-        location={{ pathname: '/' }}
-      />,
-    );
+    const wrapper = shallow(<Header {...props} location={{ pathname: '/' }} />);
     expect(wrapper.find('.search-bar-visible').exists()).toBe(true);
   });
 
@@ -109,30 +83,21 @@ describe('Header', () => {
 
   it('applies a results class when it is on the results page', () => {
     const wrapper = shallow(
-      <Header
-        {...props}
-        location={{ pathname: '/results' }}
-      />,
+      <Header {...props} location={{ pathname: '/results' }} />,
     );
     expect(wrapper.find('.is-on-results-page').exists()).toBe(true);
   });
 
   it('does not apply a results class when it is not on the results page', () => {
     const wrapper = shallow(
-      <Header
-        {...props}
-        location={{ pathname: '/profile' }}
-      />,
+      <Header {...props} location={{ pathname: '/profile' }} />,
     );
     expect(wrapper.find('.is-on-results-page').exists()).toBe(false);
   });
 
   it('is defined after clicking the "skip to main content" element', () => {
     const wrapper = shallow(
-      <Header
-        {...props}
-        location={{ pathname: '/profile' }}
-      />,
+      <Header {...props} location={{ pathname: '/profile' }} />,
     );
     wrapper.find('InteractiveElement').simulate('click');
     expect(wrapper).toBeDefined();
@@ -140,10 +105,7 @@ describe('Header', () => {
 
   it('matches snapshot when logged in', () => {
     const wrapper = shallow(
-      <Header
-        {...props}
-        userProfile={{ user: { first_name: 'test' } }}
-      />,
+      <Header {...props} userProfile={{ user: { first_name: 'test' } }} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
@@ -153,7 +115,7 @@ describe('Header', () => {
       <Header
         {...props}
         client={{}}
-        login={Object.assign({}, loginObject, { successful: false })}
+        login={{ ...loginObject, successful: false }}
       />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();

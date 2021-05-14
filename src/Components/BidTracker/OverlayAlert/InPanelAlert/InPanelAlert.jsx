@@ -7,12 +7,8 @@ const InPanelAlert = ({ title, date }) => (
       <div>
         <FontAwesome name="users" />
       </div>
-      <div>
-        {`You are in panel for ${title}`}
-      </div>
-      <div className="date-text">
-        {date}
-      </div>
+      <div>{`You are in panel for ${title}`}</div>
+      <div className="date-text">{date}</div>
     </div>
   </div>
 );

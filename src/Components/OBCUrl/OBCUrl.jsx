@@ -3,7 +3,9 @@ import { get } from 'lodash';
 import { isOnProxy } from 'utilities';
 import LinkButton from '../LinkButton';
 
-const OBCUrl = ({ type, label, isButton, altStyle, url }) => {
+const OBCUrl = ({
+  type, label, isButton, altStyle, url,
+}) => {
   let text; // link text value
   let url$ = get(url, 'internal');
 
@@ -28,20 +30,30 @@ const OBCUrl = ({ type, label, isButton, altStyle, url }) => {
     url$ = get(url, 'external');
   }
 
-  const el = isButton ?
-    <LinkButton isExternal className={`post-data-button ${altStyle ? 'usa-button-secondary' : ''}`} toLink={url$} >{text}</LinkButton>
-    :
+  const el = isButton ? (
+    <LinkButton
+      isExternal
+      className={`post-data-button ${altStyle ? 'usa-button-secondary' : ''}`}
+      toLink={url$}
+    >
+      {text}
+    </LinkButton>
+  ) : (
     // This always directs to an internal resource, so there is no security risk.
     // eslint-disable-next-line react/jsx-no-target-blank
-    <a href={url$} rel="noopener" target="_blank">{text}</a>;
-
-  return (
-    url$ ? el : null
+    <a href={url$} rel="noopener" target="_blank">
+      {text}
+    </a>
   );
+
+  return url$ ? el : null;
 };
 
 OBCUrl.propTypes = {
-  url: PropTypes.shape({ internal: PropTypes.string, external: PropTypes.string }),
+  url: PropTypes.shape({
+    internal: PropTypes.string,
+    external: PropTypes.string,
+  }),
   type: PropTypes.oneOf(['post', 'post-data', 'country']),
   label: PropTypes.node,
   isButton: PropTypes.bool,

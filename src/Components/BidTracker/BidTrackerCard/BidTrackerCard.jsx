@@ -5,7 +5,10 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import StaticDevContent from 'Components/StaticDevContent';
-import { BID_OBJECT, /* USER_PROFILE, */ EMPTY_FUNCTION } from '../../../Constants/PropTypes';
+import {
+  BID_OBJECT,
+  /* USER_PROFILE, */ EMPTY_FUNCTION,
+} from '../../../Constants/PropTypes';
 import BidSteps from '../BidStep';
 // import BidTrackerCardBottom from '../BidTrackerCardBottom';
 import BidTrackerCardTop from '../BidTrackerCardTop';
@@ -13,7 +16,12 @@ import OverlayAlert from '../OverlayAlert';
 import BoxShadow from '../../BoxShadow';
 import BidCount from '../../BidCount';
 import { shouldShowAlert } from '../BidHelpers';
-import { CriticalNeed, Handshake, HardToFill, ServiceNeedDifferential } from '../../Ribbon';
+import {
+  CriticalNeed,
+  Handshake,
+  HardToFill,
+  ServiceNeedDifferential,
+} from '../../Ribbon';
 import {
   APPROVED_PROP,
   // HAND_SHAKE_ACCEPTED_PROP,
@@ -21,18 +29,42 @@ import {
   // IN_PANEL_PROP,
   // BID_EXPLANATION_TEXT,
 } from '../../../Constants/BidData';
-import { formatDate, formatIdSpacing, getTimeDistanceInWords } from '../../../utilities';
+import {
+  formatDate,
+  formatIdSpacing,
+  getTimeDistanceInWords,
+} from '../../../utilities';
 import MediaQuery from '../../MediaQuery';
 
 class BidTrackerCard extends Component {
   getChildContext() {
-    const { bid, condensedView, priorityExists, readOnly } = this.props;
-    return { condensedView, priorityExists, isPriority: bid.is_priority, readOnly };
+    const {
+      bid, condensedView, priorityExists, readOnly,
+    } = this.props;
+    return {
+      condensedView,
+      priorityExists,
+      isPriority: bid.is_priority,
+      readOnly,
+    };
   }
+
   render() {
-    const { bid, acceptBid, condensedView, declineBid, priorityExists, submitBid, deleteBid,
-      registerHandshake, showBidCount, /* userProfile, */ useCDOView, userId,
-      unregisterHandshake, showRibbons } = this.props;
+    const {
+      bid,
+      acceptBid,
+      condensedView,
+      declineBid,
+      priorityExists,
+      submitBid,
+      deleteBid,
+      registerHandshake,
+      showBidCount,
+      /* userProfile, */ useCDOView,
+      userId,
+      unregisterHandshake,
+      showRibbons,
+    } = this.props;
     // determine whether we render an alert on top of the card
     const showAlert = shouldShowAlert(bid, { condensedView });
     // determine whether we should show the contacts section based on the status
@@ -40,13 +72,17 @@ class BidTrackerCard extends Component {
                         .includes(bid.status); */
     // add class to container for draft since we need to apply an overflow:hidden for drafts only
     const bidStatus = get(bid, 'status', '');
-    const statusClass = `bid-tracker-bid-steps-container--${formatIdSpacing(bidStatus)}`;
+    const statusClass = `bid-tracker-bid-steps-container--${formatIdSpacing(
+      bidStatus,
+    )}`;
     const bidStatistics = get(bid, 'bid_statistics[0]', {});
     const containerClass = [
       'bid-tracker',
       condensedView ? 'bid-tracker--condensed' : '',
       bid.status === APPROVED_PROP ? 'bid-tracker--is-priority--approved' : '',
-      bid.is_priority ? 'bid-tracker--is-priority' : 'bid-tracker--is-not-priority',
+      bid.is_priority
+        ? 'bid-tracker--is-priority'
+        : 'bid-tracker--is-not-priority',
       priorityExists ? 'bid-tracker--priority-exists' : '',
     ].join(' ');
     const showBidCount$ = showBidCount && !priorityExists;
@@ -55,32 +91,22 @@ class BidTrackerCard extends Component {
       <BoxShadow className={containerClass} id={`bid-${bid.id}`}>
         <div className="bid-tracker-inner-container">
           <MediaQuery breakpoint="screenXlgMin" widthType="min">
-            {matches => (
-              showRibbons &&
+            {(matches) => showRibbons && (
               <div className="bid-tracker-ribbon-container">
                 {/* still need to verify how these ribbons should be hooked into the BE */}
                 {
                   <StaticDevContent>
-                    <Handshake
-                      cutSide="both"
-                      shortName={!matches}
-                    />
+                    <Handshake cutSide="both" shortName={!matches} />
                   </StaticDevContent>
                 }
                 {
                   <StaticDevContent>
-                    <CriticalNeed
-                      cutSide="both"
-                      shortName={!matches}
-                    />
+                    <CriticalNeed cutSide="both" shortName={!matches} />
                   </StaticDevContent>
                 }
                 {
                   <StaticDevContent>
-                    <HardToFill
-                      cutSide="both"
-                      shortName={!matches}
-                    />
+                    <HardToFill cutSide="both" shortName={!matches} />
                   </StaticDevContent>
                 }
                 {
@@ -102,25 +128,26 @@ class BidTrackerCard extends Component {
             // questionText={questionText}
             useCDOView={useCDOView}
           />
-          <div className={`usa-grid-full padded-container-inner bid-tracker-bid-steps-container ${statusClass}`}>
+          <div
+            className={`usa-grid-full padded-container-inner bid-tracker-bid-steps-container ${statusClass}`}
+          >
             <BidSteps bid={bid} />
-            {
-              showAlert &&
-                <OverlayAlert
-                  bid={bid}
-                  acceptBid={acceptBid}
-                  declineBid={declineBid}
-                  submitBid={submitBid}
-                  deleteBid={deleteBid}
-                  userId={userId}
-                  registerHandshake={registerHandshake}
-                  unregisterHandshake={unregisterHandshake}
-                  useCDOView={useCDOView}
-                />
-            }
+            {showAlert && (
+              <OverlayAlert
+                bid={bid}
+                acceptBid={acceptBid}
+                declineBid={declineBid}
+                submitBid={submitBid}
+                deleteBid={deleteBid}
+                userId={userId}
+                registerHandshake={registerHandshake}
+                unregisterHandshake={unregisterHandshake}
+                useCDOView={useCDOView}
+              />
+            )}
           </div>
         </div>
-        { /*
+        {/*
           Don't have this data yet, so we'll hide
           showContacts && !condensedView &&
             <div className="usa-grid-full bid-tracker-card-bottom-container">
@@ -132,15 +159,18 @@ class BidTrackerCard extends Component {
                 />
               </div>
             </div>
-        */ }
-        {
-          condensedView &&
-            <div className="usa-grid-full bid-tracker-stats">
-              <span>{!!bid.update_date && getTimeDistanceInWords(bid.update_date)}</span>
-              <span>Added to Bid List: {formatDate(bid.create_date)}</span>
-              {showBidCount$ && <BidCount altStyle isCondensed bidStatistics={bidStatistics} />}
-            </div>
-        }
+        */}
+        {condensedView && (
+          <div className="usa-grid-full bid-tracker-stats">
+            <span>
+              {!!bid.update_date && getTimeDistanceInWords(bid.update_date)}
+            </span>
+            <span>Added to Bid List: {formatDate(bid.create_date)}</span>
+            {showBidCount$ && (
+              <BidCount altStyle isCondensed bidStatistics={bidStatistics} />
+            )}
+          </div>
+        )}
       </BoxShadow>
     );
   }

@@ -13,18 +13,20 @@ const mockStore = configureStore(middlewares);
 
 describe('GlossaryEditor', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <GlossaryEditor />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <GlossaryEditor />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('can call the submitGlossaryTerm function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <GlossaryEditor.WrappedComponent
-        submitGlossaryTerm={spy}
-      />,
+      <GlossaryEditor.WrappedComponent submitGlossaryTerm={spy} />,
     );
     wrapper.instance().submitGlossaryTerm({});
     sinon.assert.calledOnce(spy);
@@ -33,9 +35,7 @@ describe('GlossaryEditor', () => {
   it('can call the submitNewGlossaryTerm function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <GlossaryEditor.WrappedComponent
-        submitNewGlossaryTerm={spy}
-      />,
+      <GlossaryEditor.WrappedComponent submitNewGlossaryTerm={spy} />,
     );
     wrapper.instance().submitNewGlossaryTerm({});
     sinon.assert.calledOnce(spy);
@@ -43,7 +43,11 @@ describe('GlossaryEditor', () => {
 });
 
 describe('mapDispatchToProps', () => {
-  const mockGlossaryObject = { id: 1, title: 'title', definition: 'definition' };
+  const mockGlossaryObject = {
+    id: 1,
+    title: 'title',
+    definition: 'definition',
+  };
   const config = {
     submitGlossaryTerm: [mockGlossaryObject],
     submitNewGlossaryTerm: [mockGlossaryObject],

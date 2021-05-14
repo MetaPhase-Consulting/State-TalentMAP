@@ -16,9 +16,13 @@ const history = createBrowserHistory();
 
 describe('GlossaryIconComponent', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <GlossaryIcon history={history} />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <GlossaryIcon history={history} />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -32,9 +36,7 @@ describe('GlossaryIconComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <GlossaryIcon.WrappedComponent />,
-    );
+    const wrapper = shallow(<GlossaryIcon.WrappedComponent />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

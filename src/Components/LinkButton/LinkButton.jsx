@@ -1,30 +1,35 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const LinkButton = ({ children, className, toLink, useDefaultClass, isExternal }) => (
+const LinkButton = ({
+  children,
+  className,
+  toLink,
+  useDefaultClass,
+  isExternal,
+}) => (
   <span className="link-button-wrapper">
-    {
-      isExternal ?
-        <a
-          className={`${useDefaultClass ? 'link-button' : ''} ${className}`}
-          type="submit"
-          role="button"
-          href={toLink}
-          rel="noopener"
-          target="_blank"
-        >
-          {children}
-        </a>
-        :
-        <Link
-          className={`${useDefaultClass ? 'link-button' : ''} ${className}`}
-          type="submit"
-          role="button"
-          to={toLink}
-        >
-          {children}
-        </Link>
-    }
+    {isExternal ? (
+      <a
+        className={`${useDefaultClass ? 'link-button' : ''} ${className}`}
+        type="submit"
+        role="button"
+        href={toLink}
+        rel="noopener"
+        target="_blank"
+      >
+        {children}
+      </a>
+    ) : (
+      <Link
+        className={`${useDefaultClass ? 'link-button' : ''} ${className}`}
+        type="submit"
+        role="button"
+        to={toLink}
+      >
+        {children}
+      </Link>
+    )}
   </span>
 );
 

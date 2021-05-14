@@ -20,12 +20,20 @@ describe('Row', () => {
   it('renders `fluid` prop correctly', () => {
     const selector = '.usa-grid-full';
 
-    expect(shallow(<Row />).find(selector).exists()).toBe(false);
-    expect(shallow(<Row fluid />).find(selector).exists()).toBe(true);
+    expect(
+      shallow(<Row />)
+        .find(selector)
+        .exists(),
+    ).toBe(false);
+    expect(
+      shallow(<Row fluid />)
+        .find(selector)
+        .exists(),
+    ).toBe(true);
   });
 
   it('renders `as` prop and renders new tag', () => {
-    const tags = ('button|div|span|section|p').split('|');
+    const tags = 'button|div|span|section|p'.split('|');
     tags.forEach((tag) => {
       const wrapper = mount(<Row as={tag} />);
       expect(wrapper.find(tag).exists()).toBe(true);

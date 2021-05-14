@@ -10,9 +10,7 @@ describe('ProfileMenuExpandedComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <ProfileMenuExpanded {...props} />,
-    );
+    const wrapper = shallow(<ProfileMenuExpanded {...props} />);
     expect(wrapper).toBeDefined();
   });
 

@@ -7,18 +7,14 @@ describe('AssignmentsListResultsCardComponent', () => {
   const assignment = assignmentObject;
   it('is defined', () => {
     const wrapper = shallow(
-      <AssignmentsListResultsCard
-        assignment={assignment}
-      />,
+      <AssignmentsListResultsCard assignment={assignment} />,
     );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <AssignmentsListResultsCard
-        assignment={assignment}
-      />,
+      <AssignmentsListResultsCard assignment={assignment} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

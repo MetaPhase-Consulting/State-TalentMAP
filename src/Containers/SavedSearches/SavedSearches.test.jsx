@@ -15,16 +15,20 @@ const mockStore = configureStore(middlewares);
 describe('SavedSearchesContainer', () => {
   const ChildElement = SavedSearchesList;
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <SavedSearchesContainer
-        onNavigateTo={() => {}}
-        savedSearchesFetchData={() => {}}
-        setCurrentSavedSearch={() => {}}
-        deleteSearch={() => {}}
-        ChildElement={ChildElement}
-        mappedParams={[]}
-      />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <SavedSearchesContainer
+            onNavigateTo={() => {}}
+            savedSearchesFetchData={() => {}}
+            setCurrentSavedSearch={() => {}}
+            deleteSearch={() => {}}
+            ChildElement={ChildElement}
+            mappedParams={[]}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 

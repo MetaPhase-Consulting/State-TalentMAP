@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 
-const Dismiss = ({ children, onDismiss, className, buttonClassName, buttonTitle }) => (
+const Dismiss = ({
+  children,
+  onDismiss,
+  className,
+  buttonClassName,
+  buttonTitle,
+}) => (
   <div className={`usa-grid-full dismiss-container ${className}`}>
     {children}
     <button className={buttonClassName} title={buttonTitle} onClick={onDismiss}>

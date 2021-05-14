@@ -5,10 +5,7 @@ import TextEditorSubmit from './TextEditorSubmit';
 describe('TextEditorSubmitComponent', () => {
   it('is defined', () => {
     const wrapper = shallow(
-      <TextEditorSubmit
-        submit={() => {}}
-        cancel={() => {}}
-      />,
+      <TextEditorSubmit submit={() => {}} cancel={() => {}} />,
     );
     expect(wrapper).toBeDefined();
   });
@@ -16,10 +13,7 @@ describe('TextEditorSubmitComponent', () => {
   it('can click submit', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <TextEditorSubmit
-        submit={spy}
-        cancel={() => {}}
-      />,
+      <TextEditorSubmit submit={spy} cancel={() => {}} />,
     );
     // submit is the first button (0 index)
     wrapper.find('button').at(0).simulate('click');
@@ -29,10 +23,7 @@ describe('TextEditorSubmitComponent', () => {
   it('can click cancel', () => {
     const cancelSpy = sinon.spy();
     const wrapper = shallow(
-      <TextEditorSubmit
-        submit={() => {}}
-        cancel={cancelSpy}
-      />,
+      <TextEditorSubmit submit={() => {}} cancel={cancelSpy} />,
     );
     // cancel is the second button (1 index)
     wrapper.find('button').at(1).simulate('click');

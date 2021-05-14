@@ -18,9 +18,7 @@ const POSITION_SEARCH_SORTS$ = {
   ],
 };
 
-POSITION_SEARCH_SORTS$.defaultSort = POSITION_SEARCH_SORTS$.options.find(o =>
-  o.value === 'ted',
-).value;
+POSITION_SEARCH_SORTS$.defaultSort = POSITION_SEARCH_SORTS$.options.find(o => o.value === 'ted').value;
 
 export const POSITION_SEARCH_SORTS = POSITION_SEARCH_SORTS$;
 

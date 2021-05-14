@@ -6,7 +6,7 @@ const PositionAdditionalDetails = ({ content }) => (
       <p className="position-details-additional-body">
         <span className="title">About</span>
         <br />
-        { content }
+        {content}
       </p>
     </div>
   </div>

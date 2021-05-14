@@ -21,9 +21,7 @@ const fuseOptions = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: [
-    'title', 'definition', 'link',
-  ],
+  keys: ['title', 'definition', 'link'],
 };
 
 class GlossaryComponent extends Component {
@@ -45,7 +43,8 @@ class GlossaryComponent extends Component {
       setTimeout(() => {
         window.addEventListener('click', this.handleOutsideClick);
       }, 0);
-    } else { // If the Glossary is not visible, remove the event listener.
+    } else {
+      // If the Glossary is not visible, remove the event listener.
       window.removeEventListener('click', this.handleOutsideClick);
     }
 
@@ -57,20 +56,20 @@ class GlossaryComponent extends Component {
 
   resetText = () => {
     this.changeText('');
-  }
+  };
 
   toggleVisibility = () => {
     this.props.toggleVisibility();
-  }
+  };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     const { visible } = this.props;
     if (visible && !document.getElementById(ID).contains(e.target)) {
       this.toggleVisibility();
     }
   };
 
-  changeText = text => {
+  changeText = (text) => {
     const { searchText } = this.state;
     searchText.value = text;
     this.setState({ searchText });
@@ -98,7 +97,9 @@ class GlossaryComponent extends Component {
           blurRadius={4}
           spreadRadius={0}
           id="glossary"
-          className={`glossary ${visible ? 'glossary-visible' : 'glossary-hidden'}`}
+          className={`glossary ${
+            visible ? 'glossary-visible' : 'glossary-hidden'
+          }`}
           aria-describedby="glossary-title"
           aria-hidden={!visible}
         >
@@ -114,12 +115,10 @@ class GlossaryComponent extends Component {
             <div className="glossary-top glossary-padding">
               <h3 id="glossary-title">Glossary</h3>
             </div>
-            {
-              glossaryIsLoading &&
-                <Spinner type="glossary tm-spinner-color-inverted" size="big" />
-            }
-            {
-              !glossaryIsLoading &&
+            {glossaryIsLoading && (
+              <Spinner type="glossary tm-spinner-color-inverted" size="big" />
+            )}
+            {!glossaryIsLoading && (
               <div>
                 <GlossarySearch
                   changeText={this.changeText}
@@ -129,7 +128,7 @@ class GlossaryComponent extends Component {
                   <GlossaryListing glossaryItems={filteredGlossary} />
                 </div>
               </div>
-            }
+            )}
           </div>
         </BoxShadow>
       </div>

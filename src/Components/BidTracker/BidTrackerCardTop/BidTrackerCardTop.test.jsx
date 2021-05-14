@@ -15,9 +15,7 @@ describe('BidTrackerCardTopComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidTrackerCardTop {...props} />,
-    );
+    const wrapper = shallow(<BidTrackerCardTop {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -40,35 +38,27 @@ describe('BidTrackerCardTopComponent', () => {
   it('is defined with an invalid bid status', () => {
     const newBid = { ...props.bid };
     newBid.status = 'fake status';
-    const wrapper = shallow(
-      <BidTrackerCardTop {...props} bid={newBid} />,
-    );
+    const wrapper = shallow(<BidTrackerCardTop {...props} bid={newBid} />);
     expect(wrapper).toBeDefined();
   });
 
   it('shows the remove bid link when canDelete', () => {
     const newBid = { ...props.bid };
     newBid.can_delete = true;
-    const wrapper = shallow(
-      <BidTrackerCardTop {...props} bid={newBid} />,
-    );
+    const wrapper = shallow(<BidTrackerCardTop {...props} bid={newBid} />);
     expect(wrapper).toBeDefined();
     expect(wrapper.find('remove-bid-link')).toBeDefined();
   });
 
   it('calls deleteBid', () => {
-    const wrapper = shallow(
-      <BidTrackerCardTop {...props} />,
-    );
+    const wrapper = shallow(<BidTrackerCardTop {...props} />);
     expect(wrapper).toBeDefined();
     wrapper.instance().onDeleteBid();
     sinon.assert.calledOnce(props.deleteBid);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BidTrackerCardTop {...props} />,
-    );
+    const wrapper = shallow(<BidTrackerCardTop {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -4,9 +4,16 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { push } from 'connected-react-router';
 import { isEqual } from 'lodash';
-import { deleteSavedSearch, savedSearchesFetchData, setCurrentSavedSearch } from 'actions/savedSearch';
+import {
+  deleteSavedSearch,
+  savedSearchesFetchData,
+  setCurrentSavedSearch,
+} from 'actions/savedSearch';
 import { SAVED_SEARCH_PARENT_OBJECT } from 'Constants/PropTypes';
-import { DEFAULT_USER_PROFILE, POSITION_RESULTS_OBJECT } from 'Constants/DefaultProps';
+import {
+  DEFAULT_USER_PROFILE,
+  POSITION_RESULTS_OBJECT,
+} from 'Constants/DefaultProps';
 import { formQueryString } from 'utilities';
 import SavedSearchesMap from '../SavedSearchesMap';
 
@@ -35,16 +42,19 @@ class SavedSearchesContainer extends Component {
     this.props.savedSearchesFetchData(this.state.defaultSort);
   }
 
-  getSortedSearches = type => {
+  getSortedSearches = (type) => {
     if (type.target && type.target.value) {
       this.props.savedSearchesFetchData(type.target.value);
       this.setState({ defaultSort: type.target.value });
     }
   };
 
-  goToSavedSearch = savedSearchObject => {
+  goToSavedSearch = (savedSearchObject) => {
     const q = { ...savedSearchObject.filters };
-    if (savedSearchObject.endpoint === '/api/v1/fsbid/projected_vacancies/' || savedSearchObject.endpoint === '/api/v1/fsbid/projected_vacancies/tandem/') {
+    if (
+      savedSearchObject.endpoint === '/api/v1/fsbid/projected_vacancies/'
+      || savedSearchObject.endpoint === '/api/v1/fsbid/projected_vacancies/tandem/'
+    ) {
       q.projectedVacancy = 'projected';
     }
     const stringifiedQuery = formQueryString(q);
@@ -53,7 +63,12 @@ class SavedSearchesContainer extends Component {
   };
 
   render() {
-    const { savedSearches, deleteSearch, ChildElement, savedSearchesIsLoading } = this.props;
+    const {
+      savedSearches,
+      deleteSearch,
+      ChildElement,
+      savedSearchesIsLoading,
+    } = this.props;
     return (
       <div className="saved-search-parent-container">
         <SavedSearchesMap
@@ -102,11 +117,14 @@ const mapStateToProps = (state, ownProps) => ({
   deleteIsLoading: state.deleteSavedSearchIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  onNavigateTo: dest => dispatch(push(dest)),
-  savedSearchesFetchData: sortType => dispatch(savedSearchesFetchData(sortType)),
-  setCurrentSavedSearch: e => dispatch(setCurrentSavedSearch(e)),
-  deleteSearch: id => dispatch(deleteSavedSearch(id)),
+export const mapDispatchToProps = (dispatch) => ({
+  onNavigateTo: (dest) => dispatch(push(dest)),
+  savedSearchesFetchData: (sortType) => dispatch(savedSearchesFetchData(sortType)),
+  setCurrentSavedSearch: (e) => dispatch(setCurrentSavedSearch(e)),
+  deleteSearch: (id) => dispatch(deleteSavedSearch(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SavedSearchesContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(SavedSearchesContainer));

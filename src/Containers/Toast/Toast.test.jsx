@@ -11,9 +11,13 @@ const mockStore = configureStore(middlewares);
 
 describe('ToastContainer', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Toast toastData={{ type: 'success', message: 'Success!' }} />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Toast toastData={{ type: 'success', message: 'Success!' }} />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 

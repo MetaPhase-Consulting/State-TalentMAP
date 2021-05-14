@@ -14,7 +14,11 @@ describe('Loader', () => {
   it('is defined when timeout and shouldPreload are truthy', () => {
     const path = () => System.import('../LoadingError');
     const timeout = 500;
-    const LoadedComponent = createLoader({ path, shouldPreload: true, timeout });
+    const LoadedComponent = createLoader({
+      path,
+      shouldPreload: true,
+      timeout,
+    });
     expect(LoadedComponent).toBeDefined();
   });
 });

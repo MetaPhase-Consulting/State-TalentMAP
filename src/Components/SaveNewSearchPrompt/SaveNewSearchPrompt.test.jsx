@@ -19,10 +19,7 @@ describe('SaveNewSearchPromptComponent', () => {
   it('calls functions after clicking InteractiveElement', () => {
     const spy = sinon.spy();
     wrapper = shallow(
-      <SaveNewSearchPrompt
-        toggleInput={spy}
-        newSavedSearchSuccess="success"
-      />,
+      <SaveNewSearchPrompt toggleInput={spy} newSavedSearchSuccess="success" />,
     );
     wrapper.find('InteractiveElement').simulate('click');
     sinon.assert.calledOnce(spy);

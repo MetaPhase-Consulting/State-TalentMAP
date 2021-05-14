@@ -8,8 +8,11 @@ class AlertAlt extends Component {
   shouldComponentUpdate(nextProps) {
     return !isEqual(this.props, nextProps);
   }
+
   render() {
-    const { type, title, message, isAriaLive } = this.props;
+    const {
+      type, title, message, isAriaLive,
+    } = this.props;
     let icon;
     switch (type) {
       case 'warning':
@@ -21,7 +24,7 @@ class AlertAlt extends Component {
       case 'success':
         icon = 'check-circle';
         break;
-        // default to info
+      // default to info
       default:
         icon = 'info-circle';
         break;
@@ -34,9 +37,13 @@ class AlertAlt extends Component {
       };
     }
     return (
-    // 'type' is injected into the class name
-    // type 'error' requires an ARIA role
-      <div className={`tm-alert tm-alert-${type}`} role={(type === 'error') ? 'alert' : null} {...ariaLiveProps}>
+      // 'type' is injected into the class name
+      // type 'error' requires an ARIA role
+      <div
+        className={`tm-alert tm-alert-${type}`}
+        role={type === 'error' ? 'alert' : null}
+        {...ariaLiveProps}
+      >
         <div className="usa-grid-full tm-alert-body">
           <div className="usa-grid-full tm-alert-icon">
             <FontAwesome size="lg" name={icon} />

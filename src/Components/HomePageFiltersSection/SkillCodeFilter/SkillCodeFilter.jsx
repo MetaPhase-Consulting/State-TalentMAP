@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { orderBy } from 'lodash';
 import { FILTERS } from '../../../Constants/PropTypes';
-import { returnObjectsWherePropMatches, wrapForMultiSelect } from '../../../utilities';
+import {
+  returnObjectsWherePropMatches,
+  wrapForMultiSelect,
+} from '../../../utilities';
 
 const SKILL_CODE = 'code';
 const SKILL_DESCRIPTION = 'custom_description';
-export const wrapFilters = filters => wrapForMultiSelect(filters, SKILL_CODE, SKILL_DESCRIPTION);
+export const wrapFilters = (filters) => wrapForMultiSelect(filters, SKILL_CODE, SKILL_DESCRIPTION);
 
 class SkillCodeFilter extends Component {
   constructor(props) {
@@ -34,7 +37,11 @@ class SkillCodeFilter extends Component {
     const { filters, userSkills } = props;
     if (props.userSkills.length && !selectedOptions.hasBeenUpdated) {
       const options = wrapFilters(filters);
-      const defaultSkills = returnObjectsWherePropMatches(options, userSkills, 'code');
+      const defaultSkills = returnObjectsWherePropMatches(
+        options,
+        userSkills,
+        'code',
+      );
       selectedOptions.value = defaultSkills;
       this.handleChange(selectedOptions.value, true);
     }
@@ -46,27 +53,37 @@ class SkillCodeFilter extends Component {
   handleChange = (selectedOptions, bypass = false) => {
     // set state with new values
     const { selectedOptions: selectedOptionsState } = this.state;
-    this.setState({ selectedOptions: Object.assign(
-      selectedOptionsState, { value: selectedOptions }) });
+    this.setState({
+      selectedOptions: Object.assign(selectedOptionsState, {
+        value: selectedOptions,
+      }),
+    });
     // Pass to onFilterSelect prop function.
     // These are only used for "real" changes by the user, opposed to
     // programatic setup performed.
     if (!bypass) {
-      this.setState({ selectedOptions: Object.assign(
-        selectedOptionsState, { hasBeenUpdated: true }) });
+      this.setState({
+        selectedOptions: Object.assign(selectedOptionsState, {
+          hasBeenUpdated: true,
+        }),
+      });
       this.props.onFilterSelect(selectedOptions);
     }
   };
 
   render() {
-    const { filters, isLoading, label, labelSrOnly } = this.props;
+    const {
+      filters, isLoading, label, labelSrOnly,
+    } = this.props;
     const { selectedOptions } = this.state;
     const options = wrapFilters(filters);
     const sortedOptions = orderBy(options, 'custom_description');
     const labelClass = labelSrOnly ? 'usa-sr-only' : '';
     return (
       <div>
-        <label htmlFor="skill-multi-select" className={labelClass}>{label}</label>
+        <label htmlFor="skill-multi-select" className={labelClass}>
+          {label}
+        </label>
         <Select
           id="skill-multi-select"
           multi

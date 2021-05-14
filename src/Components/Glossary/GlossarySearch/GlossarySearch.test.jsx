@@ -9,20 +9,12 @@ describe('GlossaryComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <GlossarySearch
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<GlossarySearch {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <GlossarySearch
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<GlossarySearch {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -11,8 +11,18 @@ import NotificationItem from '../../ProfileDashboard/Notifications/NotificationI
 import LinkButton from '../../LinkButton';
 import CheckBox from '../../CheckBox';
 
-export const NotificationRow = ({ id, message, tags, deleteOne, date, isRead, onCheck, checked,
-  meta, onNavigateTo }) => {
+export const NotificationRow = ({
+  id,
+  message,
+  tags,
+  deleteOne,
+  date,
+  isRead,
+  onCheck,
+  checked,
+  meta,
+  onNavigateTo,
+}) => {
   let link;
   let buttonTitle;
   let buttonTitle2;
@@ -27,7 +37,12 @@ export const NotificationRow = ({ id, message, tags, deleteOne, date, isRead, on
     link = '/profile/searches';
     buttonTitle = 'Go to Saved Searches';
     icon = 'clock-o';
-    if (meta.count && meta.search && meta.search.endpoint !== '/api/v1/fsbid/projected_vacancies/' && meta.search.endpoint !== '/api/v1/fsbid/projected_vacancies/tandem/') {
+    if (
+      meta.count
+      && meta.search
+      && meta.search.endpoint !== '/api/v1/fsbid/projected_vacancies/'
+      && meta.search.endpoint !== '/api/v1/fsbid/projected_vacancies/tandem/'
+    ) {
       buttonTitle2 = 'View New Results';
     }
   }
@@ -41,19 +56,34 @@ export const NotificationRow = ({ id, message, tags, deleteOne, date, isRead, on
   }
   const title = (
     <div>
-      <div><FA name={icon} /> {message}</div>
+      <div>
+        <FA name={icon} /> {message}
+      </div>
     </div>
   );
-  const renderButton = () => !!link && !!title && <LinkButton toLink={link} className="usa-button">{buttonTitle}</LinkButton>;
+  const renderButton = () => !!link
+    && !!title && (
+    <LinkButton toLink={link} className="usa-button">
+      {buttonTitle}
+    </LinkButton>
+  );
 
   const goToSavedSearch = () => {
-    const q = { ...meta.search.filters, ordering: '-posted_date', count: meta.count };
+    const q = {
+      ...meta.search.filters,
+      ordering: '-posted_date',
+      count: meta.count,
+    };
     const stringifiedQuery = formQueryString(q);
     onNavigateTo(`/results?${stringifiedQuery}`);
   };
 
   return (
-    <Row className={`usa-grid-full notification-row ${isRead ? 'notification-row--read' : ''}`}>
+    <Row
+      className={`usa-grid-full notification-row ${
+        isRead ? 'notification-row--read' : ''
+      }`}
+    >
       <Column columns={8} style={{ display: 'flex' }}>
         <CheckBox
           _id={id}
@@ -66,9 +96,20 @@ export const NotificationRow = ({ id, message, tags, deleteOne, date, isRead, on
         <NotificationItem content={title} notificationTime={date} />
       </Column>
       <Column columns={4} className="notification-button">
-        {buttonTitle2 && <button className="usa-button" onClick={goToSavedSearch}>{buttonTitle2}</button>}
+        {buttonTitle2 && (
+          <button className="usa-button" onClick={goToSavedSearch}>
+            {buttonTitle2}
+          </button>
+        )}
         {renderButton()}
-        <button id="delete-notification-button" title="Delete this notification" onClick={() => deleteOne(id)} className="usa-button-secondary delete-button"><FA name="trash-o" /></button>
+        <button
+          id="delete-notification-button"
+          title="Delete this notification"
+          onClick={() => deleteOne(id)}
+          className="usa-button-secondary delete-button"
+        >
+          <FA name="trash-o" />
+        </button>
       </Column>
     </Row>
   );
@@ -85,7 +126,10 @@ NotificationRow.propTypes = {
   checked: PropTypes.bool,
   meta: PropTypes.shape({
     count: PropTypes.number,
-    search: PropTypes.shape({ endpoint: PropTypes.string, filters: PropTypes.shape({}) }),
+    search: PropTypes.shape({
+      endpoint: PropTypes.string,
+      filters: PropTypes.shape({}),
+    }),
   }),
   onNavigateTo: PropTypes.func,
 };
@@ -101,8 +145,8 @@ NotificationRow.defaultProps = {
   onNavigateTo: EMPTY_FUNCTION,
 };
 
-export const mapDispatchToProps = dispatch => ({
-  onNavigateTo: dest => dispatch(push(dest)),
+export const mapDispatchToProps = (dispatch) => ({
+  onNavigateTo: (dest) => dispatch(push(dest)),
 });
 
 export default connect(null, mapDispatchToProps)(withRouter(NotificationRow));

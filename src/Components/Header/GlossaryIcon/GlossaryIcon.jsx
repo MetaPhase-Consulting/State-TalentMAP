@@ -12,9 +12,7 @@ class GlossaryIcon extends Component {
   };
 
   render() {
-    return (
-      <Icon onClick={this.toggleVisibility} />
-    );
+    return <Icon onClick={this.toggleVisibility} />;
   }
 }
 
@@ -28,12 +26,12 @@ GlossaryIcon.defaultProps = {
   shouldShowGlossary: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   shouldShowGlossary: state.shouldShowGlossary,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  toggleGlossaryVisibility: shouldShow => dispatch(toggleGlossary(shouldShow)),
+export const mapDispatchToProps = (dispatch) => ({
+  toggleGlossaryVisibility: (shouldShow) => dispatch(toggleGlossary(shouldShow)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlossaryIcon);

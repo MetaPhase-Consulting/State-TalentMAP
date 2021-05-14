@@ -11,18 +11,12 @@ describe('HoverDescriptionComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('sets state on toggleVisibility()', (done) => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     const instance = wrapper.instance();
     instance.toggleVisibility(true);
     setTimeout(() => {
@@ -32,10 +26,7 @@ describe('HoverDescriptionComponent', () => {
   });
 
   it('sets state on toggle()', (done) => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     const instance = wrapper.instance();
     instance.toggle();
     setTimeout(() => {
@@ -45,10 +36,7 @@ describe('HoverDescriptionComponent', () => {
   });
 
   it('sets state to true on expand()', (done) => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     const instance = wrapper.instance();
     instance.expand();
     setTimeout(() => {
@@ -58,10 +46,7 @@ describe('HoverDescriptionComponent', () => {
   });
 
   it('sets state to close on close()', (done) => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     const instance = wrapper.instance();
     instance.close();
     setTimeout(() => {
@@ -71,10 +56,7 @@ describe('HoverDescriptionComponent', () => {
   });
 
   it('sets state on toggle()', (done) => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     const instance = wrapper.instance();
     instance.toggle();
     setTimeout(() => {
@@ -84,10 +66,7 @@ describe('HoverDescriptionComponent', () => {
   });
 
   it('sets state on toggleCardHovered()', (done) => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     const instance = wrapper.instance();
     instance.toggleCardHovered(true);
     setTimeout(() => {
@@ -97,18 +76,12 @@ describe('HoverDescriptionComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when expanded === true', () => {
-    const wrapper = shallow(
-      <HoverDescription
-        {...props}
-      />);
+    const wrapper = shallow(<HoverDescription {...props} />);
     wrapper.instance().setState({ expanded: true });
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

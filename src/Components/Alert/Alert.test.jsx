@@ -5,14 +5,9 @@ import Alert from './Alert';
 describe('Alert', () => {
   let alert = null;
 
-  const alertBody = [
-    { body: 'Alert body' },
-  ];
+  const alertBody = [{ body: 'Alert body' }];
 
-  const errorBody = [
-    { body: 'Error 1' },
-    { body: 'Error 2' },
-  ];
+  const errorBody = [{ body: 'Error 1' }, { body: 'Error 2' }];
 
   it('is defined with a default type of info', () => {
     alert = shallow(<Alert title="test" />);
@@ -30,10 +25,10 @@ describe('Alert', () => {
   });
 
   it('updates with new props', () => {
-    const wrapper = shallow(
-      <Alert title="test" />,
+    const wrapper = shallow(<Alert title="test" />);
+    expect(wrapper.instance().shouldComponentUpdate({ prop: 'new' })).toBe(
+      true,
     );
-    expect(wrapper.instance().shouldComponentUpdate({ prop: 'new' })).toBe(true);
   });
 
   it('applies "role=alert" when type is "error"', () => {
@@ -52,7 +47,9 @@ describe('Alert', () => {
 
   it('displays success alert', () => {
     const title = 'Success title';
-    alert = shallow(<Alert type="success" title={title} messages={alertBody} />);
+    alert = shallow(
+      <Alert type="success" title={title} messages={alertBody} />,
+    );
     expect(toJSON(alert)).toMatchSnapshot();
     expect(alert.find('.usa-alert-success')).toBeDefined();
     expect(alert.find('.usa-alert-heading').text()).toBe(title);
@@ -70,19 +67,30 @@ describe('Alert', () => {
 
   it('displays the divider when isDivided === true', () => {
     const title = 'Error title';
-    alert = shallow(<Alert type="error" title={title} messages={errorBody} isDivided />);
+    alert = shallow(
+      <Alert type="error" title={title} messages={errorBody} isDivided />,
+    );
     expect(alert.find('.divider').exists()).toBe(true);
   });
 
   it('does not display the divider when isDivided === false', () => {
     const title = 'Error title';
-    alert = shallow(<Alert type="error" title={title} messages={errorBody} isDivided={false} />);
+    alert = shallow(
+      <Alert
+        type="error"
+        title={title}
+        messages={errorBody}
+        isDivided={false}
+      />,
+    );
     expect(alert.find('.divider').exists()).toBe(false);
   });
 
   it('matches snapshot when isAriaLive is true', () => {
     const title = 'Success title';
-    alert = shallow(<Alert type="success" title={title} messages={alertBody} isAriaLive />);
+    alert = shallow(
+      <Alert type="success" title={title} messages={alertBody} isAriaLive />,
+    );
     expect(toJSON(alert)).toMatchSnapshot();
   });
 });

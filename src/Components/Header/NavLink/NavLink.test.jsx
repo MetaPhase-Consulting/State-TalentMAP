@@ -16,11 +16,7 @@ describe('NavLink', () => {
 
   it('is active when the link matches location pathname', () => {
     const wrapper = shallow(
-      <NavLink
-        title="test"
-        link="/"
-        location={{ pathname: '/' }}
-      />,
+      <NavLink title="test" link="/" location={{ pathname: '/' }} />,
     );
     expect(wrapper.find('.is-highlighted').exists()).toBe(true);
     expect(wrapper.find('.is-not-active').exists()).toBe(false);
@@ -28,22 +24,14 @@ describe('NavLink', () => {
 
   it('matches snapshot when the link matches location pathname', () => {
     const wrapper = shallow(
-      <NavLink
-        title="test"
-        link="/"
-        location={{ pathname: '/' }}
-      />,
+      <NavLink title="test" link="/" location={{ pathname: '/' }} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('is not active when the link matches location pathname', () => {
     const wrapper = shallow(
-      <NavLink
-        title="test"
-        link="/"
-        location={{ pathname: '/profile' }}
-      />,
+      <NavLink title="test" link="/" location={{ pathname: '/profile' }} />,
     );
     expect(wrapper.find('.is-highlighted').exists()).toBe(false);
     expect(wrapper.find('.is-not-active').exists()).toBe(true);
@@ -51,11 +39,7 @@ describe('NavLink', () => {
 
   it('matches snapshot when the link does not match location pathname', () => {
     const wrapper = shallow(
-      <NavLink
-        title="test"
-        link="/"
-        location={{ pathname: '/profile' }}
-      />,
+      <NavLink title="test" link="/" location={{ pathname: '/profile' }} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

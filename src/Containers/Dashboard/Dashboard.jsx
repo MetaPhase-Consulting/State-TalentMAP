@@ -2,10 +2,22 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { notificationsFetchData } from 'actions/notifications';
-import { bidListFetchData, submitBid, toggleBidPosition } from 'actions/bidList';
+import {
+  bidListFetchData,
+  submitBid,
+  toggleBidPosition,
+} from 'actions/bidList';
 import { favoritePositionsFetchData } from 'actions/favoritePositions';
-import { BID_LIST, FAVORITE_POSITIONS, NOTIFICATION_LIST, USER_PROFILE } from 'Constants/PropTypes';
-import { DEFAULT_FAVORITES, DEFAULT_USER_PROFILE } from 'Constants/DefaultProps';
+import {
+  BID_LIST,
+  FAVORITE_POSITIONS,
+  NOTIFICATION_LIST,
+  USER_PROFILE,
+} from 'Constants/PropTypes';
+import {
+  DEFAULT_FAVORITES,
+  DEFAULT_USER_PROFILE,
+} from 'Constants/DefaultProps';
 import ProfileDashboard from 'Components/ProfileDashboard';
 
 class DashboardContainer extends Component {
@@ -16,11 +28,22 @@ class DashboardContainer extends Component {
   }
 
   render() {
-    const { userProfile, userProfileIsLoading,
-      notifications, notificationsIsLoading, bidList, bidListIsLoading, favoritePositions,
-      favoritePositionsIsLoading, favoritePositionsHasErrored, submitBidPosition,
-      deleteBid } = this.props;
-    const allFavorites = favoritePositions.favorites.concat(favoritePositions.favoritesPV);
+    const {
+      userProfile,
+      userProfileIsLoading,
+      notifications,
+      notificationsIsLoading,
+      bidList,
+      bidListIsLoading,
+      favoritePositions,
+      favoritePositionsIsLoading,
+      favoritePositionsHasErrored,
+      submitBidPosition,
+      deleteBid,
+    } = this.props;
+    const allFavorites = favoritePositions.favorites.concat(
+      favoritePositions.favoritesPV,
+    );
     return (
       <ProfileDashboard
         userProfile={userProfile}
@@ -68,7 +91,7 @@ DashboardContainer.defaultProps = {
   favoritePositionsHasErrored: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userProfile: state.userProfile,
   userProfileIsLoading: state.userProfileIsLoading,
   notifications: state.notifications,
@@ -80,12 +103,12 @@ const mapStateToProps = state => ({
   favoritePositionsIsLoading: state.favoritePositionsIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchNotifications: () => dispatch(notificationsFetchData()),
   fetchBidList: () => dispatch(bidListFetchData()),
   fetchFavorites: () => dispatch(favoritePositionsFetchData(null, 5, 1, 'all')),
-  submitBidPosition: id => dispatch(submitBid(id)),
-  deleteBid: id => dispatch(toggleBidPosition(id, true)),
+  submitBidPosition: (id) => dispatch(submitBid(id)),
+  deleteBid: (id) => dispatch(toggleBidPosition(id, true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

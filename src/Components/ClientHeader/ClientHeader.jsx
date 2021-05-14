@@ -10,8 +10,10 @@ import { BIDDER_OBJECT, HISTORY_OBJECT } from 'Constants/PropTypes';
 import { unsetClient } from '../../actions/clientView';
 import { isCurrentPath } from '../ProfileMenu/navigation';
 import {
-  tertiaryCoolBlueLighter, tertiaryCoolBlueLightest,
-  tertiaryGoldLighter, tertiaryGoldLightest,
+  tertiaryCoolBlueLighter,
+  tertiaryCoolBlueLightest,
+  tertiaryGoldLighter,
+  tertiaryGoldLightest,
 } from '../../sass/sass-vars/variables';
 
 export const ID = 'client-header';
@@ -52,7 +54,10 @@ export class ClientHeader extends Component {
 
   matchCurrentPath(historyObject) {
     // hide if on the public profile
-    const pathMatches = isCurrentPath('/profile/public/:id', historyObject.pathname);
+    const pathMatches = isCurrentPath(
+      '/profile/public/:id',
+      historyObject.pathname,
+    );
     this.setState({
       showReturnLink: !pathMatches,
     });
@@ -69,13 +74,22 @@ export class ClientHeader extends Component {
   render() {
     const skeletonColors$ = { ...skeletonColors };
     const { showReturnLink } = this.state;
-    const { client, isLoading, hasErrored, bidderPortfolioSelectedCDO, style } = this.props;
+    const {
+      client, isLoading, hasErrored, bidderPortfolioSelectedCDO, style,
+    } = this.props;
     const name = client && client.name ? client.name : 'Unknown user';
 
-    const isSuccess = !!(client && !!client.perdet_seq_number && !isLoading && !hasErrored);
+    const isSuccess = !!(
+      client
+      && !!client.perdet_seq_number
+      && !isLoading
+      && !hasErrored
+    );
 
-    const proxyName = get(bidderPortfolioSelectedCDO, 'name') && !get(bidderPortfolioSelectedCDO, 'isCurrentUser') ?
-      get(bidderPortfolioSelectedCDO, 'name') : '';
+    const proxyName = get(bidderPortfolioSelectedCDO, 'name')
+      && !get(bidderPortfolioSelectedCDO, 'isCurrentUser')
+      ? get(bidderPortfolioSelectedCDO, 'name')
+      : '';
 
     if (proxyName) {
       skeletonColors$.highlightColor = tertiaryGoldLighter;
@@ -83,28 +97,49 @@ export class ClientHeader extends Component {
     }
 
     const renderHeader = () => (
-      <div className={`usa-banner client-header ${proxyName ? 'client-header--alternate' : ''} ${isLoading ? 'client-header--is-loading' : ''}`}>
+      <div
+        className={`usa-banner client-header ${
+          proxyName ? 'client-header--alternate' : ''
+        } ${isLoading ? 'client-header--is-loading' : ''}`}
+      >
         <div className="usa-grid usa-banner-inner">
           <div className={!showReturnLink ? 'hidden' : ''}>
             <SkeletonTheme {...skeletonColors$}>
-              {!isLoading ? <Link to={`/profile/public/${client.perdet_seq_number}`}>
-                <FA name="chevron-left" />
-                <span>Client Dashboard</span>
-              </Link> : <Skeleton width="75%" duration={1.8} />}
+              {!isLoading ? (
+                <Link to={`/profile/public/${client.perdet_seq_number}`}>
+                  <FA name="chevron-left" />
+                  <span>Client Dashboard</span>
+                </Link>
+              ) : (
+                <Skeleton width="75%" duration={1.8} />
+              )}
             </SkeletonTheme>
           </div>
           <div>
             <SkeletonTheme {...skeletonColors$}>
-              {!isLoading ? <span><FA name="clipboard" />
-                <span id="search-as-name">Position Search for {name}{!!proxyName && ` (Proxying as ${proxyName})`}</span></span> : <Skeleton width="75%" duration={1.8} />}
+              {!isLoading ? (
+                <span>
+                  <FA name="clipboard" />
+                  <span id="search-as-name">
+                    Position Search for {name}
+                    {!!proxyName && ` (Proxying as ${proxyName})`}
+                  </span>
+                </span>
+              ) : (
+                <Skeleton width="75%" duration={1.8} />
+              )}
             </SkeletonTheme>
           </div>
           <div>
             <SkeletonTheme {...skeletonColors$}>
-              {!isLoading ? <button className="unstyled-button" onClick={this.unsetClient}>
-                <FA name="close" />
-                <span>Exit client view</span>
-              </button> : <Skeleton width="75%" duration={1.8} />}
+              {!isLoading ? (
+                <button className="unstyled-button" onClick={this.unsetClient}>
+                  <FA name="close" />
+                  <span>Exit client view</span>
+                </button>
+              ) : (
+                <Skeleton width="75%" duration={1.8} />
+              )}
             </SkeletonTheme>
           </div>
         </div>
@@ -139,11 +174,17 @@ const mapStateToProps = ({
   bidderPortfolioSelectedCDO,
   clientView: { client, isLoading, hasErrored },
 }) => ({
-  client, isLoading, hasErrored, bidderPortfolioSelectedCDO,
+  client,
+  isLoading,
+  hasErrored,
+  bidderPortfolioSelectedCDO,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   unset: () => dispatch(unsetClient()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClientHeader));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(ClientHeader));

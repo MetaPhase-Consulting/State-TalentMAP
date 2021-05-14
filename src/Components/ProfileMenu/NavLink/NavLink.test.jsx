@@ -8,20 +8,14 @@ describe('NavLinkComponent', () => {
   };
   it('is defined with no children', () => {
     const wrapper = shallow(
-      <NavLinkUnwrapped
-        title="test"
-        location={locationMock}
-      />,
+      <NavLinkUnwrapped title="test" location={locationMock} />,
     );
     expect(wrapper).toBeDefined();
   });
 
   it('is defined with one child', () => {
     const wrapper = shallow(
-      <NavLinkUnwrapped
-        title="test"
-        location={locationMock}
-      >
+      <NavLinkUnwrapped title="test" location={locationMock}>
         <NavLinkUnwrapped
           title="test2"
           link="/profile/favorites/"
@@ -34,10 +28,7 @@ describe('NavLinkComponent', () => {
 
   it('is defined with multiple children', () => {
     const wrapper = shallow(
-      <NavLinkUnwrapped
-        title="test"
-        location={locationMock}
-      >
+      <NavLinkUnwrapped title="test" location={locationMock}>
         <NavLinkUnwrapped
           title="test2"
           link="/profile/favorites/"
@@ -85,10 +76,7 @@ describe('NavLinkComponent', () => {
   // so we use the Unwrapped import of the component.
   it('can expand and close a grouped list', () => {
     const wrapper = shallow(
-      <NavLinkUnwrapped
-        title="test"
-        location={locationMock}
-      >
+      <NavLinkUnwrapped title="test" location={locationMock}>
         <NavLinkUnwrapped
           title="test2"
           link="/profile/favorites/"

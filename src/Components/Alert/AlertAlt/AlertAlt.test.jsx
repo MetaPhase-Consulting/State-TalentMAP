@@ -4,25 +4,21 @@ import AlertAlt from './AlertAlt';
 
 describe('AlertAltComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <AlertAlt title="title" message="message" />,
-    );
+    const wrapper = shallow(<AlertAlt title="title" message="message" />);
     expect(wrapper).toBeDefined();
   });
 
   it('renders the title', () => {
     const title = 'title';
-    const wrapper = shallow(
-      <AlertAlt title={title} message="message" />,
-    );
+    const wrapper = shallow(<AlertAlt title={title} message="message" />);
     expect(wrapper.find('.tm-alert-heading').text()).toBe(title);
   });
 
   it('updates with new props', () => {
-    const wrapper = shallow(
-      <AlertAlt title="test" message="message" />,
+    const wrapper = shallow(<AlertAlt title="test" message="message" />);
+    expect(wrapper.instance().shouldComponentUpdate({ prop: 'new' })).toBe(
+      true,
     );
-    expect(wrapper.instance().shouldComponentUpdate({ prop: 'new' })).toBe(true);
   });
 
   it('applies "role=alert" when type is "error"', () => {
@@ -35,9 +31,7 @@ describe('AlertAltComponent', () => {
 
   it('renders the message', () => {
     const message = 'message';
-    const wrapper = shallow(
-      <AlertAlt title="title" message={message} />,
-    );
+    const wrapper = shallow(<AlertAlt title="title" message={message} />);
     expect(wrapper.find('.tm-alert-message').text()).toBe(message);
   });
 
@@ -59,16 +53,12 @@ describe('AlertAltComponent', () => {
   });
 
   it('matches snapshot with default props', () => {
-    const wrapper = shallow(
-      <AlertAlt title="title" />,
-    );
+    const wrapper = shallow(<AlertAlt title="title" />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when isAriaLive is true', () => {
-    const wrapper = shallow(
-      <AlertAlt title="title" isAriaLive />,
-    );
+    const wrapper = shallow(<AlertAlt title="title" isAriaLive />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

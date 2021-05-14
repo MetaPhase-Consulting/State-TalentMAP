@@ -7,12 +7,8 @@ const PanelRescheduledAlert = ({ date }) => (
       <div>
         <FontAwesome name="users" />
       </div>
-      <div>
-        {`You've been rescheduled for the next panel on ${date}`}
-      </div>
-      <div className="date-text">
-        {date}
-      </div>
+      <div>{`You've been rescheduled for the next panel on ${date}`}</div>
+      <div className="date-text">{date}</div>
     </div>
   </div>
 );

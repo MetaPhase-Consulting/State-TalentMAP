@@ -14,7 +14,9 @@ describe('SectionTitleComponent', () => {
   });
 
   it('can receive "className" prop', () => {
-    const wrapper = shallow(<SectionTitle title="title" className="my-class" />);
+    const wrapper = shallow(
+      <SectionTitle title="title" className="my-class" />,
+    );
     expect(wrapper.find('.my-class').exists()).toBe(true);
   });
 

@@ -29,10 +29,14 @@ class PositionDetailsContact extends Component {
     const { details } = this.props;
     const { newWebsiteContent } = this.state;
     const postWebsite = propOrDefault(details, 'description.website');
-    const plainTextPostWebsite = postWebsite ? newWebsiteContent.value || postWebsite : newWebsiteContent.value || '';
-    const formattedPostWebsite = postWebsite || newWebsiteContent.value ?
-      <a href={plainTextPostWebsite}>{plainTextPostWebsite}</a> :
-      COMING_SOON;
+    const plainTextPostWebsite = postWebsite
+      ? newWebsiteContent.value || postWebsite
+      : newWebsiteContent.value || '';
+    const formattedPostWebsite = postWebsite || newWebsiteContent.value ? (
+      <a href={plainTextPostWebsite}>{plainTextPostWebsite}</a>
+    ) : (
+      COMING_SOON
+    );
 
     return { plainTextPostWebsite, formattedPostWebsite };
   }
@@ -40,10 +44,16 @@ class PositionDetailsContact extends Component {
   get pointOfContact() {
     const { details } = this.props;
     const { newPocContent } = this.state;
-    const pointOfContact = propOrDefault(details, 'description.point_of_contact');
-    const plainTextPointOfContact = pointOfContact ? newPocContent.value || pointOfContact : newPocContent.value || '';
-    const formattedPointOfContact = pointOfContact || newPocContent.value ?
-      plainTextPointOfContact : COMING_SOON;
+    const pointOfContact = propOrDefault(
+      details,
+      'description.point_of_contact',
+    );
+    const plainTextPointOfContact = pointOfContact
+      ? newPocContent.value || pointOfContact
+      : newPocContent.value || '';
+    const formattedPointOfContact = pointOfContact || newPocContent.value
+      ? plainTextPointOfContact
+      : COMING_SOON;
     return { plainTextPointOfContact, formattedPointOfContact };
   }
 
@@ -63,7 +73,7 @@ class PositionDetailsContact extends Component {
     this.setState({ shouldShowPocEditor });
   };
 
-  submitWebsiteEdit = content => {
+  submitWebsiteEdit = (content) => {
     const { newWebsiteContent } = this.state;
     newWebsiteContent.value = content;
     this.setState({ newWebsiteContent });
@@ -71,7 +81,7 @@ class PositionDetailsContact extends Component {
     this.toggleWebsiteEditor();
   };
 
-  submitPocEdit = content => {
+  submitPocEdit = (content) => {
     const { newPocContent } = this.state;
     newPocContent.value = content;
     this.setState({ newPocContent });
@@ -82,9 +92,7 @@ class PositionDetailsContact extends Component {
   renderBidCount = () => {
     const { details } = this.props;
     const stats = getBidStatisticsObject(details.bidStatistics);
-    return (
-      <BidCount bidStatistics={stats} hideLabel altStyle isCondensed />
-    );
+    return <BidCount bidStatistics={stats} hideLabel altStyle isCondensed />;
   };
 
   render() {
@@ -94,14 +102,20 @@ class PositionDetailsContact extends Component {
     const { plainTextPostWebsite, formattedPostWebsite } = this.postWebsite;
     const { plainTextPointOfContact, formattedPointOfContact } = this.pointOfContact;
 
-    const isAllowedToEdit = !!(propOrDefault(details, 'description.is_editable_by_user'));
+    const isAllowedToEdit = !!propOrDefault(
+      details,
+      'description.is_editable_by_user',
+    );
 
     const formattedDate = formatDate(details.description.date_updated);
 
     const OBCUrl = propOrDefault(details, 'post.post_overview_url');
 
     return (
-      <div className="position-details-contact" style={{ position: 'relative' }}>
+      <div
+        className="position-details-contact"
+        style={{ position: 'relative' }}
+      >
         <div className="contact-container">
           <PermissionsWrapper permissions="superuser">
             <div className="usa-grid-full contact-section website-section">
@@ -134,17 +148,18 @@ class PositionDetailsContact extends Component {
               isAllowedToEdit={isAllowedToEdit}
             />
           </div>
-          {
-            !isProjectedVacancy &&
-              this.renderBidCount()
-          }
+          {!isProjectedVacancy && this.renderBidCount()}
         </div>
-        <div className={`contact-container ${isProjectedVacancy ? '' : 'has-bid-count'} ${!OBCUrl ? 'no-button' : ''}`}>
+        <div
+          className={`contact-container ${
+            isProjectedVacancy ? '' : 'has-bid-count'
+          } ${!OBCUrl ? 'no-button' : ''}`}
+        >
           <strong>Capsule Last Updated</strong>: {formattedDate}
         </div>
         <div className="offset-bid-button-container">
           <div className="offset-bid-button-container-button">
-            { !!OBCUrl && <ViewPostDataButton url={OBCUrl} altStyle /> }
+            {!!OBCUrl && <ViewPostDataButton url={OBCUrl} altStyle />}
           </div>
         </div>
       </div>

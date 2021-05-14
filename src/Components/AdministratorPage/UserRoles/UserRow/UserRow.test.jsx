@@ -12,8 +12,16 @@ describe('UserRow', () => {
     permissionGroups: [],
     delegateRoles: {
       superuser: { title: 'Super User', group_id: 1, group_name: 'superuser' },
-      glossary_editors: { title: 'Glossary Editor', group_id: 2, group_name: 'glossary_editors' },
-      aboutpage_editor: { title: 'About Page Editor', group_id: 3, group_name: 'aboutpage_editor' },
+      glossary_editors: {
+        title: 'Glossary Editor',
+        group_id: 2,
+        group_name: 'glossary_editors',
+      },
+      aboutpage_editor: {
+        title: 'About Page Editor',
+        group_id: 3,
+        group_name: 'aboutpage_editor',
+      },
     },
     modifyPermission: () => [],
     updatePermission: () => [],
@@ -27,14 +35,18 @@ describe('UserRow', () => {
   // TODO - revisit these tests per https://github.com/MetaPhase-Consulting/State-TalentMAP/pull/814
   xit('calls checkPermission()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<UserRow.WrappedComponent {...props} checkPermission={spy} />);
+    const wrapper = shallow(
+      <UserRow.WrappedComponent {...props} checkPermission={spy} />,
+    );
     wrapper.instance().checkPermission();
     sinon.assert.calledOnce(spy);
   });
   // TODO - revisit these tests per https://github.com/MetaPhase-Consulting/State-TalentMAP/pull/814
   xit('calls updatePermission() on checkbox click', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<UserRow.WrappedComponent {...props} updatePermission={spy} />);
+    const wrapper = shallow(
+      <UserRow.WrappedComponent {...props} updatePermission={spy} />,
+    );
     // wrapper.find('CheckBox').at(0).instance().onCheckBoxClick();
     wrapper.find('CheckBox').at(0).props().onCheckBoxClick();
 
@@ -43,21 +55,27 @@ describe('UserRow', () => {
   // TODO - revisit these tests per https://github.com/MetaPhase-Consulting/State-TalentMAP/pull/814
   xit('calls updatePermission()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<UserRow.WrappedComponent {...props} updatePermission={spy} />);
+    const wrapper = shallow(
+      <UserRow.WrappedComponent {...props} updatePermission={spy} />,
+    );
     wrapper.instance().updatePermission();
     sinon.assert.calledOnce(spy);
   });
 
   it('calls modifyPermission() from updatePermission()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<UserRow.WrappedComponent {...props} modifyPermission={spy} />);
+    const wrapper = shallow(
+      <UserRow.WrappedComponent {...props} modifyPermission={spy} />,
+    );
     wrapper.instance().updatePermission();
     sinon.assert.calledOnce(spy);
   });
   // TODO - revisit these tests per https://github.com/MetaPhase-Consulting/State-TalentMAP/pull/814
   xit('calls userHasPermissions() from checkPermission()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<UserRow.WrappedComponent {...props} userHasPermissions={spy} />);
+    const wrapper = shallow(
+      <UserRow.WrappedComponent {...props} userHasPermissions={spy} />,
+    );
     wrapper.instance().checkPermission();
     sinon.assert.calledOnce(spy);
   });
@@ -77,9 +95,7 @@ describe('UserRow', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <UserRow.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<UserRow.WrappedComponent {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

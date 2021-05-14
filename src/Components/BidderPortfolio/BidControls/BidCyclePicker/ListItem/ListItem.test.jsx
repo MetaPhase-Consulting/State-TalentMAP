@@ -11,17 +11,13 @@ describe('BidControlsComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <ListItem {...props} />,
-    );
+    const wrapper = shallow(<ListItem {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('calls selectValue() on click', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <ListItem {...props} selectValue={spy} />,
-    );
+    const wrapper = shallow(<ListItem {...props} selectValue={spy} />);
     wrapper.find('InteractiveElement').simulate('click');
     sinon.assert.calledOnce(spy);
   });
@@ -31,8 +27,12 @@ describe('BidControlsComponent', () => {
     const wrapper = shallow(
       <ListItem {...props} getIsSelected={getIsSelected} />,
     );
-    expect(wrapper.find('InteractiveElement').props()['data-selected']).toBe('selected');
-    expect(wrapper.find('InteractiveElement').props()['aria-selected']).toBe(true);
+    expect(wrapper.find('InteractiveElement').props()['data-selected']).toBe(
+      'selected',
+    );
+    expect(wrapper.find('InteractiveElement').props()['aria-selected']).toBe(
+      true,
+    );
   });
 
   it('applies props when getIsSelected returns false', () => {
@@ -40,14 +40,16 @@ describe('BidControlsComponent', () => {
     const wrapper = shallow(
       <ListItem {...props} getIsSelected={getIsSelected} />,
     );
-    expect(wrapper.find('InteractiveElement').props()['data-selected']).toBe('');
-    expect(wrapper.find('InteractiveElement').props()['aria-selected']).toBe(false);
+    expect(wrapper.find('InteractiveElement').props()['data-selected']).toBe(
+      '',
+    );
+    expect(wrapper.find('InteractiveElement').props()['aria-selected']).toBe(
+      false,
+    );
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ListItem {...props} />,
-    );
+    const wrapper = shallow(<ListItem {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

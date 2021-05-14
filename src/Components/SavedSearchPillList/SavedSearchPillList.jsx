@@ -29,38 +29,40 @@ const addColorClass = (pills, isProjectedVacancy, isTandemSearch) => {
 };
 
 const SavedSearchPillList = (props) => {
-  const { pills, isProjectedVacancy, highlightedString, isTandemSearch } = props;
+  const {
+    pills, isProjectedVacancy, highlightedString, isTandemSearch,
+  } = props;
   let isolatedPills;
 
   if (isProjectedVacancy) {
-    isolatedPills = (<div className="saved-search-pill pill--projected-vacancy pill--highlight">
-      Projected Vacancy</div>);
+    isolatedPills = (
+      <div className="saved-search-pill pill--projected-vacancy pill--highlight">
+        Projected Vacancy
+      </div>
+    );
   } else {
-    isolatedPills = (<div className="saved-search-pill">
-      Available Position</div>);
+    isolatedPills = <div className="saved-search-pill">Available Position</div>;
   }
 
-  return (
-    pills.length ?
-      <div>
-        {
+  return pills.length ? (
+    <div>
+      {
         // sort highlighted string to beginning
-        // eslint-disable-next-line
-          addColorClass(pills, isProjectedVacancy, isTandemSearch).sort((x, y) => x === highlightedString ? -1 : y === highlightedString ? 1 : 0).map(p => (
+        addColorClass(pills, isProjectedVacancy, isTandemSearch)
+          // eslint-disable-next-line
+          .sort((x, y) => x === highlightedString ? -1 : y === highlightedString ? 1 : 0)
+          .map((p) => (
             <div
               className={`saved-search-pill ${p.colorClass}`}
               key={p.description}
             >
               {shortenString(p.description, 21)}
             </div>
-          ),
-          )
-        }
-      </div>
-      :
-      <div>
-        {isolatedPills}
-      </div>
+          ))
+      }
+    </div>
+  ) : (
+    <div>{isolatedPills}</div>
   );
 };
 

@@ -13,7 +13,8 @@ describe('ResultsCardComponent', () => {
         result={resultsObject.results[0]}
         onToggle={() => {}}
         bidList={[]}
-      />);
+      />,
+    );
     expect(wrapper.instance().props.result.position.id).toBe(6);
   });
 
@@ -24,7 +25,9 @@ describe('ResultsCardComponent', () => {
         result={resultsObject.results[0]}
         onToggle={() => {}}
         bidList={[]}
-      />, { context: { isProjectedVacancy: true } });
+      />,
+      { context: { isProjectedVacancy: true } },
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -35,12 +38,16 @@ describe('ResultsCardComponent', () => {
         result={resultsObject.results[1]}
         onToggle={() => {}}
         bidList={[]}
-      />);
+      />,
+    );
     expect(wrapper.instance().props.result.position.id).toBe(60);
   });
 
   it('returns the offset px', () => {
-    global.document.getElementById = () => ({ offsetTop: 50, offsetHeight: 80 });
+    global.document.getElementById = () => ({
+      offsetTop: 50,
+      offsetHeight: 80,
+    });
 
     wrapper = shallow(
       <ResultsCard
@@ -48,7 +55,8 @@ describe('ResultsCardComponent', () => {
         result={resultsObject.results[1]}
         onToggle={() => {}}
         bidList={[]}
-      />);
+      />,
+    );
     const output = wrapper.instance().getOffsetPx();
 
     // should be offsetTop minus offsetHeight
@@ -68,7 +76,8 @@ describe('ResultsCardComponent', () => {
         result={resultsObject.results[0]}
         onToggle={() => {}}
         bidList={[]}
-      />);
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
@@ -79,7 +88,9 @@ describe('ResultsCardComponent', () => {
         result={resultsObject.results[0]}
         onToggle={() => {}}
         bidList={[]}
-      />, { context: { isClient: true } });
+      />,
+      { context: { isClient: true } },
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
@@ -90,7 +101,8 @@ describe('ResultsCardComponent', () => {
         result={{ position: { id: 1 } }}
         onToggle={() => {}}
         bidList={[]}
-      />);
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

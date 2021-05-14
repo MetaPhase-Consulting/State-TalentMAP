@@ -1,9 +1,9 @@
 export function feedbackHasErrored(state = { hasErrored: false, message: null }, action) {
   switch (action.type) {
     case 'FEEDBACK_HAS_ERRORED':
-      return action.hasErrored ?
-        { hasErrored: true, message: action.hasErrored } :
-        { hasErrored: false, message: null };
+      return action.hasErrored
+        ? { hasErrored: true, message: action.hasErrored }
+        : { hasErrored: false, message: null };
     default:
       return state;
   }

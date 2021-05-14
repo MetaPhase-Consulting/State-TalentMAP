@@ -7,7 +7,12 @@ import { get } from 'lodash';
 import { comparisonsFetchData } from 'actions/comparisons';
 import { bidListFetchData } from 'actions/bidList';
 import CompareList from 'Components/CompareList/CompareList';
-import { BID_LIST, COMPARE_LIST, SetType, USER_PROFILE } from 'Constants/PropTypes';
+import {
+  BID_LIST,
+  COMPARE_LIST,
+  SetType,
+  USER_PROFILE,
+} from 'Constants/PropTypes';
 import { DEFAULT_USER_PROFILE } from 'Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
 
@@ -24,14 +29,16 @@ export class Compare extends Component {
       this.props.onNavigateTo(LOGIN_REDIRECT);
     } else {
       const ids = get(this, 'props.match.params.ids');
-      if (ids) { this.getComparisons(ids); }
+      if (ids) {
+        this.getComparisons(ids);
+      }
       this.props.fetchBidList();
     }
   }
 
-  onToggle = id => {
+  onToggle = (id) => {
     let compareArray = this.props.match.params.ids.split(',');
-    compareArray = compareArray.filter(f => f !== String(id));
+    compareArray = compareArray.filter((f) => f !== String(id));
     const compareString = compareArray.toString();
     this.props.onNavigateTo(`/compare/${compareString}`);
     this.getComparisons(`${compareString}`);
@@ -43,8 +50,14 @@ export class Compare extends Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    const { comparisons, hasErrored, isLoading, userProfile, bidList,
-      bidListToggleIsLoading } = this.props;
+    const {
+      comparisons,
+      hasErrored,
+      isLoading,
+      userProfile,
+      bidList,
+      bidListToggleIsLoading,
+    } = this.props;
     return (
       <CompareList
         compare={comparisons}
@@ -90,7 +103,7 @@ Compare.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   comparisons: state.comparisons,
   hasErrored: state.comparisonsHasErrored,
   isLoading: state.comparisonsIsLoading,
@@ -99,10 +112,13 @@ const mapStateToProps = state => ({
   bidListToggleIsLoading: state.bidListToggleIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: url => dispatch(comparisonsFetchData(url)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (url) => dispatch(comparisonsFetchData(url)),
   fetchBidList: () => dispatch(bidListFetchData()),
-  onNavigateTo: dest => dispatch(push(dest)),
+  onNavigateTo: (dest) => dispatch(push(dest)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Compare));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Compare));

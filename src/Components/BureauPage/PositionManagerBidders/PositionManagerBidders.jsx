@@ -1,14 +1,20 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { get, isEqual, keys, orderBy } from 'lodash';
+import {
+  get, isEqual, keys, orderBy,
+} from 'lodash';
 import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Skeleton from 'react-loading-skeleton';
 import { formatDate, move } from 'utilities';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
-import { NO_END_DATE, NO_GRADE, NO_SUBMIT_DATE } from 'Constants/SystemMessages';
+import {
+  NO_END_DATE,
+  NO_GRADE,
+  NO_SUBMIT_DATE,
+} from 'Constants/SystemMessages';
 import { DECONFLICT_TOOLTIP_TEXT } from 'Constants/Tooltips';
 import { BUREAU_BIDDER_FILTERS, BUREAU_BIDDER_SORT } from 'Constants/Sort';
 import SelectForm from 'Components/SelectForm';
@@ -16,12 +22,15 @@ import Alert from 'Components/Alert';
 import InteractiveElement from 'Components/InteractiveElement';
 import ShortListLock from '../ShortListLock';
 import MailToButton from '../../MailToButton';
-import { tertiaryCoolBlueLight, tertiaryCoolBlueLightest } from '../../../sass/sass-vars/variables';
+import {
+  tertiaryCoolBlueLight,
+  tertiaryCoolBlueLightest,
+} from '../../../sass/sass-vars/variables';
 
 const getItemStyle = (isDragging, draggableStyle) => {
   const border = isDragging ? '1px solid black' : 'none';
   return {
-  // some basic styles to make the items look a bit nicer
+    // some basic styles to make the items look a bit nicer
     userSelect: 'none',
 
     // Make sure all border css is overridden
@@ -35,48 +44,71 @@ const getItemStyle = (isDragging, draggableStyle) => {
   };
 };
 
-const getListStyle = isDraggingOver => ({
+const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? tertiaryCoolBlueLightest : tertiaryCoolBlueLight,
   maxHeight: 325,
   overflowY: 'scroll',
 });
 
 const rankedBids = (bids, ranking) => {
-  const bids$ = orderBy((bids || []).map(m => {
-    const m$ = { ...m };
-    const match = ranking.find(f => +f.bidder_perdet === +m.emp_id);
-    if (match) {
-      const { rank } = match;
-      m$.rank = rank;
-      return m$;
-    }
-    return null;
-  }).filter(f => f), ['rank']);
+  const bids$ = orderBy(
+    (bids || [])
+      .map((m) => {
+        const m$ = { ...m };
+        const match = ranking.find((f) => +f.bidder_perdet === +m.emp_id);
+        if (match) {
+          const { rank } = match;
+          m$.rank = rank;
+          return m$;
+        }
+        return null;
+      })
+      .filter((f) => f),
+    ['rank'],
+  );
   return bids$;
 };
 
-const unrankedBids = (bids, ranking) => (bids || []).map(m => {
-  const match = ranking.find(f => +f.bidder_perdet === m.emp_id);
-  if (match) {
-    return null;
-  }
-  return m;
-}).filter(f => f);
+const unrankedBids = (bids, ranking) => (bids || [])
+  .map((m) => {
+    const match = ranking.find((f) => +f.bidder_perdet === m.emp_id);
+    if (match) {
+      return null;
+    }
+    return m;
+  })
+  .filter((f) => f);
 
 const getTooltipText = (title, text) => (
   <div>
-    <FA name={'exclamation-triangle'} className={'deconflict-indicator-small'} />
-    <div className={'tooltip-title'}>{title}</div>
-    <div className={'tooltip-text'}>{text}</div>
+    <FA name="exclamation-triangle" className="deconflict-indicator-small" />
+    <div className="tooltip-title">{title}</div>
+    <div className="tooltip-text">{text}</div>
   </div>
 );
 
 class PositionManagerBidders extends Component {
+  /**
+   * A semi-generic way to handle multiple lists. Matches
+   * the IDs of the droppable container to the names of the
+   * source arrays stored in the state.
+   */
+  id2List = {
+    droppable: 'shortList',
+    droppable2: 'unranked',
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      shortList: this.getItems(rankedBids(props.allBids, props.ranking), 'shortList'),
-      unranked: this.getItems(unrankedBids(props.bids, props.ranking), 'unranked'),
+      shortList: this.getItems(
+        rankedBids(props.allBids, props.ranking),
+        'shortList',
+      ),
+      unranked: this.getItems(
+        unrankedBids(props.bids, props.ranking),
+        'unranked',
+      ),
       hasLoaded: false,
       rankingUpdate: Date.now(), // track when the user performs an action
       shortListVisible: true,
@@ -92,8 +124,16 @@ class PositionManagerBidders extends Component {
     }
     state = {
       ...state,
-      shortList: this.getItems(rankedBids(nextProps.allBids, nextProps.ranking), 'shortList', nextProps),
-      unranked: this.getItems(unrankedBids(nextProps.bids, nextProps.ranking), 'unranked', nextProps),
+      shortList: this.getItems(
+        rankedBids(nextProps.allBids, nextProps.ranking),
+        'shortList',
+        nextProps,
+      ),
+      unranked: this.getItems(
+        unrankedBids(nextProps.bids, nextProps.ranking),
+        'unranked',
+        nextProps,
+      ),
     };
 
     this.setState(state);
@@ -107,31 +147,57 @@ class PositionManagerBidders extends Component {
     const { bidsIsLoading } = this.props;
 
     const shortListUpdated = !isEqual(
-      shortList.map(m => m.emp_id), prevState.shortList.map(m => m.emp_id));
+      shortList.map((m) => m.emp_id),
+      prevState.shortList.map((m) => m.emp_id),
+    );
 
     const unrankedUpdated = !isEqual(
-      unranked.map(m => m.emp_id), prevState.unranked.map(m => m.emp_id));
+      unranked.map((m) => m.emp_id),
+      prevState.unranked.map((m) => m.emp_id),
+    );
 
-    const rankingUpdatedByUser = !isEqual(rankingUpdate, prevState.rankingUpdate);
+    const rankingUpdatedByUser = !isEqual(
+      rankingUpdate,
+      prevState.rankingUpdate,
+    );
 
     const loadingHasChanged = !isEqual(bidsIsLoading, prevProps.bidsIsLoading);
 
-    if (shortListUpdated || unrankedUpdated || rankingUpdatedByUser || loadingHasChanged) {
+    if (
+      shortListUpdated
+      || unrankedUpdated
+      || rankingUpdatedByUser
+      || loadingHasChanged
+    ) {
       // Running setState should be safe since it's conditional on multiple isEqual statements
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        shortList: this.getItems(shortList.map(m => m.bid), 'shortList', this.props),
-        unranked: this.getItems(unranked.map(m => m.bid), 'unranked', this.props),
-      }, () => {
-        if (rankingUpdatedByUser) {
-          const ranking$ = shortList.map((m, i) => ({ rank: i, bidder_perdet: `${m.emp_id}` }));
-          this.props.setRanking(ranking$);
-        }
-      });
+      this.setState(
+        {
+          shortList: this.getItems(
+            shortList.map((m) => m.bid),
+            'shortList',
+            this.props,
+          ),
+          unranked: this.getItems(
+            unranked.map((m) => m.bid),
+            'unranked',
+            this.props,
+          ),
+        },
+        () => {
+          if (rankingUpdatedByUser) {
+            const ranking$ = shortList.map((m, i) => ({
+              rank: i,
+              bidder_perdet: `${m.emp_id}`,
+            }));
+            this.props.setRanking(ranking$);
+          }
+        },
+      );
     }
   }
 
-  onDragEnd = result => {
+  onDragEnd = (result) => {
     const { source, destination } = result;
 
     const rankingUpdate = Date.now();
@@ -176,69 +242,98 @@ class PositionManagerBidders extends Component {
   };
 
   // data generator
-  getItems = (bids, type, props = this.props) =>
-    bids.map((k, i) => ({
-      id: `item-${k.emp_id}-${type}`,
-      content: this.bid$(k, props, i, bids.length, type),
-      emp_id: k.emp_id,
-      bid: k, // the original bid
-    }));
+  getItems = (bids, type, props = this.props) => bids.map((k, i) => ({
+    id: `item-${k.emp_id}-${type}`,
+    content: this.bid$(k, props, i, bids.length, type),
+    emp_id: k.emp_id,
+    bid: k, // the original bid
+  }));
 
-  getList = id => this.state[this.id2List[id]];
+  getList = (id) => this.state[this.id2List[id]];
 
   // type = 'shortListVisible' or 'unrankedVisible'
-  toggleVisibility = type => {
+  toggleVisibility = (type) => {
     const type$ = get(this.state, type);
     this.setState({ [type]: !type$ });
-  }
+  };
 
   // Renders an individual bid
   bid$ = (m, props = this.props, iter, len, type) => {
     const ted = get(m, 'ted');
     const submitted = get(m, 'submitted_date');
     const formattedTed = ted ? formatDate(ted) : NO_END_DATE;
-    const formattedSubmitted = submitted ? formatDate(submitted) : NO_SUBMIT_DATE;
+    const formattedSubmitted = submitted
+      ? formatDate(submitted)
+      : NO_SUBMIT_DATE;
     const deconflict = get(m, 'has_competing_rank');
 
     const sections = {
-      RetainedSpace: type === 'unranked' ? 'Unranked' :
-        <select name="ranking" disabled={this.isDndDisabled()} value={iter} onChange={a => { this.setState({ rankingUpdate: Date.now(), shortList: move(this.state.shortList, iter, a.target.value) }); }}>
-          {[...Array(len).keys()]
-            .map((e) => (<option
-              key={e}
-              value={e}
-            >{e + 1}</option>))}
-        </select>,
-      Deconflict: deconflict ?
+      RetainedSpace:
+        type === 'unranked' ? (
+          'Unranked'
+        ) : (
+          <select
+            name="ranking"
+            disabled={this.isDndDisabled()}
+            value={iter}
+            onChange={(a) => {
+              this.setState({
+                rankingUpdate: Date.now(),
+                shortList: move(this.state.shortList, iter, a.target.value),
+              });
+            }}
+          >
+            {[...Array(len).keys()].map((e) => (
+              <option key={e} value={e}>
+                {e + 1}
+              </option>
+            ))}
+          </select>
+        ),
+      Deconflict: deconflict ? (
         <Tooltip
-          html={getTooltipText(DECONFLICT_TOOLTIP_TEXT.title, DECONFLICT_TOOLTIP_TEXT.text)}
-          theme={'deconflict-indicator'}
+          html={getTooltipText(
+            DECONFLICT_TOOLTIP_TEXT.title,
+            DECONFLICT_TOOLTIP_TEXT.text,
+          )}
+          theme="deconflict-indicator"
           arrow
           tabIndex="0"
           interactive
           useContext
         >
-          <FA name={'exclamation-triangle'} className={'deconflict-indicator'} />
+          <FA name="exclamation-triangle" className="deconflict-indicator" />
         </Tooltip>
-        : '',
-      Name: (<Link to={`/profile/public/${m.emp_id}/bureau`}>{get(m, 'name')}</Link>),
+      ) : (
+        ''
+      ),
+      Name: (
+        <Link to={`/profile/public/${m.emp_id}/bureau`}>{get(m, 'name')}</Link>
+      ),
       SubmittedDate: formattedSubmitted,
       Skill: get(m, 'skill'),
       Grade: get(m, 'grade') || NO_GRADE,
       Language: get(m, 'language'),
       TED: formattedTed,
-      CDO: get(m, 'cdo.email') ? <MailToButton email={get(m, 'cdo.email')} textAfter={get(m, 'cdo.name')} /> : 'N/A',
+      CDO: get(m, 'cdo.email') ? (
+        <MailToButton
+          email={get(m, 'cdo.email')}
+          textAfter={get(m, 'cdo.name')}
+        />
+      ) : (
+        'N/A'
+      ),
     };
 
     if (props.bidsIsLoading) {
-      keys(sections).forEach(k => {
+      keys(sections).forEach((k) => {
         sections[k] = <Skeleton />;
       });
     }
 
     const tableRows = (
       <tr>
-        {keys(sections).map(i => (
+        {keys(sections).map((i) => (
           <td>{sections[i]}</td>
         ))}
       </tr>
@@ -265,51 +360,56 @@ class PositionManagerBidders extends Component {
   };
 
   isDndDisabled = () => {
-    const { bidsIsLoading, isLocked,
-      hasBureauPermission } = this.props;
+    const { bidsIsLoading, isLocked, hasBureauPermission } = this.props;
     return bidsIsLoading || (isLocked && !hasBureauPermission);
-  }
+  };
 
-    /**
-       * A semi-generic way to handle multiple lists. Matches
-       * the IDs of the droppable container to the names of the
-       * source arrays stored in the state.
-     */
-    id2List = {
-      droppable: 'shortList',
-      droppable2: 'unranked',
-    };
+  render() {
+    const {
+      bids,
+      bidsIsLoading,
+      filtersSelected,
+      filters,
+      id,
+      isLocked,
+      hasBureauPermission,
+    } = this.props;
+    const { hasLoaded, shortListVisible, unrankedVisible } = this.state;
 
-    render() {
-      const { bids, bidsIsLoading, filtersSelected, filters, id, isLocked,
-        hasBureauPermission } = this.props;
-      const { hasLoaded, shortListVisible, unrankedVisible } = this.state;
+    const tableHeaders = [
+      'Ranking',
+      '',
+      'Name',
+      'Submitted Date',
+      'Skill',
+      'Grade',
+      'Language',
+      'TED',
+      'CDO',
+    ].map((item) => <th scope="col">{item}</th>);
 
-      const tableHeaders = ['Ranking', '', 'Name', 'Submitted Date', 'Skill', 'Grade', 'Language', 'TED', 'CDO'].map(item => (
-        <th scope="col">{item}</th>
-      ));
+    const shortListLock = (
+      <ShortListLock id={id} biddersInShortList={this.state.shortList.length} />
+    );
 
-      const shortListLock = (<ShortListLock
-        id={id}
-        biddersInShortList={this.state.shortList.length}
-      />);
+    const dndDisabled = this.isDndDisabled();
 
-      const dndDisabled = this.isDndDisabled();
-
-      const shortListSection = (
-        <>
-          <div className="list-toggle-container">
-            <InteractiveElement title="Toggle visibility" onClick={() => this.toggleVisibility('shortListVisible')}><FA name={shortListVisible ? 'chevron-down' : 'chevron-up'} /></InteractiveElement>
-            <h3>Short List ({this.state.shortList.length})</h3>
-            {shortListLock}
-          </div>
-          {
-            shortListVisible &&
+    const shortListSection = (
+      <>
+        <div className="list-toggle-container">
+          <InteractiveElement
+            title="Toggle visibility"
+            onClick={() => this.toggleVisibility('shortListVisible')}
+          >
+            <FA name={shortListVisible ? 'chevron-down' : 'chevron-up'} />
+          </InteractiveElement>
+          <h3>Short List ({this.state.shortList.length})</h3>
+          {shortListLock}
+        </div>
+        {shortListVisible && (
           <table className="position-manager-bidders-table">
             <thead>
-              <tr>
-                {tableHeaders}
-              </tr>
+              <tr>{tableHeaders}</tr>
             </thead>
             <tbody>
               <Droppable droppableId="droppable" isDropDisabled={dndDisabled}>
@@ -334,7 +434,9 @@ class PositionManagerBidders extends Component {
                               snapshot$.isDragging,
                               provided$.draggableProps.style,
                             )}
-                            className={snapshot$.isDragging ? 'is-dragging' : ''}
+                            className={
+                              snapshot$.isDragging ? 'is-dragging' : ''
+                            }
                           >
                             {item.content}
                           </div>
@@ -347,112 +449,129 @@ class PositionManagerBidders extends Component {
               </Droppable>
             </tbody>
           </table>
-          }
-        </>
-      );
+        )}
+      </>
+    );
 
-      return (
-        <div className="usa-width-one-whole position-manager-bidders">
-          { !bids.length && !!hasLoaded && shortListLock }
-          <DragDropContext onDragEnd={this.onDragEnd}>
-            {
-              // >:)
-              // eslint-disable-next-line no-nested-ternary
-              bidsIsLoading && !hasLoaded ? 'Loading...' :
-                (
-                  !bids.length && !filtersSelected && !bidsIsLoading ?
-                    <Alert type="info" title="There are no bids on this position" />
-                    :
+    return (
+      <div className="usa-width-one-whole position-manager-bidders">
+        {!bids.length && !!hasLoaded && shortListLock}
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          {
+            // >:)
+            // eslint-disable-next-line no-nested-ternary
+            bidsIsLoading && !hasLoaded ? (
+              'Loading...'
+            ) : !bids.length && !filtersSelected && !bidsIsLoading ? (
+              <Alert type="info" title="There are no bids on this position" />
+            ) : (
+              <>
+                {/* eslint-disable no-nested-ternary */}
+                {isLocked ? (
+                  hasBureauPermission ? (
+                    shortListSection
+                  ) : (
                     <>
-                      {/* eslint-disable no-nested-ternary */}
-                      {isLocked ?
-                        hasBureauPermission ? shortListSection : <>
-                          <Alert
-                            type="info"
-                            title="Short List Locked"
-                            messages={[{ body: 'The short list has been locked by the bureau. You cannot modify the short list until it has been unlocked.' }]}
-                          />
-                          <div>
-                            {shortListSection}
-                          </div>
-                        </>
-                        : shortListSection }
-                      {/* eslint-enable no-nested-ternary */}
-                      <div className="bidders-controls">
-                        <SelectForm
-                          id="sort"
-                          label="Sort by:"
-                          defaultSort={filters.ordering || ''}
-                          options={BUREAU_BIDDER_SORT.options}
-                          disabled={false}
-                          onSelectOption={e => this.props.onSort(e.target.value)}
-                        />
-                        <SelectForm
-                          id="filter"
-                          options={BUREAU_BIDDER_FILTERS.options}
-                          label="Filter By:"
-                          defaultSort={filters.handshake_code || ''}
-                          disabled={false}
-                          onSelectOption={e => this.props.onFilter('handshake_code', e.target.value)}
-                        />
-                      </div>
-
-                      <div className="list-toggle-container">
-                        <InteractiveElement title="Toggle visibility" onClick={() => this.toggleVisibility('unrankedVisible')}><FA name={unrankedVisible ? 'chevron-down' : 'chevron-up'} /></InteractiveElement>
-                        <h3>Candidates ({this.state.unranked.length})</h3>
-                      </div>
-                      {
-                        unrankedVisible &&
-                        <table className="position-manager-bidders-table">
-                          <thead>
-                            <tr>
-                              {tableHeaders}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <Droppable droppableId="droppable2" isDropDisabled={dndDisabled}>
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  style={getListStyle(snapshot.isDraggingOver)}
-                                >
-                                  {this.state.unranked.map((item, index) => (
-                                    <Draggable
-                                      key={item.id}
-                                      draggableId={item.id}
-                                      index={index}
-                                      isDragDisabled={dndDisabled}
-                                    >
-                                      {(provided$, snapshot$) => (
-                                        <div
-                                          ref={provided$.innerRef}
-                                          {...provided$.draggableProps}
-                                          {...provided$.dragHandleProps}
-                                          style={getItemStyle(
-                                            snapshot$.isDragging,
-                                            provided$.draggableProps.style,
-                                          )}
-                                          className={snapshot$.isDragging ? 'is-dragging' : ''}
-                                        >
-                                          {item.content}
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  ))}
-                                  {provided.placeholder}
-                                </div>
-                              )}
-                            </Droppable>
-                          </tbody>
-                        </table>
-                      }
+                      <Alert
+                        type="info"
+                        title="Short List Locked"
+                        messages={[
+                          {
+                            body: 'The short list has been locked by the bureau. You cannot modify the short list until it has been unlocked.',
+                          },
+                        ]}
+                      />
+                      <div>{shortListSection}</div>
                     </>
-                )
-            }
-          </DragDropContext>
-        </div>
-      );
-    }
+                  )
+                ) : (
+                  shortListSection
+                )}
+                {/* eslint-enable no-nested-ternary */}
+                <div className="bidders-controls">
+                  <SelectForm
+                    id="sort"
+                    label="Sort by:"
+                    defaultSort={filters.ordering || ''}
+                    options={BUREAU_BIDDER_SORT.options}
+                    disabled={false}
+                    onSelectOption={(e) => this.props.onSort(e.target.value)}
+                  />
+                  <SelectForm
+                    id="filter"
+                    options={BUREAU_BIDDER_FILTERS.options}
+                    label="Filter By:"
+                    defaultSort={filters.handshake_code || ''}
+                    disabled={false}
+                    onSelectOption={(e) => this.props.onFilter('handshake_code', e.target.value)}
+                  />
+                </div>
+
+                <div className="list-toggle-container">
+                  <InteractiveElement
+                    title="Toggle visibility"
+                    onClick={() => this.toggleVisibility('unrankedVisible')}
+                  >
+                    <FA
+                      name={unrankedVisible ? 'chevron-down' : 'chevron-up'}
+                    />
+                  </InteractiveElement>
+                  <h3>Candidates ({this.state.unranked.length})</h3>
+                </div>
+                {unrankedVisible && (
+                  <table className="position-manager-bidders-table">
+                    <thead>
+                      <tr>{tableHeaders}</tr>
+                    </thead>
+                    <tbody>
+                      <Droppable
+                        droppableId="droppable2"
+                        isDropDisabled={dndDisabled}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}
+                          >
+                            {this.state.unranked.map((item, index) => (
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id}
+                                index={index}
+                                isDragDisabled={dndDisabled}
+                              >
+                                {(provided$, snapshot$) => (
+                                  <div
+                                    ref={provided$.innerRef}
+                                    {...provided$.draggableProps}
+                                    {...provided$.dragHandleProps}
+                                    style={getItemStyle(
+                                      snapshot$.isDragging,
+                                      provided$.draggableProps.style,
+                                    )}
+                                    className={
+                                      snapshot$.isDragging ? 'is-dragging' : ''
+                                    }
+                                  >
+                                    {item.content}
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </tbody>
+                  </table>
+                )}
+              </>
+            )
+          }
+        </DragDropContext>
+      </div>
+    );
+  }
 }
 
 PositionManagerBidders.propTypes = {
@@ -468,7 +587,7 @@ PositionManagerBidders.propTypes = {
     ordering: PropTypes.string,
   }),
   allBids: PropTypes.arrayOf(PropTypes.shape({})),
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.id]).isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   isLocked: PropTypes.bool,
   hasBureauPermission: PropTypes.bool,
   hasPostPermission: PropTypes.bool,

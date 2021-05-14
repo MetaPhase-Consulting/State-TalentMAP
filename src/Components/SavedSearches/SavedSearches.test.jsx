@@ -16,20 +16,12 @@ describe('SavedSearchesComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <SavedSearches
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SavedSearches {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <SavedSearches
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SavedSearches {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

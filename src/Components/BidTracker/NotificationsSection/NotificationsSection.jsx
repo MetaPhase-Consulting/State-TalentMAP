@@ -29,10 +29,14 @@ class NotificationsSection extends Component {
     // We keep this logic here instead of at the container level in case we want to implement
     // something like "View more notifications" or
     // "3 other bidding notifications", etc in the future.
-    const filteredNotifications = notifications.results.slice().filter(n => n.is_read === false && n.tags.includes('bidding'));
+    const filteredNotifications = notifications.results
+      .slice()
+      .filter((n) => n.is_read === false && n.tags.includes('bidding'));
     let notification;
     // we're also only going to show the first
-    if (filteredNotifications.length) { notification = filteredNotifications[0]; }
+    if (filteredNotifications.length) {
+      notification = filteredNotifications[0];
+    }
     // if loading is complete and there is a notification, we can display it
     const shouldShowNotification = !notificationsIsLoading && notification && !markedAsRead.value;
     // Determine what type of notification to display.
@@ -43,8 +47,7 @@ class NotificationsSection extends Component {
     }
     return (
       <div>
-        {
-          shouldShowNotification &&
+        {shouldShowNotification && (
           <div className="usa-grid-full bid-tracker-notifications">
             <Dismiss
               onDismiss={() => this.markNotification(notification.id)}
@@ -57,7 +60,7 @@ class NotificationsSection extends Component {
               />
             </Dismiss>
           </div>
-        }
+        )}
       </div>
     );
   }

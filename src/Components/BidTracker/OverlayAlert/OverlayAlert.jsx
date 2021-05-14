@@ -1,8 +1,17 @@
 import PropTypes from 'prop-types';
 import { BID_OBJECT } from 'Constants/PropTypes';
-import { APPROVED_PROP, CLOSED_PROP, DECLINED_PROP, DRAFT_PROP, HAND_SHAKE_ACCEPTED_PROP,
-  HAND_SHAKE_DECLINED_PROP, HAND_SHAKE_NEEDS_REGISTER_PROP, HAND_SHAKE_OFFERED_PROP, IN_PANEL_PROP,
-  PANEL_RESCHEDULED_PROP } from 'Constants/BidData';
+import {
+  APPROVED_PROP,
+  CLOSED_PROP,
+  DECLINED_PROP,
+  DRAFT_PROP,
+  HAND_SHAKE_ACCEPTED_PROP,
+  HAND_SHAKE_DECLINED_PROP,
+  HAND_SHAKE_NEEDS_REGISTER_PROP,
+  HAND_SHAKE_OFFERED_PROP,
+  IN_PANEL_PROP,
+  PANEL_RESCHEDULED_PROP,
+} from 'Constants/BidData';
 import ApprovedAlert from './ApprovedAlert';
 import HandshakeOfferedAlert from './HandshakeOfferedAlert';
 import InPanelAlert from './InPanelAlert';
@@ -16,9 +25,19 @@ import { getBidIdUrl } from './helpers';
 
 // Alert rendering based on status is handled here.
 // eslint-disable-next-line complexity
-const OverlayAlert = ({ bid, acceptBid, declineBid, submitBid, userId, registerHandshake,
-  unregisterHandshake, useCDOView },
-{ condensedView, readOnly }) => {
+const OverlayAlert = (
+  {
+    bid,
+    acceptBid,
+    declineBid,
+    submitBid,
+    userId,
+    registerHandshake,
+    unregisterHandshake,
+    useCDOView,
+  },
+  { condensedView, readOnly },
+) => {
   const CLASS_PENDING = 'bid-tracker-overlay-alert--pending';
   const CLASS_SUCCESS = 'bid-tracker-overlay-alert--success';
   const CLASS_CLOSED = 'bid-tracker-overlay-alert--closed';
@@ -27,7 +46,9 @@ const OverlayAlert = ({ bid, acceptBid, declineBid, submitBid, userId, registerH
   const CLASS_UNREGISTER = 'bid-tracker-overlay-alert--unregister';
 
   const { position } = bid;
-  const BID_TITLE = `${position.title}${position.position_number ? ` (${position.position_number})` : ''}`;
+  const BID_TITLE = `${position.title}${
+    position.position_number ? ` (${position.position_number})` : ''
+  }`;
 
   const bidIdUrl = getBidIdUrl(bid.id, readOnly, userId);
 
@@ -37,8 +58,9 @@ const OverlayAlert = ({ bid, acceptBid, declineBid, submitBid, userId, registerH
   const setInPanelPending = () => {
     if (!condensedView) {
       overlayClass = CLASS_PENDING;
-      overlayContent =
-        <InPanelAlert title={BID_TITLE} date={bid.in_panel_date} />;
+      overlayContent = (
+        <InPanelAlert title={BID_TITLE} date={bid.in_panel_date} />
+      );
     }
   };
 
@@ -57,7 +79,8 @@ const OverlayAlert = ({ bid, acceptBid, declineBid, submitBid, userId, registerH
           registerHandshake={registerHandshake}
           unregisterHandshake={unregisterHandshake}
           bid={bid}
-        />);
+        />
+      );
       break;
     case APPROVED_PROP:
       setApproved();
@@ -83,7 +106,8 @@ const OverlayAlert = ({ bid, acceptBid, declineBid, submitBid, userId, registerH
             unregisterHandshake={unregisterHandshake}
             bid={bid}
             isUnregister
-          />);
+          />
+        );
       }
       break;
     case IN_PANEL_PROP:
@@ -101,42 +125,46 @@ const OverlayAlert = ({ bid, acceptBid, declineBid, submitBid, userId, registerH
       break;
     case DECLINED_PROP:
       overlayClass = CLASS_CLOSED;
-      overlayContent = <DeclinedAlert bureau={position.bureau} id={bid.id} bidIdUrl={bidIdUrl} />;
+      overlayContent = (
+        <DeclinedAlert
+          bureau={position.bureau}
+          id={bid.id}
+          bidIdUrl={bidIdUrl}
+        />
+      );
       break;
     case CLOSED_PROP:
       overlayClass = CLASS_CLOSED;
-      overlayContent =
-        (<ClosedAlert
+      overlayContent = (
+        <ClosedAlert
           title={BID_TITLE}
           date={bid.closed_date}
           bidIdUrl={bidIdUrl}
-        />);
+        />
+      );
       break;
     case PANEL_RESCHEDULED_PROP:
       overlayClass = CLASS_PENDING;
-      overlayContent = <PanelRescheduledAlert date={bid.scheduled_panel_date} />;
+      overlayContent = (
+        <PanelRescheduledAlert date={bid.scheduled_panel_date} />
+      );
       break;
     case DRAFT_PROP:
       overlayClass = CLASS_DRAFT;
-      overlayContent = (
-        <DraftAlert
-          bid={bid}
-          submitBid={submitBid}
-        />);
+      overlayContent = <DraftAlert bid={bid} submitBid={submitBid} />;
       break;
     default:
       break;
   }
-  return (
-    overlayContent ?
-      <div className={`bid-tracker-overlay-alert ${overlayClass}`}>
-        <div className="bid-tracker-overlay-alert-content-container">
-          <div className="bid-tracker-overlay-alert-content">
-            {overlayContent}
-          </div>
+  return overlayContent ? (
+    <div className={`bid-tracker-overlay-alert ${overlayClass}`}>
+      <div className="bid-tracker-overlay-alert-content-container">
+        <div className="bid-tracker-overlay-alert-content">
+          {overlayContent}
         </div>
-      </div> : null
-  );
+      </div>
+    </div>
+  ) : null;
 };
 
 OverlayAlert.propTypes = {

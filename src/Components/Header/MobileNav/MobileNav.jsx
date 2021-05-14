@@ -12,11 +12,13 @@ const MobileNav = ({ user, logout, showLogin }) => (
       <div className="usa-nav-secondary mobile-nav">
         <ul className="usa-unstyled-list usa-nav-secondary-links mobile-nav-only">
           <li className="mobile-nav-only">
-            { user && user.length ? `Signed in as ${user}` : null }
+            {user && user.length ? `Signed in as ${user}` : null}
           </li>
           <hr className="mobile-nav-only" />
           <li>
-            <Link to="/results"><FontAwesome name="search" /> Search</Link>
+            <Link to="/results">
+              <FontAwesome name="search" /> Search
+            </Link>
           </li>
           <li>
             <Link to="/">Home</Link>
@@ -30,12 +32,15 @@ const MobileNav = ({ user, logout, showLogin }) => (
               <Link to="/profile/dashboard/">Dashboard</Link>
             </li>
             <li>
-              {
-                showLogin ?
-                  <Link to="login" id="login-mobile">Login</Link>
-                  :
-                  <Link to="/logout" id="logout-mobile" onClick={logout}>Logout</Link>
-              }
+              {showLogin ? (
+                <Link to="login" id="login-mobile">
+                  Login
+                </Link>
+              ) : (
+                <Link to="/logout" id="logout-mobile" onClick={logout}>
+                  Logout
+                </Link>
+              )}
             </li>
           </span>
         </ul>

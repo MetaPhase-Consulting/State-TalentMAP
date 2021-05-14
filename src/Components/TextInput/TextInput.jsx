@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { usePrevious } from 'hooks';
 
-const TextInput = props => {
+const TextInput = (props) => {
   const [input, setInput] = useState(props.value || '');
 
-  const changeText = e => {
+  const changeText = (e) => {
     setInput(get(e, 'target.value'));
   };
 
@@ -26,7 +26,15 @@ const TextInput = props => {
     }
   }, [props.value]);
 
-  const { id, labelSrOnly, type, label, labelMessage, placeholder, inputProps } = props;
+  const {
+    id,
+    labelSrOnly,
+    type,
+    label,
+    labelMessage,
+    placeholder,
+    inputProps,
+  } = props;
   let labelClass;
   // set the input class based on "type" prop
   let inputClass;
@@ -50,17 +58,17 @@ const TextInput = props => {
       parentClass = '';
   }
   // set an optional message
-  const message = labelMessage.length ?
-    (
-      <span className={labelClass} id={`${id}-input-error-message`} role="alert">
-        {labelMessage}
-      </span>
-    ) :
-    null;
+  const message = labelMessage.length ? (
+    <span className={labelClass} id={`${id}-input-error-message`} role="alert">
+      {labelMessage}
+    </span>
+  ) : null;
 
   return (
     <div className={`usa-grid-full ${parentClass}`}>
-      <label htmlFor={id} className={labelSrOnly ? 'usa-sr-only' : ''}>{label}</label>
+      <label htmlFor={id} className={labelSrOnly ? 'usa-sr-only' : ''}>
+        {label}
+      </label>
       <input
         id={id}
         name="input-type-text"

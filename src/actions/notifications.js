@@ -4,7 +4,7 @@ import { subDays } from 'date-fns';
 import { get } from 'lodash';
 import api from '../api';
 import { hasValidToken } from '../utilities';
-import { handshakeOffered } from '../actions/bidTracker';
+import { handshakeOffered } from './bidTracker';
 
 let cancelRanking;
 
@@ -135,7 +135,8 @@ export function notificationsCountFetchData(useDateRange = true) {
   };
 }
 
-export function notificationsFetchData(limit = 5, page = 1, ordering = '-date_created', tags = undefined, isRead = undefined, useDateRange = true) {
+export function notificationsFetchData(limit = 5, page = 1, ordering = '-date_created',
+  tags = undefined, isRead = undefined, useDateRange = true) {
   return (dispatch) => {
     // Make use of any notifications request that could be used in the notifications popover
     const isForPopover = page === 1 && limit >= 5 && tags === undefined && isRead === undefined;
@@ -205,8 +206,10 @@ export function markNotification(id, isRead = true, shouldDelete = false,
   };
 }
 
-export function markNotifications({ ids = new Set(), markAsRead = false, shouldDelete = false,
-  cb = () => {} }) {
+export function markNotifications({
+  ids = new Set(), markAsRead = false, shouldDelete = false,
+  cb = () => {},
+}) {
   return (dispatch) => {
     dispatch(markNotificationsIsLoading(true));
     dispatch(markNotificationsHasErrored(false));

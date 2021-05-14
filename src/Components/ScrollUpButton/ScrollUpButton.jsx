@@ -10,7 +10,7 @@ const style = {
   padding: '4px 5px 5px',
 };
 
-const ScrollUpButton = props => (
+const ScrollUpButton = (props) => (
   <TinyButton
     ContainerClassName="tm-scroll-up-container"
     style={style}

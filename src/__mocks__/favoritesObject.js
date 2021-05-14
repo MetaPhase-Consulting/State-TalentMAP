@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const favoritesObject = {
   favorites: [
     {
@@ -799,3 +800,4 @@ const favoritesObject = {
 };
 
 export default favoritesObject;
+/* eslint-disable max-len */

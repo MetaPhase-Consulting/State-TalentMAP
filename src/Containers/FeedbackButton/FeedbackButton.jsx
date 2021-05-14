@@ -12,11 +12,7 @@ class FeedbackButtonContainer extends Component {
   };
 
   render() {
-    return (
-      <FeedbackButton
-        toggleVisibility={this.toggleVisibility}
-      />
-    );
+    return <FeedbackButton toggleVisibility={this.toggleVisibility} />;
   }
 }
 
@@ -30,12 +26,15 @@ FeedbackButtonContainer.defaultProps = {
   toggleFeedbackVisibility: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   shouldShowFeedback: state.shouldShowFeedback,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  toggleFeedbackVisibility: shouldDisplay => dispatch(toggleFeedback(shouldDisplay)),
+export const mapDispatchToProps = (dispatch) => ({
+  toggleFeedbackVisibility: (shouldDisplay) => dispatch(toggleFeedback(shouldDisplay)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedbackButtonContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FeedbackButtonContainer);

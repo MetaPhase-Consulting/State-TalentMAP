@@ -6,27 +6,24 @@ import items from '../../__mocks__/pillList';
 
 describe('ResultsPillContainerComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(<ResultsPillContainer
-      items={items}
-      onPillClick={() => {}}
-    />);
+    const wrapper = shallow(
+      <ResultsPillContainer items={items} onPillClick={() => {}} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<ResultsPillContainer
-      items={items}
-      onPillClick={() => {}}
-    />);
+    const wrapper = shallow(
+      <ResultsPillContainer items={items} onPillClick={() => {}} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('handles click events', () => {
     const onPillClick = sinon.spy();
-    const wrapper = mount(<ResultsPillContainer
-      items={items}
-      onPillClick={onPillClick}
-    />);
+    const wrapper = mount(
+      <ResultsPillContainer items={items} onPillClick={onPillClick} />,
+    );
     wrapper.find('button').last().simulate('click');
     expect(onPillClick.calledOnce).toBe(true);
   });

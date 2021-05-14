@@ -5,8 +5,14 @@ import AvailableBidderContainer from 'Components/AvailableBidder/AvailableBidder
 const CdoPage = () => (
   <div className="usa-grid-full profile-content-container">
     <Switch>
-      <Route path="/profile/cdo/availablebidders" render={() => <AvailableBidderContainer isCDO />} />
-      <Route path="/profile/cdo/bidderportfolio" render={() => <BidderPortfolio />} />
+      <Route
+        path="/profile/cdo/availablebidders"
+        render={() => <AvailableBidderContainer isCDO />}
+      />
+      <Route
+        path="/profile/cdo/bidderportfolio"
+        render={() => <BidderPortfolio />}
+      />
     </Switch>
   </div>
 );

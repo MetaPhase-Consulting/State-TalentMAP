@@ -5,11 +5,7 @@ import Base from '../Base';
 const Card = (props) => {
   const options = merge({}, props);
   options.className = `card ${props.className}`.trim();
-  return (
-    <Base {...options}>
-      {props.children}
-    </Base>
-  );
+  return <Base {...options}>{props.children}</Base>;
 };
 /* eslint-enable react/prop-types */
 

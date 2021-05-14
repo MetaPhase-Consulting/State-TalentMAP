@@ -8,7 +8,9 @@ const PositionsSectionTitle = ({ title, viewMoreLink }) => (
       <PositionsSectionTitleHeader title={title} />
     </div>
     <div className="usa-width-one-half positions-section-container-right">
-      { !!viewMoreLink.length && <PositionsSectionTitleViewMore viewMoreLink={viewMoreLink} /> }
+      {!!viewMoreLink.length && (
+        <PositionsSectionTitleViewMore viewMoreLink={viewMoreLink} />
+      )}
     </div>
   </div>
 );

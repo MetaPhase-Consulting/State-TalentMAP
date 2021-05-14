@@ -4,12 +4,10 @@ import InteractiveElement from '../InteractiveElement';
 const UnregisterSuccess = ({ undo }) => (
   <span>
     Handshake successfully unregistered.&nbsp;
-    <InteractiveElement
-      type="a"
-      onClick={undo}
-    >
-        Undo
-    </InteractiveElement>.
+    <InteractiveElement type="a" onClick={undo}>
+      Undo
+    </InteractiveElement>
+    .
   </span>
 );
 

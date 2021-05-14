@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
 import ResultsCondensedCard from '../ResultsCondensedCard';
-import { BID_RESULTS, FAVORITE_POSITIONS_ARRAY, HOME_PAGE_CARD_TYPE, POSITION_DETAILS_ARRAY } from '../../Constants/PropTypes';
+import {
+  BID_RESULTS,
+  FAVORITE_POSITIONS_ARRAY,
+  HOME_PAGE_CARD_TYPE,
+  POSITION_DETAILS_ARRAY,
+} from '../../Constants/PropTypes';
 
 const propTypes = {
   positions: POSITION_DETAILS_ARRAY,
@@ -40,15 +45,38 @@ const defaultProps = {
   isTandem: false,
 };
 
-const HomePagePositionsList = ({ positions, favorites, favoritesTandem, favoritesPV,
-  favoritesPVTandem, isLoading, bidList, type, refreshFavorites, title, showBidListButton,
-  useShortFavButton, showCompareButton, sortType, limit, page, isTandem }) => (
-  <div className={`condensed-card-highlighted ${isLoading ? 'results-loading' : ''}`}>
+const HomePagePositionsList = ({
+  positions,
+  favorites,
+  favoritesTandem,
+  favoritesPV,
+  favoritesPVTandem,
+  isLoading,
+  bidList,
+  type,
+  refreshFavorites,
+  title,
+  showBidListButton,
+  useShortFavButton,
+  showCompareButton,
+  sortType,
+  limit,
+  page,
+  isTandem,
+}) => (
+  <div
+    className={`condensed-card-highlighted ${
+      isLoading ? 'results-loading' : ''
+    }`}
+  >
     <div className="usa-grid-full condensed-card-grid">
       {positions.map((p) => {
         const position = p.position || p;
         return (
-          <div key={`${title}-row-${p.id}-${position.isPV}`} className="usa-width-one-third condensed-card">
+          <div
+            key={`${title}-row-${p.id}-${position.isPV}`}
+            className="usa-width-one-third condensed-card"
+          >
             <ResultsCondensedCard
               favorites={favorites}
               favoritesPV={favoritesPV}

@@ -11,14 +11,12 @@ import { Flag } from 'flag';
 const StaticDevContent = ({ children, showStaticContent, useWrapper }) => (
   <Flag
     name="flags.static_content"
-    render={() => (
-      /* eslint-disable-next-line no-nested-ternary */
-      showStaticContent ?
-        <div style={{ boxShadow: '0px 0px 0px 2px red' }}>
-          { children }
-        </div>
-        :
-        useWrapper ? <span>{ children }</span> : children
+    render={() => showStaticContent ? (/* eslint-disable-line no-nested-ternary */
+      <div style={{ boxShadow: '0px 0px 0px 2px red' }}>{children}</div>
+    ) : useWrapper ? (
+      <span>{children}</span>
+    ) : (
+      children
     )}
   />
 );
@@ -34,7 +32,7 @@ StaticDevContent.defaultProps = {
   useWrapper: true,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   showStaticContent: state.shouldShowStaticContent,
 });
 

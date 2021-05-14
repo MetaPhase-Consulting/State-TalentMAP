@@ -13,7 +13,7 @@ import {
 export default class ServiceNeededToggle extends Component {
   onClick = () => {
     const { position, onChange } = this.props;
-    const id = position.id;
+    const { id } = position;
     onChange(id, !this.checked);
   };
 
@@ -42,19 +42,20 @@ export default class ServiceNeededToggle extends Component {
       onClick: this.onClick,
     };
 
-    options.className = options.className
-      .join(' ')
-      .trim();
+    options.className = options.className.join(' ').trim();
 
-    return isSuperuser ?
-      (<div {...wrapper}>
+    return isSuperuser ? (
+      <div {...wrapper}>
         <InteractiveElement {...options}>
-          {!this.props.loading ?
-            (<FontAwesome name={this.icon} />) :
-            (<div className="ds-c-spinner" />)
-          } {this.text}
+          {!this.props.loading ? (
+            <FontAwesome name={this.icon} />
+          ) : (
+            <div className="ds-c-spinner" />
+          )}{' '}
+          {this.text}
         </InteractiveElement>
-      </div>) : (null);
+      </div>
+    ) : null;
   }
 }
 

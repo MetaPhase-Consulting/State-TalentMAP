@@ -3,7 +3,10 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { testDispatchFunctions } from '../../testUtilities/testUtilities';
 import MockTestProvider from '../../testUtilities/MockProvider';
-import PreferenceWrapperContainer, { PreferenceWrapper, mapDispatchToProps } from './PreferenceWrapper';
+import PreferenceWrapperContainer, {
+  PreferenceWrapper,
+  mapDispatchToProps,
+} from './PreferenceWrapper';
 
 describe('PreferenceWrapper', () => {
   const props = {
@@ -14,11 +17,13 @@ describe('PreferenceWrapper', () => {
   };
 
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<MockTestProvider>
-      <PreferenceWrapperContainer {...props}>
-        <button />
-      </PreferenceWrapperContainer>
-    </MockTestProvider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <MockTestProvider>
+        <PreferenceWrapperContainer {...props}>
+          <button />
+        </PreferenceWrapperContainer>
+      </MockTestProvider>,
+    );
     expect(wrapper).toBeDefined();
   });
 

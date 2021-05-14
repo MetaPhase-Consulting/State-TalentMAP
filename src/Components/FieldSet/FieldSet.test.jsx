@@ -5,9 +5,7 @@ import FieldSet from './FieldSet';
 describe('FieldSetComponent', () => {
   it('is defined', () => {
     const wrapper = shallow(
-      <FieldSet
-        legend="legend"
-      >
+      <FieldSet legend="legend">
         <span>child</span>
       </FieldSet>,
     );
@@ -16,9 +14,7 @@ describe('FieldSetComponent', () => {
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <FieldSet
-        legend="legend"
-      >
+      <FieldSet legend="legend">
         <span>child</span>
       </FieldSet>,
     );
@@ -28,10 +24,7 @@ describe('FieldSetComponent', () => {
   it('can receive legendSrOnly prop', () => {
     const legendSrOnly = true;
     const wrapper = shallow(
-      <FieldSet
-        legend="legend"
-        legendSrOnly={legendSrOnly}
-      >
+      <FieldSet legend="legend" legendSrOnly={legendSrOnly}>
         <span>child</span>
       </FieldSet>,
     );

@@ -3,30 +3,26 @@ import toJSON from 'enzyme-to-json';
 import LinkButton from './LinkButton';
 
 describe('LinkButtonComponent', () => {
-  const child = (<span>Text</span>);
+  const child = <span>Text</span>;
   const toLink = '/test/100';
   it('is defined', () => {
-    const wrapper = shallow(
-      <LinkButton toLink={toLink}>
-        {child}
-      </LinkButton>,
-    );
+    const wrapper = shallow(<LinkButton toLink={toLink}>{child}</LinkButton>);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <LinkButton toLink={toLink}>
-        {child}
-      </LinkButton>,
-    );
+    const wrapper = shallow(<LinkButton toLink={toLink}>{child}</LinkButton>);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('supports external links', () => {
     const isExternal = true;
     const wrapper = shallow(
-      <LinkButton className="test-class" toLink={toLink} isExternal={isExternal}>
+      <LinkButton
+        className="test-class"
+        toLink={toLink}
+        isExternal={isExternal}
+      >
         {child}
       </LinkButton>,
     );
@@ -38,7 +34,11 @@ describe('LinkButtonComponent', () => {
     const isExternal = true;
     const useDefaultClass = false;
     const wrapper = shallow(
-      <LinkButton toLink={toLink} isExternal={isExternal} useDefaultClass={useDefaultClass}>
+      <LinkButton
+        toLink={toLink}
+        isExternal={isExternal}
+        useDefaultClass={useDefaultClass}
+      >
         {child}
       </LinkButton>,
     );

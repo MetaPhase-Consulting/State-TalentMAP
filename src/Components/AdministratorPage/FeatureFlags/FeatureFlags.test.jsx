@@ -12,7 +12,6 @@ import { testDispatchFunctions } from '../../../testUtilities/testUtilities';
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
-
 describe('FeatureFlags', () => {
   const props = {
     featureFlags: {
@@ -43,7 +42,9 @@ describe('FeatureFlags', () => {
 
   it('calls postData on this.submitData()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<FeatureFlags.WrappedComponent {...props} postData={spy} />);
+    const wrapper = shallow(
+      <FeatureFlags.WrappedComponent {...props} postData={spy} />,
+    );
     wrapper.instance().submitData();
     sinon.assert.calledOnce(spy);
   });

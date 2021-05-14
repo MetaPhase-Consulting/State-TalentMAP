@@ -6,13 +6,18 @@ import UserProfileContactInformation from './UserProfileContactInformation';
 import ExternalUserStatus from '../ExternalUserStatus';
 import PositionInformation from '../PositionInformation';
 
-const UserProfile = ({ userProfile, showEditLink, showGeneralInformation,
-  showContactInformation, useGroup, isPublic }) => {
+const UserProfile = ({
+  userProfile,
+  showEditLink,
+  showGeneralInformation,
+  showContactInformation,
+  useGroup,
+  isPublic,
+}) => {
   const cdo = get(userProfile, 'cdo', {});
   return (
     <div className="usa-grid-full current-user">
-      {
-        showGeneralInformation &&
+      {showGeneralInformation && (
         <UserProfileGeneralInformation
           userProfile={userProfile}
           showEditLink={showEditLink}
@@ -21,12 +26,10 @@ const UserProfile = ({ userProfile, showEditLink, showGeneralInformation,
           colorProp="firstName"
           useColor={isPublic}
         />
-      }
-      {
-        showContactInformation &&
+      )}
+      {showContactInformation && (
         <div className="current-user-bottom">
-          {
-            cdo.name &&
+          {cdo.name && (
             <div className="current-user-section-border cdo-section">
               <ExternalUserStatus
                 type="cdo"
@@ -37,13 +40,15 @@ const UserProfile = ({ userProfile, showEditLink, showGeneralInformation,
                 small
               />
             </div>
-          }
+          )}
           <div className="current-user-section-border">
-            <PositionInformation assignment={get(userProfile, 'current_assignment')} />
+            <PositionInformation
+              assignment={get(userProfile, 'current_assignment')}
+            />
           </div>
           <UserProfileContactInformation userProfile={userProfile} />
         </div>
-      }
+      )}
     </div>
   );
 };

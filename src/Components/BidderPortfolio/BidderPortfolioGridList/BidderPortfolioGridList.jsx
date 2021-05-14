@@ -6,8 +6,8 @@ import { Accordion, AccordionItem } from 'Components/Accordion';
 import { BIDDER_RESULTS, CLASSIFICATIONS } from '../../../Constants/PropTypes';
 import BidderPortfolioStatRow from '../BidderPortfolioStatRow';
 
-export const isAllFalse = a => a === false;
-export const isAllTrue = a => a === true;
+export const isAllFalse = (a) => a === false;
+export const isAllTrue = (a) => a === true;
 
 class BidderPortfolioGridList extends Component {
   constructor(props) {
@@ -28,10 +28,10 @@ class BidderPortfolioGridList extends Component {
     this.debouncedSetValue();
   };
 
-  getRefById = id => {
+  getRefById = (id) => {
     const ref = get(this, `accordion-${id}`);
     return ref;
-  }
+  };
 
   // Determine whether to display a + or - for the expand toggle button.
   // Never call this function directly (use debouncedSetValue()).
@@ -41,7 +41,8 @@ class BidderPortfolioGridList extends Component {
     const accStates = [...results].map((r) => {
       // refs will not exist on the first render
       const ref = this.getRefById(r.id);
-      if (ref) { // refs are defined from the id of the result
+      if (ref) {
+        // refs are defined from the id of the result
         return ref.isExpanded();
       }
       return false;
@@ -67,7 +68,8 @@ class BidderPortfolioGridList extends Component {
           ref.setExpandedFromRef(true);
         }
       });
-    } else { // Otherwise, set them all to collapsed.
+    } else {
+      // Otherwise, set them all to collapsed.
       results.forEach((f) => {
         const ref = this.getRefById(f.id);
         if (ref) {
@@ -88,7 +90,9 @@ class BidderPortfolioGridList extends Component {
   }
 
   render() {
-    const { results, showEdit, showExpand, classifications } = this.props;
+    const {
+      results, showEdit, showExpand, classifications,
+    } = this.props;
     const { expandAll } = this.state;
     let expandText = 'Expand All';
     let expandIcon = 'plus';
@@ -98,32 +102,38 @@ class BidderPortfolioGridList extends Component {
     }
     return (
       <div>
-        {
-          showExpand &&
-          <button className="usa-accordion-button-all" title={expandText} onClick={this.toggleExpand}>
+        {showExpand && (
+          <button
+            className="usa-accordion-button-all"
+            title={expandText}
+            onClick={this.toggleExpand}
+          >
             <FontAwesome name={expandIcon} />
           </button>
-        }
-        <Accordion className="usa-grid-full accordion-inverse user-dashboard portfolio-row-list" isMultiselectable>
-          {
-            results.map(result => (
-              <AccordionItem
-                controlled
-                className="portfolio-row"
-                id={`${result.id}-row`}
-                key={result.id}
-                title={result.name}
-                setAccordion={this.onSetAccordion}
-                ref={(ref) => { this[`accordion-${result.id}`] = ref; }} // refs are defined from the id of the result
-              >
-                <BidderPortfolioStatRow
-                  userProfile={result}
-                  showEdit={showEdit}
-                  classifications={classifications}
-                />
-              </AccordionItem>
-            ))
-          }
+        )}
+        <Accordion
+          className="usa-grid-full accordion-inverse user-dashboard portfolio-row-list"
+          isMultiselectable
+        >
+          {results.map((result) => (
+            <AccordionItem
+              controlled
+              className="portfolio-row"
+              id={`${result.id}-row`}
+              key={result.id}
+              title={result.name}
+              setAccordion={this.onSetAccordion}
+              ref={(ref) => {
+                this[`accordion-${result.id}`] = ref;
+              }} // refs are defined from the id of the result
+            >
+              <BidderPortfolioStatRow
+                userProfile={result}
+                showEdit={showEdit}
+                classifications={classifications}
+              />
+            </AccordionItem>
+          ))}
         </Accordion>
       </div>
     );

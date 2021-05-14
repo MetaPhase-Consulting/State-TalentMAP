@@ -1,9 +1,11 @@
 /* eslint-disable */
-import { Link } from 'react-router-dom';
-import { getAssetPath } from 'utilities';
+import { Link } from "react-router-dom";
+import { getAssetPath } from "utilities";
 
-const hrFooterLogo = getAssetPath('/assets/logos/png/hr-logo-white-sm.png');
-const tmFooterLogo = getAssetPath('/assets/logos/png/horizontal_white_thin-sm.png');
+const hrFooterLogo = getAssetPath("/assets/logos/png/hr-logo-white-sm.png");
+const tmFooterLogo = getAssetPath(
+  "/assets/logos/png/horizontal_white_thin-sm.png"
+);
 
 const version = process.env.VERSION;
 
@@ -15,10 +17,14 @@ const Footer = () => (
           <nav className="usa-footer-nav">
             <ul className="usa-unstyled-list">
               <li className="usa-width-one-sixth usa-footer-primary-content">
-                <Link className="usa-footer-primary-link" to="/">Home</Link>
+                <Link className="usa-footer-primary-link" to="/">
+                  Home
+                </Link>
               </li>
               <li className="usa-width-one-sixth usa-footer-primary-content">
-                <Link className="usa-footer-primary-link" to='/about'>About</Link>
+                <Link className="usa-footer-primary-link" to="/about">
+                  About
+                </Link>
               </li>
             </ul>
           </nav>
@@ -26,9 +32,7 @@ const Footer = () => (
         <div className="usa-width-one-half">
           <div className="questions-container">
             <span className="help-text">Need Help? Contact </span>
-            <a href="mailto:HRHelpDesk@state.gov">
-              HRHelpDesk@state.gov
-            </a>
+            <a href="mailto:HRHelpDesk@state.gov">HRHelpDesk@state.gov</a>
           </div>
         </div>
       </div>
@@ -53,18 +57,18 @@ const Footer = () => (
         </div>
         <div className="usa-footer-contact-links usa-width-one-half tm-footer-body-contact">
           <div className="tm-footer-body-contact-item">
-            To share your feedback with us, please contact <a href="mailto:TalentMAP@state.gov">TalentMAP@state.gov</a>
+            To share your feedback with us, please contact{" "}
+            <a href="mailto:TalentMAP@state.gov">TalentMAP@state.gov</a>
           </div>
-          {
-            !!version &&
-              <div className="tm-footer-body-contact-item">
-                {`Version ${version}`}
-              </div>
-          }
+          {!!version && (
+            <div className="tm-footer-body-contact-item">
+              {`Version ${version}`}
+            </div>
+          )}
         </div>
       </div>
     </div>
   </footer>
-  );
+);
 
 export default Footer;

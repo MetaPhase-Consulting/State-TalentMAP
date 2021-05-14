@@ -2,10 +2,19 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AdministratorPage from '../../Components/AdministratorPage';
-import { getLog, getLogToDownload, getLogs, getLogsList } from '../../actions/logs';
+import {
+  getLog,
+  getLogToDownload,
+  getLogs,
+  getLogsList,
+} from '../../actions/logs';
 import { getTableStats, getUsers } from '../../actions/userRoles';
 import { fetchFeatureFlagsData } from '../../actions/featureFlags';
-import { patchSync, putAllSyncs, syncsFetchData } from '../../actions/synchronizations';
+import {
+  patchSync,
+  putAllSyncs,
+  syncsFetchData,
+} from '../../actions/synchronizations';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 
 export const downloadFile = (text) => {
@@ -39,15 +48,25 @@ class AdministratorContainer extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.logsIsLoading && !nextProps.logsIsLoading && nextProps.logs) {
+    if (
+      this.props.logsIsLoading
+      && !nextProps.logsIsLoading
+      && nextProps.logs
+    ) {
       downloadFile(nextProps.log);
     }
-    if (this.props.logToDownloadIsLoading && !nextProps.logToDownloadIsLoading
-            && nextProps.logToDownload) {
+    if (
+      this.props.logToDownloadIsLoading
+      && !nextProps.logToDownloadIsLoading
+      && nextProps.logToDownload
+    ) {
       downloadFile(nextProps.logToDownload);
     }
-    if (this.props.patchSyncIsLoading && !nextProps.patchSyncIsLoading
-            && !nextProps.patchSyncHasErrored) {
+    if (
+      this.props.patchSyncIsLoading
+      && !nextProps.patchSyncIsLoading
+      && !nextProps.patchSyncHasErrored
+    ) {
       this.props.getSyncJobs();
     }
   }
@@ -77,9 +96,21 @@ class AdministratorContainer extends Component {
 
   render() {
     const {
-      logs, logsIsLoading, logsHasErrored, patchSyncJob, patchSyncIsLoading,
-      logsList, logsListIsLoading, logsListHasErrored,
-      log, logIsLoading, logHasErrored, syncJobs, syncJobsIsLoading, totalUsers, featureFlags,
+      logs,
+      logsIsLoading,
+      logsHasErrored,
+      patchSyncJob,
+      patchSyncIsLoading,
+      logsList,
+      logsListIsLoading,
+      logsListHasErrored,
+      log,
+      logIsLoading,
+      logHasErrored,
+      syncJobs,
+      syncJobsIsLoading,
+      totalUsers,
+      featureFlags,
     } = this.props;
     const props = {
       logs,
@@ -104,9 +135,7 @@ class AdministratorContainer extends Component {
       totalUsers: totalUsers.count,
       featureFlags,
     };
-    return (
-      <AdministratorPage {...props} />
-    );
+    return <AdministratorPage {...props} />;
   }
 }
 
@@ -138,8 +167,10 @@ AdministratorContainer.propTypes = {
   patchSyncHasErrored: PropTypes.bool,
   getUsers: PropTypes.func,
   getTableStats: PropTypes.func,
-  totalUsers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape({})),
-    PropTypes.shape({ count: PropTypes.number })]),
+  totalUsers: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.shape({ count: PropTypes.number }),
+  ]),
   fetchFeatureFlagsData: PropTypes.func,
   featureFlags: PropTypes.shape({}),
 };
@@ -177,7 +208,7 @@ AdministratorContainer.defaultProps = {
   featureFlags: {},
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   logs: state.logsSuccess,
   logsIsLoading: state.logsIsLoading,
   logsHasErrored: state.logsHasErrored,
@@ -199,17 +230,20 @@ const mapStateToProps = state => ({
   featureFlags: state.featureFlags,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   getLogs: () => dispatch(getLogs()),
   getLogsList: () => dispatch(getLogsList()),
   getLog: (id, size) => dispatch(getLog(id, size)),
   getLogToDownload: (id, size) => dispatch(getLogToDownload(id, size)),
   getSyncJobs: () => dispatch(syncsFetchData()),
   putAllSyncJobs: () => dispatch(putAllSyncs()),
-  patchSyncJob: data => dispatch(patchSync(data)),
+  patchSyncJob: (data) => dispatch(patchSync(data)),
   getUsers: () => dispatch(getUsers()),
   getTableStats: () => dispatch(getTableStats()),
   fetchFeatureFlagsData: () => dispatch(fetchFeatureFlagsData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)((AdministratorContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AdministratorContainer);

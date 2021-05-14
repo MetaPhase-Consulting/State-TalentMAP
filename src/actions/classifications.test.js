@@ -32,4 +32,3 @@ describe('classifications async actions', () => {
     expectMockWasCalled({ spy, cb: done });
   });
 });
-

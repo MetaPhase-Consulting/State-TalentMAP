@@ -17,7 +17,10 @@ class ResetFilters extends Component {
           className="reset-filters"
           onClick={this.resetFilters}
         >
-          <span><FontAwesome name="times" />{this.props.clearText}</span>
+          <span>
+            <FontAwesome name="times" />
+            {this.props.clearText}
+          </span>
         </InteractiveElement>
       </div>
     );

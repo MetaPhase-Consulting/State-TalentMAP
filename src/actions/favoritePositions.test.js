@@ -7,12 +7,10 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 describe('async actions', () => {
   beforeEach(() => {
     mockAdapter.onGet('/available_position/favorites/').reply(200,
-      resultsObject,
-    );
+      resultsObject);
 
     mockAdapter.onGet('/projected_vacancy/favorites/').reply(200,
-      resultsObject,
-    );
+      resultsObject);
   });
 
   it('can fetch favorite positions', (done) => {
@@ -47,8 +45,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/cycleposition/favorites/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

@@ -3,7 +3,7 @@ import FontAwesome from 'react-fontawesome';
 
 const ProfileSectionTitle = ({ title, icon }) => (
   <h2 className="usa-grid-full hello-greeting">
-    { icon && <FontAwesome size="lg" name={icon} /> }
+    {icon && <FontAwesome size="lg" name={icon} />}
     {title}
   </h2>
 );

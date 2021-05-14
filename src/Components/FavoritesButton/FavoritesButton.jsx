@@ -20,7 +20,9 @@ class FavoritesButton extends Component {
     const fromText = 'Favorites';
     const savedState = this.getSavedState();
     const buttonClass = savedState ? 'usa-button-secondary' : '';
-    const buttonText = savedState ? `Remove from ${fromText}` : `Add to ${fromText}`;
+    const buttonText = savedState
+      ? `Remove from ${fromText}`
+      : `Add to ${fromText}`;
     const style = {
       pointerEvents: this.props.isLoading ? 'none' : 'inherit',
       cursor: 'pointer',

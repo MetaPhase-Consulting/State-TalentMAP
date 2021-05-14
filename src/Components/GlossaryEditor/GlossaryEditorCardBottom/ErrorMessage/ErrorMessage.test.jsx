@@ -16,17 +16,23 @@ describe('ErrorMessageComponent', () => {
 
   it('displays an empty string error', () => {
     const wrapper = shallow(<ErrorMessage showEmptyWarning />);
-    expect(wrapper.find('.usa-input-error-message').text()).toBe('Title and definition cannot be blank.');
+    expect(wrapper.find('.usa-input-error-message').text()).toBe(
+      'Title and definition cannot be blank.',
+    );
   });
 
   it('displays an invalid link error', () => {
     const wrapper = shallow(<ErrorMessage showInvalidLinkWarning />);
-    expect(wrapper.find('.usa-input-error-message').text()).toBe('Link should be blank or a valid URL with http/https.');
+    expect(wrapper.find('.usa-input-error-message').text()).toBe(
+      'Link should be blank or a valid URL with http/https.',
+    );
   });
 
   it('displays a response error', () => {
     const wrapper = shallow(<ErrorMessage error={errorProp} />);
-    expect(wrapper.find('.usa-input-error-message').text()).toBe(errorProp.message);
+    expect(wrapper.find('.usa-input-error-message').text()).toBe(
+      errorProp.message,
+    );
   });
 
   it('matches snapshot', () => {
@@ -50,7 +56,9 @@ describe('ErrorMessageComponent', () => {
   });
 
   it('matches snapshot when showResponseError and showEmptyWarning are true', () => {
-    const wrapper = shallow(<ErrorMessage showResponseError showEmptyWarning />);
+    const wrapper = shallow(
+      <ErrorMessage showResponseError showEmptyWarning />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

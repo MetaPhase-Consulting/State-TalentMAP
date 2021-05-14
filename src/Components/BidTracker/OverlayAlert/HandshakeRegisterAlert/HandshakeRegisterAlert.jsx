@@ -31,12 +31,16 @@ class HandshakeRegisterAlert extends Component {
     if (!isUnregister) {
       if (!readOnly) {
         mainText = 'Would you like to register this handshake?';
-      } else { mainText = 'This handshake needs to be registered'; }
+      } else {
+        mainText = 'This handshake needs to be registered';
+      }
     } else {
       mainText = `${userName || 'This user'}'s handshake has been registered`;
     }
 
-    const buttonText = isUnregister ? 'Undo Register Handshake' : 'Register Handshake';
+    const buttonText = isUnregister
+      ? 'Undo Register Handshake'
+      : 'Register Handshake';
 
     const classes = [
       'bid-tracker-alert-container',
@@ -46,15 +50,15 @@ class HandshakeRegisterAlert extends Component {
 
     const classes$ = classes.join(' ');
 
-    const regFunction = isUnregister ? this.onUnregisterHandshake : this.onRegisterHandshake;
+    const regFunction = isUnregister
+      ? this.onUnregisterHandshake
+      : this.onRegisterHandshake;
 
     return (
       <div className={classes$}>
         <div className="usa-grid-full" style={{ display: 'flex' }}>
           <div className="register-submission-container" style={{ flex: 1 }}>
-            <div className="sub-submission-text">
-              {mainText}
-            </div>
+            <div className="sub-submission-text">{mainText}</div>
             <div className="usa-grid-full register-submission-buttons-container">
               <button
                 className="tm-button-transparent tm-button-submit-bid"
@@ -65,9 +69,7 @@ class HandshakeRegisterAlert extends Component {
             </div>
           </div>
           <div className="register-position-details" style={{ flex: 1 }}>
-            <div>
-              {positionTitle}
-            </div>
+            <div>{positionTitle}</div>
             <div>
               <span className="title">Location: </span>
               {post}

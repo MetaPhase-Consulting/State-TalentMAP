@@ -137,8 +137,8 @@ export function bureauBidsSetRanking(id, ranking = []) {
         }),
       })
       .then(() => {
-        const prom = () => isEqual(ranking, []) ? Promise.resolve() :
-          api()
+        const prom = () => isEqual(ranking, []) ? Promise.resolve()
+          : api()
             .post('/available_position/ranking/', ranking, {
               cancelToken: new CancelToken((c) => {
                 cancelRanking = c;

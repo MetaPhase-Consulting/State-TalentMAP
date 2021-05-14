@@ -1,4 +1,6 @@
-import { first, get, isArray, merge } from 'lodash';
+import {
+  first, get, isArray, merge,
+} from 'lodash';
 import api from '../api';
 import { EMPTY_FUNCTION } from '../Constants/PropTypes';
 
@@ -142,8 +144,8 @@ export function glossaryPatch(term = {}, onSuccess = EMPTY_FUNCTION) {
       .catch((error) => {
         const data = merge({ title: null }, get(error, 'response.data'));
         const message = (
-          (isArray(data.title) ? first(data.title) : data.title) ||
-          'An error occurred trying to save the new glossary term. Please try again.'
+          (isArray(data.title) ? first(data.title) : data.title)
+          || 'An error occurred trying to save the new glossary term. Please try again.'
         );
 
         dispatch(glossaryPatchSuccess(false));
@@ -173,8 +175,8 @@ export function glossaryPost(term = {}, onSuccess = EMPTY_FUNCTION) {
       .catch((error) => {
         const data = merge({ title: null }, get(error, 'response.data'));
         const message = (
-          (isArray(data.title) ? first(data.title) : data.title) ||
-          'An error occurred trying to save the new glossary term. Please try again.'
+          (isArray(data.title) ? first(data.title) : data.title)
+          || 'An error occurred trying to save the new glossary term. Please try again.'
         );
 
         dispatch(glossaryPostSuccess(false));

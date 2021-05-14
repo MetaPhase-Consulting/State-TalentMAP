@@ -52,7 +52,14 @@ export function getViewStats(id, type) {
     const today$$ = today$.toJSON();
 
     const promTypes = [
-      { title: getTitle('30 days'), type: 'unique', route: 'distinctpositionviews', options: { date_of_view__gt: past30days, date_of_view__lte: today$$, position_id: id, position_type: type } },
+      {
+        title: getTitle('30 days'),
+        type: 'unique',
+        route: 'distinctpositionviews',
+        options: {
+          date_of_view__gt: past30days, date_of_view__lte: today$$, position_id: id, position_type: type,
+        },
+      },
     ];
 
     const proms = promTypes.map(m => fetchViews({ route: m.route, options: m.options }));

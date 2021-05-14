@@ -42,9 +42,7 @@ describe('ProfilePageComponent', () => {
   it('is defined', () => {
     const wrapper = shallow(
       <MemoryRouter>
-        <ProfilePage
-          {...props}
-        />
+        <ProfilePage {...props} />
       </MemoryRouter>,
     );
     expect(wrapper).toBeDefined();
@@ -53,11 +51,11 @@ describe('ProfilePageComponent', () => {
   it('it can handle showing the full name of the user', () => {
     const wrapper = shallow(
       <MemoryRouter>
-        <ProfilePage
-          {...Object.assign({}, props, { user })}
-        />
+        <ProfilePage {...{ ...props, user }} />
       </MemoryRouter>,
     );
-    expect(wrapper.find(`${user.user.first_name} ${user.user_last_name}`)).toBeDefined();
+    expect(
+      wrapper.find(`${user.user.first_name} ${user.user_last_name}`),
+    ).toBeDefined();
   });
 });

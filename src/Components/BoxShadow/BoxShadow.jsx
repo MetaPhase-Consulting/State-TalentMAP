@@ -2,8 +2,17 @@
 import PropTypes from 'prop-types';
 import cssShadow from './BoxShadowUtility';
 
-const BoxShadow = ({ is, inset, offsetX, offsetY, blurRadius, spreadRadius, color, style,
-  ...props }) => {
+const BoxShadow = ({
+  is,
+  inset,
+  offsetX,
+  offsetY,
+  blurRadius,
+  spreadRadius,
+  color,
+  style,
+  ...props
+}) => {
   const Component = is;
   const sx = {
     ...style,

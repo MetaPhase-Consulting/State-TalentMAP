@@ -4,16 +4,12 @@ import ProfileLanding from './ProfileLanding';
 
 describe('ProfileLandingComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <ProfileLanding />,
-    );
+    const wrapper = shallow(<ProfileLanding />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ProfileLanding />,
-    );
+    const wrapper = shallow(<ProfileLanding />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -14,16 +14,20 @@ const mockStore = configureStore(middlewares);
 describe('SavedSearchesMapContainer', () => {
   const ChildElement = SavedSearchesList;
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <SavedSearchesMap
-        onNavigateTo={() => {}}
-        savedSearchesFetchData={() => {}}
-        setCurrentSavedSearch={() => {}}
-        deleteSearch={() => {}}
-        ChildElement={ChildElement}
-        onSortChange={() => {}}
-      />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <SavedSearchesMap
+            onNavigateTo={() => {}}
+            savedSearchesFetchData={() => {}}
+            setCurrentSavedSearch={() => {}}
+            deleteSearch={() => {}}
+            ChildElement={ChildElement}
+            onSortChange={() => {}}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -46,7 +50,9 @@ describe('SavedSearchesMapContainer', () => {
         savedSearchesIsLoading={false}
       />,
     );
-    wrapper.setProps({ filters: { ...wrapper.instance().props.filters, hasFetched: true } });
+    wrapper.setProps({
+      filters: { ...wrapper.instance().props.filters, hasFetched: true },
+    });
     expect(setArgsAgainst.length).toBe(3);
   });
 
@@ -69,7 +75,9 @@ describe('SavedSearchesMapContainer', () => {
         savedSearchesIsLoading={false}
       />,
     );
-    wrapper.setProps({ filters: { ...wrapper.instance().props.filters, hasFetched: false } });
+    wrapper.setProps({
+      filters: { ...wrapper.instance().props.filters, hasFetched: false },
+    });
     expect(setArgsAgainst.length).toBe(2);
   });
 });

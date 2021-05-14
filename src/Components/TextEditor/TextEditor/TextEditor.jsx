@@ -16,7 +16,9 @@ export default class TextEditor extends Component {
       this.setState({
         editorState,
       });
-      this.props.onChangeText(this.state.editorState.getCurrentContent().getPlainText());
+      this.props.onChangeText(
+        this.state.editorState.getCurrentContent().getPlainText(),
+      );
     };
 
     this.focus = () => {
@@ -26,7 +28,9 @@ export default class TextEditor extends Component {
     this.submit = () => {
       // set our primary state and copied state to match
       this.setState({ editorStateCopy: this.state.editorState });
-      this.props.onSubmitText(this.state.editorState.getCurrentContent().getPlainText());
+      this.props.onSubmitText(
+        this.state.editorState.getCurrentContent().getPlainText(),
+      );
     };
 
     this.cancel = () => {
@@ -39,31 +43,35 @@ export default class TextEditor extends Component {
   }
 
   render() {
-    const { readOnly, hideButtons, spellCheck, draftJsProps, textEditorSubmitProps } = this.props;
+    const {
+      readOnly,
+      hideButtons,
+      spellCheck,
+      draftJsProps,
+      textEditorSubmitProps,
+    } = this.props;
     const shouldDisplayButtons = !readOnly && !hideButtons;
     return (
       <div>
-        <div
-          className={readOnly ? '' : 'editor'}
-        >
+        <div className={readOnly ? '' : 'editor'}>
           <Editor
             editorState={this.state.editorState}
             onChange={this.onChange}
-            ref={(element) => { this.editor = element; }}
+            ref={(element) => {
+              this.editor = element;
+            }}
             readOnly={readOnly}
             spellCheck={spellCheck}
             {...draftJsProps}
           />
         </div>
-        {
-          shouldDisplayButtons ?
-            <TextEditorSubmit
-              submit={this.submit}
-              cancel={this.cancel}
-              {...textEditorSubmitProps}
-            /> :
-            null
-        }
+        {shouldDisplayButtons ? (
+          <TextEditorSubmit
+            submit={this.submit}
+            cancel={this.cancel}
+            {...textEditorSubmitProps}
+          />
+        ) : null}
       </div>
     );
   }

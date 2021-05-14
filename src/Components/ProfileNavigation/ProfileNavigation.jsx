@@ -2,21 +2,13 @@ import { Link } from 'react-router-dom';
 
 const ProfileNavigation = () => (
   <div className="usa-grid-full">
-    <Link to="/profile">
-      Profile home
-    </Link>
+    <Link to="/profile">Profile home</Link>
     <br />
-    <Link to="/profile/favorites">
-      Favorites
-    </Link>
+    <Link to="/profile/favorites">Favorites</Link>
     <br />
-    <Link to="/profile/searches">
-      Saved Searches
-    </Link>
+    <Link to="/profile/searches">Saved Searches</Link>
     <br />
-    <Link to="/profile/bidlist">
-      Bid List
-    </Link>
+    <Link to="/profile/bidlist">Bid List</Link>
   </div>
 );
 

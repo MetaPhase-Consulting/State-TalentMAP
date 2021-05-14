@@ -6,11 +6,7 @@ import GlossaryIcon from '../GlossaryIcon';
 import NavLink from '../NavLink';
 import AccountDropdown from '../../AccountDropdown/AccountDropdown';
 
-const DesktopNav = ({
-  isLoggedIn,
-  userProfile,
-  logout,
-}) => (
+const DesktopNav = ({ isLoggedIn, userProfile, logout }) => (
   <div className="navigation-container">
     <div className="nav-link-container header-nav-desktop desktop-nav-only">
       <NavLink link="/" title="Home" routeToRight="/results" />
@@ -19,31 +15,29 @@ const DesktopNav = ({
     <div className="header-nav-desktop desktop-nav-only account-notification-container">
       <div className="header-nav-link-container account-container">
         <div className="header-nav-link">
-          {
-            (isLoggedIn && userProfile.user) &&
+          {isLoggedIn && userProfile.user && (
             <AccountDropdown
               userProfile={userProfile}
               logoutRequest={logout}
               shouldDisplayName
             />
-          }
+          )}
         </div>
       </div>
     </div>
     <div className="header-nav-desktop desktop-nav-only account-notification-container">
       <div className="header-nav-link-container notifications-container">
         <div className="header-nav-link">
-          {
-            isLoggedIn &&
-              <span>
-                <Flag name="flags.notifications">
-                  <NotificationsPopover />
-                </Flag>
-                <div className="icon-alert-container glossary-link-container">
-                  <GlossaryIcon />
-                </div>
-              </span>
-          }
+          {isLoggedIn && (
+            <span>
+              <Flag name="flags.notifications">
+                <NotificationsPopover />
+              </Flag>
+              <div className="icon-alert-container glossary-link-container">
+                <GlossaryIcon />
+              </div>
+            </span>
+          )}
         </div>
       </div>
     </div>

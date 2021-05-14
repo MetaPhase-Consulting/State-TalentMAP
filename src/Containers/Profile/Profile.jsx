@@ -17,12 +17,7 @@ class Profile extends Component {
 
   render() {
     const { userProfile, isLoading } = this.props;
-    return (
-      <ProfilePage
-        isLoading={isLoading}
-        user={userProfile}
-      />
-    );
+    return <ProfilePage isLoading={isLoading} user={userProfile} />;
   }
 }
 
@@ -48,8 +43,11 @@ const mapStateToProps = (state, ownProps) => ({
   id: ownProps,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  onNavigateTo: dest => dispatch(push(dest)),
+export const mapDispatchToProps = (dispatch) => ({
+  onNavigateTo: (dest) => dispatch(push(dest)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Profile));

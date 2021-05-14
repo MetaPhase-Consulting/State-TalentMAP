@@ -5,12 +5,10 @@ import Base from '../Base';
 /* eslint-disable react/prop-types */
 const Row = (props) => {
   const options = merge({}, props);
-  options.className = `${props.fluid ? 'usa-grid-full' : 'usa-grid'} ${props.className}`.trim();
-  return (
-    <Base {...options}>
-      {props.children}
-    </Base>
-  );
+  options.className = `${props.fluid ? 'usa-grid-full' : 'usa-grid'} ${
+    props.className
+  }`.trim();
+  return <Base {...options}>{props.children}</Base>;
 };
 /* eslint-enable react/prop-types */
 

@@ -6,7 +6,10 @@ import { MemoryRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import ExportLinkContainer, { ExportLink, mapDispatchToProps } from './ExportLink';
+import ExportLinkContainer, {
+  ExportLink,
+  mapDispatchToProps,
+} from './ExportLink';
 import { testDispatchFunctions } from '../../../testUtilities/testUtilities';
 
 const middlewares = [thunk];
@@ -19,9 +22,13 @@ describe('SearchResultsExportLink', () => {
   });
 
   it('it mounts', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <ExportLinkContainer />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <ExportLinkContainer />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -52,9 +59,13 @@ describe('SearchResultsExportLink', () => {
     const spy = sinon.spy();
     const wrapper = shallow(<ExportLink isLoading />);
     wrapper.instance().setCsvRef({ link: { click: spy } });
-    wrapper.instance().UNSAFE_componentWillReceiveProps(
-      { isLoading: false, hasErrored: false, data: { results: [] } },
-    );
+    wrapper
+      .instance()
+      .UNSAFE_componentWillReceiveProps({
+        isLoading: false,
+        hasErrored: false,
+        data: { results: [] },
+      });
     sinon.assert.calledOnce(spy);
   });
 

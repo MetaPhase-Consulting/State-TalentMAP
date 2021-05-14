@@ -39,14 +39,17 @@ BidStatisticsContainer.defaultProps = {
   bidStatisticsHasErrored: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   bidStatistics: state.bidStatistics,
   bidStatisticsIsLoading: state.bidStatisticsIsLoading,
   bidStatisticsHasErrored: state.bidStatisticsHasErrored,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchBidStatistics: () => dispatch(bidStatisticsFetchData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BidStatisticsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(BidStatisticsContainer);

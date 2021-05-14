@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Item = ({ item }) => (
-  <div className="item-listing-item">{item}</div>
-);
+const Item = ({ item }) => <div className="item-listing-item">{item}</div>;
 
 Item.propTypes = {
   item: PropTypes.string.isRequired,

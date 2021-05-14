@@ -1,7 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
-import { localStorageFetchValue, localStorageToggleValue } from '../../utilities';
+import {
+  localStorageFetchValue,
+  localStorageToggleValue,
+} from '../../utilities';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 import COMPARE_LIMIT from '../../Constants/Compare';
 import InteractiveElement from '../InteractiveElement';
@@ -38,20 +41,15 @@ class CompareCheck extends Component {
   }
 
   getSaved() {
-    const saved = localStorageFetchValue(this.state.localStorageKey, this.props.refKey);
+    const saved = localStorageFetchValue(
+      this.state.localStorageKey,
+      this.props.refKey,
+    );
     this.setState({ saved: saved.exists, count: saved.count });
   }
 
   getSavedState() {
     return this.state.saved;
-  }
-
-  exceedsLimit() {
-    return this.state.count >= this.props.limit;
-  }
-
-  isDisabled() {
-    return this.exceedsLimit() && !this.state.saved;
   }
 
   toggleSaved = () => {
@@ -66,19 +64,34 @@ class CompareCheck extends Component {
     this.getSaved();
   };
 
+  isDisabled() {
+    return this.exceedsLimit() && !this.state.saved;
+  }
+
+  exceedsLimit() {
+    return this.state.count >= this.props.limit;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   joinClassNames(className) {
-    return className
-      .join(' ')
-      .trim();
+    return className.join(' ').trim();
   }
 
   render() {
-    const { className, customElement, as: type, interactiveElementProps } = this.props;
+    const {
+      className,
+      customElement,
+      as: type,
+      interactiveElementProps,
+    } = this.props;
     const isChecked = this.getSavedState();
     const options = {
       type,
-      className: [className, 'compare-check-box-container', isChecked ? 'compare-checked' : 'compare-not-checked'],
+      className: [
+        className,
+        'compare-check-box-container',
+        isChecked ? 'compare-checked' : 'compare-not-checked',
+      ],
       onClick: this.toggleSaved,
       ...interactiveElementProps,
     };
@@ -98,18 +111,12 @@ class CompareCheck extends Component {
 
     options.className = this.joinClassNames(options.className);
 
-    return (
-      customElement ?
-        <InteractiveElement {...options}>
-          {customElement}
-        </InteractiveElement>
-        :
-        <InteractiveElement {...options}>
-          {
-            !this.isDisabled() &&
-            icon
-          } {text}
-        </InteractiveElement>
+    return customElement ? (
+      <InteractiveElement {...options}>{customElement}</InteractiveElement>
+    ) : (
+      <InteractiveElement {...options}>
+        {!this.isDisabled() && icon} {text}
+      </InteractiveElement>
     );
   }
 }
@@ -117,10 +124,7 @@ class CompareCheck extends Component {
 CompareCheck.propTypes = {
   className: PropTypes.string,
   as: PropTypes.string.isRequired,
-  refKey: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]).isRequired,
+  refKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   type: PropTypes.string,
   limit: PropTypes.number,
   onToggle: PropTypes.func,

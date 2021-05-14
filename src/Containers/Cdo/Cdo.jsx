@@ -8,17 +8,12 @@ class CdoContainer extends Component {
   }
 
   render() {
-    return (
-      <CdoPage />
-    );
+    return <CdoPage />;
   }
 }
 
-CdoContainer.propTypes = {
-};
+CdoContainer.propTypes = {};
 
-CdoContainer.defaultProps = {
-};
-
+CdoContainer.defaultProps = {};
 
 export default CdoContainer;

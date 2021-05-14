@@ -83,16 +83,16 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'bidcycle_admin',
         ],
       },
-      checkFlag('flags.static_content') ?
-        {
+      checkFlag('flags.static_content')
+        ? {
           text: 'Settings',
           route: '/profile/settings/',
           icon: 'cogs',
         } : null,
     ],
   },
-  checkFlag('flags.bid_stats') ?
-    {
+  checkFlag('flags.bid_stats')
+    ? {
       text: 'Statistics',
       icon: 'pie-chart',
       route: '/profile/statistics',
@@ -111,8 +111,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       'glossary_editors',
     ],
     children: [
-      checkFlag('flags.data_sync_admin') ?
-        {
+      checkFlag('flags.data_sync_admin')
+        ? {
           text: 'Dashboard',
           route: '/profile/administrator/dashboard/',
           icon: 'tachometer',
@@ -120,8 +120,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'superuser',
           ],
         } : null,
-      checkFlag('flags.data_sync_admin') ?
-        {
+      checkFlag('flags.data_sync_admin')
+        ? {
           text: 'Logs',
           route: '/profile/administrator/logs/',
           icon: 'sitemap',
@@ -175,8 +175,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       'post_user',
     ],
     children: [
-      checkFlag('flags.static_content') ?
-        {
+      checkFlag('flags.static_content')
+        ? {
           text: 'Dashboard',
           route: '/profile/bureau/dashboard/',
           icon: 'tachometer',
@@ -185,8 +185,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'bureau_user',
           ],
         } : null,
-      checkFlag('flags.static_content') ?
-        {
+      checkFlag('flags.static_content')
+        ? {
           text: 'Statistics',
           route: '/profile/bureau/stats/',
           icon: 'bar-chart',
@@ -195,8 +195,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'bureau_user',
           ],
         } : null,
-      checkFlag('flags.static_content') ?
-        {
+      checkFlag('flags.static_content')
+        ? {
           text: 'Position Lists',
           route: '/profile/bureau/positionlists',
           icon: 'list-ol',
@@ -215,8 +215,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'post_user',
         ],
       },
-      checkFlag('flags.available_bidders') ?
-        {
+      checkFlag('flags.available_bidders')
+        ? {
           text: 'Available Bidders',
           route: '/profile/bureau/availablebidders',
           icon: 'users',
@@ -238,8 +238,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       'superuser',
     ],
     children: [
-      checkFlag('flags.static_content') ?
-        {
+      checkFlag('flags.static_content')
+        ? {
           text: 'Dashboard',
           route: '/profile/ao/dashboard/',
           icon: 'tachometer',
@@ -270,8 +270,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       'cdo',
     ],
     children: [
-      checkFlag('flags.client_profiles') ?
-        {
+      checkFlag('flags.client_profiles')
+        ? {
           text: 'Client Profiles', // aka Bidder Portfolio
           route: '/profile/cdo/bidderportfolio',
           icon: 'address-book',
@@ -282,8 +282,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             type: 'all',
           },
         } : null,
-      checkFlag('flags.available_bidders') ?
-        {
+      checkFlag('flags.available_bidders')
+        ? {
           text: 'Available Bidders',
           route: '/profile/cdo/availablebidders',
           icon: 'users',

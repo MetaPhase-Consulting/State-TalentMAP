@@ -44,7 +44,8 @@ exports[`Content matches snapshot 1`] = `
       Array [
         Object {
           "body": <span>
-            For more information, visit 
+            For more information, visit
+             
             <a
               href="/about/more"
               rel="noopener"

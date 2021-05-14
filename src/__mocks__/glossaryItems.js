@@ -47,34 +47,42 @@ export const glossaryItems = [
 ];
 
 export const groupedGlossaryItems = {
-  '#': [{ id: 20,
+  '#': [{
+    id: 20,
     title: '6/8',
     definition: '6/8',
     last_editing_user: 'Leah Shadtrach',
     link: '',
     date_created: '2018-02-07T13:59:13.282581Z',
-    date_updated: '2018-02-07T14:35:41.904583Z' }],
-  A: [{ id: 2,
+    date_updated: '2018-02-07T14:35:41.904583Z',
+  }],
+  A: [{
+    id: 2,
     title: 'Assignment Officer (AO)',
     definition: 'The employee responsible for filling the position.',
     last_editing_user: 'Leah Shadtrach',
     link: '',
     date_created: '2018-02-07T13:59:13.282581Z',
-    date_updated: '2018-02-07T14:35:41.904583Z' }],
-  B: [{ id: 3,
+    date_updated: '2018-02-07T14:35:41.904583Z',
+  }],
+  B: [{
+    id: 3,
     title: 'Bidder',
     definition: 'An employee who is applying for a position.',
     last_editing_user: 'Leah Shadtrach',
     link: '',
     date_created: '2018-02-07T13:59:13.282581Z',
-    date_updated: '2018-02-07T14:35:41.904583Z' },
-  { id: 5,
+    date_updated: '2018-02-07T14:35:41.904583Z',
+  },
+  {
+    id: 5,
     title: 'Bureau',
     definition: 'The organization sponsoring a position.',
     last_editing_user: 'Leah Shadtrach',
     link: '',
     date_created: '2018-02-07T13:59:13.282581Z',
-    date_updated: '2018-02-07T14:35:41.904583Z' }],
+    date_updated: '2018-02-07T14:35:41.904583Z',
+  }],
 };
 
 export const groupedTerms = ['A', 'B'];

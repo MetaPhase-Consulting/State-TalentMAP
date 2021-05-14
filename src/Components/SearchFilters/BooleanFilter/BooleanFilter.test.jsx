@@ -11,32 +11,23 @@ describe('BooleanFilterComponent', () => {
 
   it('is defined', () => {
     const wrapper = shallow(
-      <BooleanFilter
-        onBooleanFilterClick={() => {}}
-        item={item}
-      />,
+      <BooleanFilter onBooleanFilterClick={() => {}} item={item} />,
     );
     expect(wrapper).toBeDefined();
   });
 
   it('handles different props', () => {
-    const unselected = Object.assign({}, item);
+    const unselected = { ...item };
     unselected.data[0].isSelected = false;
     const wrapper = shallow(
-      <BooleanFilter
-        onBooleanFilterClick={() => {}}
-        item={unselected}
-      />,
+      <BooleanFilter onBooleanFilterClick={() => {}} item={unselected} />,
     );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <BooleanFilter
-        onBooleanFilterClick={() => {}}
-        item={item}
-      />,
+      <BooleanFilter onBooleanFilterClick={() => {}} item={item} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
@@ -44,10 +35,7 @@ describe('BooleanFilterComponent', () => {
   it('can receive click events', () => {
     const onClick = sinon.spy();
     const wrapper = mount(
-      <BooleanFilter
-        onBooleanFilterClick={onClick}
-        item={item}
-      />,
+      <BooleanFilter onBooleanFilterClick={onClick} item={item} />,
     );
     wrapper.find('input').simulate('change', { target: { checked: true } });
     expect(onClick.calledOnce).toBe(true);

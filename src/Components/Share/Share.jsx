@@ -4,7 +4,9 @@ import { shareSendData } from '../../actions/share';
 import ShareButton from './ShareButton/ShareButton';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 
-const Share = ({ hasErrored, isSending, response, identifier, sendData }) => (
+const Share = ({
+  hasErrored, isSending, response, identifier, sendData,
+}) => (
   <ShareButton
     onSend={sendData}
     hasErrored={hasErrored}
@@ -21,10 +23,7 @@ Share.contextTypes = {
 Share.propTypes = {
   response: PropTypes.bool,
   sendData: PropTypes.func,
-  hasErrored: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
+  hasErrored: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   isSending: PropTypes.bool,
   identifier: PropTypes.number.isRequired,
 };
@@ -44,7 +43,7 @@ const mapStateToProps = (state, ownProps) => ({
   id: ownProps,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   sendData: (url, data) => dispatch(shareSendData(url, data)),
 });
 

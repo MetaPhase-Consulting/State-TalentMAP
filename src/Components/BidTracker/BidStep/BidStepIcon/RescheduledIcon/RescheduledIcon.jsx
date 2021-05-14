@@ -5,9 +5,7 @@ const PendingIcon = () => (
     <div className="bid-tracker-rescheduled-icon-container">
       <FontAwesome name="calendar" />
     </div>
-    <div className="bid-tracker-rescheduled-text-container">
-      Rescheduled
-    </div>
+    <div className="bid-tracker-rescheduled-text-container">Rescheduled</div>
   </div>
 );
 

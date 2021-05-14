@@ -12,7 +12,10 @@ describe('PostFilterComponent', () => {
       selectionRef: 'post',
     },
     data: [
-      { name: 'Name', location: { city: 'City', state: 'ST', country: 'United States' } },
+      {
+        name: 'Name',
+        location: { city: 'City', state: 'ST', country: 'United States' },
+      },
       { name: 'Name', location: { city: 'City', country: 'France' } },
     ],
   };
@@ -34,34 +37,24 @@ describe('PostFilterComponent', () => {
   };
 
   it('can receive props', () => {
-    const wrapper = shallow(
-      <PostFilter
-        {...props}
-      />,
+    const wrapper = shallow(<PostFilter {...props} />);
+    expect(wrapper.instance().props.item.item.title).toBe(
+      props.item.item.title,
     );
-    expect(wrapper.instance().props.item.item.title).toBe(props.item.item.title);
   });
 
   it('can call the onCheckBoxClick function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <PostFilter
-        {...props}
-        queryParamToggle={spy}
-      />,
-    );
-    wrapper.instance().onCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
+    const wrapper = shallow(<PostFilter {...props} queryParamToggle={spy} />);
+    wrapper
+      .instance()
+      .onCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
     sinon.assert.calledOnce(spy);
   });
 
   it('can call the onSelectAllDomesticPosts function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <PostFilter
-        {...props}
-        queryParamUpdate={spy}
-      />,
-    );
+    const wrapper = shallow(<PostFilter {...props} queryParamUpdate={spy} />);
     wrapper.instance().onSelectAllDomesticPosts(true);
     sinon.assert.calledOnce(spy);
     expect(wrapper.instance().state.allDomesticSelected).toBe(false);
@@ -69,36 +62,26 @@ describe('PostFilterComponent', () => {
 
   it('can call the onSelectAllOverseasPosts function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <PostFilter
-        {...props}
-        queryParamUpdate={spy}
-      />,
-    );
+    const wrapper = shallow(<PostFilter {...props} queryParamUpdate={spy} />);
     wrapper.instance().onSelectAllOverseasPosts(true);
     sinon.assert.calledOnce(spy);
     expect(wrapper.instance().state.allOverseasSelected).toBe(false);
   });
 
   it('can update on componentWillReceiveProps', () => {
-    const wrapper = shallow(
-      <PostFilter
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<PostFilter {...props} />);
     const spy = sinon.spy(wrapper.instance(), 'setSelectedStates');
-    wrapper.instance().UNSAFE_componentWillReceiveProps(
-      { domesticIsSelected: true, overseasIsSelected: false },
-    );
+    wrapper
+      .instance()
+      .UNSAFE_componentWillReceiveProps({
+        domesticIsSelected: true,
+        overseasIsSelected: false,
+      });
     sinon.assert.calledOnce(spy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <PostFilter
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<PostFilter {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
@@ -114,10 +97,7 @@ describe('PostFilterComponent', () => {
     const spy = sinon.spy();
 
     const wrapper = shallow(
-      <PostFilter
-        {...countryProps}
-        queryParamUpdate={spy}
-      />,
+      <PostFilter {...countryProps} queryParamUpdate={spy} />,
     );
     wrapper.instance().onSelectAllDomesticPosts(true);
     sinon.assert.calledOnce(spy);
@@ -139,10 +119,7 @@ describe('PostFilterComponent', () => {
     const spy = sinon.spy();
 
     const wrapper = shallow(
-      <PostFilter
-        {...countryProps}
-        queryParamUpdate={spy}
-      />,
+      <PostFilter {...countryProps} queryParamUpdate={spy} />,
     );
     wrapper.instance().onSelectAllOverseasPosts(true);
     sinon.assert.calledOnce(spy);

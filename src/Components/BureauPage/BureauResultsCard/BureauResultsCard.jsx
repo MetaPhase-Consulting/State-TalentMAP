@@ -9,13 +9,35 @@ import { COMMON_PROPERTIES } from 'Constants/EndpointParams';
 import { Row } from 'Components/Layout';
 import DefinitionList from 'Components/DefinitionList';
 import InteractiveElement from 'Components/InteractiveElement';
-import { getBidStatsToUse, getDifferentials, getResult, renderBidCountMobile } from 'Components/ResultsCard/ResultsCard';
-import LanguageList from 'Components/LanguageList';
-import { CriticalNeed, Handshake, HardToFill, ServiceNeedDifferential } from 'Components/Ribbon';
-import { getBidStatisticsObject, getPostName, propOrDefault, shortenString } from 'utilities';
 import {
-  NO_BUREAU, NO_DATE, NO_GRADE,
-  NO_POSITION_NUMBER, NO_POST, NO_SKILL, NO_TOUR_OF_DUTY, NO_UPDATE_DATE, NO_USER_LISTED,
+  getBidStatsToUse,
+  getDifferentials,
+  getResult,
+  renderBidCountMobile,
+} from 'Components/ResultsCard/ResultsCard';
+import LanguageList from 'Components/LanguageList';
+import {
+  CriticalNeed,
+  Handshake,
+  HardToFill,
+  ServiceNeedDifferential,
+} from 'Components/Ribbon';
+import {
+  getBidStatisticsObject,
+  getPostName,
+  propOrDefault,
+  shortenString,
+} from 'utilities';
+import {
+  NO_BUREAU,
+  NO_DATE,
+  NO_GRADE,
+  NO_POSITION_NUMBER,
+  NO_POST,
+  NO_SKILL,
+  NO_TOUR_OF_DUTY,
+  NO_UPDATE_DATE,
+  NO_USER_LISTED,
 } from 'Constants/SystemMessages';
 import { POSITION_DETAILS } from 'Constants/PropTypes';
 
@@ -26,6 +48,7 @@ class BureauResultsCard extends Component {
       showMore: false,
     };
   }
+
   render() {
     const { showMore } = this.state;
     const { result, isProjectedVacancy } = this.props;
@@ -37,46 +60,62 @@ class BureauResultsCard extends Component {
     const languages = getResult(pos, 'languages', []);
     const hasShortList = getResult(result, 'has_short_list', false);
 
-    const language = (<LanguageList languages={languages} propToUse="representation" />);
+    const language = (
+      <LanguageList languages={languages} propToUse="representation" />
+    );
 
     const postShort = getPostName(pos.post, NO_POST);
 
     const bidStatsToUse = getBidStatsToUse(result, pos);
     const stats = getBidStatisticsObject(bidStatsToUse);
 
-    const description = shortenString(get(pos, 'description.content') || 'No description.', 2000);
+    const description = shortenString(
+      get(pos, 'description.content') || 'No description.',
+      2000,
+    );
 
-    const detailsLink = <Link to={`/profile/bureau/positionmanager/${isProjectedVacancy ? 'vacancy' : 'available'}/${result.id}`}><h3>{title}</h3></Link>;
-    const shortListIndicator = hasShortList ? (<Tooltip
-      title="Position has an active short list"
-      arrow
-      tabIndex="0"
-    >
-      <FA name="list-ol" />
-    </Tooltip>) : '';
+    const detailsLink = (
+      <Link
+        to={`/profile/bureau/positionmanager/${
+          isProjectedVacancy ? 'vacancy' : 'available'
+        }/${result.id}`}
+      >
+        <h3>{title}</h3>
+      </Link>
+    );
+    const shortListIndicator = hasShortList ? (
+      <Tooltip title="Position has an active short list" arrow tabIndex="0">
+        <FA name="list-ol" />
+      </Tooltip>
+    ) : (
+      ''
+    );
 
     const sections = [
-    /* eslint-disable quote-props */
+      /* eslint-disable quote-props */
       {
         'Position number': position,
-        'Skill': getResult(pos, 'skill_code') || NO_SKILL,
-        'Grade': getResult(pos, 'grade') || NO_GRADE,
-        'Bureau': getResult(pos, 'bureau_short_desc') || NO_BUREAU,
+        Skill: getResult(pos, 'skill_code') || NO_SKILL,
+        Grade: getResult(pos, 'grade') || NO_GRADE,
+        Bureau: getResult(pos, 'bureau_short_desc') || NO_BUREAU,
         'Tour of duty': getResult(pos, 'post.tour_of_duty') || NO_TOUR_OF_DUTY,
-        'Language': language,
+        Language: language,
         'Post differential | Danger Pay': getDifferentials(pos),
         'Bid cycle': getResult(pos, 'latest_bidcycle.name', 'None Listed'),
-        'TED': getResult(result, 'ted') || NO_DATE,
-        'Incumbent': getResult(pos, 'current_assignment.user') || NO_USER_LISTED,
-        'Posted': getResult(result, COMMON_PROPERTIES.posted) || NO_UPDATE_DATE,
+        TED: getResult(result, 'ted') || NO_DATE,
+        Incumbent: getResult(pos, 'current_assignment.user') || NO_USER_LISTED,
+        Posted: getResult(result, COMMON_PROPERTIES.posted) || NO_UPDATE_DATE,
       },
       {
-        'Last Updated': getResult(pos, 'description.date_updated') || NO_UPDATE_DATE,
+        'Last Updated':
+          getResult(pos, 'description.date_updated') || NO_UPDATE_DATE,
       },
-    /* eslint-enable quote-props */
+      /* eslint-enable quote-props */
     ];
 
-    if (isProjectedVacancy) { delete sections[2].Posted; }
+    if (isProjectedVacancy) {
+      delete sections[2].Posted;
+    }
 
     return (
       <Row fluid className="bureau-results-card">
@@ -85,41 +124,61 @@ class BureauResultsCard extends Component {
             <div>{detailsLink}</div>
             <div>{postShort}</div>
             <div className="shortlist-icon">{shortListIndicator}</div>
-            {
-              get(stats, 'has_handshake_offered', false) && <Handshake isWide cutSide="both" className="ribbon-results-card" />
-            }
-            {
-              get(result, 'staticDevContentAlt', false) && <CriticalNeed isWide cutSide="both" className="ribbon-results-card" />
-            }
-            {
-              get(result, 'staticDevContentAlt', false) && <HardToFill isWide cutSide="both" className="ribbon-results-card" />
-            }
-            {
-              get(result, 'staticDevContentAlt', false) && <ServiceNeedDifferential isWide cutSide="both" className="ribbon-results-card" />
-            }
+            {get(stats, 'has_handshake_offered', false) && (
+              <Handshake
+                isWide
+                cutSide="both"
+                className="ribbon-results-card"
+              />
+            )}
+            {get(result, 'staticDevContentAlt', false) && (
+              <CriticalNeed
+                isWide
+                cutSide="both"
+                className="ribbon-results-card"
+              />
+            )}
+            {get(result, 'staticDevContentAlt', false) && (
+              <HardToFill
+                isWide
+                cutSide="both"
+                className="ribbon-results-card"
+              />
+            )}
+            {get(result, 'staticDevContentAlt', false) && (
+              <ServiceNeedDifferential
+                isWide
+                cutSide="both"
+                className="ribbon-results-card"
+              />
+            )}
             {renderBidCountMobile(stats)}
           </Row>
           <Row fluid className="bureau-card--section bureau-card--content">
-            <DefinitionList itemProps={{ excludeColon: true }} items={sections[0]} className="bureau-definition" />
+            <DefinitionList
+              itemProps={{ excludeColon: true }}
+              items={sections[0]}
+              className="bureau-definition"
+            />
           </Row>
           <Row fluid className="bureau-card--section bureau-card--footer">
             <DefinitionList items={sections[1]} className="bureau-definition" />
             <div className="usa-grid-full toggle-more-container">
-              <InteractiveElement className="toggle-more" onClick={() => this.setState({ showMore: !showMore })}>
+              <InteractiveElement
+                className="toggle-more"
+                onClick={() => this.setState({ showMore: !showMore })}
+              >
                 <span>View {showMore ? 'less' : 'more'} </span>
                 <FA name={`chevron-${showMore ? 'up' : 'down'}`} />
               </InteractiveElement>
             </div>
           </Row>
         </Row>
-        {
-          showMore &&
+        {showMore && (
           <Row fluid className="bureau-card--description">
-            <Linkify properties={{ target: '_blank' }}>
-              {description}
-            </Linkify>
+            <Linkify properties={{ target: '_blank' }}>{description}</Linkify>
           </Row>
-        }
+        )}
       </Row>
     );
   }

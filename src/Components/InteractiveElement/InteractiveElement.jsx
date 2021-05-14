@@ -4,9 +4,11 @@ import { ifEnter } from '../../utilities';
 
 // TODO - apply this component to other elements that rely on "eslint-disable" to avoid
 // CodeClimate errors.
-const InteractiveElement = ({ children, type, className, ...rest }) => {
+const InteractiveElement = ({
+  children, type, className, ...rest
+}) => {
   let Node = type;
-  const onClick = rest.onClick;
+  const { onClick } = rest;
   // default props that we pass to div or span
   const defaultProps = {
     tabIndex: '0',
@@ -15,8 +17,14 @@ const InteractiveElement = ({ children, type, className, ...rest }) => {
   // Anything here can override defaultProps.
   const props = {
     children,
-    onKeyDown: onClick ? (e) => { if (ifEnter(e)) { onClick(e); } } : EMPTY_FUNCTION,
-    className: (`interactive-element ${className}`).trim(),
+    onKeyDown: onClick
+      ? (e) => {
+        if (ifEnter(e)) {
+          onClick(e);
+        }
+      }
+      : EMPTY_FUNCTION,
+    className: `interactive-element ${className}`.trim(),
     ...rest,
   };
 
@@ -30,7 +38,7 @@ const InteractiveElement = ({ children, type, className, ...rest }) => {
       break;
 
     default:
-    // Set where type != (button|input)
+      // Set where type != (button|input)
       defaultProps.role = 'button';
   }
 

@@ -104,11 +104,9 @@ export function putAllSyncs() {
     api().get('/data_sync/')
       .then((response) => {
         // create promise array to PUT each job
-        const queryProms = response.data.data.map(sync =>
-          api().put(`/data_sync/run/${sync.id}/`)
-            .then(() => true)
-            .catch(() => false),
-        );
+        const queryProms = response.data.data.map(sync => api().put(`/data_sync/run/${sync.id}/`)
+          .then(() => true)
+          .catch(() => false));
         // execute queries
         Q.allSettled(queryProms)
           .then((results) => {

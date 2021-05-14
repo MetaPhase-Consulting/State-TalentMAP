@@ -1,9 +1,17 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import OverlayAlert from './OverlayAlert';
-import { APPROVED_PROP, CLOSED_PROP, DECLINED_PROP, DRAFT_PROP,
-  HAND_SHAKE_DECLINED_PROP, HAND_SHAKE_NEEDS_REGISTER_PROP, HAND_SHAKE_OFFERED_PROP, IN_PANEL_PROP,
-  PANEL_RESCHEDULED_PROP } from '../../../Constants/BidData';
+import {
+  APPROVED_PROP,
+  CLOSED_PROP,
+  DECLINED_PROP,
+  DRAFT_PROP,
+  HAND_SHAKE_DECLINED_PROP,
+  HAND_SHAKE_NEEDS_REGISTER_PROP,
+  HAND_SHAKE_OFFERED_PROP,
+  IN_PANEL_PROP,
+  PANEL_RESCHEDULED_PROP,
+} from '../../../Constants/BidData';
 import bidListObject from '../../../__mocks__/bidListObject';
 
 describe('OverlayAlertComponent', () => {
@@ -18,13 +26,21 @@ describe('OverlayAlertComponent', () => {
   };
 
   // All possible props, plus  fake prop to test the default case of the switch
-  const types = [APPROVED_PROP, CLOSED_PROP, HAND_SHAKE_OFFERED_PROP, DRAFT_PROP,
-    HAND_SHAKE_DECLINED_PROP, IN_PANEL_PROP, DECLINED_PROP, PANEL_RESCHEDULED_PROP, HAND_SHAKE_NEEDS_REGISTER_PROP, 'fake prop'];
+  const types = [
+    APPROVED_PROP,
+    CLOSED_PROP,
+    HAND_SHAKE_OFFERED_PROP,
+    DRAFT_PROP,
+    HAND_SHAKE_DECLINED_PROP,
+    IN_PANEL_PROP,
+    DECLINED_PROP,
+    PANEL_RESCHEDULED_PROP,
+    HAND_SHAKE_NEEDS_REGISTER_PROP,
+    'fake prop',
+  ];
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <OverlayAlert {...props} />,
-    );
+    const wrapper = shallow(<OverlayAlert {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -33,7 +49,11 @@ describe('OverlayAlertComponent', () => {
   types.forEach((type) => {
     it(`matches snapshot when type is "${type}"`, () => {
       const wrapper = shallow(
-        <OverlayAlert {...props} bid={{ ...props.bid, status: type }} type={type} />,
+        <OverlayAlert
+          {...props}
+          bid={{ ...props.bid, status: type }}
+          type={type}
+        />,
       );
       expect(toJSON(wrapper)).toMatchSnapshot();
     });

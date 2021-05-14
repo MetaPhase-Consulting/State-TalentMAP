@@ -32,7 +32,11 @@ class SearchResultsExportLink extends Component {
           limit: this.props.count,
           page: 1,
         };
-        downloadPositionData(queryString.stringify(query), isProjectedVacancy, isTandemSearch)
+        downloadPositionData(
+          queryString.stringify(query),
+          isProjectedVacancy,
+          isTandemSearch,
+        )
           .then(() => {
             this.setState({ isLoading: false });
           })
@@ -49,7 +53,11 @@ class SearchResultsExportLink extends Component {
     const disabled = !count;
     return (
       <div className="export-button-container">
-        <ExportButton onClick={this.onClick} isLoading={isLoading} disabled={disabled} />
+        <ExportButton
+          onClick={this.onClick}
+          isLoading={isLoading}
+          disabled={disabled}
+        />
       </div>
     );
   }

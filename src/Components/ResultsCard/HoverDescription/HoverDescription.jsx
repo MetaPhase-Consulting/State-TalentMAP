@@ -14,17 +14,15 @@ class HoverDescription extends Component {
     // Debouncing function to 260ms and binding this.
     // Used to create a delay and prevent multiple actions within a small
     // time frame from firing.
-    this.toggleVisibility = throttle(this.toggleVisibility.bind(this),
-      260, { leading: false, trailing: true });
+    this.toggleVisibility = throttle(this.toggleVisibility.bind(this), 260, {
+      leading: false,
+      trailing: true,
+    });
 
     this.state = {
       expanded: false,
       cardHovered: false,
     };
-  }
-
-  toggleVisibility(shouldExpand = false) {
-    this.setState({ expanded: !!shouldExpand });
   }
 
   toggle = () => {
@@ -38,6 +36,10 @@ class HoverDescription extends Component {
   close = () => {
     this.toggleVisibility(false);
   };
+
+  toggleVisibility(shouldExpand = false) {
+    this.setState({ expanded: !!shouldExpand });
+  }
 
   toggleCardHovered(cardHovered = false) {
     this.setState({ cardHovered });
@@ -58,42 +60,39 @@ class HoverDescription extends Component {
     const height$ = getHeight();
 
     return (
-      <Spring to={{ height: height$ }} config={{ friction: 21, tension: 175 }} >
-        {
-          ({ height }) =>
-            (
-              <div className="hover-description">
-                <InteractiveElement
-                  className="hover-button"
-                  style={{ height }}
-                  onMouseOver={this.expand}
-                  onMouseLeave={this.close}
-                  onClick={this.toggle}
-                >
-                  { !this.state.expanded && <FA name="angle-double-up" /> }
-                  <Spring from={{ opacity: expanded ? 1 : 0 }}>
-                    {
-                      ({ opacity }) => (
-                        <p style={{ opacity }}>
-                          { expanded &&
-                            <Linkify properties={{ target: '_blank' }}>
-                              {text}
-                              <Link
-                                className="position-link"
-                                to={`/${isProjectedVacancy ? 'vacancy' : 'details'}/${id}`}
-                              >
-                                View position
-                              </Link>
-                            </Linkify>
-                          }
-                        </p>
-                      )
-                    }
-                  </Spring>
-                </InteractiveElement>
-              </div>
-            )
-        }
+      <Spring to={{ height: height$ }} config={{ friction: 21, tension: 175 }}>
+        {({ height }) => (
+          <div className="hover-description">
+            <InteractiveElement
+              className="hover-button"
+              style={{ height }}
+              onMouseOver={this.expand}
+              onMouseLeave={this.close}
+              onClick={this.toggle}
+            >
+              {!this.state.expanded && <FA name="angle-double-up" />}
+              <Spring from={{ opacity: expanded ? 1 : 0 }}>
+                {({ opacity }) => (
+                  <p style={{ opacity }}>
+                    {expanded && (
+                      <Linkify properties={{ target: '_blank' }}>
+                        {text}
+                        <Link
+                          className="position-link"
+                          to={`/${
+                            isProjectedVacancy ? 'vacancy' : 'details'
+                          }/${id}`}
+                        >
+                          View position
+                        </Link>
+                      </Linkify>
+                    )}
+                  </p>
+                )}
+              </Spring>
+            </InteractiveElement>
+          </div>
+        )}
       </Spring>
     );
   }

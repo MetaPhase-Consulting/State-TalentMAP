@@ -1,8 +1,12 @@
-import { userProfile, userProfileFavoritePositionHasErrored, userProfileFavoritePositionIsLoading,
-  userProfileHasErrored, userProfileIsLoading } from './userProfile';
+import {
+  userProfile, userProfileFavoritePositionHasErrored, userProfileFavoritePositionIsLoading,
+  userProfileHasErrored, userProfileIsLoading,
+} from './userProfile';
 
-export default { userProfile,
+export default {
+  userProfile,
   userProfileHasErrored,
   userProfileIsLoading,
   userProfileFavoritePositionIsLoading,
-  userProfileFavoritePositionHasErrored };
+  userProfileFavoritePositionHasErrored,
+};

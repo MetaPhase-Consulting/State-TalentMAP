@@ -22,20 +22,17 @@ describe('ProfileDashboardComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <ProfileDashboard {...props} />);
+    const wrapper = shallow(<ProfileDashboard {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when isPublic', () => {
-    const wrapper = shallow(
-      <ProfileDashboard {...props} isPublic />);
+    const wrapper = shallow(<ProfileDashboard {...props} isPublic />);
     expect(wrapper).toBeDefined();
   });
 
   it('displays the Search as Client button when isPublic', () => {
-    const wrapper = shallow(
-      <ProfileDashboard {...props} isPublic />);
+    const wrapper = shallow(<ProfileDashboard {...props} isPublic />);
 
     // Really hacky.
     // This did not work: wrapper.find('Connect(withRouter(SearchAsClientButton))').exists()
@@ -52,13 +49,13 @@ describe('ProfileDashboardComponent', () => {
         isLoading
         assignmentIsLoading
         notificationsIsLoading
-      />);
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when loaded', () => {
-    const wrapper = shallow(
-      <ProfileDashboard {...props} />);
+    const wrapper = shallow(<ProfileDashboard {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

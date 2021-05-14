@@ -4,7 +4,10 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import HomePageFilters from './HomePageFilters';
-import { FILTER_ITEMS_ARRAY, USER_SKILL_CODE_ARRAY } from '../../../Constants/PropTypes';
+import {
+  FILTER_ITEMS_ARRAY,
+  USER_SKILL_CODE_ARRAY,
+} from '../../../Constants/PropTypes';
 import { ENDPOINT_PARAMS } from '../../../Constants/EndpointParams';
 
 class HomePageFiltersContainer extends Component {
@@ -23,7 +26,7 @@ class HomePageFiltersContainer extends Component {
 
   // When a skill is selected, pull all the "codes" from the skill array and
   // set them to a new array and store in state.
-  onSkillSelect = values => {
+  onSkillSelect = (values) => {
     const { filterValues } = this.state;
     const filterArray = [];
     values.forEach((value) => {
@@ -36,7 +39,7 @@ class HomePageFiltersContainer extends Component {
   // Submit the search by taking all the different filters' arrays and converting them strings,
   // then passing the parent object to queryString to stringify it.
   // Then pass that new string to a /results search.
-  submitSearch = e => {
+  submitSearch = (e) => {
     // preventDefault() to prevent form submission side effects
     e.preventDefault();
     const { filterValues } = this.state;
@@ -77,8 +80,8 @@ HomePageFiltersContainer.defaultProps = {
   userSkills: [],
 };
 
-export const mapDispatchToProps = dispatch => ({
-  onNavigateTo: dest => dispatch(push(dest)),
+export const mapDispatchToProps = (dispatch) => ({
+  onNavigateTo: (dest) => dispatch(push(dest)),
 });
 
 export default connect(null, mapDispatchToProps)(HomePageFiltersContainer);

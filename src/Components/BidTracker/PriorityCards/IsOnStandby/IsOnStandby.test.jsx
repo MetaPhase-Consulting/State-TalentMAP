@@ -13,25 +13,19 @@ describe('IsOnStandbyComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <IsOnStandby {...props} />,
-    );
+    const wrapper = shallow(<IsOnStandby {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('accepts different props', () => {
     const newBid = { ...bid };
     newBid.status = 'closed';
-    const wrapper = shallow(
-      <IsOnStandby {...props} bid={newBid} />,
-    );
+    const wrapper = shallow(<IsOnStandby {...props} bid={newBid} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <IsOnStandby {...props} />,
-    );
+    const wrapper = shallow(<IsOnStandby {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

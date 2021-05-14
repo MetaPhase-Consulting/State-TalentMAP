@@ -10,31 +10,19 @@ describe('BorderedListComponent', () => {
   ];
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BorderedList
-        contentArray={contentArray}
-      />,
-    );
+    const wrapper = shallow(<BorderedList contentArray={contentArray} />);
     expect(wrapper).toBeDefined();
   });
 
   it('renders the contents', () => {
-    const wrapper = shallow(
-      <BorderedList
-        contentArray={contentArray}
-      />,
-    );
+    const wrapper = shallow(<BorderedList contentArray={contentArray} />);
     expect(wrapper.find('span').text()).toBe('test 1');
     expect(wrapper.find('.my-div').text()).toBe('test 2');
     expect(wrapper.find('p').text()).toBe('test 3');
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BorderedList
-        contentArray={contentArray}
-      />,
-    );
+    const wrapper = shallow(<BorderedList contentArray={contentArray} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

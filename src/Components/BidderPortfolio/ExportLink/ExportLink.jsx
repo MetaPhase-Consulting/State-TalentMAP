@@ -21,13 +21,11 @@ const HEADERS = [
 ];
 
 // Processes results before sending to the download component to allow for custom formatting.
-const processData = data => (
-  data.map(entry => ({
-    ...mapValues(entry, x => !x ? '' : x), // eslint-disable-line no-confusing-arrow
-    grade: getFormattedNumCSV(entry.grade),
-    // any other processing we may want to do here
-  }))
-);
+const processData = (data) => data.map((entry) => ({
+  ...mapValues(entry, (x) => (!x ? '' : x)), // eslint-disable-line no-confusing-arrow
+  grade: getFormattedNumCSV(entry.grade),
+  // any other processing we may want to do here
+}));
 
 export class ExportLink extends Component {
   constructor(props) {
@@ -68,7 +66,7 @@ export class ExportLink extends Component {
     }
   };
 
-  setCsvRef = ref => {
+  setCsvRef = (ref) => {
     this.csvLink = ref;
   };
 
@@ -76,7 +74,11 @@ export class ExportLink extends Component {
     const { data, isLoading } = this.state;
     return (
       <div className="export-button-container">
-        <ExportButton onClick={this.onClick} isLoading={isLoading} disabled={this.props.disabled} />
+        <ExportButton
+          onClick={this.onClick}
+          isLoading={isLoading}
+          disabled={this.props.disabled}
+        />
         <CSVLink
           transform={spliceStringForCSV}
           tabIndex="-1"
@@ -112,7 +114,7 @@ ExportLink.defaultProps = {
   disabled: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   hasErrored: state.lastBidderPortfolioHasErrored,
   isLoading: state.lastBidderPortfolioIsLoading,
   data: state.lastBidderPortfolio,

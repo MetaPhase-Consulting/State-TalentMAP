@@ -40,48 +40,57 @@ const BidSteps = (props, context) => {
         tooltipText={tooltipText}
       />
     );
-    if (bidData[status.prop].isCurrent && bidData[status.prop].title === APPROVED.text
-    && getUseConfetti() && !condensedView) {
+    if (
+      bidData[status.prop].isCurrent
+      && bidData[status.prop].title === APPROVED.text
+      && getUseConfetti()
+      && !condensedView
+    ) {
       let colors;
       const country = get(bid, 'position.post.location.country');
       if (country) {
         colors = getFlagColorsByTextSearch(country);
       }
-      return (
-        <ConfettiIcon colors={colors}>
-          {icon}
-        </ConfettiIcon>
-      );
+      return <ConfettiIcon colors={colors}>{icon}</ConfettiIcon>;
     }
     return icon;
   };
   return (
     <Steps labelPlacement="vertical">
-      {
-        BID_STEPS.map((status) => {
-          const icon = getIcon(status);
-          return (<Step
+      {BID_STEPS.map((status) => {
+        const icon = getIcon(status);
+        return (
+          <Step
             key={shortId.generate()}
             className={`
             ${status.className}
             ${bidData[status.prop].isCurrent ? 'step-current' : ''}
             ${bidData[status.prop].isPendingLine ? 'pending-line' : ''}
-            ${bidData[status.prop].isComplete ? 'step-complete' : 'step-incomplete'}
-          `}
-            title={
-              <div>
-                <div className="step-title-main-text">{bidData[status.prop].title}</div>
-                <div className="step-title-sub-text">{formatDate(bidData[status.prop].date)}</div>
-              </div>
+            ${
+              bidData[status.prop].isComplete
+                ? 'step-complete'
+                : 'step-incomplete'
             }
+          `}
+            title={(
+              <div>
+                <div className="step-title-main-text">
+                  {bidData[status.prop].title}
+                </div>
+                <div className="step-title-sub-text">
+                  {formatDate(bidData[status.prop].date)}
+                </div>
+              </div>
+            )}
             tailContent={
-              bidData[status.prop].hasBidPreparingTooltip ? <BidPreparingIcon /> : null
+              bidData[status.prop].hasBidPreparingTooltip ? (
+                <BidPreparingIcon />
+              ) : null
             }
             icon={icon}
           />
-          );
-        })
-      }
+        );
+      })}
     </Steps>
   );
 };

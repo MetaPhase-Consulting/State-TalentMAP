@@ -3,7 +3,10 @@ import { getPostName } from '../../../utilities';
 
 const SuggestionChoicePost = ({ suggestion }) => (
   <div className="render-suggestion render-suggestion--post">
-    {getPostName(suggestion)}{suggestion.hasDuplicateDescription && suggestion.code ? ` (${suggestion.code})` : ''}
+    {getPostName(suggestion)}
+    {suggestion.hasDuplicateDescription && suggestion.code
+      ? ` (${suggestion.code})`
+      : ''}
   </div>
 );
 

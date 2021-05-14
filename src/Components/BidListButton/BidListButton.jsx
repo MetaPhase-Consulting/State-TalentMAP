@@ -22,7 +22,9 @@ class BidListButton extends Component {
   }
 
   toggleSaved = () => {
-    const { disabled, toggleBidPosition, id, isLoading } = this.props;
+    const {
+      disabled, toggleBidPosition, id, isLoading,
+    } = this.props;
     const { isSaved } = this.getBidData();
     // pass the id and the "remove" param
     if (!isLoading && !disabled) {
@@ -36,18 +38,27 @@ class BidListButton extends Component {
     const { isSaved, canDelete } = this.getBidData();
     const { isClient } = this.context;
     const isClientText = isClient ? ' Client' : '';
-    const text = isSaved ? `Remove from${isClientText} Bid List` : `Add to${isClientText} Bid List`;
+    const text = isSaved
+      ? `Remove from${isClientText} Bid List`
+      : `Add to${isClientText} Bid List`;
     const iconClass = isSaved ? 'trash' : 'plus-circle';
     const { className, disabled, isLoading } = this.props;
 
     const disabled$ = disabled || !canDelete;
     const disabledClass = disabled$ ? 'usa-button-disabled' : '';
     return (
-      <button className={`${disabledClass} ${className}`} style={this.style} onClick={this.toggleSaved} disabled={disabled$}>
+      <button
+        className={`${disabledClass} ${className}`}
+        style={this.style}
+        onClick={this.toggleSaved}
+        disabled={disabled$}
+      >
         <span className="button-icon">
-          {isLoading ?
-            (<span className="ds-c-spinner spinner-white" />) :
-            (<FontAwesome name={iconClass} />)}
+          {isLoading ? (
+            <span className="ds-c-spinner spinner-white" />
+          ) : (
+            <FontAwesome name={iconClass} />
+          )}
         </span>
         <span>{text}</span>
       </button>

@@ -15,7 +15,13 @@ import InteractiveElement from '../InteractiveElement';
 export const StaticDevContent = ({ toggle, showStaticContent }) => (
   <InteractiveElement
     type="span"
-    style={{ color: 'white', position: 'absolute', right: '0px', cursor: 'pointer', fontSize: '10px' }}
+    style={{
+      color: 'white',
+      position: 'absolute',
+      right: '0px',
+      cursor: 'pointer',
+      fontSize: '10px',
+    }}
     onClick={() => toggle(!showStaticContent)}
     className="static-content-toggle"
   >
@@ -33,12 +39,12 @@ StaticDevContent.defaultProps = {
   showStaticContent: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   showStaticContent: state.shouldShowStaticContent,
 });
 
-const mapDispatchToProps = dispatch => ({
-  toggle: value => dispatch(toggleStaticContent(value)),
+const mapDispatchToProps = (dispatch) => ({
+  toggle: (value) => dispatch(toggleStaticContent(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StaticDevContent);

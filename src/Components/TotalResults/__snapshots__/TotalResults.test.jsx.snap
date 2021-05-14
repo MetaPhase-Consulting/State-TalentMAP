@@ -6,13 +6,15 @@ exports[`TotalResults beginning and through not equal displays page numbers and 
   id="total-results"
 >
   <div>
-    Viewing 
+    Viewing
+     
     <strong>
       1
       -
       25
     </strong>
-     of 
+     
+    of 
     <strong>
       103
     </strong>
@@ -28,13 +30,15 @@ exports[`TotalResults beginning and through not equal displays page numbers and 
   id="total-results"
 >
   <div>
-    Viewing 
+    Viewing
+     
     <strong>
       26
       -
       50
     </strong>
-     of 
+     
+    of 
     <strong>
       103
     </strong>
@@ -50,13 +54,15 @@ exports[`TotalResults beginning and through not equal displays page numbers and 
   id="total-results"
 >
   <div>
-    Viewing 
+    Viewing
+     
     <strong>
       51
       -
       75
     </strong>
-     of 
+     
+    of 
     <strong>
       103
     </strong>
@@ -72,13 +78,15 @@ exports[`TotalResults beginning and through not equal displays page numbers and 
   id="total-results"
 >
   <div>
-    Viewing 
+    Viewing
+     
     <strong>
       101
       -
       103
     </strong>
-     of 
+     
+    of 
     <strong>
       103
     </strong>
@@ -94,13 +102,15 @@ exports[`TotalResults beginning and through not equal displays page numbers and 
   id="total-results"
 >
   <div>
-    Viewing 
+    Viewing
+     
     <strong>
       76
       -
       100
     </strong>
-     of 
+     
+    of 
     <strong>
       103
     </strong>

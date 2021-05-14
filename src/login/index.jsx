@@ -1,7 +1,5 @@
 import { Redirect } from 'react-router';
 
-const Login = () => (
-  <Redirect to="/" />
-);
+const Login = () => <Redirect to="/" />;
 
 export default Login;

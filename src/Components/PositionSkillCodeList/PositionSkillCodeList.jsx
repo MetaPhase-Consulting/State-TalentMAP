@@ -3,14 +3,14 @@ import { NO_SKILL } from '../../Constants/SystemMessages';
 
 const PositionSkillCodeList = ({ primarySkill, secondarySkill }) => {
   let skillCodeList = [];
-  if (primarySkill) { skillCodeList.push(primarySkill); }
-  if (secondarySkill) { skillCodeList.push(secondarySkill); }
+  if (primarySkill) {
+    skillCodeList.push(primarySkill);
+  }
+  if (secondarySkill) {
+    skillCodeList.push(secondarySkill);
+  }
   skillCodeList = skillCodeList.join(', ') || NO_SKILL;
-  return (
-    <span>
-      {skillCodeList}
-    </span>
-  );
+  return <span>{skillCodeList}</span>;
 };
 
 PositionSkillCodeList.propTypes = {

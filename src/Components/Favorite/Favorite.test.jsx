@@ -9,11 +9,8 @@ describe('Favorite', () => {
 
   it('is defined', () => {
     const favorite = TestUtils.renderIntoDocument(
-      <Favorite
-        compareArray={[]}
-        refKey={refKey}
-        onToggle={() => {}}
-      />);
+      <Favorite compareArray={[]} refKey={refKey} onToggle={() => {}} />,
+    );
     expect(favorite).toBeDefined();
   });
 
@@ -26,105 +23,146 @@ describe('Favorite', () => {
         isLoading
         hasBorder
         hideText
-      />);
+      />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('adds the correct class when useButtonClass is true', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <Favorite onToggle={spy} compareArray={[{ id: refKey }]} refKey={refKey} useButtonClass />);
+      <Favorite
+        onToggle={spy}
+        compareArray={[{ id: refKey }]}
+        refKey={refKey}
+        useButtonClass
+      />,
+    );
     expect(wrapper.find('.usa-button')).toBeDefined();
   });
 
   it('handles being in the enabled state', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <Favorite onToggle={spy} compareArray={[{ id: refKey }]} refKey={refKey} />);
+      <Favorite
+        onToggle={spy}
+        compareArray={[{ id: refKey }]}
+        refKey={refKey}
+      />,
+    );
     expect(wrapper.find('.usa-button-secondary')).toBeDefined();
   });
 
   it('can call the onToggle function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<Favorite onToggle={spy} compareArray={[]} refKey={refKey} />);
+    const wrapper = shallow(
+      <Favorite onToggle={spy} compareArray={[]} refKey={refKey} />,
+    );
     wrapper.find('InteractiveElement').simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
   it('sets state on UNSAFE_componentWillReceiveProps() when this.state.loading && !nextProps.isLoading', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<Favorite onToggle={spy} compareArray={[]} refKey={refKey} />);
+    const wrapper = shallow(
+      <Favorite onToggle={spy} compareArray={[]} refKey={refKey} />,
+    );
     wrapper.setState({ loading: true });
-    wrapper.instance().UNSAFE_componentWillReceiveProps({ isLoading: false, compareArray: [] }, {});
+    wrapper
+      .instance()
+      .UNSAFE_componentWillReceiveProps(
+        { isLoading: false, compareArray: [] },
+        {},
+      );
     expect(wrapper.instance().state.loading).toBe(false);
   });
 
   it('matches snapshot - Add state', () => {
-    const wrapper = shallow(<Favorite onToggle={() => {}} compareArray={[]} refKey={refKey} />);
+    const wrapper = shallow(
+      <Favorite onToggle={() => {}} compareArray={[]} refKey={refKey} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when useButtonClass is true', () => {
     const wrapper = shallow(
-      <Favorite onToggle={() => {}} compareArray={[]} refKey={refKey} useButtonClass />);
+      <Favorite
+        onToggle={() => {}}
+        compareArray={[]}
+        refKey={refKey}
+        useButtonClass
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when useLongText is true - Add state', () => {
-    const wrapper = shallow(<Favorite
-      onToggle={() => {}}
-      compareArray={[]}
-      refKey={refKey}
-      useLongText
-    />);
+    const wrapper = shallow(
+      <Favorite
+        onToggle={() => {}}
+        compareArray={[]}
+        refKey={refKey}
+        useLongText
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot - Remove state', () => {
     const array = [{ id: refKey }];
-    const wrapper = shallow(<Favorite
-      onToggle={() => {}}
-      compareArray={array}
-      refKey={refKey}
-      useLongText
-    />);
+    const wrapper = shallow(
+      <Favorite
+        onToggle={() => {}}
+        compareArray={array}
+        refKey={refKey}
+        useLongText
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when useLongText is true - Remove state', () => {
     const array = [{ id: refKey }];
-    const wrapper = shallow(<Favorite onToggle={() => {}} compareArray={array} refKey={refKey} />);
+    const wrapper = shallow(
+      <Favorite onToggle={() => {}} compareArray={array} refKey={refKey} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when useSpinnerWhite is true', () => {
     const array = [{ id: refKey }];
-    const wrapper = shallow(<Favorite
-      isLoading
-      onToggle={() => {}}
-      compareArray={array}
-      refKey={refKey}
-      useSpinnerWhite
-    />);
+    const wrapper = shallow(
+      <Favorite
+        isLoading
+        onToggle={() => {}}
+        compareArray={array}
+        refKey={refKey}
+        useSpinnerWhite
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when useSpinnerWhite and useButtonClassSecondary are true', () => {
     const array = [{ id: refKey }];
-    const wrapper = shallow(<Favorite
-      isLoading
-      onToggle={() => {}}
-      compareArray={array}
-      refKey={refKey}
-      useSpinnerWhite
-      useButtonClassSecondary
-    />);
+    const wrapper = shallow(
+      <Favorite
+        isLoading
+        onToggle={() => {}}
+        compareArray={array}
+        refKey={refKey}
+        useSpinnerWhite
+        useButtonClassSecondary
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot after clicking', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<Favorite onToggle={spy} compareArray={[]} refKey={refKey} />);
+    const wrapper = shallow(
+      <Favorite onToggle={spy} compareArray={[]} refKey={refKey} />,
+    );
     wrapper.find('InteractiveElement').simulate('click');
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

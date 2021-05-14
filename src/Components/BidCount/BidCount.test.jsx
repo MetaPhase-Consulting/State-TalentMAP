@@ -23,32 +23,24 @@ describe('BidCountComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidCount {...props} />,
-    );
+    const wrapper = shallow(<BidCount {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when hideLabel is true', () => {
-    const wrapper = shallow(
-      <BidCount {...props} hideLabel />,
-    );
+    const wrapper = shallow(<BidCount {...props} hideLabel />);
     expect(wrapper).toBeDefined();
   });
 
   it('properly renders classes on true', () => {
-    const wrapper = shallow(
-      <BidCount {...props} {...stylePropsTrue} />,
-    );
+    const wrapper = shallow(<BidCount {...props} {...stylePropsTrue} />);
     expect(wrapper.find('.bid-count-secondary').exists()).toBe(true);
     expect(wrapper.find('.bid-count-condensed').exists()).toBe(true);
     expect(wrapper.find('.bid-count-list-tandem').exists()).toBe(true);
   });
 
   it('properly renders classes on false', () => {
-    const wrapper = shallow(
-      <BidCount {...props} {...stylePropsFalse} />,
-    );
+    const wrapper = shallow(<BidCount {...props} {...stylePropsFalse} />);
     expect(wrapper.find('.bid-count-secondary').exists()).toBe(false);
     expect(wrapper.find('.bid-count-condensed').exists()).toBe(false);
     expect(wrapper.find('.bid-count-list-tandem').exists()).toBe(false);
@@ -70,16 +62,12 @@ describe('BidCountComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BidCount {...props} />,
-    );
+    const wrapper = shallow(<BidCount {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when hideLabel is true', () => {
-    const wrapper = shallow(
-      <BidCount {...props} hideLabel />,
-    );
+    const wrapper = shallow(<BidCount {...props} hideLabel />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

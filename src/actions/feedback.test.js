@@ -12,8 +12,7 @@ describe('async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onPost('/feedback/').reply(200,
-      'success',
-    );
+      'success');
 
     const message = {
       comments: 'my feedback',
@@ -34,8 +33,7 @@ describe('async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onPost('/feedback/').reply(400,
-      { comment: ['error'] },
-    );
+      { comment: ['error'] });
 
     const message = {
       comments: 'my feedback',

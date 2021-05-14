@@ -15,8 +15,18 @@ const STANDBY = 'standby';
 // If a priority bid exists, then we check whether this individual bid is the priority bid.
 // If it is, we'll wrap the card in the IsPriority component, and if not, we'll pass the bid
 // object to the IsOnStandby component.
-const BidTrackerCardContainer = ({ bid, acceptBid, declineBid, registerHandshake, priorityExists,
-  userProfile, submitBid, deleteBid, useCDOView, unregisterHandshake }) => {
+const BidTrackerCardContainer = ({
+  bid,
+  acceptBid,
+  declineBid,
+  registerHandshake,
+  priorityExists,
+  userProfile,
+  submitBid,
+  deleteBid,
+  useCDOView,
+  unregisterHandshake,
+}) => {
   const getCard = ({ ...props }) => (
     <BidTrackerCard
       bid={bid}
@@ -36,8 +46,12 @@ const BidTrackerCardContainer = ({ bid, acceptBid, declineBid, registerHandshake
   // Set a displayType and change it based on priority.
   // This way we can ensure that we only have one output in our return
   let displayType = DEFAULT;
-  if (priorityExists && bid.is_priority) { displayType = PRIORITY; }
-  if (priorityExists && !bid.is_priority) { displayType = STANDBY; }
+  if (priorityExists && bid.is_priority) {
+    displayType = PRIORITY;
+  }
+  if (priorityExists && !bid.is_priority) {
+    displayType = STANDBY;
+  }
 
   let cardComponent;
   switch (displayType) {
@@ -49,17 +63,13 @@ const BidTrackerCardContainer = ({ bid, acceptBid, declineBid, registerHandshake
       );
       break;
     case STANDBY:
-      cardComponent = (<IsOnStandby bid={bid} deleteBid={deleteBid} />);
+      cardComponent = <IsOnStandby bid={bid} deleteBid={deleteBid} />;
       break;
     default:
       cardComponent = getCard();
   }
 
-  return (
-    <div className="bid-tracker-container">
-      { cardComponent }
-    </div>
-  );
+  return <div className="bid-tracker-container">{cardComponent}</div>;
 };
 
 BidTrackerCardContainer.propTypes = {

@@ -5,7 +5,7 @@ import EmptyListAlert from './EmptyListAlert';
 describe('EmptyListAlertComponent', () => {
   const props = {
     textLineOne: 'Here is some text',
-    textLineTwo: (<span>And here is an element!</span>),
+    textLineTwo: <span>And here is an element!</span>,
   };
   it('is defined', () => {
     const wrapper = shallow(<EmptyListAlert {...props} />);

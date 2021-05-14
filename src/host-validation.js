@@ -8,7 +8,7 @@ module.exports = function (config) {
     return allowedValues.some((candidate) => {
       if (typeof candidate === 'string') {
         return candidate === headerValue;
-      } else if (candidate instanceof RegExp) {
+      } if (candidate instanceof RegExp) {
         console.log(`candidate ${candidate}`);
         return candidate.test(headerValue);
       }

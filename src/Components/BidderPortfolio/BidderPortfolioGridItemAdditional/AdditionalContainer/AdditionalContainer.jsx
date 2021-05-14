@@ -12,9 +12,11 @@ class BidderPortfolioGridItemAdditional extends Component {
       hasErrored: false,
     };
   }
+
   UNSAFE_componentWillMount() {
     this.fetchClient();
   }
+
   // Since displaying each set of additional details is a one-off request,
   // we don't use redux to maintain state and simply store it in the component's
   // state.
@@ -22,19 +24,19 @@ class BidderPortfolioGridItemAdditional extends Component {
     const { clientId, getClient } = this.props;
     const clientPromise = getClient(clientId);
     this.setState({ isLoading: true, hasErrored: false });
-    Promise.resolve(clientPromise)
-      .then((client) => {
-        if (client instanceof Error) {
-          this.setState({ isLoading: false, hasErrored: true });
-        } else {
-          this.setState({
-            client,
-            isLoading: false,
-            hasErrored: false,
-          });
-        }
-      });
+    Promise.resolve(clientPromise).then((client) => {
+      if (client instanceof Error) {
+        this.setState({ isLoading: false, hasErrored: true });
+      } else {
+        this.setState({
+          client,
+          isLoading: false,
+          hasErrored: false,
+        });
+      }
+    });
   }
+
   render() {
     const { client, isLoading, hasErrored } = this.state;
     return (

@@ -14,7 +14,7 @@ class Editor extends Component {
     };
   }
 
-  onContentChange = e => {
+  onContentChange = (e) => {
     this.setState({ data: e });
   };
 
@@ -35,18 +35,18 @@ class Editor extends Component {
         />
         <div className="usa-grid-full markdown-editor">
           {
-
             <MarkdownEditor
               onContentChange={this.onContentChange}
-              styles={{
-                /*
+              styles={
+                {
+                  /*
                   Do not add styles - they break starting with React 16
                 */
-              }}
+                }
+              }
               initialContent={data}
               iconsSet="font-awesome"
             />
-
           }
         </div>
       </div>

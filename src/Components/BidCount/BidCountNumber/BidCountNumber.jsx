@@ -10,16 +10,19 @@ const BidCountNumber = ({ type, number }) => (
       offset={-50}
       tabIndex="0"
     >
-      <span className="bid-count-number">
-        {number}
-      </span>
+      <span className="bid-count-number">{number}</span>
     </Tooltip>
   </li>
 );
 
 BidCountNumber.propTypes = {
   number: PropTypes.number.isRequired,
-  type: PropTypes.oneOf(['totalBids', 'atGradeBids', 'inSkillBids', 'atGradeInSkillBids']).isRequired,
+  type: PropTypes.oneOf([
+    'totalBids',
+    'atGradeBids',
+    'inSkillBids',
+    'atGradeInSkillBids',
+  ]).isRequired,
 };
 
 export default BidCountNumber;

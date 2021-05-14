@@ -39,12 +39,12 @@ Trigger.defaultProps = {
   isPrimary: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isOpen: state.viewSavedSearchDialog,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  toggle: bool => dispatch(toggleViewSavedSearchDialog(bool)),
+export const mapDispatchToProps = (dispatch) => ({
+  toggle: (bool) => dispatch(toggleViewSavedSearchDialog(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trigger);

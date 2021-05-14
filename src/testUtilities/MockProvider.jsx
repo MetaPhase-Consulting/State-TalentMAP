@@ -10,12 +10,15 @@ const flags = () => getFlags();
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-export const MockTestProvider = ({ flagProps, providerProps, memoryProps, children }) => (
+export const MockTestProvider = ({
+  flagProps,
+  providerProps,
+  memoryProps,
+  children,
+}) => (
   <FlagsProvider flags={flags()} {...flagProps}>
     <Provider store={mockStore({})} {...providerProps}>
-      <MemoryRouter {...memoryProps}>
-        {children}
-      </MemoryRouter>
+      <MemoryRouter {...memoryProps}>{children}</MemoryRouter>
     </Provider>
   </FlagsProvider>
 );

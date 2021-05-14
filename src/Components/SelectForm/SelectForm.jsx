@@ -18,9 +18,16 @@ class SelectForm extends Component {
   setDefaultValue(props) {
     const { selection } = this.state;
     const { includeFirstEmptyOption, defaultSort } = props;
-    if (includeFirstEmptyOption && !selection.length && (defaultSort || isString(defaultSort))) {
+    if (
+      includeFirstEmptyOption
+      && !selection.length
+      && (defaultSort || isString(defaultSort))
+    ) {
       this.selectOption({ target: { value: defaultSort || '' } });
-    } else if ((defaultSort || isString(defaultSort)) && defaultSort !== selection) {
+    } else if (
+      (defaultSort || isString(defaultSort))
+      && defaultSort !== selection
+    ) {
       this.setState({ selection: defaultSort || '' });
     }
   }
@@ -32,45 +39,47 @@ class SelectForm extends Component {
     this.setState({ selection });
     this.props.onSelectOption({ target: { value: transformValue(selection) } });
   }
-  render() {
-    const { id, label, options, includeFirstEmptyOption, emptyOptionText,
-      disabled, className, labelSrOnly } = this.props;
 
-    const optionList = options.map(option =>
-      (
-        <option
-          key={option.value}
-          disabled={option.disabled}
-          value={option.value}
-        >
-          {option.text}
-        </option>
-      ),
-    );
+  render() {
+    const {
+      id,
+      label,
+      options,
+      includeFirstEmptyOption,
+      emptyOptionText,
+      disabled,
+      className,
+      labelSrOnly,
+    } = this.props;
+
+    const optionList = options.map((option) => (
+      <option
+        key={option.value}
+        disabled={option.disabled}
+        value={option.value}
+      >
+        {option.text}
+      </option>
+    ));
     return (
       <div className={`usa-form ${disabled ? 'results-loading' : ''}`}>
-        <label className={labelSrOnly ? 'usa-sr-only' : ''} htmlFor={id}>{label}</label>
+        <label className={labelSrOnly ? 'usa-sr-only' : ''} htmlFor={id}>
+          {label}
+        </label>
         <select
           name={id}
           id={id}
-          onChange={e => this.selectOption(e)}
+          onChange={(e) => this.selectOption(e)}
           value={this.state.selection}
           disabled={disabled}
           className={className}
         >
-          {
-            includeFirstEmptyOption &&
-            <option
-              key="empty-option"
-              disabled="true"
-              value=""
-            >
+          {includeFirstEmptyOption && (
+            <option key="empty-option" disabled="true" value="">
               {emptyOptionText}
             </option>
-          }
-          {
-            optionList
-          }
+          )}
+          {optionList}
         </select>
       </div>
     );
@@ -98,7 +107,7 @@ SelectForm.defaultProps = {
   emptyOptionText: '- Select -',
   disabled: false,
   className: 'select-offset select-black',
-  transformValue: n => n,
+  transformValue: (n) => n,
   labelSrOnly: false,
 };
 

@@ -1,11 +1,15 @@
-import { classifications,
+import {
+  classifications,
   classificationsHasErrored,
   classificationsIsLoading,
   updateClassificationsHasErrored,
-  updateClassificationsIsLoading } from './classifications';
+  updateClassificationsIsLoading,
+} from './classifications';
 
-export default { classificationsHasErrored,
+export default {
+  classificationsHasErrored,
   classificationsIsLoading,
   classifications,
   updateClassificationsHasErrored,
-  updateClassificationsIsLoading };
+  updateClassificationsIsLoading,
+};

@@ -68,7 +68,9 @@ describe('ActionsDropdown', () => {
   });
 
   it('matches snapshot when showWithdraw and disableWithdraw are true', () => {
-    const wrapper = shallow(<ActionsDropdown {...props} showWithdraw disableWithdraw />);
+    const wrapper = shallow(
+      <ActionsDropdown {...props} showWithdraw disableWithdraw />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -39,20 +39,16 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onGet('/profile/').reply(200,
-      profile,
-    );
+      profile);
 
     mockAdapter.onGet('/permission/user/').reply(200,
-      permission,
-    );
+      permission);
 
     mockAdapter.onGet('/available_position/favorites/?limit=500').reply(200,
-      { results: [] },
-    );
+      { results: [] });
 
     mockAdapter.onPost('/stats/login/').reply(200,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -67,8 +63,7 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onDelete('/available_position/1/favorite/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -83,12 +78,10 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onGet('/available_position/1/').reply(200,
-      {},
-    );
+      {});
 
     mockAdapter.onPut('/available_position/1/favorite/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -103,8 +96,7 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onPut('/available_position/1/favorite/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -119,8 +111,7 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onPut('/available_position/1/favorite/').reply(507,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -137,16 +128,13 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/profile/').reply(404,
-      {},
-    );
+      {});
 
     mockAdapter.onGet('/permission/user/').reply(404,
-      {},
-    );
+      {});
 
     mockAdapter.onGet('/available_position/favorites/?limit=500').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

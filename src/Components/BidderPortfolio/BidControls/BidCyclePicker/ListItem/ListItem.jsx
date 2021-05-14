@@ -5,8 +5,13 @@ import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import CheckBox from 'Components/CheckBox';
 import InteractiveElement from 'Components/InteractiveElement';
 
-
-const ListItem = ({ item, selectValue, getIsSelected, queryProp, customLabel }) => {
+const ListItem = ({
+  item,
+  selectValue,
+  getIsSelected,
+  queryProp,
+  customLabel,
+}) => {
   const item$ = queryProp ? item[queryProp] : item;
   const label = customLabel || item$;
   const isSelected = getIsSelected(item);

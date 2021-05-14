@@ -12,7 +12,7 @@ class ResultsSearchHeader extends Component {
     };
   }
 
-  onChangeQueryText = e => {
+  onChangeQueryText = (e) => {
     this.changeText('q', e);
   };
 
@@ -22,9 +22,11 @@ class ResultsSearchHeader extends Component {
 
   getValue = () => this.state.q.value;
 
-  submitSearch = e => {
+  submitSearch = (e) => {
     // resolves “Form submission canceled because the form is not connected” warning
-    if (e && e.preventDefault) { e.preventDefault(); }
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     const { q } = this.state;
     // send any updates to q and location back to the Results container, and reset our page number
     this.props.onUpdate({ q: q.value });
@@ -39,15 +41,32 @@ class ResultsSearchHeader extends Component {
   }
 
   render() {
-    const { defaultKeyword, isHomePage, placeholder, searchBarDisabled,
-      searchBarDisabledPlaceholder, legend, legendSrOnly } = this.props;
+    const {
+      defaultKeyword,
+      isHomePage,
+      placeholder,
+      searchBarDisabled,
+      searchBarDisabledPlaceholder,
+      legend,
+      legendSrOnly,
+    } = this.props;
     return (
-      <div className={`results-search-bar padded-main-content results-single-search ${!isHomePage ? 'homepage-offset' : ''}`}>
+      <div
+        className={`results-search-bar padded-main-content results-single-search ${
+          !isHomePage ? 'homepage-offset' : ''
+        }`}
+      >
         <div className="usa-grid-full results-search-bar-container">
-          <form className="usa-grid-full" onSubmit={this.submitSearch} >
+          <form className="usa-grid-full" onSubmit={this.submitSearch}>
             <fieldset className="usa-width-five-sixths">
               <div className="usa-width-one-whole search-results-inputs search-keyword">
-                <legend className={`usa-grid-full homepage-search-legend ${legendSrOnly ? 'usa-sr-only' : ''}`}>{legend}</legend>
+                <legend
+                  className={`usa-grid-full homepage-search-legend ${
+                    legendSrOnly ? 'usa-sr-only' : ''
+                  }`}
+                >
+                  {legend}
+                </legend>
                 <SearchBar
                   id="search-keyword-field"
                   label="Keywords"
@@ -56,7 +75,11 @@ class ResultsSearchHeader extends Component {
                   labelSrOnly
                   noForm
                   noButton
-                  placeholder={searchBarDisabled ? searchBarDisabledPlaceholder : placeholder}
+                  placeholder={
+                    searchBarDisabled
+                      ? searchBarDisabledPlaceholder
+                      : placeholder
+                  }
                   onChangeText={this.onChangeQueryText}
                   defaultValue={defaultKeyword}
                   inputDisabled={searchBarDisabled}
@@ -66,7 +89,11 @@ class ResultsSearchHeader extends Component {
               </div>
             </fieldset>
             <div className="usa-width-one-sixth search-submit-button">
-              <button className="usa-button" type="submit" disabled={searchBarDisabled}>
+              <button
+                className="usa-button"
+                type="submit"
+                disabled={searchBarDisabled}
+              >
                 <FontAwesome name="search" className="label-icon" />
                 Search
               </button>
@@ -98,7 +125,8 @@ ResultsSearchHeader.defaultProps = {
   placeholder: 'Enter keywords...',
   isHomePage: false,
   searchBarDisabled: false,
-  searchBarDisabledPlaceholder: 'Free text search is unavailable when searching Projected Vacancies',
+  searchBarDisabledPlaceholder:
+    'Free text search is unavailable when searching Projected Vacancies',
   legend: 'Find your next position',
   legendSrOnly: false,
 };

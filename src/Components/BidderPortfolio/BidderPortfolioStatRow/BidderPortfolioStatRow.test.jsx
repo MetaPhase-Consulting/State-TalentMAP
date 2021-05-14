@@ -8,16 +8,12 @@ describe('BidderPortfolioStatRow', () => {
     userProfile: clientObject,
   };
   it('is defined', () => {
-    const wrapper = shallow(<BidderPortfolioStatRow
-      {...props}
-    />);
+    const wrapper = shallow(<BidderPortfolioStatRow {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<BidderPortfolioStatRow
-      {...props}
-    />);
+    const wrapper = shallow(<BidderPortfolioStatRow {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

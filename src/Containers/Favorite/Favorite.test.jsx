@@ -20,16 +20,18 @@ describe('Favorite', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <Favorite.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<Favorite.WrappedComponent {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is mounts', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Favorite {...props} />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Favorite {...props} />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 });

@@ -1,9 +1,13 @@
 import { isObject, merge } from 'lodash';
-import { call, cancelled, put, race, take } from 'redux-saga/effects';
+import {
+  call, cancelled, put, race, take,
+} from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import api from '../api';
 import { unsetNotificationsCount } from '../actions/notifications';
-import { trackLogin, unsetUserProfile, updateSavedSearches, userProfileFetchData } from '../actions/userProfile';
+import {
+  trackLogin, unsetUserProfile, updateSavedSearches, userProfileFetchData,
+} from '../actions/userProfile';
 import { setClient, unsetClient } from '../client/actions';
 import isCurrentPath from '../Components/ProfileMenu/navigation';
 import { redirectToLogin, redirectToLogout } from '../utilities';

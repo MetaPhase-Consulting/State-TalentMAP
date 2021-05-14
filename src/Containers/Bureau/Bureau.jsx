@@ -16,9 +16,7 @@ class BureauContainer extends Component {
   }
 
   render() {
-    return (
-      <BureauPage isAO={this.getIsAO()} />
-    );
+    return <BureauPage isAO={this.getIsAO()} />;
   }
 }
 

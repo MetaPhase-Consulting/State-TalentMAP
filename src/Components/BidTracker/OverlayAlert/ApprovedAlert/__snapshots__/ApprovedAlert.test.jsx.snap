@@ -7,8 +7,7 @@ exports[`ApprovedAlertComponent matches snapshot 1`] = `
   <div
     className="top-text"
   >
-    You've been
-     
+    You've been 
     <strong>
       approved
     </strong>

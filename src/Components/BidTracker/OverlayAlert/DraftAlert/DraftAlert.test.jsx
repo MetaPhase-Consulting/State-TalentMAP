@@ -12,8 +12,7 @@ describe('DraftAlertComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <DraftAlert {...props} />);
+    const wrapper = shallow(<DraftAlert {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -21,7 +20,10 @@ describe('DraftAlertComponent', () => {
     const wrapper = shallow(
       <DraftAlert
         {...props}
-        bid={{ ...props.bid, position: { ...props.bid.position, skill: null, grade: null } }}
+        bid={{
+          ...props.bid,
+          position: { ...props.bid.position, skill: null, grade: null },
+        }}
       />,
     );
     expect(wrapper).toBeDefined();
@@ -29,18 +31,13 @@ describe('DraftAlertComponent', () => {
 
   it('can submit a bid', () => {
     const submitSpy = sinon.spy();
-    const wrapper = shallow(
-      <DraftAlert {...props} submitBid={submitSpy} />,
-    );
+    const wrapper = shallow(<DraftAlert {...props} submitBid={submitSpy} />);
     wrapper.find('.tm-button-submit-bid').simulate('click');
     sinon.assert.calledOnce(submitSpy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <DraftAlert {...props} />,
-    );
+    const wrapper = shallow(<DraftAlert {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });
-

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import q from 'query-string';
-import { get, identity, isArray, pickBy, uniqBy } from 'lodash';
+import {
+  get, identity, isArray, pickBy, uniqBy,
+} from 'lodash';
 import { ENDPOINT_PARAMS } from 'Constants/EndpointParams';
 import PermissionsWrapper from 'Containers/PermissionsWrapper';
 import { lookupAndSetCDO } from 'actions/bidderPortfolio';
@@ -23,7 +25,7 @@ export const genSearchParams = (user) => {
 
   if (isArray(skills)) {
     skills$ = uniqBy(skills, 'code');
-    skills$ = skills$.map(m => m.code).join(',');
+    skills$ = skills$.map((m) => m.code).join(',');
   }
 
   let query = { [skillEndpoint]: skills$, [gradeEndpoint]: grade };
@@ -43,40 +45,66 @@ export class SearchAsClientButton extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { clicked } = this.state;
-    const { client, isLoading, hasErrored, history,
-      user, useRecommended } = nextProps;
+    const {
+      client, isLoading, hasErrored, history, user, useRecommended,
+    } = nextProps;
     const { perdet_seq_number: id } = user;
-    const clientHasLoaded = client && client.perdet_seq_number && client.perdet_seq_number === id &&
-      !isLoading && !hasErrored;
+    const clientHasLoaded = client
+      && client.perdet_seq_number
+      && client.perdet_seq_number === id
+      && !isLoading
+      && !hasErrored;
     if (clientHasLoaded && clicked && !useRecommended) {
       this.genSearchParamsAndNavigate(user, history);
     }
 
     const {
-      suggestions: NPsuggestions, recIsLoading: NPrecIsLoading,
-      recHasErrored: NPrecHasErrored, recId,
+      suggestions: NPsuggestions,
+      recIsLoading: NPrecIsLoading,
+      recHasErrored: NPrecHasErrored,
+      recId,
     } = nextProps;
 
-    if (recId === id && useRecommended && !NPrecIsLoading &&
-      !NPrecHasErrored && NPsuggestions && clientHasLoaded && clicked) {
+    if (
+      recId === id
+      && useRecommended
+      && !NPrecIsLoading
+      && !NPrecHasErrored
+      && NPsuggestions
+      && clientHasLoaded
+      && clicked
+    ) {
       this.stringifyParamsAndNavigate(NPsuggestions, history);
     }
   }
 
   onClick = () => {
-    const { fetchSuggestions, set, user, isLoading, recIsLoading, useRecommended } = this.props;
+    const {
+      fetchSuggestions,
+      set,
+      user,
+      isLoading,
+      recIsLoading,
+      useRecommended,
+    } = this.props;
     const { perdet_seq_number: id } = user;
     if (!isLoading && !useRecommended) {
-      this.setState({
-        clicked: true,
-      }, () => set(id));
+      this.setState(
+        {
+          clicked: true,
+        },
+        () => set(id),
+      );
     } else if (!recIsLoading && useRecommended) {
-      this.setState({
-        clicked: true,
-      }, () => {
-        set(id);
-        fetchSuggestions(id);
-      });
+      this.setState(
+        {
+          clicked: true,
+        },
+        () => {
+          set(id);
+          fetchSuggestions(id);
+        },
+      );
     }
   };
 
@@ -119,12 +147,18 @@ export class SearchAsClientButton extends Component {
 
 SearchAsClientButton.propTypes = {
   user: PropTypes.shape({
-    perdet_seq_number: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    perdet_seq_number: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
   }).isRequired,
   buttonProps: PropTypes.shape({}),
   className: PropTypes.string,
   client: PropTypes.shape({
-    perdet_seq_number: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    perdet_seq_number: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
   }),
   isLoading: PropTypes.bool,
   hasErrored: PropTypes.bool,
@@ -152,23 +186,33 @@ SearchAsClientButton.defaultProps = {
   useRecommended: true,
 };
 
-const mapStateToProps = (
-  {
-    clientView: { client, isLoading, hasErrored },
-    clientSuggestions: {
-      id: recId, suggestions, isLoading: recIsLoading, hasErrored: recHasErrored,
-    },
+const mapStateToProps = ({
+  clientView: { client, isLoading, hasErrored },
+  clientSuggestions: {
+    id: recId,
+    suggestions,
+    isLoading: recIsLoading,
+    hasErrored: recHasErrored,
   },
-) => ({
-  client, isLoading, hasErrored, recId, suggestions, recIsLoading, recHasErrored,
+}) => ({
+  client,
+  isLoading,
+  hasErrored,
+  recId,
+  suggestions,
+  recIsLoading,
+  recHasErrored,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   set: (id, cdoId) => {
     dispatch(lookupAndSetCDO(cdoId));
     dispatch(setClient(id));
   },
-  fetchSuggestions: id => dispatch(fetchClientSuggestions(id)),
+  fetchSuggestions: (id) => dispatch(fetchClientSuggestions(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchAsClientButton));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(SearchAsClientButton));

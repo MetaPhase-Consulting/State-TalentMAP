@@ -6,17 +6,30 @@ import { withRouter } from 'react-router';
 import { push } from 'connected-react-router';
 import { Flag } from 'flag';
 import FA from 'react-fontawesome';
-import { EMPTY_FUNCTION, HISTORY_OBJECT, ROUTER_LOCATION_OBJECT, USER_PROFILE } from 'Constants/PropTypes';
+import {
+  EMPTY_FUNCTION,
+  HISTORY_OBJECT,
+  ROUTER_LOCATION_OBJECT,
+  USER_PROFILE,
+} from 'Constants/PropTypes';
 import ToggleContent from '../StaticDevContent/ToggleContent';
 import { userProfileFetchData } from '../../actions/userProfile';
 import { setSelectedSearchbarFilters } from '../../actions/selectedSearchbarFilters';
 import { logoutRequest } from '../../login/actions';
 import { toggleSearchBar } from '../../actions/showSearchBar';
 import { isCurrentPath, isCurrentPathIn } from '../ProfileMenu/navigation';
-import { searchBarRoutes, searchBarRoutesForce, searchBarRoutesForceHidden } from './searchRoutes';
+import {
+  searchBarRoutes,
+  searchBarRoutesForce,
+  searchBarRoutesForceHidden,
+} from './searchRoutes';
 import MobileNav from './MobileNav';
 import DesktopNav from './DesktopNav';
-import { focusByFirstOfHeader, getAssetPath, propOrDefault } from '../../utilities';
+import {
+  focusByFirstOfHeader,
+  getAssetPath,
+  propOrDefault,
+} from '../../utilities';
 import MediaQuery from '../MediaQuery';
 import InteractiveElement from '../InteractiveElement';
 import BetaHeader from './BetaHeader';
@@ -38,24 +51,6 @@ export class Header extends Component {
     const { searchbarFilters, setSearchFilters } = this.props;
     setSearchFilters({ ...searchbarFilters, ...q });
   };
-
-  isOnResultsPage() {
-    return isCurrentPath('/results', this.props.location.pathname);
-  }
-
-  matchCurrentPath(historyObject) {
-    this.props.toggleSearchBarVisibility(false);
-    if (isCurrentPathIn(historyObject.pathname, searchBarRoutes)) {
-      this.props.toggleSearchBarVisibility(true);
-    }
-  }
-
-  checkPath() {
-    const { history } = this.props;
-    history.listen((historyObject) => {
-      this.matchCurrentPath(historyObject);
-    });
-  }
 
   toggleSearchVisibility = () => {
     const { shouldShowSearchBar, location } = this.props;
@@ -83,15 +78,31 @@ export class Header extends Component {
     return isCurrentPathIn(location.pathname, searchBarRoutesForceHidden);
   };
 
+  isOnResultsPage() {
+    return isCurrentPath('/results', this.props.location.pathname);
+  }
+
+  checkPath() {
+    const { history } = this.props;
+    history.listen((historyObject) => {
+      this.matchCurrentPath(historyObject);
+    });
+  }
+
+  matchCurrentPath(historyObject) {
+    this.props.toggleSearchBarVisibility(false);
+    if (isCurrentPathIn(historyObject.pathname, searchBarRoutes)) {
+      this.props.toggleSearchBarVisibility(true);
+    }
+  }
+
   render() {
     const {
-      login: {
-        requesting,
-      },
-      client: {
-        token,
-      },
-      shouldShowSearchBar, logout, userProfile,
+      login: { requesting },
+      client: { token },
+      shouldShowSearchBar,
+      logout,
+      userProfile,
     } = this.props;
 
     let isLoggedIn = false;
@@ -108,9 +119,12 @@ export class Header extends Component {
 
     const isOnHasOwnSearchRoute = this.isOnHasOwnSearchRoute();
     const isOnForceHideSearchRoute = this.isOnForceHideSearchRoute();
-    const showResultsSearchHeaderClass =
-      shouldShowSearchBar && !isOnHasOwnSearchRoute && !isOnForceHideSearchRoute;
-    const searchBarVisibilityClass = showResultsSearchHeaderClass ? 'search-bar-visible' : 'search-bar-hidden';
+    const showResultsSearchHeaderClass = shouldShowSearchBar
+      && !isOnHasOwnSearchRoute
+      && !isOnForceHideSearchRoute;
+    const searchBarVisibilityClass = showResultsSearchHeaderClass
+      ? 'search-bar-visible'
+      : 'search-bar-hidden';
 
     return (
       <div className={`${searchBarVisibilityClass} ${resultsPageClass}`}>
@@ -121,20 +135,29 @@ export class Header extends Component {
         >
           Skip to main content
         </InteractiveElement>
-        <header id="header" className="usa-header usa-header-extended tm-header" role="banner">
-          <Flag
-            name="flags.static_content"
-            render={() => (
-              <ToggleContent />
-            )}
-          />
+        <header
+          id="header"
+          className="usa-header usa-header-extended tm-header"
+          role="banner"
+        >
+          <Flag name="flags.static_content" render={() => <ToggleContent />} />
           <div className="usa-navbar padded-main-content padded-main-content--header">
-            <button className="usa-menu-btn"><FA name="bars" /></button>
+            <button className="usa-menu-btn">
+              <FA name="bars" />
+            </button>
             <div className="usa-logo" id="logo">
               <div className="usa-logo-text">
                 <Link to="/">
-                  <img src={hrFooterLogo} alt="Bureau of Human Resources logo" className="logo-img-hr" />
-                  <img src={logo} alt="TalentMAP logo" className="logo-img-tm" />
+                  <img
+                    src={hrFooterLogo}
+                    alt="Bureau of Human Resources logo"
+                    className="logo-img-hr"
+                  />
+                  <img
+                    src={logo}
+                    alt="TalentMAP logo"
+                    className="logo-img-tm"
+                  />
                 </Link>
               </div>
             </div>
@@ -149,7 +172,11 @@ export class Header extends Component {
             </MediaQuery>
           </div>
           <MediaQuery widthType="max" breakpoint="screenSmMax">
-            <MobileNav user={signedInAs} logout={logout} showLogin={!isLoggedIn} />
+            <MobileNav
+              user={signedInAs}
+              logout={logout}
+              showLogin={!isLoggedIn}
+            />
           </MediaQuery>
           <div className="usa-overlay" />
         </header>
@@ -189,7 +216,7 @@ Header.defaultProps = {
   setSearchFilters: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   login: state.login,
   client: state.client,
   userProfile: state.userProfile,
@@ -197,14 +224,17 @@ const mapStateToProps = state => ({
   searchbarFilters: state.selectedSearchbarFilters,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: url => dispatch(userProfileFetchData(url)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (url) => dispatch(userProfileFetchData(url)),
   logout: () => dispatch(logoutRequest()),
-  onNavigateTo: dest => dispatch(push(dest)),
-  toggleSearchBarVisibility: bool => dispatch(toggleSearchBar(bool)),
-  setSearchFilters: query => dispatch(setSelectedSearchbarFilters(query)),
+  onNavigateTo: (dest) => dispatch(push(dest)),
+  toggleSearchBarVisibility: (bool) => dispatch(toggleSearchBar(bool)),
+  setSearchFilters: (query) => dispatch(setSelectedSearchbarFilters(query)),
 });
 
-const connected = connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
+const connected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Header));
 
 export default connected;

@@ -10,9 +10,15 @@ const AboutContent = () => (
       a much greater strategy for managing our FS talent worldwide to:`}
     </p>
     <ul>
-      <li><span>Manage our assignment processes</span></li>
-      <li><span>Align our people to positions</span></li>
-      <li><span>Project our workforce planning of the future</span></li>
+      <li>
+        <span>Manage our assignment processes</span>
+      </li>
+      <li>
+        <span>Align our people to positions</span>
+      </li>
+      <li>
+        <span>Project our workforce planning of the future</span>
+      </li>
     </ul>
     <h2>Our Mission</h2>
     <p>
@@ -23,7 +29,23 @@ const AboutContent = () => (
     <Alert
       type="info"
       title="TalentMAP Progress is Ongoing"
-      messages={[{ body: <span>For more information, visit <a rel="noopener" target="_blank" href={getAssetPath('/about/more')}>HR Systems Online Resources</a>.</span> }]}
+      messages={[
+        {
+          body: (
+            <span>
+              For more information, visit{' '}
+              <a
+                rel="noopener"
+                target="_blank"
+                href={getAssetPath('/about/more')}
+              >
+                HR Systems Online Resources
+              </a>
+              .
+            </span>
+          ),
+        },
+      ]}
     />
     <h2>How TalentMAP Works</h2>
     <p>
@@ -57,7 +79,14 @@ const AboutContent = () => (
       choose to pilot the TalentMAP application to better understand the
       functionality and have the opportunity to provide feedback.`}
     </p>
-    <a type="submit" role="button" href="mailto:TalentMAP@State.gov" className="tm-button-feedback">Email TalentMAP</a>
+    <a
+      type="submit"
+      role="button"
+      href="mailto:TalentMAP@State.gov"
+      className="tm-button-feedback"
+    >
+      Email TalentMAP
+    </a>
   </div>
 );
 

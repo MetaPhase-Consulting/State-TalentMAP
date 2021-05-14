@@ -14,20 +14,22 @@ describe('BidListResultsCardComponent', () => {
         id: 2,
         position_number: '05A',
         title: 'AO',
-        bid_statistics: [{
-          id: 4,
-          bidcycle: 'Demo BidCycle 2018-01-10 15:52:20.583434',
-          user: 'Jenny Townpost',
-          draft: 3,
-          submitted: 4,
-          handshake_offered: 3,
-          handshake_accepted: 0,
-          handshake_declined: 0,
-          in_panel: 0,
-          approved: 0,
-          declined: 0,
-          closed: 0,
-        }],
+        bid_statistics: [
+          {
+            id: 4,
+            bidcycle: 'Demo BidCycle 2018-01-10 15:52:20.583434',
+            user: 'Jenny Townpost',
+            draft: 3,
+            submitted: 4,
+            handshake_offered: 3,
+            handshake_accepted: 0,
+            handshake_declined: 0,
+            in_panel: 0,
+            approved: 0,
+            declined: 0,
+            closed: 0,
+          },
+        ],
       },
     },
   };
@@ -45,7 +47,12 @@ describe('BidListResultsCardComponent', () => {
   it('can receive props', () => {
     const wrapper = shallow(
       <BidListResultsCard
-        bid={{ ...bid, post: null, update_date: '01/02/2000', create_date: '01/01/2000' }}
+        bid={{
+          ...bid,
+          post: null,
+          update_date: '01/02/2000',
+          create_date: '01/01/2000',
+        }}
         toggleBidPosition={() => {}}
         submitBid={() => {}}
       />,
@@ -56,7 +63,7 @@ describe('BidListResultsCardComponent', () => {
   it('can call functions', () => {
     const toggleBidSpy = sinon.spy();
     const submitBidSpy = sinon.spy();
-    const bidOtherStatus = Object.assign({}, bid, { status: DRAFT.property });
+    const bidOtherStatus = { ...bid, status: DRAFT.property };
     const wrapper = shallow(
       <BidListResultsCard
         bid={bidOtherStatus}

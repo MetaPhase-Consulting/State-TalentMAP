@@ -26,16 +26,28 @@ describe('BidStepIconComponent', () => {
 
   it('applies classes correctly when isComplete and needsAction are false', () => {
     const wrapper = shallow(
-      <BidStepIcon isComplete={false} needsAction={false} isCurrent={false} number={3} />,
+      <BidStepIcon
+        isComplete={false}
+        needsAction={false}
+        isCurrent={false}
+        number={3}
+      />,
     );
     expect(wrapper.find('.number-icon-incomplete').exists()).toBe(true);
   });
 
   it('applies classes correctly when isComplete and needsAction are false, and isCurrent is true', () => {
     const wrapper = shallow(
-      <BidStepIcon isComplete={false} needsAction={false} isCurrent number={3} />,
+      <BidStepIcon
+        isComplete={false}
+        needsAction={false}
+        isCurrent
+        number={3}
+      />,
     );
-    expect(wrapper.find('.number-icon-is-current-no-action').exists()).toBe(true);
+    expect(wrapper.find('.number-icon-is-current-no-action').exists()).toBe(
+      true,
+    );
   });
 
   it('applies classes correctly when isComplete is false, and needsAction and isCurrent are true', () => {
@@ -68,7 +80,13 @@ describe('BidStepIconComponent', () => {
 
   it('matches snapshot when isComplete is false and hasRescheduledTooltip', () => {
     const wrapper = shallow(
-      <BidStepIcon isComplete={false} needsAction isCurrent number={3} hasRescheduledTooltip />,
+      <BidStepIcon
+        isComplete={false}
+        needsAction
+        isCurrent
+        number={3}
+        hasRescheduledTooltip
+      />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

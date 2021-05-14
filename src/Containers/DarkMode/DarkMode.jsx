@@ -36,9 +36,9 @@ class DarkMode extends Component {
 
   browserHandler() {
     switch (getBrowserName()) {
-    // Dark mode breaks in IE11.
-    // Attempt to disable dark mode if for some reason it is set to true.
-    // Also set in src/Components/AccountDropdown/AccountDropdown.jsx
+      // Dark mode breaks in IE11.
+      // Attempt to disable dark mode if for some reason it is set to true.
+      // Also set in src/Components/AccountDropdown/AccountDropdown.jsx
       case 'Chrome':
       case 'Firefox':
       case 'Safari': {
@@ -52,9 +52,7 @@ class DarkMode extends Component {
 
   render() {
     const content = this.browserHandler();
-    return (
-      content
-    );
+    return content;
   }
 }
 
@@ -66,7 +64,7 @@ DarkMode.defaultProps = {
   isDarkMode: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isDarkMode: state.darkModePreference,
 });
 

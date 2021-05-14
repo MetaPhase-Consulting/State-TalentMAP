@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FILTER_ITEMS_ARRAY } from '../../Constants/PropTypes';
-import FieldSet from '../../Components/FieldSet/FieldSet';
-import SelectForm from '../../Components/SelectForm/SelectForm';
+import FieldSet from '../FieldSet/FieldSet';
+import SelectForm from '../SelectForm/SelectForm';
 import { formExploreRegionDropdown } from '../../utilities';
 
 class ExploreRegionDropdown extends Component {
@@ -13,7 +13,7 @@ class ExploreRegionDropdown extends Component {
     };
   }
 
-  selectRegion = e => {
+  selectRegion = (e) => {
     const { selection } = this.state;
     const { selectRegion } = this.props;
     selection.value = e.target.value;
@@ -21,7 +21,7 @@ class ExploreRegionDropdown extends Component {
     selectRegion(e.target.value);
   };
 
-  searchRegion = e => {
+  searchRegion = (e) => {
     e.preventDefault();
     this.props.onRegionSubmit(this.state.selection.value);
   };
@@ -66,7 +66,6 @@ ExploreRegionDropdown.propTypes = {
   selectRegion: PropTypes.func.isRequired,
 };
 
-ExploreRegionDropdown.defaultProps = {
-};
+ExploreRegionDropdown.defaultProps = {};
 
 export default ExploreRegionDropdown;

@@ -15,8 +15,7 @@ describe('async actions', () => {
     const response = { email: { to: testEmail, subject: '[TalentMAP] Shared position', body: 'Shared' } };
 
     mockAdapter.onPost('/share/').reply(200,
-      response,
-    );
+      response);
 
     const message = {
       type: 'position',
@@ -39,8 +38,7 @@ describe('async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onPost('/share/').reply(404,
-      {},
-    );
+      {});
 
     const message = {
       type: 'position',

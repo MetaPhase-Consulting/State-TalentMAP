@@ -7,7 +7,7 @@ import outer from '../../assets/spinner/outer.svg';
 const Spinner = ({ type, size, style }) => {
   let sizeClass = '';
   switch (size) {
-    case ('small'):
+    case 'small':
       sizeClass = 'tm-spinner-small';
       break;
     default:

@@ -8,7 +8,11 @@ import { Flag } from 'flag';
 import BidListButton from 'Containers/BidListButton';
 import Favorite from 'Containers/Favorite';
 import { BID_LIST, POSITION_DETAILS, USER_PROFILE } from 'Constants/PropTypes';
-import { CANNOT_BID_DEFAULT, CANNOT_BID_SUFFIX, NO_POST } from 'Constants/SystemMessages';
+import {
+  CANNOT_BID_DEFAULT,
+  CANNOT_BID_SUFFIX,
+  NO_POST,
+} from 'Constants/SystemMessages';
 import PermissionsWrapper from 'Containers/PermissionsWrapper';
 import { getAssetPath, getPostName, propOrDefault } from 'utilities';
 import { checkFlag } from 'flags';
@@ -41,11 +45,14 @@ class PositionTitle extends Component {
   };
 
   render() {
-    const { details, isProjectedVacancy, isArchived, userProfile } = this.props;
+    const {
+      details, isProjectedVacancy, isArchived, userProfile,
+    } = this.props;
     const { isClient, isTandemTwo } = this.context;
     const OBCUrl$ = propOrDefault(details, 'post.post_overview_url');
-    const availablilityText = get(details, 'availability.reason') ?
-      `${details.availability.reason}${CANNOT_BID_SUFFIX}` : CANNOT_BID_DEFAULT;
+    const availablilityText = get(details, 'availability.reason')
+      ? `${details.availability.reason}${CANNOT_BID_SUFFIX}`
+      : CANNOT_BID_DEFAULT;
     const availableToBid = this.getIsAvailableToBid();
     let $compareArray = [];
     if (isProjectedVacancy && isTandemTwo) {
@@ -62,8 +69,14 @@ class PositionTitle extends Component {
       <div className="position-details-header-container">
         <Helmet>
           <title>{details.title}</title>
-          <meta property="og:title" content={`${details.title} ${details.position_number}`} />
-          <meta property="og:description" content={get(details, 'description.content')} />
+          <meta
+            property="og:title"
+            content={`${details.title} ${details.position_number}`}
+          />
+          <meta
+            property="og:description"
+            content={get(details, 'description.content')}
+          />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
         <div className="position-details-header">
@@ -78,12 +91,16 @@ class PositionTitle extends Component {
                   </div>
                   <div className="post-title">
                     Location: {getPostName(details.post, NO_POST)}
-                    { !!OBCUrl$ && <span> (<OBCUrl url={OBCUrl$} />)</span> }
+                    {!!OBCUrl$ && (
+                      <span>
+                        {' '}
+                        (<OBCUrl url={OBCUrl$} />)
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="usa-width-one-half title-actions-section">
-                  {
-                    !isClient && !isArchived &&
+                  {!isClient && !isArchived && (
                     <Favorite
                       refKey={details.cpId}
                       compareArray={$compareArray}
@@ -93,7 +110,7 @@ class PositionTitle extends Component {
                       isPV={isProjectedVacancy}
                       isTandem={isTandemTwo}
                     />
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -104,9 +121,14 @@ class PositionTitle extends Component {
             src={seal}
           />
         </div>
-        <div className={useBidding() ? 'offset-bid-button-container' : 'offset-bid-button-container-no-button'}>
-          {
-            !availableToBid && !isProjectedVacancy && !isArchived &&
+        <div
+          className={
+            useBidding()
+              ? 'offset-bid-button-container'
+              : 'offset-bid-button-container-no-button'
+          }
+        >
+          {!availableToBid && !isProjectedVacancy && !isArchived && (
             <Flag
               name="flags.bidding"
               render={() => (
@@ -119,19 +141,15 @@ class PositionTitle extends Component {
                     theme="light"
                   >
                     <FontAwesome name="question-circle" />
-                    {'Why can\'t I add this position to my bid list?'}
+                    Why can't I add this position to my bid list?
                   </Tooltip>
                 </div>
               )}
             />
-          }
-          {
-            !isProjectedVacancy && !isArchived && !isTandemTwo &&
-            <Flag
-              name="flags.bidding"
-              render={this.renderBidListButton}
-            />
-          }
+          )}
+          {!isProjectedVacancy && !isArchived && !isTandemTwo && (
+            <Flag name="flags.bidding" render={this.renderBidListButton} />
+          )}
         </div>
       </div>
     );
@@ -157,6 +175,5 @@ PositionTitle.defaultProps = {
   isProjectedVacancy: false,
   isArchived: false,
 };
-
 
 export default PositionTitle;

@@ -24,8 +24,9 @@ class BidListResultsCard extends Component {
     const { position } = bid.position;
     const createdDate = formatDate(bid.create_date);
     const timeDistanceInWords = getTimeDistanceInWords(bid.update_date);
-    const contentTitle = timeDistanceInWords && createdDate ?
-      `${timeDistanceInWords} | Added to Bid List: ${createdDate}` : null;
+    const contentTitle = timeDistanceInWords && createdDate
+      ? `${timeDistanceInWords} | Added to Bid List: ${createdDate}`
+      : null;
     const bidStatistics = get(bid, 'position.bid_statistics[0]', {});
     return (
       <div className="usa-grid-full saved-search-card" key={bid.id}>
@@ -33,7 +34,7 @@ class BidListResultsCard extends Component {
           <div className="usa-width-one-whole saved-search-card-name">
             <InformationDataPoint
               titleOnBottom
-              content={
+              content={(
                 <div>
                   <BidContent
                     id={position.id}
@@ -44,19 +45,20 @@ class BidListResultsCard extends Component {
                     bidStatistics={bidStatistics}
                   />
                 </div>
-              }
+              )}
               title={contentTitle}
             />
           </div>
         </div>
         {
           // this section we'll only show if condensedView is false
-          !condensedView &&
+          !condensedView && (
             <BidActions
               status={bid.status}
               onSubmitBid={this.submitBid}
               onRemoveBid={this.removeBidPosition}
             />
+          )
         }
       </div>
     );
