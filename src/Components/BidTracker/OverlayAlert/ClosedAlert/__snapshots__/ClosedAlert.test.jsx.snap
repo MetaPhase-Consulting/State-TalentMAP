@@ -7,7 +7,7 @@ exports[`ClosedAlertComponent matches snapshot 1`] = `
   <div
     className="top-text"
   >
-    Your bid  on 
+    Your bid on 
     title
      is no longer applicable.
   </div>

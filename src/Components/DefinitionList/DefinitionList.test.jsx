@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { map, zipObject } from 'lodash';
-import DefinitionList, { Definition } from './';
+import DefinitionList, { Definition } from '.';
 
 const mock = [
   { term: 'Term #1', definition: 'Definition #1' },
@@ -33,10 +33,7 @@ describe('DefinitionList', () => {
   });
 
   it('can receive `items` as an object of key/values', () => {
-    const items = zipObject(
-      map(mock, 'term'),
-      map(mock, 'definition'),
-    );
+    const items = zipObject(map(mock, 'term'), map(mock, 'definition'));
 
     const wrapper = shallow(<DefinitionList items={items} />);
     expect(wrapper.find(selector).children('Definition')).toHaveLength(4);

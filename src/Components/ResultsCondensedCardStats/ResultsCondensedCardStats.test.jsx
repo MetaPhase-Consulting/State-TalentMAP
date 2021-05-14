@@ -14,16 +14,12 @@ describe('ResultsCondensedCardStatsComponent', () => {
     ],
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <ResultsCondensedCardStats {...props} />,
-    );
+    const wrapper = shallow(<ResultsCondensedCardStats {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ResultsCondensedCardStats {...props} />,
-    );
+    const wrapper = shallow(<ResultsCondensedCardStats {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

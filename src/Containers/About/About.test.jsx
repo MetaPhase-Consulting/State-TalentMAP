@@ -13,17 +13,19 @@ const mockStore = configureStore(middlewares);
 
 describe('Feedback', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <About />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <About />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('calls props.patchData on this.patchData', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <About.WrappedComponent patchData={spy} />,
-    );
+    const wrapper = shallow(<About.WrappedComponent patchData={spy} />);
     wrapper.instance().patchData({});
     sinon.assert.calledOnce(spy);
   });

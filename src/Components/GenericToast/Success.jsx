@@ -2,17 +2,16 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
-const Success = ({ messageBefore, link, messageAfter }) => (
-  link && link.path && link.text ?
+const Success = ({ messageBefore, link, messageAfter }) => link && link.path && link.text ? (
+  <div>
+    {messageBefore}
     <div>
-      {messageBefore}
-      <div>
-        <Link to={get(link, 'path')}>{get(link, 'text')}</Link>
-      </div>
-      {messageAfter}
+      <Link to={get(link, 'path')}>{get(link, 'text')}</Link>
     </div>
-    :
-    <span>{messageBefore}</span>
+    {messageAfter}
+  </div>
+) : (
+  <span>{messageBefore}</span>
 );
 
 Success.propTypes = {

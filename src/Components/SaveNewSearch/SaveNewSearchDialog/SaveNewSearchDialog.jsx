@@ -7,7 +7,10 @@ import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
 import Form from '../../Form';
 import FieldSet from '../../FieldSet/FieldSet';
 import TextInput from '../../TextInput';
-import { saveSearch, toggleViewSavedSearchDialog } from '../../../actions/savedSearch';
+import {
+  saveSearch,
+  toggleViewSavedSearchDialog,
+} from '../../../actions/savedSearch';
 import { focusById } from '../../../utilities';
 import { ID } from '../Trigger';
 
@@ -29,19 +32,27 @@ export class SaveNewSearchDialog extends Component {
     }
   }
 
-  onSubmit = e => {
-    if (e && e.preventDefault) { e.preventDefault(); }
+  onSubmit = (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     const { currentSearch } = this.props;
     const hasPV = get(currentSearch, 'projectedVacancy') === 'projected';
     const hasTandem = get(currentSearch, 'tandem') === 'tandem';
-    let endpoint = hasPV ? '/api/v1/fsbid/projected_vacancies/' : '/api/v1/fsbid/available_positions/';
+    let endpoint = hasPV
+      ? '/api/v1/fsbid/projected_vacancies/'
+      : '/api/v1/fsbid/available_positions/';
     if (hasTandem) {
-      endpoint = hasPV ? '/api/v1/fsbid/projected_vacancies/tandem/' : '/api/v1/fsbid/available_positions/tandem/';
+      endpoint = hasPV
+        ? '/api/v1/fsbid/projected_vacancies/tandem/'
+        : '/api/v1/fsbid/available_positions/tandem/';
     }
     let filters = omit(currentSearch, ['projectedVacancy']);
 
     // any filters we want to omit for PV. currently none.
-    if (hasPV) { filters = omit(filters, []); }
+    if (hasPV) {
+      filters = omit(filters, []);
+    }
 
     this.props.saveSearch({
       name: this.state.newSearchName,
@@ -55,7 +66,7 @@ export class SaveNewSearchDialog extends Component {
     focusById(ID, 0);
   };
 
-  changeNewSearchName = e => {
+  changeNewSearchName = (e) => {
     this.setState({ newSearchName: e });
   };
 
@@ -69,43 +80,51 @@ export class SaveNewSearchDialog extends Component {
       inputType = 'error';
     }
 
-    return (
-      isOpen ?
-        <div
-          className={`usa-grid-full save-new-search-container ${isLoading ? 'results-loading' : ''}`}
-          style={{ position: 'relative' }}
+    return isOpen ? (
+      <div
+        className={`usa-grid-full save-new-search-container ${
+          isLoading ? 'results-loading' : ''
+        }`}
+        style={{ position: 'relative' }}
+      >
+        <button
+          className="unstyled-button"
+          onClick={this.onCancel}
+          style={{ position: 'absolute', top: 5, right: 0 }}
         >
-          <button className="unstyled-button" onClick={this.onCancel} style={{ position: 'absolute', top: 5, right: 0 }}>
-            <FA name="times" />
-          </button>
-          <Form className="usa-grid-full saved-search-form" onFormSubmit={this.onSubmit}>
-            <FieldSet
-              className="saved-search-fieldset usa-width-one-half"
-              legend="Add a new saved search"
-              legendSrOnly
+          <FA name="times" />
+        </button>
+        <Form
+          className="usa-grid-full saved-search-form"
+          onFormSubmit={this.onSubmit}
+        >
+          <FieldSet
+            className="saved-search-fieldset usa-width-one-half"
+            legend="Add a new saved search"
+            legendSrOnly
+          >
+            <TextInput
+              id={INPUT_ID}
+              label="Saved Search Name"
+              changeText={this.changeNewSearchName}
+              type={inputType}
+              value={this.state.newSearchName}
+              labelMessage={hasErrored || ''}
+            />
+          </FieldSet>
+          <div className="saved-search-form-buttons">
+            <button
+              type="button"
+              className="saved-search-form-primary-button"
+              onClick={this.onSubmit}
             >
-              <TextInput
-                id={INPUT_ID}
-                label="Saved Search Name"
-                changeText={this.changeNewSearchName}
-                type={inputType}
-                value={this.state.newSearchName}
-                labelMessage={hasErrored || ''}
-              />
-            </FieldSet>
-            <div className="saved-search-form-buttons">
-              <button
-                type="button"
-                className="saved-search-form-primary-button"
-                onClick={this.onSubmit}
-              >
               Save
-              </button>
-            </div>
-          </Form>
-        </div>
-        :
-        <div className="usa-grid-full" style={{ marginTop: '20px' }} />
+            </button>
+          </div>
+        </Form>
+      </div>
+    ) : (
+      <div className="usa-grid-full" style={{ marginTop: '20px' }} />
     );
   }
 }
@@ -128,16 +147,19 @@ SaveNewSearchDialog.defaultProps = {
   currentSearch: {},
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isOpen: state.viewSavedSearchDialog,
   isLoading: state.newSavedSearchIsSaving,
   hasErrored: state.newSavedSearchHasErrored,
   currentSearch: state.currentSearch,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  toggle: bool => dispatch(toggleViewSavedSearchDialog(bool)),
-  saveSearch: object => dispatch(saveSearch(object)),
+export const mapDispatchToProps = (dispatch) => ({
+  toggle: (bool) => dispatch(toggleViewSavedSearchDialog(bool)),
+  saveSearch: (object) => dispatch(saveSearch(object)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SaveNewSearchDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SaveNewSearchDialog);

@@ -3,17 +3,10 @@ import Item from '../Item';
 
 const ItemListing = ({ items }) => (
   <div className="usa-grid-full item-listing-container">
-    {
-      items.map(item =>
-        <Item key={item} item={item} />,
-      )
-    }
-    {
-      !items.length &&
-      <span>
-        This list is empty.
-      </span>
-    }
+    {items.map((item) => (
+      <Item key={item} item={item} />
+    ))}
+    {!items.length && <span>This list is empty.</span>}
   </div>
 );
 

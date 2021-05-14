@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
 import { omit } from 'lodash';
 
-const exceptions = [
-  'as',
-  'children',
-  'fluid',
-  'columns',
-];
+const exceptions = ['as', 'children', 'fluid', 'columns'];
 
 const Base = (props) => {
   const Element = props.as;
@@ -14,11 +9,7 @@ const Base = (props) => {
 
   options.className = props.className.trim();
 
-  return (
-    <Element {...options}>
-      {props.children}
-    </Element>
-  );
+  return <Element {...options}>{props.children}</Element>;
 };
 
 Base.propTypes = {

@@ -25,12 +25,16 @@ describe('Column', () => {
 
     forOwn(columnsMap, (className, column) => {
       selector = `.${prefix}-${className}`;
-      expect(shallow(<Column columns={column} />).find(selector).exists()).toBe(true);
+      expect(
+        shallow(<Column columns={column} />)
+          .find(selector)
+          .exists(),
+      ).toBe(true);
     });
   });
 
   it('renders `as` prop and renders new tag', () => {
-    const tags = ('button|div|span|section|p').split('|');
+    const tags = 'button|div|span|section|p'.split('|');
 
     tags.forEach((tag) => {
       const wrapper = mount(<Column as={tag} />);

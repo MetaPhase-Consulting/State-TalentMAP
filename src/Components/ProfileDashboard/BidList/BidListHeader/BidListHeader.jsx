@@ -9,9 +9,7 @@ const BidListHeader = ({ date }) => {
   const buttonText = 'More Info';
   const icon = 'clock-o';
   const props = { title, buttonText, icon };
-  return (
-    <SectionHeader {...props} />
-  );
+  return <SectionHeader {...props} />;
 };
 
 BidListHeader.propTypes = {

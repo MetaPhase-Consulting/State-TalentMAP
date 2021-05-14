@@ -5,12 +5,11 @@ import Spinner from '../Spinner';
 
 const BidStatistics = ({ bidStats, isLoading }) => (
   <div className="section-padded-inner-container bid-stats-page">
-    {
-      isLoading ?
-        <Spinner type="homepage-position-results" size="big" />
-        :
-        <BidStatList bidStats={bidStats} />
-    }
+    {isLoading ? (
+      <Spinner type="homepage-position-results" size="big" />
+    ) : (
+      <BidStatList bidStats={bidStats} />
+    )}
   </div>
 );
 

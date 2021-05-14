@@ -6,9 +6,14 @@ import ErrorBoundary from 'Components/ErrorBoundary';
 import ResultsList from 'Components/ResultsList/ResultsList';
 import ScrollUpButton from '../ScrollUpButton';
 import PaginationWrapper from '../PaginationWrapper/PaginationWrapper';
-import { BID_RESULTS, EMPTY_FUNCTION,
-  PILL_ITEM_ARRAY, POSITION_SEARCH_RESULTS, SORT_BY_PARENT_OBJECT,
-  USER_PROFILE } from '../../Constants/PropTypes';
+import {
+  BID_RESULTS,
+  EMPTY_FUNCTION,
+  PILL_ITEM_ARRAY,
+  POSITION_SEARCH_RESULTS,
+  SORT_BY_PARENT_OBJECT,
+  USER_PROFILE,
+} from '../../Constants/PropTypes';
 import Spinner from '../Spinner';
 import Alert from '../Alert/Alert';
 import ResultsControls from '../ResultsControls/ResultsControls';
@@ -24,56 +29,72 @@ class ResultsContainer extends Component {
     return !isEqual(nextProps, this.props);
   }
 
-  onPageChange = q => {
+  onPageChange = (q) => {
     this.props.queryParamUpdate(q);
     this.props.scrollToTop();
   };
 
-  onSelectOrdering = e => {
+  onSelectOrdering = (e) => {
     this.props.queryParamUpdate({ ordering: e.target.value });
   };
 
   render() {
-    const { results, isLoading, hasErrored, sortBy, pageSize, hasLoaded, totalResults,
-      defaultSort, pageSizes, defaultPageSize, refreshKey, pillFilters, userProfile,
-      defaultPageNumber, queryParamUpdate, onQueryParamToggle, bidList, toggle,
+    const {
+      results,
+      isLoading,
+      hasErrored,
+      sortBy,
+      pageSize,
+      hasLoaded,
+      totalResults,
+      defaultSort,
+      pageSizes,
+      defaultPageSize,
+      refreshKey,
+      pillFilters,
+      userProfile,
+      defaultPageNumber,
+      queryParamUpdate,
+      onQueryParamToggle,
+      bidList,
+      toggle,
     } = this.props;
     const { isTandemSearch } = this.context;
     return (
       <div className="results-container">
         <MediaQuery breakpoint="screenSmMax" widthType="max">
-          {
-            matches => (matches &&
-              (
-                <div className="usa-width-one-whole mobile-controls">
-                  {
-                    isTandemSearch &&
-                    <Trigger isPrimary>
-                      <button className="usa-button-secondary">Save Tandem Search</button>
-                    </Trigger>
-                  }
-                  {
-                    !isTandemSearch &&
-                    <Trigger isPrimary>
-                      <button className="usa-button-secondary">Save Search</button>
-                    </Trigger>
-                  }
-                  <InteractiveElement onClick={toggle} className="filter-button">Filter</InteractiveElement>
-                  <div className="results-dropdown results-dropdown-sort">
-                    <SelectForm
-                      id="sort"
-                      label="Sort by:"
-                      labelSrOnly
-                      onSelectOption={this.onSelectOrdering}
-                      options={sortBy.options}
-                      defaultSort={defaultSort}
-                      className="select-blue select-offset select-small"
-                    />
-                  </div>
-                </div>
-              )
-            )
-          }
+          {(matches) => matches && (
+            <div className="usa-width-one-whole mobile-controls">
+              {isTandemSearch && (
+                <Trigger isPrimary>
+                  <button className="usa-button-secondary">
+                      Save Tandem Search
+                  </button>
+                </Trigger>
+              )}
+              {!isTandemSearch && (
+                <Trigger isPrimary>
+                  <button className="usa-button-secondary">
+                      Save Search
+                  </button>
+                </Trigger>
+              )}
+              <InteractiveElement onClick={toggle} className="filter-button">
+                  Filter
+              </InteractiveElement>
+              <div className="results-dropdown results-dropdown-sort">
+                <SelectForm
+                  id="sort"
+                  label="Sort by:"
+                  labelSrOnly
+                  onSelectOption={this.onSelectOrdering}
+                  options={sortBy.options}
+                  defaultSort={defaultSort}
+                  className="select-blue select-offset select-small"
+                />
+              </div>
+            </div>
+          )}
         </MediaQuery>
         <ResultsPillContainer
           items={pillFilters}
@@ -92,24 +113,35 @@ class ResultsContainer extends Component {
         <SaveNewSearchDialog />
         {
           // is not loading, results array exists, but is empty
-          !isLoading && results.results && !results.results.length && !hasErrored &&
+          !isLoading
+            && results.results
+            && !results.results.length
+            && !hasErrored && (
             <div className="usa-grid-full no-results">
-              <Alert title="No results found" messages={[{ body: 'Try broadening your search criteria' }]} />
+              <Alert
+                title="No results found"
+                messages={[{ body: 'Try broadening your search criteria' }]}
+              />
             </div>
+          )
         }
         {
           // is not loading and has errored
-          !isLoading && hasErrored &&
+          !isLoading && hasErrored && (
             <div className="usa-grid-full no-results">
-              <Alert type="error" title="An error has occurred" messages={[{ body: 'Try performing another search' }]} />
+              <Alert
+                type="error"
+                title="An error has occurred"
+                messages={[{ body: 'Try performing another search' }]}
+              />
             </div>
+          )
         }
         {
           <div className="results-list-container">
-            {
-              isLoading && !hasErrored &&
-                <Spinner size="big" type="position-results" />
-            }
+            {isLoading && !hasErrored && (
+              <Spinner size="big" type="position-results" />
+            )}
             <ErrorBoundary>
               <ResultsList
                 key={refreshKey}
@@ -126,17 +158,18 @@ class ResultsContainer extends Component {
         }
         {
           // if there's no results, don't show pagination
-          !!results.results && !!results.results.length &&
-          // finally, render the pagination
-          <div className="usa-grid-full react-paginate">
-            <PaginationWrapper
-              totalResults={totalResults}
-              pageSize={pageSize}
-              onPageChange={this.onPageChange}
-              forcePage={defaultPageNumber}
-            />
-            <ScrollUpButton />
-          </div>
+          !!results.results && !!results.results.length && (
+            // finally, render the pagination
+            <div className="usa-grid-full react-paginate">
+              <PaginationWrapper
+                totalResults={totalResults}
+                pageSize={pageSize}
+                onPageChange={this.onPageChange}
+                forcePage={defaultPageNumber}
+              />
+              <ScrollUpButton />
+            </div>
+          )
         }
       </div>
     );
@@ -186,7 +219,7 @@ ResultsContainer.defaultProps = {
   toggle: EMPTY_FUNCTION,
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   toggle: () => dispatch(toggleMobileFilter(true)),
 });
 

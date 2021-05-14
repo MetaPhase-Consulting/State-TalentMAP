@@ -5,10 +5,7 @@ import MediaQuery from './MediaQuery';
 describe('MediaQueryComponent', () => {
   it('is defined when widthType is "max"', () => {
     const wrapper = shallow(
-      <MediaQuery
-        breakpoint="screenSmMin"
-        widthType="max"
-      >
+      <MediaQuery breakpoint="screenSmMin" widthType="max">
         <div />
       </MediaQuery>,
     );
@@ -17,10 +14,7 @@ describe('MediaQueryComponent', () => {
 
   it('is defined when widthType is "min"', () => {
     const wrapper = shallow(
-      <MediaQuery
-        breakpoint="screenSmMax"
-        widthType="min"
-      >
+      <MediaQuery breakpoint="screenSmMax" widthType="min">
         <div />
       </MediaQuery>,
     );
@@ -29,10 +23,7 @@ describe('MediaQueryComponent', () => {
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <MediaQuery
-        breakpoint="screenSmMin"
-        widthType="max"
-      >
+      <MediaQuery breakpoint="screenSmMin" widthType="max">
         <div />
       </MediaQuery>,
     );

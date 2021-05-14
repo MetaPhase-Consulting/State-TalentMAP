@@ -12,9 +12,7 @@ describe('AccordionItemComponent', () => {
 
   it('receives props', () => {
     const wrapper = shallow(
-      <AccordionItem
-        {...props}
-      >
+      <AccordionItem {...props}>
         <span>child</span>
       </AccordionItem>,
     );
@@ -23,10 +21,7 @@ describe('AccordionItemComponent', () => {
 
   it('is defined when controlled = true', () => {
     const wrapper = shallow(
-      <AccordionItem
-        {...props}
-        controlled
-      >
+      <AccordionItem {...props} controlled>
         <span>child</span>
       </AccordionItem>,
     );
@@ -35,9 +30,7 @@ describe('AccordionItemComponent', () => {
 
   it('returns correct value for isExpanded()', () => {
     const wrapper = shallow(
-      <AccordionItem
-        {...props}
-      >
+      <AccordionItem {...props}>
         <span>child</span>
       </AccordionItem>,
     );
@@ -49,9 +42,7 @@ describe('AccordionItemComponent', () => {
 
   it('sets state on setExpandedFromRef()', () => {
     const wrapper = shallow(
-      <AccordionItem
-        {...props}
-      >
+      <AccordionItem {...props}>
         <span>child</span>
       </AccordionItem>,
     );
@@ -63,10 +54,7 @@ describe('AccordionItemComponent', () => {
 
   it('receives different props', () => {
     const wrapper = shallow(
-      <AccordionItem
-        {...props}
-        preContent={<span />}
-      >
+      <AccordionItem {...props} preContent={<span />}>
         <span>child</span>
       </AccordionItem>,
     );
@@ -79,7 +67,9 @@ describe('AccordionItemComponent', () => {
       <AccordionItem
         {...props}
         expanded={false}
-        setAccordion={(e) => { expanded.value = e; }}
+        setAccordion={(e) => {
+          expanded.value = e;
+        }}
       >
         <span>child</span>
       </AccordionItem>,
@@ -90,10 +80,7 @@ describe('AccordionItemComponent', () => {
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <AccordionItem
-        {...props}
-        setAccordion={() => {}}
-      >
+      <AccordionItem {...props} setAccordion={() => {}}>
         <span>child</span>
       </AccordionItem>,
     );

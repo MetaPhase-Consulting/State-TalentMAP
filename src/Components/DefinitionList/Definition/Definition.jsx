@@ -38,10 +38,7 @@ Definition.propTypes = {
   truncate: PropTypes.bool,
   excludeColon: PropTypes.bool,
   /** Takes precedence over `definition` if both props are used. */
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(Node),
-    Node,
-  ]),
+  children: PropTypes.oneOfType([PropTypes.arrayOf(Node), Node]),
 };
 
 Definition.defaultProps = defaults;

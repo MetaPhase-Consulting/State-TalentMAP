@@ -1,9 +1,11 @@
-import { acceptBidHasErrored, acceptBidIsLoading, acceptBidSuccess,
+import {
+  acceptBidHasErrored, acceptBidIsLoading, acceptBidSuccess,
   bidListFetchDataSuccess, bidListHasErrored, bidListIsLoading,
   bidListToggleHasErrored, bidListToggleIsLoading, bidListToggleSuccess,
   clientBidListFetchDataSuccess, clientBidListHasErrored, clientBidListIsLoading,
   declineBidHasErrored, declineBidIsLoading, declineBidSuccess,
-  submitBidHasErrored, submitBidIsLoading, submitBidSuccess } from './bidList';
+  submitBidHasErrored, submitBidIsLoading, submitBidSuccess,
+} from './bidList';
 
 export default {
   bidListHasErrored,

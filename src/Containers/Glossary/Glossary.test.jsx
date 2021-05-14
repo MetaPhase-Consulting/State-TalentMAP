@@ -13,18 +13,20 @@ const mockStore = configureStore(middlewares);
 
 describe('Glossary', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Glossary />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Glossary />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('can call the toggleVisibility function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <Glossary.WrappedComponent
-        toggleGlossaryVisibility={spy}
-      />,
+      <Glossary.WrappedComponent toggleGlossaryVisibility={spy} />,
     );
     wrapper.instance().toggleVisibility();
     sinon.assert.calledOnce(spy);

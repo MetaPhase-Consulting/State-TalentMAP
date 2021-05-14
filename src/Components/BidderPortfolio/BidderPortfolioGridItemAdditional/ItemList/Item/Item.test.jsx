@@ -7,18 +7,12 @@ describe('ItemComponent', () => {
     item: 'Bid 1',
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <Item
-        {...props}
-      />);
+    const wrapper = shallow(<Item {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <Item
-        {...props}
-      />);
+    const wrapper = shallow(<Item {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

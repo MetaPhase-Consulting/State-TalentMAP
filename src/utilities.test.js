@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import { isEqual } from 'lodash';
-import { anyToTitleCase,
+import {
+  anyToTitleCase,
   cleanQueryParams,
   difference,
   downloadFromResponse,
@@ -618,21 +619,28 @@ describe('mapSavedSearchesToSingleQuery', () => {
 
 describe('mapSavedSearchToDescriptions', () => {
   const searches = searchObjectParent;
-  const mappedFilters = [{ codeRef: '6080',
+  const mappedFilters = [{
+    codeRef: '6080',
     descCode: 'CONSULAR AFFAIRS',
     description: 'CONSULAR AFFAIRS',
     hasDuplicateDescription: true,
     isCommon: undefined,
     isTandem: true,
     isToggle: undefined,
-    selectionRef: 'position__skill__code__in' }];
+    selectionRef: 'position__skill__code__in',
+  }];
 
   it('maps saved searches to descriptions', () => {
     const mappedDescriptions = mapSavedSearchToDescriptions(
-      searches.results[0].filters, mappedFilters);
+      searches.results[0].filters, mappedFilters,
+    );
     const expected = [
-      { description: 'german', isTandem: undefined, isCommon: true, isToggle: undefined },
-      { description: 'CONSULAR AFFAIRS', isTandem: true, isCommon: undefined, isToggle: undefined },
+      {
+        description: 'german', isTandem: undefined, isCommon: true, isToggle: undefined,
+      },
+      {
+        description: 'CONSULAR AFFAIRS', isTandem: true, isCommon: undefined, isToggle: undefined,
+      },
     ];
     expect(isEqual(mappedDescriptions, expected)).toBe(true);
   });

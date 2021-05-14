@@ -26,8 +26,7 @@ describe('async actions', () => {
               date_of_login: '2019-08-20T13:53:39.673162Z',
             },
           ],
-        },
-      )
+        })
     ));
   });
 
@@ -46,9 +45,10 @@ describe('async actions', () => {
   it('handles errors when fetching stats', (done) => {
     const store = mockStore({});
 
-    mockAdapter.onGet('/stats/distinctlogins/?date_of_login__gt=2009-12-21T17%3A00%3A00.000Z&date_of_login__lte=2010-01-20T17%3A00%3A00.000Z&limit=1').reply(404,
-      null,
-    );
+    mockAdapter.onGet(
+      '/stats/distinctlogins/?date_of_login__gt=2009-12-21T17%3A00%3A00.000Z&date_of_login__lte=2010-01-20T17%3A00%3A00.000Z&limit=1',
+    )
+      .reply(404, null);
 
     const f = () => {
       setTimeout(() => {

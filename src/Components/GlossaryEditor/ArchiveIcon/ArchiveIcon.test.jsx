@@ -24,13 +24,17 @@ describe('ArchiveIconComponent', () => {
 
   it('sets the correct values when isArchived is true', () => {
     const wrapper = shallow(<ArchiveIcon {...props} isArchived />);
-    expect(wrapper.find('InteractiveElement').render().text()).toBe('Un-archive this term');
+    expect(wrapper.find('InteractiveElement').render().text()).toBe(
+      'Un-archive this term',
+    );
     expect(wrapper.find('.term-archived').exists()).toBe(true);
   });
 
   it('sets the correct values when isArchived is false', () => {
     const wrapper = shallow(<ArchiveIcon {...props} isArchived={false} />);
-    expect(wrapper.find('InteractiveElement').render().text()).toBe('Archive this term');
+    expect(wrapper.find('InteractiveElement').render().text()).toBe(
+      'Archive this term',
+    );
     expect(wrapper.find('.term-not-archived').exists()).toBe(true);
   });
 

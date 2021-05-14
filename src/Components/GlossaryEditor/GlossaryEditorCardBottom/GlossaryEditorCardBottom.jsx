@@ -16,12 +16,11 @@ const GlossaryEditorCardBottom = (props) => {
     showInvalidLinkWarning,
   } = props;
 
-  const doErrorIdsMatch = (hasErrored.id === id);
+  const doErrorIdsMatch = hasErrored.id === id;
   const showResponseError = hasErrored.hasErrored;
-  const showWarningOrError = (
-    showEmptyWarning || showInvalidLinkWarning ||
-    (showResponseError && (doErrorIdsMatch || isNewTerm))
-  );
+  const showWarningOrError = showEmptyWarning
+    || showInvalidLinkWarning
+    || (showResponseError && (doErrorIdsMatch || isNewTerm));
 
   const errorProps = {
     showEmptyWarning,
@@ -34,17 +33,16 @@ const GlossaryEditorCardBottom = (props) => {
       <div className="glossary-warning-container">
         {showWarningOrError && <ErrorMessage {...errorProps} />}
       </div>
-      {
-        !isNewTerm &&
-          <History
-            dateUpdated={dateUpdated}
-            updatedBy={updatedBy}
-            isArchived={isArchived}
-            id={id}
-            submitGlossaryTerm={submitGlossaryTerm}
-            hasErrored={showWarningOrError}
-          />
-      }
+      {!isNewTerm && (
+        <History
+          dateUpdated={dateUpdated}
+          updatedBy={updatedBy}
+          isArchived={isArchived}
+          id={id}
+          submitGlossaryTerm={submitGlossaryTerm}
+          hasErrored={showWarningOrError}
+        />
+      )}
     </div>
   );
 };

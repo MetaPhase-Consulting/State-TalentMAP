@@ -20,16 +20,18 @@ describe('BidTracker', () => {
   };
 
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <BidTracker />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <BidTracker />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('is defined after calling scrollToId', () => {
-    const wrapper = shallow(<BidTracker.WrappedComponent
-      {...props}
-    />);
+    const wrapper = shallow(<BidTracker.WrappedComponent {...props} />);
     wrapper.instance().scrollToId(1);
     expect(wrapper).toBeDefined();
   });
@@ -44,19 +46,18 @@ describe('BidTracker', () => {
   });
 
   it('calls scrollToId when componentDidUpdate is called', () => {
-    const wrapper = shallow(<BidTracker.WrappedComponent
-      {...props}
-      match={{ params: { bid: 2 } }}
-    />);
+    const wrapper = shallow(
+      <BidTracker.WrappedComponent {...props} match={{ params: { bid: 2 } }} />,
+    );
     const spy = sinon.spy(wrapper.instance(), 'scrollToId');
-    wrapper.instance().componentDidUpdate({ ...props, match: { params: { bid: 2 } } });
+    wrapper
+      .instance()
+      .componentDidUpdate({ ...props, match: { params: { bid: 2 } } });
     sinon.assert.calledOnce(spy);
   });
 
   it('calls scrollIntoView when scrollToId is called', () => {
-    const wrapper = shallow(<BidTracker.WrappedComponent
-      {...props}
-    />);
+    const wrapper = shallow(<BidTracker.WrappedComponent {...props} />);
     const spy = sinon.spy();
     global.document.querySelector = () => ({ scrollIntoView: spy });
     wrapper.instance().scrollToId();
@@ -67,10 +68,7 @@ describe('BidTracker', () => {
   it('can call the getBidList function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <BidTracker.WrappedComponent
-        {...props}
-        fetchBidList={spy}
-      />,
+      <BidTracker.WrappedComponent {...props} fetchBidList={spy} />,
     );
     wrapper.instance().getBidList();
     // should be called once on component mount

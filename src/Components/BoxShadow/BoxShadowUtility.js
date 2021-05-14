@@ -55,7 +55,7 @@ const isLength = v => v === '0' || LENGTH_REG.test(v);
 const toNum = (v) => {
   if (!/px$/.test(v) && v !== '0') return v;
   const n = parseFloat(v);
-  return !isNaN(n) ? n : v;
+  return !Number.isNaN(n) ? n : v;
 };
 const toPx = n => typeof n === 'number' && n !== 0 ? (`${n}px`) : n;
 

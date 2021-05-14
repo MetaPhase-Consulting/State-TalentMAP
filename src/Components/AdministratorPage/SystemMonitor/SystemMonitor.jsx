@@ -20,8 +20,9 @@ class SystemMonitor extends Component {
 
   getInfo = () => {
     this.setState({ isLoading: true, hasErrored: false }, () => {
-      api().get('/stats/sysmon/')
-        .then(data => {
+      api()
+        .get('/stats/sysmon/')
+        .then((data) => {
           this.setState({
             hasLoaded: true,
             data: data.data,
@@ -36,7 +37,7 @@ class SystemMonitor extends Component {
           });
         });
     });
-  }
+  };
 
   render() {
     const { hasLoaded, hasErrored, data } = this.state;

@@ -1,4 +1,6 @@
-import { compact, forOwn, has, isArray, isBoolean, isNumber, isObject, isString, keys, pickBy } from 'lodash';
+import {
+  compact, forOwn, has, isArray, isBoolean, isNumber, isObject, isString, keys, pickBy,
+} from 'lodash';
 import { GET_PROFILE_MENU } from './Menu';
 
 /**
@@ -78,7 +80,7 @@ describe('Menu', () => {
 
       forOwn(item, (value, key) => {
         rule = rules[key];
-        type = rule.type;
+        ({ type } = rule);
         validate = types[type];
 
         // console.log([key, rule, type, value, validate]);

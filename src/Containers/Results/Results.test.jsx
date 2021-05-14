@@ -33,50 +33,41 @@ describe('Results', () => {
   };
 
   it('is defined', () => {
-    const results = TestUtils.renderIntoDocument(<MockTestProvider>
-      <Results
-        {...props}
-      />
-    </MockTestProvider>);
+    const results = TestUtils.renderIntoDocument(
+      <MockTestProvider>
+        <Results {...props} />
+      </MockTestProvider>,
+    );
     expect(results).toBeDefined();
   });
 
   it('is defined when isAuthorized returns false', () => {
-    const results = TestUtils.renderIntoDocument(<MockTestProvider>
-      <Results
-        {...props}
-        isAuthorized={() => false}
-      />
-    </MockTestProvider>);
+    const results = TestUtils.renderIntoDocument(
+      <MockTestProvider>
+        <Results {...props} isAuthorized={() => false} />
+      </MockTestProvider>,
+    );
     expect(results).toBeDefined();
   });
 
   it('can handle authentication redirects', () => {
-    const results = TestUtils.renderIntoDocument(<MockTestProvider>
-      <Results
-        {...props}
-      />
-    </MockTestProvider>);
+    const results = TestUtils.renderIntoDocument(
+      <MockTestProvider>
+        <Results {...props} />
+      </MockTestProvider>,
+    );
     expect(results).toBeDefined();
   });
 
   it('sets filtersIsLoading state when it receives new props', () => {
-    const wrapper = shallow(
-      <Results.WrappedComponent
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Results.WrappedComponent {...props} />);
     expect(wrapper.instance().state.filtersIsLoading).toBe(true);
     wrapper.setProps({ ...props, filtersIsLoading: false });
     expect(wrapper.instance().state.filtersIsLoading).toBe(false);
   });
 
   it('returns a value for getStringifiedQuery()', () => {
-    const wrapper = shallow(
-      <Results.WrappedComponent
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Results.WrappedComponent {...props} />);
     wrapper.instance().resultsPageRef = { getKeywordValue: () => 'test' };
     wrapper.update();
     expect(wrapper.instance().getStringifiedQuery()).toBeDefined();
@@ -84,11 +75,7 @@ describe('Results', () => {
 
   it('can call the onQueryParamUpdate function', () => {
     const query = { ordering: 'position__bureau', q: 'German' };
-    const wrapper = shallow(
-      <Results.WrappedComponent
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Results.WrappedComponent {...props} />);
     wrapper.instance().resultsPageRef = { getKeywordValue: () => 'German' };
     wrapper.update();
 
@@ -119,7 +106,9 @@ describe('Results', () => {
     const wrapper = shallow(
       <Results.WrappedComponent
         {...props}
-        storeSearch={(v) => { value.newValue = v; }}
+        storeSearch={(v) => {
+          value.newValue = v;
+        }}
       />,
     );
     wrapper.instance().setState({ query: { value: 'q=German' } });
@@ -130,11 +119,9 @@ describe('Results', () => {
 
   it('calls history.push on this.resetFilters()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Results.WrappedComponent
-        {...props}
-      />, { context: { router: { history: { push: spy } } } },
-    );
+    const wrapper = shallow(<Results.WrappedComponent {...props} />, {
+      context: { router: { history: { push: spy } } },
+    });
     wrapper.instance().resetFilters();
     sinon.assert.calledOnce(spy);
   });
@@ -145,19 +132,13 @@ describe('Results', () => {
     [{ ordering: 'order' }, false],
     [{ other: true, ordering: 'order' }, true],
     [{ other: 0 }, true],
-  ].map((d, i) => (
-    it(`returns the correct value for this.getQueryExists() at index ${i}`, () => {
-      const wrapper = shallow(
-        <Results.WrappedComponent
-          {...props}
-        />,
-      );
-      const q$ = q.stringify(d[0]);
-      wrapper.instance().setState({ query: { value: q$ } });
-      const exp = wrapper.instance().getQueryExists();
-      expect(exp).toBe(d[1]);
-    })
-  ));
+  ].map((d, i) => it(`returns the correct value for this.getQueryExists() at index ${i}`, () => {
+    const wrapper = shallow(<Results.WrappedComponent {...props} />);
+    const q$ = q.stringify(d[0]);
+    wrapper.instance().setState({ query: { value: q$ } });
+    const exp = wrapper.instance().getQueryExists();
+    expect(exp).toBe(d[1]);
+  }));
 
   it('can call the onQueryParamToggle function when removing a param', (done) => {
     const wrapper = shallow(
@@ -275,7 +256,9 @@ describe('Results', () => {
     const f = () => {
       setTimeout(() => {
         // make sure the skill was removed
-        expect(instance.state.query.value).toBe('language=1&newFilter=2&skill=2');
+        expect(instance.state.query.value).toBe(
+          'language=1&newFilter=2&skill=2',
+        );
         done();
       }, debounceTimeInMs + 100);
     };
@@ -306,7 +289,13 @@ describe('Results', () => {
       />,
     );
     const history = { value: { search: null } };
-    wrapper.instance().context.router = { history: { push: (h) => { history.value = h; } } };
+    wrapper.instance().context.router = {
+      history: {
+        push: (h) => {
+          history.value = h;
+        },
+      },
+    };
     wrapper.instance().state.query.value = 'language=1&ordering=bureau&q=German&skill=1';
     wrapper.instance().onQueryParamToggle('skill', '2', true);
     // There wasn't a change, so we should refresh the page - i.e., value.search

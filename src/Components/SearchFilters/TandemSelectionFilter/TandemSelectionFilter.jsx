@@ -13,15 +13,17 @@ const TandemSelectionFilter = ({ onChange, userProfile, isLoading }) => {
   const tandem1Name = get(userProfile, 'display_name', 'Tandem 1');
   const tandem1Name$ = shortenString(tandem1Name, 15);
   const items$ = [
-    { label: tandem1Name$, value: '1', tooltip: tandem1Name !== tandem1Name$ ? tandem1Name : null, toggleClass: 'toggle-tandem-1' },
+    {
+      label: tandem1Name$,
+      value: '1',
+      tooltip: tandem1Name !== tandem1Name$ ? tandem1Name : null,
+      toggleClass: 'toggle-tandem-1',
+    },
     { label: 'Tandem 2', value: '2', toggleClass: 'toggle-tandem-2' },
   ];
   return (
     <div className="tandem-filter-container">
-      {
-        !isLoading &&
-        <Toggle items={items$} onChange={onChange$} />
-      }
+      {!isLoading && <Toggle items={items$} onChange={onChange$} />}
     </div>
   );
 };
@@ -38,7 +40,7 @@ TandemSelectionFilter.defaultProps = {
   isLoading: true,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userProfile: state.userProfile,
   isLoading: state.userProfileIsLoading,
 });

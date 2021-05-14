@@ -2,9 +2,20 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import { get } from 'lodash';
-import { faBalanceScaleLeft, faChessQueen, faDiceSix, faGraduationCap, faLanguage, faMedal,
-  faPercentage, faRegistered, faSeedling, faSpa, faTree, faUserFriends }
-  from '@fortawesome/free-solid-svg-icons';
+import {
+  faBalanceScaleLeft,
+  faChessQueen,
+  faDiceSix,
+  faGraduationCap,
+  faLanguage,
+  faMedal,
+  faPercentage,
+  faRegistered,
+  faSeedling,
+  faSpa,
+  faTree,
+  faUserFriends,
+} from '@fortawesome/free-solid-svg-icons';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import InteractiveElement from '../../InteractiveElement';
 
@@ -109,14 +120,42 @@ const icons = {
 
 const status$ = ['none', 'success'];
 
-const ClientBadge = ({ type, status, showShortCode, editView, onChange, id }) => {
+const ClientBadge = ({
+  type,
+  status,
+  showShortCode,
+  editView,
+  onChange,
+  id,
+}) => {
   const isHighlighted = status === true ? 'success' : 'none';
   const ariaLabel = `type of "${type.code}" with status of "${status$[status]}"`;
   const icon = get(icons, type.code, 'None');
   const text = showShortCode === true ? get(icon, 'text', 'None') : '';
   return (
-    <div className={`usa-grid-full client-badge-container client-badge-container--${icons[type.code] && icons[type.code].isIcon ? 'icon' : 'text'} client-badge-container--${isHighlighted}`}>
-      {editView ? <InteractiveElement onClick={() => onChange(id)}>
+    <div
+      className={`usa-grid-full client-badge-container client-badge-container--${
+        icons[type.code] && icons[type.code].isIcon ? 'icon' : 'text'
+      } client-badge-container--${isHighlighted}`}
+    >
+      {editView ? (
+        <InteractiveElement onClick={() => onChange(id)}>
+          <div className="client-badge">
+            <Tooltip
+              title={text}
+              arrow
+              offset={-95}
+              position="top-end"
+              tabIndex="0"
+            >
+              <FontAwesomeIcon
+                aria-label={ariaLabel}
+                icon={get(icon, 'name', 'None')}
+              />
+            </Tooltip>
+          </div>
+        </InteractiveElement>
+      ) : (
         <div className="client-badge">
           <Tooltip
             title={text}
@@ -131,28 +170,12 @@ const ClientBadge = ({ type, status, showShortCode, editView, onChange, id }) =>
             />
           </Tooltip>
         </div>
-      </InteractiveElement>
-        :
-        <div className="client-badge">
-          <Tooltip
-            title={text}
-            arrow
-            offset={-95}
-            position="top-end"
-            tabIndex="0"
-          >
-            <FontAwesomeIcon
-              aria-label={ariaLabel}
-              icon={get(icon, 'name', 'None')}
-            />
-          </Tooltip>
-        </div>
-      }
-      {showShortCode &&
+      )}
+      {showShortCode && (
         <div className="client-badge-text">
           <span>{get(icon, 'shortCode', 'None')}</span>
         </div>
-      }
+      )}
     </div>
   );
 };

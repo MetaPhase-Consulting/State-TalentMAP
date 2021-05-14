@@ -4,9 +4,7 @@ import Login from './index';
 
 describe('Login', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <Login />,
-    );
+    const wrapper = shallow(<Login />);
     expect(wrapper).toBeDefined();
   });
 });

@@ -11,12 +11,11 @@ import NoFavorites from '../../EmptyListAlert/NoFavorites';
 import SectionHeader from '../SectionHeader';
 import StaticDevContent from '../../StaticDevContent';
 
-
 const FavoriteList = ({ favoritePositions }) => {
   let favorites = [];
   let isTandem = false;
   if (get(favoritePositions, 'favorites', []).length > 0) {
-    favorites = favoritePositions.favorites;
+    favorites = favoritePositions.favorites; // eslint-disable-line prefer-destructuring
   } else if (get(favoritePositions, 'favoritesPV', []).length > 0) {
     favorites = favoritePositions.favoritesPV;
   } else if (get(favoritePositions, 'favoritesTandem', []).length > 0) {
@@ -29,38 +28,43 @@ const FavoriteList = ({ favoritePositions }) => {
   const positionArray = [];
   favorites.slice(0, 2).forEach((pos) => {
     const position = pos.position || pos;
-    return (
-      positionArray.push(
-        <FavoriteListResultsCard
-          position={{ ...position, cpId: pos.id }}
-          isPV={pos.isPV}
-          condensedView
-          /* pass a parentClassName that we can use from the BorderedList component */
-          parentClassName="parent-list-container"
-          isTandem={isTandem}
-        />,
-      )
+    return positionArray.push(
+      <FavoriteListResultsCard
+        position={{ ...position, cpId: pos.id }}
+        isPV={pos.isPV}
+        condensedView
+        /* pass a parentClassName that we can use from the BorderedList component */
+        parentClassName="parent-list-container"
+        isTandem={isTandem}
+      />,
     );
   });
   return (
     <div className="usa-grid-full profile-section-container">
       <StaticDevContent>
-        <SectionHeader title="3 projected vacancies are now available" buttonText="View Favorites" icon="globe" />
+        <SectionHeader
+          title="3 projected vacancies are now available"
+          buttonText="View Favorites"
+          icon="globe"
+        />
       </StaticDevContent>
       <div className="usa-grid-full section-padded-inner-container">
         <div className="usa-width-one-whole">
-          <SectionTitle title="Favorites" icon="star" len={favoritePositions.counts.all} />
+          <SectionTitle
+            title="Favorites"
+            icon="star"
+            len={favoritePositions.counts.all}
+          />
         </div>
       </div>
       <div className="favorites-list-container">
-        {
-          positionArray.length === 0 ?
-            <div className="usa-grid-full section-padded-inner-container">
-              <NoFavorites />
-            </div>
-            :
-            <BorderedList contentArray={positionArray} />
-        }
+        {positionArray.length === 0 ? (
+          <div className="usa-grid-full section-padded-inner-container">
+            <NoFavorites />
+          </div>
+        ) : (
+          <BorderedList contentArray={positionArray} />
+        )}
       </div>
       <div className="section-padded-inner-container small-link-container view-more-link-centered">
         <Link to="/profile/favorites/">View more</Link>
@@ -77,7 +81,7 @@ FavoriteList.defaultProps = {
   favoritePositions: DEFAULT_FAVORITES,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   favoritePositions: state.favoritePositions,
 });
 

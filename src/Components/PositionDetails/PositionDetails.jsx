@@ -32,7 +32,7 @@ class PositionDetails extends Component {
 
   // The additional details section should match after edits are made,
   // so we set the content to a value in local state when ever any edits are made.
-  editDescriptionContent = content => {
+  editDescriptionContent = (content) => {
     this.props.editDescriptionContent(content);
     const { newDescriptionContent } = this.state;
     newDescriptionContent.value = content;
@@ -66,51 +66,63 @@ class PositionDetails extends Component {
 
     return (
       <div className="content-container position-details-container">
-        <Row className="position-details-description-container positions-details-about-position back-container padded-main-content" fluid>
+        <Row
+          className="position-details-description-container positions-details-about-position back-container padded-main-content"
+          fluid
+        >
           <GoBackLink />
         </Row>
-        { isReady &&
-        <div>
-          <PositionTitle
-            details={{
-              ...position,
-              cpId: details.id,
-              availability: get(details, 'availability', {}),
-              bidStatistics: get(details, 'bid_statistics', [{}]),
-            }}
-            bidList={bidList}
-            editDescriptionContent={this.editDescriptionContent}
-            editPocContent={editPocContent}
-            editWebsiteContent={editWebsiteContent}
-            resetDescriptionEditMessages={resetDescriptionEditMessages}
-            userProfile={userProfile}
-            isProjectedVacancy={isProjectedVacancy}
-            isArchived={isArchived}
-          />
-          <PositionDetailsItem
-            details={details}
-            editDescriptionContent={this.editDescriptionContent}
-            editPocContent={editPocContent}
-            editWebsiteContent={editWebsiteContent}
-            resetDescriptionEditMessages={resetDescriptionEditMessages}
-            userProfile={userProfile}
-            highlightPosition={highlightPosition}
-            onHighlight={onHighlight}
-            isProjectedVacancy={isProjectedVacancy}
-            isArchived={isArchived}
-          />
-          <hr />
-          <Row className="position-details-description-container padded-main-content" fluid>
-            { !isProjectedVacancy && !isArchived && <PositionSimilarPositions id={details.id} /> }
-          </Row>
-        </div>}
+        {isReady && (
+          <div>
+            <PositionTitle
+              details={{
+                ...position,
+                cpId: details.id,
+                availability: get(details, 'availability', {}),
+                bidStatistics: get(details, 'bid_statistics', [{}]),
+              }}
+              bidList={bidList}
+              editDescriptionContent={this.editDescriptionContent}
+              editPocContent={editPocContent}
+              editWebsiteContent={editWebsiteContent}
+              resetDescriptionEditMessages={resetDescriptionEditMessages}
+              userProfile={userProfile}
+              isProjectedVacancy={isProjectedVacancy}
+              isArchived={isArchived}
+            />
+            <PositionDetailsItem
+              details={details}
+              editDescriptionContent={this.editDescriptionContent}
+              editPocContent={editPocContent}
+              editWebsiteContent={editWebsiteContent}
+              resetDescriptionEditMessages={resetDescriptionEditMessages}
+              userProfile={userProfile}
+              highlightPosition={highlightPosition}
+              onHighlight={onHighlight}
+              isProjectedVacancy={isProjectedVacancy}
+              isArchived={isArchived}
+            />
+            <hr />
+            <Row
+              className="position-details-description-container padded-main-content"
+              fluid
+            >
+              {!isProjectedVacancy && !isArchived && (
+                <PositionSimilarPositions id={details.id} />
+              )}
+            </Row>
+          </div>
+        )}
         {isLoading$ && <Spinner type="position-details" size="big" />}
-        {isError &&
+        {isError && (
           <div className="usa-grid-full position-error">
             <h2>There was an error loading this position</h2>
-            <p><Link to="/results">Return to search</Link> and select filters to look for a similar position.</p>
+            <p>
+              <Link to="/results">Return to search</Link> and select filters to
+              look for a similar position.
+            </p>
           </div>
-        }
+        )}
       </div>
     );
   }

@@ -10,17 +10,14 @@ describe('BidListButton', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidListButton.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<BidListButton.WrappedComponent {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when isClient === true', () => {
-    const wrapper = shallow(
-      <BidListButton.WrappedComponent {...props} />,
-      { context: { isClient: true } },
-    );
+    const wrapper = shallow(<BidListButton.WrappedComponent {...props} />, {
+      context: { isClient: true },
+    });
     expect(wrapper).toBeDefined();
   });
 });

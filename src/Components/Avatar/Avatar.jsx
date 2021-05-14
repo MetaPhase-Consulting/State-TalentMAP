@@ -37,8 +37,18 @@ const defaultProps = {
   colorString: '',
 };
 
-const Avatar = ({ initials, firstName, lastName, className, small, onClick, fallback,
-  externalSource, externalSourceToUse, colorString }) => {
+const Avatar = ({
+  initials,
+  firstName,
+  lastName,
+  className,
+  small,
+  onClick,
+  fallback,
+  externalSource,
+  externalSourceToUse,
+  colorString,
+}) => {
   const avatar = <span>{initials || fallback}</span>;
   /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
   /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -47,26 +57,34 @@ const Avatar = ({ initials, firstName, lastName, className, small, onClick, fall
   };
   let containerStyle = {};
   if (colorString) {
-    const output = getAvatarColor((colorString));
+    const output = getAvatarColor(colorString);
     containerStyle = {
-      ...containerStyle, ...output,
+      ...containerStyle,
+      ...output,
     };
   }
-  if (small) { style.borderRadius = 30; }
+  if (small) {
+    style.borderRadius = 30;
+  }
   return (
-    <div style={containerStyle} className={`tm-avatar ${small ? 'tm-avatar--small' : ''} ${className}`} onClick={onClick} role="img" aria-label={`${firstName} ${lastName}`}>
-      {
-        get(externalSource, externalSourceToUse) ?
-          <ImageFallback
-            src={externalSource[externalSourceToUse]}
-            fallbackImage={avatar}
-            initialImage={avatar}
-            alt="avatar"
-            style={style}
-          />
-          :
-          avatar
-      }
+    <div
+      style={containerStyle}
+      className={`tm-avatar ${small ? 'tm-avatar--small' : ''} ${className}`}
+      onClick={onClick}
+      role="img"
+      aria-label={`${firstName} ${lastName}`}
+    >
+      {get(externalSource, externalSourceToUse) ? (
+        <ImageFallback
+          src={externalSource[externalSourceToUse]}
+          fallbackImage={avatar}
+          initialImage={avatar}
+          alt="avatar"
+          style={style}
+        />
+      ) : (
+        avatar
+      )}
     </div>
     /* eslint-enable jsx-a11y/no-noninteractive-element-interactions */
     /* eslint-enable jsx-a11y/no-static-element-interactions */

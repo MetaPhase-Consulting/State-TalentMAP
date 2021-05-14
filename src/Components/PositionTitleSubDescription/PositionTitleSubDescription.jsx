@@ -3,32 +3,30 @@ import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import TextEditor from '../TextEditor';
 import EditContentButton from '../EditContentButton';
 
-const PositionTitleSubDescription = ({ title, formattedContent, plainContent, shouldShowEditor,
-  onSubmitText, toggleEditor, isAllowedToEdit }) => (
-  <div
-    className="usa-width-one-whole position-details-header-body editable-position-field"
-  >
+const PositionTitleSubDescription = ({
+  title,
+  formattedContent,
+  plainContent,
+  shouldShowEditor,
+  onSubmitText,
+  toggleEditor,
+  isAllowedToEdit,
+}) => (
+  <div className="usa-width-one-whole position-details-header-body editable-position-field">
     <div className="editable-position-field-title">{title}: </div>
-    {
-      !shouldShowEditor &&
+    {!shouldShowEditor && (
       <div className="usa-grid-full">
         {formattedContent}
-        {
-          isAllowedToEdit &&
-          <EditContentButton
-            onToggle={toggleEditor}
-          />
-        }
+        {isAllowedToEdit && <EditContentButton onToggle={toggleEditor} />}
       </div>
-    }
-    {
-      shouldShowEditor &&
-        <TextEditor
-          initialText={plainContent}
-          onSubmitText={onSubmitText}
-          cancel={toggleEditor}
-        />
-    }
+    )}
+    {shouldShowEditor && (
+      <TextEditor
+        initialText={plainContent}
+        onSubmitText={onSubmitText}
+        cancel={toggleEditor}
+      />
+    )}
   </div>
 );
 

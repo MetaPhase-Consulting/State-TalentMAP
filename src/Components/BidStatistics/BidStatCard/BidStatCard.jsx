@@ -2,12 +2,8 @@ import PropTypes from 'prop-types';
 
 const BidStatCard = ({ title, number }) => (
   <div className="bid-stat-card">
-    <div className="bid-stat-card-number">
-      {number}
-    </div>
-    <div className="bid-stat-card-title">
-      {title}
-    </div>
+    <div className="bid-stat-card-number">{number}</div>
+    <div className="bid-stat-card-title">{title}</div>
   </div>
 );
 

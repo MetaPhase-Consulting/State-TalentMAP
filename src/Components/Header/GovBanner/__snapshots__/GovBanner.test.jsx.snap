@@ -70,7 +70,8 @@ exports[`GovBanner matches snapshot 1`] = `
           className="usa-media_block-body"
         >
           <p>
-            This site is also protected by an SSL (Secure Sockets Layer) certificate that’s been signed by the U.S. government. The 
+            This site is also protected by an SSL (Secure Sockets Layer) certificate that’s been signed by the U.S. government. The
+             
             <strong>
               https://
             </strong>

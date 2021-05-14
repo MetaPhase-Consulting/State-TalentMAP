@@ -14,7 +14,7 @@ function queryParamUpdate(newQueryObject, oldQueryString, returnAsObject = false
     }
   }
   // combine our old and new query objects, overwriting any diffs with new
-  const newQuery = Object.assign({}, parsedQuery, newQueryObject);
+  const newQuery = { ...parsedQuery, ...newQueryObject };
   // remove any params with no value
   Object.keys(newQuery).forEach((key) => {
     const newQuery$ = get(newQuery, key) || '';

@@ -23,12 +23,10 @@ describe('async actions', () => {
     ];
 
     mockAdapter.onGet('/country/?q=Afgh&limit=3').reply(200,
-      results,
-    );
+      results);
 
     mockAdapter.onGet('/country/?q=fake&limit=3').reply(404,
-      null,
-    );
+      null);
   });
 
   it('can fetch post results', (done) => {

@@ -1,7 +1,9 @@
-import { logHasErrored, logIsLoading, logSuccess,
+import {
+  logHasErrored, logIsLoading, logSuccess,
   logToDownloadHasErrored, logToDownloadIsLoading, logToDownloadSuccess,
   logsHasErrored, logsIsLoading, logsListHasErrored,
-  logsListIsLoading, logsListSuccess, logsSuccess } from './logs';
+  logsListIsLoading, logsListSuccess, logsSuccess,
+} from './logs';
 
 export default {
   logsIsLoading,

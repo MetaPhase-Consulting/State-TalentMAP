@@ -6,26 +6,20 @@ import BetaHeader, { mapDispatchToProps } from './BetaHeader';
 
 describe('BetaHeader', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <BetaHeader.WrappedComponent />,
-    );
+    const wrapper = shallow(<BetaHeader.WrappedComponent />);
     expect(wrapper).toBeDefined();
   });
 
   it('calls patchData on this.patchData()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <BetaHeader.WrappedComponent patchData={spy} />,
-    );
+    const wrapper = shallow(<BetaHeader.WrappedComponent patchData={spy} />);
     wrapper.instance().patchData();
     sinon.assert.calledOnce(spy);
   });
 
   it('updates state on this.toggleEditor()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <BetaHeader.WrappedComponent patchData={spy} />,
-    );
+    const wrapper = shallow(<BetaHeader.WrappedComponent patchData={spy} />);
     expect(wrapper.instance().state.editorVisible).toBe(false);
     wrapper.instance().toggleEditor();
     expect(wrapper.instance().state.editorVisible).toBe(true);
@@ -33,9 +27,7 @@ describe('BetaHeader', () => {
 
   it('updates state and calls patchData on this.submit()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <BetaHeader.WrappedComponent patchData={spy} />,
-    );
+    const wrapper = shallow(<BetaHeader.WrappedComponent patchData={spy} />);
     wrapper.instance().setState({ editorVisible: true });
     expect(wrapper.instance().state.editorVisible).toBe(true);
     wrapper.instance().submit();
@@ -45,9 +37,7 @@ describe('BetaHeader', () => {
 
   it('updates state on this.cancel()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <BetaHeader.WrappedComponent patchData={spy} />,
-    );
+    const wrapper = shallow(<BetaHeader.WrappedComponent patchData={spy} />);
     wrapper.instance().setState({ editorVisible: true });
     expect(wrapper.instance().state.editorVisible).toBe(true);
     wrapper.instance().cancel();
@@ -55,9 +45,7 @@ describe('BetaHeader', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BetaHeader.WrappedComponent />,
-    );
+    const wrapper = shallow(<BetaHeader.WrappedComponent />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

@@ -19,13 +19,13 @@ const getMessage = (showEmptyWarning, showInvalidLinkWarning, error) => {
 
 const ErrorMessage = ({ showEmptyWarning, showInvalidLinkWarning, error }) => {
   const showResponseError = isObject(error) ? error.hasErrored : error; // Deprecated prop
-  const isError = (showEmptyWarning || showInvalidLinkWarning || showResponseError);
+  const isError = showEmptyWarning || showInvalidLinkWarning || showResponseError;
 
-  return (
-    isError ? <span className="usa-input-error-message" role="alert">
+  return isError ? (
+    <span className="usa-input-error-message" role="alert">
       {getMessage(showEmptyWarning, showInvalidLinkWarning, error)}
-    </span> : null
-  );
+    </span>
+  ) : null;
 };
 
 // TODO
@@ -35,7 +35,6 @@ ErrorMessage.propTypes = {
   showEmptyWarning: PropTypes.bool,
   showInvalidLinkWarning: PropTypes.bool,
   error: PropTypes.oneOfType([GLOSSARY_ERROR_OBJECT, PropTypes.bool]),
-
 };
 
 ErrorMessage.defaultProps = {

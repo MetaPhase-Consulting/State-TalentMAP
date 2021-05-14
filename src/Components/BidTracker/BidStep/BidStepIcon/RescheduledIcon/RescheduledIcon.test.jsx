@@ -4,16 +4,12 @@ import RescheduledIcon from './RescheduledIcon';
 
 describe('RescheduledIconComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <RescheduledIcon />,
-    );
+    const wrapper = shallow(<RescheduledIcon />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <RescheduledIcon />,
-    );
+    const wrapper = shallow(<RescheduledIcon />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

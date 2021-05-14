@@ -99,7 +99,8 @@ exports[`Footer Component matches snapshot 1`] = `
         <div
           className="tm-footer-body-contact-item"
         >
-          To share your feedback with us, please contact 
+          To share your feedback with us, please contact
+           
           <a
             href="mailto:TalentMAP@state.gov"
           >

@@ -3,9 +3,7 @@ import Ribbon from '../Ribbon';
 
 const CriticalNeed = ({ shortName, ...props }) => {
   const text = shortName ? 'CN' : 'Critical need';
-  return (
-    <Ribbon icon="exclamation" text={text} type="cn" {...props} />
-  );
+  return <Ribbon icon="exclamation" text={text} type="cn" {...props} />;
 };
 
 CriticalNeed.propTypes = {

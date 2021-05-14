@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 import Alert from '../../Components/Alert/Alert';
 import { auth } from '../sagas';
-import { tokenValidationRequest } from '../../login/actions';
+import { tokenValidationRequest } from '../actions';
 
 import { initialState } from '../reducer';
 
@@ -18,44 +18,49 @@ export class TokenValidation extends Component {
     // First check to see if there's a token in the query params.
     let token = parsedQuery.tmApiToken;
     // If not, check if one exists in the cookies.
-    if (!token) { token = auth.get(); }
+    if (!token) {
+      token = auth.get();
+    }
     // If neither criteria is met, set the token to null which will cause a failure.
-    if (!token) { token = null; }
+    if (!token) {
+      token = null;
+    }
     // Finally, pass that token to the tokenValidationRequest function
     this.props.tokenValidationRequest(token);
   }
 
   render() {
     const {
-      login: {
-        requesting,
-        messages,
-        errors,
-      },
+      login: { requesting, messages, errors },
     } = this.props;
 
     return (
       <div className="usa-grid-full login-container content-container padded-main-content">
         <div className="usa-grid-full login">
           <div className="auth-messages">
-            {
-              !requesting && !!errors.length &&
-              (<div className="usa-width-one-half">
-                <Alert title="Failed to login due to:" messages={errors} type="error" />
-              </div>)
-            }
-            {
-              !requesting && !!messages.length &&
-              (<div className="usa-width-one-half">
-                <Alert title="Please see below" messages={messages} type="info" />
-              </div>)
-            }
-            {
-              requesting &&
-              (<div className="usa-width-one-half">
+            {!requesting && !!errors.length && (
+              <div className="usa-width-one-half">
+                <Alert
+                  title="Failed to login due to:"
+                  messages={errors}
+                  type="error"
+                />
+              </div>
+            )}
+            {!requesting && !!messages.length && (
+              <div className="usa-width-one-half">
+                <Alert
+                  title="Please see below"
+                  messages={messages}
+                  type="info"
+                />
+              </div>
+            )}
+            {requesting && (
+              <div className="usa-width-one-half">
                 <Alert title="Logging in..." type="info" />
-              </div>)
-            }
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -78,12 +83,12 @@ TokenValidation.defaultProps = {
   login: initialState,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   login: state.login,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  tokenValidationRequest: token => dispatch(tokenValidationRequest(token)),
+export const mapDispatchToProps = (dispatch) => ({
+  tokenValidationRequest: (token) => dispatch(tokenValidationRequest(token)),
 });
 
 const connected = connect(mapStateToProps, mapDispatchToProps)(TokenValidation);

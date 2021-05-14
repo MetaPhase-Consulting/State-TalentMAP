@@ -11,19 +11,14 @@ describe('BidStatistics', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidStatistics.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<BidStatistics.WrappedComponent {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('can call the getBidStats function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <BidStatistics.WrappedComponent
-        {...props}
-        fetchBidStatistics={spy}
-      />,
+      <BidStatistics.WrappedComponent {...props} fetchBidStatistics={spy} />,
     );
     wrapper.instance().getBidStats();
     // should be called once on component mount

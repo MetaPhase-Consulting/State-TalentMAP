@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { bidListFetchData } from '../../actions/bidList';
-import HomePage from '../../Containers/HomePage/HomePage';
+import HomePage from '../HomePage/HomePage';
 import { BID_LIST } from '../../Constants/PropTypes';
 import { LOGIN_REDIRECT } from '../../login/routes';
 
@@ -54,13 +54,13 @@ Home.defaultProps = {
   bidList: { results: [] },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userProfileIsLoading: state.userProfileIsLoading,
   bidList: state.bidListFetchDataSuccess,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  onNavigateTo: dest => dispatch(push(dest)),
+export const mapDispatchToProps = (dispatch) => ({
+  onNavigateTo: (dest) => dispatch(push(dest)),
   bidListFetchData: () => dispatch(bidListFetchData()),
 });
 

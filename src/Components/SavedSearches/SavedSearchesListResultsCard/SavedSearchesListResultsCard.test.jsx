@@ -12,21 +12,14 @@ describe('SavedSearchesListResultsCardComponent', () => {
     deleteSearch: () => {},
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SavedSearchesListResultsCard {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('can click the delete button', () => {
     const spy = sinon.spy();
     const wrapper = mount(
-      <SavedSearchesListResultsCard
-        {...props}
-        deleteSearch={spy}
-      />,
+      <SavedSearchesListResultsCard {...props} deleteSearch={spy} />,
     );
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(spy);
@@ -35,10 +28,7 @@ describe('SavedSearchesListResultsCardComponent', () => {
   it('can click the View button', () => {
     const spy = sinon.spy();
     const wrapper = mount(
-      <SavedSearchesListResultsCard
-        {...props}
-        goToSavedSearch={spy}
-      />,
+      <SavedSearchesListResultsCard {...props} goToSavedSearch={spy} />,
     );
 
     wrapper.find('button').at(0).simulate('click');
@@ -46,11 +36,7 @@ describe('SavedSearchesListResultsCardComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SavedSearchesListResultsCard {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
@@ -58,10 +44,7 @@ describe('SavedSearchesListResultsCardComponent', () => {
     const savedSearch = { ...props.savedSearch };
     savedSearch.date_created = null;
     const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-        savedSearch={savedSearch}
-      />,
+      <SavedSearchesListResultsCard {...props} savedSearch={savedSearch} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

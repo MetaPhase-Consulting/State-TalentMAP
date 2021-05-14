@@ -13,8 +13,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/capsule_description/1/').reply(200,
-      'success',
-    );
+      'success');
 
     const f = () => {
       setTimeout(() => {
@@ -29,8 +28,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/capsule_description/1/').reply(200,
-      'success',
-    );
+      'success');
 
     const f = () => {
       setTimeout(() => {
@@ -45,8 +43,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/capsule_description/1/').reply(200,
-      'success',
-    );
+      'success');
 
     const f = () => {
       setTimeout(() => {
@@ -73,8 +70,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/capsule_description/1/').reply(404,
-      { message: 'unauthorized' },
-    );
+      { message: 'unauthorized' });
 
     const f = () => {
       setTimeout(() => {
@@ -89,8 +85,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/capsule_description/1/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

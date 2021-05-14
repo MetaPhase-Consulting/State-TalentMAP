@@ -3,11 +3,22 @@ import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import { get, keys } from 'lodash';
 import { formatDate } from 'utilities';
-import { availableBidderEditData, availableBiddersToggleUser } from 'actions/availableBidders';
+import {
+  availableBidderEditData,
+  availableBiddersToggleUser,
+} from 'actions/availableBidders';
 import { useDispatch } from 'react-redux';
 import {
-  NO_BUREAU, NO_CDO, NO_COMMENTS, NO_END_DATE, NO_GRADE, NO_LANGUAGE,
-  NO_LANGUAGES, NO_OC_REASON, NO_POST, NO_STATUS,
+  NO_BUREAU,
+  NO_CDO,
+  NO_COMMENTS,
+  NO_END_DATE,
+  NO_GRADE,
+  NO_LANGUAGE,
+  NO_LANGUAGES,
+  NO_OC_REASON,
+  NO_POST,
+  NO_STATUS,
 } from 'Constants/SystemMessages';
 import EditBidder from 'Components/AvailableBidder/EditBidder';
 import InteractiveElement from 'Components/InteractiveElement';
@@ -18,9 +29,10 @@ import swal from '@sweetalert/with-react';
 import { FILTER } from 'Constants/PropTypes';
 import SkillCodeList from '../../SkillCodeList';
 
-
 const AvailableBidderRow = (props) => {
-  const { bidder, CDOView, isLoading, isCDO, bureaus } = props;
+  const {
+    bidder, CDOView, isLoading, isCDO, bureaus,
+  } = props;
 
   // Formatting
   const shared = get(bidder, 'available_bidder_details.is_shared', false);
@@ -38,18 +50,20 @@ const AvailableBidderRow = (props) => {
     if (status === 'OC') {
       return (
         <Tooltip
-          html={
+          html={(
             <div>
-              <div className={'tooltip-text'}>
+              <div className="tooltip-text">
                 <div>
-                  <span className="title">OC Reason:</span> <span className="text">{ocReason}</span>
+                  <span className="title">OC Reason:</span>{' '}
+                  <span className="text">{ocReason}</span>
                 </div>
                 <div>
-                  <span className="title">OC Bureau:</span> <span className="text">{ocBureau}</span>
+                  <span className="title">OC Bureau:</span>{' '}
+                  <span className="text">{ocBureau}</span>
                 </div>
               </div>
             </div>
-          }
+          )}
           theme="oc-status"
           arrow
           tabIndex="0"
@@ -66,24 +80,33 @@ const AvailableBidderRow = (props) => {
   const getLanguages = () => (
     <div className="ab-languages">
       <Tooltip
-        html={
-          languages.map(l => (
-            <div className="language-group">
-              <span className="language-name">{get(l, 'language', NO_LANGUAGE)}: </span>
-              <span className="title">Speaking:</span> <span className="text">{get(l, 'speaking_score') || NO_LANGUAGE} | </span>
-              <span className="title">Reading:</span> <span className="text">{get(l, 'reading_score') || NO_LANGUAGE}</span>
-            </div>
-          ))
-        }
+        html={languages.map((l) => (
+          <div className="language-group">
+            <span className="language-name">
+              {get(l, 'language', NO_LANGUAGE)}:{' '}
+            </span>
+            <span className="title">Speaking:</span>{' '}
+            <span className="text">
+              {get(l, 'speaking_score') || NO_LANGUAGE} |{' '}
+            </span>
+            <span className="title">Reading:</span>{' '}
+            <span className="text">
+              {get(l, 'reading_score') || NO_LANGUAGE}
+            </span>
+          </div>
+        ))}
         theme="ab-languages"
         arrow
         tabIndex="0"
         interactive
         useContext
       >
-        {
-          languages.map((l, i) => <span>{get(l, 'code')}{i === languages.length - 1 ? '' : ', '}</span>)
-        }
+        {languages.map((l, i) => (
+          <span>
+            {get(l, 'code')}
+            {i === languages.length - 1 ? '' : ', '}
+          </span>
+        ))}
         <FA className="oc-icon" name="question-circle" />
       </Tooltip>
     </div>
@@ -99,38 +122,47 @@ const AvailableBidderRow = (props) => {
     if (!get(loc, 'city') && !get(loc, 'country')) return '';
     // Foreign posts - City, Country
     let x = `${get(loc, 'city')}, ${get(loc, 'country')}`;
-    if (!get(loc, 'city')) { x = get(loc, 'country'); }
-    if (!get(loc, 'country')) { x = get(loc, 'city'); }
+    if (!get(loc, 'city')) {
+      x = get(loc, 'country');
+    }
+    if (!get(loc, 'country')) {
+      x = get(loc, 'city');
+    }
     return x;
   };
 
   const getCDO = () => (
-    <MailToButton email={get(cdo, 'email')} textBefore={`${get(cdo, 'first_name[0]')}. ${get(cdo, 'last_name')}`} />
+    <MailToButton
+      email={get(cdo, 'email')}
+      textBefore={`${get(cdo, 'first_name[0]')}. ${get(cdo, 'last_name')}`}
+    />
   );
 
-
-  const sections = isCDO ? {
-    name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
-    status: getStatus(),
-    skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
-    grade: get(bidder, 'grade') || NO_GRADE,
-    languages: languages.length ? getLanguages() : NO_LANGUAGES,
-    ted: formattedTed,
-    current_post: getCustomLocation(),
-    cdo: cdo ? getCDO() : NO_CDO,
-    comments: get(bidder, 'available_bidder_details.comments') || NO_COMMENTS,
-  } : {
-    name: (<Link to={`/profile/public/${id}/bureau`}>{name}</Link>),
-    skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
-    grade: get(bidder, 'grade') || NO_GRADE,
-    languages: languages ? getLanguages() : NO_LANGUAGES,
-    ted: formattedTed,
-    current_post: getCustomLocation(),
-    cdo: cdo ? getCDO() : NO_CDO,
-  };
+  const sections = isCDO
+    ? {
+      name: <Link to={`/profile/public/${id}`}>{name}</Link>,
+      status: getStatus(),
+      skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
+      grade: get(bidder, 'grade') || NO_GRADE,
+      languages: languages.length ? getLanguages() : NO_LANGUAGES,
+      ted: formattedTed,
+      current_post: getCustomLocation(),
+      cdo: cdo ? getCDO() : NO_CDO,
+      comments:
+          get(bidder, 'available_bidder_details.comments') || NO_COMMENTS,
+    }
+    : {
+      name: <Link to={`/profile/public/${id}/bureau`}>{name}</Link>,
+      skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
+      grade: get(bidder, 'grade') || NO_GRADE,
+      languages: languages ? getLanguages() : NO_LANGUAGES,
+      ted: formattedTed,
+      current_post: getCustomLocation(),
+      cdo: cdo ? getCDO() : NO_CDO,
+    };
 
   if (isLoading) {
-    keys(sections).forEach(k => {
+    keys(sections).forEach((k) => {
       sections[k] = <Skeleton />;
     });
   }
@@ -154,7 +186,13 @@ const AvailableBidderRow = (props) => {
           sections={sections}
           submitAction={submitAction}
           bureaus={bureaus}
-          details={{ ocBureau, ocReason, status, shared, languages }}
+          details={{
+            ocBureau,
+            ocReason,
+            status,
+            shared,
+            languages,
+          }}
         />
       ),
     });
@@ -163,7 +201,8 @@ const AvailableBidderRow = (props) => {
   const getTRClass = () => {
     if (CDOView) {
       return '';
-    } else if (shared) {
+    }
+    if (shared) {
       return 'ab-active';
     }
     return 'ab-inactive';
@@ -171,19 +210,24 @@ const AvailableBidderRow = (props) => {
 
   return (
     <tr className={getTRClass()}>
-      {
-        keys(sections).map(i => {
-          if (i === 'comments' && sections[i] === NO_COMMENTS) {
-            return (<td key={i}><text aria-disabled="true" className="no-comments">{sections[i]}</text></td>);
-          }
+      {keys(sections).map((i) => {
+        if (i === 'comments' && sections[i] === NO_COMMENTS) {
           return (
-            <td key={i}>{sections[i]}</td>
+            <td key={i}>
+              <text aria-disabled="true" className="no-comments">
+                {sections[i]}
+              </text>
+            </td>
           );
-        })
-      }
-      {
-        isLoading && isCDO ? <td><Skeleton /></td> :
-          isCDO &&
+        }
+        return <td key={i}>{sections[i]}</td>;
+      })}
+      {isLoading && isCDO ? (
+        <td>
+          <Skeleton />
+        </td>
+      ) : (
+        isCDO && (
           <td>
             <div className="ab-action-buttons">
               <Tooltip
@@ -197,32 +241,36 @@ const AvailableBidderRow = (props) => {
                   <FA name="pencil-square-o" className="fa-lg" />
                 </InteractiveElement>
               </Tooltip>
-              {
-                status === 'OC' || status === 'UA' ?
-                  <Tooltip
-                    title={shared ? 'Unshare with Bureaus' : 'Share with Bureaus'}
-                    arrow
-                    offset={-95}
-                    position="top-end"
-                    tabIndex="0"
+              {status === 'OC' || status === 'UA' ? (
+                <Tooltip
+                  title={shared ? 'Unshare with Bureaus' : 'Share with Bureaus'}
+                  arrow
+                  offset={-95}
+                  position="top-end"
+                  tabIndex="0"
+                >
+                  <InteractiveElement
+                    onClick={() => dispatch(
+                      availableBidderEditData(id, { is_shared: !shared }),
+                    )}
                   >
-                    <InteractiveElement
-                      onClick={() => dispatch(availableBidderEditData(id, { is_shared: !shared }))}
-                    >
-                      <FA name={shared ? 'building' : 'building-o'} className="fa-lg" />
-                    </InteractiveElement>
-                  </Tooltip>
-                  :
-                  <Tooltip
-                    title={'Status must be UA or OC to share with bureau'}
-                    arrow
-                    offset={-95}
-                    position="top-end"
-                    tabIndex="0"
-                  >
-                    <FA name="lock" className="fa-lg" />
-                  </Tooltip>
-              }
+                    <FA
+                      name={shared ? 'building' : 'building-o'}
+                      className="fa-lg"
+                    />
+                  </InteractiveElement>
+                </Tooltip>
+              ) : (
+                <Tooltip
+                  title="Status must be UA or OC to share with bureau"
+                  arrow
+                  offset={-95}
+                  position="top-end"
+                  tabIndex="0"
+                >
+                  <FA name="lock" className="fa-lg" />
+                </Tooltip>
+              )}
               <Tooltip
                 title="Remove from Available Bidders List"
                 arrow
@@ -238,7 +286,8 @@ const AvailableBidderRow = (props) => {
               </Tooltip>
             </div>
           </td>
-      }
+        )
+      )}
     </tr>
   );
 };

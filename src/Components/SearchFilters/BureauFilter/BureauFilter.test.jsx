@@ -39,44 +39,35 @@ describe('BureauFilterComponent', () => {
   };
 
   it('can receive props', () => {
-    const wrapper = shallow(
-      <BureauFilter
-        {...props}
-      />,
+    const wrapper = shallow(<BureauFilter {...props} />);
+    expect(wrapper.instance().props.item.item.title).toBe(
+      props.item.item.title,
     );
-    expect(wrapper.instance().props.item.item.title).toBe(props.item.item.title);
   });
 
   it('can call the onCheckBoxClick function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <BureauFilter
-        {...props}
-        queryParamToggle={spy}
-      />,
-    );
-    wrapper.instance().onCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
+    const wrapper = shallow(<BureauFilter {...props} queryParamToggle={spy} />);
+    wrapper
+      .instance()
+      .onCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
     sinon.assert.calledOnce(spy);
   });
 
   it('can call the onFunctionalBureauCheckBoxClick function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <BureauFilter
-        {...props}
-        queryParamToggle={spy}
-      />,
-    );
-    wrapper.instance().onFunctionalBureauCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
+    const wrapper = shallow(<BureauFilter {...props} queryParamToggle={spy} />);
+    wrapper
+      .instance()
+      .onFunctionalBureauCheckBoxClick(true, {
+        selectionRef: 'test',
+        code: 'code',
+      });
     sinon.assert.calledOnce(spy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BureauFilter
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<BureauFilter {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

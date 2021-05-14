@@ -3,11 +3,12 @@
 exports[`DefinitionList matches snapshot 1`] = `
 <div>
   <span>
-    N/A
-     | 
+    None listed%
+     |
+     
   </span>
   <span>
-    N/A
+    None listed%
   </span>
   <span
     style={

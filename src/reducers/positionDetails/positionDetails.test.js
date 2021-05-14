@@ -21,7 +21,12 @@ describe('reducers', () => {
     ));
     expect(isEqual(
       result,
-      { id: 2, position: { id: 2, prop: true, prop2: true, prop3: 3 } },
+      {
+        id: 2,
+        position: {
+          id: 2, prop: true, prop2: true, prop3: 3,
+        },
+      },
     )).toBe(true);
   });
 });

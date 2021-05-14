@@ -7,13 +7,9 @@ import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { availableBiddersToggleUser } from 'actions/availableBidders';
 import InteractiveElement from '../../InteractiveElement';
 
-
-const AddToInternalListButton = props => {
+const AddToInternalListButton = (props) => {
   const {
-    refKey,
-    toggleAvailableBidder,
-    isLoading,
-    compareArray,
+    refKey, toggleAvailableBidder, isLoading, compareArray,
   } = props;
 
   const [loading, setLoading] = useState(isLoading);
@@ -25,7 +21,10 @@ const AddToInternalListButton = props => {
     }
   }, [isLoading]);
 
-  const inInternalList = () => includes(compareArray.map(m => `${m}`), refKey);
+  const inInternalList = () => includes(
+    compareArray.map((m) => `${m}`),
+    refKey,
+  );
 
   const toggleInternal = () => {
     if (!isLoading) {
@@ -35,7 +34,7 @@ const AddToInternalListButton = props => {
   };
 
   const getText = () => inInternalList() ? 'from Internal List' : 'to Internal List';
-  const getIcon = () => inInternalList() ? 'minus' : 'plus';
+  const getIcon = () => (inInternalList() ? 'minus' : 'plus');
 
   return (
     <InteractiveElement
@@ -43,10 +42,11 @@ const AddToInternalListButton = props => {
       className="usa-button btn-icon-to-spinner"
       type="button"
     >
-      {loading ?
-        (<span className="ds-c-spinner spinner-white" />) :
+      {loading ? (
+        <span className="ds-c-spinner spinner-white" />
+      ) : (
         <FontAwesome name={getIcon()} />
-      }
+      )}
       <span className="btn-icon-to-spinner-text">{getText()}</span>
     </InteractiveElement>
   );
@@ -65,13 +65,16 @@ AddToInternalListButton.defaultProps = {
   isLoading: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: state.availableBiddersToggleUserIsLoading,
   compareArray: state.availableBiddersIdsSuccess,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   toggleAvailableBidder: (id, remove) => dispatch(availableBiddersToggleUser(id, remove)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddToInternalListButton);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddToInternalListButton);

@@ -6,7 +6,11 @@ const NotificationItem = ({ content, notificationTime }) => {
   const timeDistanceInWords = getTimeDistanceInWords(notificationTime);
   return (
     <div className="usa-grid-full notification-card">
-      <InformationDataPoint content={content} title={timeDistanceInWords} titleOnBottom />
+      <InformationDataPoint
+        content={content}
+        title={timeDistanceInWords}
+        titleOnBottom
+      />
     </div>
   );
 };

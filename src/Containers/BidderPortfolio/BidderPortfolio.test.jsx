@@ -12,17 +12,19 @@ const mockStore = configureStore(middlewares);
 
 describe('BidderPortfolio', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <BidderPortfolio />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <BidderPortfolio />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('calls the onQueryParamUpdate function', () => {
     const wrapper = shallow(
-      <BidderPortfolio.WrappedComponent
-        fetchBidderPortfolioCounts={() => {}}
-      />,
+      <BidderPortfolio.WrappedComponent fetchBidderPortfolioCounts={() => {}} />,
     );
     wrapper.instance().onQueryParamUpdate({ q: 'test' });
     wrapper.instance().onQueryParamUpdate({ page: 2 });
@@ -52,9 +54,7 @@ describe('BidderPortfolio', () => {
 
   it('calls the mapToType function', () => {
     const wrapper = shallow(
-      <BidderPortfolio.WrappedComponent
-        fetchBidderPortfolioCounts={() => {}}
-      />,
+      <BidderPortfolio.WrappedComponent fetchBidderPortfolioCounts={() => {}} />,
     );
     wrapper.instance().state.query.value = 'type=all';
     wrapper.instance().mapTypeToQuery();

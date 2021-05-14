@@ -18,21 +18,25 @@ describe('FavoritesContainer', () => {
   };
 
   it('is defined', () => {
-    const favorites = shallow(<QueryParamProvider>
-      <FavoritePositionsContainer.WrappedComponent {...props} /></QueryParamProvider>,
+    const favorites = shallow(
+      <QueryParamProvider>
+        <FavoritePositionsContainer.WrappedComponent {...props} />
+      </QueryParamProvider>,
     );
     expect(favorites).toBeDefined();
   });
 
   xit('can call the onToggleFavorite function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<QueryParamProvider>
-      <FavoritePositionsContainer.WrappedComponent
-        fetchData={() => {}}
-        toggleFavorite={spy}
-        bidList={bidListObject}
-        bidListFetchData={() => {}}
-      /></QueryParamProvider>,
+    const wrapper = shallow(
+      <QueryParamProvider>
+        <FavoritePositionsContainer.WrappedComponent
+          fetchData={() => {}}
+          toggleFavorite={spy}
+          bidList={bidListObject}
+          bidListFetchData={() => {}}
+        />
+      </QueryParamProvider>,
     );
     wrapper.instance().onToggleFavorite();
     sinon.assert.calledOnce(spy);
@@ -40,13 +44,15 @@ describe('FavoritesContainer', () => {
 
   xit('can call the getSortedFavorites function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<QueryParamProvider>
-      <FavoritePositionsContainer.WrappedComponent
-        fetchData={spy}
-        toggleFavorite={() => {}}
-        bidList={bidListObject}
-        bidListFetchData={() => {}}
-      /></QueryParamProvider>,
+    const wrapper = shallow(
+      <QueryParamProvider>
+        <FavoritePositionsContainer.WrappedComponent
+          fetchData={spy}
+          toggleFavorite={() => {}}
+          bidList={bidListObject}
+          bidListFetchData={() => {}}
+        />
+      </QueryParamProvider>,
     );
     wrapper.instance().getSortedFavorites({ target: { value: 'title' } });
     // fetchData is called once at mount,

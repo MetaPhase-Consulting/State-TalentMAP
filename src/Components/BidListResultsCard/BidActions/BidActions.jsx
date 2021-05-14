@@ -5,13 +5,10 @@ const BidActions = ({ status, onSubmitBid, onRemoveBid }) => (
   <div>
     {
       // check if the bid has NOT been submitted
-      status === DRAFT.property ?
+      status === DRAFT.property ? (
         // if so, display action buttons
         <div className="usa-width-one-whole">
-          <button
-            onClick={onSubmitBid}
-            title="Submit this bid"
-          >
+          <button onClick={onSubmitBid} title="Submit this bid">
             Submit Bid
           </button>
           <button
@@ -21,8 +18,8 @@ const BidActions = ({ status, onSubmitBid, onRemoveBid }) => (
           >
             Delete
           </button>
-        </div> :
-        null
+        </div>
+      ) : null
     }
   </div>
 );

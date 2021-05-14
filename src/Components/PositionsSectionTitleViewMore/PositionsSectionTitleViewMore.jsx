@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 
 const PositionsSectionTitleViewMore = ({ viewMoreLink }) => (
   <div className="positions-section-view-more">
-    <Link to={viewMoreLink}>View More <FontAwesome name="angle-right" /></Link>
+    <Link to={viewMoreLink}>
+      View More <FontAwesome name="angle-right" />
+    </Link>
   </div>
 );
 

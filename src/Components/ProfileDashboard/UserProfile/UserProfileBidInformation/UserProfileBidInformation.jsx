@@ -32,5 +32,4 @@ UserProfileBidInformation.defaultProps = {
   denominator: 10,
 };
 
-
 export default UserProfileBidInformation;

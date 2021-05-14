@@ -8,26 +8,19 @@ describe('async actions', () => {
   beforeEach(() => {
     // limit = 3 is the default param in the function
     mockAdapter.onGet('/notification/?limit=3&ordering=-date_updated').reply(200,
-      notificationsObject,
-    );
+      notificationsObject);
     mockAdapter.onGet('/notification/?limit=2&ordering=-date_updated').reply(200,
-      notificationsObject,
-    );
+      notificationsObject);
     mockAdapter.onGet('/notification/?limit=2&ordering=date_updated').reply(200,
-      notificationsObject,
-    );
+      notificationsObject);
     mockAdapter.onGet('/notification/?limit=1&is_read=false').reply(200,
-      notificationsObject,
-    );
+      notificationsObject);
     mockAdapter.onGet('/notification/?limit=1&ordering=-date_created&tags=bidding').reply(200,
-      notificationsObject,
-    );
+      notificationsObject);
     mockAdapter.onPatch('/notification/1/').reply(200,
-      notificationsObject,
-    );
+      notificationsObject);
     mockAdapter.onPatch('/notification/2/').reply(404,
-      null,
-    );
+      null);
   });
 
   it('can fetch notifications', (done) => {
@@ -137,8 +130,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/notification/?limit=1&is_read=false').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

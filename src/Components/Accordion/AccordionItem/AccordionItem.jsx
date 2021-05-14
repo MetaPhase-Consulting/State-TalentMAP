@@ -14,7 +14,10 @@ class AccordionItem extends Component {
 
   // Update the value of expanded, only if the prop value changed and the new value is not undefined
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isUndefined(nextProps.expanded) && !(isEqual(nextProps.expanded, this.props.expanded))) {
+    if (
+      !isUndefined(nextProps.expanded)
+      && !isEqual(nextProps.expanded, this.props.expanded)
+    ) {
       this.setState({ expanded: nextProps.expanded });
     }
   }
@@ -41,10 +44,23 @@ class AccordionItem extends Component {
 
   render() {
     const { expanded: expandedState } = this.state;
-    const { id, title, children, className, controlled, expanded: expandedProp, useIdClass,
-      buttonClass, childClass, preContent, disabled } = this.props;
+    const {
+      id,
+      title,
+      children,
+      className,
+      controlled,
+      expanded: expandedProp,
+      useIdClass,
+      buttonClass,
+      childClass,
+      preContent,
+      disabled,
+    } = this.props;
     const formattedId = formatIdSpacing(id);
-    const idClass = useIdClass ? `accordion-${(formattedId || 'accordion').toLowerCase()}` : '';
+    const idClass = useIdClass
+      ? `accordion-${(formattedId || 'accordion').toLowerCase()}`
+      : '';
     let expanded$ = expandedProp;
     if (controlled) {
       expanded$ = !disabled && expandedState;
@@ -54,7 +70,9 @@ class AccordionItem extends Component {
         {preContent}
         <button
           id={`${id}-button`}
-          className={`usa-accordion-button ${buttonClass} ${preContent ? 'has-pre-content' : ''}`}
+          className={`usa-accordion-button ${buttonClass} ${
+            preContent ? 'has-pre-content' : ''
+          }`}
           aria-expanded={expanded$}
           aria-controls={formattedId}
           onClick={this.setExpanded}
@@ -62,7 +80,11 @@ class AccordionItem extends Component {
         >
           <div className="accordion-item-title">{title}</div>
         </button>
-        <div id={formattedId} className={`usa-accordion-content ${childClass} ${idClass}`} aria-hidden={!expanded$}>
+        <div
+          id={formattedId}
+          className={`usa-accordion-content ${childClass} ${idClass}`}
+          aria-hidden={!expanded$}
+        >
           {children}
         </div>
       </li>

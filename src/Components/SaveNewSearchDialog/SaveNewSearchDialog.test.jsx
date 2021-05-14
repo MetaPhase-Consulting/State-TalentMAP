@@ -22,7 +22,9 @@ describe('SaveNewSearchDialogComponent', () => {
     wrapper = shallow(
       <SaveNewSearchDialog
         onCancel={() => {}}
-        saveSearch={(e) => { form.value = e; }}
+        saveSearch={(e) => {
+          form.value = e;
+        }}
         newSavedSearchHasErrored="error"
       />,
     );
@@ -37,7 +39,10 @@ describe('SaveNewSearchDialogComponent', () => {
     wrapper = shallow(
       <SaveNewSearchDialog
         onCancel={() => {}}
-        saveSearch={(e, id) => { form.value = e; form.valueSec = id; }}
+        saveSearch={(e, id) => {
+          form.value = e;
+          form.valueSec = id;
+        }}
         newSavedSearchHasErrored="error"
         currentSavedSearch={savedSearch}
       />,
@@ -54,7 +59,10 @@ describe('SaveNewSearchDialogComponent', () => {
     wrapper = shallow(
       <SaveNewSearchDialog
         onCancel={() => {}}
-        saveSearch={(e, id) => { form.value = e; form.valueSec = id; }}
+        saveSearch={(e, id) => {
+          form.value = e;
+          form.valueSec = id;
+        }}
         newSavedSearchHasErrored="error"
         currentSavedSearch={savedSearch}
       />,
@@ -82,10 +90,7 @@ describe('SaveNewSearchDialogComponent', () => {
     const cancelSpy = sinon.spy();
     const formSubmitSpy = sinon.spy();
     wrapper = shallow(
-      <SaveNewSearchDialog
-        onCancel={cancelSpy}
-        saveSearch={formSubmitSpy}
-      />,
+      <SaveNewSearchDialog onCancel={cancelSpy} saveSearch={formSubmitSpy} />,
     );
     wrapper.instance().props.onCancel();
     wrapper.instance().onSubmit();
@@ -95,10 +100,7 @@ describe('SaveNewSearchDialogComponent', () => {
 
   it('matches snapshot', () => {
     wrapper = shallow(
-      <SaveNewSearchDialog
-        onCancel={() => {}}
-        saveSearch={() => {}}
-      />,
+      <SaveNewSearchDialog onCancel={() => {}} saveSearch={() => {}} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

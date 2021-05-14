@@ -58,7 +58,8 @@ exports[`BidTrackerCardTopComponent matches snapshot 1`] = `
           hideOnClick={true}
           html={
             <span>
-              Your bid is likely in one of several steps in the process. 
+              Your bid is likely in one of several steps in the process.
+               
               <Link
                 className="tooltip-link"
                 replace={false}

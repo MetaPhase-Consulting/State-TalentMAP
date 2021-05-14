@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const Icon = ({ className }) => (
-  <span className={`compare-rectangle-container ${className}`} >
+  <span className={`compare-rectangle-container ${className}`}>
     <span className="compare-rectangle" />
     <span className="compare-rectangle" />
     <span className="compare-rectangle" />

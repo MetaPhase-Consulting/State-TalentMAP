@@ -35,8 +35,14 @@ class Updates extends Component {
         </div>
         <StaticDevContent>
           <div className="section-padded-inner-container small-link-container view-more-link-centered">
-            { !isEditable && <button className="unstyled-button" onClick={this.enableEdit}><FA name="pencil" /> Edit Updates</button> }
-            { isEditable && <EditButtons initialShowSave onChange={this.disableEdit} /> }
+            {!isEditable && (
+              <button className="unstyled-button" onClick={this.enableEdit}>
+                <FA name="pencil" /> Edit Updates
+              </button>
+            )}
+            {isEditable && (
+              <EditButtons initialShowSave onChange={this.disableEdit} />
+            )}
           </div>
         </StaticDevContent>
       </div>

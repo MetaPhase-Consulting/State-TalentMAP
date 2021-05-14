@@ -12,42 +12,25 @@ describe('GlossaryComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <Glossary
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Glossary {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('can enter a keyword', () => {
-    const wrapper = shallow(
-      <Glossary
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Glossary {...props} />);
     wrapper.instance().changeText('test');
     expect(wrapper.instance().state.searchText.value).toBe('test');
   });
 
   it('can close the glossary', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Glossary
-        {...props}
-        toggleVisibility={spy}
-      />,
-    );
+    const wrapper = shallow(<Glossary {...props} toggleVisibility={spy} />);
     wrapper.find('button').simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
   it('is defined after receiving props', (done) => {
-    const wrapper = shallow(
-      <Glossary
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Glossary {...props} />);
     wrapper.setProps({ ...props, visible: true });
     wrapper.update();
     wrapper.setProps({ ...props, visible: false });
@@ -59,21 +42,12 @@ describe('GlossaryComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <Glossary
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<Glossary {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when visible is false', () => {
-    const wrapper = shallow(
-      <Glossary
-        {...props}
-        visible={false}
-      />,
-    );
+    const wrapper = shallow(<Glossary {...props} visible={false} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

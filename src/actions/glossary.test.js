@@ -7,20 +7,16 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 describe('async actions', () => {
   beforeEach(() => {
     mockAdapter.onGet('/glossary/?limit=500').reply(200,
-      { results: glossaryItems },
-    );
+      { results: glossaryItems });
 
     mockAdapter.onGet('/glossary/?is_archived=false&limit=500').reply(200,
-      { results: glossaryItems },
-    );
+      { results: glossaryItems });
 
     mockAdapter.onPost('/glossary/').reply(200,
-      glossaryItems[0],
-    );
+      glossaryItems[0]);
 
     mockAdapter.onPatch('/glossary/3/').reply(200,
-      glossaryItems[0],
-    );
+      glossaryItems[0]);
   });
 
   it('can fetch the glossary', (done) => {
@@ -42,8 +38,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/glossary/?is_archived=false').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -74,8 +69,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/glossary/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -107,8 +101,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onPost('/glossary/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -141,8 +134,7 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onPatch('/glossary/3/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

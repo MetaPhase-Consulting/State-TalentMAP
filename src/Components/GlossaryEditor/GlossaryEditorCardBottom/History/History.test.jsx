@@ -32,12 +32,16 @@ describe('HistoryComponent', () => {
   });
 
   it('matches snapshot when dateUpdated is undefined', () => {
-    const wrapper = shallow(<History {...props} isArchived={false} dateUpdated={undefined} />);
+    const wrapper = shallow(
+      <History {...props} isArchived={false} dateUpdated={undefined} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when updatedBy is undefined', () => {
-    const wrapper = shallow(<History {...props} isArchived={false} updatedBy={undefined} />);
+    const wrapper = shallow(
+      <History {...props} isArchived={false} updatedBy={undefined} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

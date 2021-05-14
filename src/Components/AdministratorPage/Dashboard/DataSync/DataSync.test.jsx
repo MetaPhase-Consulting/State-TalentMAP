@@ -36,21 +36,23 @@ describe('DataSync', () => {
     expect(parsedError).toEqual(undefined);
   });
 
-  [['showForm', true], ['closeForm', false]].map(m =>
-    it(`updates showForm on ${m[0]}()`, () => {
-      const wrapper = shallow(<DataSync {...props} />);
-      wrapper.instance()[m[0]]();
-      expect(wrapper.instance().state.showForm).toBe(m[1]);
-    }),
-  );
+  [
+    ['showForm', true],
+    ['closeForm', false],
+  ].map((m) => it(`updates showForm on ${m[0]}()`, () => {
+    const wrapper = shallow(<DataSync {...props} />);
+    wrapper.instance()[m[0]]();
+    expect(wrapper.instance().state.showForm).toBe(m[1]);
+  }));
 
-  [['updateTime', 'next_synchronization_time'], ['updateDate', 'next_synchronization']].map(m =>
-    it(`updates formValues.${m[1]} on ${m[0]}()`, () => {
-      const wrapper = shallow(<DataSync {...props} />);
-      wrapper.instance()[m[0]]('a');
-      expect(get(wrapper.instance().state.formValues, [m[1]])).toBe('a');
-    }),
-  );
+  [
+    ['updateTime', 'next_synchronization_time'],
+    ['updateDate', 'next_synchronization'],
+  ].map((m) => it(`updates formValues.${m[1]} on ${m[0]}()`, () => {
+    const wrapper = shallow(<DataSync {...props} />);
+    wrapper.instance()[m[0]]('a');
+    expect(get(wrapper.instance().state.formValues, [m[1]])).toBe('a');
+  }));
 
   it('updates state with updateBool()', () => {
     const wrapper = shallow(<DataSync {...props} />);
@@ -72,7 +74,14 @@ describe('DataSync', () => {
 
   it('submits a job with submitSync()', () => {
     const job = {};
-    const wrapper = shallow(<DataSync {...props} patchSyncJob={(e) => { job.value = e; }} />);
+    const wrapper = shallow(
+      <DataSync
+        {...props}
+        patchSyncJob={(e) => {
+          job.value = e;
+        }}
+      />,
+    );
     wrapper.instance().setJob(props.syncJobs[0]);
     wrapper.instance().submitSync();
     expect(job.value).toBeDefined();

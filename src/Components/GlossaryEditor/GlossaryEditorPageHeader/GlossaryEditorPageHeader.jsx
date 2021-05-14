@@ -1,6 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { EMPTY_FUNCTION, GLOSSARY_ERROR_OBJECT, GLOSSARY_SUCCESS_OBJECT } from '../../../Constants/PropTypes';
+import {
+  EMPTY_FUNCTION,
+  GLOSSARY_ERROR_OBJECT,
+  GLOSSARY_SUCCESS_OBJECT,
+} from '../../../Constants/PropTypes';
 import GlossaryEditorCard from '../GlossaryEditorCard';
 import Alert from '../../Alert';
 
@@ -18,7 +22,11 @@ class GlossaryEditorPage extends Component {
   };
 
   render() {
-    const { submitNewGlossaryTerm, glossaryPostHasErrored, glossaryPostSuccess } = this.props;
+    const {
+      submitNewGlossaryTerm,
+      glossaryPostHasErrored,
+      glossaryPostSuccess,
+    } = this.props;
     const { showNewTerm } = this.state;
 
     const postHasSucceeded = !glossaryPostHasErrored.hasErrored && glossaryPostSuccess.success;
@@ -34,23 +42,27 @@ class GlossaryEditorPage extends Component {
             <button onClick={this.toggleNewTermEditor}>Create term</button>
           </div>
         </div>
-        {
-          showPostSuccess && <Alert type="success" title="Success" messages={[{ body: 'Successfully added term!' }]} isAriaLive />
-        }
-        {
-          showNewTerm &&
-            <div className="usa-grid-full editor-container">
-              <div className="usa-width-one-whole glossary-editor-card-container">
-                <GlossaryEditorCard
-                  term={{}}
-                  isNewTerm
-                  submitGlossaryTerm={submitNewGlossaryTerm}
-                  onCancel={this.toggleNewTermEditor}
-                  hasErrored={glossaryPostHasErrored}
-                />
-              </div>
+        {showPostSuccess && (
+          <Alert
+            type="success"
+            title="Success"
+            messages={[{ body: 'Successfully added term!' }]}
+            isAriaLive
+          />
+        )}
+        {showNewTerm && (
+          <div className="usa-grid-full editor-container">
+            <div className="usa-width-one-whole glossary-editor-card-container">
+              <GlossaryEditorCard
+                term={{}}
+                isNewTerm
+                submitGlossaryTerm={submitNewGlossaryTerm}
+                onCancel={this.toggleNewTermEditor}
+                hasErrored={glossaryPostHasErrored}
+              />
             </div>
-        }
+          </div>
+        )}
       </div>
     );
   }

@@ -1,15 +1,29 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { get, isEqual, omit, pick } from 'lodash';
+import {
+  get, isEqual, omit, pick,
+} from 'lodash';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
-import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioCountsFetchData,
-  bidderPortfolioFetchData } from 'actions/bidderPortfolio';
+import {
+  BID_PORTFOLIO_FILTERS_TYPE,
+  BID_PORTFOLIO_SORTS_TYPE,
+  CLIENTS_PAGE_SIZES,
+} from 'Constants/Sort';
+import {
+  bidderPortfolioCDOsFetchData,
+  bidderPortfolioCountsFetchData,
+  bidderPortfolioFetchData,
+} from 'actions/bidderPortfolio';
 import { availableBiddersFetchData } from 'actions/availableBidders';
-import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
+import {
+  BIDDER_LIST,
+  BIDDER_PORTFOLIO_COUNTS,
+  CLASSIFICATIONS,
+  EMPTY_FUNCTION,
+} from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
 import queryParamUpdate from '../queryParams';
 import BidderPortfolioPage from '../../Components/BidderPortfolio/BidderPortfolioPage';
@@ -30,6 +44,7 @@ class BidderPortfolio extends Component {
       ordering: { value: props.defaultSort },
     };
   }
+
   // Fetch bidder list and bidder statistics.
   UNSAFE_componentWillMount() {
     if (get(this.props, 'cdos', []).length) {
@@ -46,21 +61,24 @@ class BidderPortfolio extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     const props = ['cdos', 'selectedSeasons', 'selectedUnassigned'];
     if (!isEqual(pick(this.props, props), pick(nextProps, props))) {
-      this.setState({
-        // Reset page number, since these filters are
-        // captured outside the normal query param lifecycle.
-        page: { value: 1 },
-      }, () => {
-        this.getBidderPortfolio();
-        this.props.fetchBidderPortfolioCounts();
-      });
+      this.setState(
+        {
+          // Reset page number, since these filters are
+          // captured outside the normal query param lifecycle.
+          page: { value: 1 },
+        },
+        () => {
+          this.getBidderPortfolio();
+          this.props.fetchBidderPortfolioCounts();
+        },
+      );
     }
   }
 
   // For when we need to UPDATE the ENTIRE value of a filter.
   // Much of the logic is abstracted to a helper, but we need to set state within
   // the instance.
-  onQueryParamUpdate = q => {
+  onQueryParamUpdate = (q) => {
     const { query, page } = this.state;
     this.setState({ [Object.keys(q)[0]]: { value: Object.values(q)[0] } });
     const newQuery = queryParamUpdate(q, query.value);
@@ -88,10 +106,12 @@ class BidderPortfolio extends Component {
   mapTypeToQuery() {
     const { query } = this.state;
     let parsedQuery = queryString.parse(query.value);
-    if ((Object.keys(BIDDER_PORTFOLIO_PARAM_OBJECTS)).includes(parsedQuery.type)) {
-      parsedQuery = Object.assign(
-        parsedQuery, { ...BIDDER_PORTFOLIO_PARAM_OBJECTS[parsedQuery.type] },
-      );
+    if (
+      Object.keys(BIDDER_PORTFOLIO_PARAM_OBJECTS).includes(parsedQuery.type)
+    ) {
+      parsedQuery = Object.assign(parsedQuery, {
+        ...BIDDER_PORTFOLIO_PARAM_OBJECTS[parsedQuery.type],
+      });
       parsedQuery = omit(parsedQuery, ['type']);
     }
     query.value = queryString.stringify(parsedQuery);
@@ -100,7 +120,9 @@ class BidderPortfolio extends Component {
 
   // When we trigger a new search, we reset the page number and limit.
   createSearchQuery() {
-    const { page, limit, hasHandshake, ordering } = this.state;
+    const {
+      page, limit, hasHandshake, ordering,
+    } = this.state;
     this.mapTypeToQuery();
     const query = {
       page: page.value,
@@ -120,11 +142,22 @@ class BidderPortfolio extends Component {
   }
 
   render() {
-    const { bidderPortfolio, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
-      bidderPortfolioCounts, bidderPortfolioCountsIsLoading,
-      bidderPortfolioCountsHasErrored, cdos, bidderPortfolioCDOsIsLoading,
-      classifications, classificationsIsLoading, classificationsHasErrored } = this.props;
-    const { limit, page, hasHandshake, ordering } = this.state;
+    const {
+      bidderPortfolio,
+      bidderPortfolioIsLoading,
+      bidderPortfolioHasErrored,
+      bidderPortfolioCounts,
+      bidderPortfolioCountsIsLoading,
+      bidderPortfolioCountsHasErrored,
+      cdos,
+      bidderPortfolioCDOsIsLoading,
+      classifications,
+      classificationsIsLoading,
+      classificationsHasErrored,
+    } = this.props;
+    const {
+      limit, page, hasHandshake, ordering,
+    } = this.state;
     const isLoading = (bidderPortfolioCDOsIsLoading || bidderPortfolioIsLoading) && cdos.length;
     return (
       <div>
@@ -146,7 +179,6 @@ class BidderPortfolio extends Component {
           defaultOrdering={ordering.value}
         />
       </div>
-
     );
   }
 }
@@ -162,7 +194,9 @@ BidderPortfolio.propTypes = {
   fetchBidderPortfolioCounts: PropTypes.func.isRequired,
   fetchBidderPortfolioCDOs: PropTypes.func.isRequired,
   cdos: PropTypes.arrayOf(PropTypes.shape({})),
-  selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])), // eslint-disable-line
+  selectedSeasons: PropTypes.arrayOf( // eslint-disable-line
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  ),
   fetchClassifications: PropTypes.func.isRequired,
   classifications: CLASSIFICATIONS,
   classificationsHasErrored: PropTypes.bool.isRequired,
@@ -196,7 +230,7 @@ BidderPortfolio.defaultProps = {
   selectedUnassigned: [],
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   bidderPortfolio: state.bidderPortfolio,
   bidderPortfolioIsLoading: state.bidderPortfolioIsLoading,
   bidderPortfolioHasErrored: state.bidderPortfolioHasErrored,
@@ -211,17 +245,28 @@ const mapStateToProps = state => ({
   classificationsIsLoading: state.classificationsIsLoading,
   classificationsHasErrored: state.classificationsHasErrored,
   classifications: state.classifications,
-  defaultHandshakeFilter: get(state, `sortPreferences.${BID_PORTFOLIO_FILTERS_TYPE}.defaultSort`, BID_PORTFOLIO_FILTERS_TYPE.defaultSort),
-  defaultSort: get(state, `sortPreferences.${BID_PORTFOLIO_SORTS_TYPE}.defaultSort`, BID_PORTFOLIO_SORTS_TYPE.defaultSort),
+  defaultHandshakeFilter: get(
+    state,
+    `sortPreferences.${BID_PORTFOLIO_FILTERS_TYPE}.defaultSort`,
+    BID_PORTFOLIO_FILTERS_TYPE.defaultSort,
+  ),
+  defaultSort: get(
+    state,
+    `sortPreferences.${BID_PORTFOLIO_SORTS_TYPE}.defaultSort`,
+    BID_PORTFOLIO_SORTS_TYPE.defaultSort,
+  ),
   selectedUnassigned: state.bidderPortfolioSelectedUnassigned,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchBidderPortfolio: (query) => dispatch(bidderPortfolioFetchData(query)),
   fetchBidderPortfolioCounts: () => dispatch(bidderPortfolioCountsFetchData()),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersFetchData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BidderPortfolio));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(BidderPortfolio));

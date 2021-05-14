@@ -3,16 +3,38 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { get } from 'lodash';
-import { acceptBid, bidListFetchData, declineBid,
-  registerHandshake, routeChangeResetState, submitBid, toggleBidPosition,
-  unregisterHandshake } from '../../actions/bidList';
+import {
+  acceptBid,
+  bidListFetchData,
+  declineBid,
+  registerHandshake,
+  routeChangeResetState,
+  submitBid,
+  toggleBidPosition,
+  unregisterHandshake,
+} from '../../actions/bidList';
 import { userProfilePublicFetchData } from '../../actions/userProfilePublic';
-import { bidTrackerNotificationsFetchData, markNotification } from '../../actions/notifications';
-import { ACCEPT_BID_HAS_ERRORED, ACCEPT_BID_SUCCESS, BID_LIST, BID_LIST_TOGGLE_HAS_ERRORED,
-  BID_LIST_TOGGLE_SUCCESS, DECLINE_BID_HAS_ERRORED, DECLINE_BID_SUCCESS, EMPTY_FUNCTION,
-  MARK_NOTIFICATION_SUCCESS, NOTIFICATION_LIST, REGISTER_HANDSHAKE_HAS_ERRORED,
-  REGISTER_HANDSHAKE_SUCCESS, SUBMIT_BID_HAS_ERRORED, SUBMIT_BID_SUCCESS,
-  UNREGISTER_HANDSHAKE_HAS_ERRORED, UNREGISTER_HANDSHAKE_SUCCESS,
+import {
+  bidTrackerNotificationsFetchData,
+  markNotification,
+} from '../../actions/notifications';
+import {
+  ACCEPT_BID_HAS_ERRORED,
+  ACCEPT_BID_SUCCESS,
+  BID_LIST,
+  BID_LIST_TOGGLE_HAS_ERRORED,
+  BID_LIST_TOGGLE_SUCCESS,
+  DECLINE_BID_HAS_ERRORED,
+  DECLINE_BID_SUCCESS,
+  EMPTY_FUNCTION,
+  MARK_NOTIFICATION_SUCCESS,
+  NOTIFICATION_LIST,
+  REGISTER_HANDSHAKE_HAS_ERRORED,
+  REGISTER_HANDSHAKE_SUCCESS,
+  SUBMIT_BID_HAS_ERRORED,
+  SUBMIT_BID_SUCCESS,
+  UNREGISTER_HANDSHAKE_HAS_ERRORED,
+  UNREGISTER_HANDSHAKE_SUCCESS,
   USER_PROFILE,
 } from '../../Constants/PropTypes';
 import { DEFAULT_USER_PROFILE } from '../../Constants/DefaultProps';
@@ -20,7 +42,12 @@ import BidTracker from '../../Components/BidTracker';
 
 class BidTrackerContainer extends Component {
   UNSAFE_componentWillMount() {
-    const { isPublic, match: { params: { id } } } = this.props;
+    const {
+      isPublic,
+      match: {
+        params: { id },
+      },
+    } = this.props;
     if (isPublic) {
       this.getPublicBidList(id);
     } else {
@@ -35,7 +62,9 @@ class BidTrackerContainer extends Component {
   }
 
   componentDidUpdate() {
-    const { match: { params } } = this.props;
+    const {
+      match: { params },
+    } = this.props;
     if (params.bid) {
       this.scrollToId(params.bid);
     }
@@ -54,7 +83,11 @@ class BidTrackerContainer extends Component {
   scrollToId(id) {
     const el = document.querySelector(`#bid-${id}`);
     if (el && !this.state.hasScrolled) {
-      el.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'smooth' });
+      el.scrollIntoView({
+        block: 'start',
+        inline: 'nearest',
+        behavior: 'smooth',
+      });
       if (!this.state.hasScrolled) {
         this.setState({ hasScrolled: true });
       }
@@ -62,26 +95,60 @@ class BidTrackerContainer extends Component {
   }
 
   render() {
-    const { bidList, deleteBid, isPublic,
-      bidListHasErrored, bidListIsLoading, bidListToggleHasErrored,
-      bidListToggleSuccess, submitBidPosition,
-      submitBidHasErrored, submitBidIsLoading, submitBidSuccess,
-      acceptBidPosition, acceptBidHasErrored, acceptBidIsLoading, acceptBidSuccess,
-      declineBidPosition, declineBidHasErrored, declineBidIsLoading,
-      declineBidSuccess, notifications, notificationsIsLoading,
-      markNotificationHasErrored, markNotificationIsLoading, markNotificationSuccess,
-      markBidTrackerNotification, userProfile, userProfileIsLoading,
-      userProfilePublic, userProfilePublicIsLoading, userProfilePublicHasErrored,
-      registerHandshakePosition, registerHandshakeHasErrored,
-      registerHandshakeIsLoading, registerHandshakeSuccess,
-      unregisterHandshakeHasErrored, unregisterHandshakeSuccess,
-      unregisterHandshakePosition, unregisterHandshakeIsLoading } = this.props;
+    const {
+      bidList,
+      deleteBid,
+      isPublic,
+      bidListHasErrored,
+      bidListIsLoading,
+      bidListToggleHasErrored,
+      bidListToggleSuccess,
+      submitBidPosition,
+      submitBidHasErrored,
+      submitBidIsLoading,
+      submitBidSuccess,
+      acceptBidPosition,
+      acceptBidHasErrored,
+      acceptBidIsLoading,
+      acceptBidSuccess,
+      declineBidPosition,
+      declineBidHasErrored,
+      declineBidIsLoading,
+      declineBidSuccess,
+      notifications,
+      notificationsIsLoading,
+      markNotificationHasErrored,
+      markNotificationIsLoading,
+      markNotificationSuccess,
+      markBidTrackerNotification,
+      userProfile,
+      userProfileIsLoading,
+      userProfilePublic,
+      userProfilePublicIsLoading,
+      userProfilePublicHasErrored,
+      registerHandshakePosition,
+      registerHandshakeHasErrored,
+      registerHandshakeIsLoading,
+      registerHandshakeSuccess,
+      unregisterHandshakeHasErrored,
+      unregisterHandshakeSuccess,
+      unregisterHandshakePosition,
+      unregisterHandshakeIsLoading,
+    } = this.props;
 
-    const bidList$ = isPublic ? { results: userProfilePublic.bidList } : bidList;
-    const bidListHasErrored$ = isPublic ? userProfilePublicHasErrored : bidListHasErrored;
-    const bidListIsLoading$ = isPublic ? userProfilePublicIsLoading : bidListIsLoading;
+    const bidList$ = isPublic
+      ? { results: userProfilePublic.bidList }
+      : bidList;
+    const bidListHasErrored$ = isPublic
+      ? userProfilePublicHasErrored
+      : bidListHasErrored;
+    const bidListIsLoading$ = isPublic
+      ? userProfilePublicIsLoading
+      : bidListIsLoading;
     const userProfile$ = isPublic ? userProfilePublic : userProfile;
-    const userProfileIsLoading$ = isPublic ? userProfilePublicIsLoading : userProfileIsLoading;
+    const userProfileIsLoading$ = isPublic
+      ? userProfilePublicIsLoading
+      : userProfileIsLoading;
 
     const useCDOView = get(userProfile, 'is_cdo') && isPublic && !userProfileIsLoading;
 
@@ -228,7 +295,7 @@ BidTrackerContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   bidListHasErrored: state.bidListHasErrored,
   bidListIsLoading: state.bidListIsLoading,
   bidList: state.bidListFetchDataSuccess,
@@ -265,36 +332,39 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
   const isPublic = get(ownProps, 'isPublic');
   const id$ = get(ownProps, 'match.params.id');
   let config = {
-    fetchUserData: id => dispatch(userProfilePublicFetchData(id)),
+    fetchUserData: (id) => dispatch(userProfilePublicFetchData(id)),
     fetchBidList: () => dispatch(bidListFetchData()),
     bidListRouteChangeResetState: () => dispatch(routeChangeResetState()),
     // Here, we only want the newest bidding-related notification.
     // We'll perform a client-side check to see if it's unread, as that's would be the only
     // case that we'd display this notification.
     fetchNotifications: () => dispatch(bidTrackerNotificationsFetchData()),
-    markBidTrackerNotification: id => dispatch(markNotification(id)),
+    markBidTrackerNotification: (id) => dispatch(markNotification(id)),
   };
   // Different configs based on whether this is the public view or not
   if (!isPublic) {
     config = {
       ...config,
-      submitBidPosition: id => dispatch(submitBid(id)),
-      acceptBidPosition: id => dispatch(acceptBid(id)),
-      declineBidPosition: id => dispatch(declineBid(id)),
-      deleteBid: id => dispatch(toggleBidPosition(id, true, false, false, true)),
+      submitBidPosition: (id) => dispatch(submitBid(id)),
+      acceptBidPosition: (id) => dispatch(acceptBid(id)),
+      declineBidPosition: (id) => dispatch(declineBid(id)),
+      deleteBid: (id) => dispatch(toggleBidPosition(id, true, false, false, true)),
     };
   } else {
     config = {
       ...config,
-      submitBidPosition: id => dispatch(submitBid(id, id$)),
-      acceptBidPosition: id => dispatch(acceptBid(id, id$)),
-      declineBidPosition: id => dispatch(declineBid(id, id$)),
-      registerHandshakePosition: id => dispatch(registerHandshake(id, id$)),
-      unregisterHandshakePosition: id => dispatch(unregisterHandshake(id, id$)),
-      deleteBid: id => dispatch(toggleBidPosition(id, true, false, id$, true)),
+      submitBidPosition: (id) => dispatch(submitBid(id, id$)),
+      acceptBidPosition: (id) => dispatch(acceptBid(id, id$)),
+      declineBidPosition: (id) => dispatch(declineBid(id, id$)),
+      registerHandshakePosition: (id) => dispatch(registerHandshake(id, id$)),
+      unregisterHandshakePosition: (id) => dispatch(unregisterHandshake(id, id$)),
+      deleteBid: (id) => dispatch(toggleBidPosition(id, true, false, id$, true)),
     };
   }
   return config;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BidTrackerContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(BidTrackerContainer));

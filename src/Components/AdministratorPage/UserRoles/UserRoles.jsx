@@ -42,7 +42,9 @@ class UserRoles extends Component {
       const roles = { ...DELEGATE_ROLES };
       tableStats.forEach((m) => {
         const roleGroup = get(roles, `${m.name}`);
-        if (roleGroup) { roles[m.name].group_id = m.id; }
+        if (roleGroup) {
+          roles[m.name].group_id = m.id;
+        }
       });
       // remove role if did not match with tableStats(no id in roles)
       const removeRoles = [];
@@ -57,13 +59,13 @@ class UserRoles extends Component {
     const DELEGATE_ROLES$ = getDelegateRoles();
 
     const thArray = [];
-    Object.keys(DELEGATE_ROLES$).forEach(m => (
-      thArray.push(
-        <th key={get(DELEGATE_ROLES$, `${m}.group_name`)}>{get(DELEGATE_ROLES$, `${m}.title`)}</th>,
-      )
+    Object.keys(DELEGATE_ROLES$).forEach((m) => thArray.push(
+      <th key={get(DELEGATE_ROLES$, `${m}.group_name`)}>
+        {get(DELEGATE_ROLES$, `${m}.title`)}
+      </th>,
     ));
 
-    const userRows = usersList.map(m => (
+    const userRows = usersList.map((m) => (
       <UserRow
         key={m.id}
         userID={m.id}
@@ -72,34 +74,38 @@ class UserRoles extends Component {
         permissionGroups={m.groups}
         delegateRoles={DELEGATE_ROLES$}
       />
-    ),
-    );
+    ));
 
     return (
       <div
         className={`usa-grid-full profile-content-inner-container administrator-page
-        ${(usersIsLoading) ? 'results-loading' : ''}`}
+        ${usersIsLoading ? 'results-loading' : ''}`}
       >
-        {
-          usersIsLoading &&
-            <div>
-              <Spinner type="homepage-position-results" size="big" />
-            </div>
-        }
+        {usersIsLoading && (
+          <div>
+            <Spinner type="homepage-position-results" size="big" />
+          </div>
+        )}
         <div className="usa-grid-full">
           <ProfileSectionTitle title="User Roles" icon="users" />
         </div>
-        {
-          usersSuccess &&
+        {usersSuccess && (
           <div>
             <div className="usa-grid-full searches-top-section selectUsers" />
             <div className="usa-grid-full total-results">
-              <TotalResults total={totalUsers} pageNumber={page} pageSize={range} />
+              <TotalResults
+                total={totalUsers}
+                pageNumber={page}
+                pageSize={range}
+              />
             </div>
             <div className="usa-grid-full">
-              {
-                usersSuccess &&
-                <table className={`delegateRole--table ${modifyPermissionIsLoading ? 'delegate-roles-loading' : ''}`}>
+              {usersSuccess && (
+                <table
+                  className={`delegateRole--table ${
+                    modifyPermissionIsLoading ? 'delegate-roles-loading' : ''
+                  }`}
+                >
                   <thead>
                     <tr>
                       <th>userName</th>
@@ -107,11 +113,9 @@ class UserRoles extends Component {
                       {thArray}
                     </tr>
                   </thead>
-                  <tbody>
-                    {userRows}
-                  </tbody>
+                  <tbody>{userRows}</tbody>
                 </table>
-              }
+              )}
             </div>
             <div className="usa-grid-full react-paginate">
               <PaginationWrapper
@@ -122,7 +126,7 @@ class UserRoles extends Component {
               />
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }
@@ -137,7 +141,8 @@ UserRoles.propTypes = {
       last_name: PropTypes.string,
       first_name: PropTypes.string,
       groups: PropTypes.arrayOf(PropTypes.shape({})),
-    })),
+    }),
+  ),
   usersIsLoading: PropTypes.bool,
   usersHasErrored: PropTypes.bool,
   modifyPermissionIsLoading: PropTypes.bool,
@@ -147,13 +152,15 @@ UserRoles.propTypes = {
 
 UserRoles.defaultProps = {
   totalUsers: 0,
-  usersList: [{
-    id: null,
-    username: '',
-    last_name: '',
-    first_name: '',
-    groups: [],
-  }],
+  usersList: [
+    {
+      id: null,
+      username: '',
+      last_name: '',
+      first_name: '',
+      groups: [],
+    },
+  ],
   usersIsLoading: false,
   usersHasErrored: false,
   modifyPermissionIsLoading: false,
@@ -161,7 +168,7 @@ UserRoles.defaultProps = {
   updateUsers: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   usersList: get(state, 'usersSuccess.results', []),
   usersIsLoading: state.usersIsLoading,
   usersHasErrored: state.usersHasErrored,
@@ -169,7 +176,7 @@ const mapStateToProps = state => ({
   tableStats: state.getTableStatsSuccess,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   updateUsers: (page, limit) => dispatch(getUsers(page, limit)),
 });
 

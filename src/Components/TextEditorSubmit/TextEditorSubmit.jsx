@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types';
 
-const TextEditorSubmit = ({ submit, cancel, submitProps, cancelProps }) => (
+const TextEditorSubmit = ({
+  submit, cancel, submitProps, cancelProps,
+}) => (
   <div>
-    <button className="usa-button" onClick={submit} {...submitProps}>Submit</button>
-    <button className="usa-button-secondary" onClick={cancel} {...cancelProps}>Cancel</button>
+    <button className="usa-button" onClick={submit} {...submitProps}>
+      Submit
+    </button>
+    <button className="usa-button-secondary" onClick={cancel} {...cancelProps}>
+      Cancel
+    </button>
   </div>
 );
 

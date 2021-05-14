@@ -8,16 +8,12 @@ describe('PositionViews', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <PositionViews.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<PositionViews.WrappedComponent {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <PositionViews.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<PositionViews.WrappedComponent {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

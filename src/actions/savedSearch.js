@@ -175,7 +175,9 @@ export function deleteSavedSearch(id) {
         dispatch(currentSavedSearch(false));
       })
       .catch((err) => {
-        dispatch(deleteSavedSearchHasErrored(JSON.stringify(propOrDefault(err, 'response.data', 'An error occurred trying to delete this search.'))));
+        dispatch(deleteSavedSearchHasErrored(
+          JSON.stringify(propOrDefault(err, 'response.data', 'An error occurred trying to delete this search.')),
+        ));
         dispatch(toastError(
           SystemMessages.DELETE_SAVED_SEARCH_ERROR,
           SystemMessages.DELETE_SAVED_SEARCH_ERROR_TITLE,
@@ -201,11 +203,11 @@ export function cloneSavedSearch(id) {
       .then((response) => {
         const responseObject = response.data;
         // copy the object, but only with the properties we need
-        const clonedResponse = Object.assign({}, {
+        const clonedResponse = {
           name: responseObject.name,
           endpoint: responseObject.endpoint,
           filters: responseObject.filters,
-        });
+        };
 
         // append a timestamp to the end of the name
         clonedResponse.name += ` - Copy - ${new Date()}`;
@@ -225,8 +227,7 @@ export function cloneSavedSearch(id) {
   };
 }
 
-export const setCurrentSavedSearch = searchObject =>
-  dispatch => dispatch(currentSavedSearch(searchObject));
+export const setCurrentSavedSearch = searchObject => dispatch => dispatch(currentSavedSearch(searchObject));
 
 // save a new search OR pass an ID to patch an existing search
 export function saveSearch(data, id) {
@@ -248,19 +249,23 @@ export function saveSearch(data, id) {
         dispatch(newSavedSearchHasErrored(false));
         dispatch(newSavedSearchSuccess(
           // if an ID was passed, we know to use the UPDATED message
-          id ?
-            { title: SystemMessages.UPDATED_SAVED_SEARCH_SUCCESS_TITLE,
-              message: SystemMessages.UPDATED_SAVED_SEARCH_SUCCESS(response.data.name) } :
-            { title: SystemMessages.NEW_SAVED_SEARCH_SUCCESS_TITLE,
-              message: SystemMessages.NEW_SAVED_SEARCH_SUCCESS(response.data.name) },
+          id
+            ? {
+              title: SystemMessages.UPDATED_SAVED_SEARCH_SUCCESS_TITLE,
+              message: SystemMessages.UPDATED_SAVED_SEARCH_SUCCESS(response.data.name),
+            }
+            : {
+              title: SystemMessages.NEW_SAVED_SEARCH_SUCCESS_TITLE,
+              message: SystemMessages.NEW_SAVED_SEARCH_SUCCESS(response.data.name),
+            },
         ));
         // eslint-disable-next-line
         const success = id => id ?
           dispatch(toastSuccess(
             SystemMessages.UPDATED_SAVED_SEARCH_SUCCESS(response.data.name),
             SystemMessages.UPDATED_SAVED_SEARCH_SUCCESS_TITLE,
-          )) :
-          dispatch(toastSuccess(
+          ))
+          : dispatch(toastSuccess(
             SystemMessages.NEW_SAVED_SEARCH_SUCCESS(response.data.name),
             SystemMessages.NEW_SAVED_SEARCH_SUCCESS_TITLE,
           ));

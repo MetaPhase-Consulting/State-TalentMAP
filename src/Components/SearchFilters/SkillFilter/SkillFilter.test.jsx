@@ -13,7 +13,12 @@ describe('SkillFilterComponent', () => {
     },
     data: [
       { name: 'Name1', id: 1, cone: 'Cone1' },
-      { name: 'Name2', id: 2, cone: 'Cone2', isSelected: true },
+      {
+        name: 'Name2',
+        id: 2,
+        cone: 'Cone2',
+        isSelected: true,
+      },
       { name: 'Name2', id: 3, cone: 'Cone2' },
     ],
   };
@@ -40,67 +45,54 @@ describe('SkillFilterComponent', () => {
   };
 
   it('can receive props', () => {
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-      />,
+    const wrapper = shallow(<SkillFilter {...props} />);
+    expect(wrapper.instance().props.item.item.title).toBe(
+      props.item.item.title,
     );
-    expect(wrapper.instance().props.item.item.title).toBe(props.item.item.title);
   });
 
   it('can call the onCheckBoxClick function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-        queryParamToggle={spy}
-      />,
-    );
-    wrapper.instance().onCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
+    const wrapper = shallow(<SkillFilter {...props} queryParamToggle={spy} />);
+    wrapper
+      .instance()
+      .onCheckBoxClick(true, { selectionRef: 'test', code: 'code' });
     sinon.assert.calledOnce(spy);
   });
 
   it('can call the onConeCheckBoxClick function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-        queryParamUpdate={spy}
-      />,
-    );
-    wrapper.instance().onConeCheckBoxClick(true, { selectionRef: 'test', code: 'code', cone: skillCones.data[0] });
+    const wrapper = shallow(<SkillFilter {...props} queryParamUpdate={spy} />);
+    wrapper
+      .instance()
+      .onConeCheckBoxClick(true, {
+        selectionRef: 'test',
+        code: 'code',
+        cone: skillCones.data[0],
+      });
     sinon.assert.calledOnce(spy);
   });
 
   it('can update on componentWillReceiveProps', () => {
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SkillFilter {...props} />);
     const spy = sinon.spy(wrapper.instance(), 'setParentCheckboxes');
     wrapper.instance().UNSAFE_componentWillReceiveProps(props);
     sinon.assert.calledOnce(spy);
   });
 
   it('does not render cones with zero children', () => {
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SkillFilter {...props} />);
     // should only render two out of the three cones
     expect(wrapper.find('AccordionItem').length).toBe(2);
   });
 
   it('clicks the accordion onConeCheckBoxClick() if getAttribute returns !== "true"', () => {
     const clickSpy = sinon.spy();
-    global.document.getElementById = () => ({ getAttribute: () => 'false', click: clickSpy });
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-      />,
-    );
+    global.document.getElementById = () => ({
+      getAttribute: () => 'false',
+      click: clickSpy,
+    });
+    const wrapper = shallow(<SkillFilter {...props} />);
 
     wrapper.instance().onConeCheckBoxClick(true, { cone: { id: 1 } });
     sinon.assert.calledOnce(clickSpy);
@@ -108,23 +100,18 @@ describe('SkillFilterComponent', () => {
 
   it('does not click the accordion onConeCheckBoxClick() if getAttribute returns === "true"', () => {
     const clickSpy = sinon.spy();
-    global.document.getElementById = () => ({ getAttribute: () => 'true', click: clickSpy });
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-      />,
-    );
+    global.document.getElementById = () => ({
+      getAttribute: () => 'true',
+      click: clickSpy,
+    });
+    const wrapper = shallow(<SkillFilter {...props} />);
 
     wrapper.instance().onConeCheckBoxClick(true, { cone: { id: 1 } });
     sinon.assert.notCalled(clickSpy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <SkillFilter
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SkillFilter {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

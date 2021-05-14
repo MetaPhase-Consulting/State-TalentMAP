@@ -12,16 +12,12 @@ describe('UserProfileComponent', () => {
     },
   };
   it('is defined', () => {
-    const wrapper = shallow(<UserProfile
-      {...props}
-    />);
+    const wrapper = shallow(<UserProfile {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<UserProfile
-      {...props}
-    />);
+    const wrapper = shallow(<UserProfile {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

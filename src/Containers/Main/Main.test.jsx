@@ -5,15 +5,18 @@ import Main from './Main';
 
 describe('Main', () => {
   it('is defined', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
 
   it('handles a position details route', () => {
     const resultsArray = [
-      { id: 6,
+      {
+        id: 6,
         grade: '05',
         skill: 'OFFICE MANAGEMENT (9017)',
         bureau: '150000',
@@ -22,12 +25,30 @@ describe('Main', () => {
         is_overseas: true,
         create_date: '2006-09-20',
         update_date: '2017-06-08',
-        post: { id: 162, tour_of_duty: '2YRR', code: 'LT6000000', description: 'MASERU, LESOTHO', cost_of_living_adjustment: 0, differential_rate: 15, danger_pay: 0, rest_relaxation_point: 'London', has_consumable_allowance: false, has_service_needs_differential: false },
+        post: {
+          id: 162,
+          tour_of_duty: '2YRR',
+          code: 'LT6000000',
+          description: 'MASERU, LESOTHO',
+          cost_of_living_adjustment: 0,
+          differential_rate: 15,
+          danger_pay: 0,
+          rest_relaxation_point: 'London',
+          has_consumable_allowance: false,
+          has_service_needs_differential: false,
+        },
         languages: [
-          { id: 1, language: 'French (FR)', reading_proficiency: '2', spoken_proficiency: '2', representation: 'French (FR) 2/2' },
+          {
+            id: 1,
+            language: 'French (FR)',
+            reading_proficiency: '2',
+            spoken_proficiency: '2',
+            representation: 'French (FR) 2/2',
+          },
         ],
       },
-      { id: 60,
+      {
+        id: 60,
         grade: '03',
         skill: 'OFFICE MANAGEMENT (9017)',
         bureau: '150000',
@@ -36,85 +57,122 @@ describe('Main', () => {
         is_overseas: true,
         create_date: '2006-09-20',
         update_date: '2017-06-08',
-        post: { id: 162, tour_of_duty: '2YRR', code: 'LT6000000', description: 'MASERU, LESOTHO', cost_of_living_adjustment: 0, differential_rate: 15, danger_pay: 0, rest_relaxation_point: 'London', has_consumable_allowance: false, has_service_needs_differential: false },
+        post: {
+          id: 162,
+          tour_of_duty: '2YRR',
+          code: 'LT6000000',
+          description: 'MASERU, LESOTHO',
+          cost_of_living_adjustment: 0,
+          differential_rate: 15,
+          danger_pay: 0,
+          rest_relaxation_point: 'London',
+          has_consumable_allowance: false,
+          has_service_needs_differential: false,
+        },
         languages: [],
       },
     ];
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/results']}>
-      <Main results={resultsArray} />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/results']}>
+        <Main results={resultsArray} />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a position details route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/details/00011111']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/details/00011111']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/favorites route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/favorites']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/favorites']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/searches route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/searches']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/searches']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/dashboard route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/dashboard']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/dashboard']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/bidderportfolio route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/bidderportfolio']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/bidderportfolio']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/glossaryeditor route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/glossaryeditor']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/glossaryeditor']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/bidtracker route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/bidtracker']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/bidtracker']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/administrator route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/administrator']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/administrator']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/administrator route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/administrator']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/administrator']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/administrator/dashboard/ route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/administrator/dashboard']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/administrator/dashboard']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles a profile/administrator/logs/ route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/profile/administrator/logs']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/profile/administrator/logs']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
   it('handles an about route', () => {
-    const main = TestUtils.renderIntoDocument(<MemoryRouter initialEntries={['/about']}>
-      <Main />
-    </MemoryRouter>);
+    const main = TestUtils.renderIntoDocument(
+      <MemoryRouter initialEntries={['/about']}>
+        <Main />
+      </MemoryRouter>,
+    );
     expect(main).toBeDefined();
   });
 });

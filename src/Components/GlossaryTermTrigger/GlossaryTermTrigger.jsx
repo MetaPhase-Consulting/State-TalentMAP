@@ -36,7 +36,7 @@ GlossaryTermTrigger.defaultProps = {
   term: '',
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   toggle: () => dispatch(toggleGlossary(true)),
 });
 

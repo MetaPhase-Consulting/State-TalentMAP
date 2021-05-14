@@ -9,17 +9,12 @@ describe('CheckboxList', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(<CheckboxList
-      {...props}
-    />);
+    const wrapper = shallow(<CheckboxList {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when isDisabled is true', () => {
-    const wrapper = shallow(<CheckboxList
-      {...props}
-      isDisabled
-    />);
+    const wrapper = shallow(<CheckboxList {...props} isDisabled />);
     expect(wrapper).toBeDefined();
   });
 });

@@ -24,12 +24,16 @@ describe('CompareDrawer', () => {
 
   it('displays the correct number of results data cards', () => {
     const wrapper = shallow(<CompareDrawer {...props} isHidden={false} />);
-    expect(wrapper.find('.check-container').length).toBe(resultsObject.results.length);
+    expect(wrapper.find('.check-container').length).toBe(
+      resultsObject.results.length,
+    );
   });
 
   it('displays the correct number of empty cards', () => {
     const maxCards = 5;
     const wrapper = shallow(<CompareDrawer {...props} isHidden={false} />);
-    expect(wrapper.find('.compare-item-empty').length).toBe(maxCards - resultsObject.results.length);
+    expect(wrapper.find('.compare-item-empty').length).toBe(
+      maxCards - resultsObject.results.length,
+    );
   });
 });

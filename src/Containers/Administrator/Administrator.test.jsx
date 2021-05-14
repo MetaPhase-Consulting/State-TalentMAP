@@ -13,17 +13,19 @@ const mockStore = configureStore(middlewares);
 
 describe('Administrator', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Administrator />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Administrator />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('calls the onDownloadClick function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Administrator.WrappedComponent getLogs={spy} />,
-    );
+    const wrapper = shallow(<Administrator.WrappedComponent getLogs={spy} />);
     wrapper.instance().onDownloadClick();
     sinon.assert.calledOnce(spy);
   });
@@ -39,9 +41,7 @@ describe('Administrator', () => {
 
   it('calls the getLogById function', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Administrator.WrappedComponent getLog={spy} />,
-    );
+    const wrapper = shallow(<Administrator.WrappedComponent getLog={spy} />);
     wrapper.instance().getLogById('access.log');
     sinon.assert.calledOnce(spy);
   });
@@ -50,14 +50,22 @@ describe('Administrator', () => {
     const wrapper = shallow(
       <Administrator.WrappedComponent logsIsLoading logToDownloadIsLoading />,
     );
-    wrapper.setProps({ logsIsLoading: false, logs: 'data', logToDownloadIsLoading: false, logToDownload: 'data' });
+    wrapper.setProps({
+      logsIsLoading: false,
+      logs: 'data',
+      logToDownloadIsLoading: false,
+      logToDownload: 'data',
+    });
     expect(wrapper).toBeDefined();
   });
 
   it('calls putAllSyncJobs on runAllJobs() if putAllSyncsIsLoading === false', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <Administrator.WrappedComponent putAllSyncJobs={spy} putAllSyncsIsLoading={false} />,
+      <Administrator.WrappedComponent
+        putAllSyncJobs={spy}
+        putAllSyncsIsLoading={false}
+      />,
     );
     // should call spy since isloading === false
     wrapper.instance().runAllJobs();

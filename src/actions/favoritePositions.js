@@ -65,37 +65,33 @@ export function favoritePositionsFetchData(sortType, limit = 15,
 
     if (openPV === 'open' || openPV === 'all') {
       const url = createUrl(`/available_position/favorites/?limit=${limit}&page=${page}`);
-      const fetchFavorites = () =>
-        api().get(url)
-          .then(({ data }) => data)
-          .catch(error => error);
+      const fetchFavorites = () => api().get(url)
+        .then(({ data }) => data)
+        .catch(error => error);
       queryProms.push(fetchFavorites());
     }
 
     if (openPV === 'openTandem' || openPV === 'all') {
       const urlTandem = createUrl(`/available_position/tandem/favorites/?limit=${limit}&page=${page}`);
-      const fetchTandemFavorites = () =>
-        api().get(urlTandem)
-          .then(({ data }) => data)
-          .catch(error => error);
+      const fetchTandemFavorites = () => api().get(urlTandem)
+        .then(({ data }) => data)
+        .catch(error => error);
       queryProms.push(fetchTandemFavorites());
     }
 
     if (openPV === 'pv' || openPV === 'all') {
       const urlPV = createUrl(`/projected_vacancy/favorites/?limit=${limit}&page=${page}`);
-      const fetchPVFavorites = () =>
-        api().get(urlPV)
-          .then(({ data }) => data)
-          .catch(error => error);
+      const fetchPVFavorites = () => api().get(urlPV)
+        .then(({ data }) => data)
+        .catch(error => error);
       queryProms.push(fetchPVFavorites());
     }
 
     if (openPV === 'pvTandem' || openPV === 'all') {
       const urlPVTandem = createUrl(`/projected_vacancy/tandem/favorites/?limit=${limit}&page=${page}`);
-      const fetchTandemPVFavorites = () =>
-        api().get(urlPVTandem)
-          .then(({ data }) => data)
-          .catch(error => error);
+      const fetchTandemPVFavorites = () => api().get(urlPVTandem)
+        .then(({ data }) => data)
+        .catch(error => error);
       queryProms.push(fetchTandemPVFavorites());
     }
 
@@ -145,8 +141,8 @@ export function favoritePositionsFetchData(sortType, limit = 15,
             data$.favoritesPVTandem = get(results, '[3].value.results', []).map(m => ({ ...m, isPV: true }));
             data$.results = get(results, '[0].value.results', []); // TODO: outdated? consider removing
           }
-          data$.counts.all = data$.counts.favorites + data$.counts.favoritesTandem +
-            data$.counts.favoritesPV + data$.counts.favoritesPVTandem;
+          data$.counts.all = data$.counts.favorites + data$.counts.favoritesTandem
+            + data$.counts.favoritesPV + data$.counts.favoritesPVTandem;
           batch(() => {
             dispatch(favoritePositionsFetchDataSuccess(data$));
             dispatch(favoritePositionsHasErrored(false));

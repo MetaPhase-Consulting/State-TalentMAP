@@ -17,10 +17,14 @@ describe('Base', () => {
   });
 
   it('renders `as` prop and renders new tag', () => {
-    const tags = ('button|div|span|section|p').split('|');
+    const tags = 'button|div|span|section|p'.split('|');
 
     tags.forEach((tag) => {
-      expect(shallow(<Base as={tag} />).find(tag).exists()).toBe(true);
+      expect(
+        shallow(<Base as={tag} />)
+          .find(tag)
+          .exists(),
+      ).toBe(true);
     });
   });
 

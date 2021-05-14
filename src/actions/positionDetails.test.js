@@ -5,7 +5,8 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 
 describe('async actions', () => {
   beforeEach(() => {
-    const details = { count: 2,
+    const details = {
+      count: 2,
       results: [{
         id: 4,
         grade: '05',
@@ -17,15 +18,14 @@ describe('async actions', () => {
         create_date: '2006-09-20',
         update_date: '2017-06-08',
         languages: [],
-      }] };
+      }],
+    };
 
     mockAdapter.onGet('/fsbid/available_positions/00011111/').reply(200,
-      details,
-    );
+      details);
 
     mockAdapter.onGet('/fsbid/available_positions/00011112/').reply(404,
-      null,
-    );
+      null);
   });
 
   it('can fetch a position', (done) => {

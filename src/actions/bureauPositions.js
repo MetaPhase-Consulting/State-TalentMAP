@@ -1,13 +1,14 @@
 import { downloadFromResponse } from 'utilities';
 import { batch } from 'react-redux';
-import { get, identity, isArray, pickBy } from 'lodash';
+import {
+  get, identity, isArray, pickBy,
+} from 'lodash';
 import querystring from 'query-string';
 import { CancelToken } from 'axios';
 import { toastError } from './toast';
 import api from '../api';
 
 let cancel;
-
 
 export function downloadBureauPositionsData(userQuery) {
   if (get(userQuery, 'position__bureau__code__in', []).length < 1) {

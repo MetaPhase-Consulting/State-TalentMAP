@@ -2,9 +2,7 @@ import PropTypes from 'prop-types';
 
 const PositionsSectionTitleHeader = ({ title }) => (
   <div className="positions-section-title-header">
-    <span>
-      {title}
-    </span>
+    <span>{title}</span>
   </div>
 );
 

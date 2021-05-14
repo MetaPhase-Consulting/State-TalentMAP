@@ -5,19 +5,14 @@ import { InBidList } from 'Components/Ribbon';
 import { existsInNestedObject } from 'utilities';
 
 const BidListButtonContainer = (
-  { id, compareArray, clientCompareArray, ...rest },
+  {
+    id, compareArray, clientCompareArray, ...rest
+  },
   { isClient },
 ) => {
   const compareArray$ = (isClient ? clientCompareArray : compareArray).results;
   const hasBid = existsInNestedObject(id, compareArray$);
-  return (
-    hasBid ?
-      <InBidList
-        {...rest}
-        id={id}
-      />
-      : null
-  );
+  return hasBid ? <InBidList {...rest} id={id} /> : null;
 };
 
 BidListButtonContainer.contextTypes = {
@@ -35,7 +30,7 @@ BidListButtonContainer.defaultProps = {
   clientCompareArray: { results: [] },
 };
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   compareArray: state.bidListFetchDataSuccess,
   clientCompareArray: state.clientBidListFetchDataSuccess,
 });

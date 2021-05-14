@@ -14,8 +14,8 @@ export function sortPreferences(state = SORT_PREFERENCES_WITHOUT_OPTIONS, action
   switch (action.type) {
     case 'SET_SORT_PREFERENCE': {
       const { key, value } = action;
-      if (key && SORT_PREFERENCES[key] &&
-        findIndex(SORT_PREFERENCES[key].options, (f) => {
+      if (key && SORT_PREFERENCES[key]
+        && findIndex(SORT_PREFERENCES[key].options, (f) => {
           const value$ = `${value}`;
           const optionValue$ = `${f.value}`;
           return value$ === optionValue$;

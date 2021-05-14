@@ -10,16 +10,12 @@ describe('ConfirmLinkComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <ConfirmLink {...props} />,
-    );
+    const wrapper = shallow(<ConfirmLink {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('calls onClick when clicked twice', () => {
-    const wrapper = shallow(
-      <ConfirmLink {...props} />,
-    );
+    const wrapper = shallow(<ConfirmLink {...props} />);
     expect(wrapper).toBeDefined();
     const instance = wrapper.instance();
     expect(wrapper.state().confirm).toBe(false);
@@ -31,9 +27,7 @@ describe('ConfirmLinkComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ConfirmLink {...props} />,
-    );
+    const wrapper = shallow(<ConfirmLink {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

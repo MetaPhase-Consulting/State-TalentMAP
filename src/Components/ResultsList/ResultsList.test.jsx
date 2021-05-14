@@ -7,12 +7,7 @@ describe('ResultsListComponent', () => {
   let wrapper = null;
 
   beforeEach(() => {
-    results = shallow(
-      <ResultsList
-        results={resultsObject}
-        bidList={[]}
-      />,
-    );
+    results = shallow(<ResultsList results={resultsObject} bidList={[]} />);
   });
 
   it('is defined', () => {
@@ -20,10 +15,7 @@ describe('ResultsListComponent', () => {
   });
 
   it('handles an empty result set', () => {
-    wrapper = shallow(<ResultsList
-      results={{}}
-      bidList={[]}
-    />);
+    wrapper = shallow(<ResultsList results={{}} bidList={[]} />);
     expect(wrapper.find('div').hasClass('results-loading')).toBe(false);
   });
 });
@@ -36,9 +28,24 @@ describe('getIsGroupEnd', () => {
   ];
 
   const commuterPostResults = [
-    { position: { commuterPost: { description: 'EU Belfast/Dublin' }, post: { location: { city: 'Belfast' } } } },
-    { position: { commuterPost: { description: 'EU Belfast/Dublin' }, post: { location: { city: 'Dublin' } } } },
-    { position: { commuterPost: { description: 'EU Rome/Vatican City' }, post: { location: { city: 'Rome' } } } },
+    {
+      position: {
+        commuterPost: { description: 'EU Belfast/Dublin' },
+        post: { location: { city: 'Belfast' } },
+      },
+    },
+    {
+      position: {
+        commuterPost: { description: 'EU Belfast/Dublin' },
+        post: { location: { city: 'Dublin' } },
+      },
+    },
+    {
+      position: {
+        commuterPost: { description: 'EU Rome/Vatican City' },
+        post: { location: { city: 'Rome' } },
+      },
+    },
   ];
 
   // using results

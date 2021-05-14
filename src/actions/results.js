@@ -76,8 +76,8 @@ export function resultsFetchSimilarPositions(id, favorites, bidList) {
             filteredPositions.push(position);
           }
         });
-        const returnResults = isEmpty(filteredPositions) ?
-          { results: originalResults.slice(0, 3) } : { results: filteredPositions };
+        const returnResults = isEmpty(filteredPositions)
+          ? { results: originalResults.slice(0, 3) } : { results: filteredPositions };
         batch(() => {
           dispatch(resultsSimilarPositionsFetchDataSuccess(returnResults));
           dispatch(resultsSimilarPositionsHasErrored(false));

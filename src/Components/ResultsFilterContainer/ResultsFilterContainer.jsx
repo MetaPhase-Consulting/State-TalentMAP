@@ -1,8 +1,12 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import ErrorBoundary from 'Components/ErrorBoundary';
-import { ACCORDION_SELECTION_OBJECT, FILTER_ITEMS_ARRAY,
-  MISSION_DETAILS_ARRAY, POST_DETAILS_ARRAY } from '../../Constants/PropTypes';
+import {
+  ACCORDION_SELECTION_OBJECT,
+  FILTER_ITEMS_ARRAY,
+  MISSION_DETAILS_ARRAY,
+  POST_DETAILS_ARRAY,
+} from '../../Constants/PropTypes';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
 import SearchFiltersContainer from '../SearchFilters/SearchFiltersContainer';
 import ResetFilters from '../ResetFilters/ResetFilters';
@@ -18,10 +22,24 @@ class ResultsFilterContainer extends Component {
   }
 
   render() {
-    const { filters, resetFilters, setAccordion, selectedAccordion, isLoading,
-      fetchMissionAutocomplete, missionSearchResults, missionSearchIsLoading,
-      missionSearchHasErrored, fetchPostAutocomplete, onQueryParamUpdate, onQueryParamToggle,
-      postSearchResults, postSearchIsLoading, postSearchHasErrored, showClear } = this.props;
+    const {
+      filters,
+      resetFilters,
+      setAccordion,
+      selectedAccordion,
+      isLoading,
+      fetchMissionAutocomplete,
+      missionSearchResults,
+      missionSearchIsLoading,
+      missionSearchHasErrored,
+      fetchPostAutocomplete,
+      onQueryParamUpdate,
+      onQueryParamToggle,
+      postSearchResults,
+      postSearchIsLoading,
+      postSearchHasErrored,
+      showClear,
+    } = this.props;
     return (
       <div className={`filter-container ${isLoading ? 'is-loading' : ''}`}>
         {isLoading && <Spinner type="results-filter" size="small" />}
@@ -32,7 +50,7 @@ class ResultsFilterContainer extends Component {
           <div className="usa-grid-full filter-control-container">
             <div className="filter-control-left">Select Filter:</div>
             <div className="filter-control-right">
-              { showClear && <ResetFilters resetFilters={resetFilters} /> }
+              {showClear && <ResetFilters resetFilters={resetFilters} />}
             </div>
           </div>
           <div className="usa-grid-full search-filters-container">

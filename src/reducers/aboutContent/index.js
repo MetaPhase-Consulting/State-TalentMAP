@@ -1,9 +1,11 @@
-import { aboutContent,
+import {
+  aboutContent,
   aboutContentHasErrored,
   aboutContentIsLoading,
   aboutContentPatchHasErrored,
   aboutContentPatchIsLoading,
-  aboutContentPatchSuccess } from './aboutContent';
+  aboutContentPatchSuccess,
+} from './aboutContent';
 
 export default {
   aboutContentHasErrored,

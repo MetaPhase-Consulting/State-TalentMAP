@@ -8,9 +8,5 @@ export default (props) => {
     borderRadius: '4px',
     padding: '1rem 1rem 0.5rem 1rem',
   };
-  return (
-    <div style={style}>
-      {children}
-    </div>
-  );
+  return <div style={style}>{children}</div>;
 };

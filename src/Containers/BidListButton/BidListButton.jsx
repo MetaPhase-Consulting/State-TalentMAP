@@ -1,19 +1,30 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { BID_LIST, EMPTY_FUNCTION, SetType } from '../../Constants/PropTypes';
-import { toggleBidPosition, toggleClientBidPosition } from '../../actions/bidList';
+import {
+  toggleBidPosition,
+  toggleClientBidPosition,
+} from '../../actions/bidList';
 import BidListButton from '../../Components/BidListButton';
 
 const BidListButtonContainer = (
-  { toggleBid, toggleClientBid, isLoading, id, compareArray, clientCompareArray, ...rest },
+  {
+    toggleBid,
+    toggleClientBid,
+    isLoading,
+    id,
+    compareArray,
+    clientCompareArray,
+    ...rest
+  },
   { isClient },
 ) => (
   <BidListButton
     {...rest}
-    toggleBidPosition={(id$, remove) => // eslint-disable-line no-confusing-arrow
-      isClient ?
-        toggleClientBid(id$, remove) :
-        toggleBid(id$, remove)}
+    toggleBidPosition={(
+      id$,
+      remove, // eslint-disable-line no-confusing-arrow
+    ) => (isClient ? toggleClientBid(id$, remove) : toggleBid(id$, remove))}
     id={id}
     isLoading={isLoading.has(id)}
     compareArray={(isClient ? clientCompareArray : compareArray).results}
@@ -40,15 +51,18 @@ BidListButtonContainer.defaultProps = {
   clientCompareArray: { results: [] },
 };
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   isLoading: state.bidListToggleIsLoading,
   compareArray: state.bidListFetchDataSuccess,
   clientCompareArray: state.clientBidListFetchDataSuccess,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   toggleBid: (id, remove) => dispatch(toggleBidPosition(id, remove)),
   toggleClientBid: (id, remove) => dispatch(toggleClientBidPosition(id, remove)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BidListButtonContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(BidListButtonContainer);

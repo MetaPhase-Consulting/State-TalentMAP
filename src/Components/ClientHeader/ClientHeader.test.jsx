@@ -7,7 +7,10 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
 import { includes } from 'lodash';
-import ClientHeaderContainer, { ClientHeader, mapDispatchToProps } from './ClientHeader';
+import ClientHeaderContainer, {
+  ClientHeader,
+  mapDispatchToProps,
+} from './ClientHeader';
 import { testDispatchFunctions } from '../../testUtilities/testUtilities';
 
 const middlewares = [thunk];
@@ -30,33 +33,51 @@ describe('ClientHeader', () => {
   });
 
   it("displays a proxied CDO's name", () => {
-    const wrapper = shallow(<ClientHeader {...props} bidderPortfolioSelectedCDO={{ name: 'Andrew Proxy' }} />);
-    expect(wrapper.find('#search-as-name').text()).toMatch(/Proxying as Andrew Proxy/);
+    const wrapper = shallow(
+      <ClientHeader
+        {...props}
+        bidderPortfolioSelectedCDO={{ name: 'Andrew Proxy' }}
+      />,
+    );
+    expect(wrapper.find('#search-as-name').text()).toMatch(
+      /Proxying as Andrew Proxy/,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('uses different colors when proxied as another CDO', () => {
-    const wrapper = shallow(<ClientHeader {...props} bidderPortfolioSelectedCDO={{ name: 'Andrew Proxy' }} />);
+    const wrapper = shallow(
+      <ClientHeader
+        {...props}
+        bidderPortfolioSelectedCDO={{ name: 'Andrew Proxy' }}
+      />,
+    );
     expect(wrapper.find('SkeletonTheme').at(0).props().color).toBe('#FFF1D2');
-    wrapper.setProps({ ...props, bidderPortfolioSelectedCDO: { name: 'Self', isCurrentUser: true } });
+    wrapper.setProps({
+      ...props,
+      bidderPortfolioSelectedCDO: { name: 'Self', isCurrentUser: true },
+    });
     wrapper.update();
     expect(wrapper.find('SkeletonTheme').at(0).props().color).toBe('#DCE4EF');
     expect(wrapper).toBeDefined();
   });
 
   it('is displays the proxy CDO when is exists and is not the current user', () => {
-    const wrapper = shallow(<ClientHeader {...props} bidderPortfolioSelectedCDO={{ name: 'Mike', isCurrentUser: false }} />);
+    const wrapper = shallow(
+      <ClientHeader
+        {...props}
+        bidderPortfolioSelectedCDO={{ name: 'Mike', isCurrentUser: false }}
+      />,
+    );
     const text = wrapper.find('#search-as-name').text();
     expect(includes(text, '(Proxying as Mike)')).toBe(true);
   });
 
   it('calls unset() on click', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<ClientHeader
-      {...props}
-      unset={spy}
-      client={{ perdet_seq_number: 1 }}
-    />);
+    const wrapper = shallow(
+      <ClientHeader {...props} unset={spy} client={{ perdet_seq_number: 1 }} />,
+    );
     wrapper.find('button').simulate('click');
     sinon.assert.calledOnce(spy);
   });
@@ -67,7 +88,8 @@ describe('ClientHeader', () => {
         <MemoryRouter>
           <ClientHeaderContainer {...props} />
         </MemoryRouter>
-      </Provider>);
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -77,7 +99,12 @@ describe('ClientHeader', () => {
   });
 
   it('matches snapshot when proxying as another CDO', () => {
-    const wrapper = shallow(<ClientHeader {...props} bidderPortfolioSelectedCDO={{ name: 'Andrew Proxy' }} />);
+    const wrapper = shallow(
+      <ClientHeader
+        {...props}
+        bidderPortfolioSelectedCDO={{ name: 'Andrew Proxy' }}
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

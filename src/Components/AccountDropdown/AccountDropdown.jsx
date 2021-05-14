@@ -1,6 +1,9 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Dropdown, { DropdownContent, DropdownTrigger } from 'react-simple-dropdown';
+import Dropdown, {
+  DropdownContent,
+  DropdownTrigger,
+} from 'react-simple-dropdown';
 import PropTypes from 'prop-types';
 import { compact, get, values } from 'lodash';
 import { EMPTY_FUNCTION, USER_PROFILE } from 'Constants/PropTypes';
@@ -13,13 +16,18 @@ const getUseDarkMode = () => checkFlag('flags.personalization');
 
 const browserHandler = () => {
   switch (getBrowserName()) {
-  // Dark mode breaks in IE11.
-  // Attempt to disable dark mode if for some reason it is set to true.
-  // Also set in src/Containers/DarkMode/DarkMode.jsx
+    // Dark mode breaks in IE11.
+    // Attempt to disable dark mode if for some reason it is set to true.
+    // Also set in src/Containers/DarkMode/DarkMode.jsx
     case 'Chrome':
     case 'Firefox':
     case 'Safari': {
-      return <DarkModeToggle className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link account-dropdown-link--button" />;
+      return (
+        <DarkModeToggle
+          className={`unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link
+          account-dropdown-link--button`}
+        />
+      );
     }
     default: {
       return null;
@@ -58,36 +66,49 @@ export class AccountDropdown extends Component {
     const isLoading = compact(values(avatar)).length > 0;
 
     return (
-      isLoading &&
-      <Dropdown
-        className="account-dropdown"
-        ref={(dropdown) => { this.dropdown = dropdown; }}
-        removeElement
-        onMouseEnter={this.showDropdown}
-        onMouseLeave={this.hideDropdown}
-      >
-        <DropdownTrigger href="/#">
-          <Avatar className="account-dropdown--avatar" {...avatar} />
-          {
-            shouldDisplayName &&
-              <span className="account-dropdown--name" id="account-username">{displayName}</span>
-          }
-        </DropdownTrigger>
-        <div className="dropdown-content-outer-container">
-          <DropdownContent onMouseEnter={this.showDropdown}>
-            <div className="account-dropdown--identity account-dropdown--segment">
-              <div>Signed in as</div>
-              <strong>{displayName}</strong>
-            </div>
-            <Link className="account-dropdown--identity account-dropdown--segment account-dropdown-link" to="/profile/dashboard" onClick={this.hideDropdown}>Dashboard</Link>
-            {
-              getUseDarkMode() ?
-                browserHandler() : null
-            }
-            <Link className="account-dropdown--identity account-dropdown--segment account-dropdown-link" to="/logout" onClick={this.logout}>Logout</Link>
-          </DropdownContent>
-        </div>
-      </Dropdown>
+      isLoading && (
+        <Dropdown
+          className="account-dropdown"
+          ref={(dropdown) => {
+            this.dropdown = dropdown;
+          }}
+          removeElement
+          onMouseEnter={this.showDropdown}
+          onMouseLeave={this.hideDropdown}
+        >
+          <DropdownTrigger href="/#">
+            <Avatar className="account-dropdown--avatar" {...avatar} />
+            {shouldDisplayName && (
+              <span className="account-dropdown--name" id="account-username">
+                {displayName}
+              </span>
+            )}
+          </DropdownTrigger>
+          <div className="dropdown-content-outer-container">
+            <DropdownContent onMouseEnter={this.showDropdown}>
+              <div className="account-dropdown--identity account-dropdown--segment">
+                <div>Signed in as</div>
+                <strong>{displayName}</strong>
+              </div>
+              <Link
+                className="account-dropdown--identity account-dropdown--segment account-dropdown-link"
+                to="/profile/dashboard"
+                onClick={this.hideDropdown}
+              >
+                Dashboard
+              </Link>
+              {getUseDarkMode() ? browserHandler() : null}
+              <Link
+                className="account-dropdown--identity account-dropdown--segment account-dropdown-link"
+                to="/logout"
+                onClick={this.logout}
+              >
+                Logout
+              </Link>
+            </DropdownContent>
+          </div>
+        </Dropdown>
+      )
     );
   }
 }

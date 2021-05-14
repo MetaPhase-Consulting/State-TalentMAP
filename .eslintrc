@@ -46,6 +46,28 @@
     "sort-imports": ["error", {
       "ignoreDeclarationSort": true
     }],
+    "react/jsx-props-no-spreading": [0],
+    "react/jsx-closing-tag-location": [0],
+    "react/destructuring-assignment": [0],
+    "react/default-props-match-prop-types": [0],
+    "react/require-default-props": [0],
+    "react/button-has-type": "warn",
+    "jsx-a11y/control-has-associated-label": "warn",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "react/no-access-state-in-setstate": "warn",
+    "react/no-deprecated": [0],
+    "react/no-unused-state": "warn",
+    "react/forbid-prop-types": [0],
+    "react/jsx-one-expression-per-line": [0],
+    "jsx-a11y/label-has-associated-control": "warn",
+    "max-len": ["error", { "code": 145, "ignoreTemplateLiterals": true }],
+    "react/jsx-curly-brace-presence": "warn",
+    "react/no-unescaped-entities": "warn",
+    "prefer-destructuring": ["error", {
+      "array": false,
+      "object": true
+    }],
+    "import/no-cycle": "warn",
     "linebreak-style": [0],
     "react/jsx-uses-react": [0],
     "react/react-in-jsx-scope": [0],

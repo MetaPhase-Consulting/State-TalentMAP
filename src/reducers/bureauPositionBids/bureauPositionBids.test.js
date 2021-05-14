@@ -26,7 +26,8 @@ describe('bureauPositionBids reducers', () => {
   });
 
   it('can set reducer BUREAU_POSITION_BIDS_RANKING_HAS_ERRORED', () => {
-    expect(reducers.bureauPositionBidsRankingHasErrored(false, { type: 'BUREAU_POSITION_BIDS_RANKING_HAS_ERRORED', hasErrored: true })).toBe(true);
+    expect(reducers.bureauPositionBidsRankingHasErrored(false,
+      { type: 'BUREAU_POSITION_BIDS_RANKING_HAS_ERRORED', hasErrored: true })).toBe(true);
   });
 
   it('can set reducer BUREAU_POSITION_BIDS_RANKING_IS_LOADING', () => {
@@ -38,14 +39,17 @@ describe('bureauPositionBids reducers', () => {
   });
 
   it('can set reducer BUREAU_POSITION_BIDS_SET_RANKING_HAS_ERRORED', () => {
-    expect(reducers.bureauPositionBidsSetRankingHasErrored(false, { type: 'BUREAU_POSITION_BIDS_SET_RANKING_HAS_ERRORED', hasErrored: true })).toBe(true);
+    expect(reducers.bureauPositionBidsSetRankingHasErrored(false,
+      { type: 'BUREAU_POSITION_BIDS_SET_RANKING_HAS_ERRORED', hasErrored: true })).toBe(true);
   });
 
   it('can set reducer BUREAU_POSITION_BIDS_SET_RANKING_IS_LOADING', () => {
-    expect(reducers.bureauPositionBidsSetRankingIsLoading(false, { type: 'BUREAU_POSITION_BIDS_SET_RANKING_IS_LOADING', isLoading: true })).toBe(true);
+    expect(reducers.bureauPositionBidsSetRankingIsLoading(false,
+      { type: 'BUREAU_POSITION_BIDS_SET_RANKING_IS_LOADING', isLoading: true })).toBe(true);
   });
 
   it('can set reducer BUREAU_POSITION_BIDS_SET_RANKING_FETCH_DATA_SUCCESS', () => {
-    expect(reducers.bureauPositionBidsSetRanking(false, { type: 'BUREAU_POSITION_BIDS_SET_RANKING_FETCH_DATA_SUCCESS', success: true })).toBe(true);
+    expect(reducers.bureauPositionBidsSetRanking(false,
+      { type: 'BUREAU_POSITION_BIDS_SET_RANKING_FETCH_DATA_SUCCESS', success: true })).toBe(true);
   });
 });

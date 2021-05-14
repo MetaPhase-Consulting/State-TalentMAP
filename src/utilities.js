@@ -1,8 +1,10 @@
 import Scroll from 'react-scroll';
 import { distanceInWords, format } from 'date-fns';
-import { cloneDeep, get, has, includes, intersection, isArray, isEmpty, isEqual, isFunction,
+import {
+  cloneDeep, get, has, includes, intersection, isArray, isEmpty, isEqual, isFunction,
   isNumber, isObject, isString, keys, lowerCase, merge as merge$, omit, orderBy, padStart, pick,
-  split, startCase, take, toLower, toString, transform, uniqBy } from 'lodash';
+  split, startCase, take, toLower, toString, transform, uniqBy,
+} from 'lodash';
 import numeral from 'numeral';
 import queryString from 'query-string';
 import shortid from 'shortid';
@@ -112,7 +114,8 @@ export function fetchJWT() {
 }
 
 export const sortTods = (data) => {
-  const sortingArray = ['T', 'C', 'H', 'O', 'V', '1', '2', 'U', 'A', 'B', 'E', 'N', 'S', 'G', 'D', 'F', 'R', 'Q', 'J', 'I', 'P', 'W', 'L', 'K', 'M', 'Y', 'Z', 'X'];
+  const sortingArray = ['T', 'C', 'H', 'O', 'V', '1', '2', 'U', 'A', 'B', 'E',
+    'N', 'S', 'G', 'D', 'F', 'R', 'Q', 'J', 'I', 'P', 'W', 'L', 'K', 'M', 'Y', 'Z', 'X'];
   // eslint-disable-next-line no-confusing-arrow
   return orderBy(data, o => o ? sortingArray.indexOf(o.code) : sortingArray.length);
 };
@@ -211,9 +214,8 @@ export const scrollToId = ({ el, config = {} }) => {
 
 // When we want to grab a label, but aren't sure which one exists.
 // We set custom ones first in the list.
-export const getItemLabel = itemData =>
-  itemData.custom_description || itemData.long_description ||
-  itemData.description || itemData.code || itemData.name;
+export const getItemLabel = itemData => itemData.custom_description || itemData.long_description
+  || itemData.description || itemData.code || itemData.name;
 
 // abcde 4 // a...
 // Shortens strings to varying lengths
@@ -269,7 +271,7 @@ export const existsInNestedObject = (ref, array, prop = 'position', nestedProp =
 // we also want to get rid of page and limit,
 // since those aren't valid params in the saved search endpoint
 export const cleanQueryParams = (q) => {
-  let object = Object.assign({}, q);
+  let object = { ...q };
   object = omit(object, ['count']);
   Object.keys(object).forEach((key) => {
     if (VALID_PARAMS.indexOf(key) <= -1) {
@@ -280,7 +282,7 @@ export const cleanQueryParams = (q) => {
 };
 
 export const cleanTandemQueryParams = (q) => {
-  const object = Object.assign({}, q);
+  const object = { ...q };
   Object.keys(object).forEach((key) => {
     if (VALID_TANDEM_PARAMS.indexOf(key) <= -1 && VALID_PARAMS.indexOf(key) <= -1) {
       delete object[key];
@@ -306,8 +308,7 @@ export const removeDuplicates = (myArr, props = ['']) => (
 
 // Format date for notifications.
 // We want to use minutes for recent notifications, but days for older ones.
-export const getTimeDistanceInWords = (dateToCompare, date = new Date(), options = {}) =>
-  `${distanceInWords(dateToCompare, date, options)} ago`;
+export const getTimeDistanceInWords = (dateToCompare, date = new Date(), options = {}) => `${distanceInWords(dateToCompare, date, options)} ago`;
 
 // Format the date into our preferred format.
 // We can take any valid date and convert it into M.D.YYYY format, or any
@@ -323,8 +324,7 @@ export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
 };
 
 // Prefix asset paths with the PUBLIC_URL
-export const getAssetPath = strAssetPath =>
-  `${process.env.PUBLIC_URL}${strAssetPath}`.replace('//', '/');
+export const getAssetPath = strAssetPath => `${process.env.PUBLIC_URL}${strAssetPath}`.replace('//', '/');
 
 // Filter by objects that contain a specified prop(s) that match a string.
 // Check if any of "array"'s objects' "props" contain "keyword"
@@ -401,8 +401,8 @@ export const wrapForMultiSelect = (options, valueProp, labelProp) => options.sli
 // Provide two arrays, a sourceArray and a compareArray, and a property to check (propToCheck),
 // and this function will return objects from the sourceArray where a given propToCheck value exists
 // in at least one object in both arrays.
-export const returnObjectsWherePropMatches = (sourceArray = [], compareArray = [], propToCheck) =>
-  sourceArray.filter(o1 => compareArray.some(o2 => o1[propToCheck] === o2[propToCheck]));
+export const returnObjectsWherePropMatches = (sourceArray = [],
+  compareArray = [], propToCheck) => sourceArray.filter(o1 => compareArray.some(o2 => o1[propToCheck] === o2[propToCheck]));
 
 // Convert a numerator and a denominator to a percentage.
 export const numbersToPercentString = (numerator, denominator, percentFormat = '0.0%') => {
@@ -419,15 +419,14 @@ export const formatWaiverTitle = waiver => `${waiver.position} - ${waiver.catego
 // obj should be an object, such as { a: { b: 1, c: { d: 2 } } }
 // path should be a string to the desired path - "a.b.c.d"
 // defaultToReturn should be the default value you want to return if the traversal fails
-export const propOrDefault = (obj, path, defaultToReturn = null) =>
-  get(obj, path, defaultToReturn);
+export const propOrDefault = (obj, path, defaultToReturn = null) => get(obj, path, defaultToReturn);
 
 // Return the correct object from the bidStatistics array/object.
 // If it doesn't exist, return an empty object.
 export const getBidStatisticsObject = (bidStatistics) => {
   if (Array.isArray(bidStatistics) && bidStatistics.length) {
     return bidStatistics[0];
-  } else if (isObject(bidStatistics)) {
+  } if (isObject(bidStatistics)) {
     return bidStatistics;
   }
   return {};
@@ -447,12 +446,12 @@ export const formatIdSpacing = (id) => {
 };
 
 // provide an array of permissions to check if they all exist in an array of user permissions
-export const userHasPermissions = (permissionsToCheck = [], userPermissions = []) =>
-  permissionsToCheck.every(val => userPermissions.indexOf(val) >= 0);
+export const userHasPermissions = (permissionsToCheck = [],
+  userPermissions = []) => permissionsToCheck.every(val => userPermissions.indexOf(val) >= 0);
 
 // provide an array of permissions to check if at least one exists in an array of user permissions
-export const userHasSomePermissions = (permissionsToCheck = [], userPermissions = []) =>
-  !!intersection(permissionsToCheck, userPermissions).length;
+export const userHasSomePermissions = (permissionsToCheck = [],
+  userPermissions = []) => !!intersection(permissionsToCheck, userPermissions).length;
 
 // Takes multiple saved search objects and combines them into one object,
 // where the value for each property is an array of all individual values
@@ -481,8 +480,8 @@ export const mapSavedSearchesToSingleQuery = (savedSearchesObject) => {
     }, {});
   }
 
-  const mergedFilters = mappedSearchTermsFormatted.length ?
-    merge(...mappedSearchTermsFormatted) : {};
+  const mergedFilters = mappedSearchTermsFormatted.length
+    ? merge(...mappedSearchTermsFormatted) : {};
 
   const mergedFiltersWithoutArrays = { ...mergedFilters };
 
@@ -516,7 +515,8 @@ export const mapSavedSearchToDescriptions = (savedSearchObject, mappedParams) =>
         isTandem: undefined,
         isCommon: true,
         isToggle: undefined,
-      });
+      },
+    );
   }
 
   searchKeys.forEach((s) => {
@@ -532,8 +532,8 @@ export const mapSavedSearchToDescriptions = (savedSearchObject, mappedParams) =>
 
 export const getPostName = (post, defaultValue = null) => {
   let valueToReturn = defaultValue;
-  if (propOrDefault(post, 'location.city') &&
-    (propOrDefault(post, 'location.country') === 'United States' || propOrDefault(post, 'location.country') === 'USA')) {
+  if (propOrDefault(post, 'location.city')
+    && (propOrDefault(post, 'location.country') === 'United States' || propOrDefault(post, 'location.country') === 'USA')) {
     valueToReturn = `${post.location.city}, ${post.location.state}`;
   } else if (propOrDefault(post, 'location.city')) {
     valueToReturn = `${post.location.city}${post.location.country ? `, ${post.location.country}` : ''}`;
@@ -623,7 +623,7 @@ export const getFormattedNumCSV = (v) => {
     return '';
   }
   // else
-  return !isNaN(v) ? `=${v}` : v;
+  return !Number.isNaN(v) ? `=${v}` : v;
 };
 
 export const spliceStringForCSV = (v) => {
@@ -644,9 +644,7 @@ export const paginate = (array, pageSize, pageNumber) => {
 // to any objects that are duplicates.
 export const mapDuplicates = (data = [], propToCheck = 'custom_description') => data.slice().map((p) => {
   const p$ = { ...p };
-  const matching = data.filter(f =>
-    f[propToCheck] === p$[propToCheck],
-  ) || [];
+  const matching = data.filter(f => f[propToCheck] === p$[propToCheck]) || [];
   if (matching.length >= 2) {
     p$.hasDuplicateDescription = true;
   }
@@ -679,9 +677,9 @@ export const getBrowserName = () => Bowser.getParser(window.navigator.userAgent)
 export const getAriaValue = (e) => {
   if (e === 'true') {
     return e;
-  } else if (e === 'false') {
+  } if (e === 'false') {
     return e;
-  } else if (e) {
+  } if (e) {
     return 'true';
   }
   return 'false';
@@ -755,7 +753,7 @@ export const loadImg = (src, callback) => {
   sprite.src = src;
 };
 
-export const isNumeric = value => isNumber(value) || (!isEmpty(value) && !isNaN(value));
+export const isNumeric = value => isNumber(value) || (!isEmpty(value) && !Number.isNaN(value));
 
 // BEGIN FUSE SEARCH //
 const fuseOptions = {

@@ -6,11 +6,9 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 describe('async actions', () => {
   beforeEach(() => {
     mockAdapter.onGet('/homepage/banner/').reply(200,
-      { text: 'text', is_visible: true },
-    );
+      { text: 'text', is_visible: true });
     mockAdapter.onPatch('/homepage/banner/').reply(200,
-      null,
-    );
+      null);
   });
 
   it('fetches the home banner content', (done) => {
@@ -29,8 +27,7 @@ describe('async actions', () => {
     const store = mockStore({ notifications: {} });
 
     mockAdapter.onGet('/homepage/banner/').reply(200,
-      { text: 'text', is_visible: false },
-    );
+      { text: 'text', is_visible: false });
 
     const f = () => {
       setTimeout(() => {
@@ -45,8 +42,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onGet('/homepage/banner/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -73,8 +69,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onPatch('/homepage/banner/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

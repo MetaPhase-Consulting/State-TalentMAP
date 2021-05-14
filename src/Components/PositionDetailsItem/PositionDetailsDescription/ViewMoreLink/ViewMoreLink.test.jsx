@@ -9,27 +9,25 @@ describe('ViewMoreLink', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <ViewMoreLink {...props} />,
-    );
+    const wrapper = shallow(<ViewMoreLink {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('toggles text on click', () => {
-    const wrapper = shallow(
-      <ViewMoreLink {...props} />,
-    );
+    const wrapper = shallow(<ViewMoreLink {...props} />);
     expect(wrapper.instance().state.shouldDisplayViewMore).toBe(false);
-    expect(wrapper.find('InteractiveElement').render().text()).toBe('View less');
+    expect(wrapper.find('InteractiveElement').render().text()).toBe(
+      'View less',
+    );
     wrapper.find('InteractiveElement').simulate('click');
     expect(wrapper.instance().state.shouldDisplayViewMore).toBe(true);
-    expect(wrapper.find('InteractiveElement').render().text()).toBe('View more');
+    expect(wrapper.find('InteractiveElement').render().text()).toBe(
+      'View more',
+    );
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ViewMoreLink {...props} />,
-    );
+    const wrapper = shallow(<ViewMoreLink {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

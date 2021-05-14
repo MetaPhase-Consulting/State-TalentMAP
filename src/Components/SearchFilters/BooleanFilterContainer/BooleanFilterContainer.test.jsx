@@ -4,10 +4,12 @@ import sinon from 'sinon';
 import BooleanFilterContainer from './BooleanFilterContainer';
 
 describe('BooleanFilterContainerComponent', () => {
-  const items = [{
-    item: { title: 'title', selectionRef: 'ref' },
-    data: [{ isSelected: true }],
-  }];
+  const items = [
+    {
+      item: { title: 'title', selectionRef: 'ref' },
+      data: [{ isSelected: true }],
+    },
+  ];
 
   it('matches snapshot', () => {
     const wrapper = shallow(

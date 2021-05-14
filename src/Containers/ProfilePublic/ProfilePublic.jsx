@@ -8,7 +8,11 @@ import ProfileDashboard from 'Components/ProfileDashboard';
 import Alert from 'Components/Alert';
 import { fetchClassifications } from 'actions/classifications';
 import { userProfilePublicFetchData } from 'actions/userProfilePublic';
-import { CLASSIFICATIONS, EMPTY_FUNCTION, USER_PROFILE } from 'Constants/PropTypes';
+import {
+  CLASSIFICATIONS,
+  EMPTY_FUNCTION,
+  USER_PROFILE,
+} from 'Constants/PropTypes';
 import { DEFAULT_USER_PROFILE } from 'Constants/DefaultProps';
 import { registerHandshake, unregisterHandshake } from 'actions/bidList';
 
@@ -26,7 +30,7 @@ class ProfilePublic extends Component {
     const viewType = get(this.props, 'match.params.viewType');
     const isBureauView = viewType === 'bureau';
     return isBureauView;
-  }
+  };
 
   render() {
     const {
@@ -54,21 +58,20 @@ class ProfilePublic extends Component {
         showSearchAsClient: false,
       };
     }
-    return (
-      combinedErrored ?
-        <Alert type="error" title="User not found" />
-        :
-        <ProfileDashboard
-          userProfile={userProfile}
-          isLoading={combinedLoading}
-          bidList={bidList}
-          classifications={classifications}
-          clientClassifications={clientClassifications}
-          registerHandshake={registerHandshakePosition}
-          unregisterHandshake={unregisterHandshakePosition}
-          isPublic
-          {...props}
-        />
+    return combinedErrored ? (
+      <Alert type="error" title="User not found" />
+    ) : (
+      <ProfileDashboard
+        userProfile={userProfile}
+        isLoading={combinedLoading}
+        bidList={bidList}
+        classifications={classifications}
+        clientClassifications={clientClassifications}
+        registerHandshake={registerHandshakePosition}
+        unregisterHandshake={unregisterHandshakePosition}
+        isPublic
+        {...props}
+      />
     );
   }
 }
@@ -117,12 +120,15 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
   const id$ = get(ownProps, 'match.params.id');
   const config = {
     fetchData: (id, includeBids) => dispatch(userProfilePublicFetchData(id, false, includeBids)),
-    onNavigateTo: dest => dispatch(push(dest)),
+    onNavigateTo: (dest) => dispatch(push(dest)),
     fetchClassifications: () => dispatch(fetchClassifications()),
-    registerHandshakePosition: id => dispatch(registerHandshake(id, id$)),
-    unregisterHandshakePosition: id => dispatch(unregisterHandshake(id, id$)),
+    registerHandshakePosition: (id) => dispatch(registerHandshake(id, id$)),
+    unregisterHandshakePosition: (id) => dispatch(unregisterHandshake(id, id$)),
   };
   return config;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProfilePublic));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(ProfilePublic));

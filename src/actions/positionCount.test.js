@@ -8,8 +8,7 @@ describe('async actions', () => {
     const details = { count: 1867 };
 
     mockAdapter.onGet('/fsbid/available_positions/?limit=1').reply(200,
-      details,
-    );
+      details);
   });
 
   it('can fetch position count', (done) => {
@@ -28,8 +27,7 @@ describe('async actions', () => {
     const store = mockStore({});
 
     mockAdapter.onGet('/fsbid/available_positions/?limit=1').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

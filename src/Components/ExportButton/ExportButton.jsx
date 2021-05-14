@@ -1,9 +1,21 @@
 import PropTypes from 'prop-types';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 
-const ExportButton = ({ onClick, text, className, isLoading, primaryClass, ...rest }) => (
-  <button className={`${primaryClass} ${className}`} onClick={onClick} {...rest}>
-    {isLoading && <span className="ds-c-spinner spinner-blue" />}<span>{text}</span>
+const ExportButton = ({
+  onClick,
+  text,
+  className,
+  isLoading,
+  primaryClass,
+  ...rest
+}) => (
+  <button
+    className={`${primaryClass} ${className}`}
+    onClick={onClick}
+    {...rest}
+  >
+    {isLoading && <span className="ds-c-spinner spinner-blue" />}
+    <span>{text}</span>
   </button>
 );
 

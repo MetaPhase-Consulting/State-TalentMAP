@@ -7,9 +7,7 @@ import { EMPTY_FUNCTION } from '../../../../Constants/PropTypes';
 import InteractiveElement from '../../../InteractiveElement';
 
 const LogsPage = (props) => {
-  const {
-    name, onClick, isSelected,
-  } = props;
+  const { name, onClick, isSelected } = props;
 
   const onDownloadClick$ = (e) => {
     stopProp(e);
@@ -29,7 +27,9 @@ const LogsPage = (props) => {
       type={Row}
       role="radio"
       aria-checked={isSelected}
-      className={`usa-grid-full log-list-row ${isSelected ? 'log-list-row--selected' : ''}`}
+      className={`usa-grid-full log-list-row ${
+        isSelected ? 'log-list-row--selected' : ''
+      }`}
     >
       <Column columns={1}>
         <FA name={isSelected ? 'dot-circle-o' : 'circle-o'} />
@@ -38,7 +38,13 @@ const LogsPage = (props) => {
         <span>{name}</span>
       </Column>
       <Column columns={2} className="log-list-row--download">
-        <button name="download" className="usa-button" onClick={onDownloadClick$}>Download</button>
+        <button
+          name="download"
+          className="usa-button"
+          onClick={onDownloadClick$}
+        >
+          Download
+        </button>
       </Column>
     </InteractiveElement>
   );

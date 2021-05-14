@@ -24,9 +24,7 @@ describe('BoxShadow', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BoxShadow />,
-    );
+    const wrapper = shallow(<BoxShadow />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

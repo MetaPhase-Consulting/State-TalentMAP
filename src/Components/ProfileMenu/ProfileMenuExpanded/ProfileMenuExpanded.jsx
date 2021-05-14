@@ -25,7 +25,7 @@ function getProps(options, roles, params = {}) {
     title: options.text,
     iconName: options.icon,
     link: options.route,
-    search: (options.params || ''),
+    search: options.params || '',
     hidden: isHidden(options, roles, params),
   };
 
@@ -57,27 +57,32 @@ const ProfileMenuExpanded = (props) => {
     <div className="usa-grid-full profile-menu">
       <div className="menu-title">
         <div className="menu-title-text">Menu</div>
-        <button className="unstyled-button" title="Collapse menu" onClick={props.collapse}>
+        <button
+          className="unstyled-button"
+          title="Collapse menu"
+          onClick={props.collapse}
+        >
           <FontAwesome name="exchange" />
         </button>
       </div>
       <NavLinksContainer>
-        {
-          GET_PROFILE_MENU().map((item) => {
-            const subitems = (item.children || []);
-            return subitems.length ? (
-              <NavLink key={item.text} {...getProps(item, roles, props$)}>
-                {
-                  subitems.filter(f => f.route).map(subitem => (
-                    <NavLink key={subitem.text} {...getProps(subitem, roles, props$)} />
-                  ))
-                }
-              </NavLink>
-            ) : (
-              <NavLink key={item.text} {...getProps(item, roles, props$)} />
-            );
-          })
-        }
+        {GET_PROFILE_MENU().map((item) => {
+          const subitems = item.children || [];
+          return subitems.length ? (
+            <NavLink key={item.text} {...getProps(item, roles, props$)}>
+              {subitems
+                .filter((f) => f.route)
+                .map((subitem) => (
+                  <NavLink
+                    key={subitem.text}
+                    {...getProps(subitem, roles, props$)}
+                  />
+                ))}
+            </NavLink>
+          ) : (
+            <NavLink key={item.text} {...getProps(item, roles, props$)} />
+          );
+        })}
       </NavLinksContainer>
     </div>
   );

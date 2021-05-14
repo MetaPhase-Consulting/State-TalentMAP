@@ -3,28 +3,32 @@ import ResultsCondensedCardTop from '../ResultsCondensedCardTop';
 import ResultsCondensedCardBottom from '../ResultsCondensedCardBottom';
 import ResultsCondensedCardFooter from '../ResultsCondensedCardFooter';
 import BoxShadow from '../BoxShadow';
-import { BID_RESULTS, FAVORITE_POSITIONS_ARRAY, HOME_PAGE_CARD_TYPE, POSITION_DETAILS } from '../../Constants/PropTypes';
+import {
+  BID_RESULTS,
+  FAVORITE_POSITIONS_ARRAY,
+  HOME_PAGE_CARD_TYPE,
+  POSITION_DETAILS,
+} from '../../Constants/PropTypes';
 
-const ResultsCondensedCard = (
-  {
-    position,
-    favorites,
-    favoritesTandem,
-    favoritesPV,
-    favoritesPVTandem,
-    bidList,
-    type,
-    refreshFavorites,
-    showBidListButton,
-    isProjectedVacancy,
-    isRecentlyAvailable,
-    useShortFavButton,
-    showCompareButton,
-    sortType,
-    limit,
-    page,
-    isTandem,
-  }) => (
+const ResultsCondensedCard = ({
+  position,
+  favorites,
+  favoritesTandem,
+  favoritesPV,
+  favoritesPVTandem,
+  bidList,
+  type,
+  refreshFavorites,
+  showBidListButton,
+  isProjectedVacancy,
+  isRecentlyAvailable,
+  useShortFavButton,
+  showCompareButton,
+  sortType,
+  limit,
+  page,
+  isTandem,
+}) => (
   <BoxShadow className="usa-grid-full condensed-card-inner">
     <ResultsCondensedCardTop
       position={position}

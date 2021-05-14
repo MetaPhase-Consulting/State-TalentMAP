@@ -19,8 +19,16 @@ const isIE = browser.satisfies({ 'internet explorer': '<=11' });
 const THROTTLE_MS = isIE ? 1000 : 0;
 
 export function renderList({ items, selected, ...rest }) {
-  const getIsSelected = item => !!selected.find(f => f.id === item.id);
-  return items.map(item => <ListItem key={item.id} item={item} {...rest} queryProp="name" getIsSelected={getIsSelected} />);
+  const getIsSelected = (item) => !!selected.find((f) => f.id === item.id);
+  return items.map((item) => (
+    <ListItem
+      key={item.id}
+      item={item}
+      {...rest}
+      queryProp="name"
+      getIsSelected={getIsSelected}
+    />
+  ));
 }
 
 class CDOAutoSuggest extends Component {
@@ -57,7 +65,8 @@ class CDOAutoSuggest extends Component {
     const { suggestions } = this.state;
     const { isLoading, hasErrored, selection, cdoSelections } = this.props; // eslint-disable-line
     return (
-      !isLoading && !hasErrored &&
+      !isLoading
+      && !hasErrored && (
         <div className="cdo-autosuggest">
           <Picky
             placeholder="Select CDOs"
@@ -77,6 +86,7 @@ class CDOAutoSuggest extends Component {
             // filterTermProcessor={trim} // import trim from lodash
           />
         </div>
+      )
     );
   }
 }
@@ -101,7 +111,7 @@ CDOAutoSuggest.defaultProps = {
   currentCDO: {},
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cdos: state.bidderPortfolioCDOs,
   isLoading: state.bidderPortfolioCDOsIsLoading,
   hasErrored: state.bidderPortfolioCDOsHasErrored,
@@ -109,7 +119,7 @@ const mapStateToProps = state => ({
   currentCDO: state.bidderPortfolioSelectedCDO,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   setCDOsToSearchBy: (arr) => {
     dispatch(bidderPortfolioSelectCDOsToSearchBy(arr));
     dispatch(unsetClientView());

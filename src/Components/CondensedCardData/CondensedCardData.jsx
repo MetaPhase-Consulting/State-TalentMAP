@@ -7,8 +7,9 @@ import CondensedCardDataPoint from './CondensedCardDataPoint';
 import { formatDate, propOrDefault } from '../../utilities';
 
 const CondensedCardData = ({ position }) => {
-  const estimatedEndDate = propOrDefault(position, 'ted') ?
-    formatDate(position.ted) : NO_DATE;
+  const estimatedEndDate = propOrDefault(position, 'ted')
+    ? formatDate(position.ted)
+    : NO_DATE;
   return (
     <div className="usa-grid-full condensed-card-data">
       <CondensedCardDataPoint
@@ -18,7 +19,12 @@ const CondensedCardData = ({ position }) => {
       />
       <CondensedCardDataPoint
         title="Skill"
-        content={<PositionSkillCodeList primarySkill={get(position, 'position.skill')} secondarySkill={get(position, 'position.skill_secondary')} />}
+        content={(
+          <PositionSkillCodeList
+            primarySkill={get(position, 'position.skill')}
+            secondarySkill={get(position, 'position.skill_secondary')}
+          />
+        )}
         hasFixedTitleWidth
       />
       <CondensedCardDataPoint
@@ -28,7 +34,12 @@ const CondensedCardData = ({ position }) => {
       />
       <CondensedCardDataPoint
         title="Language"
-        content={<LanguageList languages={get(position, 'position.languages')} propToUse="representation" />}
+        content={(
+          <LanguageList
+            languages={get(position, 'position.languages')}
+            propToUse="representation"
+          />
+        )}
         hasFixedTitleWidth
       />
     </div>

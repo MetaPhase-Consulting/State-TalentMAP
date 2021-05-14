@@ -40,8 +40,7 @@ describe('async actions', () => {
   it('parses state for shouldUseClient', () => {
     let id = 1;
     const getResult = () => actions.shouldUseClient(() => (
-      { clientView: { client: { perdet_seq_number: id } } }),
-    );
+      { clientView: { client: { perdet_seq_number: id } } }));
     expect(getResult()).toBe(true);
     id = null;
     expect(getResult()).toBe(false);
@@ -49,8 +48,7 @@ describe('async actions', () => {
 
   it('can fetch a bid list', (done) => {
     mockAdapter.onGet('/fsbid/bidlist/?ordering=draft_date').reply(200,
-      bidList,
-    );
+      bidList);
 
     const f = () => {
       setTimeout(() => {
@@ -63,8 +61,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching a bid list', (done) => {
     mockAdapter.onGet('/fsbid/bidlist/?ordering=draft_date').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -77,8 +74,7 @@ describe('async actions', () => {
 
   it('can remove a position from the bid list', (done) => {
     mockAdapter.onDelete('/fsbid/bidlist/position/1/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -91,8 +87,7 @@ describe('async actions', () => {
 
   it('can add a position to the bid list', (done) => {
     mockAdapter.onPut('/fsbid/bidlist/position/1/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -105,8 +100,7 @@ describe('async actions', () => {
 
   it('can submit a bid', (done) => {
     mockAdapter.onPut('/fsbid/bidlist/position/1/submit/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -119,8 +113,7 @@ describe('async actions', () => {
 
   it('can handle errors when submitting a bid', (done) => {
     mockAdapter.onPut('/fsbid/bidlist/position/1/submit/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -133,8 +126,7 @@ describe('async actions', () => {
 
   it('can handle errors when adding a position to the bid list', (done) => {
     mockAdapter.onPut('/fsbid/bidlist/position/1/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -147,8 +139,7 @@ describe('async actions', () => {
 
   it('can accept a bid', (done) => {
     mockAdapter.onGet('/bid/1/accept_handshake/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -161,8 +152,7 @@ describe('async actions', () => {
 
   it('can handle errors when accepting a bid', (done) => {
     mockAdapter.onGet('/bid/1/accept_handshake/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -175,8 +165,7 @@ describe('async actions', () => {
 
   it('can decline a bid', (done) => {
     mockAdapter.onGet('/bid/1/decline_handshake/').reply(204,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -189,8 +178,7 @@ describe('async actions', () => {
 
   it('can handle errors when declining a bid', (done) => {
     mockAdapter.onGet('/bid/1/decline_handshake/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -205,8 +193,7 @@ describe('async actions', () => {
     store = mockStore({ clientView: { client: { perdet_seq_number: 1 } } });
 
     mockAdapter.onGet('/fsbid/cdo/client/1/?ordering=draft_date').reply(200,
-      { results: [] },
-    );
+      { results: [] });
 
     const f = () => {
       setTimeout(() => {
@@ -221,8 +208,7 @@ describe('async actions', () => {
     store = mockStore({});
 
     mockAdapter.onGet('/fsbid/cdo/client/1/?ordering=draft_date').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -237,8 +223,7 @@ describe('async actions', () => {
     store = mockStore({ clientView: { client: { perdet_seq_number: 1 } } });
 
     mockAdapter.onDelete('/fsbid/cdo/position/1/client/2/register/').reply(200,
-      { results: [] },
-    );
+      { results: [] });
 
     const f = () => {
       setTimeout(() => {
@@ -253,8 +238,7 @@ describe('async actions', () => {
     store = mockStore({});
 
     mockAdapter.onDelete('/fsbid/cdo/position/1/client/2/register/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -269,8 +253,7 @@ describe('async actions', () => {
     store = mockStore({ clientView: { client: { perdet_seq_number: 1 } } });
 
     mockAdapter.onPut('/fsbid/cdo/position/1/client/2/register/').reply(200,
-      { results: [] },
-    );
+      { results: [] });
 
     const f = () => {
       setTimeout(() => {
@@ -285,8 +268,7 @@ describe('async actions', () => {
     store = mockStore({});
 
     mockAdapter.onPut('/fsbid/cdo/position/1/client/2/register/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

@@ -2,23 +2,35 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { get } from 'lodash';
 import ResultsCard from 'Components/ResultsCard/ResultsCard';
-import { BID_RESULTS, FAVORITE_POSITIONS_ARRAY, POSITION_SEARCH_RESULTS } from 'Constants/PropTypes';
+import {
+  BID_RESULTS,
+  FAVORITE_POSITIONS_ARRAY,
+  POSITION_SEARCH_RESULTS,
+} from 'Constants/PropTypes';
 
 export const getIsGroupEnd = (results, i) => {
   const nextIndex = i + 1;
   const nextResult = get(results, `[${nextIndex}]`);
-  const currentCommuterPost = get(results, `[${i}].position.commuterPost.description`);
+  const currentCommuterPost = get(
+    results,
+    `[${i}].position.commuterPost.description`,
+  );
   const nextCommuterPost = get(nextResult, 'position.commuterPost.description');
   const currentCity = get(results, `[${i}].position.post.location.city`);
   const nextCity = get(nextResult, 'position.post.location.city');
   let isGroupEnd = false;
-  const commuterPostsNonMatch = currentCommuterPost && nextCommuterPost &&
-    currentCommuterPost !== nextCommuterPost;
+  const commuterPostsNonMatch = currentCommuterPost
+    && nextCommuterPost
+    && currentCommuterPost !== nextCommuterPost;
   if (commuterPostsNonMatch) {
     isGroupEnd = true;
   }
-  if (commuterPostsNonMatch && currentCity &&
-    nextCity && currentCity !== nextCity) {
+  if (
+    commuterPostsNonMatch
+    && currentCity
+    && nextCity
+    && currentCity !== nextCity
+  ) {
     isGroupEnd = true;
   }
   if (!currentCommuterPost && !nextCommuterPost && currentCity !== nextCity) {
@@ -27,12 +39,22 @@ export const getIsGroupEnd = (results, i) => {
   return isGroupEnd;
 };
 
-const ResultsList = ({ results, isLoading, favorites, favoritesPV,
-  favoritesTandem, favoritesPVTandem, bidList }, { isTandemSearch, newResultsCount }) => {
+const ResultsList = (
+  {
+    results,
+    isLoading,
+    favorites,
+    favoritesPV,
+    favoritesTandem,
+    favoritesPVTandem,
+    bidList,
+  },
+  { isTandemSearch, newResultsCount },
+) => {
   const mapResults = results.results || [];
   return (
     <div className={isLoading ? 'results-loading' : null}>
-      { mapResults.map((result, i) => {
+      {mapResults.map((result, i) => {
         const key = shortid.generate();
         const useGroupEnd = getIsGroupEnd(mapResults, i) && isTandemSearch;
         const isNew = newResultsCount > i;

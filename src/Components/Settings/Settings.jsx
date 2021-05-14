@@ -16,10 +16,11 @@ class RadioList extends Component {
     const token = fetchUserToken();
     const jwt = fetchJWT();
     const json = {
-      token, jwt,
+      token,
+      jwt,
     };
     return JSON.stringify(json, undefined, 2);
-  }
+  };
 
   render() {
     const tokens = this.getTokens();
@@ -32,14 +33,13 @@ class RadioList extends Component {
         </div>
         <div className="usa-grid-full">
           <p>
-            Use this page to copy your auth tokens for troubleshooting. Click the button below to
-            copy your auth token to your clipboard. Do not share this for any reason besides
-            troubleshooting by the TalentMAP or Help Desk teams.
+            Use this page to copy your auth tokens for troubleshooting. Click
+            the button below to copy your auth token to your clipboard. Do not
+            share this for any reason besides troubleshooting by the TalentMAP
+            or Help Desk teams.
           </p>
           <pre style={{ width: 500 }}>
-            <span style={{ backgroundColor: 'white' }}>
-              {tokens}
-            </span>
+            <span style={{ backgroundColor: 'white' }}>{tokens}</span>
           </pre>
           <CopyToClipboard
             text={tokens}

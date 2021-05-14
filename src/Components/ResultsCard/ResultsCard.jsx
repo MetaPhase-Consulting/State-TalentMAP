@@ -15,23 +15,46 @@ import CompareCheck from '../CompareCheck/CompareCheck';
 import LanguageList from '../LanguageList';
 import BidCount from '../BidCount';
 import BoxShadow from '../BoxShadow';
-import { CriticalNeed, Handshake, HardToFill, ServiceNeedDifferential } from '../Ribbon';
+import {
+  CriticalNeed,
+  Handshake,
+  HardToFill,
+  ServiceNeedDifferential,
+} from '../Ribbon';
 import InBidListContainer from './InBidList';
 import HoverDescription from './HoverDescription';
 import OBCUrl from '../OBCUrl';
 import BidListButton from '../../Containers/BidListButton';
 import bannerImg from '../../assets/svg/card-flag.svg';
 
-import { formatDate, getBidStatisticsObject, getDifferentialPercentage, getPostName,
-  propOrDefault, shortenString } from '../../utilities';
-
-import { FAVORITE_POSITIONS_ARRAY, POSITION_DETAILS } from '../../Constants/PropTypes';
 import {
-  NO_BID_CYCLE, NO_BUREAU, NO_DATE, NO_GRADE,
-  NO_POSITION_NUMBER, NO_POST, NO_TOUR_OF_DUTY, NO_UPDATE_DATE, NO_USER_LISTED,
+  formatDate,
+  getBidStatisticsObject,
+  getDifferentialPercentage,
+  getPostName,
+  propOrDefault,
+  shortenString,
+} from '../../utilities';
+
+import {
+  FAVORITE_POSITIONS_ARRAY,
+  POSITION_DETAILS,
+} from '../../Constants/PropTypes';
+import {
+  NO_BID_CYCLE,
+  NO_BUREAU,
+  NO_DATE,
+  NO_GRADE,
+  NO_POSITION_NUMBER,
+  NO_POST,
+  NO_TOUR_OF_DUTY,
+  NO_UPDATE_DATE,
+  NO_USER_LISTED,
 } from '../../Constants/SystemMessages';
 
-export const getPostNameText = pos => `${getPostName(pos.post, NO_POST)}${pos.organization ? `: ${pos.organization}` : ''}`;
+export const getPostNameText = (pos) => `${getPostName(pos.post, NO_POST)}${
+  pos.organization ? `: ${pos.organization}` : ''
+}`;
 
 export const getBidStatsToUse = (result, pos) => result.bid_statistics || pos.bid_statistics;
 
@@ -46,7 +69,7 @@ export const getDifferentials = (result) => {
 export const getResult = (result, path, defaultValue, isRate = false) => {
   let value = get(result, path, defaultValue);
 
-  if ((/_date|date_|ted/i).test(path) && value !== defaultValue) {
+  if (/_date|date_|ted/i.test(path) && value !== defaultValue) {
     value = formatDate(value);
   }
 
@@ -55,7 +78,13 @@ export const getResult = (result, path, defaultValue, isRate = false) => {
 
     const OBCUrl$ = get(result, 'post.post_bidding_considerations_url');
     if (OBCUrl$) {
-      return (<span> {value$} | <OBCUrl url={OBCUrl$} type="post-data" label="View OBC Data" /></span>);
+      return (
+        <span>
+          {' '}
+          {value$} |{' '}
+          <OBCUrl url={OBCUrl$} type="post-data" label="View OBC Data" />
+        </span>
+      );
     }
 
     return value$;
@@ -72,13 +101,13 @@ export const getResult = (result, path, defaultValue, isRate = false) => {
   return value;
 };
 
-export const renderBidCount = stats => (
+export const renderBidCount = (stats) => (
   <Column columns="4">
     <BidCount bidStatistics={stats} altStyle />
   </Column>
 );
 
-export const renderBidCountMobile = stats => (
+export const renderBidCountMobile = (stats) => (
   <BidCount bidStatistics={stats} altStyle />
 );
 
@@ -119,7 +148,9 @@ class ResultsCard extends Component {
     const position = getResult(pos, 'position_number', NO_POSITION_NUMBER);
     const languages = getResult(pos, 'languages', []);
 
-    const language = (<LanguageList languages={languages} propToUse="representation" />);
+    const language = (
+      <LanguageList languages={languages} propToUse="representation" />
+    );
 
     const post = getPostNameText(pos);
     const postShort = getPostName(pos.post, NO_POST);
@@ -127,8 +158,14 @@ class ResultsCard extends Component {
     const bidStatsToUse = getBidStatsToUse(result, pos);
     const stats = getBidStatisticsObject(bidStatsToUse);
 
-    const description = shortenString(get(pos, 'description.content') || 'No description.', 750);
-    const descriptionMobile = shortenString(get(pos, 'description.content') || 'No description.', 500);
+    const description = shortenString(
+      get(pos, 'description.content') || 'No description.',
+      750,
+    );
+    const descriptionMobile = shortenString(
+      get(pos, 'description.content') || 'No description.',
+      500,
+    );
 
     const innerId = this.getInnerId();
 
@@ -142,28 +179,35 @@ class ResultsCard extends Component {
     const commuterPostFreq = get(pos, 'commuterPost.frequency');
 
     const sections = [
-    /* eslint-disable quote-props */
+      /* eslint-disable quote-props */
       {
-        'TED': getResult(result, 'ted', NO_DATE),
+        TED: getResult(result, 'ted', NO_DATE),
         [bidTypeTitle]: getResult(result, 'bidcycle.name', NO_BID_CYCLE),
-        'Skill': <PositionSkillCodeList primarySkill={get(pos, 'skill')} secondarySkill={get(pos, 'skill_secondary')} />,
-        'Grade': getResult(pos, 'grade', NO_GRADE),
-        'Bureau': getResult(pos, 'bureau', NO_BUREAU),
+        Skill: (
+          <PositionSkillCodeList
+            primarySkill={get(pos, 'skill')}
+            secondarySkill={get(pos, 'skill_secondary')}
+          />
+        ),
+        Grade: getResult(pos, 'grade', NO_GRADE),
+        Bureau: getResult(pos, 'bureau', NO_BUREAU),
       },
       {
         'Tour of duty': getResult(pos, 'post.tour_of_duty', NO_TOUR_OF_DUTY),
-        'Language': language,
+        Language: language,
         'Post differential | Danger Pay': getDifferentials(pos),
-        'Incumbent': getResult(pos, 'current_assignment.user', NO_USER_LISTED),
+        Incumbent: getResult(pos, 'current_assignment.user', NO_USER_LISTED),
       },
       {
-        'Posted': getResult(result, COMMON_PROPERTIES.posted, NO_UPDATE_DATE),
+        Posted: getResult(result, COMMON_PROPERTIES.posted, NO_UPDATE_DATE),
         'Position number': position,
       },
-    /* eslint-enable quote-props */
+      /* eslint-enable quote-props */
     ];
 
-    if (isProjectedVacancy) { delete sections[2].Posted; }
+    if (isProjectedVacancy) {
+      delete sections[2].Posted;
+    }
 
     options.favorite = {
       compareArray: [],
@@ -190,18 +234,22 @@ class ResultsCard extends Component {
       options.favorite.compareArray = favorites;
     }
 
-    const detailsLink = <Link to={`/${isProjectedVacancy ? 'vacancy' : 'details'}/${result.id}${isTandem2 ? '?tandem=true' : ''}`}>View position</Link>;
+    const detailsLink = (
+      <Link
+        to={`/${isProjectedVacancy ? 'vacancy' : 'details'}/${result.id}${
+          isTandem2 ? '?tandem=true' : ''
+        }`}
+      >
+        View position
+      </Link>
+    );
 
     const availability = get(result, 'availability.availability');
     const availableToBid = isNull(availability) || !!availability;
 
     const renderBidListButton = () => (
-      <BidListButton
-        id={result.id}
-        disabled={!availableToBid}
-      />
+      <BidListButton id={result.id} disabled={!availableToBid} />
     );
-
 
     const cardClassArray = ['results-card'];
     if (isProjectedVacancy) cardClassArray.push('results-card--secondary');
@@ -211,32 +259,41 @@ class ResultsCard extends Component {
     if (isNew) cardClassArray.push('results-card--new');
     const cardClass = cardClassArray.join(' ');
 
-    const headingTop =
-      !isTandem ?
-        (<>
-          <h3>{title}</h3>
-          {detailsLink}
-        </>)
-        :
-        (
-          <Row className="usa-grid-full commuter-header">
-            <Column columns={commuterPostFreq ? 7 : 12}><h3>Post: {postShort}</h3></Column>
-            {!!commuterPostFreq && <Column className="commute-frequency" columns={5}>Commute Frequency: {commuterPostFreq}</Column>}
-          </Row>
-        );
+    const headingTop = !isTandem ? (
+      <>
+        <h3>{title}</h3>
+        {detailsLink}
+      </>
+    ) : (
+      <Row className="usa-grid-full commuter-header">
+        <Column columns={commuterPostFreq ? 7 : 12}>
+          <h3>Post: {postShort}</h3>
+        </Column>
+        {!!commuterPostFreq && (
+          <Column className="commute-frequency" columns={5}>
+            Commute Frequency: {commuterPostFreq}
+          </Column>
+        )}
+      </Row>
+    );
 
-    const headingBottom = !isTandem ?
-      <><dt>Location:</dt><dd>{post}</dd></>
-      :
-      (<>
+    const headingBottom = !isTandem ? (
+      <>
+        <dt>Location:</dt>
+        <dd>{post}</dd>
+      </>
+    ) : (
+      <>
         <div>{title}</div>
         <div className="tandem-details-link">{detailsLink}</div>
-      </>);
+      </>
+    );
 
     return (
       <MediaQueryWrapper breakpoint="screenSmMax" widthType="max">
-        {matches => (
+        {(matches) => (
           <BoxShadow>
+            { /* eslint-disable jsx-a11y/mouse-events-have-key-events */ }
             <div
               id={id}
               style={{ position: 'relative', overflow: 'hidden' }}
@@ -244,105 +301,107 @@ class ResultsCard extends Component {
               onMouseOver={() => this.hover.toggleCardHovered(true)}
               onMouseLeave={() => this.hover.toggleCardHovered(false)}
             >
-              {
-                !!commuterPost &&
-                <img
-                  src={bannerImg}
-                  alt="banner"
-                  className="commuter-banner"
-                />
-              }
-              {
-                matches ?
-                  <Row className="header" fluid>
-                    <h3>{title}</h3>: {post}
-                    {detailsLink}
-                    {
-                      !isProjectedVacancy &&
-                      <Flag
-                        name="flags.bid_count"
-                        render={() => renderBidCountMobile(stats)}
-                      />
-                    }
-                  </Row>
-                  :
-                  <Row className="header" fluid>
-                    <Column columns="8">
-                      <Column columns="12" className="results-card-title-link">
-                        {headingTop}
-                      </Column>
-                      <Column columns="12" className="results-card-title-link">
-                        {headingBottom}
-                      </Column>
+              { /* eslint-enable jsx-a11y/mouse-events-have-key-events */ }
+              {!!commuterPost && (
+                <img src={bannerImg} alt="banner" className="commuter-banner" />
+              )}
+              {matches ? (
+                <Row className="header" fluid>
+                  <h3>{title}</h3>: {post}
+                  {detailsLink}
+                  {!isProjectedVacancy && (
+                    <Flag
+                      name="flags.bid_count"
+                      render={() => renderBidCountMobile(stats)}
+                    />
+                  )}
+                </Row>
+              ) : (
+                <Row className="header" fluid>
+                  <Column columns="8">
+                    <Column columns="12" className="results-card-title-link">
+                      {headingTop}
                     </Column>
-                    {
-                      !isProjectedVacancy &&
-                      <Flag
-                        name="flags.bid_count"
-                        render={() => renderBidCount(stats)}
-                      />
-                    }
-                  </Row>
-              }
+                    <Column columns="12" className="results-card-title-link">
+                      {headingBottom}
+                    </Column>
+                  </Column>
+                  {!isProjectedVacancy && (
+                    <Flag
+                      name="flags.bid_count"
+                      render={() => renderBidCount(stats)}
+                    />
+                  )}
+                </Row>
+              )}
               <Row id={innerId} fluid>
                 <Column columns="5">
-                  {
-                    !!isTandem &&
+                  {!!isTandem && (
                     <div className="tandem-identifier">
                       <div>{`Tandem User ${isTandem1 ? 1 : 2}`}</div>
                     </div>
-                  }
+                  )}
                   <DefinitionList items={sections[0]} />
                 </Column>
-                {
-                  !matches &&
+                {!matches && (
                   <Column columns="5">
                     <DefinitionList items={sections[1]} />
                   </Column>
-                }
+                )}
                 <Column columns="2">
                   <div className="ribbon-container">
-                    {
-                      get(stats, 'has_handshake_offered', false) && <Handshake isWideResults className="ribbon-results-card" />
-                    }
+                    {get(stats, 'has_handshake_offered', false) && (
+                      <Handshake
+                        isWideResults
+                        className="ribbon-results-card"
+                      />
+                    )}
                     {
                       <StaticDevContent>
-                        <CriticalNeed isWideResults className="ribbon-results-card" />
+                        <CriticalNeed
+                          isWideResults
+                          className="ribbon-results-card"
+                        />
                       </StaticDevContent>
                     }
-                    {
-                      get(result, 'isDifficultToStaff', false) &&
+                    {get(result, 'isDifficultToStaff', false) && (
                       <StaticDevContent>
-                        <HardToFill isWideResults className="ribbon-results-card" />
+                        <HardToFill
+                          isWideResults
+                          className="ribbon-results-card"
+                        />
                       </StaticDevContent>
-                    }
-                    {
-                      get(result, 'isServiceNeedDifferential', false) &&
+                    )}
+                    {get(result, 'isServiceNeedDifferential', false) && (
                       <StaticDevContent>
-                        <ServiceNeedDifferential isWideResults className="ribbon-results-card" />
+                        <ServiceNeedDifferential
+                          isWideResults
+                          className="ribbon-results-card"
+                        />
                       </StaticDevContent>
-                    }
+                    )}
                     {
                       // conditional rendering occurs inside the container
-                      <InBidListContainer id={result.id} isWideResults className="ribbon-results-card" />
+                      <InBidListContainer
+                        id={result.id}
+                        isWideResults
+                        className="ribbon-results-card"
+                      />
                     }
                   </div>
                 </Column>
               </Row>
               <Row className="footer results-card-padded-section" fluid>
                 <Column columns={matches ? 8 : 6} as="section">
-                  {
-                    !!favorites && !isClient &&
-                      <Favorite {...options.favorite} />
-                  }
-                  {
-                    isClient && !isProjectedVacancy &&
-                      <Flag
-                        name="flags.bidding"
-                        render={renderBidListButton}
-                      />
-                  }
-                  {!isProjectedVacancy && !isClient && <CompareCheck {...options.compare} />}
+                  {!!favorites && !isClient && (
+                    <Favorite {...options.favorite} />
+                  )}
+                  {isClient && !isProjectedVacancy && (
+                    <Flag name="flags.bidding" render={renderBidListButton} />
+                  )}
+                  {!isProjectedVacancy && !isClient && (
+                    <CompareCheck {...options.compare} />
+                  )}
                 </Column>
                 <Column columns={matches ? 4 : 6} as="section">
                   <div>
@@ -351,7 +410,9 @@ class ResultsCard extends Component {
                 </Column>
               </Row>
               <HoverDescription
-                ref={(x) => { this.hover = x; }}
+                ref={(x) => {
+                  this.hover = x;
+                }}
                 text={matches ? descriptionMobile : description}
                 getOffsetPx={this.getOffsetPx}
                 id={result.id}

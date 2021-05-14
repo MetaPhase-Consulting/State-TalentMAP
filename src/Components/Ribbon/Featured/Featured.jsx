@@ -18,13 +18,16 @@ const Featured = ({ featuredType, ...props }) => {
       text = 'Featured';
       break;
   }
-  return (
-    <Ribbon icon="bolt" text={text} type="tertiary" {...props} />
-  );
+  return <Ribbon icon="bolt" text={text} type="tertiary" {...props} />;
 };
 
 Featured.propTypes = {
-  featuredType: PropTypes.oneOf(['featured', 'volunteer', 'urgentVacancy', 'hardToFill']),
+  featuredType: PropTypes.oneOf([
+    'featured',
+    'volunteer',
+    'urgentVacancy',
+    'hardToFill',
+  ]),
 };
 
 Featured.defaultProps = {

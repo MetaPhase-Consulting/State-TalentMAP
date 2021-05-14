@@ -20,16 +20,12 @@ describe('BidTrackerCardContainerComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidTrackerCardContainer {...props} />,
-    );
+    const wrapper = shallow(<BidTrackerCardContainer {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when isPublic === true', () => {
-    const wrapper = shallow(
-      <BidTrackerCardContainer {...props} isPublic />,
-    );
+    const wrapper = shallow(<BidTrackerCardContainer {...props} isPublic />);
     expect(wrapper).toBeDefined();
   });
 
@@ -42,14 +38,22 @@ describe('BidTrackerCardContainerComponent', () => {
 
   it('matches snapshot when priorityExists is true and bid.is_priority is true', () => {
     const wrapper = shallow(
-      <BidTrackerCardContainer {...props} priorityExists bid={{ ...bid, is_priority: true }} />,
+      <BidTrackerCardContainer
+        {...props}
+        priorityExists
+        bid={{ ...bid, is_priority: true }}
+      />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when priorityExists is true and bid.is_priority is false', () => {
     const wrapper = shallow(
-      <BidTrackerCardContainer {...props} priorityExists bid={{ ...bid, is_priority: false }} />,
+      <BidTrackerCardContainer
+        {...props}
+        priorityExists
+        bid={{ ...bid, is_priority: false }}
+      />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

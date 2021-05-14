@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 
-const FieldSet = ({ legend, children, legendSrOnly, className }) => (
+const FieldSet = ({
+  legend, children, legendSrOnly, className,
+}) => (
   <fieldset className={className}>
     <legend className={legendSrOnly ? 'usa-sr-only' : null}>{legend}</legend>
     {children}

@@ -12,9 +12,7 @@ describe('GlossaryTermTriggerComponent', () => {
 
   it('is defined', () => {
     const wrapper = shallow(
-      <GlossaryTermTrigger.WrappedComponent
-        {...props}
-      />,
+      <GlossaryTermTrigger.WrappedComponent {...props} />,
     );
     expect(wrapper).toBeDefined();
   });
@@ -22,10 +20,7 @@ describe('GlossaryTermTriggerComponent', () => {
   it('calls toggle() on click', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <GlossaryTermTrigger.WrappedComponent
-        {...props}
-        toggle={spy}
-      />,
+      <GlossaryTermTrigger.WrappedComponent {...props} toggle={spy} />,
     );
     wrapper.find('InteractiveElement').simulate('click');
     sinon.assert.calledOnce(spy);

@@ -16,16 +16,18 @@ import './polyfills';
 const isPersonaAuth = () => checkFlag('flags.persona_auth');
 
 export const render = () => {
-  ReactDOM.render((
-    <App />
-  ), document.getElementById('root') || document.createElement('div'));
+  ReactDOM.render(
+    <App />,
+    document.getElementById('root') || document.createElement('div'),
+  );
 };
 
 // Because the JWT request could be slow.
 export const renderLoading = () => {
-  ReactDOM.render((
-    <Splash />
-  ), document.getElementById('root') || document.createElement('div'));
+  ReactDOM.render(
+    <Splash />,
+    document.getElementById('root') || document.createElement('div'),
+  );
 };
 
 // function to initialize app, capture feature flags in localStorage
@@ -39,7 +41,9 @@ export const init = (config) => {
   };
 
   // Only needed for local development
-  if (isPersonaAuth()) { headers.tmusrname = localStorage.getItem('tmusrname'); }
+  if (isPersonaAuth()) {
+    headers.tmusrname = localStorage.getItem('tmusrname');
+  }
 
   if (auth) {
     renderLoading();
@@ -60,7 +64,8 @@ export const getConfig = () => {
   sessionStorage.removeItem('config');
 
   // fetch config.json to get API URL
-  axios.get(getAssetPath('/config/config.json'))
+  axios
+    .get(getAssetPath('/config/config.json'))
     .then((response) => {
       const url = get(response, 'data.api_config.baseURL');
       if (url) {

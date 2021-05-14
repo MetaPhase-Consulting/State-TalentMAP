@@ -7,11 +7,8 @@ import Spinner from '../../Spinner';
 import SelectForm from '../../SelectForm';
 import { Column, Row } from '../../Layout';
 
-
 const BureauPage = (props) => {
-  const {
-    placeholderText,
-  } = props;
+  const { placeholderText } = props;
   const data = [
     { name: 'Group A', value: 400 },
     { name: 'Group B', value: 300 },
@@ -24,14 +21,25 @@ const BureauPage = (props) => {
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     // eslint-disable-next-line react/prop-types
-    cx, cy, midAngle, innerRadius, outerRadius, percent,
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
   }) => {
     const radius = (innerRadius + (outerRadius - innerRadius)) * 0.5;
-    const x = cx + (radius * Math.cos(-midAngle * RADIAN));
-    const y = cy + (radius * Math.sin(-midAngle * RADIAN));
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+      >
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
@@ -48,19 +56,38 @@ const BureauPage = (props) => {
   ];
 
   const countries = [
-    'Bahamas', 'Andorra', 'Vanuatu', 'Malawi', 'Equatorial Guinea', 'Sierra Leone', 'Mozambique',
-    'France', 'Sudan', 'Iran', 'Malta', 'Papua New Guinea', 'Congo', 'Nauru', 'Guatemala',
-    'Wallis and Futuna', 'Madagascar', 'Virgin Islands', 'Saint Pierre and Miquelon', 'Tajikistan',
-    'Trinidad and Tobago', 'Iceland', 'Italy', 'Panama', 'Lithuania'];
+    'Bahamas',
+    'Andorra',
+    'Vanuatu',
+    'Malawi',
+    'Equatorial Guinea',
+    'Sierra Leone',
+    'Mozambique',
+    'France',
+    'Sudan',
+    'Iran',
+    'Malta',
+    'Papua New Guinea',
+    'Congo',
+    'Nauru',
+    'Guatemala',
+    'Wallis and Futuna',
+    'Madagascar',
+    'Virgin Islands',
+    'Saint Pierre and Miquelon',
+    'Tajikistan',
+    'Trinidad and Tobago',
+    'Iceland',
+    'Italy',
+    'Panama',
+    'Lithuania',
+  ];
 
   return (
-    <div
-      className={'usa-grid-full profile-content-inner-container bureau-page'}
-    >
-      {
-        !placeholderText &&
-          <Spinner type="homepage-position-results" size="big" />
-      }
+    <div className="usa-grid-full profile-content-inner-container bureau-page">
+      {!placeholderText && (
+        <Spinner type="homepage-position-results" size="big" />
+      )}
       <div className="usa-grid-full">
         <ProfileSectionTitle title="Bureau Dashboard" icon="tachometer" />
       </div>
@@ -74,7 +101,7 @@ const BureauPage = (props) => {
                 id="bid-cycle"
                 options={bidCycles}
                 label="Bid Cycle"
-              // onSelectOption={myFunction}
+                // onSelectOption={myFunction}
               />
             </div>
             <div className="usa-width-one-whole">
@@ -91,8 +118,12 @@ const BureauPage = (props) => {
                     dataKey="value"
                   >
                     {
-                      // eslint-disable-next-line react/no-array-index-key
-                      data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                      data.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`} // eslint-disable-line react/no-array-index-key
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))
                     }
                   </Pie>
                 </PieChart>
@@ -100,11 +131,14 @@ const BureauPage = (props) => {
               </div>
               <div className="usa-width-three-fourths">
                 <div className="mainSelector">
-                  <FA name={'dot-circle-o'} />
+                  <FA name="dot-circle-o" />
                   <span>WHA (All positions)</span>
                 </div>
                 {countries.map((m) => {
-                  const isSelected = includes(['Nauru', 'Malawi', 'Sudan', 'Guatemala', 'Italy'], m);
+                  const isSelected = includes(
+                    ['Nauru', 'Malawi', 'Sudan', 'Guatemala', 'Italy'],
+                    m,
+                  );
                   return (
                     <Column columns={2}>
                       <FA name={isSelected ? 'dot-circle-o' : 'circle-o'} />

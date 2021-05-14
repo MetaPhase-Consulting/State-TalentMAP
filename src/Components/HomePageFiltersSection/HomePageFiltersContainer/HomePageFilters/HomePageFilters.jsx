@@ -2,18 +2,26 @@ import PropTypes from 'prop-types';
 import SkillCodeFilter from '../../SkillCodeFilter';
 import Form from '../../../Form';
 import FieldSet from '../../../FieldSet/FieldSet';
-import { FILTER_ITEMS_ARRAY, USER_SKILL_CODE_ARRAY } from '../../../../Constants/PropTypes';
+import {
+  FILTER_ITEMS_ARRAY,
+  USER_SKILL_CODE_ARRAY,
+} from '../../../../Constants/PropTypes';
 
-const HomePageFiltersSection = ({ filters, submitSearch, onFilterSelect, isLoading,
-  userSkills }) => {
-  const skillCodes = filters.find(f => f.item && f.item.description === 'skill');
+const HomePageFiltersSection = ({
+  filters,
+  submitSearch,
+  onFilterSelect,
+  isLoading,
+  userSkills,
+}) => {
+  const skillCodes = filters.find(
+    (f) => f.item && f.item.description === 'skill',
+  );
   const skillCodesData = skillCodes ? skillCodes.data : [];
   return (
     <div className="usa-grid-full">
       <Form className="usa-grid-full" onFormSubmit={submitSearch}>
-        <FieldSet
-          legend="Search by Skill"
-        >
+        <FieldSet legend="Search by Skill">
           <SkillCodeFilter
             filters={skillCodesData}
             onFilterSelect={onFilterSelect}

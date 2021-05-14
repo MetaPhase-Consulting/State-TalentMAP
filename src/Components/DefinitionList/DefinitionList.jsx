@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
-import { isArray, isPlainObject, keys, map, merge, omit } from 'lodash';
+import {
+  isArray, isPlainObject, keys, map, merge, omit,
+} from 'lodash';
 import Definition from './Definition/Definition';
 
 const defaults = {
@@ -13,7 +15,7 @@ const defaults = {
 const DefinitionList = ({ truncate = true, itemProps, ...props }) => {
   const options = omit(props, keys(defaults));
   const children = !isArray(props.children) ? [props.children] : props.children;
-  let items = props.items;
+  let { items } = props;
 
   // Transform prop type objects
   if (isPlainObject(items)) {
@@ -25,17 +27,17 @@ const DefinitionList = ({ truncate = true, itemProps, ...props }) => {
     }));
   }
 
-  options.className = options.className ? `definitions ${options.className}` : 'definitions';
+  options.className = options.className
+    ? `definitions ${options.className}`
+    : 'definitions';
 
   return (
     <dl {...options}>
-      {
-        children.length ?
-          children :
-          items.map(item => (
-            <Definition key={shortid.generate()} {...item} />
-          ))
-      }
+      {children.length
+        ? children
+        : items.map((item) => (
+          <Definition key={shortid.generate()} {...item} />
+        ))}
     </dl>
   );
 };
@@ -62,10 +64,7 @@ DefinitionList.propTypes = {
   itemProps: PropTypes.shape({}),
 
   /** Takes precedence over `items` if both props are used. */
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(node),
-    node,
-  ]),
+  children: PropTypes.oneOfType([PropTypes.arrayOf(node), node]),
 
   truncate: PropTypes.bool,
 };

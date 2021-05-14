@@ -61,15 +61,13 @@ export const ADD_FAVORITE_TITLE = 'Favorite Added';
 export const DELETE_FAVORITE_TITLE = 'Favorite Removed';
 export const ERROR_FAVORITE_TITLE = 'Favorite Error';
 export const DELETE_FAVORITE_SUCCESS = (pos, onToggle) => RemoveSuccess({ pos, onToggle });
-export const DELETE_FAVORITE_ERROR = () => "We're experiencing an error attempting to remove this position from your Favorites. Please try again.";
+export const DELETE_FAVORITE_ERROR = () => "We're experiencing an error attempting to remove this position from your Favorites. Please try again."; // eslint-disable-line max-len
 export const ADD_FAVORITE_SUCCESS = pos => FavoriteSuccess({ pos });
 export const ADD_FAVORITE_ERROR = () => "We're experiencing an error attempting to add this position to your Favorites. Please try again.";
 export const ADD_FAVORITE_LIMIT_ERROR_AP = limit => `You have reached the limit of ${limit} for Open Position favorites. Please remove a favorite and try again.`;
 export const ADD_FAVORITE_LIMIT_ERROR_PV = limit => `You have reached the limit of ${limit} for Projected Vacancy favorites. Please remove a favorite and try again.`;
 export const TANDEM_FAVORITE_MISSING = () => 'Please add at least 1 favorite for both user and tandem within tandem search.';
-export const GENERIC_SUCCESS =
-  (messageBefore, link, messageAfter) =>
-    GenericSuccessToast({ messageBefore, link, messageAfter });
+export const GENERIC_SUCCESS = (messageBefore, link, messageAfter) => GenericSuccessToast({ messageBefore, link, messageAfter });
 
 export const ACCEPT_BID_SUCCESS = 'Bid successfully accepted.';
 export const ACCEPT_BID_ERROR = 'Error trying to accept this bid.';
@@ -87,7 +85,6 @@ export const NEW_SAVED_SEARCH_SUCCESS_TITLE = 'Success';
 export const UPDATED_SAVED_SEARCH_SUCCESS_TITLE = 'Saved search updated';
 export const DELETE_SAVED_SEARCH_SUCCESS_TITLE = 'Success';
 export const DELETE_SAVED_SEARCH_ERROR_TITLE = 'Saved search error';
-
 
 export const NEW_SAVED_SEARCH_SUCCESS = name => SavedSearchSuccess({ name });
 export const UPDATED_SAVED_SEARCH_SUCCESS = name => SavedSearchSuccess({ name, isUpdated: true });
@@ -109,7 +106,6 @@ export const UNSET_CLIENT_SUCCESS_MESSAGE = 'You have exited client view.';
 export const POST_FEATURE_FLAGS_SUCCESS = 'Config File successfully updated.';
 export const POST_FEATURE_FLAGS_ERROR = 'Error updating Config File. Please try again.';
 
-
 export const ADD_TO_INTERNAL_LIST_SUCCESS_TITLE = 'Client Added';
 export const ADD_TO_INTERNAL_LIST_SUCCESS = 'Client Added to Internal List';
 
@@ -123,15 +119,13 @@ export const UPDATE_AVAILABLE_BIDDER_ERROR = 'Error updating Available Bidder in
 
 export const INTERNAL_LIST_ERROR_TITLE = 'Internal list Error';
 export const ADD_TO_INTERNAL_LIST_ERROR = "We're experiencing an error attempting to add this client to the Internal list. Please try again.";
-export const REMOVE_FROM_INTERNAL_LIST_ERROR = "We're experiencing an error attempting to remove this client from the Internal list. Please try again.";
+export const REMOVE_FROM_INTERNAL_LIST_ERROR = "We're experiencing an error attempting to remove this client from the Internal list. Please try again."; // eslint-disable-line max-len
 
 export const HANDSHAKE_OFFERED_TITLE = 'Handshake Offered!';
-export const HANDSHAKE_OFFERED_BODY = ({ name, message }) =>
-  HandshakeOffered({ name, message });
+export const HANDSHAKE_OFFERED_BODY = ({ name, message }) => HandshakeOffered({ name, message });
 
 export const HANDSHAKE_ACCEPTED_TITLE = 'Handshake Accepted!';
-export const HANDSHAKE_ACCEPTED_BODY = ({ name, position, bid }) =>
-  HandshakeAccepted({ name, position, bid });
+export const HANDSHAKE_ACCEPTED_BODY = ({ name, position, bid }) => HandshakeAccepted({ name, position, bid });
 
 export const COMING_SOON = 'Coming Soon';
 

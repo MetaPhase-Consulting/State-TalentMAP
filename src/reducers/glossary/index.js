@@ -1,7 +1,9 @@
-import { glossary, glossaryEditor, glossaryEditorHasErrored,
+import {
+  glossary, glossaryEditor, glossaryEditorHasErrored,
   glossaryEditorIsLoading, glossaryHasErrored, glossaryIsLoading, glossaryPatchHasErrored,
   glossaryPatchIsLoading, glossaryPatchSuccess, glossaryPostHasErrored,
-  glossaryPostIsLoading, glossaryPostSuccess } from './glossary';
+  glossaryPostIsLoading, glossaryPostSuccess,
+} from './glossary';
 
 export default {
   glossary,

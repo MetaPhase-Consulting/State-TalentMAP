@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
-import { EMPTY_FUNCTION, PROFILE_MENU_SECTION_EXPANDED, ROUTER_LOCATION_OBJECT } from '../../../Constants/PropTypes';
+import {
+  EMPTY_FUNCTION,
+  PROFILE_MENU_SECTION_EXPANDED,
+  ROUTER_LOCATION_OBJECT,
+} from '../../../Constants/PropTypes';
 import isCurrentPath, { checkIfChildrenMatchPath } from '../navigation';
 import InteractiveElement from '../../InteractiveElement';
 import { propOrDefault } from '../../../utilities';
@@ -20,15 +24,27 @@ class NavLink extends Component {
     this.shouldExpandIfChildActive();
   }
 
+  // toggles visibility of grouped children links
+  toggleNestedLinksVisibility = () => {
+    const { children, toggleMenuSection, title } = this.props;
+    if (children) {
+      const { showNestedLinks } = this.state;
+      showNestedLinks.value = !showNestedLinks.value;
+      this.setState({ showNestedLinks });
+      toggleMenuSection({ title, display: showNestedLinks.value });
+    }
+  };
+
   // Checks if any of the children links match the current path.
   // If so, we'll toggle the visibility to true
   shouldExpandIfChildActive() {
     const { children, expandedSection, title } = this.props;
-    const pathname = this.props.location.pathname;
+    const { pathname } = this.props.location;
     // If there's multiple children, do any of them match the current pathname?
     const childrenMatchPath = checkIfChildrenMatchPath(children, pathname);
     // If there's only one child, does it match the current path?
-    const childIsCurrentPath = propOrDefault(children, 'props.link') && isCurrentPath(pathname, children.props.link);
+    const childIsCurrentPath = propOrDefault(children, 'props.link')
+      && isCurrentPath(pathname, children.props.link);
     // If the title matches the expandedSection title, check the display boolean
     // on whether or not to expand this section.
     const expandedExistsAndTitleMatches = expandedSection && expandedSection.title === title;
@@ -37,7 +53,9 @@ class NavLink extends Component {
     if (childIsCurrentPath) {
       found = true;
     }
-    if (expandedExistsAndTitleMatches) { found = expandedSection.display; }
+    if (expandedExistsAndTitleMatches) {
+      found = expandedSection.display;
+    }
     // if the child or one of the children match, set showNestedLinks to true
     if (found) {
       this.setState({ showNestedLinks: { value: true } });
@@ -49,14 +67,22 @@ class NavLink extends Component {
   // elements with children and no link become a clickable, expandable list with its children.
   // If neither criteria is met, we simply return the unwrapped element.
   wrapInLink(element) {
-    const { link, search, children, iconName } = this.props;
+    const {
+      link, search, children, iconName,
+    } = this.props;
     const iconClass = iconName ? 'icon-padding' : '';
     // If there's no link prop, then we don't want to wrap the element in a <Link>
     if (link.length) {
       return (
-        <Link to={{ pathname: link, search }} className={iconName ? 'icon-padding' : ''}>{element}</Link>
+        <Link
+          to={{ pathname: link, search }}
+          className={iconName ? 'icon-padding' : ''}
+        >
+          {element}
+        </Link>
       );
-    } else if (children) {
+    }
+    if (children) {
       // Else, this must be a grouping of children, so we'll wrap it accordingly.
       return (
         <InteractiveElement
@@ -73,57 +99,48 @@ class NavLink extends Component {
     return element;
   }
 
-  // toggles visibility of grouped children links
-  toggleNestedLinksVisibility = () => {
-    const { children, toggleMenuSection, title } = this.props;
-    if (children) {
-      const { showNestedLinks } = this.state;
-      showNestedLinks.value = !showNestedLinks.value;
-      this.setState({ showNestedLinks });
-      toggleMenuSection({ title, display: showNestedLinks.value });
-    }
-  };
-
   render() {
-    const { title, iconName, children, link, hidden } = this.props;
+    const {
+      title, iconName, children, link, hidden,
+    } = this.props;
     const isHighlighted = isCurrentPath(this.props.location.pathname, link);
     const { showNestedLinks } = this.state;
     return (
       <div>
-        {
-          !hidden &&
-          <li className={`usa-grid-full ${children ? 'expandable-link' : ''} ${isHighlighted ? 'link-highlighted' : 'link-unhighlighted'}`}>
+        {!hidden && (
+          <li
+            className={`usa-grid-full ${children ? 'expandable-link' : ''} ${
+              isHighlighted ? 'link-highlighted' : 'link-unhighlighted'
+            }`}
+          >
             <div className="list-item-wrapper">
-              {
-                this.wrapInLink( // wrap our element
-                  <span>
-                    {
-                      <span className="fa-container">
-                        {iconName ? <FontAwesome name={iconName} /> : null}
-                      </span>
-                    }
-                    <span className="title-container">
-                      {title}
+              {this.wrapInLink(
+                // wrap our element
+                <span>
+                  <span className="fa-container">
+                    {iconName ? <FontAwesome name={iconName} /> : null}
+                  </span>
+                  <span className="title-container">{title}</span>
+                  {!!children && ( // if there are children, pass an angle-down/angle-right icon
+                    <span className="fa-container angle-container">
+                      <FontAwesome
+                        name={
+                          showNestedLinks.value ? 'angle-down' : 'angle-right'
+                        }
+                      />
                     </span>
-                    {
-                      !!children && // if there are children, pass an angle-down/angle-right icon
-                      <span className="fa-container angle-container">
-                        <FontAwesome name={showNestedLinks.value ? 'angle-down' : 'angle-right'} />
-                      </span>
-                    }
-                  </span>,
-                )
-              }
+                  )}
+                </span>,
+              )}
             </div>
             {
               // if the group was clicked and children exist, show the children
-              showNestedLinks.value &&
-              <ul className="children-ul">
-                {children}
-              </ul>
+              showNestedLinks.value && (
+                <ul className="children-ul">{children}</ul>
+              )
             }
           </li>
-        }
+        )}
       </div>
     );
   }

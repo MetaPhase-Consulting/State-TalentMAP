@@ -1,4 +1,6 @@
-import { findIndex, findLastIndex, get, isEqual, last, startsWith } from 'lodash';
+import {
+  findIndex, findLastIndex, get, isEqual, last, startsWith,
+} from 'lodash';
 
 // map paths to readable link text
 export function mapRoutesToNames(route) {

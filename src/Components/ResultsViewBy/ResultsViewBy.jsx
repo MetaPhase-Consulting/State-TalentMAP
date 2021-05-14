@@ -29,18 +29,29 @@ class ResultsViewBy extends Component {
     }
     return 'is-not-selected';
   }
+
   render() {
     return (
       <div className="results-viewby-container">
         <div className="view-label">View:</div>
         <div className={`view-icon ${this.isSelected('card')}`}>
-          <button className="unstyled-button" id="select-card" onClick={this.selectCard}>
+          <button
+            className="unstyled-button"
+            id="select-card"
+            onClick={this.selectCard}
+          >
             <span className="usa-sr-only">Card view</span>
             <FontAwesome name="th" />
           </button>
         </div>
-        <div className={`view-icon view-icon-border ${this.isSelected('grid')}`}>
-          <button className="unstyled-button" id="select-grid" onClick={this.selectGrid}>
+        <div
+          className={`view-icon view-icon-border ${this.isSelected('grid')}`}
+        >
+          <button
+            className="unstyled-button"
+            id="select-grid"
+            onClick={this.selectGrid}
+          >
             <span className="usa-sr-only">Grid view</span>
             <FontAwesome name="th-list" />
           </button>

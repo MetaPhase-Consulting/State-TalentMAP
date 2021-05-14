@@ -12,7 +12,7 @@ class Toggle extends Component {
     };
   }
 
-  onSelect = e => {
+  onSelect = (e) => {
     const { onChange } = this.props;
     const val = get(e, 'target.value');
     if (val) {
@@ -22,15 +22,15 @@ class Toggle extends Component {
     }
   };
 
+  isSelected = (v) => {
+    const { val } = this.state;
+    return v === val;
+  };
+
   // used by consumer components as ref
   updateVal(val) {
     this.setState({ val });
   }
-
-  isSelected = v => {
-    const { val } = this.state;
-    return v === val;
-  };
 
   render() {
     const { items } = this.props;
@@ -41,30 +41,33 @@ class Toggle extends Component {
           const addTooltip = !isNil(m.tooltip);
           let renderedContent;
           if (!addTooltip) {
-            renderedContent = (<button
-              key={m.value}
-              value={m.value}
-              onClick={this.onSelect}
-              className={`toggle-button ${isSelected ? 'toggle-button--selected' : ''} ${m.toggleClass}`}
-            >
-              {m.label}
-            </button>);
+            renderedContent = (
+              <button
+                key={m.value}
+                value={m.value}
+                onClick={this.onSelect}
+                className={`toggle-button ${
+                  isSelected ? 'toggle-button--selected' : ''
+                } ${m.toggleClass}`}
+              >
+                {m.label}
+              </button>
+            );
           } else {
             renderedContent = (
-              <Tooltip
-                title={m.tooltip}
-                arrow
-                offset={-50}
-                tabIndex="0"
-              >
+              <Tooltip title={m.tooltip} arrow offset={-50} tabIndex="0">
                 <button
                   key={m.value}
                   value={m.value}
                   onClick={this.onSelect}
-                  className={`toggle-button ${isSelected ? 'toggle-button--selected' : ''} ${m.toggleClass}`}
-                >{m.label}
+                  className={`toggle-button ${
+                    isSelected ? 'toggle-button--selected' : ''
+                  } ${m.toggleClass}`}
+                >
+                  {m.label}
                 </button>
-              </Tooltip>);
+              </Tooltip>
+            );
           }
 
           return renderedContent;
@@ -75,10 +78,12 @@ class Toggle extends Component {
 }
 
 Toggle.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  })).isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
+  ).isRequired,
   initialIndex: PropTypes.number,
   onChange: PropTypes.func,
 };

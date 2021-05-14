@@ -1,47 +1,56 @@
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
-import { APPROVED, CLOSED, DECLINED, DRAFT, HAND_SHAKE_ACCEPTED,
-  HAND_SHAKE_DECLINED, HAND_SHAKE_OFFERED, IN_PANEL, SUBMITTED } from '../../../Constants/BidStatuses';
+import {
+  APPROVED,
+  CLOSED,
+  DECLINED,
+  DRAFT,
+  HAND_SHAKE_ACCEPTED,
+  HAND_SHAKE_DECLINED,
+  HAND_SHAKE_OFFERED,
+  IN_PANEL,
+  SUBMITTED,
+} from '../../../Constants/BidStatuses';
 
 const BidStatus = ({ status, positionTitle }) => {
-  let icon;
+  let icon = 'blah';
   let text;
   switch (status) {
     case APPROVED.property:
       icon = 'check';
-      text = APPROVED.text;
+      ({ text } = APPROVED);
       break;
     case CLOSED.property:
       icon = 'times-circle-o';
-      text = CLOSED.text;
+      ({ text } = CLOSED);
       break;
     case DRAFT.property:
       icon = 'bookmark';
-      text = DRAFT.text;
+      ({ text } = DRAFT);
       break;
     case DECLINED.property:
       icon = 'times';
-      text = DECLINED.text;
+      ({ text } = DECLINED);
       break;
     case HAND_SHAKE_ACCEPTED.property:
       icon = 'handshake-o';
-      text = HAND_SHAKE_ACCEPTED.text;
+      ({ text } = HAND_SHAKE_ACCEPTED);
       break;
     case HAND_SHAKE_DECLINED.property:
       icon = 'times';
-      text = HAND_SHAKE_DECLINED.text;
+      ({ text } = HAND_SHAKE_DECLINED);
       break;
     case HAND_SHAKE_OFFERED.property:
       icon = 'star';
-      text = HAND_SHAKE_OFFERED.text;
+      ({ text } = HAND_SHAKE_OFFERED);
       break;
     case IN_PANEL.property:
       icon = 'clock-o';
-      text = IN_PANEL.text;
+      ({ text } = IN_PANEL);
       break;
     case SUBMITTED.property:
       icon = 'thumbs-o-up';
-      text = SUBMITTED.text;
+      ({ text } = SUBMITTED);
       break;
     default:
       icon = 'question';
@@ -58,6 +67,5 @@ BidStatus.propTypes = {
   status: PropTypes.string.isRequired,
   positionTitle: PropTypes.string.isRequired,
 };
-
 
 export default BidStatus;

@@ -10,32 +10,52 @@ import TotalResults from '../TotalResults';
 import NotificationRow from './NotificationRow';
 import SelectForm from '../SelectForm';
 
-const Notifications = ({ notifications, isLoading, hasErrored, deleteOne, page, pageSize,
-  onPageChange, onCheck, getCheckedValue, selectAll, markNotificationsByType }) => {
+const Notifications = ({
+  notifications,
+  isLoading,
+  hasErrored,
+  deleteOne,
+  page,
+  pageSize,
+  onPageChange,
+  onCheck,
+  getCheckedValue,
+  selectAll,
+  markNotificationsByType,
+}) => {
   const results = get(notifications, 'results', []);
   return (
-    <div className={`usa-grid-full favorite-positions-container notifications-page profile-content-inner-container ${isLoading ? 'results-loading' : ''}`}>
+    <div
+      className={`usa-grid-full favorite-positions-container notifications-page profile-content-inner-container ${
+        isLoading ? 'results-loading' : ''
+      }`}
+    >
       <div className="usa-grid-full favorites-top-section">
         <div className="favorites-title-container">
           <ProfileSectionTitle title="Notifications" icon="globe" />
         </div>
       </div>
-      {
-        isLoading && !hasErrored &&
-          <Spinner type="homepage-position-results" size="big" />
-      }
-      {
-        !isLoading && !results.length &&
-          <div>No notifications</div>
-      }
-      {
-        !isLoading && !hasErrored && !!results.length &&
+      {isLoading && !hasErrored && (
+        <Spinner type="homepage-position-results" size="big" />
+      )}
+      {!isLoading && !results.length && <div>No notifications</div>}
+      {!isLoading && !hasErrored && !!results.length && (
         <div>
           <Column className="total-results-container">
-            <TotalResults total={notifications.count} pageNumber={page} pageSize={pageSize} suffix="notifications" />
+            <TotalResults
+              total={notifications.count}
+              pageNumber={page}
+              pageSize={pageSize}
+              suffix="notifications"
+            />
           </Column>
           <Column className="total-results-container notifications-controls-container">
-            <div><button onClick={selectAll}><FA name="check-square-o" />Select all</button></div>
+            <div>
+              <button onClick={selectAll}>
+                <FA name="check-square-o" />
+                Select all
+              </button>
+            </div>
             <div className="results-dropdown results-dropdown-sort">
               <SelectForm
                 id="mark-notification-dropdown"
@@ -46,7 +66,7 @@ const Notifications = ({ notifications, isLoading, hasErrored, deleteOne, page, 
                   { value: 'unread', text: 'Mark as unread' },
                   { value: 'delete', text: 'Delete' },
                 ]}
-                onSelectOption={e => markNotificationsByType(e.target.value)}
+                onSelectOption={(e) => markNotificationsByType(e.target.value)}
               />
             </div>
           </Column>
@@ -80,7 +100,7 @@ const Notifications = ({ notifications, isLoading, hasErrored, deleteOne, page, 
             </div>
           </Column>
         </div>
-      }
+      )}
     </div>
   );
 };

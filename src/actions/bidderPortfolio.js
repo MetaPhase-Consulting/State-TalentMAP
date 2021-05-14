@@ -1,6 +1,8 @@
 import { batch } from 'react-redux';
 import { stringify } from 'query-string';
-import { find, get, includes, isArray, join, omit, replace } from 'lodash';
+import {
+  find, get, includes, isArray, join, omit, replace,
+} from 'lodash';
 import { CancelToken } from 'axios';
 import { downloadFromResponse } from 'utilities';
 import { BID_PORTFOLIO_SORTS } from 'Constants/Sort';

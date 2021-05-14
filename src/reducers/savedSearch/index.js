@@ -1,11 +1,14 @@
-import { cloneSavedSearchHasErrored, cloneSavedSearchIsLoading,
+import {
+  cloneSavedSearchHasErrored, cloneSavedSearchIsLoading,
   cloneSavedSearchSuccess, currentSavedSearch, currentSearch,
   deleteSavedSearchHasErrored, deleteSavedSearchIsLoading,
   deleteSavedSearchSuccess, newSavedSearchHasErrored, newSavedSearchIsSaving,
   newSavedSearchSuccess, savedSearchesHasErrored, savedSearchesIsLoading,
-  savedSearchesSuccess, viewSavedSearchDialog } from './savedSearch';
+  savedSearchesSuccess, viewSavedSearchDialog,
+} from './savedSearch';
 
-export default { newSavedSearchIsSaving,
+export default {
+  newSavedSearchIsSaving,
   newSavedSearchHasErrored,
   newSavedSearchSuccess,
   currentSavedSearch,
@@ -19,4 +22,5 @@ export default { newSavedSearchIsSaving,
   cloneSavedSearchHasErrored,
   cloneSavedSearchSuccess,
   viewSavedSearchDialog,
-  currentSearch };
+  currentSearch,
+};

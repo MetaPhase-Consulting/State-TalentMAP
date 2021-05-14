@@ -107,7 +107,8 @@ describe('ResultsCondensedCardBottomComponent', () => {
         favoritesPV={favoritesPV}
         favoritesTandem={favoritesTandem}
         favoritesPVTandem={favoritesPVTandem}
-      />, { context: { isClient: true } },
+      />,
+      { context: { isClient: true } },
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

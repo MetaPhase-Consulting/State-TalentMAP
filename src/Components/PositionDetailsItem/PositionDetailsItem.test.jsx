@@ -20,23 +20,23 @@ describe('PositionDetailsItem', () => {
   });
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <PositionDetailsItem {...props} />,
-    );
+    const wrapper = shallow(<PositionDetailsItem {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when posted date is null', () => {
     const details$ = { ...props.details };
     details$.position[COMMON_PROPERTIES.posted] = null;
-    const wrapper = shallow(
-      <PositionDetailsItem {...props} />,
-    );
+    const wrapper = shallow(<PositionDetailsItem {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('handles different props and different position objects', () => {
-    const details = Object.assign(detailsObject, { languages: [], post: null, is_overseas: false });
+    const details = Object.assign(detailsObject, {
+      languages: [],
+      post: null,
+      is_overseas: false,
+    });
 
     const wrapper = shallow(
       <PositionDetailsItem {...props} details={details} />,
@@ -45,8 +45,12 @@ describe('PositionDetailsItem', () => {
   });
 
   it('handles different types of position objects', () => {
-    const details = Object.assign(detailsObject,
-      { languages: [], is_overseas: true, organization: null, bureau: null });
+    const details = Object.assign(detailsObject, {
+      languages: [],
+      is_overseas: true,
+      organization: null,
+      bureau: null,
+    });
 
     const wrapper = shallow(
       <PositionDetailsItem {...props} details={details} />,
@@ -55,9 +59,7 @@ describe('PositionDetailsItem', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <PositionDetailsItem {...props} />,
-    );
+    const wrapper = shallow(<PositionDetailsItem {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

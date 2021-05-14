@@ -9,16 +9,12 @@ describe('HomePageFiltersSectionComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <HomePageFiltersSection {...props} />,
-    );
+    const wrapper = shallow(<HomePageFiltersSection {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <HomePageFiltersSection {...props} />,
-    );
+    const wrapper = shallow(<HomePageFiltersSection {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

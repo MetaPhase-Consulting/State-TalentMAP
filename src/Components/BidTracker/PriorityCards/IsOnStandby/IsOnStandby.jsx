@@ -13,15 +13,19 @@ const IsOnStandby = ({ bid, deleteBid }) => {
   return (
     <div
       className={`usa-grid-full bid-tracker
-        bid-tracker-standby-container ${useDisabledClass && 'standby-container-disabled'}`}
+        bid-tracker-standby-container ${
+          useDisabledClass && 'standby-container-disabled'
+        }`}
     >
       <div className="padded-container-inner bid-tracker-standby-title">
         <div className="bid-tracker-standby-inner-container">
           <div className="bid-tracker-standby-title-top">
-            { useDisabledClass && <FontAwesome name="check-circle-o" /> }
+            {useDisabledClass && <FontAwesome name="check-circle-o" />}
             {bidStatus}
           </div>
-          { !useDisabledClass && <div className="bid-tracker-standby-title-bottom">(on-hold)</div> }
+          {!useDisabledClass && (
+            <div className="bid-tracker-standby-title-bottom">(on-hold)</div>
+          )}
         </div>
       </div>
       <div className="bid-tracker-standby-content-container">

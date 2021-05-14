@@ -13,18 +13,20 @@ const mockStore = configureStore(middlewares);
 
 describe('FeedbackButton', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <FeedbackButton />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <FeedbackButton />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('can call the toggleVisibility function', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <FeedbackButton.WrappedComponent
-        toggleFeedbackVisibility={spy}
-      />,
+      <FeedbackButton.WrappedComponent toggleFeedbackVisibility={spy} />,
     );
     wrapper.instance().toggleVisibility();
     sinon.assert.calledOnce(spy);

@@ -2,7 +2,12 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
-import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
+import {
+  NO_GRADE,
+  NO_LANGUAGE,
+  NO_POST,
+  NO_TOUR_END_DATE,
+} from 'Constants/SystemMessages';
 import { formatDate } from 'utilities';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from '../../../Constants/PropTypes';
 import SkillCodeList from '../../SkillCodeList';
@@ -28,26 +33,33 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
       <div>
         <div>
           <div className="stat-card-data-point">
-            <dt>Employee ID:</dt><dd>{id}</dd>
+            <dt>Employee ID:</dt>
+            <dd>{id}</dd>
           </div>
           <div className="stat-card-data-point">
-            <dt>Skill:</dt><dd><SkillCodeList skillCodes={userProfile.skills} /></dd>
+            <dt>Skill:</dt>
+            <dd>
+              <SkillCodeList skillCodes={userProfile.skills} />
+            </dd>
           </div>
           <div className="stat-card-data-point">
-            <dt>Grade:</dt><dd>{userProfile.grade || NO_GRADE}</dd>
+            <dt>Grade:</dt>
+            <dd>{userProfile.grade || NO_GRADE}</dd>
           </div>
           <div className="stat-card-data-point">
-            <dt>Languages:</dt><dd>{languages || NO_LANGUAGE}</dd>
+            <dt>Languages:</dt>
+            <dd>{languages || NO_LANGUAGE}</dd>
           </div>
           <div className="stat-card-data-point">
-            <dt>TED:</dt><dd>{ted || NO_TOUR_END_DATE}</dd>
+            <dt>TED:</dt>
+            <dd>{ted || NO_TOUR_END_DATE}</dd>
           </div>
           <div className="stat-card-data-point">
-            <dt>Location:</dt><dd>{currentAssignmentText || NO_POST}</dd>
+            <dt>Location:</dt>
+            <dd>{currentAssignmentText || NO_POST}</dd>
           </div>
         </div>
-        {
-          !showEdit &&
+        {!showEdit && (
           <div className="bidder-portfolio-stat-row-updates">
             <h4>Classifications: </h4>
             <ClientBadgeList
@@ -55,17 +67,13 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
               classifications={classifications}
             />
           </div>
-        }
-        {
-          !showEdit && useCDOBidding() &&
+        )}
+        {!showEdit && useCDOBidding() && (
           <div className="button-container">
             <SearchAsClientButton user={userProfile} />
           </div>
-        }
-        {
-          showEdit &&
-          <CheckboxList id={userProfile.id} />
-        }
+        )}
+        {showEdit && <CheckboxList id={userProfile.id} />}
       </div>
     </div>
   );

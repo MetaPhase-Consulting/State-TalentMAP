@@ -3,10 +3,23 @@ import Picky from 'react-picky';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import bowser from 'bowser';
-import { every, filter, flatMap, includes, indexOf, isArray, isObject, map, throttle } from 'lodash';
+import {
+  every,
+  filter,
+  flatMap,
+  includes,
+  indexOf,
+  isArray,
+  isObject,
+  map,
+  throttle,
+} from 'lodash';
 import { format } from 'date-fns';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
-import { bidderPortfolioSeasonsFetchData, bidderPortfolioSetSeasons } from 'actions/bidderPortfolio';
+import {
+  bidderPortfolioSeasonsFetchData,
+  bidderPortfolioSetSeasons,
+} from 'actions/bidderPortfolio';
 import ListItem from './ListItem';
 
 // TODO - Running into an issue where the label/span element is also
@@ -18,9 +31,11 @@ const isIE = browser.satisfies({ 'internet explorer': '<=11' });
 const THROTTLE_MS = isIE ? 1000 : 0;
 
 export function renderList({ items, selected, ...rest }) {
-  const selected$ = every(selected, isObject) ? flatMap(selected, a => a.description) : selected;
-  const getIsSelected = item => selected$.includes(item);
-  return items.map(item => {
+  const selected$ = every(selected, isObject)
+    ? flatMap(selected, (a) => a.description)
+    : selected;
+  const getIsSelected = (item) => selected$.includes(item);
+  return items.map((item) => {
     const props = {
       ...rest,
       getIsSelected,
@@ -41,9 +56,7 @@ export function renderList({ items, selected, ...rest }) {
       );
       props.customLabel = label;
     }
-    return (
-      <ListItem {...props} />
-    );
+    return <ListItem {...props} />;
   });
 }
 
@@ -61,51 +74,59 @@ class BidCyclePicker extends Component {
     );
 
     // restore stored bid season selections
-    let seasons$ = this.props.seasons.filter(f => includes(props.selectedSeasons, f.id));
-    seasons$ = seasons$.map(m => m.description);
+    let seasons$ = this.props.seasons.filter((f) => includes(props.selectedSeasons, f.id));
+    seasons$ = seasons$.map((m) => m.description);
     this.state.arrayValue = seasons$;
   }
+
   UNSAFE_componentWillMount() {
     // Only perform once in the session since this will rarely change.
     if (!this.props.seasons.length) {
       this.props.fetchSeasons();
     }
   }
+
   componentDidMount() {
     this.props.setSeasonsCb(this.getSeasons());
     this.props.setClick(this.setMultipleOptionFromParent);
   }
+
   componentDidUpdate() {
     this.props.setSeasonsCb(this.getSeasons());
   }
+
   setSeasons() {
     const seasons = this.bidSeasonsToIds();
     this.props.setSeasons(seasons);
   }
+
   getSeasons() {
     const { arrayValue } = this.state;
     const { seasons } = this.props;
     const ids$ = isArray(seasons) ? [...seasons] : [];
-    return filter(ids$, f => indexOf(arrayValue, f.description) > -1);
+    return filter(ids$, (f) => indexOf(arrayValue, f.description) > -1);
   }
 
   setMultipleOptionFromParent(seasonObjs) {
-    this.setState({ arrayValue: seasonObjs.map(a => a.description) }, () => this.setSeasons());
+    this.setState({ arrayValue: seasonObjs.map((a) => a.description) }, () => this.setSeasons());
   }
 
   bidSeasonsToIds = () => {
     const { arrayValue } = this.state;
     const { seasons } = this.props;
     let ids$ = isArray(seasons) ? [...seasons] : [];
-    ids$ = filter(ids$, f => indexOf(arrayValue, f.description) > -1);
-    ids$ = map(ids$, m => m.id);
+    ids$ = filter(ids$, (f) => indexOf(arrayValue, f.description) > -1);
+    ids$ = map(ids$, (m) => m.id);
     return ids$;
   };
 
   selectMultipleOption(value) {
-    const value$ = every(value, isObject) ? flatMap(value, a => a.description) : value;
+    const value$ = every(value, isObject)
+      ? flatMap(value, (a) => a.description)
+      : value;
     this.setState({ arrayValue: value$ }, () => this.setSeasons());
   }
+
   render() {
     const { arrayValue } = this.state;
     const { seasons, isLoading, hasErrored } = this.props; // eslint-disable-line
@@ -137,7 +158,9 @@ BidCyclePicker.propTypes = {
   setSeasons: PropTypes.func.isRequired,
   setSeasonsCb: PropTypes.func,
   setClick: PropTypes.func,
-  selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+  selectedSeasons: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  ),
 };
 
 BidCyclePicker.defaultProps = {
@@ -149,14 +172,14 @@ BidCyclePicker.defaultProps = {
   selectedSeasons: [],
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   seasons: state.bidderPortfolioSeasons,
   selectedSeasons: state.bidderPortfolioSelectedSeasons,
   isLoading: state.bidderPortfolioSeasonsIsLoading,
   hasErrored: state.bidderPortfolioSeasonsHasErrored,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchSeasons: () => dispatch(bidderPortfolioSeasonsFetchData()),
   setSeasons: (arr = []) => dispatch(bidderPortfolioSetSeasons(arr)),
 });

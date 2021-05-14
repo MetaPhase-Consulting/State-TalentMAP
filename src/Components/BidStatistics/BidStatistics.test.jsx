@@ -8,30 +8,17 @@ describe('BidStatisticsComponent', () => {
     bidStats: bidStatistics,
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <BidStatistics
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<BidStatistics {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <BidStatistics
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<BidStatistics {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when isLoading is true', () => {
-    const wrapper = shallow(
-      <BidStatistics
-        {...props}
-        isLoading
-      />,
-    );
+    const wrapper = shallow(<BidStatistics {...props} isLoading />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -13,38 +13,24 @@ describe('AccordionItemComponent', () => {
   );
 
   it('receives elements', () => {
-    const wrapper = shallow(
-      <Accordion>
-        {child}
-      </Accordion>,
-    );
+    const wrapper = shallow(<Accordion>{child}</Accordion>);
     expect(wrapper.find('ul').props().children).toBe(child);
   });
 
   it('receives className prop', () => {
     const wrapper = shallow(
-      <Accordion className="my-class">
-        {child}
-      </Accordion>,
+      <Accordion className="my-class">{child}</Accordion>,
     );
     expect(wrapper.find('.my-class').exists()).toBe(true);
   });
 
   it('receives isMultiselectable prop', () => {
-    const wrapper = shallow(
-      <Accordion isMultiselectable>
-        {child}
-      </Accordion>,
-    );
+    const wrapper = shallow(<Accordion isMultiselectable>{child}</Accordion>);
     expect(wrapper.find('ul').prop('aria-multiselectable')).toBe(true);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <Accordion>
-        {child}
-      </Accordion>,
-    );
+    const wrapper = shallow(<Accordion>{child}</Accordion>);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -5,7 +5,10 @@ import CDOAutoSuggest, { renderList } from './CDOAutoSuggest';
 
 describe('renderList', () => {
   it('render', () => {
-    const wrapper = renderList({ items: [{ id: 1 }, { id: 2 }], selected: [{ id: 1 }] });
+    const wrapper = renderList({
+      items: [{ id: 1 }, { id: 2 }],
+      selected: [{ id: 1 }],
+    });
     expect(wrapper).toBeDefined();
   });
 });
@@ -13,8 +16,18 @@ describe('renderList', () => {
 describe('CDOAutoSuggest', () => {
   const props = {
     cdos: [
-      { first_name: 'John', last_name: 'Daniels', id: 3, hru_id: 3 },
-      { first_name: 'Mary', last_name: 'Brown', id: 4, hru_ud: 4 },
+      {
+        first_name: 'John',
+        last_name: 'Daniels',
+        id: 3,
+        hru_id: 3,
+      },
+      {
+        first_name: 'Mary',
+        last_name: 'Brown',
+        id: 4,
+        hru_ud: 4,
+      },
     ],
     selection: [{ first_name: 'Mary', last_name: 'Brown', id: 4 }],
     isLoading: false,
@@ -35,7 +48,9 @@ describe('CDOAutoSuggest', () => {
 
   it('calls the prop on onSuggestionSelected()', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(<CDOAutoSuggest.WrappedComponent {...props} setCDOsToSearchBy={spy} />);
+    const wrapper = shallow(
+      <CDOAutoSuggest.WrappedComponent {...props} setCDOsToSearchBy={spy} />,
+    );
     wrapper.instance().selectMultipleOption([props.cdos[0]]);
     sinon.assert.calledOnce(spy);
   });

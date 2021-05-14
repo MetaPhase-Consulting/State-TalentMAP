@@ -2,7 +2,12 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import groupBy from 'lodash/groupBy';
-import { EMPTY_FUNCTION, GLOSSARY_ARRAY, GLOSSARY_ERROR_OBJECT, GLOSSARY_SUCCESS_OBJECT } from '../../../Constants/PropTypes';
+import {
+  EMPTY_FUNCTION,
+  GLOSSARY_ARRAY,
+  GLOSSARY_ERROR_OBJECT,
+  GLOSSARY_SUCCESS_OBJECT,
+} from '../../../Constants/PropTypes';
 import Spinner from '../../Spinner';
 import GlossaryEditorContainer from '../GlossaryEditorContainer';
 import GlossaryEditorSearch from '../GlossaryEditorSearch';
@@ -23,6 +28,28 @@ class GlossaryEditorPage extends Component {
     this.debounceTimeMs = 300;
   }
 
+  // Perform client-side search but apply loading prop to provide
+  // a more natural search exprience.
+  debouncedChangeText = (text) => {
+    this.setState({ localSearchIsLoading: true });
+    this.debouncedText.cancel();
+    this.debouncedText = debounce(
+      (q) => this.changeText(q),
+      this.debounceTimeMs,
+    );
+    this.debouncedText(text);
+  };
+
+  debouncedChangeLetter = (letter) => {
+    this.setState({ localSearchIsLoading: true });
+    this.debouncedLetter.cancel();
+    this.debouncedLetter = debounce(
+      (q) => this.changeFirstLetter(q),
+      this.debounceTimeMs,
+    );
+    this.debouncedLetter(letter);
+  };
+
   // Update search text string and set localSearchIsLoading to false.
   changeText(text) {
     this.setState({ searchText: text.q, localSearchIsLoading: false });
@@ -34,28 +61,16 @@ class GlossaryEditorPage extends Component {
     this.setState({ firstLetter, localSearchIsLoading: false });
   }
 
-  // Perform client-side search but apply loading prop to provide
-  // a more natural search exprience.
-  debouncedChangeText = text => {
-    this.setState({ localSearchIsLoading: true });
-    this.debouncedText.cancel();
-    this.debouncedText = debounce(q => this.changeText(q), this.debounceTimeMs);
-    this.debouncedText(text);
-  };
-
-  debouncedChangeLetter = letter => {
-    this.setState({ localSearchIsLoading: true });
-    this.debouncedLetter.cancel();
-    this.debouncedLetter = debounce(q => this.changeFirstLetter(q), this.debounceTimeMs);
-    this.debouncedLetter(letter);
-  };
-
   filteredTermsBySearch() {
     const { searchText } = this.state;
     const { glossaryItems } = this.props;
 
     // filter where the keyword matches part of the title or definition
-    let filteredTerms = filterByProps(searchText, ['title', 'definition'], glossaryItems);
+    let filteredTerms = filterByProps(
+      searchText,
+      ['title', 'definition'],
+      glossaryItems,
+    );
     filteredTerms = groupBy(filteredTerms, (term) => {
       const first = term.title.substr(0, 1).toUpperCase();
       // check if it's a letter
@@ -63,8 +78,9 @@ class GlossaryEditorPage extends Component {
       // if so, assign it to its first letter
       if (firstIsAlpha) {
         return first;
-      // else, assign it to the '#' prop
-      } return '#';
+        // else, assign it to the '#' prop
+      }
+      return '#';
     });
     return filteredTerms;
   }
@@ -118,23 +134,25 @@ class GlossaryEditorPage extends Component {
           submitGlossaryTerm={submitGlossaryTerm}
         />
         <div className="usa-grid-full bidder-portfolio-container profile-content-inner-container">
-          <div className={`usa-grid-full bidder-portfolio-listing ${isLoading ? 'results-loading' : ''}`}>
-            {
-              isLoading &&
-                <Spinner type="homepage-position-results" size="big" />
-            }
-            {
-              !isLoading &&
-                <GlossaryEditorContainer
-                  submitGlossaryTerm={submitGlossaryTerm}
-                  submitGlossaryFirstLetter={this.debouncedChangeLetter}
-                  glossaryItems={filteredGlossary}
-                  availableLetters={availableLetters}
-                  glossaryPatchHasErrored={glossaryPatchHasErrored}
-                  glossaryPatchSuccess={glossaryPatchSuccess}
-                  onGlossaryEditorCancel={onGlossaryEditorCancel}
-                />
-            }
+          <div
+            className={`usa-grid-full bidder-portfolio-listing ${
+              isLoading ? 'results-loading' : ''
+            }`}
+          >
+            {isLoading && (
+              <Spinner type="homepage-position-results" size="big" />
+            )}
+            {!isLoading && (
+              <GlossaryEditorContainer
+                submitGlossaryTerm={submitGlossaryTerm}
+                submitGlossaryFirstLetter={this.debouncedChangeLetter}
+                glossaryItems={filteredGlossary}
+                availableLetters={availableLetters}
+                glossaryPatchHasErrored={glossaryPatchHasErrored}
+                glossaryPatchSuccess={glossaryPatchSuccess}
+                onGlossaryEditorCancel={onGlossaryEditorCancel}
+              />
+            )}
           </div>
         </div>
       </div>

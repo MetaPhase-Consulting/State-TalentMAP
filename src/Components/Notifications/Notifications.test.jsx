@@ -14,37 +14,27 @@ describe('NotificationsComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <Notifications {...props} />,
-    );
+    const wrapper = shallow(<Notifications {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when there are no results', () => {
-    const wrapper = shallow(
-      <Notifications {...props} notifications={{}} />,
-    );
+    const wrapper = shallow(<Notifications {...props} notifications={{}} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when isLoading is true', () => {
-    const wrapper = shallow(
-      <Notifications {...props} isLoading />,
-    );
+    const wrapper = shallow(<Notifications {...props} isLoading />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when hasErrored is true', () => {
-    const wrapper = shallow(
-      <Notifications {...props} hasErrored />,
-    );
+    const wrapper = shallow(<Notifications {...props} hasErrored />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <Notifications {...props} />,
-    );
+    const wrapper = shallow(<Notifications {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -7,12 +7,16 @@ describe('FavoritesListComponent', () => {
   const positions = resultsObject.results;
 
   it('is defined', () => {
-    const wrapper = shallow(<FavoritesList.WrappedComponent favorites={positions} />);
+    const wrapper = shallow(
+      <FavoritesList.WrappedComponent favorites={positions} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<FavoritesList.WrappedComponent favorites={positions} />);
+    const wrapper = shallow(
+      <FavoritesList.WrappedComponent favorites={positions} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

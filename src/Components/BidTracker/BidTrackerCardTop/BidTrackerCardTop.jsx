@@ -13,7 +13,6 @@ import BidTrackerCardTitle from '../BidTrackerCardTitle';
 
 const useBiddingTips = () => checkFlag('flags.bidding_tips');
 
-
 class BidTrackerCardTop extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +27,9 @@ class BidTrackerCardTop extends Component {
   };
 
   render() {
-    const { bid, hideDelete, showBidCount, useCDOView /* , questionText */ } = this.props;
+    const {
+      bid, hideDelete, showBidCount, useCDOView, /* , questionText */
+    } = this.props;
     const { readOnly } = this.context;
     const { position } = bid;
     // const showQuestion = !!(questionText && questionText.text);
@@ -42,7 +43,10 @@ class BidTrackerCardTop extends Component {
       // eslint-disable-next-line max-len
       // <GlossaryTermTrigger className="tooltip-link" text={questionText.link} term={questionText.term} />
       <span>
-        Your bid is likely in one of several steps in the process. <Link className="tooltip-link" to="/biddingProcess">Learn more here.</Link>
+        Your bid is likely in one of several steps in the process.{' '}
+        <Link className="tooltip-link" to="/biddingProcess">
+          Learn more here.
+        </Link>
       </span>
     );
     return (
@@ -61,33 +65,37 @@ class BidTrackerCardTop extends Component {
         </div>
         <div className="bid-tracker-card-title-outer-container-right">
           <div className="bid-tracker-card-title-container-right">
-            {bid.cdo_bid &&
+            {bid.cdo_bid && (
               <div className="bid-tracker-question-text-container bid-tracker-cdo-submitted-container">
                 <span>
                   <FontAwesome name="flag" /> Bid Submitted by CDO
                 </span>
               </div>
-            }
-            {biddingTips &&
-            <div className="bid-tracker-question-text-container">
-              <Tooltip
-                html={getQuestionElement()}
-                arrow
-                tabIndex="0"
-                interactive
-                interactiveBorder={5}
-                useContext
-              >
-                <span>
-                  <FontAwesome name="question-circle" /> Why is it taking so long?
-                </span>
-              </Tooltip>
-            </div>}
+            )}
+            {biddingTips && (
+              <div className="bid-tracker-question-text-container">
+                <Tooltip
+                  html={getQuestionElement()}
+                  arrow
+                  tabIndex="0"
+                  interactive
+                  interactiveBorder={5}
+                  useContext
+                >
+                  <span>
+                    <FontAwesome name="question-circle" /> Why is it taking so
+                    long?
+                  </span>
+                </Tooltip>
+              </div>
+            )}
             <div className="bid-tracker-actions-container">
-              {bid.can_delete && !hideDelete && (!readOnly || useCDOView) &&
+              {bid.can_delete && !hideDelete && (!readOnly || useCDOView) && (
                 <button className="unstyled-button" onClick={this.onDeleteBid}>
-                  <FontAwesome name="trash" />Remove from Bid List</button>
-              }
+                  <FontAwesome name="trash" />
+                  Remove from Bid List
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -5,18 +5,18 @@ import DashboardContainer, { mapDispatchToProps } from './Dashboard';
 
 describe('DashboardContainer', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<MockTestProvider>
-      <DashboardContainer />
-    </MockTestProvider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <MockTestProvider>
+        <DashboardContainer />
+      </MockTestProvider>,
+    );
     expect(wrapper).toBeDefined();
   });
 });
 
 describe('mapDispatchToProps', () => {
-  testDispatchFunctions(
-    mapDispatchToProps,
-    {
-      submitBidPosition: [1],
-      deleteBid: [1],
-    });
+  testDispatchFunctions(mapDispatchToProps, {
+    submitBidPosition: [1],
+    deleteBid: [1],
+  });
 });

@@ -8,18 +8,12 @@ describe('AdditionalContainerComponent', () => {
     getClient: () => ({ id: 3 }),
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <AdditionalContainer
-        {...props}
-      />);
+    const wrapper = shallow(<AdditionalContainer {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('correctly sets state when getClient is successful', (done) => {
-    const wrapper = shallow(
-      <AdditionalContainer
-        {...props}
-      />);
+    const wrapper = shallow(<AdditionalContainer {...props} />);
     const f = () => {
       setTimeout(() => {
         expect(wrapper.instance().state.client.id).toBe(3);
@@ -30,10 +24,7 @@ describe('AdditionalContainerComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <AdditionalContainer
-        {...props}
-      />);
+    const wrapper = shallow(<AdditionalContainer {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

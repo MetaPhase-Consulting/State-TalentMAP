@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { get, isNull } from 'lodash';
 import { Flag } from 'flag';
 import CondensedCardData from '../CondensedCardData';
-import { FAVORITE_POSITIONS_ARRAY, POSITION_DETAILS } from '../../Constants/PropTypes';
+import {
+  FAVORITE_POSITIONS_ARRAY,
+  POSITION_DETAILS,
+} from '../../Constants/PropTypes';
 import Favorite from '../../Containers/Favorite';
 import BidListButton from '../../Containers/BidListButton';
 import PermissionsWrapper from '../../Containers/PermissionsWrapper';
@@ -15,36 +18,36 @@ class ResultsCondensedCardBottom extends Component {
   renderStats = () => {
     const { showBidCount, position, isTandem } = this.props;
     const pos = position.position || position;
-    const stats = getBidStatisticsObject(position.bid_statistics || pos.bid_statistics);
-    return showBidCount ?
+    const stats = getBidStatisticsObject(
+      position.bid_statistics || pos.bid_statistics,
+    );
+    return showBidCount ? (
       <Flag
         name="flags.bid_count"
-        render={() => (<ResultsCondensedCardStats
-          bidStatisticsArray={[stats]}
-          isTandemTwo={isTandem}
-        />)}
+        render={() => (
+          <ResultsCondensedCardStats
+            bidStatisticsArray={[stats]}
+            isTandemTwo={isTandem}
+          />
+        )}
       />
-      :
-      null;
+    ) : null;
   };
 
   renderBidListButton = () => {
     const { showBidListButton, position, isTandem } = this.props;
     const availability = get(position, 'availability.availability');
     const availableToBid = isNull(availability) || !!availability;
-    return showBidListButton && !isTandem ?
+    return showBidListButton && !isTandem ? (
       <PermissionsWrapper permissions="bidder">
-        <BidListButton
-          id={position.id}
-          disabled={!availableToBid}
-        />
+        <BidListButton id={position.id} disabled={!availableToBid} />
       </PermissionsWrapper>
-      :
-      null;
+    ) : null;
   };
 
   render() {
-    const { position,
+    const {
+      position,
       favorites,
       favoritesTandem,
       favoritesPV,
@@ -72,16 +75,16 @@ class ResultsCondensedCardBottom extends Component {
     }
 
     return (
-      <div className={`condensed-card-bottom-container ${isTandem ? 'condensed-card-bottom-container--tandem-two' : ''}`}>
+      <div
+        className={`condensed-card-bottom-container ${
+          isTandem ? 'condensed-card-bottom-container--tandem-two' : ''
+        }`}
+      >
         <div className="usa-grid-full condensed-card-bottom">
-          <Flag
-            name="flags.bid_count"
-            render={this.renderStats}
-          />
+          <Flag name="flags.bid_count" render={this.renderStats} />
           <CondensedCardData position={position} />
           <div className="usa-grid-full condensed-card-buttons-section">
-            {
-              !isClient &&
+            {!isClient && (
               <Favorite
                 useLongText
                 hideText={useShortFavButton}
@@ -97,15 +100,11 @@ class ResultsCondensedCardBottom extends Component {
                 limit={limit}
                 page={page}
               />
-            }
-            <Flag
-              name="flags.bidding"
-              render={this.renderBidListButton}
-            />
-            {
-              showCompareButton && !isProjectedVacancy &&
+            )}
+            <Flag name="flags.bidding" render={this.renderBidListButton} />
+            {showCompareButton && !isProjectedVacancy && (
               <CompareCheck as="div" refKey={position.cpId} />
-            }
+            )}
           </div>
         </div>
       </div>

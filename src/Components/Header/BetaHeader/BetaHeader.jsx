@@ -8,7 +8,10 @@ import PermissionsWrapper from '../../../Containers/PermissionsWrapper';
 import EditContentButton from '../../EditContentButton';
 import TextEditor from '../../TextEditor';
 import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
-import { homeBannerContentFetchData, homeBannerContentPatchData } from '../../../actions/homeBannerContent';
+import {
+  homeBannerContentFetchData,
+  homeBannerContentPatchData,
+} from '../../../actions/homeBannerContent';
 import { focusById, userHasPermissions } from '../../../utilities';
 
 const EDIT_BUTTON_ID = 'edit-home-content';
@@ -30,19 +33,21 @@ class BetaHeader extends Component {
     this.props.fetchData();
   }
 
-  patchData = data => {
+  patchData = (data) => {
     this.props.patchData(data);
   };
 
   toggleEditor = () => {
     const { editorVisible } = this.state;
     this.setState({ editorVisible: !editorVisible }, () => {
-      const elToFocus = this.state.editorVisible ? SUBMIT_BUTTON_ID : EDIT_BUTTON_ID;
+      const elToFocus = this.state.editorVisible
+        ? SUBMIT_BUTTON_ID
+        : EDIT_BUTTON_ID;
       focusById(elToFocus, 0);
     });
   };
 
-  submit = data => {
+  submit = (data) => {
     this.props.patchData(data);
     this.setState({ editorVisible: false });
   };
@@ -56,43 +61,44 @@ class BetaHeader extends Component {
     const { editorVisible } = this.state;
     const permissionsNeeded = ['superuser'];
     const userPermissions = get(userProfile, 'permission_groups', []);
-    const hasPermissions = userHasPermissions(permissionsNeeded, userPermissions);
+    const hasPermissions = userHasPermissions(
+      permissionsNeeded,
+      userPermissions,
+    );
 
     const shouldDisplayHeader = data || hasPermissions;
 
     const header = (
       <div className="usa-banner tm-beta-header">
         <div className="usa-grid usa-banner-inner padded-main-content">
-          {
-            !editorVisible &&
-              <div className="loader">
-                <FontAwesome name="gears" />
-                <SkeletonTheme color="#FAD980" highlightColor="#FDEFCC">
-                  {!isLoading ? data : <Skeleton width="50%" duration={1.8} />}
-                </SkeletonTheme>
-              </div>
-          }
-          {
-            !isLoading && !editorVisible &&
-              <PermissionsWrapper permissions="superuser">
-                <EditContentButton onToggle={this.toggleEditor} id={EDIT_BUTTON_ID} />
-              </PermissionsWrapper>
-          }
-          {
-            editorVisible &&
-              <TextEditor
-                initialText={data}
-                cancel={this.cancel}
-                onSubmitText={this.submit}
-                submitProps={{ id: SUBMIT_BUTTON_ID }}
+          {!editorVisible && (
+            <div className="loader">
+              <FontAwesome name="gears" />
+              <SkeletonTheme color="#FAD980" highlightColor="#FDEFCC">
+                {!isLoading ? data : <Skeleton width="50%" duration={1.8} />}
+              </SkeletonTheme>
+            </div>
+          )}
+          {!isLoading && !editorVisible && (
+            <PermissionsWrapper permissions="superuser">
+              <EditContentButton
+                onToggle={this.toggleEditor}
+                id={EDIT_BUTTON_ID}
               />
-          }
+            </PermissionsWrapper>
+          )}
+          {editorVisible && (
+            <TextEditor
+              initialText={data}
+              cancel={this.cancel}
+              onSubmitText={this.submit}
+              submitProps={{ id: SUBMIT_BUTTON_ID }}
+            />
+          )}
         </div>
       </div>
     );
-    return (
-      shouldDisplayHeader ? header : null
-    );
+    return shouldDisplayHeader ? header : null;
   }
 }
 
@@ -113,16 +119,16 @@ BetaHeader.defaultProps = {
   userProfile: {},
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.homeBannerContent,
   hasErrored: state.homeBannerContentHasErrored,
   isLoading: state.homeBannerContentIsLoading,
   userProfile: state.userProfile,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchData: () => dispatch(homeBannerContentFetchData()),
-  patchData: data => dispatch(homeBannerContentPatchData(data)),
+  patchData: (data) => dispatch(homeBannerContentPatchData(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BetaHeader);

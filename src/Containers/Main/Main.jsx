@@ -5,15 +5,15 @@ import { ScrollContext } from 'react-router-scroll-4';
 import { FlagsProvider } from 'flag';
 import { StickyContainer } from 'react-sticky';
 import { QueryParamProvider } from 'use-query-params';
-import Routes from '../../Containers/Routes/Routes';
+import Routes from '../Routes/Routes';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
-import Glossary from '../../Containers/Glossary';
-import AuthorizedWrapper from '../../Containers/AuthorizedWrapper';
-import DarkMode from '../../Containers/DarkMode';
+import Glossary from '../Glossary';
+import AuthorizedWrapper from '../AuthorizedWrapper';
+import DarkMode from '../DarkMode';
 import checkIndexAuthentication from '../../lib/check-auth';
 import { history, store } from '../../store';
-import PageMeta from '../../Containers/PageMeta';
+import PageMeta from '../PageMeta';
 import Toast from '../Toast';
 import getFlags from '../../flags';
 
@@ -21,7 +21,7 @@ const isAuthorized = () => checkIndexAuthentication(store);
 
 const flags = () => getFlags();
 
-const Main = props => (
+const Main = (props) => (
   <StickyContainer>
     <FlagsProvider flags={flags()}>
       <Provider store={store} history={history}>

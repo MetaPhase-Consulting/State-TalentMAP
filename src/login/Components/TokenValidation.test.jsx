@@ -47,7 +47,12 @@ describe('TokenValidation', () => {
   it('can handle other props', () => {
     const wrapper = shallow(
       <TokenValidation.WrappedComponent
-        login={{ ...loginObject, requesting: false, errors, messages: errors }}
+        login={{
+          ...loginObject,
+          requesting: false,
+          errors,
+          messages: errors,
+        }}
       />,
     );
     expect(wrapper).toBeDefined();

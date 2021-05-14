@@ -1,5 +1,7 @@
 import { setupAsyncMocks } from '../testUtilities/testUtilities';
-import { fetchAllClientData, fetchClient, fetchClientBids, fetchClientWaivers } from './client';
+import {
+  fetchAllClientData, fetchClient, fetchClientBids, fetchClientWaivers,
+} from './client';
 import { clientBids, clientObject, clientWaivers } from '../__mocks__/client';
 
 const { mockAdapter } = setupAsyncMocks();
@@ -11,8 +13,7 @@ describe('async actions', () => {
 
   it('can fetch a client', (done) => {
     mockAdapter.onGet('/client/1/').reply(200,
-      clientObject,
-    );
+      clientObject);
 
     const f = () => {
       setTimeout(() => {
@@ -29,8 +30,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching a client', (done) => {
     mockAdapter.onGet('/client/2/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -47,8 +47,7 @@ describe('async actions', () => {
 
   it('can fetch client waivers', (done) => {
     mockAdapter.onGet('/client/1/waivers/').reply(200,
-      clientWaivers,
-    );
+      clientWaivers);
 
     const f = () => {
       setTimeout(() => {
@@ -65,8 +64,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching client waivers', (done) => {
     mockAdapter.onGet('/client/2/waivers/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -83,8 +81,7 @@ describe('async actions', () => {
 
   it('can fetch client bids', (done) => {
     mockAdapter.onGet('/client/1/bids/').reply(200,
-      clientBids,
-    );
+      clientBids);
 
     const f = () => {
       setTimeout(() => {
@@ -101,8 +98,7 @@ describe('async actions', () => {
 
   it('can handle errors when fetching client bids', (done) => {
     mockAdapter.onGet('/client/2/bids/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {
@@ -119,14 +115,11 @@ describe('async actions', () => {
 
   it('can perform fetchAllClientData', (done) => {
     mockAdapter.onGet('/client/1/bids/').reply(200,
-      clientBids,
-    );
+      clientBids);
     mockAdapter.onGet('/client/1/waivers/').reply(200,
-      clientWaivers,
-    );
+      clientWaivers);
     mockAdapter.onGet('/client/1/').reply(200,
-      clientObject,
-    );
+      clientObject);
 
     const f = () => {
       setTimeout(() => {
@@ -145,14 +138,11 @@ describe('async actions', () => {
 
   it('can handle errors when performing fetchAllClientData', (done) => {
     mockAdapter.onGet('/client/1/bids/').reply(200,
-      clientBids,
-    );
+      clientBids);
     mockAdapter.onGet('/client/1/waivers/').reply(404,
-      null,
-    );
+      null);
     mockAdapter.onGet('/client/1/').reply(200,
-      clientObject,
-    );
+      clientObject);
 
     const f = () => {
       setTimeout(() => {

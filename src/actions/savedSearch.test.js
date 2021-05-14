@@ -22,8 +22,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onPost('/searches/').reply(200,
-      {},
-    );
+      {});
 
     const message = {};
 
@@ -41,8 +40,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onPatch('/searches/1/').reply(200,
-      {},
-    );
+      {});
 
     const message = {};
 
@@ -60,8 +58,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onGet('/searches/?ordering=someSortType').reply(200,
-      searchObjectParent,
-    );
+      searchObjectParent);
 
     const f = () => {
       setTimeout(() => {
@@ -76,8 +73,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onGet('/searches/').reply(404,
-      'error',
-    );
+      'error');
 
     const f = () => {
       setTimeout(() => {
@@ -92,8 +88,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onDelete('/searches/1/').reply(204,
-      {},
-    );
+      {});
 
     const f = () => {
       setTimeout(() => {
@@ -108,12 +103,10 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onGet('/searches/1/').reply(200,
-      { name: 'test', filters: {}, endpoint: '/api/v1/position' },
-    );
+      { name: 'test', filters: {}, endpoint: '/api/v1/position' });
 
     mockAdapter.onPost('/searches/').reply(204,
-      { name: 'test 2' },
-    );
+      { name: 'test 2' });
 
     const f = () => {
       setTimeout(() => {
@@ -128,12 +121,10 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onGet('/searches/1/').reply(404,
-      'error',
-    );
+      'error');
 
     mockAdapter.onPost('/searches/').reply(204,
-      { name: 'test 2' },
-    );
+      { name: 'test 2' });
 
     const f = () => {
       setTimeout(() => {
@@ -148,12 +139,10 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onGet('/searches/1/').reply(200,
-      { name: 'test', filters: {}, endpoint: '/api/v1/position' },
-    );
+      { name: 'test', filters: {}, endpoint: '/api/v1/position' });
 
     mockAdapter.onPost('/searches/').reply(404,
-      'error',
-    );
+      'error');
 
     const f = () => {
       setTimeout(() => {
@@ -168,8 +157,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onDelete('/searches/1/').reply(404,
-      'error',
-    );
+      'error');
 
     const f = () => {
       setTimeout(() => {
@@ -184,8 +172,7 @@ describe('saved search async actions', () => {
     const store = mockStore({ share: false });
 
     mockAdapter.onPost('/searches/').reply(404,
-      'error',
-    );
+      'error');
 
     const message = {};
 

@@ -25,7 +25,9 @@ describe('BidderPortfolioPageComponent', () => {
   });
 
   it('is defined when navDataIsLoading === true', () => {
-    const wrapper = shallow(<BidderPortfolioPage {...props} navDataIsLoading />);
+    const wrapper = shallow(
+      <BidderPortfolioPage {...props} navDataIsLoading />,
+    );
     expect(wrapper).toBeDefined();
   });
 

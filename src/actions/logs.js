@@ -102,10 +102,8 @@ export function getLogs() {
         let text = '';
 
         // create promise array to retrieve individual logs
-        const queryProms = data.map(log =>
-          // get each log
-          api().get(`/logs/${log}/`)
-            .then(response => ({ log, data: response.data })));
+        const queryProms = data.map(log => api().get(`/logs/${log}/`) // get each log
+          .then(response => ({ log, data: response.data })));
 
         // execute queries
         Q.allSettled(queryProms)

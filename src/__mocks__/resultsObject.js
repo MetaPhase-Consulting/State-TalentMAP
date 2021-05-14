@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const resultsObject = {
   count: 2,
   results: [
@@ -182,3 +183,4 @@ const resultsObject = {
 };
 
 export default resultsObject;
+/* eslint-enable max-len */

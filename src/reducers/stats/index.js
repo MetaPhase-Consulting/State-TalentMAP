@@ -1,9 +1,13 @@
-import { stats, statsHasErrored, statsIntervals,
-  statsIntervalsHasErrored, statsIntervalsIsLoading, statsIsLoading } from './stats';
+import {
+  stats, statsHasErrored, statsIntervals,
+  statsIntervalsHasErrored, statsIntervalsIsLoading, statsIsLoading,
+} from './stats';
 
-export default { statsIsLoading,
+export default {
+  statsIsLoading,
   statsHasErrored,
   stats,
   statsIntervalsIsLoading,
   statsIntervalsHasErrored,
-  statsIntervals };
+  statsIntervals,
+};

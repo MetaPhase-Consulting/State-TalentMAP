@@ -56,7 +56,8 @@ exports[`AccountDropdown matches snapshot 1`] = `
         Dashboard
       </Link>
       <Connect(DarkModeToggle)
-        className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link account-dropdown-link--button"
+        className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link
+          account-dropdown-link--button"
       />
       <Link
         className="account-dropdown--identity account-dropdown--segment account-dropdown-link"
@@ -133,7 +134,8 @@ exports[`AccountDropdown matches snapshot when shouldDisplayName is true 1`] = `
         Dashboard
       </Link>
       <Connect(DarkModeToggle)
-        className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link account-dropdown-link--button"
+        className="unstyled-button account-dropdown--identity account-dropdown--segment account-dropdown-link
+          account-dropdown-link--button"
       />
       <Link
         className="account-dropdown--identity account-dropdown--segment account-dropdown-link"

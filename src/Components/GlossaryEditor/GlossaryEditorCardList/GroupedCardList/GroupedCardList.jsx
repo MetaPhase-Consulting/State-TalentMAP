@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
 import { extend } from 'lodash';
-import { EMPTY_FUNCTION, GLOSSARY_ERROR_OBJECT, GLOSSARY_SUCCESS_OBJECT, GROUPED_GLOSSARY_ARRAYS_OBJECT } from '../../../../Constants/PropTypes';
+import {
+  EMPTY_FUNCTION,
+  GLOSSARY_ERROR_OBJECT,
+  GLOSSARY_SUCCESS_OBJECT,
+  GROUPED_GLOSSARY_ARRAYS_OBJECT,
+} from '../../../../Constants/PropTypes';
 import GlossaryEditorCard from '../../GlossaryEditorCard';
 
 // Holds all response error states for editor cards
@@ -18,44 +23,51 @@ const GroupedCardList = (props) => {
 
   return (
     <div className="usa-grid-full grouped-glossary-listing">
-      {
-        groups.map(termGroup => (
-          <div key={termGroup} className="usa-grid-full term-group">
-            <h3 className="term-title" aria-label={`Terms beginning with the character ${termGroup}`}>{termGroup}</h3>
-            {
-              terms[termGroup].map((term, i) => {
-                // Cache init
-                if (!errors[term.id]) {
-                  errors[term.id] = extend({}, glossaryPatchHasErrored);
-                }
-
-                // Update cached error if id matches that in error object
-                if (term.id === glossaryPatchHasErrored.id) {
-                  errors[term.id] = extend({}, errors[term.id], glossaryPatchHasErrored);
-                }
-
-                // Use the stored error so that we provide errors if multiple cards are in edit mode
-                const error = errors[term.id];
-
-                return (
-                  <div
-                    className={`usa-width-one-half glossary-editor-card-container ${(i + 1) % 2 === 0 ? 'usa-end-row' : ''}`}
-                    key={term.title}
-                  >
-                    <GlossaryEditorCard
-                      term={term}
-                      submitGlossaryTerm={submitGlossaryTerm}
-                      onCancel={onGlossaryEditorCancel}
-                      hasErrored={error}
-                      success={glossaryPatchSuccess}
-                    />
-                  </div>
-                );
-              })
+      {groups.map((termGroup) => (
+        <div key={termGroup} className="usa-grid-full term-group">
+          <h3
+            className="term-title"
+            aria-label={`Terms beginning with the character ${termGroup}`}
+          >
+            {termGroup}
+          </h3>
+          {terms[termGroup].map((term, i) => {
+            // Cache init
+            if (!errors[term.id]) {
+              errors[term.id] = extend({}, glossaryPatchHasErrored);
             }
-          </div>
-        ))
-      }
+
+            // Update cached error if id matches that in error object
+            if (term.id === glossaryPatchHasErrored.id) {
+              errors[term.id] = extend(
+                {},
+                errors[term.id],
+                glossaryPatchHasErrored,
+              );
+            }
+
+            // Use the stored error so that we provide errors if multiple cards are in edit mode
+            const error = errors[term.id];
+
+            return (
+              <div
+                className={`usa-width-one-half glossary-editor-card-container ${
+                  (i + 1) % 2 === 0 ? 'usa-end-row' : ''
+                }`}
+                key={term.title}
+              >
+                <GlossaryEditorCard
+                  term={term}
+                  submitGlossaryTerm={submitGlossaryTerm}
+                  onCancel={onGlossaryEditorCancel}
+                  hasErrored={error}
+                  success={glossaryPatchSuccess}
+                />
+              </div>
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 };

@@ -13,17 +13,22 @@ export class PermissionsWrapper extends Component {
   }
 
   checkPermissions = () => {
-    const { isLoading, minimum, permissions, userProfile } = this.props;
+    const {
+      isLoading, minimum, permissions, userProfile,
+    } = this.props;
     if (!isLoading) {
       const isEmpty = !permissions.length;
       const permissions$ = typeof permissions === 'string' ? [permissions] : permissions;
-      let doesUserHavePermissions = () =>
-        isEmpty || userHasPermissions(permissions$, userProfile.permission_groups || []) ||
-        userHasPermissions(permissions$, userProfile.permissions || []);
+      let doesUserHavePermissions = () => isEmpty
+        || userHasPermissions(permissions$, userProfile.permission_groups || [])
+        || userHasPermissions(permissions$, userProfile.permissions || []);
       if (minimum) {
-        doesUserHavePermissions = () =>
-          isEmpty || userHasSomePermissions(permissions$, userProfile.permission_groups || []) ||
-        userHasSomePermissions(permissions$, userProfile.permissions || []);
+        doesUserHavePermissions = () => isEmpty
+          || userHasSomePermissions(
+            permissions$,
+            userProfile.permission_groups || [],
+          )
+          || userHasSomePermissions(permissions$, userProfile.permissions || []);
       }
       if (!isLoading) {
         return doesUserHavePermissions();
@@ -41,29 +46,32 @@ export class PermissionsWrapper extends Component {
       hasPermissions,
     };
 
-    const children$ = typeof children === 'function'
-      ? children(renderProps)
-      : children;
+    const children$ = typeof children === 'function' ? children(renderProps) : children;
 
-    const fallback$ = typeof fallback === 'function'
-      ? fallback(renderProps)
-      : fallback;
+    const fallback$ = typeof fallback === 'function' ? fallback(renderProps) : fallback;
 
-    return (
-      hasPermissions ? children$ : fallback$
-    );
+    return hasPermissions ? children$ : fallback$;
   }
 }
 
 PermissionsWrapper.propTypes = {
   userProfile: USER_PROFILE,
   isLoading: PropTypes.bool,
-  permissions: PropTypes.oneOfType(
-    [PropTypes.arrayOf(PropTypes.string), PropTypes.string],
-  ), // permissions to check exist
-  children: PropTypes.oneOfType([PropTypes.string,
-    PropTypes.number, PropTypes.element, PropTypes.func]).isRequired,
-  fallback: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.element]),
+  permissions: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.string,
+  ]), // permissions to check exist
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.element,
+    PropTypes.func,
+  ]).isRequired,
+  fallback: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.element,
+  ]),
   minimum: PropTypes.bool,
   onMount: PropTypes.func,
 };
@@ -77,7 +85,7 @@ PermissionsWrapper.defaultProps = {
   onMount: () => {},
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userProfile: state.userProfile,
   isLoading: state.userProfileIsLoading,
 });

@@ -2,10 +2,14 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { clientBidListFetchData } from './bidList';
-import { GET_CLIENT_SUCCESS_MESSAGE, SET_CLIENT_ERROR, SET_CLIENT_SUCCESS,
-  UNSET_CLIENT_SUCCESS, UNSET_CLIENT_SUCCESS_MESSAGE } from '../Constants/SystemMessages';
+import {
+  GET_CLIENT_SUCCESS_MESSAGE, SET_CLIENT_ERROR, SET_CLIENT_SUCCESS,
+  UNSET_CLIENT_SUCCESS, UNSET_CLIENT_SUCCESS_MESSAGE,
+} from '../Constants/SystemMessages';
 
-export function setClientViewAs({ loadingId, client, isLoading, hasErrored }) {
+export function setClientViewAs({
+  loadingId, client, isLoading, hasErrored,
+}) {
   return {
     type: 'SET_CLIENT_VIEW_AS',
     config: {
@@ -31,8 +35,7 @@ export function setClient(id) {
         batch(() => {
           dispatch(setClientViewAs({ client: data, isLoading: false, hasErrored: false }));
           dispatch(clientBidListFetchData());
-          dispatch(toastSuccess(GET_CLIENT_SUCCESS_MESSAGE(data), SET_CLIENT_SUCCESS),
-          );
+          dispatch(toastSuccess(GET_CLIENT_SUCCESS_MESSAGE(data), SET_CLIENT_SUCCESS));
         });
       })
       .catch(() => {

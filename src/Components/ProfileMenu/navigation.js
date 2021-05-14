@@ -1,4 +1,3 @@
-
 import { matchPath } from 'react-router';
 import queryString from 'query-string';
 import { propOrDefault } from '../../utilities';
@@ -44,8 +43,8 @@ export function checkIfChildrenMatchPath(children, pathname) {
   // Returns true if any children match the path, otherwise false
   if (children && Array.isArray(children)) {
     children.forEach((c) => {
-      if (propOrDefault(c, 'props.link') &&
-        isCurrentPath(pathname, c.props.link)) {
+      if (propOrDefault(c, 'props.link')
+        && isCurrentPath(pathname, c.props.link)) {
         found = true;
       }
     });

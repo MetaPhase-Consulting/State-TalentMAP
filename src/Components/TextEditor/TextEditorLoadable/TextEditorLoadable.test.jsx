@@ -3,9 +3,7 @@ import TextEditorLoadable, { path } from './TextEditorLoadable';
 
 describe('TextEditorLoadable', () => {
   it('is defined', () => {
-    const wrapper = shallow(
-      <TextEditorLoadable />,
-    );
+    const wrapper = shallow(<TextEditorLoadable />);
     expect(wrapper).toBeDefined();
   });
 

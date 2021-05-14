@@ -7,7 +7,9 @@ import { forEach, uniqBy } from 'lodash';
 import swal from '@sweetalert/with-react';
 
 const EditBidder = (props) => {
-  const { name, sections, submitAction, bureaus, details } = props;
+  const {
+    name, sections, submitAction, bureaus, details,
+  } = props;
   const [status, setStatus] = useState(details.status);
   const [comment, setComment] = useState(sections.comments);
   const [ocReason, setOCReason] = useState(details.ocReason);
@@ -89,26 +91,36 @@ const EditBidder = (props) => {
         </div>
         <div>
           <label htmlFor="ocReason">*OC Reason:</label>
-          <select id="ocReason" defaultValue={ocReason} onChange={(e) => setOCReason(e.target.value)} disabled={status !== 'OC'} >
+          <select
+            id="ocReason"
+            defaultValue={ocReason}
+            onChange={(e) => setOCReason(e.target.value)}
+            disabled={status !== 'OC'}
+          >
             <option value="">None listed</option>
-            {
-              (status === 'OC') &&
-              reasons.map(r => (
-                <option key={r} value={r}>{r}</option>
-              ))
-            }
+            {status === 'OC'
+              && reasons.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
           </select>
         </div>
         <div>
           <label htmlFor="ocBureau">*OC Bureau:</label>
-          <select id="ocBureau" defaultValue={ocBureau} onChange={(e) => setOCBureau(e.target.value)} disabled={status !== 'OC'} >
+          <select
+            id="ocBureau"
+            defaultValue={ocBureau}
+            onChange={(e) => setOCBureau(e.target.value)}
+            disabled={status !== 'OC'}
+          >
             <option value="">None listed</option>
-            {
-              (status === 'OC') &&
-                bureauOptions.map(o => (
-                  <option key={o.id} value={o.short_description}>{o.custom_description}</option>
-                ))
-            }
+            {status === 'OC'
+              && bureauOptions.map((o) => (
+                <option key={o.id} value={o.short_description}>
+                  {o.custom_description}
+                </option>
+              ))}
           </select>
         </div>
         <div>
@@ -121,9 +133,13 @@ const EditBidder = (props) => {
         </div>
         <div>
           <dt>Languages:</dt>
-          <dd>{languages.map((l, i) => (
-            ` ${l.custom_description}${i + 1 === languages.length ? '' : ','}`
-          ))}</dd>
+          <dd>
+            {languages.map(
+              (l, i) => ` ${l.custom_description}${
+                i + 1 === languages.length ? '' : ','
+              }`,
+            )}
+          </dd>
         </div>
         <div>
           <dt>TED:</dt>
@@ -147,7 +163,9 @@ const EditBidder = (props) => {
             onChange={(e) => setComment(e.target.value)}
           />
         </div>
-        <button onClick={submit} type="submit">Submit</button>
+        <button onClick={submit} type="submit">
+          Submit
+        </button>
         <button onClick={cancel}>Cancel</button>
       </form>
     </div>

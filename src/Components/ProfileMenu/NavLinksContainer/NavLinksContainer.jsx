@@ -1,10 +1,6 @@
 import PropTypes from 'prop-types';
 
-const NavLinksContainer = ({ children }) => (
-  <ul>
-    {children}
-  </ul>
-);
+const NavLinksContainer = ({ children }) => <ul>{children}</ul>;
 
 NavLinksContainer.propTypes = {
   children: PropTypes.node.isRequired,

@@ -1,4 +1,5 @@
-import { markNotificationHasErrored, markNotificationIsLoading, markNotificationSuccess,
+import {
+  markNotificationHasErrored, markNotificationIsLoading, markNotificationSuccess,
   markNotificationsHasErrored, markNotificationsIsLoading, markNotificationsSuccess,
   notifications, notificationsCount, notificationsCountHasErrored,
   notificationsCountIsLoading,
@@ -6,9 +7,11 @@ import { markNotificationHasErrored, markNotificationIsLoading, markNotification
   notificationsIsLoading,
   notificationsPopover,
   notificationsPopoverHasErrored,
-  notificationsPopoverIsLoading } from './notifications';
+  notificationsPopoverIsLoading,
+} from './notifications';
 
-export default { notificationsHasErrored,
+export default {
+  notificationsHasErrored,
   notificationsIsLoading,
   notifications,
   notificationsPopoverHasErrored,
@@ -22,4 +25,5 @@ export default { notificationsHasErrored,
   markNotificationSuccess,
   markNotificationsHasErrored,
   markNotificationsIsLoading,
-  markNotificationsSuccess };
+  markNotificationsSuccess,
+};

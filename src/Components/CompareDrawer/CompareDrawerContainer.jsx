@@ -39,7 +39,10 @@ export class Compare extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     // we ignore comparisons state, since its just tracking the user's choices
-    return !(isEqual(nextProps, this.props)) || !(isEqual(omit(nextState, 'comparisons'), omit(this.state, 'comparisons')));
+    return (
+      !isEqual(nextProps, this.props)
+      || !isEqual(omit(nextState, 'comparisons'), omit(this.state, 'comparisons'))
+    );
   }
 
   componentWillUnmount() {
@@ -52,34 +55,38 @@ export class Compare extends Component {
 
   lsListener = () => {
     const comparisons = JSON.parse(localStorage.getItem('compare') || []);
-    this.setState({ prevComparisons: this.state.comparisons, comparisons }, () => {
-      this.getComparisons(this.state.comparisons.toString());
-    });
+    this.setState(
+      { prevComparisons: this.state.comparisons, comparisons },
+      () => {
+        this.getComparisons(this.state.comparisons.toString());
+      },
+    );
   };
 
   scrollListener = () => {
     const { isHidden } = this.state;
 
     // eslint-disable-next-line no-unused-expressions
-    getScrollDistanceFromBottom() < this.scrollDistance ?
-      !isHidden && this.setState({ isHidden: true })
-      :
-      isHidden && this.setState({ isHidden: false });
+    getScrollDistanceFromBottom() < this.scrollDistance
+      ? !isHidden && this.setState({ isHidden: true })
+      : isHidden && this.setState({ isHidden: false });
   };
 
   render() {
-    const { isHidden, comparisons: comparisonsState, prevComparisons } = this.state;
+    const {
+      isHidden,
+      comparisons: comparisonsState,
+      prevComparisons,
+    } = this.state;
     const { comparisons, hasErrored } = this.props;
 
     const comparisonsToUse = comparisonsState.length > prevComparisons.length
-      ? comparisonsState : prevComparisons;
+      ? comparisonsState
+      : prevComparisons;
 
     /* sort based on any prior compare list, so the cards don't get jumbled
     after one is removed, as it persists until the new request completes */
-    const sortedComparisons = comparisons.sort((a, b) =>
-      (comparisonsToUse.indexOf(a.id) >
-        comparisonsToUse.indexOf(b.id) ? 1 : -1),
-    );
+    const sortedComparisons = comparisons.sort((a, b) => comparisonsToUse.indexOf(a.id) > comparisonsToUse.indexOf(b.id) ? 1 : -1);
 
     const isHidden$ = isHidden || !sortedComparisons.length;
     return (
@@ -103,13 +110,13 @@ Compare.defaultProps = {
   hasErrored: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   comparisons: state.comparisons,
   hasErrored: state.comparisonsHasErrored,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: url => dispatch(comparisonsFetchData(url)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (url) => dispatch(comparisonsFetchData(url)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Compare);

@@ -5,7 +5,10 @@ import FA from 'react-fontawesome';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import ExportButton from 'Components/ExportButton';
 import PermissionsWrapper from 'Containers/PermissionsWrapper';
-import { shortListLockFetchData, shortListLockUpdateData } from 'actions/shortListLock';
+import {
+  shortListLockFetchData,
+  shortListLockUpdateData,
+} from 'actions/shortListLock';
 
 class PositionManagerDetails extends Component {
   UNSAFE_componentWillMount() {
@@ -14,15 +17,24 @@ class PositionManagerDetails extends Component {
   }
 
   updateStatus = () => {
-    const { id, updateStatus, statusIsLoading, statusUpdateIsLoading, status } = this.props;
+    const {
+      id, updateStatus, statusIsLoading, statusUpdateIsLoading, status,
+    } = this.props;
     if (id && !statusIsLoading && !statusUpdateIsLoading) {
       updateStatus(!status);
     }
-  }
+  };
 
   render() {
-    const { status, statusIsLoading, statusUpdateIsLoading, statusUpdateHasErrored,
-      statusHasErrored, id, biddersInShortList } = this.props;
+    const {
+      status,
+      statusIsLoading,
+      statusUpdateIsLoading,
+      statusUpdateHasErrored,
+      statusHasErrored,
+      id,
+      biddersInShortList,
+    } = this.props;
     const isLoading = statusIsLoading || statusUpdateIsLoading;
     let text = 'Lock';
     let disabled = false;
@@ -40,12 +52,22 @@ class PositionManagerDetails extends Component {
       disabled = true;
       text = 'Loading...';
     }
-    const content = <span>{text} { !isLoading && <FA name={status ? 'unlock' : 'lock'} /> }</span>;
+    const content = (
+      <span>
+        {text} {!isLoading && <FA name={status ? 'unlock' : 'lock'} />}
+      </span>
+    );
     return (
       <PermissionsWrapper permissions="bureau_user">
-        {
-          id ? <ExportButton isLoading={isLoading} primaryClass="usa-button-primary bureau-lock-button" text={content} onClick={this.updateStatus} disabled={disabled} /> : null
-        }
+        {id ? (
+          <ExportButton
+            isLoading={isLoading}
+            primaryClass="usa-button-primary bureau-lock-button"
+            text={content}
+            onClick={this.updateStatus}
+            disabled={disabled}
+          />
+        ) : null}
       </PermissionsWrapper>
     );
   }
@@ -88,4 +110,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   updateStatus: (status) => dispatch(shortListLockUpdateData(ownProps.id, status)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PositionManagerDetails);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PositionManagerDetails);

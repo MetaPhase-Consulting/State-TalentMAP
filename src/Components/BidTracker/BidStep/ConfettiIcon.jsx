@@ -10,24 +10,28 @@ const ANIMATION_DURATION = 3000;
 class ConfettiIcon extends Component {
   constructor(props) {
     super(props);
-    this.celebrate = throttle(
-      this.celebrate.bind(this),
-      THROTTLE_DURATION,
-      { trailing: true, leading: true },
-    );
+    this.celebrate = throttle(this.celebrate.bind(this), THROTTLE_DURATION, {
+      trailing: true,
+      leading: true,
+    });
     this.state = {
       isPartyTime: false,
     };
   }
+
   celebrate() {
-    this.setState({
-      isPartyTime: true,
-    }, () => {
-      setTimeout(() => {
-        this.setState({ isPartyTime: false });
-      }, 0);
-    });
+    this.setState(
+      {
+        isPartyTime: true,
+      },
+      () => {
+        setTimeout(() => {
+          this.setState({ isPartyTime: false });
+        }, 0);
+      },
+    );
   }
+
   render() {
     const { isPartyTime } = this.state;
     const { children, colors } = this.props;

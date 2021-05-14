@@ -10,16 +10,12 @@ describe('ProfileMenuCollapsedComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <ProfileMenuCollapsed {...props} />,
-    );
+    const wrapper = shallow(<ProfileMenuCollapsed {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <ProfileMenuCollapsed {...props} />,
-    );
+    const wrapper = shallow(<ProfileMenuCollapsed {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 

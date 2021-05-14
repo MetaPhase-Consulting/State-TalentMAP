@@ -15,9 +15,9 @@ describe('index', () => {
   });
 
   it('renders without crashing', () => {
-    expect(JSON.stringify(
-      Object.assign({}, Index, { _reactInternalInstance: 'censored' }),
-    )).toMatchSnapshot();
+    expect(
+      JSON.stringify({ ...Index, _reactInternalInstance: 'censored' }),
+    ).toMatchSnapshot();
   });
 
   it('renders without crashing on init()', () => {

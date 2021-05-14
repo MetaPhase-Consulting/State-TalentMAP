@@ -13,7 +13,8 @@ const FavoriteContainer = ({
   sortType,
   limit,
   page,
-  ...rest }) => (
+  ...rest
+}) => (
   <Favorite
     onToggle={onToggle}
     isLoading={!!isLoading.has(refKey)}
@@ -27,7 +28,8 @@ FavoriteContainer.propTypes = {
   onToggle: PropTypes.func.isRequired,
   isLoading: SetType,
   hasErrored: PropTypes.bool.isRequired,
-  refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired]).isRequired,
+  refKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string.isRequired])
+    .isRequired,
   isPV: PropTypes.bool,
   isTandem: PropTypes.bool,
   sortType: PropTypes.string,
@@ -44,14 +46,23 @@ FavoriteContainer.defaultProps = {
   page: 1,
 };
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
   isLoading: state.userProfileFavoritePositionIsLoading,
   hasErrored: state.userProfileFavoritePositionHasErrored || false,
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
   onToggle: (id, remove, refresh = false, isTandem = false) => {
-    dispatch(userProfileToggleFavoritePosition(id, remove, refresh, get(ownProps, 'isPV'), get(ownProps, 'sortType'), isTandem));
+    dispatch(
+      userProfileToggleFavoritePosition(
+        id,
+        remove,
+        refresh,
+        get(ownProps, 'isPV'),
+        get(ownProps, 'sortType'),
+        isTandem,
+      ),
+    );
   },
 });
 

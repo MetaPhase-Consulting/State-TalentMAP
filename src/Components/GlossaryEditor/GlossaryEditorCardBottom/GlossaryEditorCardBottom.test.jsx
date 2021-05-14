@@ -19,44 +19,41 @@ describe('GlossaryEditorCardBottomComponent', () => {
   });
 
   it('displays an empty string error', () => {
-    const wrapper = shallow(<GlossaryEditorCardBottom {...props} showEmptyWarning />);
+    const wrapper = shallow(
+      <GlossaryEditorCardBottom {...props} showEmptyWarning />,
+    );
     expect(wrapper.find('ErrorMessage').props().showEmptyWarning).toBe(true);
   });
 
   it('displays a response error when is new term', () => {
     const state = { message: 'error', hasErrored: true };
-    const wrapper = shallow(<GlossaryEditorCardBottom
-      {...props}
-      hasErrored={state}
-      id={1}
-    />);
+    const wrapper = shallow(
+      <GlossaryEditorCardBottom {...props} hasErrored={state} id={1} />,
+    );
     expect(wrapper.find('ErrorMessage').props().error).toBe(state);
   });
 
   it('does not display a response error when ids do not match', () => {
-    const wrapper = shallow(<GlossaryEditorCardBottom
-      {...props}
-      isNewTerm={false}
-      hasErrored={{ id: 1, message: 'error', hasErrored: true }}
-      id={2}
-    />);
+    const wrapper = shallow(
+      <GlossaryEditorCardBottom
+        {...props}
+        isNewTerm={false}
+        hasErrored={{ id: 1, message: 'error', hasErrored: true }}
+        id={2}
+      />,
+    );
     expect(wrapper.find('ErrorMessage').exists()).toBe(false);
   });
 
   it('does not display the bottom section when isNewTerm is true', () => {
-    const wrapper = shallow(<GlossaryEditorCardBottom
-      {...props}
-      isNewTerm
-    />);
+    const wrapper = shallow(<GlossaryEditorCardBottom {...props} isNewTerm />);
     expect(wrapper.find('History').exists()).toBe(false);
   });
 
   it('displays the bottom section when isNewTerm is false', () => {
-    const wrapper = shallow(<GlossaryEditorCardBottom
-      {...props}
-      id={1}
-      isNewTerm={false}
-    />);
+    const wrapper = shallow(
+      <GlossaryEditorCardBottom {...props} id={1} isNewTerm={false} />,
+    );
     expect(wrapper.find('History').exists()).toBe(true);
   });
 

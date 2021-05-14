@@ -5,11 +5,22 @@ import { mapSavedSearchToDescriptions } from 'utilities';
 import SavedSearchPillList from '../../../SavedSearchPillList';
 import InteractiveElement from '../../../InteractiveElement';
 
-const SavedSearchListResultsCard = ({ savedSearch, goToSavedSearch,
-  mappedParams, isProjectedVacancy, isTandemSearch }) => {
-  const pills = mapSavedSearchToDescriptions(savedSearch.filters, mappedParams).slice(0, 4);
+const SavedSearchListResultsCard = ({
+  savedSearch,
+  goToSavedSearch,
+  mappedParams,
+  isProjectedVacancy,
+  isTandemSearch,
+}) => {
+  const pills = mapSavedSearchToDescriptions(
+    savedSearch.filters,
+    mappedParams,
+  ).slice(0, 4);
   return (
-    <div className="usa-grid-full saved-search-card profile-section-container" key={savedSearch.id}>
+    <div
+      className="usa-grid-full saved-search-card profile-section-container"
+      key={savedSearch.id}
+    >
       <div className="usa-grid-full">
         <div className="usa-width-one-whole favorites-card-section">
           <InteractiveElement

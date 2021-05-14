@@ -2,7 +2,12 @@ import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
-import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
+import {
+  NO_GRADE,
+  NO_LANGUAGE,
+  NO_POST,
+  NO_TOUR_END_DATE,
+} from 'Constants/SystemMessages';
 import { formatDate } from 'utilities';
 import BoxShadow from '../../BoxShadow';
 import SkillCodeList from '../../SkillCodeList';
@@ -24,28 +29,34 @@ const BidderPortfolioStatCard = ({ userProfile, classifications }) => {
     <BoxShadow className="usa-grid-full bidder-portfolio-stat-card">
       <div className="bidder-portfolio-stat-card-top">
         <div>
-          <h3>
-            {get(userProfile, 'shortened_name', 'N/A')}
-          </h3>
+          <h3>{get(userProfile, 'shortened_name', 'N/A')}</h3>
           <Link to={`/profile/public/${perdet}`}>View Profile</Link>
         </div>
         <div className="stat-card-data-point">
-          <dt>Employee ID:</dt><dd>{id}</dd>
+          <dt>Employee ID:</dt>
+          <dd>{id}</dd>
         </div>
         <div className="stat-card-data-point">
-          <dt>Skill:</dt><dd><SkillCodeList skillCodes={userProfile.skills} /></dd>
+          <dt>Skill:</dt>
+          <dd>
+            <SkillCodeList skillCodes={userProfile.skills} />
+          </dd>
         </div>
         <div className="stat-card-data-point">
-          <dt>Grade:</dt><dd>{userProfile.grade || NO_GRADE}</dd>
+          <dt>Grade:</dt>
+          <dd>{userProfile.grade || NO_GRADE}</dd>
         </div>
         <div className="stat-card-data-point">
-          <dt>Languages:</dt><dd>{languages || NO_LANGUAGE}</dd>
+          <dt>Languages:</dt>
+          <dd>{languages || NO_LANGUAGE}</dd>
         </div>
         <div className="stat-card-data-point">
-          <dt>TED:</dt><dd>{ted || NO_TOUR_END_DATE}</dd>
+          <dt>TED:</dt>
+          <dd>{ted || NO_TOUR_END_DATE}</dd>
         </div>
         <div className="stat-card-data-point">
-          <dt>Location:</dt><dd>{currentAssignmentText || NO_POST}</dd>
+          <dt>Location:</dt>
+          <dd>{currentAssignmentText || NO_POST}</dd>
         </div>
       </div>
       <div className="bidder-portfolio-stat-card-bottom">
@@ -56,11 +67,21 @@ const BidderPortfolioStatCard = ({ userProfile, classifications }) => {
             classifications={classifications}
           />
         </div>
-        {useCDOBidding() &&
-        <div className="button-container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-          <SearchAsClientButton user={userProfile} />
-          { useAvailableBidders() && <AddToInternalListButton refKey={perdet} /> }
-        </div>}
+        {useCDOBidding() && (
+          <div
+            className="button-container"
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <SearchAsClientButton user={userProfile} />
+            {useAvailableBidders() && (
+              <AddToInternalListButton refKey={perdet} />
+            )}
+          </div>
+        )}
       </div>
     </BoxShadow>
   );

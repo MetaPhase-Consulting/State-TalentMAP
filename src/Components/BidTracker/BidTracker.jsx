@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { find, get, orderBy, reverse } from 'lodash';
+import {
+  find, get, orderBy, reverse,
+} from 'lodash';
 import Alert from 'Components/Alert';
 import ExportButton from 'Components/ExportButton';
 import SearchAsClientButton from 'Components/BidderPortfolio/SearchAsClientButton/SearchAsClientButton';
@@ -33,16 +35,16 @@ class BidTracker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sortValue: find(SORT_OPTIONS, f => f.defaultSort).value,
+      sortValue: find(SORT_OPTIONS, (f) => f.defaultSort).value,
       exportIsLoading: false,
     };
   }
 
-  onSelectOption = e => {
+  onSelectOption = (e) => {
     this.setState({ sortValue: get(e, 'target.value') });
   };
 
-  setIsLoading = exportIsLoading => {
+  setIsLoading = (exportIsLoading) => {
     this.setState({ exportIsLoading });
   };
 
@@ -58,11 +60,11 @@ class BidTracker extends Component {
         results$ = orderBy(results$, LOCATION);
         break;
       case STATUS:
-        results$ = orderBy(results$, e => get(BID_STATUS_ORDER, `${e.status}`, -1));
+        results$ = orderBy(results$, (e) => get(BID_STATUS_ORDER, `${e.status}`, -1));
         results$ = reverse(results$);
         break;
       case REVERSE_STATUS:
-        results$ = orderBy(results$, e => get(BID_STATUS_ORDER, `${e.status}`));
+        results$ = orderBy(results$, (e) => get(BID_STATUS_ORDER, `${e.status}`));
         break;
       default:
         results$ = results;
@@ -71,7 +73,10 @@ class BidTracker extends Component {
   }
 
   exportBidlistData = () => {
-    const { isPublic, userProfile: { perdet_seq_number } } = this.props;
+    const {
+      isPublic,
+      userProfile: { perdet_seq_number },
+    } = this.props;
     this.setIsLoading(true);
     downloadBidlistData(isPublic, perdet_seq_number)
       .then(() => {
@@ -80,22 +85,33 @@ class BidTracker extends Component {
       .catch(() => {
         this.setIsLoading(false);
       });
-  }
+  };
 
   render() {
     const { exportIsLoading, sortValue } = this.state;
-    const { bidList, bidListIsLoading, bidListHasErrored, acceptBid,
-      declineBid, submitBid, deleteBid, userProfile,
-      userProfileIsLoading, isPublic, useCDOView, registerHandshake,
-      unregisterHandshake } = this.props;
+    const {
+      bidList,
+      bidListIsLoading,
+      bidListHasErrored,
+      acceptBid,
+      declineBid,
+      submitBid,
+      deleteBid,
+      userProfile,
+      userProfileIsLoading,
+      isPublic,
+      useCDOView,
+      registerHandshake,
+      unregisterHandshake,
+    } = this.props;
     const isLoading = bidListIsLoading || userProfileIsLoading;
-    const title = isPublic && get(userProfile, 'name') && !userProfileIsLoading ?
-      `${userProfile.name}'s Bid Tracker` : 'Bid Tracker';
+    const title = isPublic && get(userProfile, 'name') && !userProfileIsLoading
+      ? `${userProfile.name}'s Bid Tracker`
+      : 'Bid Tracker';
 
-    const emptyBidListText = isPublic ?
-      'This user does not have any bids in their bid list.'
-      :
-      'You do not have any bids in your bid list.';
+    const emptyBidListText = isPublic
+      ? 'This user does not have any bids in their bid list.'
+      : 'You do not have any bids in your bid list.';
 
     const cdoEmail = get(userProfile, 'cdo.email');
 
@@ -114,10 +130,9 @@ class BidTracker extends Component {
           </div>
           <div className="usa-width-one-half bid-tracker-cdo-email-container">
             <div className="bid-tracker-cdo-email">
-              {
-                cdoEmail && !userProfileIsLoading &&
+              {cdoEmail && !userProfileIsLoading && (
                 <ContactCDOButton email={cdoEmail} />
-              }
+              )}
             </div>
           </div>
         </div>
@@ -132,38 +147,50 @@ class BidTracker extends Component {
             />
           </div>
           <div className="export-button-container">
-            <ExportButton onClick={this.exportBidlistData} isLoading={exportIsLoading} />
+            <ExportButton
+              onClick={this.exportBidlistData}
+              isLoading={exportIsLoading}
+            />
           </div>
         </div>
         <div className="bid-tracker-content-container">
-          {
-            isLoading && <Spinner type="homepage-position-results" size="big" />
-          }
-          {
-            !isLoading && !bidListHasErrored &&
-              <div className="usa-grid-full">
-                <BidStatusStats bidList={bidList.results} />
-                <BidTrackerCardList
-                  bids={sortedBids}
-                  acceptBid={acceptBid}
-                  declineBid={declineBid}
-                  submitBid={submitBid}
-                  deleteBid={deleteBid}
-                  registerHandshake={registerHandshake}
-                  unregisterHandshake={unregisterHandshake}
-                  userProfile={userProfile}
-                  useCDOView={useCDOView}
-                />
-              </div>
-          }
-          {
-            !isLoading && !bidListHasErrored && !get(bidList, 'results', []).length &&
-            <Alert type="info" title="Bid list empty" messages={[{ body: emptyBidListText }]} />
-          }
-          {
-            bidListHasErrored && !isLoading &&
-            <Alert type="error" title="An error has occurred" messages={[{ body: 'We were unable to load your bid list. Please try again later.' }]} />
-          }
+          {isLoading && <Spinner type="homepage-position-results" size="big" />}
+          {!isLoading && !bidListHasErrored && (
+            <div className="usa-grid-full">
+              <BidStatusStats bidList={bidList.results} />
+              <BidTrackerCardList
+                bids={sortedBids}
+                acceptBid={acceptBid}
+                declineBid={declineBid}
+                submitBid={submitBid}
+                deleteBid={deleteBid}
+                registerHandshake={registerHandshake}
+                unregisterHandshake={unregisterHandshake}
+                userProfile={userProfile}
+                useCDOView={useCDOView}
+              />
+            </div>
+          )}
+          {!isLoading
+            && !bidListHasErrored
+            && !get(bidList, 'results', []).length && (
+            <Alert
+              type="info"
+              title="Bid list empty"
+              messages={[{ body: emptyBidListText }]}
+            />
+          )}
+          {bidListHasErrored && !isLoading && (
+            <Alert
+              type="error"
+              title="An error has occurred"
+              messages={[
+                {
+                  body: 'We were unable to load your bid list. Please try again later.',
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
     );

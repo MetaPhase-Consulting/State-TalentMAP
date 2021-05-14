@@ -5,16 +5,16 @@ import bidderListObject from '../../../__mocks__/bidderListObject';
 
 describe('BidderPortfolioCardListComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(<BidderPortfolioCardList
-      results={bidderListObject.results}
-    />);
+    const wrapper = shallow(
+      <BidderPortfolioCardList results={bidderListObject.results} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<BidderPortfolioCardList
-      results={bidderListObject.results}
-    />);
+    const wrapper = shallow(
+      <BidderPortfolioCardList results={bidderListObject.results} />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

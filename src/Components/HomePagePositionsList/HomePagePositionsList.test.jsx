@@ -12,19 +12,20 @@ describe('HomePagePositionsList', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(<HomePagePositionsList
-      positions={resultsObject.results}
-      {...props}
-    />);
+    const wrapper = shallow(
+      <HomePagePositionsList positions={resultsObject.results} {...props} />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('renders the results-loading class if isLoading is true', () => {
-    const wrapper = shallow(<HomePagePositionsList
-      positions={resultsObject.results}
-      {...props}
-      isLoading
-    />);
+    const wrapper = shallow(
+      <HomePagePositionsList
+        positions={resultsObject.results}
+        {...props}
+        isLoading
+      />,
+    );
     expect(wrapper.find('.results-loading').exists()).toBe(true);
   });
 
@@ -32,10 +33,9 @@ describe('HomePagePositionsList', () => {
     // test with 7 positions and a max of 6
     const positions = Array(7).fill(resultsObject.results[0]);
 
-    const wrapper = shallow(<HomePagePositionsList
-      positions={positions}
-      {...props}
-    />);
+    const wrapper = shallow(
+      <HomePagePositionsList positions={positions} {...props} />,
+    );
     expect(wrapper.find('.condensed-card').length).toEqual(positions.length);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

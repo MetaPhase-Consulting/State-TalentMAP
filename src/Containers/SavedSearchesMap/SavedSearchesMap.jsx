@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { merge } from 'lodash';
 import { filtersFetchData } from '../../actions/filters/filters';
 import { mapSavedSearchesToSingleQuery } from '../../utilities';
-import { DEFAULT_USER_PROFILE, POSITION_RESULTS_OBJECT } from '../../Constants/DefaultProps';
+import {
+  DEFAULT_USER_PROFILE,
+  POSITION_RESULTS_OBJECT,
+} from '../../Constants/DefaultProps';
 import {
   EMPTY_FUNCTION,
   FILTERS_PARENT,
@@ -39,10 +42,7 @@ class SavedSearchesMap extends Component {
     const { hasSetupValues } = this.state;
 
     // is anything loading from the parent? if so, don't try to fetch filters
-    const isLoading = (
-      savedSearchesIsLoading ||
-      deleteSavedSearchIsLoading
-    );
+    const isLoading = savedSearchesIsLoading || deleteSavedSearchIsLoading;
 
     const mappedSearchQuery = mapSavedSearchesToSingleQuery(savedSearches);
 
@@ -57,16 +57,25 @@ class SavedSearchesMap extends Component {
     if (filters$.hasFetched && !isLoading && !hasSetupValues) {
       this.setState({ hasSetupValues: true });
       fetchFilters(filters$, mappedSearchQuery, filters$);
-    } else if (!isLoading && !hasSetupValues) { // if not, we'll perform AJAX
+    } else if (!isLoading && !hasSetupValues) {
+      // if not, we'll perform AJAX
       this.setState({ hasSetupValues: true });
       fetchFilters(filters$, mappedSearchQuery);
     }
   }
 
   render() {
-    const { savedSearches, deleteSearch, filters, ChildElement,
-      savedSearchesHasErrored, savedSearchesIsLoading, goToSavedSearch,
-      filtersIsLoading, onSortChange } = this.props;
+    const {
+      savedSearches,
+      deleteSearch,
+      filters,
+      ChildElement,
+      savedSearchesHasErrored,
+      savedSearchesIsLoading,
+      goToSavedSearch,
+      filtersIsLoading,
+      onSortChange,
+    } = this.props;
     const props = {
       savedSearches,
       deleteSearch,
@@ -79,9 +88,7 @@ class SavedSearchesMap extends Component {
       mappedParams: filters.mappedParams || [],
     };
 
-    return (
-      <ChildElement {...props} />
-    );
+    return <ChildElement {...props} />;
   }
 }
 
@@ -116,15 +123,14 @@ SavedSearchesMap.contextTypes = {
   container: PropTypes.element,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   filters: state.filters,
   filtersHasErrored: state.filtersHasErrored,
   filtersIsLoading: state.filtersIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchFilters: (items, queryParams, savedFilters) =>
-    dispatch(filtersFetchData(items, queryParams, savedFilters)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchFilters: (items, queryParams, savedFilters) => dispatch(filtersFetchData(items, queryParams, savedFilters)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedSearchesMap);

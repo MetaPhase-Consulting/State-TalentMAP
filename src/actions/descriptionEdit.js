@@ -66,9 +66,6 @@ export function editDescription(id, content, pointOfContact, website) {
   };
 }
 
-export const editDescriptionContent = (id, content) =>
-  dispatch => dispatch(editDescription(id, content));
-export const editPocContent = (id, content) =>
-  dispatch => dispatch(editDescription(id, null, content));
-export const editWebsiteContent = (id, content) =>
-  dispatch => dispatch(editDescription(id, null, null, content));
+export const editDescriptionContent = (id, content) => dispatch => dispatch(editDescription(id, content));
+export const editPocContent = (id, content) => dispatch => dispatch(editDescription(id, null, content));
+export const editWebsiteContent = (id, content) => dispatch => dispatch(editDescription(id, null, null, content));

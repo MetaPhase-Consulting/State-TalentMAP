@@ -15,24 +15,32 @@ describe('ProfilePublic', () => {
     bidList: [],
   };
   it('is defined', () => {
-    const profile = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <ProfilePublic
-        isAuthorized={() => true}
-        onNavigateTo={() => {}}
-        userProfile={userProfile}
-      />
-    </MemoryRouter></Provider>);
+    const profile = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <ProfilePublic
+            isAuthorized={() => true}
+            onNavigateTo={() => {}}
+            userProfile={userProfile}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(profile).toBeDefined();
   });
 
   it('can handle authentication redirects', () => {
-    const profile = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <ProfilePublic
-        isAuthorized={() => false}
-        onNavigateTo={() => {}}
-        userProfile={userProfile}
-      />
-    </MemoryRouter></Provider>);
+    const profile = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <ProfilePublic
+            isAuthorized={() => false}
+            onNavigateTo={() => {}}
+            userProfile={userProfile}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(profile).toBeDefined();
   });
 });

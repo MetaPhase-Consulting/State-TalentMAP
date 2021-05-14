@@ -14,10 +14,12 @@ describe('GlossaryEditorPageHeaderComponent', () => {
   });
 
   it('displays a success alert', () => {
-    const wrapper = shallow(<GlossaryEditorPageHeader
-      {...props}
-      glossaryPostSuccess={{ success: true }}
-    />);
+    const wrapper = shallow(
+      <GlossaryEditorPageHeader
+        {...props}
+        glossaryPostSuccess={{ success: true }}
+      />,
+    );
     expect(wrapper.find('[type="success"]').exists()).toBe(true);
   });
 
@@ -34,17 +36,17 @@ describe('GlossaryEditorPageHeaderComponent', () => {
   });
 
   it('matches snapshot when glossaryPostSuccess is true', () => {
-    const wrapper = shallow(<GlossaryEditorPageHeader
-      {...props}
-      glossaryPostSuccess={{ success: true }}
-    />);
+    const wrapper = shallow(
+      <GlossaryEditorPageHeader
+        {...props}
+        glossaryPostSuccess={{ success: true }}
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when showNewTerm is true', () => {
-    const wrapper = shallow(<GlossaryEditorPageHeader
-      {...props}
-    />);
+    const wrapper = shallow(<GlossaryEditorPageHeader {...props} />);
     wrapper.instance().toggleNewTermEditor();
     expect(wrapper.instance().state.showNewTerm).toBe(true);
     expect(toJSON(wrapper)).toMatchSnapshot();

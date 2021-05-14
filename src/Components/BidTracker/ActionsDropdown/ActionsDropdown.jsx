@@ -1,14 +1,17 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Dropdown, { DropdownContent, DropdownTrigger } from 'react-simple-dropdown';
+import Dropdown, {
+  DropdownContent,
+  DropdownTrigger,
+} from 'react-simple-dropdown';
 import { toggleBidPosition } from '../../../actions/bidList';
 import ActionsLink from '../ActionsLink';
 import InteractiveElement from '../../InteractiveElement';
 
 // Export unconnected class for testing.
 export class ActionsDropdown extends Component {
-  setDropdown = dropdown => {
+  setDropdown = (dropdown) => {
     this.dropdown = dropdown;
   };
 
@@ -23,7 +26,9 @@ export class ActionsDropdown extends Component {
 
   render() {
     // Use different props to display certain actions and disable them as well.
-    const { showDelete, disableDelete, showWithdraw, disableWithdraw } = this.props;
+    const {
+      showDelete, disableDelete, showWithdraw, disableWithdraw,
+    } = this.props;
 
     const dropdownSegmentClass = 'account-dropdown--identity account-dropdown--segment';
 
@@ -51,45 +56,33 @@ export class ActionsDropdown extends Component {
           <ActionsLink />
         </DropdownTrigger>
         <DropdownContent>
-          <div
-            tabIndex="0"
-            role="link"
-            className={dropdownSegmentClass}
-          >
+          <div tabIndex="0" role="link" className={dropdownSegmentClass}>
             Send to e-mail
           </div>
-          <div
-            tabIndex="0"
-            role="link"
-            className={dropdownSegmentClass}
-          >
+          <div tabIndex="0" role="link" className={dropdownSegmentClass}>
             Print
           </div>
-          {
-            showDelete ?
-              <InteractiveElement
-                type="div"
-                role="link"
-                className={`${dropdownSegmentClass} ${deleteClass}`}
-                onClick={this.deleteBid}
-                title={deleteTitle}
-              >
-                Delete
-              </InteractiveElement>
-              : null
-          }
-          {
-            showWithdraw ?
-              <InteractiveElement
-                type="div"
-                role="link"
-                className={`${dropdownSegmentClass} ${withdrawClass}`}
-                title={withdrawTitle}
-              >
-                Withdraw
-              </InteractiveElement>
-              : null
-          }
+          {showDelete ? (
+            <InteractiveElement
+              type="div"
+              role="link"
+              className={`${dropdownSegmentClass} ${deleteClass}`}
+              onClick={this.deleteBid}
+              title={deleteTitle}
+            >
+              Delete
+            </InteractiveElement>
+          ) : null}
+          {showWithdraw ? (
+            <InteractiveElement
+              type="div"
+              role="link"
+              className={`${dropdownSegmentClass} ${withdrawClass}`}
+              title={withdrawTitle}
+            >
+              Withdraw
+            </InteractiveElement>
+          ) : null}
         </DropdownContent>
       </Dropdown>
     );
@@ -112,13 +105,13 @@ ActionsDropdown.defaultProps = {
   disableWithdraw: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   bidListToggleHasErrored: state.bidListToggleHasErrored,
   bidListToggleIsLoading: state.bidListToggleIsLoading,
   bidListToggleSuccess: state.bidListToggleSuccess,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   toggleBid: (id, remove) => dispatch(toggleBidPosition(id, remove)),
 });
 

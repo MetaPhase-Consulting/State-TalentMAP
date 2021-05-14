@@ -11,16 +11,12 @@ describe('HomePageFiltersComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <HomePageFilters {...props} />,
-    );
+    const wrapper = shallow(<HomePageFilters {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when no filters are available', () => {
-    const wrapper = shallow(
-      <HomePageFilters {...props} filters={[]} />,
-    );
+    const wrapper = shallow(<HomePageFilters {...props} filters={[]} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -32,9 +28,7 @@ describe('HomePageFiltersComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <HomePageFilters {...props} />,
-    );
+    const wrapper = shallow(<HomePageFilters {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

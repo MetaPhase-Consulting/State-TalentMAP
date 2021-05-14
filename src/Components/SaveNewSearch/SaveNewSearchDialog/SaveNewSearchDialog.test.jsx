@@ -17,20 +17,13 @@ describe('SaveNewSearchDialogComponent', () => {
   };
 
   it('is defined', () => {
-    wrapper = shallow(
-      <SaveNewSearchDialog
-        {...props}
-      />,
-    );
+    wrapper = shallow(<SaveNewSearchDialog {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('is defined when hasErrored is truthy', () => {
     wrapper = shallow(
-      <SaveNewSearchDialog
-        {...props}
-        hasErrored="some error"
-      />,
+      <SaveNewSearchDialog {...props} hasErrored="some error" />,
     );
     expect(wrapper).toBeDefined();
   });
@@ -40,7 +33,9 @@ describe('SaveNewSearchDialogComponent', () => {
     wrapper = shallow(
       <SaveNewSearchDialog
         {...props}
-        saveSearch={(e) => { form.value = e; }}
+        saveSearch={(e) => {
+          form.value = e;
+        }}
       />,
     );
     wrapper.instance().onSubmit(form);
@@ -51,10 +46,7 @@ describe('SaveNewSearchDialogComponent', () => {
   it('can call functions', () => {
     const formSubmitSpy = sinon.spy();
     wrapper = shallow(
-      <SaveNewSearchDialog
-        {...props}
-        saveSearch={formSubmitSpy}
-      />,
+      <SaveNewSearchDialog {...props} saveSearch={formSubmitSpy} />,
     );
     wrapper.instance().onSubmit();
     sinon.assert.calledOnce(formSubmitSpy);
@@ -69,12 +61,11 @@ describe('SaveNewSearchDialogComponent', () => {
       isLoading: true,
     };
 
-    wrapper = shallow(
-      <SaveNewSearchDialog
-        {...props$}
-      />,
+    wrapper = shallow(<SaveNewSearchDialog {...props$} />);
+    const changeNewSearchNameSpy = sinon.spy(
+      wrapper.instance(),
+      'changeNewSearchName',
     );
-    const changeNewSearchNameSpy = sinon.spy(wrapper.instance(), 'changeNewSearchName');
     wrapper.setProps({ ...props$, isLoading: false, hasErrored: false });
     sinon.assert.calledOnce(toggleSpy);
     sinon.assert.calledOnce(changeNewSearchNameSpy);
@@ -88,21 +79,13 @@ describe('SaveNewSearchDialogComponent', () => {
       toggle: toggleSpy,
     };
 
-    wrapper = shallow(
-      <SaveNewSearchDialog
-        {...props$}
-      />,
-    );
+    wrapper = shallow(<SaveNewSearchDialog {...props$} />);
     wrapper.instance().onCancel();
     sinon.assert.calledOnce(toggleSpy);
   });
 
   it('matches snapshot', () => {
-    wrapper = shallow(
-      <SaveNewSearchDialog
-        {...props}
-      />,
-    );
+    wrapper = shallow(<SaveNewSearchDialog {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

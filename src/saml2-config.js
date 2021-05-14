@@ -65,4 +65,6 @@ const logout = (handler) => {
   serviceProvider.create_logout_request_url(identityProvider, {}, handler);
 };
 
-module.exports = { metadata, login, loginAlt, logout };
+module.exports = {
+  metadata, login, loginAlt, logout,
+};

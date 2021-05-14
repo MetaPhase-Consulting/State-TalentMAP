@@ -8,20 +8,12 @@ describe('SaveNewSearchAlertComponent', () => {
   const message = { title: 'Title', message: 'A test message.' };
 
   it('is defined', () => {
-    wrapper = shallow(
-      <SaveNewSearchAlert
-        newSavedSearchSuccess={message}
-      />,
-    );
+    wrapper = shallow(<SaveNewSearchAlert newSavedSearchSuccess={message} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    wrapper = shallow(
-      <SaveNewSearchAlert
-        newSavedSearchSuccess={message}
-      />,
-    );
+    wrapper = shallow(<SaveNewSearchAlert newSavedSearchSuccess={message} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

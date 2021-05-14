@@ -29,12 +29,10 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onGet('/fsbid/client/1/').reply(200,
-      profile,
-    );
+      profile);
 
     mockAdapter.onGet('/fsbid/cdo/client/1/').reply(200,
-      { results: bids },
-    );
+      { results: bids });
 
     const f = () => {
       setTimeout(() => {
@@ -49,12 +47,10 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onGet('/fsbid/client/1/').reply(200,
-      { ...profile, perdet_seq_number: undefined },
-    );
+      { ...profile, perdet_seq_number: undefined });
 
     mockAdapter.onGet('/fsbid/cdo/client/1/').reply(200,
-      { results: bids },
-    );
+      { results: bids });
 
     const f = () => {
       setTimeout(() => {
@@ -69,12 +65,10 @@ describe('async actions', () => {
     const store = mockStore({ profile: {} });
 
     mockAdapter.onGet('/fsbid/client/1/').reply(200,
-      { ...profile, id: undefined },
-    );
+      { ...profile, id: undefined });
 
     mockAdapter.onGet('/fsbid/cdo/client/1/').reply(200,
-      { results: bids },
-    );
+      { results: bids });
 
     const f = () => {
       setTimeout(() => {
@@ -91,12 +85,10 @@ describe('async actions', () => {
     mockAdapter.reset();
 
     mockAdapter.onGet('/fsbid/client/1/').reply(404,
-      null,
-    );
+      null);
 
     mockAdapter.onGet('/fsbid/cdo/client/1/').reply(404,
-      null,
-    );
+      null);
 
     const f = () => {
       setTimeout(() => {

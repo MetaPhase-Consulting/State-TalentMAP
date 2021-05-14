@@ -12,7 +12,11 @@ describe('OrganizationStampComponent', () => {
 
   it('is defined when showMail is false', () => {
     const wrapper = shallow(
-      <OrganizationStamp name="African Affairs" abbreviation="AF" showMail={false} />,
+      <OrganizationStamp
+        name="African Affairs"
+        abbreviation="AF"
+        showMail={false}
+      />,
     );
     expect(wrapper).toBeDefined();
   });
@@ -26,7 +30,11 @@ describe('OrganizationStampComponent', () => {
 
   it('matches snapshot when showMail is false', () => {
     const wrapper = shallow(
-      <OrganizationStamp name="African Affairs" abbreviation="AF" showMail={false} />,
+      <OrganizationStamp
+        name="African Affairs"
+        abbreviation="AF"
+        showMail={false}
+      />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

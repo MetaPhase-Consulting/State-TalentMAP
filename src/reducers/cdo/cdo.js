@@ -86,4 +86,3 @@ export function availableBidderEditDataSuccess(state = {}, action) {
       return state;
   }
 }
-

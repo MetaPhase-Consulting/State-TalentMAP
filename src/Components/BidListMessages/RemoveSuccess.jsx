@@ -4,13 +4,12 @@ import { POSITION_DETAILS } from '../../Constants/PropTypes';
 
 const RemoveSuccess = ({ pos, onToggle }) => (
   <span>
-    {pos.title} ({pos.position_number}) has been successfully removed from Bid List.&nbsp;
-    <InteractiveElement
-      type="a"
-      onClick={onToggle}
-    >
-        Undo
-    </InteractiveElement>.
+    {pos.title} ({pos.position_number}) has been successfully removed from Bid
+    List.&nbsp;
+    <InteractiveElement type="a" onClick={onToggle}>
+      Undo
+    </InteractiveElement>
+    .
   </span>
 );
 

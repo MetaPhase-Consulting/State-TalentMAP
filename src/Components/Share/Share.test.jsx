@@ -11,9 +11,13 @@ const mockStore = configureStore(middlewares);
 
 describe('Main', () => {
   it('is defined', () => {
-    const share = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Share identifier={5} />
-    </MemoryRouter></Provider>);
+    const share = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Share identifier={5} />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(share).toBeDefined();
   });
 });

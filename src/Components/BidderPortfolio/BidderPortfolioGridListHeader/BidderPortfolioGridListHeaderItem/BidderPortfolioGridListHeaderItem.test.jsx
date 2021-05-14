@@ -4,12 +4,16 @@ import BidderPortfolioGridListHeaderItem from './BidderPortfolioGridListHeaderIt
 
 describe('BidderPortfolioGridListHeaderItemComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(<BidderPortfolioGridListHeaderItem content="test" />);
+    const wrapper = shallow(
+      <BidderPortfolioGridListHeaderItem content="test" />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<BidderPortfolioGridListHeaderItem content="test" />);
+    const wrapper = shallow(
+      <BidderPortfolioGridListHeaderItem content="test" />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

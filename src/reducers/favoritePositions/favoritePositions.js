@@ -17,8 +17,7 @@ export function favoritePositionsIsLoading(state = false, action) {
   }
 }
 
-export function favoritePositions(state = {
-  favorites: [], favoritesPV: [], counts: {} }, action) {
+export function favoritePositions(state = { favorites: [], favoritesPV: [], counts: {} }, action) {
   switch (action.type) {
     case 'FAVORITE_POSITIONS_FETCH_DATA_SUCCESS':
       return {

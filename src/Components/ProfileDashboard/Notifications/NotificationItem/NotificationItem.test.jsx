@@ -6,10 +6,7 @@ import NotificationItem from './NotificationItem';
 describe('NotificationItemComponent', () => {
   it('is defined', () => {
     const wrapper = shallow(
-      <NotificationItem
-        content="content"
-        notificationTime="10-10-2017"
-      />,
+      <NotificationItem content="content" notificationTime="10-10-2017" />,
     );
     expect(wrapper).toBeDefined();
   });
@@ -23,10 +20,7 @@ describe('NotificationItemComponent', () => {
     // https://date-fns.org/v1.29.0/docs/distanceInWords
     const notificationTime = subMonths(new Date(), 2.1).toString();
     const wrapper = shallow(
-      <NotificationItem
-        content="content"
-        notificationTime={notificationTime}
-      />,
+      <NotificationItem content="content" notificationTime={notificationTime} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

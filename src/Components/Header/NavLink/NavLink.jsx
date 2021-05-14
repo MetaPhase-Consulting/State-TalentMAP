@@ -4,12 +4,20 @@ import { Link } from 'react-router-dom';
 import { ROUTER_LOCATION_OBJECT } from '../../../Constants/PropTypes';
 import { isCurrentPath } from '../../ProfileMenu/navigation';
 
-export const NavLink = ({ title, link, location, navLinkClass, routeToRight }) => {
+export const NavLink = ({
+  title,
+  link,
+  location,
+  navLinkClass,
+  routeToRight,
+}) => {
   const isActive = isCurrentPath(location.pathname, link);
   const toRightIsActive = isCurrentPath(location.pathname, routeToRight);
   return (
     <div
-      className={`header-nav-link-container ${isActive ? 'is-highlighted' : 'is-not-active'} ${toRightIsActive ? 'link-right-active' : ''}`}
+      className={`header-nav-link-container ${
+        isActive ? 'is-highlighted' : 'is-not-active'
+      } ${toRightIsActive ? 'link-right-active' : ''}`}
     >
       <div className="header-nav-link">
         <div className={`header-nav-link-text ${navLinkClass}`}>

@@ -27,5 +27,4 @@ FavoriteContent.propTypes = {
   position: POSITION_DETAILS.isRequired,
 };
 
-
 export default FavoriteContent;

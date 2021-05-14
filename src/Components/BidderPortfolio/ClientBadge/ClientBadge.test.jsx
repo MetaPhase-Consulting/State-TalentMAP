@@ -9,16 +9,12 @@ describe('ClientBadge', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(<ClientBadge
-      {...props}
-    />);
+    const wrapper = shallow(<ClientBadge {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<ClientBadge
-      {...props}
-    />);
+    const wrapper = shallow(<ClientBadge {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

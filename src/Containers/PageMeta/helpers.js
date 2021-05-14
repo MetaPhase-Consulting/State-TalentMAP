@@ -14,7 +14,7 @@ const getBestMatchPath = (routes, historyObject) => {
     // if the route matches, has a page title, and it's path is longer than the current value,
     // then set result to that object.
     if (matched && route.pageTitle && matched.path.length > result.path.length) {
-      result = Object.assign({}, matched, route);
+      result = { ...matched, ...route };
     }
   });
 

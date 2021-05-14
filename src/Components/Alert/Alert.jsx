@@ -9,8 +9,11 @@ class Alert extends Component {
   shouldComponentUpdate(nextProps) {
     return !isEqual(this.props, nextProps);
   }
+
   render() {
-    const { type, title, messages, isAriaLive, isDivided } = this.props;
+    const {
+      type, title, messages, isAriaLive, isDivided,
+    } = this.props;
     // 'type' is injected into the class name
     // type 'error' requires an ARIA role
     let ariaLiveProps = {};
@@ -21,30 +24,29 @@ class Alert extends Component {
       };
     }
     const h3 = <h3 className="usa-alert-heading">{title}</h3>;
-    const body = messages.map(message =>
-      (<p className="usa-alert-text" key={shortid.generate()}>
+    const body = messages.map((message) => (
+      <p className="usa-alert-text" key={shortid.generate()}>
         {message.body}
-      </p>),
-    );
+      </p>
+    ));
     return (
-      <div className={`usa-alert usa-alert-${type}`} role={(type === 'error') ? 'alert' : null} {...ariaLiveProps}>
-        {
-          isDivided ?
-            <div>
-              <div className="usa-alert-body">
-                {h3}
-              </div>
-              <div className="divider" />
-              <div className="usa-alert-body">
-                {body}
-              </div>
-            </div>
-            :
-            <div className="usa-alert-body">
-              {h3}
-              {body}
-            </div>
-        }
+      <div
+        className={`usa-alert usa-alert-${type}`}
+        role={type === 'error' ? 'alert' : null}
+        {...ariaLiveProps}
+      >
+        {isDivided ? (
+          <div>
+            <div className="usa-alert-body">{h3}</div>
+            <div className="divider" />
+            <div className="usa-alert-body">{body}</div>
+          </div>
+        ) : (
+          <div className="usa-alert-body">
+            {h3}
+            {body}
+          </div>
+        )}
       </div>
     );
   }
@@ -56,7 +58,8 @@ Alert.propTypes = {
   messages: PropTypes.arrayOf(
     PropTypes.shape({
       body: PropTypes.node,
-    })),
+    }),
+  ),
   isAriaLive: PropTypes.bool,
   isDivided: PropTypes.bool,
 };

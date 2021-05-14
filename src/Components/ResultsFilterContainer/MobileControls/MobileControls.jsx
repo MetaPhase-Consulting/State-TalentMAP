@@ -8,20 +8,17 @@ import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
 
 const MobileControls = ({ toggle }) => (
   <MediaQuery breakpoint="screenSmMax" widthType="max">
-    {
-      matches => (
-        matches &&
-        <div className="filter-container-top">
-          <InteractiveElement onClick={toggle}>
-            <FA name="chevron-left" />
-          </InteractiveElement>
-          <span>Filter</span>
-          <div>
-            <button onClick={toggle}>View Results</button>
-          </div>
+    {(matches) => matches && (
+      <div className="filter-container-top">
+        <InteractiveElement onClick={toggle}>
+          <FA name="chevron-left" />
+        </InteractiveElement>
+        <span>Filter</span>
+        <div>
+          <button onClick={toggle}>View Results</button>
         </div>
-      )
-    }
+      </div>
+    )}
   </MediaQuery>
 );
 
@@ -33,7 +30,7 @@ MobileControls.defaultProps = {
   toggle: EMPTY_FUNCTION,
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   toggle: () => dispatch(toggleMobileFilter(false)),
 });
 

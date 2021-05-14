@@ -1,7 +1,10 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import sinon from 'sinon';
-import { SearchAsClientButton, genSearchParams /* , mapDispatchToProps */ } from './SearchAsClientButton';
+import {
+  SearchAsClientButton,
+  genSearchParams /* , mapDispatchToProps */,
+} from './SearchAsClientButton';
 // import { testDispatchFunctions } from '../../../testUtilities/testUtilities';
 
 describe('SearchAsClientButton', () => {
@@ -50,7 +53,9 @@ describe('SearchAsClientButton', () => {
   it('sets state and navigates on stringifyParamsAndNavigate()', (done) => {
     const params = { skill: '', grade: '03,04' };
     const history = { push: sinon.spy() };
-    const wrapper = shallow(<SearchAsClientButton {...props} history={history} />);
+    const wrapper = shallow(
+      <SearchAsClientButton {...props} history={history} />,
+    );
     wrapper.setState({ clicked: true });
     wrapper.instance().stringifyParamsAndNavigate(params);
     expect(wrapper.instance().state.clicked).toBe(false);
@@ -67,7 +72,9 @@ describe('SearchAsClientButton', () => {
       grade: '03',
     };
     const result = () => genSearchParams(user);
-    expect(result()).toBe('position__grade__code__in=03&position__skill__code__in=1%2C5A');
+    expect(result()).toBe(
+      'position__grade__code__in=03&position__skill__code__in=1%2C5A',
+    );
 
     user.grade = null;
     expect(result()).toBe('position__skill__code__in=1%2C5A');

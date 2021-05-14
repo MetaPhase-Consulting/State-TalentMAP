@@ -4,10 +4,17 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
-import { debounce, get, has, isString, keys, omit, pickBy } from 'lodash';
+import {
+  debounce, get, has, isString, keys, omit, pickBy,
+} from 'lodash';
 import { toastInfo } from 'actions/toast';
 import queryParamUpdate from '../queryParams';
-import { cleanQueryParams, cleanTandemQueryParams, getAssetPath, scrollToTop } from '../../utilities';
+import {
+  cleanQueryParams,
+  cleanTandemQueryParams,
+  getAssetPath,
+  scrollToTop,
+} from '../../utilities';
 import { resultsFetchData } from '../../actions/results';
 import { filtersFetchData } from '../../actions/filters/filters';
 import { bidListFetchData } from '../../actions/bidList';
@@ -18,13 +25,24 @@ import { setSelectedAccordion } from '../../actions/selectedAccordion';
 import { toggleSearchBar } from '../../actions/showSearchBar';
 import ResultsPage from '../../Components/ResultsPage/ResultsPage';
 import CompareDrawer from '../../Components/CompareDrawer';
-import { ACCORDION_SELECTION_OBJECT, BIDDER_OBJECT, BID_LIST,
-  EMPTY_FUNCTION, FILTERS_PARENT, MISSION_DETAILS_ARRAY,
-  POSITION_SEARCH_RESULTS, POST_DETAILS_ARRAY, USER_PROFILE } from '../../Constants/PropTypes';
+import {
+  ACCORDION_SELECTION_OBJECT,
+  BIDDER_OBJECT,
+  BID_LIST,
+  EMPTY_FUNCTION,
+  FILTERS_PARENT,
+  MISSION_DETAILS_ARRAY,
+  POSITION_SEARCH_RESULTS,
+  POST_DETAILS_ARRAY,
+  USER_PROFILE,
+} from '../../Constants/PropTypes';
 import { ACCORDION_SELECTION } from '../../Constants/DefaultProps';
 import { LOGIN_REDIRECT } from '../../login/routes';
-import { POSITION_PAGE_SIZES, POSITION_PAGE_SIZES_TYPE,
-  POSITION_SEARCH_SORTS_DYNAMIC } from '../../Constants/Sort';
+import {
+  POSITION_PAGE_SIZES,
+  POSITION_PAGE_SIZES_TYPE,
+  POSITION_SEARCH_SORTS_DYNAMIC,
+} from '../../Constants/Sort';
 
 const DEFAULT_PAGE_NUMBER = 1;
 
@@ -53,7 +71,8 @@ class Results extends Component {
     const isTandemSearch = tandem === 'tandem';
     const newResultsCount = this.getNewResultsCount();
     return {
-      isTandemSearch, newResultsCount,
+      isTandemSearch,
+      newResultsCount,
     };
   }
 
@@ -70,7 +89,10 @@ class Results extends Component {
       this.props.bidListFetchData();
     }
     if (count) {
-      showNewResultsToast(`There are ${count} new positions for your saved search. They have been automatically sorted by posted date.`, 'New Results');
+      showNewResultsToast(
+        `There are ${count} new positions for your saved search. They have been automatically sorted by posted date.`,
+        'New Results',
+      );
     }
   }
 
@@ -81,7 +103,7 @@ class Results extends Component {
   }
 
   // for when we need to UPDATE the ENTIRE value of a filter
-  onQueryParamUpdate = q => {
+  onQueryParamUpdate = (q) => {
     const newQueryString = queryParamUpdate(q, this.state.query.value);
     // and push to history
     this.updateHistory(newQueryString);
@@ -141,17 +163,19 @@ class Results extends Component {
   getNewResultsCount = () => {
     const q = queryString.parse(this.state.query.value);
     const count = get(q, 'count');
-    return isNaN(count) ? 0 : +count;
-  }
+    return Number.isNaN(count) ? 0 : +count;
+  };
 
   // check if there are filters selected so that the clear filters button can be displayed or hidden
   getQueryExists = () => {
-    const { query: { value } } = this.state;
+    const {
+      query: { value },
+    } = this.state;
     let query = queryString.parse(value);
     // omit page size and ordering
     query = omit(query, ['limit', 'ordering']);
     // remove any falsy props, unless it's a 0
-    query = pickBy(query, v => v || v === 0);
+    query = pickBy(query, (v) => v || v === 0);
     // query exists if it has keys
     return !!keys(query).length;
   };
@@ -160,7 +184,8 @@ class Results extends Component {
     // ResultsPage is connected so we access the ref's functions slightly differently
     // https://github.com/reduxjs/react-redux/issues/475#issuecomment-242976693
     const keyword = get(this, 'resultsPageRef.keywordRef')
-      ? this.resultsPageRef.keywordRef.getValue() : '';
+      ? this.resultsPageRef.keywordRef.getValue()
+      : '';
     if (isString(keyword)) {
       const parsed$ = queryString.parse(q);
       parsed$.q = keyword;
@@ -169,35 +194,46 @@ class Results extends Component {
     return false;
   }
 
+  // reset to no query params
+  resetFilters = () => {
+    this.context.router.history.push({
+      search: '',
+    });
+  };
+
   createQueryParams() {
-    const { query, defaultSort, defaultPageSize, defaultPageNumber, defaultKeyword } = this.state;
+    const {
+      query,
+      defaultSort,
+      defaultPageSize,
+      defaultPageNumber,
+      defaultKeyword,
+    } = this.state;
     const { filters, fetchFilters } = this.props;
     const filters$ = { ...filters };
     // set our current query
     const parsedQuery = queryString.parse(query.value);
-    const { ordering, limit, page, q } = parsedQuery;
+    const {
+      ordering, limit, page, q,
+    } = parsedQuery;
     // set our default ordering
-    defaultSort.value =
-      ordering || POSITION_SEARCH_SORT$().defaultSort;
+    defaultSort.value = ordering || POSITION_SEARCH_SORT$().defaultSort;
     // set our default page size
-    defaultPageSize.value =
-      parseInt(limit, 10) || this.props.defaultPageSize;
+    defaultPageSize.value = parseInt(limit, 10) || this.props.defaultPageSize;
     // set our default page number
-    defaultPageNumber.value =
-      parseInt(page, 10) || DEFAULT_PAGE_NUMBER;
+    defaultPageNumber.value = parseInt(page, 10) || DEFAULT_PAGE_NUMBER;
     // set our default keyword (?q=...)
-    defaultKeyword.value =
-      q || defaultKeyword.value;
+    defaultKeyword.value = q || defaultKeyword.value;
     // add our defaultSort and defaultPageSize to the query,
     // but don't add them to history on initial render if
     // they weren't included in the initial query params
-    const newQuery =
-      { ordering: defaultSort.value,
-        page: defaultPageNumber.value,
-        limit: defaultPageSize.value,
-        // this order dictates that query params take precedence over default values
-        ...parsedQuery,
-      };
+    const newQuery = {
+      ordering: defaultSort.value,
+      page: defaultPageNumber.value,
+      limit: defaultPageSize.value,
+      // this order dictates that query params take precedence over default values
+      ...parsedQuery,
+    };
     const newQueryString = queryString.stringify(newQuery);
 
     // Have the filters already been fetched?
@@ -207,7 +243,8 @@ class Results extends Component {
     // the query params against the filters
     if (filters$.hasFetched) {
       fetchFilters(filters$, newQuery, filters$);
-    } else { // if not, we'll perform AJAX
+    } else {
+      // if not, we'll perform AJAX
       fetchFilters(filters$, newQuery);
     }
     // fetch new results
@@ -233,17 +270,13 @@ class Results extends Component {
       window.history.pushState('', '', getAssetPath(`/results?${q$}`));
       this.debounced.cancel();
       // add debounce so that quickly selecting multiple filters is smooth
-      this.debounced = debounce(() => this.createQueryParams(), this.props.debounceTimeInMs);
+      this.debounced = debounce(
+        () => this.createQueryParams(),
+        this.props.debounceTimeInMs,
+      );
       this.debounced();
     });
   }
-
-  // reset to no query params
-  resetFilters = () => {
-    this.context.router.history.push({
-      search: '',
-    });
-  };
 
   callFetchData(q) {
     this.props.fetchData(q);
@@ -256,19 +289,36 @@ class Results extends Component {
     // does parsedQuery have tandem filter
     const tandemSearch = has(parsedQuery, 'tandem');
     // remove any invalid filters
-    const cleanedQuery = tandemSearch ? cleanTandemQueryParams(parsedQuery)
+    const cleanedQuery = tandemSearch
+      ? cleanTandemQueryParams(parsedQuery)
       : cleanQueryParams(parsedQuery);
     // store formed object in redux
     this.props.storeSearch(cleanedQuery);
   }
 
   render() {
-    const { results, hasErrored, isLoading, filters,
-      selectedAccordion, setAccordion, userProfile, fetchMissionAutocomplete,
-      missionSearchResults, missionSearchIsLoading, missionSearchHasErrored,
-      fetchPostAutocomplete, postSearchResults, postSearchIsLoading,
-      postSearchHasErrored, shouldShowSearchBar, bidList,
-      client, clientIsLoading, clientHasErrored } = this.props;
+    const {
+      results,
+      hasErrored,
+      isLoading,
+      filters,
+      selectedAccordion,
+      setAccordion,
+      userProfile,
+      fetchMissionAutocomplete,
+      missionSearchResults,
+      missionSearchIsLoading,
+      missionSearchHasErrored,
+      fetchPostAutocomplete,
+      postSearchResults,
+      postSearchIsLoading,
+      postSearchHasErrored,
+      shouldShowSearchBar,
+      bidList,
+      client,
+      clientIsLoading,
+      clientHasErrored,
+    } = this.props;
     const { filtersIsLoading } = this.state;
     const filters$ = { ...filters };
     const showClear = this.getQueryExists();
@@ -276,7 +326,9 @@ class Results extends Component {
     return (
       <div>
         <ResultsPage
-          ref={(ref) => { this.resultsPageRef = ref; }}
+          ref={(ref) => {
+            this.resultsPageRef = ref;
+          }}
           results={results}
           hasErrored={hasErrored}
           isLoading={isLoading}
@@ -387,7 +439,7 @@ Results.defaultProps = {
   showNewResultsToast: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   results: state.results,
   hasErrored: state.resultsHasErrored,
   isLoading: state.resultsIsLoading,
@@ -405,24 +457,32 @@ const mapStateToProps = state => ({
   postSearchHasErrored: state.postSearchHasErrored,
   shouldShowSearchBar: state.shouldShowSearchBar,
   bidList: state.bidListFetchDataSuccess,
-  defaultPageSize: get(state, `sortPreferences.${POSITION_PAGE_SIZES_TYPE}.defaultSort`, POSITION_PAGE_SIZES.defaultSort),
+  defaultPageSize: get(
+    state,
+    `sortPreferences.${POSITION_PAGE_SIZES_TYPE}.defaultSort`,
+    POSITION_PAGE_SIZES.defaultSort,
+  ),
   client: get(state, 'clientView.client'),
   clientIsLoading: get(state, 'clientView.isLoading'),
   clientHasErrored: get(state, 'clientView.hasErrored'),
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchData: url => dispatch(resultsFetchData(url)),
-  fetchFilters: (items, queryParams, savedFilters) =>
-    dispatch(filtersFetchData(items, queryParams, savedFilters, true)),
-  setAccordion: accordion => dispatch(setSelectedAccordion(accordion)),
-  onNavigateTo: dest => dispatch(push(dest)),
-  fetchMissionAutocomplete: query => dispatch(missionSearchFetchData(query)),
-  fetchPostAutocomplete: query => dispatch(postSearchFetchData(query)),
-  toggleSearchBarVisibility: bool => dispatch(toggleSearchBar(bool)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchData: (url) => dispatch(resultsFetchData(url)),
+  fetchFilters: (items, queryParams, savedFilters) => dispatch(filtersFetchData(
+    items, queryParams, savedFilters, true,
+  )),
+  setAccordion: (accordion) => dispatch(setSelectedAccordion(accordion)),
+  onNavigateTo: (dest) => dispatch(push(dest)),
+  fetchMissionAutocomplete: (query) => dispatch(missionSearchFetchData(query)),
+  fetchPostAutocomplete: (query) => dispatch(postSearchFetchData(query)),
+  toggleSearchBarVisibility: (bool) => dispatch(toggleSearchBar(bool)),
   bidListFetchData: () => dispatch(bidListFetchData()),
-  storeSearch: obj => dispatch(storeCurrentSearch(obj)),
+  storeSearch: (obj) => dispatch(storeCurrentSearch(obj)),
   showNewResultsToast: (message, title) => dispatch(toastInfo(message, title)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Results));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Results));

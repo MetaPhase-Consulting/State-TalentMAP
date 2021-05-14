@@ -25,15 +25,24 @@ class BidderPortfolioGridItem extends Component {
     const { userProfile } = this.props;
     const { expanded } = this.state;
     /* Object [0] should be the most recent. If undefined, use 0 for draft and submitted. */
-    const latestBidStatistics = userProfile.bid_statistics[0] || { draft: 0, submitted: 0 };
+    const latestBidStatistics = userProfile.bid_statistics[0] || {
+      draft: 0,
+      submitted: 0,
+    };
     return (
       <div className="bidder-portfolio-grid-item-container">
         <div className="usa-grid-full current-user bidder-portfolio-grid-item">
           <div className="usa-width-one-fourth grid-item-section">
             <div className="checkbox-container">
-              <CheckBox id={`checkbox-${userProfile.id}`} label="Select this user" value={false} labelSrOnly small />
+              <CheckBox
+                id={`checkbox-${userProfile.id}`}
+                label="Select this user"
+                value={false}
+                labelSrOnly
+                small
+              />
             </div>
-            <div className="general-information-container" >
+            <div className="general-information-container">
               <UserProfileGeneralInformation
                 userProfile={userProfile}
                 showEditLink={false}
@@ -62,10 +71,9 @@ class BidderPortfolioGridItem extends Component {
             />
           </div>
         </div>
-        {
-          expanded &&
-            <BidderPortfolioGridItemAdditional clientId={userProfile.id} />
-        }
+        {expanded && (
+          <BidderPortfolioGridItemAdditional clientId={userProfile.id} />
+        )}
       </div>
     );
   }

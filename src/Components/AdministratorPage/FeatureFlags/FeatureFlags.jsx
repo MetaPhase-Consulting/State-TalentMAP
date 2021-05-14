@@ -19,7 +19,7 @@ class FeatureFlags extends Component {
     };
   }
 
-  handleChange = d => {
+  handleChange = (d) => {
     this.setState({ editableFeatureFlags: d });
   };
 
@@ -39,39 +39,43 @@ class FeatureFlags extends Component {
 
     const featureFlagsSuccess = !featureFlagsIsLoading && !featureFlagsHasErrored;
 
-    const isSuperUser = userHasPermissions(['superuser'], userProfile.permission_groups);
+    const isSuperUser = userHasPermissions(
+      ['superuser'],
+      userProfile.permission_groups,
+    );
     return (
       <div
         className={`usa-grid-full profile-content-inner-container administrator-page
-        ${(featureFlagsIsLoading) ? 'results-loading' : ''}`}
+        ${featureFlagsIsLoading ? 'results-loading' : ''}`}
       >
-        {
-          featureFlagsIsLoading && !featureFlagsHasErrored &&
-            <Spinner type="homepage-position-results" size="big" />
-        }
+        {featureFlagsIsLoading && !featureFlagsHasErrored && (
+          <Spinner type="homepage-position-results" size="big" />
+        )}
         <div className="usa-grid-full">
           <ProfileSectionTitle title="Feature Flags" icon="flag" />
         </div>
 
-        { featureFlagsSuccess && isSuperUser ?
+        {featureFlagsSuccess && isSuperUser ? (
           <PermissionsWrapper permissions="superuser">
-            <Editor
-              value={featureFlags}
-              onChange={this.handleChange}
-            />
-            <button name="Submit" className="usa-button" onClick={this.submitData}>Submit</button>
+            <Editor value={featureFlags} onChange={this.handleChange} />
+            <button
+              name="Submit"
+              className="usa-button"
+              onClick={this.submitData}
+            >
+              Submit
+            </button>
           </PermissionsWrapper>
-          :
+        ) : (
           <div>
             <div>
               <pre>
-                {
-                  isObject(featureFlags) && JSON.stringify(featureFlags, undefined, 2)
-                }
+                {isObject(featureFlags)
+                  && JSON.stringify(featureFlags, undefined, 2)}
               </pre>
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }
@@ -93,14 +97,14 @@ FeatureFlags.defaultProps = {
   postData: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userProfile: state.userProfile,
   featureFlagsHasErrored: state.featureFlagsHasErrored,
   featureFlagsIsLoading: state.featureFlagsIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  postData: data => dispatch(postFeatureFlagsData(data)),
+export const mapDispatchToProps = (dispatch) => ({
+  postData: (data) => dispatch(postFeatureFlagsData(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeatureFlags);

@@ -5,7 +5,12 @@ import PositionsSectionTitle from '../PositionsSectionTitle';
 import HomePagePositionsList from '../HomePagePositionsList';
 import Alert from '../Alert';
 import Spinner from '../Spinner';
-import { BID_RESULTS, FAVORITE_POSITIONS_ARRAY, HOME_PAGE_CARD_TYPE, POSITION_DETAILS_ARRAY } from '../../Constants/PropTypes';
+import {
+  BID_RESULTS,
+  FAVORITE_POSITIONS_ARRAY,
+  HOME_PAGE_CARD_TYPE,
+  POSITION_DETAILS_ARRAY,
+} from '../../Constants/PropTypes';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -33,59 +38,64 @@ const defaultProps = {
   wrapInLink: true,
 };
 
-const HomePagePositionsSection = ({ title, icon, viewMoreLink, positions,
-  favorites, isLoading, hasErrored, bidList, type, useSpinner, wrapInLink }) => {
+const HomePagePositionsSection = ({
+  title,
+  icon,
+  viewMoreLink,
+  positions,
+  favorites,
+  isLoading,
+  hasErrored,
+  bidList,
+  type,
+  useSpinner,
+  wrapInLink,
+}) => {
   const listIsReady = !!(positions && Object.keys(positions).length);
   const shouldShowAlert = !hasErrored && positions && !positions.length;
   const shouldShowErrorAlert = hasErrored && !isLoading;
   const shouldDisplaySpinner = useSpinner && isLoading;
   const isFavorites = title === 'Favorited Positions';
 
-  const wrappedInLink = wrapInLink ?
-    (
-      <Link to={viewMoreLink} title={`View more ${title}`}>
-        <h2 className="positions-section-title">
-          { !!icon.length && <FontAwesome name={icon} /> }
-          {title}
-          <FontAwesome name="angle-right" />
-        </h2>
-      </Link>
-    )
-    :
-    (
+  const wrappedInLink = wrapInLink ? (
+    <Link to={viewMoreLink} title={`View more ${title}`}>
       <h2 className="positions-section-title">
-        { !!icon.length && <FontAwesome name={icon} /> }
+        {!!icon.length && <FontAwesome name={icon} />}
         {title}
+        <FontAwesome name="angle-right" />
       </h2>
-    );
+    </Link>
+  ) : (
+    <h2 className="positions-section-title">
+      {!!icon.length && <FontAwesome name={icon} />}
+      {title}
+    </h2>
+  );
   return (
     <div className="usa-grid-full positions-section">
-      <PositionsSectionTitle
-        title={wrappedInLink}
-      />
-      {
-        shouldDisplaySpinner && <Spinner size="small" type="homepage-positions-results" />
-      }
-      {
-        listIsReady &&
-          <HomePagePositionsList
-            favorites={favorites}
-            positions={positions}
-            isLoading={isLoading}
-            bidList={bidList}
-            type={type}
-            title={title}
-          />
-      }
-      {
-        shouldShowAlert && isFavorites && <Alert title="No available positions added to Favorites" />
-      }
-      {
-        shouldShowAlert && !isFavorites && <Alert title="No results match this criteria" />
-      }
-      {
-        shouldShowErrorAlert && <Alert title="An error occurred loading positions" type="error" />
-      }
+      <PositionsSectionTitle title={wrappedInLink} />
+      {shouldDisplaySpinner && (
+        <Spinner size="small" type="homepage-positions-results" />
+      )}
+      {listIsReady && (
+        <HomePagePositionsList
+          favorites={favorites}
+          positions={positions}
+          isLoading={isLoading}
+          bidList={bidList}
+          type={type}
+          title={title}
+        />
+      )}
+      {shouldShowAlert && isFavorites && (
+        <Alert title="No available positions added to Favorites" />
+      )}
+      {shouldShowAlert && !isFavorites && (
+        <Alert title="No results match this criteria" />
+      )}
+      {shouldShowErrorAlert && (
+        <Alert title="An error occurred loading positions" type="error" />
+      )}
     </div>
   );
 };

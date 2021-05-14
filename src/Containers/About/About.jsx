@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
 import About from '../../Components/About';
-import { aboutContentFetchData, aboutContentPatchData } from '../../actions/aboutContent';
+import {
+  aboutContentFetchData,
+  aboutContentPatchData,
+} from '../../actions/aboutContent';
 
 class AboutContainer extends Component {
   UNSAFE_componentWillMount() {
@@ -14,12 +17,14 @@ class AboutContainer extends Component {
     this.props.fetchData();
   }
 
-  patchData = data => {
+  patchData = (data) => {
     this.props.patchData(data);
   };
 
   render() {
-    const { data, hasErrored, isLoading, patchIsLoading, patchHasErrored } = this.props;
+    const {
+      data, hasErrored, isLoading, patchIsLoading, patchHasErrored,
+    } = this.props;
     const props = {
       data,
       hasErrored,
@@ -28,9 +33,7 @@ class AboutContainer extends Component {
       patchIsLoading,
       patchHasErrored,
     };
-    return (
-      <About {...props} />
-    );
+    return <About {...props} />;
   }
 }
 
@@ -56,7 +59,7 @@ AboutContainer.defaultProps = {
   patchData: EMPTY_FUNCTION,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.aboutContent,
   hasErrored: state.aboutContentHasErrored,
   isLoading: state.aboutContentIsLoading,
@@ -65,9 +68,9 @@ const mapStateToProps = state => ({
   patchIsLoading: state.aboutContentPatchIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchData: () => dispatch(aboutContentFetchData()),
-  patchData: data => dispatch(aboutContentPatchData(data)),
+  patchData: (data) => dispatch(aboutContentPatchData(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AboutContainer);

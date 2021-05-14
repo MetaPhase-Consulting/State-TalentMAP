@@ -6,16 +6,17 @@ const { mockStore, mockAdapter } = setupAsyncMocks();
 
 const items = {
   filters: [
-    { item: {
-      title: 'Skill',
-      sort: 100,
-      description: 'skill',
-      endpoint: 'skill/',
-      selectionRef: 'skill__code__in',
-      text: 'Choose Skill',
-    },
-    data: [
-    ],
+    {
+      item: {
+        title: 'Skill',
+        sort: 100,
+        description: 'skill',
+        endpoint: 'skill/',
+        selectionRef: 'skill__code__in',
+        text: 'Choose Skill',
+      },
+      data: [
+      ],
     },
     {
       item: {
@@ -158,32 +159,25 @@ describe('async actions', () => {
     };
 
     mockAdapter.onGet('http://localhost:8000/api/v1/skill/').reply(200,
-      skills,
-    );
+      skills);
 
     mockAdapter.onGet('http://localhost:8000/api/v1/organization/?is_bureau=true&is_regional=true').reply(200,
-      regions,
-    );
+      regions);
 
     mockAdapter.onGet('http://localhost:8000/api/v1/grade/').reply(200,
-      grades,
-    );
+      grades);
 
     mockAdapter.onGet('http://localhost:8000/api/v1/orgpost/?limit=7').reply(200,
-      posts,
-    );
+      posts);
 
     mockAdapter.onGet('http://localhost:8000/api/v1/orgpost/1/').reply(200,
-      posts.results[0],
-    );
+      posts.results[0]);
 
     mockAdapter.onGet('http://localhost:8000/api/v1/orgpost/2/').reply(404,
-      null,
-    );
+      null);
 
     mockAdapter.onGet('http://localhost:8000/api/v1/invalid/').reply(404,
-      {},
-    );
+      {});
   });
 
   const queryParams = {
@@ -205,8 +199,7 @@ describe('async actions', () => {
 
   it('can fetch filters when some filters do not have data nested within the results property', (done) => {
     mockAdapter.onGet('http://localhost:8000/api/v1/grade/').reply(200,
-      [{ id: 1 }],
-    );
+      [{ id: 1 }]);
 
     const store = mockStore({ filters: [] });
 
@@ -235,7 +228,7 @@ describe('async actions', () => {
 
   it('can handle failed fetches of filters', (done) => {
     const store = mockStore({ filters: [] });
-    const invalidItems = Object.assign({}, items);
+    const invalidItems = { ...items };
     invalidItems.filters[0].item.endpoint = 'invalid/'; // actually make one of the endpoints invalid
 
     const f = () => {

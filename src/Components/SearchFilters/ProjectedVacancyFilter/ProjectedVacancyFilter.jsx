@@ -6,7 +6,7 @@ import { EMPTY_FUNCTION } from '../../../Constants/PropTypes';
 
 class ProjectedVacancyFilter extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const item = nextProps.items.find(f => f.isSelected);
+    const item = nextProps.items.find((f) => f.isSelected);
     if (item && item.code && this.toggleRef) {
       this.toggleRef.updateVal(item.code);
     }
@@ -14,29 +14,57 @@ class ProjectedVacancyFilter extends Component {
       this.toggleRef.updateVal(nextProps.items[0].code);
     }
   }
+
   render() {
     const { items, onChange } = this.props;
-    const items$ = items.map(m => {
+    const items$ = items.map((m) => {
       if (m.code === 'projected') {
-        return { ...m, label: m.short_description, value: m.code, toggleClass: 'toggle-pv' };
-      } else if (m.code === 'open') {
-        return { ...m, label: m.short_description, value: m.code, toggleClass: 'toggle-ap' };
+        return {
+          ...m,
+          label: m.short_description,
+          value: m.code,
+          toggleClass: 'toggle-pv',
+        };
       }
-      return { ...m, label: m.short_description, value: m.code, toggleClass: '' };
+      if (m.code === 'open') {
+        return {
+          ...m,
+          label: m.short_description,
+          value: m.code,
+          toggleClass: 'toggle-ap',
+        };
+      }
+      return {
+        ...m,
+        label: m.short_description,
+        value: m.code,
+        toggleClass: '',
+      };
     });
     return (
       <div className="projected-vacancy-filter-container">
-        <Toggle ref={(x) => { this.toggleRef = x; }} items={items$} onChange={onChange} />
+        <Toggle
+          ref={(x) => {
+            this.toggleRef = x;
+          }}
+          items={items$}
+          onChange={onChange}
+        />
       </div>
     );
   }
 }
 
 ProjectedVacancyFilter.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    short_description: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    code: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  })),
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      short_description: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      code: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
+  ),
   onChange: PropTypes.func,
 };
 

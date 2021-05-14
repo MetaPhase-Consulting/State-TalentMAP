@@ -4,7 +4,11 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { HISTORY_OBJECT } from 'Constants/PropTypes';
-import { handshakeNotificationsFetchData, notificationsCountFetchData, notificationsFetchData } from '../../../actions/notifications';
+import {
+  handshakeNotificationsFetchData,
+  notificationsCountFetchData,
+  notificationsFetchData,
+} from '../../../actions/notifications';
 import IconAlert from '../../IconAlert';
 
 class Notifications extends Component {
@@ -26,15 +30,20 @@ class Notifications extends Component {
       }
     });
   }
+
   UNSAFE_componentWillReceiveProps(nextProps) {
     // don't fetch notifications if already on the Notifications page
     const path = get(nextProps, 'history.location.pathname');
-    if (nextProps.notificationsCount !== this.props.notificationsCount && path !== '/profile/notifications') {
+    if (
+      nextProps.notificationsCount !== this.props.notificationsCount
+      && path !== '/profile/notifications'
+    ) {
       // only fetch notifications if the count has changed
       this.props.fetchNotifications();
       this.props.fetchHandshakeNotifications();
     }
   }
+
   render() {
     const { notificationsCount, ...rest } = this.props;
     return (
@@ -60,14 +69,17 @@ Notifications.defaultProps = {
   notificationsCount: 0,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   notificationsCount: state.notificationsCount,
 });
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   fetchNotificationsCount: () => dispatch(notificationsCountFetchData()),
   fetchNotifications: () => dispatch(notificationsFetchData()),
   fetchHandshakeNotifications: () => dispatch(handshakeNotificationsFetchData()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Notifications));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(Notifications));

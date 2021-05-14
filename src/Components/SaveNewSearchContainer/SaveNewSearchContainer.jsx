@@ -1,6 +1,9 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SAVED_SEARCH_MESSAGE, SAVED_SEARCH_OBJECT } from '../../Constants/PropTypes';
+import {
+  SAVED_SEARCH_MESSAGE,
+  SAVED_SEARCH_OBJECT,
+} from '../../Constants/PropTypes';
 import SaveNewSearchDialog from '../SaveNewSearchDialog';
 import SaveNewSearchPrompt from '../SaveNewSearchPrompt';
 
@@ -12,7 +15,7 @@ class SaveNewSearchContainer extends Component {
     };
   }
 
-  toggleInput = e => {
+  toggleInput = (e) => {
     // preventDefault() to avoid query params getting added in MS Edge
     e.preventDefault();
     const { showInput } = this.state;
@@ -27,22 +30,26 @@ class SaveNewSearchContainer extends Component {
       newSavedSearchHasErrored,
       currentSavedSearch,
       newSavedSearchIsSaving,
-      saveSearch } = this.props;
+      saveSearch,
+    } = this.props;
     return (
-      <div className={`usa-grid-full save-new-search-container ${newSavedSearchIsSaving ? 'results-loading' : ''}`}>
+      <div
+        className={`usa-grid-full save-new-search-container ${
+          newSavedSearchIsSaving ? 'results-loading' : ''
+        }`}
+      >
         <SaveNewSearchPrompt
           toggleInput={this.toggleInput}
           currentSavedSearch={currentSavedSearch}
         />
-        {
-          showInput.value &&
+        {showInput.value && (
           <SaveNewSearchDialog
             saveSearch={saveSearch}
             onCancel={this.toggleInput}
             newSavedSearchHasErrored={newSavedSearchHasErrored}
             currentSavedSearch={currentSavedSearch}
           />
-        }
+        )}
       </div>
     );
   }

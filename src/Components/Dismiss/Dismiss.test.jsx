@@ -24,7 +24,11 @@ describe('DismissComponent', () => {
     const className = 'class1';
     const buttonClassName = 'class2';
     const wrapper = shallow(
-      <Dismiss onDismiss={() => {}} className={className} buttonClassName={buttonClassName}>
+      <Dismiss
+        onDismiss={() => {}}
+        className={className}
+        buttonClassName={buttonClassName}
+      >
         {child}
       </Dismiss>,
     );
@@ -34,21 +38,13 @@ describe('DismissComponent', () => {
 
   it('calls onDismiss() on button click', () => {
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Dismiss onDismiss={spy}>
-        {child}
-      </Dismiss>,
-    );
+    const wrapper = shallow(<Dismiss onDismiss={spy}>{child}</Dismiss>);
     wrapper.find('button').simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <Dismiss onDismiss={() => {}}>
-        {child}
-      </Dismiss>,
-    );
+    const wrapper = shallow(<Dismiss onDismiss={() => {}}>{child}</Dismiss>);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

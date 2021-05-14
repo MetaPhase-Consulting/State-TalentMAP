@@ -5,9 +5,7 @@ const PendingIcon = () => (
     <div className="bid-tracker-pending-icon-container">
       <FontAwesome name="clock-o" />
     </div>
-    <div className="bid-tracker-pending-text-container">
-      Pending
-    </div>
+    <div className="bid-tracker-pending-text-container">Pending</div>
   </div>
 );
 

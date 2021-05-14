@@ -12,9 +12,7 @@ describe('SkillCodeFilterComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <SkillCodeFilter {...props} />,
-    );
+    const wrapper = shallow(<SkillCodeFilter {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -30,15 +28,18 @@ describe('SkillCodeFilterComponent', () => {
 
   it('sets default selected options once and not after a user change', () => {
     const testProps = props;
-    const wrapper = shallow(
-      <SkillCodeFilter {...testProps} />,
-    );
+    const wrapper = shallow(<SkillCodeFilter {...testProps} />);
     // the userSkills should be passed to selectedOptions.value
     expect(wrapper.instance().state.selectedOptions.value.length).toBe(1);
     // userSkills should also have been wrapped with new props, such as label
-    expect(wrapper.instance().state.selectedOptions.value[0].label).toBeDefined();
+    expect(
+      wrapper.instance().state.selectedOptions.value[0].label,
+    ).toBeDefined();
     // simulate a user change where they have two filters
-    wrapper.instance().handleChange([{ code: '100', label: '100' }, { code: '200', label: '200' }]);
+    wrapper.instance().handleChange([
+      { code: '100', label: '100' },
+      { code: '200', label: '200' },
+    ]);
     // Then provide some external prop changes.
     // Providing new userSkills should not update state.
     wrapper.setProps({ ...testProps });
@@ -46,16 +47,12 @@ describe('SkillCodeFilterComponent', () => {
     expect(wrapper.instance().state.selectedOptions.value.length).toBe(2);
     // ...and that the two object in that array have the same codes as the objects in the first
     // array we passed.
-    expect(wrapper.instance().state.selectedOptions.value[0].code)
-      .toBe('100');
-    expect(wrapper.instance().state.selectedOptions.value[1].code)
-      .toBe('200');
+    expect(wrapper.instance().state.selectedOptions.value[0].code).toBe('100');
+    expect(wrapper.instance().state.selectedOptions.value[1].code).toBe('200');
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <SkillCodeFilter {...props} />,
-    );
+    const wrapper = shallow(<SkillCodeFilter {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

@@ -7,7 +7,11 @@ describe('ViewComparisonLink', () => {
 
   beforeEach(() => {
     localStorage.setItem('compare', JSON.stringify(['1', '2']));
-    viewLink = TestUtils.renderIntoDocument(<MemoryRouter><ViewComparisonLink /></MemoryRouter>);
+    viewLink = TestUtils.renderIntoDocument(
+      <MemoryRouter>
+        <ViewComparisonLink />
+      </MemoryRouter>,
+    );
   });
 
   it('is defined', () => {

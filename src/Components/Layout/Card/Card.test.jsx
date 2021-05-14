@@ -26,7 +26,7 @@ describe('Card', () => {
   });
 
   it('renders `as` prop and renders new tag', () => {
-    const tags = ('button|div|span|section|p').split('|');
+    const tags = 'button|div|span|section|p'.split('|');
 
     tags.forEach((tag) => {
       const wrapper = mount(<Card as={tag} />);

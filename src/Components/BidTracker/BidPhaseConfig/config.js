@@ -14,7 +14,6 @@ export const BID_PHASE_TYPE = () => TYPE_LIMITED;
 export const isTypeComplete = () => BID_PHASE_TYPE() === TYPE_COMPLETE;
 
 // eslint-disable-next-line no-confusing-arrow
-export const bidClassesFromCurrentStatus = () =>
-  BID_PHASE_TYPE() === TYPE_LIMITED ? limitedConfig : completeConfig;
+export const bidClassesFromCurrentStatus = () => BID_PHASE_TYPE() === TYPE_LIMITED ? limitedConfig : completeConfig;
 
 export default bidClassesFromCurrentStatus;

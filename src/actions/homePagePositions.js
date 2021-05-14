@@ -2,14 +2,16 @@ import { batch } from 'react-redux';
 import { SPECIAL_NEEDS } from 'Constants/EndpointParams';
 import { isEmpty } from 'lodash';
 import api from '../api';
-import { FAVORITED_POSITIONS,
+import {
+  FAVORITED_POSITIONS,
   FEATURED_GRADE_AND_SKILL_CONE_POSITIONS,
   FEATURED_GRADE_AND_SKILL_POSITIONS,
   FEATURED_GRADE_POSITIONS,
   FEATURED_POSITIONS,
   RECOMMENDED_GRADE_AND_SKILL_CONE_POSITIONS,
   RECOMMENDED_GRADE_AND_SKILL_POSITIONS,
-  RECOMMENDED_GRADE_POSITIONS } from '../Constants/PropTypes';
+  RECOMMENDED_GRADE_POSITIONS,
+} from '../Constants/PropTypes';
 
 const specialNeedsParams = SPECIAL_NEEDS.join(',');
 
@@ -19,14 +21,10 @@ export const GET_RECOMMENDED_GRADE_AND_SKILL_CONE_POSITIONS_QUERY = (skillCodes,
 export const GET_RECOMMENDED_GRADE_POSITIONS_QUERY = grade => `/fsbid/available_positions/?position__grade__code__in=${grade}&limit=3`;
 export const FAVORITE_POSITIONS_QUERY = () => '/available_position/favorites/?limit=3';
 
-export const GET_FEATURED_GRADE_AND_SKILL_POSITIONS_QUERY = (skillCodes, grade) =>
-  `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${skillCodes}&position__grade__code__in=${grade}&limit=3`;
-export const GET_FEATURED_GRADE_AND_SKILL_CONE_POSITIONS_QUERY = (skillCodes, grade) =>
-  `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${skillCodes}&position__grade__code__in=${grade}&limit=3`;
-export const GET_FEATURED_GRADE_POSITIONS_QUERY = (grade) =>
-  `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&position__grade__code__in=${grade}&limit=3`;
-export const GET_FEATURED_POSITIONS_QUERY = () =>
-  `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&limit=3`;
+export const GET_FEATURED_GRADE_AND_SKILL_POSITIONS_QUERY = (skillCodes, grade) => `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${skillCodes}&position__grade__code__in=${grade}&limit=3`;
+export const GET_FEATURED_GRADE_AND_SKILL_CONE_POSITIONS_QUERY = (skillCodes, grade) => `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&position__skill__code__in=${skillCodes}&position__grade__code__in=${grade}&limit=3`;
+export const GET_FEATURED_GRADE_POSITIONS_QUERY = (grade) => `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&position__grade__code__in=${grade}&limit=3`;
+export const GET_FEATURED_POSITIONS_QUERY = () => `/fsbid/available_positions/featuredPositions/?position__post_indicator__in=${specialNeedsParams}&limit=3`;
 
 export function homePageRecommendedPositionsHasErrored(bool) {
   return {
@@ -115,7 +113,8 @@ export function homePageFeaturedPositionsFetchData(skills = [], grade, skillCone
         if (!shouldSkip) {
           batch(() => {
             dispatch(homePageFeaturedPositionsFetchDataSuccess(
-              { positions: results.data.results, name: queryType.name }));
+              { positions: results.data.results, name: queryType.name },
+            ));
             dispatch(homePageFeaturedPositionsHasErrored(false));
             dispatch(homePageFeaturedPositionsIsLoading(false));
           });
@@ -146,12 +145,14 @@ export function homePageRecommendedPositionsFetchData(skills = [], grade, skillC
       const querySkillCodes = ids.join(',');
       queryType.name = RECOMMENDED_GRADE_AND_SKILL_POSITIONS;
       queryType.query = GET_RECOMMENDED_GRADE_AND_SKILL_CODE_POSITIONS_QUERY(
-        querySkillCodes, grade);
+        querySkillCodes, grade,
+      );
     } else if (grade && skillCones && skillCones.length) {
       const querySkillCones = skillCones.join(',');
       queryType.name = RECOMMENDED_GRADE_AND_SKILL_CONE_POSITIONS;
       queryType.query = GET_RECOMMENDED_GRADE_AND_SKILL_CONE_POSITIONS_QUERY(
-        querySkillCones, grade);
+        querySkillCones, grade,
+      );
     } else if (grade) {
       queryType.name = RECOMMENDED_GRADE_POSITIONS;
       queryType.query = GET_RECOMMENDED_GRADE_POSITIONS_QUERY(grade);
@@ -177,7 +178,8 @@ export function homePageRecommendedPositionsFetchData(skills = [], grade, skillC
         if (!shouldSkip) {
           batch(() => {
             dispatch(homePageRecommendedPositionsFetchDataSuccess(
-              { positions: results.data.results, name: queryType.name }));
+              { positions: results.data.results, name: queryType.name },
+            ));
             dispatch(homePageRecommendedPositionsHasErrored(false));
             dispatch(homePageRecommendedPositionsIsLoading(false));
           });

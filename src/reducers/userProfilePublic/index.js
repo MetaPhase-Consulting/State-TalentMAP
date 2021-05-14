@@ -1,5 +1,7 @@
 import { userProfilePublic, userProfilePublicHasErrored, userProfilePublicIsLoading } from './userProfilePublic';
 
-export default { userProfilePublic,
+export default {
+  userProfilePublic,
   userProfilePublicHasErrored,
-  userProfilePublicIsLoading };
+  userProfilePublicIsLoading,
+};

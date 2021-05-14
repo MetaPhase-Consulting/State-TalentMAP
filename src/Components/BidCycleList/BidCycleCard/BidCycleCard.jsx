@@ -16,7 +16,7 @@ const getCycleInfo = (item, key) => {
 
   let item$ = get(item, key, defaults[key]);
 
-  if ((/date/).test(key)) {
+  if (/date/.test(key)) {
     item$ = formatDate(item$, 'M.D.YYYY');
   }
 
@@ -31,18 +31,18 @@ const BidCycleCard = (props) => {
     deadline: getCycleInfo(props.cycle, 'cycle_deadline_date'),
   };
 
-  return (cycle ?
+  return cycle ? (
     <MediaQuery maxWidth="760px">
-      {matches => (
+      {(matches) => (
         <Card>
           <Row fluid>
-            <Column columns={(matches ? 12 : 3)}>
+            <Column columns={matches ? 12 : 3}>
               <DefinitionList>
                 <Definition term="Name" definition={cycle.name} />
                 <Definition term="Deadline Date" definition={cycle.deadline} />
               </DefinitionList>
             </Column>
-            <Column columns={(matches ? 12 : 3)}>
+            <Column columns={matches ? 12 : 3}>
               <DefinitionList>
                 <Definition term="Start Date" definition={cycle.start} />
                 <Definition term="End Date" definition={cycle.end} />
@@ -51,9 +51,8 @@ const BidCycleCard = (props) => {
           </Row>
         </Card>
       )}
-    </MediaQuery> :
-    null
-  );
+    </MediaQuery>
+  ) : null;
 };
 
 BidCycleCard.propTypes = {

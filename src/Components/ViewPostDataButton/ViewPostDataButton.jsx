@@ -7,7 +7,11 @@ const ViewPostDataButton = ({ url, type, altStyle }) => (
   <OBCUrl
     url={url}
     type={type}
-    label={<span><FontAwesome name="map-marker" /> View OBC Post Info</span>}
+    label={(
+      <span>
+        <FontAwesome name="map-marker" /> View OBC Post Info
+      </span>
+    )}
     isButton
     altStyle={altStyle}
   />

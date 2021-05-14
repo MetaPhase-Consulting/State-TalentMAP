@@ -9,9 +9,7 @@ describe('DarkModeToggle', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <DarkModeToggle.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<DarkModeToggle.WrappedComponent {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -23,15 +21,13 @@ describe('DarkModeToggle', () => {
   });
 
   it('it displays "Enable" when isDarkMode !== true', () => {
-    const wrapper = shallow(
-      <DarkModeToggle.WrappedComponent {...props} />,
-    );
+    const wrapper = shallow(<DarkModeToggle.WrappedComponent {...props} />);
     expect(wrapper.find('button').text()).toBe('Enable Dark Mode');
   });
 
   it('calls the set function', () => {
     let val = true;
-    const onClick = v => val = v; // eslint-disable-line
+    const onClick = (v) => (val = v); // eslint-disable-line
     const wrapper = shallow(
       <DarkModeToggle.WrappedComponent {...props} isDarkMode set={onClick} />,
     );

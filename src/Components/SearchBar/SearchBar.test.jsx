@@ -74,17 +74,19 @@ import SearchBar from './SearchBar';
 
     it('sets state and calls props.onClear() on this.onClear()', () => {
       const spy = sinon.spy();
-      wrapper = shallow(<SearchBar
-        id="search-2"
-        type={size}
-        submitDisabled={false}
-        submitText="Submit 2"
-        alertText="Search is disabled"
-        onChangeText={() => {}}
-        onSubmitSearch={() => {}}
-        showClear
-        onClear={spy}
-      />);
+      wrapper = shallow(
+        <SearchBar
+          id="search-2"
+          type={size}
+          submitDisabled={false}
+          submitText="Submit 2"
+          alertText="Search is disabled"
+          onChangeText={() => {}}
+          onSubmitSearch={() => {}}
+          showClear
+          onClear={spy}
+        />,
+      );
       wrapper.instance().setState({ searchText: { value: 'abc' } });
       wrapper.find('InteractiveElement').simulate('click');
       expect(wrapper.instance().state.searchText.value).toBe('');

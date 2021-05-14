@@ -1,26 +1,25 @@
 import PropTypes from 'prop-types';
 import LinkButton from '../../../LinkButton';
 
-const HandshakeDeclinedAlert = ({ userName, bureau, bidIdUrl }, { condensedView }) => (
-  <div
-    className="bid-tracker-alert-container bid-tracker-alert-container--handshake-declined"
-  >
+const HandshakeDeclinedAlert = (
+  { userName, bureau, bidIdUrl },
+  { condensedView },
+) => (
+  <div className="bid-tracker-alert-container bid-tracker-alert-container--handshake-declined">
     <div className="top-text">
-      {
-        userName && bureau ?
-          <span>{`${userName}, you've declined ${bureau}'s handshake`}</span>
-          :
-          <span>{'You\'ve declined the handshake'}</span>
-      }
+      {userName && bureau ? (
+        <span>{`${userName}, you've declined ${bureau}'s handshake`}</span>
+      ) : (
+        <span>You've declined the handshake</span>
+      )}
     </div>
-    {
-      condensedView &&
+    {condensedView && (
       <div className="usa-grid-full">
         <LinkButton toLink={bidIdUrl} className="tm-button-transparent">
           Go to Bid Tracker
         </LinkButton>
       </div>
-    }
+    )}
   </div>
 );
 

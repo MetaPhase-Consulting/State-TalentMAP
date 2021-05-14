@@ -6,18 +6,14 @@ import bidderPortfolioCountsObject from '../../../../../__mocks__/bidderPortfoli
 describe('NavigationListComponent', () => {
   it('is defined', () => {
     const wrapper = shallow(
-      <NavigationList
-        counts={bidderPortfolioCountsObject}
-      />,
+      <NavigationList counts={bidderPortfolioCountsObject} />,
     );
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
     const wrapper = shallow(
-      <NavigationList
-        counts={bidderPortfolioCountsObject}
-      />,
+      <NavigationList counts={bidderPortfolioCountsObject} />,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });

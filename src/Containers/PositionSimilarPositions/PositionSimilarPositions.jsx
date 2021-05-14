@@ -3,21 +3,41 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { resultsFetchSimilarPositions } from '../../actions/results';
 import { bidListFetchData } from '../../actions/bidList';
-import { BID_LIST, EMPTY_FUNCTION, POSITION_SEARCH_RESULTS, USER_PROFILE } from '../../Constants/PropTypes';
+import {
+  BID_LIST,
+  EMPTY_FUNCTION,
+  POSITION_SEARCH_RESULTS,
+  USER_PROFILE,
+} from '../../Constants/PropTypes';
 import HomePagePositionsSection from '../../Components/HomePagePositionsSection';
 
 class Position extends Component {
   UNSAFE_componentWillMount() {
-    const { fetchSimilarPositions, id, userProfile, bidList,
-      positionDetailsIsLoading } = this.props;
+    const {
+      fetchSimilarPositions,
+      id,
+      userProfile,
+      bidList,
+      positionDetailsIsLoading,
+    } = this.props;
     if (!positionDetailsIsLoading) {
-      fetchSimilarPositions(id, userProfile.favorite_positions, bidList.results);
+      fetchSimilarPositions(
+        id,
+        userProfile.favorite_positions,
+        bidList.results,
+      );
     }
   }
 
   render() {
-    const { title, similarPositions, similarPositionsHasErrored,
-      userProfile, similarPositionsIsLoading, bidList } = this.props;
+    const {
+      title,
+      similarPositions,
+      similarPositionsHasErrored,
+      userProfile,
+      similarPositionsIsLoading,
+      bidList,
+    } = this.props;
     return (
       <HomePagePositionsSection
         title={title}
@@ -56,7 +76,7 @@ Position.defaultProps = {
   positionDetailsIsLoading: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userProfile: state.userProfile,
   bidListHasErrored: state.bidListHasErrored,
   bidListIsLoading: state.bidListIsLoading,
@@ -70,9 +90,8 @@ const mapStateToProps = state => ({
   positionDetailsIsLoading: state.positionDetailsIsLoading,
 });
 
-export const mapDispatchToProps = dispatch => ({
-  fetchSimilarPositions: (id, favorites, bidList) =>
-    dispatch(resultsFetchSimilarPositions(id, favorites, bidList)),
+export const mapDispatchToProps = (dispatch) => ({
+  fetchSimilarPositions: (id, favorites, bidList) => dispatch(resultsFetchSimilarPositions(id, favorites, bidList)),
   fetchBidList: () => dispatch(bidListFetchData()),
 });
 

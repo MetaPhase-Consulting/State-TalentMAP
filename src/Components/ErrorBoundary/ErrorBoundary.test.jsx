@@ -23,7 +23,9 @@ describe('ErrorBoundary', () => {
 
   it('returns error information to onCatch if wrapped component throws', () => {
     let obj = { a: null, b: null };
-    const onCatch = (a, b) => { obj = { a, b }; };
+    const onCatch = (a, b) => {
+      obj = { a, b };
+    };
     const wrapper = mount(
       <ErrorBoundary onCatch={onCatch}>
         <FakeComponent />
@@ -37,7 +39,6 @@ describe('ErrorBoundary', () => {
     expect(obj.b.componentStack).toEqual(`
     in FakeComponent (created by ErrorBoundary)
     in ErrorBoundary (created by WrapperComponent)
-    in WrapperComponent`,
-    );
+    in WrapperComponent`);
   });
 });

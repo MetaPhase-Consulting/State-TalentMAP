@@ -29,35 +29,35 @@ describe('filter helpers', () => {
   it('returns correct values for the getFilterCustomDescription function', () => {
     // templated strings are returned based on the description value
     expect(getFilterCustomDescription(
-      { item: { description: 'region' } }, { short_description: 't', long_description: 'test' }),
-    ).toBe('(t) test');
+      { item: { description: 'region' } }, { short_description: 't', long_description: 'test' },
+    )).toBe('(t) test');
     expect(getFilterCustomDescription(
-      { item: { description: 'functionalRegion' } }, { short_description: 't', long_description: 'test' }),
-    ).toBe('(t) test');
+      { item: { description: 'functionalRegion' } }, { short_description: 't', long_description: 'test' },
+    )).toBe('(t) test');
     expect(getFilterCustomDescription(
-      { item: { description: 'skill' } }, { description: 'test', code: 't' }),
-    ).toBe('test (t)');
+      { item: { description: 'skill' } }, { description: 'test', code: 't' },
+    )).toBe('test (t)');
     expect(getFilterCustomDescription(
-      { item: { description: 'post' } }, { location: { city: 'Paris', country: 'France' } }),
-    ).toBe('Paris, France');
+      { item: { description: 'post' } }, { location: { city: 'Paris', country: 'France' } },
+    )).toBe('Paris, France');
     expect(getFilterCustomDescription(
-      { item: { description: 'bidCycle' } }, { name: 'test' }),
-    ).toBe('test');
+      { item: { description: 'bidCycle' } }, { name: 'test' },
+    )).toBe('test');
     expect(getFilterCustomDescription(
-      { item: { description: 'language' } }, { formal_description: 'test', code: '1' }),
-    ).toBe('test (1)');
+      { item: { description: 'language' } }, { formal_description: 'test', code: '1' },
+    )).toBe('test (1)');
     expect(getFilterCustomDescription(
-      { item: { description: 'grade' } }, { formal_description: 'test', code: '1' }),
-    ).toBe('1');
+      { item: { description: 'grade' } }, { formal_description: 'test', code: '1' },
+    )).toBe('1');
     ['postDiff', 'dangerPay', 'bidSeason'].forEach((f) => {
       expect(getFilterCustomDescription(
-        { item: { description: f } }, { description: 'test' }),
-      ).toBe('test');
+        { item: { description: f } }, { description: 'test' },
+      )).toBe('test');
     });
     // but unmapped descriptions will return false
     expect(getFilterCustomDescription(
-      { item: { description: 'invalid' } }, { location: { city: 'Paris', country: 'France' } }),
-    ).toBe(false);
+      { item: { description: 'invalid' } }, { location: { city: 'Paris', country: 'France' } },
+    )).toBe(false);
   });
 
   it('can return correct values for the getPillDescription function', () => {
@@ -75,7 +75,11 @@ describe('filter helpers', () => {
 
   it('can return correct values for the getPostOrMissionDescription function', () => {
     // all valid properties should return a templated value
-    expect(getPostOrMissionDescription({ type: 'post', location: { city: 'Paris', country: 'France' }, short_name: 'PAR' })).toBe('Paris, France');
+    expect(getPostOrMissionDescription({
+      type: 'post',
+      location: { city: 'Paris', country: 'France' },
+      short_name: 'PAR',
+    })).toBe('Paris, France');
     // but unmapped descriptions will return false
     expect(getPostOrMissionDescription({ type: 'invalid', location: { city: 'Paris', country: 'France' }, short_name: 'PAR' })).toBe(false);
   });

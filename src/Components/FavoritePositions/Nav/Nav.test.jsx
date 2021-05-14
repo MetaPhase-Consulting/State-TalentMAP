@@ -13,25 +13,19 @@ describe('NavComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <Nav {...props} />,
-    );
+    const wrapper = shallow(<Nav {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('mounts with the selection prop', () => {
     const exp = props.options[1].title;
-    const wrapper = shallow(
-      <Nav {...props} selected={exp} />,
-    );
+    const wrapper = shallow(<Nav {...props} selected={exp} />);
     expect(wrapper.instance().state.selected).toBe(exp);
   });
 
   it('updates the selected state if a new selected prop is set', () => {
     const exp = 'test';
-    const wrapper = shallow(
-      <Nav {...props} />,
-    );
+    const wrapper = shallow(<Nav {...props} />);
     wrapper.setProps({ ...props, selected: exp });
     expect(wrapper.instance().state.selected).toBe(exp);
   });
@@ -39,18 +33,14 @@ describe('NavComponent', () => {
   it('sets state and calls the onClick prop when instance.onClick is called', () => {
     const exp = 'test';
     const spy = sinon.spy();
-    const wrapper = shallow(
-      <Nav {...props} onClick={spy} />,
-    );
+    const wrapper = shallow(<Nav {...props} onClick={spy} />);
     wrapper.instance().onClick(exp);
     sinon.assert.calledOnce(spy);
     expect(wrapper.instance().state.selected).toBe(exp);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <Nav {...props} />,
-    );
+    const wrapper = shallow(<Nav {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

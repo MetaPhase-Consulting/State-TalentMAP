@@ -32,8 +32,8 @@ export function shouldShowAlert(bid, { condensedView = false }) {
   }
 
   // status is in the array OR paneling is today
-  if (alertStatusArray.includes(bid.status) ||
-  (bid.is_paneling_today && bid.status === IN_PANEL_PROP)) {
+  if (alertStatusArray.includes(bid.status)
+  || (bid.is_paneling_today && bid.status === IN_PANEL_PROP)) {
     return true;
   }
   return false;

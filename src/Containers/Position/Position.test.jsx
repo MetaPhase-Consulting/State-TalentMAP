@@ -14,13 +14,17 @@ const mockStore = configureStore(middlewares);
 
 describe('Position', () => {
   it('is defined', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Position
-        isAuthorized={() => true}
-        onNavigateTo={() => {}}
-        routerLocations={routerLocations}
-      />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Position
+            isAuthorized={() => true}
+            onNavigateTo={() => {}}
+            routerLocations={routerLocations}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 
@@ -70,13 +74,17 @@ describe('Position', () => {
   });
 
   it('can handle authentication redirects', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <Position
-        isAuthorized={() => false}
-        onNavigateTo={() => {}}
-        routerLocations={routerLocations}
-      />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <Position
+            isAuthorized={() => false}
+            onNavigateTo={() => {}}
+            routerLocations={routerLocations}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 });

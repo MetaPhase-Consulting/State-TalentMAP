@@ -8,7 +8,11 @@ import { getItemLabel } from '../../../utilities';
 
 class MultiSelectFilter extends Component {
   onCheckBoxClick = (value, props) => {
-    this.props.queryParamToggle(props.selectionRef, props[this.props.queryProperty], !value);
+    this.props.queryParamToggle(
+      props.selectionRef,
+      props[this.props.queryProperty],
+      !value,
+    );
   };
 
   getGroupedFilters() {
@@ -21,8 +25,9 @@ class MultiSelectFilter extends Component {
       // if so, assign it to its first letter
       if (firstIsAlpha) {
         return first;
-      // else, assign it to the '#' prop
-      } return '#';
+        // else, assign it to the '#' prop
+      }
+      return '#';
     });
 
     return groupedTerms;
@@ -39,11 +44,11 @@ class MultiSelectFilter extends Component {
     }
     return (
       <FieldSet key={item.item.title} legend={item.item.title} legendSrOnly>
-        {
-          !itemsGroupedByAlpha &&
-            item.data.map((itemData) => {
-              const itemLabel = getItemLabel(itemData);
-              return (<CheckBox
+        {!itemsGroupedByAlpha
+          && item.data.map((itemData) => {
+            const itemLabel = getItemLabel(itemData);
+            return (
+              <CheckBox
                 _id={itemData.id} /* when we need the original id */
                 id={`checkbox${itemLabel}-${item.item.description}`}
                 key={`checkbox${itemLabel}-${item.item.description}`}
@@ -55,38 +60,38 @@ class MultiSelectFilter extends Component {
                 selectionRef={item.item.selectionRef}
                 onCheckBoxClick={this.onCheckBoxClick}
                 className="tm-checkbox-transparent"
-              />);
-            })
-        }
-        {
-          itemsGroupedByAlpha &&
-            alphaGroups.map((group, i) => (
-              <div key={group} className={`usa-grid-full term-group ${i === 0 ? 'term-group-first' : ''}`}>
-                <div className="term-title">{group}</div>
-                {
-                  itemsGroupedByAlpha[group].map((itemData) => {
-                    const itemLabel = getItemLabel(itemData);
-                    return (
-                      <CheckBox
-                        _id={itemData.id} /* when we need the original id */
-                        id={`checkbox${itemLabel}-${item.item.description}`}
-                        key={`checkbox${itemLabel}-${item.item.description}`}
-                        label={itemLabel}
-                        title={itemLabel}
-                        name={itemLabel}
-                        value={itemData.isSelected || false}
-                        code={itemData.code}
-                        selectionRef={item.item.selectionRef}
-                        onCheckBoxClick={this.onCheckBoxClick}
-                        className="tm-checkbox-transparent"
-                      />
-                    );
-                  },
-                  )
-                }
-              </div>
-            ))
-        }
+              />
+            );
+          })}
+        {itemsGroupedByAlpha
+          && alphaGroups.map((group, i) => (
+            <div
+              key={group}
+              className={`usa-grid-full term-group ${
+                i === 0 ? 'term-group-first' : ''
+              }`}
+            >
+              <div className="term-title">{group}</div>
+              {itemsGroupedByAlpha[group].map((itemData) => {
+                const itemLabel = getItemLabel(itemData);
+                return (
+                  <CheckBox
+                    _id={itemData.id} /* when we need the original id */
+                    id={`checkbox${itemLabel}-${item.item.description}`}
+                    key={`checkbox${itemLabel}-${item.item.description}`}
+                    label={itemLabel}
+                    title={itemLabel}
+                    name={itemLabel}
+                    value={itemData.isSelected || false}
+                    code={itemData.code}
+                    selectionRef={item.item.selectionRef}
+                    onCheckBoxClick={this.onCheckBoxClick}
+                    className="tm-checkbox-transparent"
+                  />
+                );
+              })}
+            </div>
+          ))}
       </FieldSet>
     );
   }

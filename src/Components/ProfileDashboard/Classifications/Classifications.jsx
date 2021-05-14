@@ -4,12 +4,16 @@ import FA from 'react-fontawesome';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateClassifications } from 'actions/classifications';
-import { CLASSIFICATIONS, CLIENT_CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
+import {
+  CLASSIFICATIONS,
+  CLIENT_CLASSIFICATIONS,
+  EMPTY_FUNCTION,
+} from 'Constants/PropTypes';
 import { checkFlag } from 'flags';
 import SectionTitle from '../SectionTitle';
 import CheckboxList from '../../BidderPortfolio/CheckboxList';
 
-const Classifications = props => {
+const Classifications = (props) => {
   const {
     classifications,
     clientClassifications,
@@ -73,34 +77,37 @@ const Classifications = props => {
           />
         </div>
       </div>
-      {
-        !editView && displayClassificationsEditor &&
+      {!editView && displayClassificationsEditor && (
         <div className="section-padded-inner-container small-link-container view-more-link-centered">
-          <button className="unstyled-button classifications-checkbox" onClick={() => setEditView(true)}>
-            <FA
-              name="edit"
-            />Edit Classifications
+          <button
+            className="unstyled-button classifications-checkbox"
+            onClick={() => setEditView(true)}
+          >
+            <FA name="edit" />
+            Edit Classifications
           </button>
         </div>
-      }
-      { editView &&
+      )}
+      {editView && (
         <div className="section-padded-inner-container small-link-container view-more-link-centered">
           <div className="saved-search-form-buttons">
             <button
               type="button"
               className="saved-search-form-primary-button"
               onClick={onSubmit}
-            >Save
+            >
+              Save
             </button>
             <button
               type="button"
               className="saved-search-form-primary-button"
               onClick={cancelInput}
-            >Cancel
+            >
+              Cancel
             </button>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };
@@ -118,9 +125,8 @@ Classifications.defaultProps = {
   updateUserClassifications: EMPTY_FUNCTION,
 };
 
-export const mapDispatchToProps = dispatch => ({
-  updateUserClassifications: (classification, id) =>
-    dispatch(updateClassifications(classification, id)),
+export const mapDispatchToProps = (dispatch) => ({
+  updateUserClassifications: (classification, id) => dispatch(updateClassifications(classification, id)),
 });
 
 export default connect(null, mapDispatchToProps)(Classifications);

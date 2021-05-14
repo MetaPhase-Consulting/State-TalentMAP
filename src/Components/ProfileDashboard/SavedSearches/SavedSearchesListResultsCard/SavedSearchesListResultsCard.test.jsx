@@ -11,32 +11,21 @@ describe('SavedSearchesListResultsCardComponent', () => {
     goToSavedSearch: () => {},
   };
   it('is defined', () => {
-    const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SavedSearchesListResultsCard {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('can click the navigation button', () => {
     const spy = sinon.spy();
     const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-        goToSavedSearch={spy}
-      />,
+      <SavedSearchesListResultsCard {...props} goToSavedSearch={spy} />,
     );
     wrapper.find('.search-title').simulate('click');
     sinon.assert.calledOnce(spy);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <SavedSearchesListResultsCard
-        {...props}
-      />,
-    );
+    const wrapper = shallow(<SavedSearchesListResultsCard {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

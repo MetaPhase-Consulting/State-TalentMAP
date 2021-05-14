@@ -24,12 +24,14 @@ class About extends Component {
   toggleEditor = () => {
     const { editorVisible } = this.state;
     this.setState({ editorVisible: !editorVisible }, () => {
-      const elToFocus = this.state.editorVisible ? SUBMIT_BUTTON_ID : EDIT_BUTTON_ID;
+      const elToFocus = this.state.editorVisible
+        ? SUBMIT_BUTTON_ID
+        : EDIT_BUTTON_ID;
       focusById(elToFocus, 1);
     });
   };
 
-  submit = data => {
+  submit = (data) => {
     this.props.patchData(data);
   };
 
@@ -40,38 +42,56 @@ class About extends Component {
       <div className="usa-grid-full content-container padded-main-content">
         <div className="usa-grid-full about-page">
           <MediaQuery breakpoint="screenSmMax" widthType="min">
-            {matches => (
+            {(matches) => (
               <div>
-                {
-                  isLoading && !hasErrored &&
-                    <Spinner type="homepage-position-results" size="big" />
-                }
-                {
-                  !isLoading && hasErrored &&
-                  <Alert type="error" title="Error loading About page" messages={[{ body: 'Please try again.' }]} />
-                }
-                {
-                  !isLoading &&
-                  <div className={`${matches ? 'usa-width-one-half' : 'usa-width-three-fourths'} about-content`}>
-                    {
-                      !editorVisible &&
-                        <PermissionsWrapper permissions={['superuser', 'aboutpage_editor']} minimum>
-                          <EditContentButton onToggle={this.toggleEditor} id={EDIT_BUTTON_ID} />
-                        </PermissionsWrapper>
-                    }
-                    {editorVisible ?
+                {isLoading && !hasErrored && (
+                  <Spinner type="homepage-position-results" size="big" />
+                )}
+                {!isLoading && hasErrored && (
+                  <Alert
+                    type="error"
+                    title="Error loading About page"
+                    messages={[{ body: 'Please try again.' }]}
+                  />
+                )}
+                {!isLoading && (
+                  <div
+                    className={`${
+                      matches ? 'usa-width-one-half' : 'usa-width-three-fourths'
+                    } about-content`}
+                  >
+                    {!editorVisible && (
+                      <PermissionsWrapper
+                        permissions={['superuser', 'aboutpage_editor']}
+                        minimum
+                      >
+                        <EditContentButton
+                          onToggle={this.toggleEditor}
+                          id={EDIT_BUTTON_ID}
+                        />
+                      </PermissionsWrapper>
+                    )}
+                    {editorVisible ? (
                       <Editor
                         cancel={this.toggleEditor}
                         submit={this.submit}
                         data={data}
-                      /> :
+                      />
+                    ) : (
                       <div>
                         <ReactMarkdown source={data} linkTarget="_blank" />
-                        <a type="submit" role="button" href="mailto:TalentMAP@State.gov" className="tm-button-feedback">Email TalentMAP</a>
+                        <a
+                          type="submit"
+                          role="button"
+                          href="mailto:TalentMAP@State.gov"
+                          className="tm-button-feedback"
+                        >
+                          Email TalentMAP
+                        </a>
                       </div>
-                    }
+                    )}
                   </div>
-                }
+                )}
               </div>
             )}
           </MediaQuery>

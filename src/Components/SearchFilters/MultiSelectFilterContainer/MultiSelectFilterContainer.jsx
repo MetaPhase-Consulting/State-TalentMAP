@@ -6,17 +6,18 @@ const shortid = require('shortid'); // only use shortid if we don't have a key t
 
 const MultiSelectFilterContainer = ({ multiSelectFilterList }) => (
   <Accordion className="accordion-inverse">
-    {
-      multiSelectFilterList.map(item => (
-        <AccordionItem
-          key={item.title || shortid.generate()}
-          id={`checkbox-${formatIdSpacing(`${item.title}${item.isTandem ? '-tandem' : ''}`)}`}
-          title={item.altTitle || item.title}
-          buttonClass={item.buttonClass}
-        >
-          {item.content}
-        </AccordionItem>))
-    }
+    {multiSelectFilterList.map((item) => (
+      <AccordionItem
+        key={item.title || shortid.generate()}
+        id={`checkbox-${formatIdSpacing(
+          `${item.title}${item.isTandem ? '-tandem' : ''}`,
+        )}`}
+        title={item.altTitle || item.title}
+        buttonClass={item.buttonClass}
+      >
+        {item.content}
+      </AccordionItem>
+    ))}
   </Accordion>
 );
 

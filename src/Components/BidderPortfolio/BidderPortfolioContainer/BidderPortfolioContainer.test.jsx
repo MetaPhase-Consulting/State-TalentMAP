@@ -6,23 +6,27 @@ import bidderListObject from '../../../__mocks__/bidderListObject';
 
 describe('BidderPortfolioContainerComponent', () => {
   it('is defined', () => {
-    const wrapper = shallow(<BidderPortfolioContainer
-      bidderPortfolio={bidderListObject}
-      pageSize={8}
-      pageNumber={1}
-      queryParamUpdate={() => {}}
-    />);
+    const wrapper = shallow(
+      <BidderPortfolioContainer
+        bidderPortfolio={bidderListObject}
+        pageSize={8}
+        pageNumber={1}
+        queryParamUpdate={() => {}}
+      />,
+    );
     expect(wrapper).toBeDefined();
   });
 
   it('can call the onPageChange function', (done) => {
     const spy = sinon.spy();
-    const wrapper = shallow(<BidderPortfolioContainer
-      bidderPortfolio={bidderListObject}
-      pageSize={8}
-      pageNumber={1}
-      queryParamUpdate={spy}
-    />);
+    const wrapper = shallow(
+      <BidderPortfolioContainer
+        bidderPortfolio={bidderListObject}
+        pageSize={8}
+        pageNumber={1}
+        queryParamUpdate={spy}
+      />,
+    );
     wrapper.instance().onPageChange({});
     setTimeout(() => {
       sinon.assert.calledOnce(spy);
@@ -31,22 +35,26 @@ describe('BidderPortfolioContainerComponent', () => {
   });
 
   it('matches snapshot when the all property is greater than zero', () => {
-    const wrapper = shallow(<BidderPortfolioContainer
-      bidderPortfolio={bidderListObject}
-      pageSize={8}
-      pageNumber={1}
-      queryParamUpdate={() => {}}
-    />);
+    const wrapper = shallow(
+      <BidderPortfolioContainer
+        bidderPortfolio={bidderListObject}
+        pageSize={8}
+        pageNumber={1}
+        queryParamUpdate={() => {}}
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when the all property is zero', () => {
-    const wrapper = shallow(<BidderPortfolioContainer
-      bidderPortfolio={Object.assign({}, bidderListObject, { count: 0, results: [] })}
-      pageSize={8}
-      pageNumber={1}
-      queryParamUpdate={() => {}}
-    />);
+    const wrapper = shallow(
+      <BidderPortfolioContainer
+        bidderPortfolio={{ ...bidderListObject, count: 0, results: [] }}
+        pageSize={8}
+        pageNumber={1}
+        queryParamUpdate={() => {}}
+      />,
+    );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

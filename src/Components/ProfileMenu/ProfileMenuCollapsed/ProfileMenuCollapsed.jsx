@@ -13,23 +13,19 @@ const ProfileMenuCollapsed = ({ expand, roles, isGlossaryEditor }) => (
       </button>
     </div>
     <NavLinksContainer>
-      {
-        GET_PROFILE_MENU().map((item) => {
-          const int = intersection(item.roles, roles);
-          const hasIntersection = !!int.length || !item.roles.length;
-          const props = {
-            iconName: item.icon,
-            link: item.route,
-            search: (item.params || ''),
-            hidden: (item.isGlossaryEditor && !isGlossaryEditor) ||
-                    (!hasIntersection),
-          };
+      {GET_PROFILE_MENU().map((item) => {
+        const int = intersection(item.roles, roles);
+        const hasIntersection = !!int.length || !item.roles.length;
+        const props = {
+          iconName: item.icon,
+          link: item.route,
+          search: item.params || '',
+          hidden:
+            (item.isGlossaryEditor && !isGlossaryEditor) || !hasIntersection,
+        };
 
-          return (
-            <NavLink key={item.text} {...props} />
-          );
-        })
-      }
+        return <NavLink key={item.text} {...props} />;
+      })}
     </NavLinksContainer>
   </div>
 );

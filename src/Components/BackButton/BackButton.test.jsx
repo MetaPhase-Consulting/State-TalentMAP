@@ -14,10 +14,27 @@ const mockStore = configureStore(middlewares);
 describe('BackButton', () => {
   const props = {
     routerLocations: [
-      { pathname: '/results', search: '?q=', hash: '', state: undefined, key: 'dudni5' },
-      { pathname: '/compare/58312870,58312869', search: '', hash: '', state: undefined, key: 't0s36f' },
+      {
+        pathname: '/results',
+        search: '?q=',
+        hash: '',
+        state: undefined,
+        key: 'dudni5',
+      },
+      {
+        pathname: '/compare/58312870,58312869',
+        search: '',
+        hash: '',
+        state: undefined,
+        key: 't0s36f',
+      },
     ],
-    location: { pathname: '/compare/58312870,58312869', search: '', hash: '', key: 't0s36f' },
+    location: {
+      pathname: '/compare/58312870,58312869',
+      search: '',
+      hash: '',
+      key: 't0s36f',
+    },
     ignoreCurrentPath: true,
   };
 
@@ -27,9 +44,13 @@ describe('BackButton', () => {
   });
 
   it('is defined when connected', () => {
-    const wrapper = TestUtils.renderIntoDocument(<Provider store={mockStore({})}><MemoryRouter>
-      <BackButtonContainer {...props} />
-    </MemoryRouter></Provider>);
+    const wrapper = TestUtils.renderIntoDocument(
+      <Provider store={mockStore({})}>
+        <MemoryRouter>
+          <BackButtonContainer {...props} />
+        </MemoryRouter>
+      </Provider>,
+    );
     expect(wrapper).toBeDefined();
   });
 

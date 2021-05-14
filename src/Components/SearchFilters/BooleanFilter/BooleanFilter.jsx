@@ -10,13 +10,14 @@ const BooleanFilter = ({ item, onBooleanFilterClick }) => (
     name={item.item.title}
     value={item.data[0].isSelected || false}
     selectionRef={item.item.selectionRef}
-    onCheckBoxClick={
-      (e) => {
-        onBooleanFilterClick(
-          e, item.data[0].code, item.item.selectionRef, item.data[0].isSelected,
-        );
-      }
-    }
+    onCheckBoxClick={(e) => {
+      onBooleanFilterClick(
+        e,
+        item.data[0].code,
+        item.item.selectionRef,
+        item.data[0].isSelected,
+      );
+    }}
   />
 );
 

@@ -2,7 +2,17 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 
-const IconAlert = ({ type, number, link, limit, useLimit, alt, title, disabled, className }) => {
+const IconAlert = ({
+  type,
+  number,
+  link,
+  limit,
+  useLimit,
+  alt,
+  title,
+  disabled,
+  className,
+}) => {
   let numberText = number; // the text we'll display
   if (useLimit && limit <= number) {
     numberText = `${limit}+`;
@@ -14,25 +24,24 @@ const IconAlert = ({ type, number, link, limit, useLimit, alt, title, disabled, 
       <div className="alert-icon" />
       <span className="usa-sr-only">{alt}</span>
       <FontAwesome name={type} />
-      {
-        shouldShowNumber ?
-          <span className="alert-icon-badge">
-            {numberText}
-          </span>
-          :
-          null
-      }
+      {shouldShowNumber ? (
+        <span className="alert-icon-badge">{numberText}</span>
+      ) : null}
     </div>
   );
   return (
-    <div className={`icon-alert-container ${disabled ? 'icon-alert-disabled' : ''} ${className}`}>
-      {
-        link ?
-          <Link to={link} role="button" title={title}>
-            {content}
-          </Link>
-          : content
-      }
+    <div
+      className={`icon-alert-container ${
+        disabled ? 'icon-alert-disabled' : ''
+      } ${className}`}
+    >
+      {link ? (
+        <Link to={link} role="button" title={title}>
+          {content}
+        </Link>
+      ) : (
+        content
+      )}
     </div>
   );
 };

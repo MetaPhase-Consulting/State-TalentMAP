@@ -15,19 +15,21 @@ describe('Success', () => {
   it('is defined', () => {
     const wrapper = shallow(<Success pos={detailsObject} {...props} />);
     expect(wrapper).toBeDefined();
-    expect(wrapper.find('Link')
-      .exists()).toBe(true);
+    expect(wrapper.find('Link').exists()).toBe(true);
   });
 
   it('hides link', () => {
-    const wrapper = shallow(<Success pos={detailsObject} {...props} hideLink />);
-    expect(wrapper.find('Link')
-      .exists()).toBe(false);
+    const wrapper = shallow(
+      <Success pos={detailsObject} {...props} hideLink />,
+    );
+    expect(wrapper.find('Link').exists()).toBe(false);
   });
 
   it('renders public profile link when given perdet', () => {
     const wrapper = shallow(<Success pos={detailsObject} {...props} />);
-    expect(wrapper.find('Link').prop('to')).toBe('/profile/bidtracker/public/12345/');
+    expect(wrapper.find('Link').prop('to')).toBe(
+      '/profile/bidtracker/public/12345/',
+    );
   });
 
   it('renders basic link', () => {

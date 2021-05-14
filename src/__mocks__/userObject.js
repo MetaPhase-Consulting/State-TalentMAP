@@ -85,4 +85,4 @@ export const bidderUserObject = {
   ],
 };
 
-export const cdoUserObject = Object.assign({}, bidderUserObject, { cdo: null, is_cdo: true });
+export const cdoUserObject = { ...bidderUserObject, cdo: null, is_cdo: true };

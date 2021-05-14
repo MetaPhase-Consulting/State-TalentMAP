@@ -1,11 +1,15 @@
 import { batch } from 'react-redux';
-import { cloneDeep, get, isArray, keys, orderBy, union, uniqBy } from 'lodash';
+import {
+  cloneDeep, get, isArray, keys, orderBy, union, uniqBy,
+} from 'lodash';
 import Q from 'q';
 import api from '../../api';
 import { ASYNC_PARAMS, ENDPOINT_PARAMS } from '../../Constants/EndpointParams';
 import { mapDuplicates, removeDuplicates } from '../../utilities';
-import { doesCodeOrIdMatch, getFilterCustomAttributes, getFilterCustomDescription,
-  getPillDescription, getPostOrMissionDescription, isBooleanFilter, isPercentageFilter } from './helpers';
+import {
+  doesCodeOrIdMatch, getFilterCustomAttributes, getFilterCustomDescription,
+  getPillDescription, getPostOrMissionDescription, isBooleanFilter, isPercentageFilter,
+} from './helpers';
 
 export function filtersHasErrored(bool) {
   return {
@@ -125,7 +129,7 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
               // for when they get put inside Pills
               if (item.codeRef === data.codeRef) {
                 const description = getPostOrMissionDescription(data);
-                const code = data.code;
+                const { code } = data;
                 if (description) {
                   asyncFilters[i].description = description;
                   asyncFilters[i].code = code;
@@ -209,9 +213,9 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
       if (queryParamObject) {
         responses.filters.forEach((response) => {
           const filterRef = response.item.selectionRef;
-          const isTandem = response.item.isTandem;
-          const isCommon = response.item.isCommon;
-          const isToggle = response.item.isToggle;
+          const { isTandem } = response.item;
+          const { isCommon } = response.item;
+          const { isToggle } = response.item;
           Object.keys(queryParamObject).forEach((key) => {
             if (key === filterRef) {
               // convert the string to an array
@@ -235,12 +239,10 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
                       if (isBooleanFilter(response.item.description)) {
                         mappedObject.description = response.item.title;
                       } else if (isPercentageFilter(response.item.description)) {
-                        mappedObject.description =
-                          getPillDescription(filterItemObject, response.item.description);
+                        mappedObject.description = getPillDescription(filterItemObject, response.item.description);
                       } else {
                         // try to get the shortest description since pills should be small
-                        mappedObject.description =
-                          getPillDescription(filterItemObject, response.item.description);
+                        mappedObject.description = getPillDescription(filterItemObject, response.item.description);
                       }
                     }
                   });
@@ -297,20 +299,19 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
           });
           const mappedDyanmicFilters = dynamicFilters.map(item => {
             const response = ({ ...endpointResponses[item.item.endpoint] });
-            const itemFilter = Object.assign({}, item);
+            const itemFilter = { ...item };
             itemFilter.state = response.state;
             const data$ = item.initialDataAP;
             let results$ = response.data.results;
             if (item.item.description === 'post') {
-              results$ =
-                get(response, 'data', [])
-                  .map(m => ({
+              results$ = get(response, 'data', [])
+                .map(m => ({
+                  ...m,
+                  id: m.code,
+                  location: {
                     ...m,
-                    id: m.code,
-                    location: {
-                      ...m,
-                    },
-                  }));
+                  },
+                }));
             }
 
             // We have a mix of server-supplied and hard-coded data, so we combine them with union.
@@ -362,8 +363,10 @@ export function filtersFetchData(items = { filters: [] }, queryParams = {}, save
           results.forEach((result) => {
             if (result.state === 'fulfilled' && get(result, 'data', []).length) {
             // if fulfilled, return the formatted data
-              responses.filters.push({ data: get(result, 'data', []),
-                item: get(result, 'item', {}) });
+              responses.filters.push({
+                data: get(result, 'data', []),
+                item: get(result, 'item', {}),
+              });
             } else {
             // Else, return the correct structure, but with no data. Include hasErrored prop.
               responses.filters.push({ data: [], item: {}, hasErrored: true });

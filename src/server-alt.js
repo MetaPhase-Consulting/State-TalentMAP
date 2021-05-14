@@ -5,7 +5,9 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const hostValidation = require('./host-validation');
 const routesArray = require('./routes.js');
-const { metadata, login, metadataPublic, loginPublic } = require('./saml2-config');
+const {
+  metadata, login, metadataPublic, loginPublic,
+} = require('./saml2-config');
 
 // middleware to override helmet.noCache
 const removeCacheControl = (req, res, next) => {
@@ -27,9 +29,9 @@ const PUBLIC_URL = process.env.PUBLIC_URL || '/talentmap/';
 const ROUTES = routesArray.map(route => `${PUBLIC_URL}${route.path}${route.exact ? '' : '*'}`.replace('//', '/'));
 // define the OBC root url
 // example: https://www.obcurl.gov
-const OBC_URL = process.env.OBC_URL;
+const { OBC_URL } = process.env;
 // allowed referers
-const APPROVED_REFERERS = process.env.APPROVED_REFERERS;
+const { APPROVED_REFERERS } = process.env;
 // application port
 const port = process.env.PORT || 3000;
 // path to external about page
@@ -39,7 +41,9 @@ const app = express();
 if (APPROVED_REFERERS) {
   // cast APPROVED_REFERERS to an array
   app.use(ROUTES, hostValidation({
-    referers: [/^https:\/\/hrtst\.hr\.state\.sbu(?:\/[^]*)?$/, /^https:\/\/hrivv\.hr\.state\.sbu(?:\/[^]*)?$/, /^https:\/\/stsent\.state\.gov(?:\/[^]*)?$/, /^https:\/\/hronlinetest-usdos\.msappproxy\.net(?:\/[^]*)?$/, /^https:\/\/hronline-usdos\.msappproxy\.net(?:\/[^]*)?$/],
+    referers: [/^https:\/\/hrtst\.hr\.state\.sbu(?:\/[^]*)?$/,
+      /^https:\/\/hrivv\.hr\.state\.sbu(?:\/[^]*)?$/, /^https:\/\/stsent\.state\.gov(?:\/[^]*)?$/,
+      /^https:\/\/hronlinetest-usdos\.msappproxy\.net(?:\/[^]*)?$/, /^https:\/\/hronline-usdos\.msappproxy\.net(?:\/[^]*)?$/],
     fail: (req, res) => res.redirect(process.env.SSO_LOGOUT_URL),
   }));
 }
@@ -107,21 +111,21 @@ app.get(`${PUBLIC_URL}metadata`, (request, response) => {
 });
 
 app.get(`${PUBLIC_URL}obc/post/data/:id`, (request, response) => {
-  const id = request.params.id;
+  const { id } = request.params;
   response.redirect(`${OBC_URL}/post/postdatadetails/${id}`);
 });
 
 // OBC redirect - posts
 app.get(`${PUBLIC_URL}obc/post/:id`, (request, response) => {
   // set the id passed in the route and pass it to the redirect
-  const id = request.params.id;
+  const { id } = request.params;
   response.redirect(`${OBC_URL}/post/detail/${id}`);
 });
 
 // OBC redirect - countries
 app.get(`${PUBLIC_URL}obc/country/:id`, (request, response) => {
   // set the id passed in the route and pass it to the redirect
-  const id = request.params.id;
+  const { id } = request.params;
   response.redirect(`${OBC_URL}/country/detail/${id}`);
 });
 

@@ -109,7 +109,6 @@ export function getTableStats() {
   };
 }
 
-
 export function modifyPermission(addPermission, userID, groupID) {
   const action = addPermission ? 'put' : 'delete';
   const apiURL = `permission/group/${groupID}/user/${userID}/`;

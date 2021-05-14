@@ -13,16 +13,12 @@ describe('PositionDetailsContact', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <PositionDetailsContact {...props} />,
-    );
+    const wrapper = shallow(<PositionDetailsContact {...props} />);
     expect(wrapper).toBeDefined();
   });
 
   it('toggles editors', () => {
-    const wrapper = shallow(
-      <PositionDetailsContact {...props} />,
-    );
+    const wrapper = shallow(<PositionDetailsContact {...props} />);
     wrapper.instance().toggleWebsiteEditor();
     expect(wrapper.instance().state.shouldShowWebsiteEditor.value).toBe(true);
     wrapper.instance().togglePocEditor();
@@ -49,20 +45,17 @@ describe('PositionDetailsContact', () => {
   });
 
   it('hides the editor button when the user does not have permission', () => {
-    const details = Object.assign(detailsObject, { description: { is_editable_by_user: false } });
+    const details = Object.assign(detailsObject, {
+      description: { is_editable_by_user: false },
+    });
     const wrapper = shallow(
-      <PositionDetailsContact
-        {...props}
-        details={details}
-      />,
+      <PositionDetailsContact {...props} details={details} />,
     );
     expect(wrapper.find('EditContentButton')).toHaveLength(0);
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <PositionDetailsContact {...props} />,
-    );
+    const wrapper = shallow(<PositionDetailsContact {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

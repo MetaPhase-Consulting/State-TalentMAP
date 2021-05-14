@@ -1,9 +1,11 @@
-import { homeBannerContent,
+import {
+  homeBannerContent,
   homeBannerContentHasErrored,
   homeBannerContentIsLoading,
   homeBannerContentPatchHasErrored,
   homeBannerContentPatchIsLoading,
-  homeBannerContentPatchSuccess } from './homeBannerContent';
+  homeBannerContentPatchSuccess,
+} from './homeBannerContent';
 
 export default {
   homeBannerContentHasErrored,

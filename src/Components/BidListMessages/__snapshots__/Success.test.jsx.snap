@@ -5,7 +5,8 @@ exports[`Success matches snapshot 1`] = `
   Test Position
    (
   00003027
-  ) has been successfully added to Bid List. 
+  ) has been successfully added to Bid List.
+   
   <span>
     <Link
       replace={false}

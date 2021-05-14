@@ -6,7 +6,6 @@ import FavoritePositions from './FavoritePositions';
 import favoritesObject from '../../__mocks__/favoritesObject';
 import bidListObject from '../../__mocks__/bidListObject';
 
-
 describe('FavoritePositionsComponent', () => {
   const props = {
     favorites: favoritesObject.favorites,
@@ -26,9 +25,7 @@ describe('FavoritePositionsComponent', () => {
   };
 
   it('is defined', () => {
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
+    const wrapper = shallow(<FavoritePositions {...props} />);
     expect(wrapper).toBeDefined();
   });
 
@@ -36,12 +33,7 @@ describe('FavoritePositionsComponent', () => {
     const spy = sinon.spy();
     let wrapper;
     act(() => {
-      wrapper = mount(
-        <FavoritePositions
-          {...props}
-          selectedNav={spy}
-        />,
-      );
+      wrapper = mount(<FavoritePositions {...props} selectedNav={spy} />);
     });
     wrapper.find('Nav').simulate('onClick', 'open');
     sinon.assert.calledOnce(spy);
@@ -49,35 +41,27 @@ describe('FavoritePositionsComponent', () => {
 
   xit('is defined when selected === pv', () => {
     // const spy = sinon.spy();
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
+    const wrapper = shallow(<FavoritePositions {...props} />);
     wrapper.setState({ selected: 'pv' });
     expect(wrapper).toBeDefined();
   });
 
   xit('is defined when selected === pvTandem', () => {
     // const spy = sinon.spy();
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
+    const wrapper = shallow(<FavoritePositions {...props} />);
     wrapper.setState({ selected: 'pvTandem' });
     expect(wrapper).toBeDefined();
   });
 
   xit('is defined when selected === openTandem', () => {
     // const spy = sinon.spy();
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
+    const wrapper = shallow(<FavoritePositions {...props} />);
     wrapper.setState({ selected: 'openTandem' });
     expect(wrapper).toBeDefined();
   });
 
   xit('can receive props', () => {
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
+    const wrapper = shallow(<FavoritePositions {...props} />);
     expect(wrapper.instance().props.favorites).toBe(props.favorites);
   });
 
@@ -107,9 +91,7 @@ describe('FavoritePositionsComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(
-      <FavoritePositions {...props} />,
-    );
+    const wrapper = shallow(<FavoritePositions {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });
