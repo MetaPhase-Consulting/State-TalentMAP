@@ -10,6 +10,7 @@ import Editor from './Editor';
 import Spinner from '../Spinner';
 import Alert from '../Alert';
 import { SUBMIT_BUTTON_ID } from './Editor/Editor';
+import { get } from 'lodash';
 
 const EDIT_BUTTON_ID = 'edit-about-content';
 
