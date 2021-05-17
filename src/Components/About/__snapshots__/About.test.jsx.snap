@@ -7,6 +7,7 @@ exports[`About matches snapshot 1`] = `
   <div
     className="usa-grid-full about-page"
   >
+    <Connect(withRouter(BackButton)) />
     <MediaQueryWrapper
       breakpoint="screenSmMax"
       widthType="min"

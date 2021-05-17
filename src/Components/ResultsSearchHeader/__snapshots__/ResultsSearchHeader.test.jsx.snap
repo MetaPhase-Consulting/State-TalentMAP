@@ -7,6 +7,7 @@ exports[`ResultsSearchHeaderComponent matches snapshot 1`] = `
   <div
     className="usa-grid-full results-search-bar-container"
   >
+    <Connect(withRouter(BackButton)) />
     <form
       className="usa-grid-full"
       onSubmit={[Function]}

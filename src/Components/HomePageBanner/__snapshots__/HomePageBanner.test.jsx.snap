@@ -7,6 +7,7 @@ exports[`HomePageBanner Component matches snapshot 1`] = `
   <div
     className="usa-grid-full"
   >
+    <Connect(withRouter(BackButton)) />
     <img
       alt="TalentMAP logo"
       src="/assets/logos/png/horizontal_color_thin-sm.png"
