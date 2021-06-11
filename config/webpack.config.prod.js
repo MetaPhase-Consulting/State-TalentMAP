@@ -164,16 +164,6 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-						// run compilation threaded
-						loader: 'thread-loader',
-						options: {
-							// there should be 1 cpu for the fork-ts-checker-webpack-plugin
-							workers: os.cpus().length - 1,
-							// set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-							poolTimeout: Infinity,
-						},
-					},
-          {
 						// main typescript compilation loader
 						loader: 'ts-loader',
 						options: {
@@ -309,7 +299,6 @@ module.exports = {
     // Webpack plugin that runs typescript type checker on a separate process.
 		new ForkTsCheckerWebpackPlugin({
 			// block webpack's emit to wait for type checker/linter and to add errors to the webpack's compilation
-			// also required for the the overlay functionality of webpack-dev-server
 			async: false,
 			typescript: {
 				diagnosticOptions: {
