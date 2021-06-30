@@ -94,7 +94,7 @@ class HandshakeOfferedAlert extends Component {
                 </div>
                 <div>
                   <div><span>Tour of Duty: </span>{tod}</div>
-                  <div><span>TESTING NEW GIT SETUP AGAIN: </span>{languages$}</div>
+                  <div><span>TESTING2 NEW GIT SETUP: </span>{languages$}</div>
                   <div><span>Post Differential | Danger Pay: </span>{postDiff} | {dangerPay}</div>
                   <div><span>Incumbent: </span>{incumbent}</div>
                 </div>
