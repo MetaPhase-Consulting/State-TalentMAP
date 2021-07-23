@@ -6,9 +6,9 @@ import InteractiveElement from 'Components/InteractiveElement';
 import FontAwesome from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import { get, includes } from 'lodash';
-import { CLOSED_PROP, DECLINED_PROP, DRAFT_PROP, HAND_SHAKE_ACCEPTED_PROP,
-  HAND_SHAKE_DECLINED_PROP, HAND_SHAKE_NEEDS_REGISTER_PROP, HAND_SHAKE_OFFERED_PROP, IN_PANEL_PROP,
-  PANEL_RESCHEDULED_PROP } from 'Constants/BidData';
+import { APPROVED_PROP, CLOSED_PROP, DECLINED_PROP, DRAFT_PROP,
+  HAND_SHAKE_ACCEPTED_PROP, HAND_SHAKE_DECLINED_PROP, HAND_SHAKE_NEEDS_REGISTER_PROP,
+  HAND_SHAKE_OFFERED_PROP, IN_PANEL_PROP, PANEL_RESCHEDULED_PROP, PRE_PANEL_PROP } from 'Constants/BidData';
 import HandshakeOfferedAlert from './HandshakeOfferedAlert';
 import InPanelAlert from './InPanelAlert';
 import HandshakeDeclinedAlert from './HandshakeDeclinedAlert';
@@ -139,7 +139,11 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
   const positionHandshakeRegistered = get(bid, 'position_info.bid_statistics[0].has_handshake_offered');
   let showArrow = true;
   if (positionHandshakeRegistered &&
-    (bid.status !== HAND_SHAKE_ACCEPTED_PROP && bid.status !== DRAFT_PROP)) {
+    !includes([
+      HAND_SHAKE_ACCEPTED_PROP, DRAFT_PROP,
+      PRE_PANEL_PROP, IN_PANEL_PROP, PANEL_RESCHEDULED_PROP, APPROVED_PROP,
+    ], bid.status)
+  ) {
     showArrow = false;
     overlayClass = CLASS_REGISTER_ANOTHER_CLIENT;
     overlayContent = (
