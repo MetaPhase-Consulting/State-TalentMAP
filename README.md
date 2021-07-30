@@ -26,7 +26,7 @@ A comprehensive research, bidding, and matching system that pairs Foreign Servic
 #### Position Management (Future Development)
 - Ability to Manage Positions for Bidding (Create, Edit, Delete)
 
-## High Level Architecture
+## Architecture
 The system can be divided into 3 parts:
 1) Frontend UI (this repository)
 2) [Backend API](https://github.com/MetaPhase-Consulting/State-TalentMAP-API)
