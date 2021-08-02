@@ -1871,10 +1871,10 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
 
-"@types/node@*", "@types/node@>=10.0.0", "@types/node@^16.4.7":
-  version "16.4.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.7.tgz#f7afa78769d4b477f5092d7c3468e2e8653d779c"
-  integrity sha512-aDDY54sst8sx47CWT6QQqIZp45yURq4dic0+HCYfYNcY5Ejlb/CLmFnRLfy3wQuYafOeh3lB/DAKaqRKBtcZmA==
+"@types/node@*", "@types/node@>=10.0.0", "@types/node@^16.4.10":
+  version "16.4.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.10.tgz#e57e2a54fc6da58da94b3571b1cb456d39f88597"
+  integrity sha512-TmVHsm43br64js9BqHWqiDZA+xMtbUpI1MBIA0EyiBmoV9pcEYFOSdj5fr6enZNfh4fChh+AGOLIzGwJnkshyQ==
 
 "@types/node@^8.0.14", "@types/node@^8.5.5":
   version "8.9.5"
@@ -1906,10 +1906,10 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
-"@types/react@*", "@types/react@^17.0.14":
-  version "17.0.14"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.14.tgz#f0629761ca02945c4e8fea99b8177f4c5c61fb0f"
-  integrity sha512-0WwKHUbWuQWOce61UexYuWTGuGY/8JvtUe/dtQ6lR4sZ3UiylHotJeWpf3ArP9+DSGUoLY3wbU59VyMrJps5VQ==
+"@types/react@*", "@types/react@^17.0.15":
+  version "17.0.15"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.15.tgz#c7533dc38025677e312606502df7656a6ea626d0"
+  integrity sha512-uTKHDK9STXFHLaKv6IMnwp52fm0hwU+N89w/p9grdUqcFA6WuqDyPhaWopbNyE1k/VhgzmHl8pu1L4wITtmlLw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
