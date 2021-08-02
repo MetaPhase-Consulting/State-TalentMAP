@@ -23,7 +23,7 @@ const getUseConfetti = () => checkFlag('flags.confetti');
 // by bidClassesFromCurrentStatus.
 // These classes determine colors, whether to use an icon or a number, the title text, etc.
 const BidSteps = (props, context) => {
-  const { bid } = props;
+  const { bid, collapseOverlay } = props;
   const { condensedView } = context;
   const bidData = bidClassesFromCurrentStatus(bid).stages || {};
   const getIcon = (status) => {
@@ -60,6 +60,7 @@ const BidSteps = (props, context) => {
       {
         BID_STEPS.map((status) => {
           const icon = getIcon(status);
+          const showBidPrepToolTip = bidData[status.prop].hasBidPreparingTooltip && collapseOverlay;
           return (<Step
             key={shortId.generate()}
             className={`
@@ -75,7 +76,7 @@ const BidSteps = (props, context) => {
               </div>
             }
             tailContent={
-              bidData[status.prop].hasBidPreparingTooltip ? <BidPreparingIcon /> : null
+              showBidPrepToolTip ? <BidPreparingIcon /> : null
             }
             icon={icon}
           />
@@ -92,6 +93,7 @@ BidSteps.contextTypes = {
 
 BidSteps.propTypes = {
   bid: BID_OBJECT.isRequired,
+  collapseOverlay: PropTypes.bool.isRequired,
 };
 
 export default BidSteps;

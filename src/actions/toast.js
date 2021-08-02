@@ -50,3 +50,13 @@ export function toastHandshake(toast, title, options) {
     options,
   };
 }
+
+export function toastHandshakeRevoke(toast, title, customClassName, options) {
+  return {
+    type: 'TOAST_NOTIFICATION_REVOKE_HANDSHAKE',
+    toast,
+    title,
+    customClassName,
+    options,
+  };
+}

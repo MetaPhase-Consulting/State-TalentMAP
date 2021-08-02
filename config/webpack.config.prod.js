@@ -16,6 +16,15 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const paths = require('./paths');
 const envVariables = require('./env');
 const FAST_BUILD = process.env.FAST_BUILD || false;
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+
+// get git info from command line
+let commitHash = ''
+try {
+  commitHash = require('child_process')
+    .execSync('git rev-parse --short HEAD')
+    .toString();
+} catch {}
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -347,6 +356,10 @@ module.exports = {
       paths: true,
       shorthands: true,
     }),
+    new webpack.DefinePlugin({
+      __COMMIT_HASH__: JSON.stringify(commitHash),
+    }),
+    new ProgressBarPlugin(),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

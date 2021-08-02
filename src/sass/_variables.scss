@@ -165,6 +165,11 @@ $results-card-accent: $blue-primary;
 $results-card-border: $color-gray-lighter;
 
 //**
+//* Handshake Colors
+//*
+$hs-expiration-orange:#F7B578;
+
+//**
 //* Delegate Roles table
 //*
 $odd-td-background-color: #e6f1f8;
@@ -214,3 +219,5 @@ $angle-down-black: url('#{$asset-path}assets/img/angle-down-black.svg');
 // other variables
 //
 $button-box-shadow: 5px 10px 20px -4px $color-black-box-shadow;
+$bg-hs-another-client: #dbdbdb;
+$bg-overlay-hs-another-client: #636363;

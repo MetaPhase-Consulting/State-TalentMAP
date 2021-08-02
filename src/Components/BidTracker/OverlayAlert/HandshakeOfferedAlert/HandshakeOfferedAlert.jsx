@@ -9,7 +9,6 @@ import { DEFAULT_TEXT, NO_BUREAU, NO_DANGER_PAY,
   NO_GRADE, NO_LANGUAGES, NO_POST_DIFFERENTIAL, NO_SKILL,
   NO_TOUR_END_DATE, NO_TOUR_OF_DUTY, NO_USER_LISTED } from 'Constants/SystemMessages';
 import { formatDate, getDifferentialPercentage } from 'utilities';
-import StaticDevContent from 'Components/StaticDevContent';
 import TimeRemaining from '../TimeRemaining';
 import { acceptHandshake, declineHandshake } from '../../../../actions/handshake2';
 import LinkButton from '../../../LinkButton';
@@ -37,7 +36,7 @@ class HandshakeOfferedAlert extends Component {
     const tod = get(position, 'tour_of_duty') || NO_TOUR_OF_DUTY;
     const languages = get(position, 'languages');
     const postDiff = getDifferentialPercentage(get(position, 'post.differential_rate')) || NO_POST_DIFFERENTIAL;
-    const dangerPay = get(position, 'post.danger_pay') || NO_DANGER_PAY;
+    const dangerPay = getDifferentialPercentage(get(position, 'post.danger_pay')) || NO_DANGER_PAY;
     const incumbent = get(position, 'current_assignment.user') || NO_USER_LISTED;
     const hsOfferedDate = formatDate(get(bid, 'handshake.hs_date_offered')) || DEFAULT_TEXT;
     const handshake = get(bid, 'handshake') || {};
@@ -45,6 +44,7 @@ class HandshakeOfferedAlert extends Component {
     const bidderAction$ = bidderAction === 'handshake_accepted' ? 'accepted' : 'declined';
     const hsActionBy = `${handshake.hs_cdo_indicator ? 'a CDO' : `${cdoView ? userName : 'you'}`}`;
     const hsActionDate = formatDate(bidderAction$ === 'accepted' ? get(handshake, 'hs_date_accepted') : get(handshake, 'hs_date_declined'));
+    const hsExpiration = get(handshake, 'hs_date_expiration');
 
     let languages$ = NO_LANGUAGES;
     if (languages) {
@@ -70,9 +70,7 @@ class HandshakeOfferedAlert extends Component {
                     <button className="tm-button-transparent tm-button-no-box" onClick={this.onDeclineBid}>
                     Decline Handshake
                     </button>
-                    <StaticDevContent>
-                      <TimeRemaining />
-                    </StaticDevContent>
+                    {!!hsExpiration && <TimeRemaining time={hsExpiration} />}
                   </>
                   :
                   <>
@@ -80,9 +78,14 @@ class HandshakeOfferedAlert extends Component {
                     <button className="tm-button-transparent" onClick={this.onAcceptBid} disabled={bidderAction$ === 'accepted'}>
                       <FontAwesomeIcon icon={faCheck} /> Accept Handshake
                     </button>
-                    <button className="tm-button-transparent tm-button-no-box" onClick={this.onDeclineBid} disabled={bidderAction$ === 'declined'}>
-                      Decline Handshake
-                    </button>
+                    {
+                      cdoView &&
+                        <button
+                          className="tm-button-transparent tm-button-no-box"
+                          onClick={this.onDeclineBid}
+                          disabled={bidderAction$ === 'declined'}
+                        >Decline Handshake</button>
+                    }
                   </>
               }
             </div>
@@ -96,8 +99,8 @@ class HandshakeOfferedAlert extends Component {
                 </div>
                 <div>
                   <div><span>Tour of Duty: </span>{tod}</div>
-                  <div><span>Bid Languages: </span>{languages$}</div>
-                  <div><span>Post Differential | Danger Pay: </span>{postDiff}|{dangerPay}</div>
+                  <div><span>Language: </span>{languages$}</div>
+                  <div><span>Post Differential | Danger Pay: </span>{postDiff} | {dangerPay}</div>
                   <div><span>Incumbent: </span>{incumbent}</div>
                 </div>
               </div>

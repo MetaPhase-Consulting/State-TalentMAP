@@ -1,3 +1,5 @@
+import 'core-js/shim'; // included < Stage 4 proposals
+import 'regenerator-runtime/runtime';
 import chalk from 'chalk';
 import { JSDOM } from 'jsdom';
 Object.entries = require('object.entries'); // because jest doesn't import babel
@@ -85,3 +87,8 @@ beforeEach(() => {
 
 // Mock jsoneditor-react
 jest.mock('jsoneditor-react', () => ({ JsonEditor: jest.fn() }))
+
+// fix memory leak - https://github.com/facebook/jest/issues/7874
+afterAll(() => {
+  // global.gc && global.gc();
+})

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { BID_OBJECT } from 'Constants/PropTypes';
 import { NO_BUREAU } from 'Constants/SystemMessages';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InteractiveElement from 'Components/InteractiveElement';
 import FontAwesome from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
@@ -21,7 +21,7 @@ import { getBidIdUrl } from './helpers';
 
 // Alert rendering based on status is handled here.
 const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
-  unregisterHandshake, useCDOView, isCollapsible, userName },
+  unregisterHandshake, useCDOView, isCollapsible, userName, togglePanelAlert },
 { condensedView, readOnly }) => {
   const CLASS_PENDING = 'bid-tracker-overlay-alert--pending';
   const CLASS_CLOSED = 'bid-tracker-overlay-alert--closed';
@@ -29,8 +29,8 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
   const CLASS_REGISTER = 'bid-tracker-overlay-alert--register';
   const CLASS_UNREGISTER = 'bid-tracker-overlay-alert--unregister';
 
-  const position = get(bid, 'position_info.position');
-  const BID_TITLE = `${position.title}${position.position_number ? ` (${position.position_number})` : ''}`;
+  const position = get(bid, 'position_info.position') || {};
+  const BID_TITLE = position.title ? `${position.title}${position.position_number ? ` (${position.position_number})` : ''}` : 'N/A';
   const bureau = get(position, 'bureau') || NO_BUREAU;
 
   const bidIdUrl = getBidIdUrl(bid.id, readOnly, userId);
@@ -49,6 +49,7 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
   const [collapseOverlay, setCollapseOverlay] = useState(false);
 
   function toggleOverlay() {
+    togglePanelAlert(!collapseOverlay);
     setCollapseOverlay(!collapseOverlay);
   }
 
@@ -128,6 +129,11 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
       break;
   }
 
+  // set tooltip to false on mount only
+  useEffect(() => {
+    togglePanelAlert(!overlayContent);
+  }, []);
+
   const isCollapsible$ = isCollapsible && includes([HAND_SHAKE_NEEDS_REGISTER_PROP, HAND_SHAKE_ACCEPTED_PROP], get(bid, 'status'));
   const rotate = collapseOverlay ? 'rotate(180deg)' : 'rotate(0)';
 
@@ -165,6 +171,7 @@ OverlayAlert.propTypes = {
   useCDOView: PropTypes.bool,
   userName: PropTypes.string,
   isCollapsible: PropTypes.bool,
+  togglePanelAlert: PropTypes.func.isRequired,
 };
 
 OverlayAlert.defaultProps = {
