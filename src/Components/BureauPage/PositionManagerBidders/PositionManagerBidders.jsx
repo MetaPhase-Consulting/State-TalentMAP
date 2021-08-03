@@ -329,7 +329,8 @@ class PositionManagerBidders extends Component {
                 handshake={handshake}
                 positionID={props.id}
                 personID={m.emp_id}
-                disabled={!active_hs_perdet && !isNull(active_hs_perdet)}
+                disabled={(!active_hs_perdet && !isNull(active_hs_perdet))
+                  || isNull(get(props, 'bidCycle.handshake_allowed_date', null))}
                 bidCycle={get(props, 'bidCycle', {})}
               />
             </PermissionsWrapper>
