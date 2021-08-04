@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { get, isEqual, isNull, keys, orderBy } from 'lodash';
+import { get, isEqual, keys, orderBy } from 'lodash';
 import FA from 'react-fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tooltip } from 'react-tippy';
@@ -329,8 +329,7 @@ class PositionManagerBidders extends Component {
                 handshake={handshake}
                 positionID={props.id}
                 personID={m.emp_id}
-                disabled={(!active_hs_perdet && !isNull(active_hs_perdet))
-                  || isNull(get(props, 'bidCycle.handshake_allowed_date', null))}
+                activePerdet={active_hs_perdet}
                 bidCycle={get(props, 'bidCycle', {})}
               />
             </PermissionsWrapper>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { get, isNull } from 'lodash';
 import { offerHandshake, revokeHandshake } from 'actions/handshake';
 import swal from '@sweetalert/with-react';
+import { Tooltip } from 'react-tippy';
 import FA from 'react-fontawesome';
 import { useCloseSwalOnUnmount } from 'utilities';
 import EditHandshake from '../EditHandshake';
@@ -10,13 +12,13 @@ import EditHandshake from '../EditHandshake';
 const HandshakeBureauButton = props => {
   const { positionID, personID, bidCycle } = props;
   const [handshake, setHandshake] = useState(props.handshake);
-  const [disabled, setDisabled] = useState(props.disabled);
+  const [activePerdet, setActivePerdet] = useState(props.activePerdet);
 
   useCloseSwalOnUnmount();
 
   useEffect(() => {
     setHandshake(props.handshake);
-    setDisabled(props.disabled);
+    setActivePerdet(props.activePerdet);
   }, [props]);
 
   const dispatch = useDispatch();
@@ -26,6 +28,8 @@ const HandshakeBureauButton = props => {
     hs_date_offered,
   } = handshake;
 
+  const hsAllowed = get(bidCycle, 'handshake_allowed_date', null);
+  const tooltipActive = isNull(hsAllowed);
 
   const buttonText = () => {
     if (hs_status_code === 'handshake_revoked') {
@@ -61,24 +65,67 @@ const HandshakeBureauButton = props => {
     });
   };
 
+  const disabled = () => {
+    if ((!activePerdet && !isNull(activePerdet)) || tooltipActive) {
+      return true;
+    }
+    return false;
+  };
+
   return (
-    <div className="btn-hs-wrapper">
-      <button
-        className="btn-action"
-        title={`${buttonText()} handshake`}
-        onClick={() => handshakeModal(false)}
-        disabled={disabled}
+    tooltipActive ?
+      <Tooltip
+        html={
+          <div className="status-tooltip-wrapper">
+            <span>
+              Not able to offer handshakes until administrator has set official
+              handshake allowed date for this cycle. Please contact CDA for
+              further assistance.
+            </span>
+          </div>
+        }
+        theme="hs-status"
+        arrow
+        tabIndex="0"
+        interactive
+        useContext
       >
-        {buttonText()}
-      </button>
-      <button
-        className="btn-infoOnly"
-        onClick={() => handshakeModal(true)}
-        disabled={!hs_date_offered}
-      >
-        <FA name="info-circle" />
-      </button>
-    </div>
+        <div className="btn-hs-wrapper">
+          <button
+            className="btn-action"
+            title={`${buttonText()} handshake`}
+            onClick={() => handshakeModal(false)}
+            disabled={disabled()}
+          >
+            {buttonText()}
+          </button>
+          <button
+            className="btn-infoOnly"
+            onClick={() => handshakeModal(true)}
+            disabled={!hs_date_offered}
+          >
+            <FA name="info-circle" />
+          </button>
+        </div>
+      </Tooltip>
+      :
+      <div className="btn-hs-wrapper">
+        <button
+          className="btn-action"
+          title={`${buttonText()} handshake`}
+          onClick={() => handshakeModal(false)}
+          disabled={disabled()}
+        >
+          {buttonText()}
+        </button>
+        <button
+          className="btn-infoOnly"
+          onClick={() => handshakeModal(true)}
+          disabled={!hs_date_offered}
+        >
+          <FA name="info-circle" />
+        </button>
+      </div>
   );
 };
 
@@ -87,7 +134,7 @@ HandshakeBureauButton.propTypes = {
   bidCycle: PropTypes.shape({}),
   positionID: PropTypes.string,
   personID: PropTypes.string,
-  disabled: PropTypes.bool,
+  activePerdet: PropTypes.string,
 };
 
 HandshakeBureauButton.defaultProps = {
@@ -96,6 +143,7 @@ HandshakeBureauButton.defaultProps = {
   positionID: '',
   personID: '',
   disabled: true,
+  activePerdet: null,
 };
 
 export default HandshakeBureauButton;
