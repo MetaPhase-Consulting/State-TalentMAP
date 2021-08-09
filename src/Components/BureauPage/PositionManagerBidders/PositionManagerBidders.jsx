@@ -398,7 +398,7 @@ class PositionManagerBidders extends Component {
 
   render() {
     const { bids, bidsIsLoading, filtersSelected, filters, id, isLocked,
-      hasBureauPermission } = this.props;
+      hasBureauPermission, bidCycle } = this.props;
     const { hasLoaded, shortListVisible, unrankedVisible } = this.state;
 
     const tableHeaders = ['Ranking', '', 'Name', 'Submitted Date', 'Skill', 'Grade', 'Language', 'Classifications', 'TED', 'CDO', ''].map(item => (
@@ -492,6 +492,7 @@ class PositionManagerBidders extends Component {
                   :
                   <>
                     {/* eslint-disable no-nested-ternary */}
+                    {!get(bidCycle, 'handshake_allowed_date') && <Alert type="dark" title="Handshakes are not yet available for this cycle" />}
                     {isLocked ?
                       hasBureauPermission ? shortListSection : <>
                         <Alert
@@ -523,7 +524,6 @@ class PositionManagerBidders extends Component {
                         onSelectOption={e => this.props.onFilter('handshake_code', e.target.value)}
                       />
                     </div>
-
                     <div className="list-toggle-container">
                       <InteractiveElement title="Toggle visibility" onClick={() => this.toggleVisibility('unrankedVisible')}><FA name={unrankedVisible ? 'chevron-down' : 'chevron-up'} /></InteractiveElement>
                       <h3>Candidates ({this.state.unranked.length})</h3>
@@ -596,6 +596,7 @@ class PositionManagerBidders extends Component {
 
 PositionManagerBidders.propTypes = {
   bids: PropTypes.arrayOf(PropTypes.shape({})),
+  bidCycle: PropTypes.shape({}),
   bidsIsLoading: PropTypes.bool,
   onSort: PropTypes.func,
   onFilter: PropTypes.func,
@@ -616,6 +617,7 @@ PositionManagerBidders.propTypes = {
 
 PositionManagerBidders.defaultProps = {
   bids: [],
+  bidCycle: {},
   bidsIsLoading: false,
   onSort: EMPTY_FUNCTION,
   onFilter: EMPTY_FUNCTION,
