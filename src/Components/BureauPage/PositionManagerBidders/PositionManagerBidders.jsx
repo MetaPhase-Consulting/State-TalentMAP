@@ -492,7 +492,7 @@ class PositionManagerBidders extends Component {
                   :
                   <>
                     {/* eslint-disable no-nested-ternary */}
-                    {!get(bidCycle, 'handshake_allowed_date') && <Alert type="dark" title="Bureaus cannot yet offer handshakes for this cycle" />}
+                    {!get(bidCycle, 'handshake_allowed_date') && <Alert type="dark" title="Bureaus cannot offer handshakes for this cycle at this time" />}
                     {isLocked ?
                       hasBureauPermission ? shortListSection : <>
                         <Alert
