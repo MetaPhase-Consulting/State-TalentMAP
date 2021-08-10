@@ -121,7 +121,7 @@
     "@types/node": "^16.4.12",
     "@types/react": "^17.0.16",
     "@types/react-dom": "^17.0.9",
-    "@types/react-responsive": "^8.0.2",
+    "@types/react-responsive": "^8.0.3",
     "@types/react-router-dom": "^5.1.8",
     "@types/shortid": "^0.0.29",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
@@ -198,7 +198,7 @@
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-plugin-ramdisk": "^0.1.8",
     "whatwg-fetch": "2.0.3",
-    "workbox-webpack-plugin": "^6.2.0",
+    "workbox-webpack-plugin": "^6.2.2",
     "yarn": "^1.22.11"
   },
   "scripts": {
