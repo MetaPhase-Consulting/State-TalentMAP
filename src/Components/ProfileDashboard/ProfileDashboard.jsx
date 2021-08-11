@@ -18,8 +18,24 @@ import SavedSearches from './SavedSearches/SavedSearchesWrapper';
 import BackButton from '../BackButton';
 import BoxShadow from '../BoxShadow';
 import Classifications from './Classifications';
+import Languages from './Languages';
 
 const useCDOBidding = () => checkFlag('flags.cdo_bidding');
+
+const fakeLanguages = [
+  {
+    name: 'French',
+    speaking: 1,
+    reading: 3,
+    date: '3/2/21',
+  },
+  {
+    name: 'German',
+    speaking: 2,
+    reading: 4,
+    date: '1/1/20',
+  },
+];
 
 const ProfileDashboard = ({
   userProfile, isLoading, notifications, isPublic,
@@ -71,6 +87,11 @@ const ProfileDashboard = ({
                         </Flag>
                         <BoxShadow className="usa-width-one-whole user-dashboard-section favorites-section">
                           <SavedSearches />
+                        </BoxShadow>
+                        <BoxShadow className="usa-width-one-whole user-dashboard-section favorites-section">
+                          <Languages
+                            languagesArray={fakeLanguages}
+                          />
                         </BoxShadow>
                       </Column>
                       <Column
