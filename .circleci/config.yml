@@ -68,14 +68,6 @@ jobs:
                     yarn test $TEST -- --ci --reporters=default --reporters=jest-junit --coverageReporters=lcov
           environment:
             JEST_JUNIT_OUTPUT_NAME: "reports/jest/test-results.xml"
-
-      #- run: ./cc-test-reporter after-build --exit-code $? < coverage/lcov.info
-      #- store_test_results:
-      #    path: reports
-      #- store_artifacts:
-      #    path: coverage/lcov.info
-      #    destination: coverage/lcov.info
-
       - run:
           name: Code Climate Test Coverage
           command: |
@@ -265,21 +257,21 @@ workflows:
       - upload-coverage:
           requires:
             - yarn
-      #- site:
-      #    requires:
-      #      - yarn
-      #- server:
-      #    requires:
-      #      - yarn
+      - site:
+          requires:
+            - yarn
+      - server:
+          requires:
+            - yarn
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
-      #- deploy:
-      #    requires:
-      #      - yarn
-      #    filters:
-      #      branches:
-      #        only: dev
+      - deploy:
+          requires:
+            - yarn
+          filters:
+            branches:
+              only: dev
       # - zap:s
       #     requires:
       #       - docker-build
