@@ -112,7 +112,7 @@ class BidTrackerCard extends Component {
             deleteBid={deleteBid}
             showBidCount={showBidCount$}
             hideDelete={priorityExists}
-            bidTakenFlag={bidTakenFlag}
+            bidTakenFlag={bidTakenFlag} // needed?
             // questionText={questionText}
             useCDOView={useCDOView}
           />
@@ -136,6 +136,7 @@ class BidTrackerCard extends Component {
                   useCDOView={useCDOView}
                   isCollapsible={isCollapsible}
                   togglePanelAlert={this.togglePanelAlert}
+                  condensedView={condensedView}
                 />
             }
           </div>
