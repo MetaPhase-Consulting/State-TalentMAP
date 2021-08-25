@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import { EMPTY_FUNCTION } from '../../Constants/PropTypes';
+import BidCycles from 'Containers/BidCycles';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import Dashboard from './Dashboard';
 import Logs from './Logs';
 import Stats from './Stats';
 import UserRoles from './UserRoles';
 import FeatureFlags from './FeatureFlags';
-import BidCycles from '../../Containers/BidCycles';
 
 const AdministratorPage = (props) => {
   const {
