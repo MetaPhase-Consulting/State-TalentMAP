@@ -10,8 +10,6 @@ const receiveBidCycles = data => ({
 });
 
 export const fetchBidCycles = () => dispatch => {
-  // eslint-disable-next-line no-console
-  console.log('current: in fetchBidCycles');
   const ep = ['/fsbid/reference/cycles/', '/bidhandshakecycle/'];
   const queryProms = ep.map(url =>
     api().get(url)
