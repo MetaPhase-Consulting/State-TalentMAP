@@ -40,7 +40,7 @@ class BureauResultsCard extends Component {
 
     const language = (<LanguageList languages={languages} propToUse="representation" />);
 
-    const postShort = getPostName(pos.post, NO_POST);
+    const postShort = `${getPostName(pos.post, NO_POST)}${pos.organization ? `: ${pos.organization}` : ''}`;
 
     const bidStatsToUse = getBidStatsToUse(result, pos);
     const stats = getBidStatisticsObject(bidStatsToUse);
@@ -86,7 +86,7 @@ class BureauResultsCard extends Component {
             <div>{detailsLink}</div>
             <div>{postShort}</div>
             <div className="shortlist-icon">{shortListIndicator}</div>
-            <HandshakeStatus handshake={result.handshake} />
+            <HandshakeStatus handshake={result.lead_handshake} />
             {
               get(stats, 'has_handshake_offered', false) && <Handshake isWide cutSide="both" className="ribbon-results-card" />
             }
