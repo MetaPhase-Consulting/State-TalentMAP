@@ -1,15 +1,12 @@
-import { find, get } from 'lodash';
 import BidCycleCard from './BidCycleCard';
 import { Column, Row } from '../Layout';
 import ProfileSectionTitle from '../ProfileSectionTitle';
 import { BID_CYCLES } from '../../Constants/PropTypes';
-import GET_PROFILE_MENU from '../../Constants/Menu';
 
-const title = get(find(GET_PROFILE_MENU()[1].children, { route: '/profile/administrator/cycles/' }), 'text');
 const BidCycleList = ({ cycles }) => (
   <Row fluid>
     <Column>
-      <ProfileSectionTitle title={title} />
+      <ProfileSectionTitle title="Bid Cycles" />
       {cycles.map(cycle => (
         <BidCycleCard key={cycle.id} cycle={cycle} />
       ))}
