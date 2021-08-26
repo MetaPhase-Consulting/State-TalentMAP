@@ -211,6 +211,10 @@ const EditBidder = (props) => {
           />
         </div>
         <div>
+          <dt>Created:</dt>
+          <dd>{details.formattedCreated}</dd>
+        </div>
+        <div>
           <dt>Bureau Share:</dt>
           {
             status === 'OC' || status === 'UA' ?
