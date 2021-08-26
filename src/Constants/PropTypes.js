@@ -735,3 +735,13 @@ export const AB_EDIT_SECTIONS_OBJECT = PropTypes.shape({
   cdo: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   comments: PropTypes.string,
 });
+
+export const AB_EDIT_DETAILS_OBJECT = PropTypes.shape({
+  oc_bureau: PropTypes.string,
+  oc_reason: PropTypes.string,
+  status: PropTypes.string,
+  shared: PropTypes.bool,
+  languages: LANGUAGE_QUALIFICATIONS,
+  bidderBureau: PropTypes.string,
+  formattedCreated: PropTypes.string,
+});
