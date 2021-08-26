@@ -6,7 +6,7 @@ import { BID_CYCLES } from '../../Constants/PropTypes';
 const BidCycleList = ({ cycles }) => (
   <Row fluid>
     <Column>
-      <ProfileSectionTitle title="Bid Cycles" />
+      <ProfileSectionTitle title="Bid Cycles" icon="hourglass-start" />
       {cycles.map(cycle => (
         <BidCycleCard key={cycle.id} cycle={cycle} />
       ))}
