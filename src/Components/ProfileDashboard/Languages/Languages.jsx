@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types';
+import { format, isValid } from 'date-fns-v2';
+import { get } from 'lodash';
 import SectionTitle from '../SectionTitle';
 import InformationDataPoint from '../InformationDataPoint';
 
 const Languages = props => {
   const { languagesArray } = props;
+
+  const getTestDate = (langObj) => {
+    const testDate = get(langObj, 'test_date', false);
+    return isValid(new Date(testDate)) ? format(new Date(testDate), 'P') : '--/--/----';
+  };
 
   return (
     <div className="usa-grid-full profile-section-container languages-container">
@@ -14,15 +21,18 @@ const Languages = props => {
         <div className="languages-list-container">
           {languagesArray.map(l => (
             <>
-              <InformationDataPoint
-                title={l.name}
-                content={
-                  <div className="language-details">
-                    {`Reading: ${l.reading} | Speaking: ${l.speaking}`}
-                    <span>{`Test Date: ${l.date}`}</span>
-                  </div>
-                }
-              />
+              {
+                get(l, 'language') ?
+                  <InformationDataPoint
+                    title={get(l, 'language')}
+                    content={
+                      <div className="language-details">
+                        {`Reading: ${get(l, 'reading_score') || '--'} | Speaking: ${get(l, 'speaking_score') || '--'}`}
+                        <span>{`Test Date: ${getTestDate(l)}`}</span>
+                      </div>
+                    }
+                  /> : <></>
+              }
             </>
           ))}
         </div>
