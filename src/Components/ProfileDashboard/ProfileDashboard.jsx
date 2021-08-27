@@ -81,6 +81,7 @@ const ProfileDashboard = ({
                         <BoxShadow className="usa-width-one-whole user-dashboard-section favorites-section">
                           <SavedSearches />
                         </BoxShadow>
+                        { isBidder() && favoritesContainer() }
                       </Column>
                       <Column
                         columns={columns[2]}
