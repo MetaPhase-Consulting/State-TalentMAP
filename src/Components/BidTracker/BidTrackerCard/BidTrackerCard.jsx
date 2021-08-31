@@ -7,7 +7,7 @@ import { get } from 'lodash';
 import StaticDevContent from 'Components/StaticDevContent';
 import { BID_OBJECT, EMPTY_FUNCTION, USER_PROFILE } from 'Constants/PropTypes';
 import { DEFAULT_USER_PROFILE } from 'Constants/DefaultProps';
-import { APPROVED_PROP, DRAFT_PROP, HAND_SHAKE_ACCEPTED_PROP } from 'Constants/BidData';
+import { APPROVED_PROP, DRAFT_PROP, HAND_SHAKE_ACCEPTED_PROP, IN_PANEL_PROP } from 'Constants/BidData';
 import { formatDate, formatIdSpacing, getTimeDistanceInWords } from 'utilities';
 import BidSteps from '../BidStep';
 import BidTrackerCardTop from '../BidTrackerCardTop';
@@ -58,7 +58,8 @@ class BidTrackerCard extends Component {
     // const questionText = get(BID_EXPLANATION_TEXT, `[${bid.status}]`);
     const { showPanelAlert } = this.state;
     const bidTakenFlag = (get(bid, 'position_info.bid_statistics[0].has_handshake_offered'))
-      && (bid.status !== HAND_SHAKE_ACCEPTED_PROP && bid.status !== DRAFT_PROP);
+      && (bid.status !== APPROVED_PROP && bid.status !== HAND_SHAKE_ACCEPTED_PROP
+        && bid.status !== DRAFT_PROP && bid.status !== IN_PANEL_PROP);
     const bidTaken = bidTakenFlag ? ' bid-tracker-hs-another-client' : '';
     const bidStepsClass = ['usa-grid-full', 'padded-container-inner', 'bid-tracker-bid-steps-container', statusClass];
 
