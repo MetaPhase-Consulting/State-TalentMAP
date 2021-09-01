@@ -4,15 +4,15 @@ import FontAwesome from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import RescheduledIcon from './RescheduledIcon';
 
-const assignClasses = (isComplete, needsAction, isCurrent, handshakeRegisteredWithAnotherBidder) => {
+const assignClasses = (isComplete, needsAction, isCurrent, handshakeRegisterWithAnotherBidder) => {
   const classes = ['number-icon'];
 
   if (!needsAction) {
     classes.push('number-icon-incomplete');
   }
 
-  if (!needsAction && isCurrent && handshakeRegisteredWithAnotherBidder) {
-    classes.push('hs-regs-with-another-bidder-number-icon-is-current-no-action');
+  if (!needsAction && isCurrent && handshakeRegisterWithAnotherBidder) {
+    classes.push('register-with-another-bidder-number-icon-is-current-no-action');
   } else if (!needsAction && isCurrent) {
     classes.push('number-icon-is-current-no-action')
   }
@@ -21,8 +21,8 @@ const assignClasses = (isComplete, needsAction, isCurrent, handshakeRegisteredWi
     classes.push('number-icon-needs-action');
   }
 
-  if (handshakeRegisteredWithAnotherBidder) {
-    classes.push('hs-regs-with-another-bidder-icon')
+  if (handshakeRegisterWithAnotherBidder) {
+    classes.push('register-with-another-bidder-icon')
   }
   return classes.join(' ');
 };
@@ -34,7 +34,7 @@ const getTooltipText = (title, text) => (
   </div>
 );
 
-const getCheckIcon = (title, text, isCondensed, handshakeRegisteredWithAnotherBidder) => {
+const getCheckIcon = (title, text, isCondensed, handshakeRegisterWithAnotherBidder) => {
   if(title && text && !isCondensed ) {
     return (
         <Tooltip
@@ -56,7 +56,7 @@ const getCheckIcon = (title, text, isCondensed, handshakeRegisteredWithAnotherBi
 
 const BidStepIcon = ({ isComplete, needsAction, isCurrent, number,
   hasRescheduledTooltip, tooltipTitle, tooltipText,
-  handshakeRegisteredWithAnotherBidder}, { condensedView }) => (
+  handshakeRegisterWithAnotherBidder}, { condensedView }) => (
     <span className={isComplete ? 'icon-complete' : 'icon-incomplete'}>
     { !isComplete
         ?
@@ -71,14 +71,14 @@ const BidStepIcon = ({ isComplete, needsAction, isCurrent, number,
                   useContext
               >
               <span
-                  className={assignClasses(isComplete, needsAction, isCurrent, handshakeRegisteredWithAnotherBidder)}
+                  className={assignClasses(isComplete, needsAction, isCurrent, handshakeRegisterWithAnotherBidder)}
               >
                 {number > 0 ? number : null}
               </span>
               </Tooltip>
               :
             <span
-                className={assignClasses(isComplete, needsAction, isCurrent, handshakeRegisteredWithAnotherBidder)}
+                className={assignClasses(isComplete, needsAction, isCurrent, handshakeRegisterWithAnotherBidder)}
             >
               {number > 0 ? number : null}
             </span>
@@ -102,7 +102,7 @@ BidStepIcon.propTypes = {
   hasRescheduledTooltip: PropTypes.bool,
   tooltipTitle: PropTypes.string,
   tooltipText: PropTypes.string,
-  handshakeRegisteredWithAnotherBidder: PropTypes.bool.isRequired,
+  handshakeRegisterWithAnotherBidder: PropTypes.bool.isRequired,
 };
 
 BidStepIcon.defaultProps = {

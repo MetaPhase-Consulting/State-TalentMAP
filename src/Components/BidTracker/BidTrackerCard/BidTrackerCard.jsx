@@ -60,11 +60,11 @@ class BidTrackerCard extends Component {
     const bidTakenFlag = (get(bid, 'position_info.bid_statistics[0].has_handshake_offered'))
       && (bid.status !== APPROVED_PROP && bid.status !== HAND_SHAKE_ACCEPTED_PROP
       && bid.status !== DRAFT_PROP && bid.status !== IN_PANEL_PROP && bid.status !== CLOSED_PROP);
-    const bidTaken = bidTakenFlag ? ' bid-tracker-hs-regs-with-another-bidder' : '';
+    const bidTaken = bidTakenFlag ? ' bid-tracker-register-with-another-bidder' : '';
     const bidStepsClass = ['usa-grid-full', 'padded-container-inner', 'bid-tracker-bid-steps-container', statusClass];
 
     if (bidTakenFlag) {
-      bidStepsClass.push('hs-regs-with-another-bidder-bid-steps');
+      bidStepsClass.push('register-with-another-bidder-bid-steps');
     }
 
     const bidStepsClasses$ = bidStepsClass.join(' ');

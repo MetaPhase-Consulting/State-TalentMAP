@@ -510,13 +510,13 @@ $register-hide-icon: 95%;
     border-color: $color-green-dark;
   }
 
-  .hs-regs-with-another-bidder-icon {
+  .register-with-another-bidder-icon {
     animation: none;
     background: $color-green-dark-opacity50;
     border-color: $color-green-dark-opacity50;
   }
 
-  .hs-regs-with-another-bidder-number-icon-is-current-no-action {
+  .register-with-another-bidder-number-icon-is-current-no-action {
     background: $color-green-dark-opacity50;
     border-color: $color-green-dark-opacity50;
   }
@@ -655,7 +655,7 @@ $register-hide-icon: 95%;
     }
   }
 
-  .hs-regs-with-another-bidder-bid-steps {   
+  .register-with-another-bidder-bid-steps {   
     .pending-line {
       .rc-steps-item-tail::after {
         border: 1.5px dashed $color-green-dark-opacity50;
@@ -1113,8 +1113,8 @@ $register-hide-icon: 95%;
     }
   }
 
-  .hs-regs-with-another-bidder-bid-steps {
-    .hs-regs-with-another-bidder-icon {
+  .register-with-another-bidder-bid-steps {
+    .register-with-another-bidder-icon {
       background: $color-green-dark-opacity50;
       border-color: $color-green-dark-opacity50;
     }
@@ -1531,6 +1531,6 @@ $register-hide-icon: 95%;
   overflow: hidden;
 }
 
-.bid-tracker-hs-regs-with-another-bidder {
+.bid-tracker-register-with-another-bidder {
   background: $bg-hs-another-client;
 }
