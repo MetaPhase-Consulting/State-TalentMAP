@@ -633,7 +633,7 @@ const items =
       },
       {
         item: {
-          title: 'Handshake',
+          title: 'Handshake Registered',
           sort: 1200,
           description: 'handshake',
           selectionRef: ENDPOINT_PARAMS.handshake,
@@ -648,7 +648,7 @@ const items =
       },
       {
         item: {
-          title: 'Handshake',
+          title: 'Handshake Registered',
           sort: 1200,
           description: 'handshake-tandem',
           selectionRef: ENDPOINT_PARAMS_TANDEM.handshake,
@@ -677,6 +677,19 @@ const items =
           { code: 'O', description: 'Offered', isSelected: false },
           { code: 'R', description: 'Revoked', isSelected: false },
         ],
+      },
+      {
+        item: {
+          title: 'Organization',
+          sort: 1300,
+          description: 'organization',
+          selectionRef: ENDPOINT_PARAMS.organization,
+          tryCache: true,
+          text: 'Choose Organization',
+          choices: [
+          ],
+        },
+        data: [],
       },
     ],
   };
