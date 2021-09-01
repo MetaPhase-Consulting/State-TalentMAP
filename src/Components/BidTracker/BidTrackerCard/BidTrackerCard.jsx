@@ -113,7 +113,7 @@ class BidTrackerCard extends Component {
             deleteBid={deleteBid}
             showBidCount={showBidCount$}
             hideDelete={priorityExists}
-            bidTakenFlag={bidTakenFlag} // needed?
+            bidTakenFlag={bidTakenFlag}
             // questionText={questionText}
             useCDOView={useCDOView}
           />
