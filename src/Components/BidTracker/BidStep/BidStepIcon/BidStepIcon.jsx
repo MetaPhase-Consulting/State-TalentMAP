@@ -34,7 +34,7 @@ const getTooltipText = (title, text) => (
   </div>
 );
 
-const getCheckIcon = (title, text, isCondensed, handshakeRegisterWithAnotherBidder) => {
+const getCheckIcon = (title, text, isCondensed) => {
   if(title && text && !isCondensed ) {
     return (
         <Tooltip
