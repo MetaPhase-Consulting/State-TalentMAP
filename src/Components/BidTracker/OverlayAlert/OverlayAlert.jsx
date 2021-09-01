@@ -17,7 +17,7 @@ import ClosedAlert from './ClosedAlert';
 import PanelRescheduledAlert from './PanelRescheduledAlert';
 import HandshakeRegisterAlert from './HandshakeRegisterAlert';
 import DraftAlert from './DraftAlert';
-import HandshakeRegisterAnotherClientAlert from './HandshakeRegisterAnotherClientAlert';
+import HandshakeRegisterWithAnotherBidderAlert from './HandshakeRegisterWithAnotherBidderAlert';
 import { getBidIdUrl } from './helpers';
 
 // Alert rendering based on status is handled here.
@@ -144,7 +144,7 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
     showArrow = false;
     overlayClass = CLASS_REGISTER_WITH_ANOTHER_BIDDER;
     overlayContent = (
-      <HandshakeRegisterAnotherClientAlert
+      <HandshakeRegisterWithAnotherBidderAlert
         condensedView={condensedView}
         bid={bid}
       />);
