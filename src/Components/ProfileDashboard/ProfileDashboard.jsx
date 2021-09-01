@@ -125,7 +125,7 @@ const ProfileDashboard = ({
                     isPublic &&
                     <>
                       <Column
-                        columns={columns[0]}
+                        columns={columns[1]}
                         className="user-dashboard-section-container user-dashboard-column-2"
                       >
                         {
