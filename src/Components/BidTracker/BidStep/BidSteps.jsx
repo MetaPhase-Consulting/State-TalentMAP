@@ -27,7 +27,7 @@ const BidSteps = (props, context) => {
   const { bid, collapseOverlay } = props;
   const { condensedView } = context;
   const bidData = bidClassesFromCurrentStatus(bid).stages || {};
-  const handshakeRegisteredAnotherClient =
+  const handshakeRegisteredWithAnotherBidder =
     get(bid, 'position_info.bid_statistics[0].has_handshake_offered') &&
     (bid.status !== APPROVED_PROP && bid.status !== HAND_SHAKE_ACCEPTED_PROP
       && bid.status !== DRAFT_PROP && bid.status !== IN_PANEL_PROP && bid.status !== CLOSED_PROP);
@@ -43,7 +43,7 @@ const BidSteps = (props, context) => {
         hasRescheduledTooltip={bidData[status.prop].hasRescheduledTooltip}
         tooltipTitle={tooltipTitle}
         tooltipText={tooltipText}
-        handshakeRegisteredAnotherClient={handshakeRegisteredAnotherClient}
+        handshakeRegisteredWithAnotherBidder={handshakeRegisteredWithAnotherBidder}
       />
     );
     if (bidData[status.prop].isCurrent && bidData[status.prop].title === APPROVED.text
