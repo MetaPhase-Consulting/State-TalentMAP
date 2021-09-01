@@ -9,7 +9,7 @@ const Languages = props => {
   const languagesArray$ = languagesArray || [];
 
   const getTestDate = (langObj) => {
-    const testDate = get(langObj, 'test_date', '');
+    const testDate = get(langObj, 'test_date') || '';
     return isValid(new Date(testDate)) ? format(new Date(testDate), 'P') : '--/--/----';
   };
 
