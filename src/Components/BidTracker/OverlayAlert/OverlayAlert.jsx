@@ -29,7 +29,7 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
   const CLASS_DRAFT = 'bid-tracker-overlay-alert--draft';
   const CLASS_REGISTER = 'bid-tracker-overlay-alert--register';
   const CLASS_UNREGISTER = 'bid-tracker-overlay-alert--unregister';
-  const CLASS_REGISTER_ANOTHER_CLIENT = 'bid-tracker-overlay-alert--register-another-client';
+  const CLASS_REGISTER_WITH_ANOTHER_BIDDER = 'bid-tracker-overlay-alert--register-with-another-bidder';
 
   const position = get(bid, 'position_info.position') || {};
   const BID_TITLE = position.title ? `${position.title}${position.position_number ? ` (${position.position_number})` : ''}` : 'N/A';
@@ -136,13 +136,13 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
     togglePanelAlert(!overlayContent);
   }, []);
 
-  const positionHandshakeRegistered = get(bid, 'position_info.bid_statistics[0].has_handshake_offered');
+  const handshakeRegsiterWithAnotherPosition = get(bid, 'position_info.bid_statistics[0].has_handshake_offered');
   let showArrow = true;
-  if (positionHandshakeRegistered &&
+  if (handshakeRegsiterWithAnotherPosition &&
     (bid.status !== HAND_SHAKE_ACCEPTED_PROP && bid.status !== DRAFT_PROP
       && bid.status !== CLOSED_PROP && bid.status !== DECLINED_PROP)) {
     showArrow = false;
-    overlayClass = CLASS_REGISTER_ANOTHER_CLIENT;
+    overlayClass = CLASS_REGISTER_WITH_ANOTHER_BIDDER;
     overlayContent = (
       <HandshakeRegisterAnotherClientAlert
         condensedView={condensedView}
