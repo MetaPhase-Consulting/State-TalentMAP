@@ -271,7 +271,7 @@ $register-hide-icon: 95%;
 
 .bid-tracker-overlay-alert--register-with-another-bidder {
   background: $bg-overlay-register-with-another-bidder;
-  margin-left: auto;
+  margin-left: 44%;
   position: absolute;
   right: 0;
   width: 56%;
@@ -1516,6 +1516,7 @@ $register-hide-icon: 95%;
 
   .bid-tracker-overlay-alert--register-with-another-bidder {
     margin-left: 0%;
+    width: 100%;
 
     .bid-tracker-overlay-alert-content-container {
       padding-right: 0%;
