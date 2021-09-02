@@ -663,8 +663,8 @@ $register-hide-icon: 95%;
   .register-with-another-bidder-bid-steps {
     .pending-line {
       .rc-steps-item-tail::after {
-        border: 1.5px dashed $color-green-dark-opacity50;
-        color: $blue-primary;
+        border: 1.5px dashed $color-gray-light;
+        color: $color-gray-light;
       }
     }
   }
