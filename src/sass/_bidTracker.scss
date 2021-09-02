@@ -271,10 +271,10 @@ $register-hide-icon: 95%;
 
 .bid-tracker-overlay-alert--register-with-another-bidder {
   background: $bg-overlay-register-with-another-bidder;
-  width: 56%;
   margin-left: auto;
   position: absolute;
   right: 0;
+  width: 56%;
 
   .bid-tracker-overlay-alert-content-container {
     width: 90%;
@@ -283,7 +283,7 @@ $register-hide-icon: 95%;
 
 .bid-tracker-overlay-alert--register-with-another-bidder::after {
   border-bottom: 10px solid transparent;
-  border-left: 10px solid $bg-register-with-another-bidder;;
+  border-left: 10px solid $bg-register-with-another-bidder;
   border-top: 10px solid transparent;
   clear: both;
   content: '';
@@ -655,7 +655,7 @@ $register-hide-icon: 95%;
     }
   }
 
-  .register-with-another-bidder-bid-steps {   
+  .register-with-another-bidder-bid-steps {
     .pending-line {
       .rc-steps-item-tail::after {
         border: 1.5px dashed $color-green-dark-opacity50;
@@ -1517,7 +1517,7 @@ $register-hide-icon: 95%;
   .bid-tracker-overlay-alert--register-with-another-bidder {
     margin-left: 0%;
 
-  .bid-tracker-overlay-alert-content-container {
+    .bid-tracker-overlay-alert-content-container {
       padding-right: 0%;
     }
   }
