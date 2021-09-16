@@ -118,7 +118,7 @@
     "@types/axios": "^0.14.0",
     "@types/date-fns": "^2.6.0",
     "@types/jest": "^26.0.24",
-    "@types/lodash": "^4.14.172",
+    "@types/lodash": "^4.14.173",
     "@types/node": "^16.4.12",
     "@types/react": "^17.0.16",
     "@types/react-dom": "^17.0.9",
@@ -200,7 +200,7 @@
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-plugin-ramdisk": "^0.2.0",
     "whatwg-fetch": "2.0.3",
-    "workbox-webpack-plugin": "^6.2.4",
+    "workbox-webpack-plugin": "^6.3.0",
     "yarn": "^1.22.11"
   },
   "scripts": {
