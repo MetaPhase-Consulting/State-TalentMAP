@@ -19,7 +19,7 @@ import HandshakeRegisterAlert from './HandshakeRegisterAlert';
 import DraftAlert from './DraftAlert';
 import HandshakeRegisterWithAnotherBidderAlert from './HandshakeRegisterWithAnotherBidderAlert';
 import { getBidIdUrl } from './helpers';
-import { showHandshakeRegsiteredWtihAnotherBidderOverlay } from '../BidHelpers';
+import { showHandshakeRegsiterWtihAnotherBidderOverlay } from '../BidHelpers';
 
 // Alert rendering based on status is handled here.
 const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
@@ -137,10 +137,9 @@ const OverlayAlert = ({ bid, submitBid, userId, registerHandshake,
     togglePanelAlert(!overlayContent);
   }, []);
 
-  const handshakeRegsiterWithAnotherPosition = get(bid, 'position_info.bid_statistics[0].has_handshake_offered');
   let showArrow = true;
-  if (handshakeRegsiterWithAnotherPosition &&
-    showHandshakeRegsiteredWtihAnotherBidderOverlay(bid)) {
+  if (get(bid, 'position_info.bid_statistics[0].has_handshake_offered') &&
+    showHandshakeRegsiterWtihAnotherBidderOverlay(bid)) {
     showArrow = false;
     overlayClass = CLASS_REGISTER_WITH_ANOTHER_BIDDER;
     overlayContent = (

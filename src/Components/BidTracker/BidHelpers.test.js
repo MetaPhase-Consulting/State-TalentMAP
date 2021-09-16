@@ -13,8 +13,8 @@ import {
   bidClassesFromCurrentStatus,
   getActionPermissions,
   shouldShowAlert,
-  showHandshakeRegsiteredWtihAnotherBidder,
-  showHandshakeRegsiteredWtihAnotherBidderOverlay,
+  showHandshakeRegsiterWtihAnotherBidder,
+  showHandshakeRegsiterWtihAnotherBidderOverlay,
 } from './BidHelpers';
 import bidListObject from '../../__mocks__/bidListObject';
 
@@ -90,26 +90,26 @@ describe('getActionPermissions function', () => {
   });
 });
 
-describe('showHandshakeRegsiteredWtihAnotherBidder function', () => {
+describe('showHandshakeRegsiterWtihAnotherBidder function', () => {
   it('returns true for a valid status', () => {
-    const result = showHandshakeRegsiteredWtihAnotherBidder({ status: IN_PANEL_PROP }, {});
+    const result = showHandshakeRegsiterWtihAnotherBidder({ status: SUBMITTED_PROP }, {});
     expect(result).toBe(true);
   });
 
   it('returns false for a invalid status', () => {
-    const result = showHandshakeRegsiteredWtihAnotherBidder({ status: DRAFT_PROP }, {});
+    const result = showHandshakeRegsiterWtihAnotherBidder({ status: DRAFT_PROP }, {});
     expect(result).toBe(false);
   });
 });
 
-describe('showHandshakeRegsiteredWtihAnotherBidderOverlay function', () => {
+describe('showHandshakeRegsiterWtihAnotherBidderOverlay function', () => {
   it('returns true for a valid status', () => {
-    const result = showHandshakeRegsiteredWtihAnotherBidderOverlay({ status: IN_PANEL_PROP }, {});
+    const result = showHandshakeRegsiterWtihAnotherBidderOverlay({ status: SUBMITTED_PROP }, {});
     expect(result).toBe(true);
   });
 
   it('returns false for a invalid status', () => {
-    const result = showHandshakeRegsiteredWtihAnotherBidderOverlay({ status: DRAFT_PROP }, {});
+    const result = showHandshakeRegsiterWtihAnotherBidderOverlay({ status: DRAFT_PROP }, {});
     expect(result).toBe(false);
   });
 });
