@@ -9,7 +9,13 @@ import {
   PRE_PANEL_PROP,
   SUBMITTED_PROP,
 } from '../../Constants/BidData';
-import { bidClassesFromCurrentStatus, getActionPermissions, shouldShowAlert } from './BidHelpers';
+import {
+  bidClassesFromCurrentStatus,
+  getActionPermissions,
+  shouldShowAlert,
+  showHandshakeRegsiteredWtihAnotherBidder,
+  showHandshakeRegsiteredWtihAnotherBidderOverlay,
+} from './BidHelpers';
 import bidListObject from '../../__mocks__/bidListObject';
 
 // Test that the result of each status prop is defined
@@ -81,5 +87,29 @@ describe('getActionPermissions function', () => {
     expect(permissions.disableDelete).toBe(false);
     expect(permissions.showWithdraw).toBe(true);
     expect(permissions.disableWithdraw).toBe(true);
+  });
+});
+
+describe('showHandshakeRegsiteredWtihAnotherBidder function', () => {
+  it('returns true for a valid status', () => {
+    const result = showHandshakeRegsiteredWtihAnotherBidder({ status: IN_PANEL_PROP }, {});
+    expect(result).toBe(true);
+  });
+
+  it('returns false for a invalid status', () => {
+    const result = showHandshakeRegsiteredWtihAnotherBidder({ status: DRAFT_PROP }, {});
+    expect(result).toBe(false);
+  });
+});
+
+describe('showHandshakeRegsiteredWtihAnotherBidderOverlay function', () => {
+  it('returns true for a valid status', () => {
+    const result = showHandshakeRegsiteredWtihAnotherBidderOverlay({ status: IN_PANEL_PROP }, {});
+    expect(result).toBe(true);
+  });
+
+  it('returns false for a invalid status', () => {
+    const result = showHandshakeRegsiteredWtihAnotherBidderOverlay({ status: DRAFT_PROP }, {});
+    expect(result).toBe(false);
   });
 });

@@ -5,15 +5,8 @@ import { APPROVED } from 'Constants/BidStatuses';
 import { checkFlag } from 'flags';
 import { get } from 'lodash';
 import { BID_OBJECT } from 'Constants/PropTypes';
-import {
-  APPROVED_PROP,
-  CLOSED_PROP,
-  DRAFT_PROP,
-  HAND_SHAKE_ACCEPTED_PROP,
-  IN_PANEL_PROP,
-} from 'Constants/BidData';
 import ConfettiIcon from './ConfettiIcon';
-import { bidClassesFromCurrentStatus } from '../BidHelpers';
+import { bidClassesFromCurrentStatus, showHandshakeRegsiterWtihAnotherBidder } from '../BidHelpers';
 import BID_STEPS from './BidStepsHelpers';
 import BidStepIcon from './BidStepIcon';
 import BidPreparingIcon from './BidStepIcon/BidPreparingIcon';
@@ -33,9 +26,9 @@ const BidSteps = (props, context) => {
   const { bid, collapseOverlay } = props;
   const { condensedView } = context;
   const bidData = bidClassesFromCurrentStatus(bid).stages || {};
+  // added to bid helpers
   const handshakeRegisterWithAnotherBidder = get(bid, 'position_info.bid_statistics[0].has_handshake_offered')
-    && (bid.status !== APPROVED_PROP && bid.status !== HAND_SHAKE_ACCEPTED_PROP
-      && bid.status !== DRAFT_PROP && bid.status !== IN_PANEL_PROP && bid.status !== CLOSED_PROP);
+    && showHandshakeRegsiterWtihAnotherBidder(bid);
   const getIcon = (status) => {
     const tooltipTitle = get(bidData[status.prop], 'tooltip.title');
     const tooltipText = get(bidData[status.prop], 'tooltip.text');
