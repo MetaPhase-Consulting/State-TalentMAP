@@ -46,7 +46,6 @@ const debouncedNetworkAlert = throttle(
   { leading: true, trailing: false },
 );
 
-// eslint-disable-next-line no-unused-vars
 const debouncedExpiredSessionAlert = throttle(
   // eslint-disable-next-line global-require
   () => require('./store').store.dispatch(toastWarning(
