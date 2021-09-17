@@ -170,6 +170,7 @@ const api = () => {
   api$.interceptors.response.use(response => response, (error) => {
     // We want to perform this on 302 to Microsoft, but CORS blocks visibility from axios,
     // so this is the closest we can get to capturing the session expiring.
+    // https://github.com/axios/axios/issues/838#issuecomment-304033403
     if (typeof error.response === 'undefined') {
       debouncedExpiredSessionAlert();
     }
