@@ -75,7 +75,7 @@ export const bidClassesFromCurrentStatus = (bid = { status: 'draft' }) => getCon
 
 export function showHandshakeRegsiterWtihAnotherBidder(bid) {
   if ((bid.status === SUBMITTED_PROP || bid.status === HAND_SHAKE_ACCEPTED_PROP
-    || bid.status === IN_PANEL_PROP || bid.status === DRAFT_PROP)) {
+    || bid.status === IN_PANEL_PROP || bid.status === DRAFT_PROP || bid.status === APPROVED_PROP)) {
     return false;
   }
   return true;
