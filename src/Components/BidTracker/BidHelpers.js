@@ -74,11 +74,11 @@ export function getActionPermissions(status) {
 export const bidClassesFromCurrentStatus = (bid = { status: 'draft' }) => getConfig()(bid);
 
 export function showHandshakeRegsiterWtihAnotherBidder(bid) {
-  if ((bid.status !== APPROVED_PROP && bid.status !== HAND_SHAKE_ACCEPTED_PROP
-    && bid.status !== DRAFT_PROP && bid.status !== IN_PANEL_PROP && bid.status !== CLOSED_PROP)) {
-    return true;
+  if ((bid.status === SUBMITTED_PROP || bid.status === HAND_SHAKE_ACCEPTED_PROP
+    || bid.status === IN_PANEL_PROP || bid.status === DRAFT_PROP)) {
+    return false;
   }
-  return false;
+  return true;
 }
 
 export function showHandshakeRegsiterWtihAnotherBidderOverlay(bid) {
