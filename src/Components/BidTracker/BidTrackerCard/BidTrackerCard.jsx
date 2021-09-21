@@ -14,7 +14,7 @@ import BidTrackerCardTop from '../BidTrackerCardTop';
 import OverlayAlert from '../OverlayAlert';
 import BoxShadow from '../../BoxShadow';
 import BidCount from '../../BidCount';
-import { shouldShowAlert, showHandshakeRegsiterWtihAnotherBidder } from '../BidHelpers';
+import { shouldShowAlert, showHandshakeRegsiterWithAnotherBidderOverlay } from '../BidHelpers';
 import { CriticalNeed, Handshake, HistDiffToStaff, ServiceNeedDifferential } from '../../Ribbon';
 import MediaQuery from '../../MediaQuery';
 
@@ -58,7 +58,7 @@ class BidTrackerCard extends Component {
     // const questionText = get(BID_EXPLANATION_TEXT, `[${bid.status}]`);
     const { showPanelAlert } = this.state;
     const bidTakenFlag = (get(bid, 'position_info.bid_statistics[0].has_handshake_offered'))
-      && showHandshakeRegsiterWtihAnotherBidder(bid);
+      && showHandshakeRegsiterWithAnotherBidderOverlay(bid);
     const bidTaken = bidTakenFlag ? ' bid-tracker-register-with-another-bidder' : '';
     const bidStepsClass = ['usa-grid-full', 'padded-container-inner', 'bid-tracker-bid-steps-container', statusClass];
 

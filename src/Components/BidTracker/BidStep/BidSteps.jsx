@@ -6,7 +6,7 @@ import { checkFlag } from 'flags';
 import { get } from 'lodash';
 import { BID_OBJECT } from 'Constants/PropTypes';
 import ConfettiIcon from './ConfettiIcon';
-import { bidClassesFromCurrentStatus, showHandshakeRegsiterWtihAnotherBidder } from '../BidHelpers';
+import { bidClassesFromCurrentStatus, showHandshakeRegsiterWithAnotherBidderOverlay } from '../BidHelpers';
 import BID_STEPS from './BidStepsHelpers';
 import BidStepIcon from './BidStepIcon';
 import BidPreparingIcon from './BidStepIcon/BidPreparingIcon';
@@ -28,7 +28,7 @@ const BidSteps = (props, context) => {
   const bidData = bidClassesFromCurrentStatus(bid).stages || {};
   // added to bid helpers
   const handshakeRegisterWithAnotherBidder = get(bid, 'position_info.bid_statistics[0].has_handshake_offered')
-    && showHandshakeRegsiterWtihAnotherBidder(bid);
+    && showHandshakeRegsiterWithAnotherBidderOverlay(bid);
   const getIcon = (status) => {
     const tooltipTitle = get(bidData[status.prop], 'tooltip.title');
     const tooltipText = get(bidData[status.prop], 'tooltip.text');
