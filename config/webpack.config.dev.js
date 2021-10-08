@@ -306,7 +306,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new WebpackPluginRamdisk({}),
+    // new WebpackPluginRamdisk({}), TODO add back in - cypress ci testing
     new webpackDashboard(),
     // Webpack plugin that runs typescript type checker on a separate process.
 		new ForkTsCheckerWebpackPlugin({
