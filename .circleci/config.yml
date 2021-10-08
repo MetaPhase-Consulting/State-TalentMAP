@@ -182,6 +182,11 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: mkdir ~/.npm-global
+      - run: npm config set prefix '~/.npm-global'
+      - run: export PATH=~/.npm-global/bin:$PATH
       - run:
           name: Replace config.json
           command: cp ${STATIC_PATH}/config/config_dev.json ${STATIC_PATH}/config/config.json
