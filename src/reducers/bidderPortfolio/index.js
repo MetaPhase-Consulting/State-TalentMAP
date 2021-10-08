@@ -1,11 +1,11 @@
-import { bidderPortfolioSelectedSeasons, bidderPortfolioSeasons, bidderPortfolioSeasonsIsLoading,
-  bidderPortfolioSeasonsHasErrored,
-  bidderPortfolio, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
-  bidderPortfolioCounts, bidderPortfolioCountsIsLoading, bidderPortfolioCountsHasErrored,
-  bidderPortfolioCDOs, bidderPortfolioCDOsIsLoading, bidderPortfolioCDOsHasErrored,
-  bidderPortfolioLastQuery, lastBidderPortfolioHasErrored, lastBidderPortfolioIsLoading,
-  bidderPortfolioSelectedCDO, bidderPortfolioSelectedCDOsToSearchBy,
-  lastBidderPortfolio } from './bidderPortfolio';
+import { bidderPortfolio, bidderPortfolioCDOs, bidderPortfolioCDOsHasErrored,
+  bidderPortfolioCDOsIsLoading,
+  bidderPortfolioCounts, bidderPortfolioCountsHasErrored, bidderPortfolioCountsIsLoading,
+  bidderPortfolioHasErrored, bidderPortfolioIsLoading, bidderPortfolioLastQuery,
+  bidderPortfolioSeasons, bidderPortfolioSeasonsHasErrored, bidderPortfolioSeasonsIsLoading,
+  bidderPortfolioSelectedCDO, bidderPortfolioSelectedCDOsToSearchBy, bidderPortfolioSelectedSeasons,
+  bidderPortfolioSelectedUnassigned, lastBidderPortfolio,
+  lastBidderPortfolioHasErrored, lastBidderPortfolioIsLoading } from './bidderPortfolio';
 
 export default { bidderPortfolioSelectedSeasons,
   bidderPortfolioSeasons,
@@ -25,4 +25,5 @@ export default { bidderPortfolioSelectedSeasons,
   lastBidderPortfolioIsLoading,
   bidderPortfolioSelectedCDO,
   bidderPortfolioSelectedCDOsToSearchBy,
-  lastBidderPortfolio };
+  lastBidderPortfolio,
+  bidderPortfolioSelectedUnassigned };

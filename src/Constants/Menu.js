@@ -75,26 +75,6 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'bidder',
         ],
       } : null,
-      {
-        text: 'Bid Cycles',
-        route: '/profile/cycles/',
-        icon: 'hourglass-start',
-        roles: [
-          'bidcycle_admin',
-        ],
-      },
-      checkFlag('flags.client_profiles') ?
-        {
-          text: 'Client Profiles', // aka Bidder Portfolio
-          route: '/profile/bidderportfolio',
-          icon: 'users',
-          roles: [
-            'cdo',
-          ],
-          params: {
-            type: 'all',
-          },
-        } : null,
       checkFlag('flags.static_content') ?
         {
           text: 'Settings',
@@ -166,6 +146,15 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         ],
       },
       {
+        text: 'Bid Cycles',
+        route: '/profile/administrator/cycles/',
+        icon: 'hourglass-start',
+        roles: [
+          'superuser',
+          'bidcycle_admin',
+        ],
+      },
+      {
         text: 'Glossary Editor',
         route: '/profile/glossaryeditor/',
         icon: 'book',
@@ -184,7 +173,6 @@ export const GET_PROFILE_MENU = () => MenuConfig([
     roles: [
       'superuser',
       'bureau_user',
-      'post_user',
     ],
     children: [
       checkFlag('flags.static_content') ?
@@ -207,16 +195,6 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'bureau_user',
           ],
         } : null,
-      checkFlag('flags.static_content') ?
-        {
-          text: 'Position Lists',
-          route: '/profile/bureau/positionlists',
-          icon: 'list-ol',
-          roles: [
-            'superuser',
-            'bureau_user',
-          ],
-        } : null,
       {
         text: 'Position Manager',
         route: '/profile/bureau/positionmanager',
@@ -224,6 +202,47 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         roles: [
           'superuser',
           'bureau_user',
+        ],
+      },
+      checkFlag('flags.available_bidders') ?
+        {
+          text: 'Available Bidders',
+          route: '/profile/bureau/availablebidders',
+          icon: 'users',
+          roles: [
+            'super_user',
+            'bureau_user',
+          ],
+        } : null,
+    ],
+  } : null,
+  checkFlag('flags.post') ? {
+    text: 'Post',
+    route: '/profile/post/dashboard/',
+    icon: 'building',
+    toggleMenuSection: true,
+    expandedSection: true,
+    roles: [
+      'superuser',
+      'post_user',
+    ],
+    children: [
+      checkFlag('flags.static_content') ?
+        {
+          text: 'Dashboard',
+          route: '/profile/post/dashboard/',
+          icon: 'tachometer',
+          roles: [
+            'superuser',
+            'post_user',
+          ],
+        } : null,
+      {
+        text: 'Position Manager',
+        route: '/profile/post/positionmanager',
+        icon: 'map',
+        roles: [
+          'superuser',
           'post_user',
         ],
       },
@@ -231,7 +250,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
   } : null,
   checkFlag('flags.ao') ? {
     text: 'AO',
-    route: '/profile/ao/positionmanager/',
+    route: '/profile/ao/dashboard/',
     icon: 'building-o',
     toggleMenuSection: true,
     expandedSection: true,
@@ -246,21 +265,46 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           route: '/profile/ao/dashboard/',
           icon: 'tachometer',
           roles: [
+            'ao_user',
             'superuser',
-            'bureau_user',
           ],
         } : null,
-      {
-        text: 'Position Manager',
-        route: '/profile/ao/positionmanager',
-        icon: 'map-o',
-        roles: [
-          'ao_user',
-          'superuser',
-        ],
-      },
     ],
   } : null,
+  {
+    text: 'CDO',
+    route: '/profile/cdo/bidderportfolio',
+    icon: 'street-view',
+    toggleMenuSection: true,
+    expandedSection: true,
+    roles: [
+      'superuser',
+      'cdo',
+    ],
+    children: [
+      checkFlag('flags.client_profiles') ?
+        {
+          text: 'Client Profiles', // aka Bidder Portfolio
+          route: '/profile/cdo/bidderportfolio',
+          icon: 'address-book',
+          roles: [
+            'cdo',
+          ],
+          params: {
+            type: 'all',
+          },
+        } : null,
+      checkFlag('flags.available_bidders') ?
+        {
+          text: 'Available Bidders',
+          route: '/profile/cdo/availablebidders',
+          icon: 'users',
+          roles: [
+            'cdo',
+          ],
+        } : null,
+    ],
+  },
 ].filter(x => x));
 
 export default GET_PROFILE_MENU;

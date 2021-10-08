@@ -1,7 +1,7 @@
 import api from '../api';
 import * as SystemMessages from '../Constants/SystemMessages';
 import { propOrDefault } from '../utilities';
-import { toastSuccess, toastError } from './toast';
+import { toastError, toastSuccess } from './toast';
 
 export function newSavedSearchHasErrored(bool) {
   return {
@@ -215,6 +215,8 @@ export function cloneSavedSearch(id) {
             dispatch(cloneSavedSearchHasErrored(false));
             dispatch(cloneSavedSearchSuccess(`Successfully cloned the selected search as "${postResponse.data.name}".`));
             dispatch(currentSavedSearch(false));
+            // i think this is causing an extra network call right before we delete a search
+            // only see cloneSavedSearch called in tests, so not sure what magic is calling it
             dispatch(savedSearchesFetchData());
           })
           .catch(err => onCatch(err));

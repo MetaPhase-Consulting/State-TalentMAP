@@ -30,6 +30,14 @@ exports[`BidderPortfolioStatCard matches snapshot 1`] = `
       className="stat-card-data-point"
     >
       <dt>
+        Employee ID:
+      </dt>
+      <dd />
+    </div>
+    <div
+      className="stat-card-data-point"
+    >
+      <dt>
         Skill:
       </dt>
       <dd>
@@ -55,6 +63,26 @@ exports[`BidderPortfolioStatCard matches snapshot 1`] = `
       </dt>
       <dd>
         01
+      </dd>
+    </div>
+    <div
+      className="stat-card-data-point"
+    >
+      <dt>
+        Languages:
+      </dt>
+      <dd>
+        None listed
+      </dd>
+    </div>
+    <div
+      className="stat-card-data-point"
+    >
+      <dt>
+        TED:
+      </dt>
+      <dd>
+        None listed
       </dd>
     </div>
     <div
@@ -202,6 +230,7 @@ exports[`BidderPortfolioStatCard matches snapshot 1`] = `
           }
         }
       />
+      <Connect(AddToInternalListButton) />
     </div>
   </div>
 </BoxShadow>

@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import {
   APPROVED_PROP,
   CLOSED_PROP,
-  HAND_SHAKE_OFFERED_PROP,
-  HAND_SHAKE_DECLINED_PROP,
-  IN_PANEL_PROP,
   DECLINED_PROP,
+  HAND_SHAKE_DECLINED_PROP,
+  HAND_SHAKE_OFFERED_PROP,
+  IN_PANEL_PROP,
 } from './BidData';
 import SetType from './SetType';
 
@@ -109,7 +109,10 @@ export const FILTER = PropTypes.shape({
     PropTypes.string,
     PropTypes.number,
   ]),
-  code: PropTypes.string,
+  code: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   description: PropTypes.string,
   long_description: PropTypes.string,
   short_description: PropTypes.string,
@@ -316,26 +319,67 @@ export const BID_CYCLE_NAME_TYPE = PropTypes.oneOfType([
   PropTypes.string,
 ]);
 
+export const BID_CYCLE = PropTypes.shape({
+  id: PropTypes.number,
+  name: BID_CYCLE_NAME_TYPE,
+  cycle_start_date: PropTypes.string,
+  cycle_deadline_date: PropTypes.string,
+  cycle_end_date: PropTypes.string,
+  active: PropTypes.bool,
+});
+
+export const BID_CYCLES = PropTypes.arrayOf(BID_CYCLE);
+
 export const BID_OBJECT = PropTypes.shape({
   id: PropTypes.number,
-  bidcycle: BID_CYCLE_NAME_TYPE,
+  emp_id: PropTypes.string,
   user: PropTypes.string,
-  position: PropTypes.shape({
-    id: PropTypes.number,
-    grade: PropTypes.string,
-    skill: PropTypes.string,
-    position_number: PropTypes.string,
-    title: PropTypes.string,
-    create_date: PropTypes.string,
-    update_date: PropTypes.string,
-    post: PropTypes.shape({
-      id: PropTypes.number,
-      location: POSITION_POST_NESTED_LOCATION,
-    }),
-  }),
-  reviewer: BID_REVIEWER_OBJECT,
+  can_delete: PropTypes.bool,
   status: PropTypes.string,
-  submission_date: PropTypes.string,
+  panel_status: PropTypes.string,
+  draft_date: PropTypes.string,
+  submitted_date: PropTypes.string,
+  handshake_offered_date: PropTypes.string,
+  handshake_accepted_date: PropTypes.string,
+  handshake_declined_date: PropTypes.string,
+  in_panel_date: PropTypes.string,
+  scheduled_panel_date: PropTypes.string,
+  approved_date: PropTypes.string,
+  declined_date: PropTypes.string,
+  closed_date: PropTypes.string,
+  is_priority: PropTypes.bool,
+  panel_reschedule_count: PropTypes.number,
+  create_date: PropTypes.string,
+  update_date: PropTypes.string,
+  reviewer: BID_REVIEWER_OBJECT,
+  cdo_bid: PropTypes.bool,
+  hs_status_code: PropTypes.string,
+  hs_cdo_indicator: PropTypes.bool,
+  position_info: PropTypes.shape({
+    id: PropTypes.number,
+    status_code: PropTypes.string,
+    ted: PropTypes.string,
+    posted_date: PropTypes.string,
+    ...POSITION_DETAILS,
+    bidcycle: BID_CYCLE,
+    bid_statistics: [
+      {
+        id: PropTypes.number,
+        total_bids: PropTypes.number,
+        in_grade: PropTypes.number,
+        at_skill: PropTypes.number,
+        in_grade_at_skill: PropTypes.number,
+        has_handshake_offered: PropTypes.bool,
+        has_handshake_accepted: PropTypes.bool,
+      },
+    ],
+    unaccompaniedStatus: PropTypes.string,
+    isConsumable: PropTypes.bool,
+    isServiceNeedDifferential: PropTypes.bool,
+    isDifficultToStaff: PropTypes.bool,
+    isEFMInside: PropTypes.bool,
+    isEFMOutside: PropTypes.bool,
+  }),
 });
 
 export const BID_RESULTS = PropTypes.arrayOf(
@@ -565,17 +609,6 @@ export const CLIENT_BY_ID = PropTypes.shape({
 
 export const HOME_PAGE_CARD_TYPE = PropTypes.oneOf(['default', 'serviceNeed']);
 
-export const BID_CYCLE = PropTypes.shape({
-  id: PropTypes.number,
-  name: PropTypes.string,
-  cycle_start_date: PropTypes.string,
-  cycle_deadline_date: PropTypes.string,
-  cycle_end_date: PropTypes.string,
-  active: PropTypes.bool,
-});
-
-export const BID_CYCLES = PropTypes.arrayOf(BID_CYCLE);
-
 export const HIGHLIGHT_POSITION = PropTypes.shape({
   loading: PropTypes.bool,
   success: PropTypes.bool,
@@ -585,9 +618,10 @@ export const HIGHLIGHT_POSITION = PropTypes.shape({
 export { SetType };
 
 export const CLASSIFICATION = PropTypes.shape({
-  id: PropTypes.string,
-  show: PropTypes.string,
+  code: PropTypes.string,
   text: PropTypes.string,
+  seasons: PropTypes.arrayOf(PropTypes.object),
+  glossary_term: PropTypes.string,
 });
 
 export const CLASSIFICATIONS = PropTypes.arrayOf(CLASSIFICATION);
@@ -622,7 +656,14 @@ export const ORG_PERMISSIONS = PropTypes.arrayOf(
   }),
 );
 
-export const FILTER_SELECTION = PropTypes.arrayOf(PropTypes.string);
+export const FILTER_SELECTION = PropTypes.arrayOf(
+  PropTypes.oneOfType(
+    [
+      PropTypes.string,
+      PropTypes.shape({}),
+    ],
+  ),
+);
 
 export const BUREAU_USER_SELECTIONS = PropTypes.shape({
   page: PropTypes.number,
@@ -646,4 +687,68 @@ export const HOME_PAGE_FEATURED_POSITIONS = PropTypes.shape({
 export const HOME_PAGE_RECOMMENDED_POSITIONS = PropTypes.shape({
   positions: PropTypes.arrayOf(POSITION_DETAILS),
   name: PropTypes.string,
+});
+
+export const HANDSHAKE_DETAILS = PropTypes.shape({
+  hs_status_code: PropTypes.string,
+  bidder_hs_code: PropTypes.string,
+  hs_date_accepted: PropTypes.string,
+  hs_date_declined: PropTypes.string,
+  hs_date_offered: PropTypes.string,
+  hs_date_revoked: PropTypes.string,
+  hs_date_expiration: PropTypes.string,
+  hs_cdo_indicator: PropTypes.bool,
+});
+
+export const AB_DETAILS_OBJECT = PropTypes.shape({
+  id: PropTypes.number,
+  status: PropTypes.string,
+  oc_reason: PropTypes.string,
+  oc_bureau: PropTypes.string,
+  comments: PropTypes.string,
+  date_created: PropTypes.string,
+  update_date: PropTypes.string,
+  archived: PropTypes.bool,
+  is_shared: PropTypes.bool,
+  last_editing_user_id: PropTypes.number,
+  perdet_seq_num: PropTypes.number,
+});
+
+export const AVAILABLE_BIDDER_OBJECT = PropTypes.shape({
+  id: PropTypes.number,
+  cdo: CDO_OBJECT,
+  name: PropTypes.string,
+  shortened_name: PropTypes.string,
+  initials: PropTypes.string,
+  perdet_seq_number: PropTypes.string,
+  grade: PropTypes.string,
+  skills: USER_SKILL_CODE_ARRAY,
+  employee_id: PropTypes.string,
+  pos_location: PropTypes.string,
+  classifications: CLIENT_CLASSIFICATIONS,
+  current_assignment: ASSIGNMENT_OBJECT,
+  languages: LANGUAGE_QUALIFICATIONS,
+  available_bidder_details: AB_DETAILS_OBJECT,
+});
+
+export const AB_EDIT_SECTIONS_OBJECT = PropTypes.shape({
+  name: PropTypes.element,
+  status: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  skill: PropTypes.element,
+  grade: PropTypes.string,
+  languages: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  ted: PropTypes.string,
+  current_post: PropTypes.string,
+  cdo: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  comments: PropTypes.string,
+});
+
+export const AB_EDIT_DETAILS_OBJECT = PropTypes.shape({
+  oc_bureau: PropTypes.string,
+  oc_reason: PropTypes.string,
+  status: PropTypes.string,
+  shared: PropTypes.bool,
+  languages: LANGUAGE_QUALIFICATIONS,
+  bidderBureau: PropTypes.string,
+  formattedCreated: PropTypes.string,
 });

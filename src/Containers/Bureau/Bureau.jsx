@@ -14,11 +14,4 @@ class BureauContainer extends Component {
   }
 }
 
-BureauContainer.propTypes = {
-};
-
-BureauContainer.defaultProps = {
-};
-
-
 export default BureauContainer;

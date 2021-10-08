@@ -52,6 +52,11 @@ import featureFlags from './featureFlags';
 import bureauPositionBids from './bureauPositionBids';
 import bureauPositionManager from './bureauPositionManager';
 import bureauPositionDetails from './bureauPositionDetails';
+import shortListLock from './shortListLock';
+import cdo from './cdo';
+import hs from './handshake2';
+import handshake from './handshake';
+// TODO: remove handshake2 after PR 1494 merged (bc handshake2 will be moved to handshake.js)
 
 export default (history) => combineReducers({
   ...results,
@@ -102,6 +107,10 @@ export default (history) => combineReducers({
   ...bureauPositionBids,
   ...bureauPositionManager,
   ...bureauPositionDetails,
+  ...shortListLock,
+  ...cdo,
+  ...hs,
+  ...handshake,
   router: connectRouter(history),
   client,
   login,

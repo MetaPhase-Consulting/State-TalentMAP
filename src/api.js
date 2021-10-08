@@ -7,7 +7,7 @@ import Enum from 'enum';
 import bowser from 'bowser';
 import { setUserEmpId } from 'actions/userProfile';
 import { toastWarning } from 'actions/toast';
-import { fetchUserToken, hasValidToken, propOrDefault, redirectToLoginRedirect, fetchJWT } from 'utilities';
+import { fetchJWT, fetchUserToken, hasValidToken, propOrDefault, redirectToLoginRedirect } from 'utilities';
 import { checkFlag } from 'flags';
 import { staticFilters } from './reducers/filters/filters';
 import { logoutRequest } from './login/actions';
@@ -32,6 +32,7 @@ const debouncedLogout = throttle(
   { leading: true, trailing: false },
 );
 
+// eslint-disable-next-line no-unused-vars
 const debouncedNetworkAlert = throttle(
   // eslint-disable-next-line global-require
   () => require('./store').store.dispatch(toastWarning(
@@ -162,10 +163,10 @@ const api = () => {
         break;
       }
 
-      case 500: {
+      /* case 500: {
         debouncedNetworkAlert();
         break;
-      }
+      } */
 
       default: {
       // We don't want to stop the pipeline even if there's a problem with the dispatch

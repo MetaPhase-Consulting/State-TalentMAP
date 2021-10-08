@@ -1,7 +1,17 @@
-import { classificationsHasErrored,
+import { classifications,
+  classificationsHasErrored,
   classificationsIsLoading,
-  classifications } from './classifications';
+  updateClassificationsHasErrored,
+  updateClassificationsIsLoading,
+  userClassifications,
+  userClassificationsHasErrored,
+  userClassificationsIsLoading } from './classifications';
 
 export default { classificationsHasErrored,
   classificationsIsLoading,
-  classifications };
+  classifications,
+  updateClassificationsHasErrored,
+  updateClassificationsIsLoading,
+  userClassificationsHasErrored,
+  userClassificationsIsLoading,
+  userClassifications };

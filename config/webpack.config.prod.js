@@ -1,5 +1,6 @@
 'use strict';
 
+const os = require('os');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -11,8 +12,19 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const paths = require('./paths');
 const envVariables = require('./env');
+const FAST_BUILD = process.env.FAST_BUILD || false;
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+
+// get git info from command line
+let commitHash = ''
+try {
+  commitHash = require('child_process')
+    .execSync('git rev-parse --short HEAD')
+    .toString();
+} catch {}
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -55,7 +67,7 @@ module.exports = {
   bail: true,
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
-  devtool: 'source-map',
+  devtool: FAST_BUILD ? undefined : 'source-map',
   // In production, we only want to load the polyfills and the app code.
   // Polyfills should always be first to avoid IE11 issues.
   entry: [require.resolve('./polyfills'), paths.appIndexJs],
@@ -86,7 +98,7 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
     alias: envVariables.aliases,
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -107,7 +119,7 @@ module.exports = {
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         enforce: 'pre',
         use: [
           {
@@ -131,7 +143,7 @@ module.exports = {
       {
         exclude: [
           /\.html$/,
-          /\.(js|jsx)$/,
+          /\.(js|jsx|ts|tsx)$/,
           /\.css$/,
           /\.json$/,
           /\.bmp$/,
@@ -155,9 +167,30 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]',
         },
       },
+      // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+						// main typescript compilation loader
+						loader: 'ts-loader',
+						options: {
+							/**
+							 * Increase build speed by disabling typechecking for the
+							 * main process and is required to be used with thread-loader
+							 * @see https://github.com/TypeStrong/ts-loader/blob/master/examples/thread-loader/webpack.config.js
+							 * Requires to use the ForkTsCheckerWebpack Plugin
+							 */
+              happyPackMode: true,
+              configFile: paths.tsconfig,
+						},
+					},
+        ]
+      },
       // Process JS with Babel.
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         include: paths.appSrc,
         loader: require.resolve('babel-loader'),
         options: {
@@ -272,6 +305,18 @@ module.exports = {
       template: paths.loginHtml,
       filename: 'login.html'
     }),
+    // Webpack plugin that runs typescript type checker on a separate process.
+		new ForkTsCheckerWebpackPlugin({
+			// block webpack's emit to wait for type checker/linter and to add errors to the webpack's compilation
+			async: false,
+			typescript: {
+				diagnosticOptions: {
+					semantic: true,
+					syntactic: true,
+				},
+				configFile: paths.tsconfig,
+			},
+		}),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -297,6 +342,7 @@ module.exports = {
     // the HTML & assets that are part of the Webpack build.
     new GenerateSW({
       // Config options, if needed.
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
     }),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
@@ -311,6 +357,10 @@ module.exports = {
       paths: true,
       shorthands: true,
     }),
+    new webpack.DefinePlugin({
+      __COMMIT_HASH__: JSON.stringify(commitHash),
+    }),
+    new ProgressBarPlugin(),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

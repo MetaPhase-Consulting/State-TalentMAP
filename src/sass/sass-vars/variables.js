@@ -18,6 +18,12 @@ module.exports = {
   get screenMdMaxNum() { return this.screenLgMinNum - 1; },
   get 'screen-md-max'() { return `${this.screenMdMaxNum}px`; },
 
+  screenXlgMinNum: 1400,
+  get 'screen-xlg-min'() { return `${this.screenXlgMinNum}px`; },
+
+  get screenLgMaxNum() { return this.screenXlgMinNum - 1; },
+  get 'screen-lg-max'() { return `${this.screenLgMaxNum}px`; },
+
   // Colors
   tertiaryCoolBlueLightest: '#DCE4EF',
   get 'var-tertiary-cool-blue-lightest'() { return this.tertiaryCoolBlueLightest; },
@@ -33,6 +39,8 @@ module.exports = {
 
   tertiaryGoldLighter: '#FAD980',
   get 'var-tertiary-gold-lighter'() { return this.tertiaryGoldLighter; },
+
+  colorBlueChill: '#117C8D',
 
   // Set our asset path. This is similar to getAssetPath in utilities, but
   // we wrap the environment variable in quotes so it can be used in .scss files.

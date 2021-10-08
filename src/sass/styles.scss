@@ -34,6 +34,9 @@
 // react-day-picker
 @import '~react-day-picker/lib/style.css';
 
+// react-datepicker
+@import "~react-datepicker/dist/react-datepicker.css";
+
 // Global
 @import 'variables';
 
@@ -103,3 +106,7 @@
 @import 'overrides';
 @import 'accessibility';
 @import 'faq';
+@import 'availableBidders';
+@import 'handshakeStatus';
+@import 'handshakeModal';
+@import 'languages';

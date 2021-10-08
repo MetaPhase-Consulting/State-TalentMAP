@@ -2,20 +2,20 @@ import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Flag } from 'flag';
 import Settings from 'Components/Settings';
-import Dashboard from '../../Containers/Dashboard/Dashboard';
-import BidderPortfolio from '../../Containers/BidderPortfolio';
-import BidCycles from '../../Containers/BidCycles';
-import FavoritePositionsContainer from '../../Containers/Favorites/Favorites';
-import GlossaryEditor from '../../Containers/GlossaryEditor';
-import BidTracker from '../../Containers/BidTracker';
-import BidStatistics from '../../Containers/BidStatistics';
-import SavedSearchesWrapper from '../../Components/SavedSearches/SavedSearchesWrapper';
-import ProfilePublic from '../../Containers/ProfilePublic';
+import Dashboard from 'Containers/Dashboard/Dashboard';
+import FavoritePositionsContainer from 'Containers/Favorites/Favorites';
+import GlossaryEditor from 'Containers/GlossaryEditor';
+import BidTracker from 'Containers/BidTracker';
+import BidStatistics from 'Containers/BidStatistics';
+import SavedSearchesWrapper from 'Components/SavedSearches/SavedSearchesWrapper';
+import ProfilePublic from 'Containers/ProfilePublic';
+import Administrator from 'Containers/Administrator';
+import Bureau from 'Containers/Bureau';
+import Cdo from 'Containers/Cdo';
+import Post from 'Containers/Post';
+import GLOSSARY_EDITOR_PERM from 'Constants/Permissions';
+import { USER_PROFILE } from 'Constants/PropTypes';
 import Notifications from './Notifications';
-import Administrator from '../../Containers/Administrator';
-import Bureau from '../../Containers/Bureau';
-import GLOSSARY_EDITOR_PERM from '../../Constants/Permissions';
-import { USER_PROFILE } from '../../Constants/PropTypes';
 import { userHasPermissions } from '../../utilities';
 import ProfileMenu from '../ProfileMenu';
 import Spinner from '../Spinner/Spinner';
@@ -32,8 +32,6 @@ const ProfilePage = ({ user, isLoading }) => (
         :
         <Switch>
           <Route path="/profile/dashboard" component={Dashboard} />
-          <Route path="/profile/bidderportfolio" component={BidderPortfolio} />
-          <Route path="/profile/cycles" component={BidCycles} />
           <Route path="/profile/favorites" component={FavoritePositionsContainer} />
           <Route path="/profile/searches" component={SavedSearchesWrapper} />
           <Route path="/profile/settings" component={Settings} />
@@ -49,6 +47,8 @@ const ProfilePage = ({ user, isLoading }) => (
           <Route path="/profile/administrator" component={Administrator} />
           <Route path="/profile/bureau" component={Bureau} />
           <Route path="/profile/ao" component={Bureau} />
+          <Route path="/profile/cdo" component={Cdo} />
+          <Route path="/profile/post" component={Post} />
           <Flag
             name="flags.bidding"
             render={() => (

@@ -21,6 +21,13 @@
     "tandem": true,
     "bureau": true,
     "indicators": true,
-    "us_codes": true
+    "us_codes": true,
+    "ao": true,
+    "available_bidders": true,
+    "unassigned_filters": true,
+    "classifications": true,
+    "handshake_bidding": true,
+    "post_handshake": false,
+    "post": false
   }
 }

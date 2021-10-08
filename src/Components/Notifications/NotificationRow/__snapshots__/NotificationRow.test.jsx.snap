@@ -25,6 +25,7 @@ exports[`NotificationRowComponent matches snapshot 1`] = `
       label="Mark notification"
       labelSrOnly={true}
       name=""
+      onChange={[Function]}
       onCheckBoxClick={[Function]}
       overrideLifecycle={false}
       small={false}
@@ -53,9 +54,7 @@ exports[`NotificationRowComponent matches snapshot 1`] = `
   >
     <LinkButton
       className="usa-button"
-      isExternal={false}
       toLink="/profile/bidtracker"
-      useDefaultClass={true}
     >
       Go to Bid Tracker
     </LinkButton>

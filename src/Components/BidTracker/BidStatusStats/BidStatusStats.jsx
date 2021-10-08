@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { DRAFT_PROP, BID_TRACKER_SUBMITTED_ACTIVE_STATUSES } from 'Constants/BidData';
+import { BID_TRACKER_SUBMITTED_ACTIVE_STATUSES, DRAFT_PROP } from 'Constants/BidData';
 import { BID_RESULTS } from 'Constants/PropTypes';
 import { getBidListStats } from 'utilities';
 
@@ -10,7 +10,7 @@ const BidStatusStats = ({ bidList, condensed }) => {
   return (
     <div className={`usa-grid-full bid-status-stats${condensed ? '--condensed' : ''}`}>
         Bids drafted: <div className="bid-stat">({draftBids})</div>
-        Bids submitted and active: <div className="bid-stat">({submittedActiveBids})</div>
+        Submitted Bids: <div className="bid-stat">({submittedActiveBids})</div>
     </div>
   );
 };

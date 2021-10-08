@@ -113,6 +113,58 @@ describe('BureauPage', () => {
             },
           ],
         },
+        {
+          item: { description: 'postIndicators' },
+          data: [
+            {
+              code: 'BT_MOST_DIFFICULT_TO_STAFF_FLG',
+              description: 'Historic Diff. to Staff',
+              isSelected: false,
+            },
+          ],
+        },
+        {
+          item: {
+            title: 'Organization',
+            sort: 1300,
+            description: 'organization',
+            tryCache: true,
+            text: 'Choose Organization',
+            choices: [],
+          },
+          data: [
+            {
+              code: '201000',
+              long_description: 'ASSISTANT SECRETARY FOR ADMINISTRATION',
+              short_description: 'A',
+            },
+            {
+              code: '222210',
+              long_description: 'TRANSPORTATION & TRAVEL MANAGEMENT DIVISION',
+              short_description: 'A/LM/OPS/TTM',
+            },
+          ],
+        },
+        {
+          item: { description: 'handshake' },
+          data: [
+            {
+              code: 'HS',
+              description: 'Has Handshake',
+              isSelected: false,
+            },
+          ],
+        },
+        {
+          item: { description: 'tmHandshake' },
+          data: [
+            {
+              code: 'A',
+              description: 'Accepted',
+              isSelected: false,
+            },
+          ],
+        },
       ],
     },
     bureauPermissions: [
