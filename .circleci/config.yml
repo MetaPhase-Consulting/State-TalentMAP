@@ -289,7 +289,7 @@ workflows:
           requires:
             - yarn
       - cypress
-      - yarn
+      - yarn:
           requires:
             - cypress
       - server:
