@@ -282,7 +282,6 @@ workflows:
       #           - dev
       #           - staging
       #           - master
-      - yarn
       - upload-coverage:
           requires:
             - yarn
@@ -290,6 +289,9 @@ workflows:
           requires:
             - yarn
       - cypress
+      - yarn
+          requires:
+            - cypress
       - server:
           requires:
             - yarn
