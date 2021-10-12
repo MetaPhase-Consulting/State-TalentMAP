@@ -14,7 +14,6 @@ import {
   getActionPermissions,
   shouldShowAlert,
   showHandshakeRegsiterWithAnotherBidderOverlay,
-  // showHandshakeRegsiterWithAnotherBidderOverlay,
 } from './BidHelpers';
 import bidListObject from '../../__mocks__/bidListObject';
 

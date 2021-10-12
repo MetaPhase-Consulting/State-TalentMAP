@@ -26,7 +26,6 @@ const BidSteps = (props, context) => {
   const { bid, collapseOverlay } = props;
   const { condensedView } = context;
   const bidData = bidClassesFromCurrentStatus(bid).stages || {};
-  // added to bid helpers
   const handshakeRegisterWithAnotherBidder = get(bid, 'position_info.bid_statistics[0].has_handshake_offered')
     && showHandshakeRegsiterWithAnotherBidderOverlay(bid);
   const getIcon = (status) => {

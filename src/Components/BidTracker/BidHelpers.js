@@ -74,7 +74,6 @@ export function getActionPermissions(status) {
 // we could dynamically render step titles within the function.
 export const bidClassesFromCurrentStatus = (bid = { status: 'draft' }) => getConfig()(bid);
 
-// spell correctly "WTIH"
 export function showHandshakeRegsiterWithAnotherBidderOverlay(bid) {
   const bidStatusOptions = [
     APPROVED_PROP,
@@ -86,15 +85,3 @@ export function showHandshakeRegsiterWithAnotherBidderOverlay(bid) {
   const showOverlay = !includes(bidStatusOptions, bid.status);
   return showOverlay;
 }
-
-// export function showHandshakeRegsiterWithAnotherBidderOverlay(bid) {
-//   const bidStatusOptions = [
-//     APPROVED_PROP,
-//     CLOSED_PROP,
-//     DRAFT_PROP,
-//     HAND_SHAKE_ACCEPTED_PROP,
-//     IN_PANEL_PROP,
-//   ];
-//   const showOverlay = !includes(bidStatusOptions, bid.status);
-//   return showOverlay;
-// }
