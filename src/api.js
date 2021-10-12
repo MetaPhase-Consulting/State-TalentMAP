@@ -49,8 +49,8 @@ const debouncedNetworkAlert = throttle(
 const debouncedExpiredSessionAlert = throttle(
   // eslint-disable-next-line global-require
   () => require('./store').store.dispatch(toastWarning(
-    'It appears your session may have expired. Some functionality may not work until you refresh the page.',
-    'Session Error',
+    'Your session has expired or you are offline. Try refreshing the page or checking your network connectivity.',
+    'Network Error',
     'network-error',
     true,
     { position: 'bottom-center', autoClose: 6500 },
