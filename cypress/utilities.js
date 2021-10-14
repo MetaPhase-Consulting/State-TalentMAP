@@ -12,6 +12,8 @@ const doLogin = () => {
 
   cy.get(':nth-child(1) > a').click();
 
+  cy.wait(10000);
+
   cy.wait('@getProfile');
 };
 
