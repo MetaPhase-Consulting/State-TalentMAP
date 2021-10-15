@@ -132,7 +132,10 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .header {
-    margin-bottom: 1rem;
+    // temp while i bounce all over the site to test
+    background-color: red;
+    color: green;
+    margin-bottom: 1.3rem;
     margin-top: .2rem;
 
     .results-card-title-link {
@@ -177,8 +180,11 @@ $results-container-width: 100% - $filter-container-width;
   }
 
   .footer {
-    margin-bottom: rem(10px);
-    margin-top: rem(14px);
+    // temp while i bounce all over the site to test
+    background-color: red;
+    color: green;
+    margin-bottom: rem(13px);
+    margin-top: rem(20px);
     padding-top: rem(4px);
 
     $section-height: 38px;
