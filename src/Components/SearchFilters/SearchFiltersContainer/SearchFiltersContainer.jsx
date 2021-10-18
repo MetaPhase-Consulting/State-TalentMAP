@@ -104,6 +104,7 @@ class SearchFiltersContainer extends Component {
         }
         return f.item.onlyAvailablePositions || !f.item.onlyProjectedVacancy;
       });
+
     // Get our boolean filter names.
     // We use the "description" property because these are less likely
     // to change (they're not UI elements).
@@ -122,6 +123,7 @@ class SearchFiltersContainer extends Component {
           booleanFiltersMap.set(searchFilter.item.description, searchFilter);
         }
       });
+
     // sort boolean filters by sortedBooleanNames
     // pull from Map
     const booleanFilters = [];
