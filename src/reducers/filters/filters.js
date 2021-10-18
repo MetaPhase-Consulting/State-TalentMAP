@@ -691,6 +691,38 @@ const items =
         },
         data: [],
       },
+      {
+        item: {
+          title: 'Hard to Fill',
+          sort: 1400,
+          description: 'hardToFill',
+          selectionRef: ENDPOINT_PARAMS.hardToFill,
+          tryCache: true,
+          text: 'Include Hard to Fill Positions',
+          onlyAvailablePositions: true,
+          choices: [
+          ],
+        },
+        data: [
+          { code: 'Y', description: 'Is Hard to Fill' },
+          { code: 'N', description: 'Is not Hard to Fill' },
+        ],
+      },
+      {
+        item: {
+          title: 'Hard to Fill',
+          sort: 1400,
+          description: 'hardToFill-tandem',
+          selectionRef: ENDPOINT_PARAMS_TANDEM.hardToFill,
+          text: 'Include Hard to Fill Positions',
+          isTandem: true,
+          onlyAvailablePositions: true,
+        },
+        data: [
+          { code: 'Y', description: 'Is Hard to Fill' },
+          { code: 'N', description: 'Is not Hard to Fill' },
+        ],
+      },
     ],
   };
 

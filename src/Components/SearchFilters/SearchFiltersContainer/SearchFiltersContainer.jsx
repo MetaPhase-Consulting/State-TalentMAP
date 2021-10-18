@@ -104,7 +104,6 @@ class SearchFiltersContainer extends Component {
         }
         return f.item.onlyAvailablePositions || !f.item.onlyProjectedVacancy;
       });
-
     // Get our boolean filter names.
     // We use the "description" property because these are less likely
     // to change (they're not UI elements).
@@ -123,7 +122,6 @@ class SearchFiltersContainer extends Component {
           booleanFiltersMap.set(searchFilter.item.description, searchFilter);
         }
       });
-
     // sort boolean filters by sortedBooleanNames
     // pull from Map
     const booleanFilters = [];
@@ -136,13 +134,14 @@ class SearchFiltersContainer extends Component {
 
     // get our normal multi-select filters
     const multiSelectFilterNames = ['bidSeason', 'bidCycle', 'skill', 'grade', 'region', 'tod', 'language',
-      'postDiff', 'dangerPay', 'postIndicators', 'unaccompaniedStatus', 'handshake'];
+      'postDiff', 'dangerPay', 'postIndicators', 'unaccompaniedStatus', 'handshake', 'hardToFill'];
 
 
     const multiSelectFilterNamesTandemCommon = ['post', 'postDiff', 'dangerPay', 'postIndicators', 'unaccompaniedStatus'];
-    const multiSelectFilterNamesTandem1 = ['bidSeason', 'bidCycle', 'skill', 'grade', 'region', 'tod', 'language', 'handshake'];
+    const multiSelectFilterNamesTandem1 = ['bidSeason', 'bidCycle', 'skill', 'grade', 'region', 'tod', 'language', 'handshake',
+      'hardToFill'];
     const multiSelectFilterNamesTandem2 = ['bidSeason-tandem', 'bidCycle-tandem', 'skill-tandem', 'grade-tandem',
-      'region-tandem', 'tod-tandem', 'language-tandem', 'handshake-tandem'];
+      'region-tandem', 'tod-tandem', 'language-tandem', 'handshake-tandem', 'hardToFill-tandem'];
 
     if (!usePostIndicators()) {
       remove(multiSelectFilterNames, f => f === 'postIndicators');
