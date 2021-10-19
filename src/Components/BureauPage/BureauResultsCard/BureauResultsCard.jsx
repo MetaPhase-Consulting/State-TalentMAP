@@ -11,7 +11,7 @@ import DefinitionList from 'Components/DefinitionList';
 import InteractiveElement from 'Components/InteractiveElement';
 import { getBidStatsToUse, getDifferentials, getResult, renderBidCountMobile } from 'Components/ResultsCard/ResultsCard';
 import LanguageList from 'Components/LanguageList';
-import { CriticalNeed, Handshake, HistDiffToStaff, ServiceNeedDifferential } from 'Components/Ribbon';
+import { CriticalNeed, Handshake, HistDiffToStaff, IsHardToFill, ServiceNeedDifferential } from 'Components/Ribbon';
 import HandshakeStatus from 'Components/Handshake/HandshakeStatus';
 import { getBidStatisticsObject, getPostName, propOrDefault, shortenString } from 'utilities';
 import {
@@ -81,6 +81,8 @@ class BureauResultsCard extends Component {
     /* eslint-enable quote-props */
     ];
 
+    const ribbonClass = 'ribbon-results-card';
+
     if (isProjectedVacancy) { delete sections[2].Posted; }
 
     return (
@@ -91,16 +93,19 @@ class BureauResultsCard extends Component {
             <div className="shortlist-icon">{shortListIndicator}</div>
             <HandshakeStatus handshake={result.lead_handshake} />
             {
-              get(stats, 'has_handshake_offered', false) && <Handshake isWide cutSide="both" className="ribbon-results-card" />
+              get(stats, 'has_handshake_offered', false) && <Handshake isWide cutSide="both" className={ribbonClass} />
             }
             {
-              get(result, 'staticDevContentAlt', false) && <CriticalNeed isWide cutSide="both" className="ribbon-results-card" />
+              get(result, 'staticDevContentAlt', false) && <CriticalNeed isWide cutSide="both" className={ribbonClass} />
             }
             {
-              get(result, 'isDifficultToStaff', false) && <HistDiffToStaff isWide cutSide="both" className="ribbon-results-card" />
+              get(result, 'isDifficultToStaff', false) && <HistDiffToStaff isWide cutSide="both" className={ribbonClass} />
             }
             {
-              get(result, 'isServiceNeedDifferential', false) && <ServiceNeedDifferential isWide cutSide="both" className="ribbon-results-card" />
+              get(result, 'isServiceNeedDifferential', false) && <ServiceNeedDifferential isWide cutSide="both" className={ribbonClass} />
+            }
+            {
+              get(result, 'isHardToFill', false) && <IsHardToFill isWide cutSide="both" className={ribbonClass} />
             }
             {renderBidCountMobile(stats)}
           </Row>
