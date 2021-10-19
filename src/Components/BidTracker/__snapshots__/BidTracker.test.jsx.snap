@@ -266,6 +266,7 @@ exports[`BidTrackerComponent matches snapshot 1`] = `
           ]
         }
         condensed={false}
+        showTotal={true}
       />
       <BidTrackerCardList
         acceptBid={[Function]}
