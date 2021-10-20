@@ -87,7 +87,7 @@ const ResultsCondensedCardTop = ({
         {
           isHardToFill &&
           <Tooltip
-            title="Is Hard to Fill"
+            title="Hard to Fill"
             arrow
             offset={-150}
           >

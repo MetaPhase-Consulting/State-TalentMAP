@@ -19,6 +19,7 @@ import {
   NO_POSITION_NUMBER, NO_POST, NO_SKILL, NO_TOUR_OF_DUTY, NO_UPDATE_DATE, NO_USER_LISTED,
 } from 'Constants/SystemMessages';
 import { POSITION_DETAILS } from 'Constants/PropTypes';
+import MediaQuery from '../../MediaQuery';
 
 class BureauResultsCard extends Component {
   constructor(props) {
@@ -92,21 +93,28 @@ class BureauResultsCard extends Component {
             <div>{detailsLink}</div>
             <div className="shortlist-icon">{shortListIndicator}</div>
             <HandshakeStatus handshake={result.lead_handshake} />
-            {
-              get(stats, 'has_handshake_offered', false) && <Handshake isWide cutSide="both" className={ribbonClass} />
-            }
-            {
-              get(result, 'staticDevContentAlt', false) && <CriticalNeed isWide cutSide="both" className={ribbonClass} />
-            }
-            {
-              get(result, 'isDifficultToStaff', false) && <HistDiffToStaff isWide cutSide="both" className={ribbonClass} />
-            }
-            {
-              get(result, 'isServiceNeedDifferential', false) && <ServiceNeedDifferential isWide cutSide="both" className={ribbonClass} />
-            }
-            {
-              get(result, 'isHardToFill', false) && <IsHardToFill isWide cutSide="both" className={ribbonClass} />
-            }
+            <MediaQuery breakpoint="screenXlgMin" widthType="min">
+              {matches => (
+                <>
+                  {
+                    get(stats, 'has_handshake_offered', false) && <Handshake cutSide="both" className={ribbonClass} shortName={!matches} />
+                  }
+                  {
+                    get(result, 'staticDevContentAlt', false) && <CriticalNeed cutSide="both" className={ribbonClass} shortName={!matches} />
+                  }
+                  {
+                    get(result, 'isDifficultToStaff', false) && <HistDiffToStaff cutSide="both" className={ribbonClass} shortName={!matches} />
+                  }
+                  {
+                    get(result, 'isServiceNeedDifferential', false) && <ServiceNeedDifferential cutSide="both" className={ribbonClass} shortName={!matches} />
+                  }
+                  {
+                    get(result, 'isHardToFill', false) && <IsHardToFill cutSide="both" className={ribbonClass} shortName={!matches} />
+                  }
+                </>
+              )}
+            </MediaQuery>
+
             {renderBidCountMobile(stats)}
           </Row>
           <Row fluid className="bureau-card--section bureau-card--header">
