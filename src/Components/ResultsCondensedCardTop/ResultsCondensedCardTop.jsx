@@ -36,7 +36,7 @@ const ResultsCondensedCardTop = ({
   const title = get(position, 'position.title', '');
 
   const titleHeader = <h3>{title}</h3>;
-  const ribbonClass = {ribbonClass};
+  const ribbonClass = 'ribbon-condensed-card';
 
   const link = `/${isProjectedVacancy ? 'vacancy' : 'details'}/${position.id}${isTandem ? '?tandem=true' : ''}`;
 
