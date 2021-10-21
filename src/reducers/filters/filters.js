@@ -697,15 +697,14 @@ const items =
           sort: 1400,
           description: 'hardToFill',
           selectionRef: ENDPOINT_PARAMS.hardToFill,
-          tryCache: true,
           text: 'Include Hard to Fill Positions',
           onlyAvailablePositions: true,
           choices: [
           ],
         },
         data: [
-          { code: 'Y', description: 'Is Hard to Fill' },
-          { code: 'N', description: 'Is not Hard to Fill' },
+          { code: 'Y', description: 'Hard to Fill' },
+          { code: 'N', description: 'Not Hard to Fill' },
         ],
       },
       {
@@ -719,8 +718,8 @@ const items =
           onlyAvailablePositions: true,
         },
         data: [
-          { code: 'Y', description: 'Is Hard to Fill' },
-          { code: 'N', description: 'Is not Hard to Fill' },
+          { code: 'Y', description: 'Hard to Fill' },
+          { code: 'N', description: 'Not Hard to Fill' },
         ],
       },
     ],
