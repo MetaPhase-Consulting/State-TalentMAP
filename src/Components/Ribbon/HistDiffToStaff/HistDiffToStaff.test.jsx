@@ -8,7 +8,7 @@ describe('HistDiffToStaffComponent', () => {
     expect(wrapper).toBeDefined();
   });
 
-   it('matches snapshot', () => {
+  it('matches snapshot', () => {
     const wrapper = shallow(<HistDiffToStaff />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
