@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
-import HistDiffToStaff from './HistDiffToStaff';
 import toJSON from 'enzyme-to-json';
+import HistDiffToStaff from './HistDiffToStaff';
 
 describe('HistDiffToStaffComponent', () => {
   it('is defined', () => {

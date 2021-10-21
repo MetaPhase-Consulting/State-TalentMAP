@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
-import ServiceNeedDifferential from './ServiceNeedDifferential';
 import toJSON from 'enzyme-to-json';
+import ServiceNeedDifferential from './ServiceNeedDifferential';
 
 
 describe('ServiceNeedDifferentialComponent', () => {

@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
-import IsHardToFill from './IsHardToFill';
 import toJSON from 'enzyme-to-json';
+import IsHardToFill from './IsHardToFill';
 
 describe('IsHardToFillComponent', () => {
   it('is defined', () => {

@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
-import CriticalNeed from './CriticalNeed';
 import toJSON from 'enzyme-to-json';
+import CriticalNeed from './CriticalNeed';
 
 describe('CriticalNeedComponent', () => {
   it('is defined', () => {

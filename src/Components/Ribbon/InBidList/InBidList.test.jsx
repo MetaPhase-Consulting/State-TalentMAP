@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
-import InBidList from './InBidList';
 import toJSON from 'enzyme-to-json';
+import InBidList from './InBidList';
 
 describe('InBidListComponent', () => {
   it('is defined', () => {
