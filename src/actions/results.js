@@ -69,22 +69,29 @@ export function resultsFetchSimilarPositions(id, favorites, bidList) {
         const originalResults = results.results;
         const filteredPositions = [];
         const favoritesBidListArray = [];
+        /* eslint-disable */
+        console.log('favorites', favorites);
         favorites.forEach(favorite => favoritesBidListArray.push(Number(favorite.id)));
+        console.log('bidList', bidList);
         bidList.forEach(bid => favoritesBidListArray.push(Number(bid.position_info.id)));
         originalResults.forEach(position => {
           if (filteredPositions.length < 3 && !favoritesBidListArray.includes(position.id)) {
             filteredPositions.push(position);
           }
         });
+        console.log('filteredPositions', filteredPositions);
+        console.log('originalResults', originalResults);
         const returnResults = isEmpty(filteredPositions) ?
           { results: originalResults.slice(0, 3) } : { results: filteredPositions };
+        console.log('returnResults', returnResults);
         batch(() => {
           dispatch(resultsSimilarPositionsFetchDataSuccess(returnResults));
           dispatch(resultsSimilarPositionsHasErrored(false));
           dispatch(resultsSimilarPositionsIsLoading(false));
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log('errored in catch', err);
         batch(() => {
           dispatch(resultsSimilarPositionsFetchDataSuccess({}));
           dispatch(resultsSimilarPositionsHasErrored(true));
