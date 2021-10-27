@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { NO_LANGUAGES, NO_POSITION_NUMBER, NO_POST, NO_SKILL } from 'Constants/SystemMessages';
 import { POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDate, getPostName } from '../../../../../utilities';
