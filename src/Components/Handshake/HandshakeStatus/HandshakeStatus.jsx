@@ -103,6 +103,10 @@ const HandshakeStatus = props => {
         useContext
         trigger="click"
       >
+        {
+          props.infoIcon ?
+            <FA className="hs-status-info" name="info-circle" />
+            :
         <div className="hs-status-container">
           <div className={`hs-status-bureau ${bureauStyle.bureau}`}>
             <FA name={`${bureauStyle.bureauIcon} fa-rotate-90`} />
@@ -120,6 +124,7 @@ const HandshakeStatus = props => {
             }
           </div>
         </div>
+        }
       </Tooltip>
     </>
   );
@@ -128,11 +133,13 @@ const HandshakeStatus = props => {
 HandshakeStatus.propTypes = {
   handshake: PropTypes.shape({}),
   handshakeRegisteredDate: PropTypes.string,
+  infoIcon: PropTypes.bool,
 };
 
 HandshakeStatus.defaultProps = {
   handshake: {},
   handshakeRegisteredDate: '',
+  infoIcon: false,
 };
 
 export default HandshakeStatus;
