@@ -69,6 +69,7 @@ class SearchFiltersContainer extends Component {
   };
 
   onTandemSearchClick = value => {
+    const { isProjectedVacancy } = this.context;
     let config = {};
     if (!value) {
       config = {
@@ -78,6 +79,7 @@ class SearchFiltersContainer extends Component {
     } else {
       config = {
         ...config,
+        ordering: isProjectedVacancy ? 'ted' : '-posted_date',
         tandem: 'tandem',
       };
       this.setState({ showTandem2: false }); // reset showTandem2 to false
