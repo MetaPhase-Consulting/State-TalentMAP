@@ -72,7 +72,7 @@ const HandshakeStatus = props => {
 
   const bureauStyle = styling[hs_status_code] || styling.default;
   const bidderStyle = styling[bidder_hs_code] || styling[isExpired ? 'handshake_expired' : 'default'];
-  const handshakeRegisteredDate = props.handshakeRegisteredDate;
+  const { handshakeRegisteredDate } = props;
 
   return (
     <>
@@ -107,23 +107,23 @@ const HandshakeStatus = props => {
           props.infoIcon ?
             <FA className="hs-status-info" name="info-circle" />
             :
-        <div className="hs-status-container">
-          <div className={`hs-status-bureau ${bureauStyle.bureau}`}>
-            <FA name={`${bureauStyle.bureauIcon} fa-rotate-90`} />
-          </div>
-          <div className={`hs-status-bidder ${bidderStyle.bidder}`}>
-            {
-              bidderStyle.bidderIcon === 'clock-o' ?
-                <span>
-                  <FA name={bidderStyle.bidderIcon} />
-                </span>
-                :
-                <span className="fa-flip-vertical">
-                  <FA name={`${bidderStyle.bidderIcon} fa-rotate-270`} />
-                </span>
-            }
-          </div>
-        </div>
+            <div className="hs-status-container">
+              <div className={`hs-status-bureau ${bureauStyle.bureau}`}>
+                <FA name={`${bureauStyle.bureauIcon} fa-rotate-90`} />
+              </div>
+              <div className={`hs-status-bidder ${bidderStyle.bidder}`}>
+                {
+                  bidderStyle.bidderIcon === 'clock-o' ?
+                    <span>
+                      <FA name={bidderStyle.bidderIcon} />
+                    </span>
+                    :
+                    <span className="fa-flip-vertical">
+                      <FA name={`${bidderStyle.bidderIcon} fa-rotate-270`} />
+                    </span>
+                }
+              </div>
+            </div>
         }
       </Tooltip>
     </>
