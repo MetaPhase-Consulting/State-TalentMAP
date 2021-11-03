@@ -72,7 +72,7 @@ const HandshakeStatus = props => {
 
   const bureauStyle = styling[hs_status_code] || styling.default;
   const bidderStyle = styling[bidder_hs_code] || styling[isExpired ? 'handshake_expired' : 'default'];
-  const { handshakeRegisteredDate } = props;
+  const { handshakeRegisteredDate, handshakeRegistered } = props;
 
   return (
     <>
@@ -89,7 +89,7 @@ const HandshakeStatus = props => {
                 {bidderStyle.date ? formatDate(bidderStyle.date) : ''}
               </div>
             </div>
-            {handshakeRegisteredDate &&
+            {handshakeRegisteredDate && handshakeRegistered &&
             <div className="hs-registered">
               <span className="title">Handshake Registered: </span>{formatDate(handshakeRegisteredDate)}
             </div>
@@ -101,7 +101,6 @@ const HandshakeStatus = props => {
         tabIndex="0"
         interactive
         useContext
-        trigger="click"
       >
         {
           props.infoIcon ?
@@ -133,12 +132,14 @@ const HandshakeStatus = props => {
 HandshakeStatus.propTypes = {
   handshake: PropTypes.shape({}),
   handshakeRegisteredDate: PropTypes.string,
+  handshakeRegistered: PropTypes.string,
   infoIcon: PropTypes.bool,
 };
 
 HandshakeStatus.defaultProps = {
   handshake: {},
   handshakeRegisteredDate: '',
+  handshakeRegistered: '',
   infoIcon: false,
 };
 

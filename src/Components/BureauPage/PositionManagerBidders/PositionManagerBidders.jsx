@@ -263,8 +263,8 @@ class PositionManagerBidders extends Component {
     const formattedSubmitted = submitted ? formatDate(submitted) : NO_SUBMIT_DATE;
     const deconflict = get(m, 'has_competing_rank');
     const handshake = get(m, 'handshake', {}) || {};
-    // const handshakeRegisteredDate = get(m, 'handshake_registered_date');
-    const handshakeRegisteredDate = m.emp_id === '7900451' ? get(m, 'handshake_registered_date') : null;
+    const handshakeRegisteredDate = get(m, 'handshake_registered_date');
+    const handshakeRegistered = get(m, 'handshake_registered');
     const active_hs_perdet = get(m, 'active_handshake_perdet');
     const hasAcceptedOtherOffer = get(m, 'has_accepted_other_offer');
     const bureauOBidderA = (get(handshake, 'hs_status_code') === 'handshake_offered')
@@ -337,6 +337,7 @@ class PositionManagerBidders extends Component {
               postHandshakeVisibility() &&
               <HandshakeStatus
                 handshake={handshake}
+                handshakeRegistered={handshakeRegistered}
                 handshakeRegisteredDate={handshakeRegisteredDate}
               />
             }
@@ -348,10 +349,10 @@ class PositionManagerBidders extends Component {
               </> :
               <HandshakeStatus
                 handshake={handshake}
+                handshakeRegistered={handshakeRegistered}
                 handshakeRegisteredDate={handshakeRegisteredDate}
               />
             }
-
           </PermissionsWrapper>
           {
             type !== 'unranked' &&
