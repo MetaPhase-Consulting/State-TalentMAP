@@ -264,7 +264,7 @@ class PositionManagerBidders extends Component {
     const deconflict = get(m, 'has_competing_rank');
     const handshake = get(m, 'handshake', {}) || {};
     const handshakeRegisteredDate = get(m, 'handshake_registered_date');
-    const handshakeRegistered = get(m, 'handshake_registered', 'N') === 'Y';
+    const handshakeRegistered = get(m, 'handshake_registered') === 'Y';
     const active_hs_perdet = get(m, 'active_handshake_perdet');
     const hasAcceptedOtherOffer = get(m, 'has_accepted_other_offer');
     const bureauOBidderA = (get(handshake, 'hs_status_code') === 'handshake_offered')
@@ -337,20 +337,21 @@ class PositionManagerBidders extends Component {
               postHandshakeVisibility() &&
               <HandshakeStatus
                 handshake={handshake}
-                handshakeRegistered={handshakeRegistered}
-                handshakeRegisteredDate={handshakeRegisteredDate}
               />
             }
           >
             { this.props.hasHsReg && bureauOBidderA ?
               <>
                 <HandshakeAnimation isBidder />
-                <HandshakeStatus handshake={handshake} infoIcon />
+                <HandshakeStatus
+                  handshake={handshake}
+                  handshakeRegistered={handshakeRegistered}
+                  handshakeRegisteredDate={handshakeRegisteredDate}
+                  infoIcon
+                />
               </> :
               <HandshakeStatus
                 handshake={handshake}
-                handshakeRegistered={handshakeRegistered}
-                handshakeRegisteredDate={handshakeRegisteredDate}
               />
             }
           </PermissionsWrapper>
