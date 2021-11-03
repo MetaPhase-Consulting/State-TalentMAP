@@ -132,14 +132,14 @@ const HandshakeStatus = props => {
 HandshakeStatus.propTypes = {
   handshake: PropTypes.shape({}),
   handshakeRegisteredDate: PropTypes.string,
-  handshakeRegistered: PropTypes.string,
+  handshakeRegistered: PropTypes.bool,
   infoIcon: PropTypes.bool,
 };
 
 HandshakeStatus.defaultProps = {
   handshake: {},
   handshakeRegisteredDate: '',
-  handshakeRegistered: '',
+  handshakeRegistered: false,
   infoIcon: false,
 };
 
