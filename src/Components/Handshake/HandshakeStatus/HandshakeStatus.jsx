@@ -14,7 +14,6 @@ const HandshakeStatus = props => {
 
 
   const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'Pp') : '';
-  const removeTime = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
   const {
     hs_status_code,
@@ -92,7 +91,7 @@ const HandshakeStatus = props => {
             </div>
             {handshakeRegisteredDate && handshakeRegistered &&
             <div className="hs-registered">
-              <span className="title">Handshake Registered: </span>{removeTime(formatDate(handshakeRegisteredDate))}
+              <span className="title">Handshake Registered: </span>{formatDate(handshakeRegisteredDate).split(',')[0]}
             </div>
             }
           </div>
