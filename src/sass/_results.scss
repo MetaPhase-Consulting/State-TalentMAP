@@ -993,14 +993,14 @@ $results-container-width: 100% - $filter-container-width;
 }
 
 .tutorial-button {
-  position: fixed;
   bottom: 5px;
-  left: 10px;
   color: $primary-blue;
   font-size: 2em;
+  left: 10px;
+  position: fixed;
 
   > span {
-    box-shadow: 0px 0px 92px 5px $primary-blue;
     border-radius: 100%;
+    box-shadow: 0px 0px 90px 5px $primary-blue;
   }
 }
