@@ -33,7 +33,7 @@ const steps = [
     hideCloseButton: true,
   },
   {
-    target: '.results-card-title-link',
+    target: '.results-card-title-link > a',
     content: 'To view more information about a position and add it to your bid list, click "View position"',
     hideCloseButton: true,
   },
