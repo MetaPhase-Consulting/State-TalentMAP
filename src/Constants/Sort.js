@@ -19,7 +19,7 @@ const POSITION_SEARCH_SORTS$ = {
 };
 
 POSITION_SEARCH_SORTS$.defaultSort = POSITION_SEARCH_SORTS$.options.find(o =>
-  o.value === 'ted',
+  o.value === '-posted_date',
 ).value;
 
 export const POSITION_SEARCH_SORTS = POSITION_SEARCH_SORTS$;
@@ -180,5 +180,16 @@ export const BUREAU_BIDDER_FILTERS = {
     { value: '', text: 'All' },
     { value: 'HS', text: 'Handshake' },
     { value: 'OP', text: 'No Handshake' },
+  ],
+};
+
+export const AGENDA_ITEM_HISTORY_FILTERS = {
+  // values tbd, subject to what WS returns
+  options: [
+    { value: 'status', text: 'Agenda Status' },
+    { value: '-panel_date', text: 'Panel date: Latest' },
+    { value: 'panel_date', text: 'Panel date: Earliest' },
+    { value: '-updated_date', text: 'Updated date: Latest' },
+    { value: 'updated_date', text: 'Updated date: Earliest' },
   ],
 };
