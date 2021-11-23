@@ -213,8 +213,9 @@ jobs:
           command: |
             git clone https://github.com/MetaPhase-Consulting/State-TalentMAP-API.git
             cd State-TalentMAP-API
+            chmod -R 777 ./
             docker-compose build
-            docker-compose up
+            docker-compose up -d
             docker-compose run app python manage.py migrate
             docker-compose run app python manage.py create_demo_environment
             docker-compose run mock_fsbid npm run migrate
