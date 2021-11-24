@@ -6,8 +6,7 @@ services:
     #ports:
     #  - 3000:3000
     command: >
-      bash -c "cp public/config/config_dev.json public/config/config.json
-      && yarn build
+      bash -c "yarn build
       && serve -s ./build -p 3000"
     # environment:
       #- PUBLIC_URL=/talentmap/
