@@ -191,15 +191,6 @@ jobs:
       #    name: Replace config.json
       #    command: cp ${STATIC_PATH}/config/config_dev.json ${STATIC_PATH}/config/config.json
       - run:
-          name: Install dependencies
-          command: yarn install --pure-lockfile
-      - run:
-          name: sudo apt-get update
-          command: sudo apt-get update
-      - run:
-          name: Install cypress dependencies
-          command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-      - run:
           name: Run API
           command: |
             git clone https://github.com/MetaPhase-Consulting/State-TalentMAP-API.git
@@ -218,6 +209,15 @@ jobs:
             docker-compose run mock_fsbid npm run migrate
             docker-compose run mock_fsbid npm run seed
             cd ../
+      - run:
+          name: Install dependencies
+          command: yarn install --pure-lockfile
+      - run:
+          name: sudo apt-get update
+          command: sudo apt-get update
+      - run:
+          name: Install cypress dependencies
+          command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run:
           name: Build app
           command: yarn build
