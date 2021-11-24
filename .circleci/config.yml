@@ -196,7 +196,7 @@ jobs:
             git clone https://github.com/MetaPhase-Consulting/State-TalentMAP-API.git
             cd State-TalentMAP-API
             chmod -R 777 ./
-            docker-compose create --build
+            docker-compose up --no-start
             docker cp talentmap_api/ state-talentmap-api_app_1:/app/talentmap_api/
             docker cp show_logo.py state-talentmap-api_app_1:/app/
             docker cp wait-for-oracle.sh state-talentmap-api_app_1:/app/
