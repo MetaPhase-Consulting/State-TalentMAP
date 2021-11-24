@@ -209,13 +209,13 @@ jobs:
       - run:
           name: Run API
           command: |
+            cd State-TalentMAP-API
             docker-compose up -d
             docker-compose run app sh -c "./wait-for-oracle.sh oracle:1521/oraclepdb talentmap1 talentmap1 '' true"
             docker-compose run app python manage.py migrate
             docker-compose run app python manage.py create_demo_environment
             docker-compose run mock_fsbid npm run migrate
             docker-compose run mock_fsbid npm run seed
-            cd ../
       - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
