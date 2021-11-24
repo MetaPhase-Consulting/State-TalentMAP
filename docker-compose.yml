@@ -23,4 +23,4 @@ volumes:
 networks:
   network:
     external:
-    name: state-talentmap-api_default
+      name: state-talentmap-api_default
