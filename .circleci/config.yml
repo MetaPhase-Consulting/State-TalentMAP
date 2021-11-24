@@ -191,7 +191,7 @@ jobs:
       #    name: Replace config.json
       #    command: cp ${STATIC_PATH}/config/config_dev.json ${STATIC_PATH}/config/config.json
       - run:
-          name: Run API
+          name: Build API
           command: |
             git clone https://github.com/MetaPhase-Consulting/State-TalentMAP-API.git
             cd State-TalentMAP-API
@@ -206,7 +206,11 @@ jobs:
             docker cp healthcheck-alt.sql state-talentmap-api_app_1:/app/
             docker cp healthcheck.sql state-talentmap-api_app_1:/app/
             docker cp create-oracle-user.sql state-talentmap-api_app_1:/app/
+      - run:
+          name: Run API
+          command: |
             docker-compose up -d
+            docker-compose run app sh -c "./wait-for-oracle.sh oracle:1521/oraclepdb talentmap1 talentmap1 '' true"
             docker-compose run app python manage.py migrate
             docker-compose run app python manage.py create_demo_environment
             docker-compose run mock_fsbid npm run migrate
