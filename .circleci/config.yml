@@ -218,10 +218,17 @@ jobs:
             docker-compose run mock_fsbid npm run seed
       - run:
           name: Build UI
-          command: docker-compose build
+          command: |
+            chmod -R 777 ./
+            docker-compose up --no-start
+            docker cp . project_web_1:/app/
+            docker cp config project_web_1:/app/config/
+            docker cp public project_web_1:/app/public/
+            docker cp src project_web_1:/app/src/
+            docker cp scripts project_web_1:/app/scripts/
       - run:
           name: Run Cypress
-          command: docker-compose up
+          command: docker-compose up -d && docker-compose run web yarn cypress:ci
       #- run:
       #    name: Install dependencies
       #    command: yarn install --pure-lockfile

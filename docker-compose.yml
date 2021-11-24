@@ -5,11 +5,10 @@ services:
       context: .
     #ports:
     #  - 3000:3000
-    command: |
-      cp public/config/config_dev.json public/config/config.json
-      yarn build
-      nohup serve -s ./build -p 3000 &
-      yarn cypress:ci
+    command: >
+      bash -c "cp public/config/config_dev.json public/config/config.json
+      && yarn build
+      && serve -s ./build -p 3000"
     # environment:
       #- PUBLIC_URL=/talentmap/
       #- STATIC_PATH=/app/build/
