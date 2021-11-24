@@ -220,6 +220,7 @@ jobs:
           name: Build UI
           command: |
             chmod -R 777 ./
+            cp public/config/config_cypress.json public/config/config.json
             docker-compose up --no-start
             docker cp . project_web_1:/app/
             docker cp config project_web_1:/app/config/
@@ -228,7 +229,7 @@ jobs:
             docker cp scripts project_web_1:/app/scripts/
       - run:
           name: Run Cypress
-          command: docker-compose up -d && docker-compose run web yarn cypress:ci
+          command: docker-compose run web yarn cypress:ci
       #- run:
       #    name: Install dependencies
       #    command: yarn install --pure-lockfile

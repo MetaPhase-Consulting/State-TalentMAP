@@ -13,8 +13,14 @@ services:
       #- PUBLIC_URL=/talentmap/
       #- STATIC_PATH=/app/build/
       #- API_ROOT=http://api:8000/
+    networks:
+      - network
     volumes:
       - .:/app:delegated
       - node-modules:/app/node_modules/
 volumes:
   node-modules:
+networks:
+  network:
+    external:
+    name: state-talentmap-api_default
