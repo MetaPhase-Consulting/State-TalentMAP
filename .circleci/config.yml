@@ -203,6 +203,9 @@ jobs:
             docker cp create-oracle-user.sh state-talentmap-api_app_1:/app/
             docker cp manage.py state-talentmap-api_app_1:/app/
             docker cp setup.cfg state-talentmap-api_app_1:/app/
+            docker cp healthcheck-alt.sql state-talentmap-api_app_1:/app/
+            docker cp healthcheck.sql state-talentmap-api_app_1:/app/
+            docker cp create-oracle-user.sql state-talentmap-api_app_1:/app/
             docker-compose up -d
             docker-compose run app python manage.py migrate
             docker-compose run app python manage.py create_demo_environment
