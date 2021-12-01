@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
+import { Tooltip } from 'react-tippy';
 import BoxShadow from '../../BoxShadow';
 import { Handshake } from '../../Ribbon';
 
@@ -21,43 +22,53 @@ const EmployeeAgendaSearchCards = ({ isCDO }) => {
   };
 
   return (
-    <div className="bidder-portfolio-stat-card-container">
-      <BoxShadow className="usa-grid-full bidder-portfolio-stat-card">
-        <div className="bidder-portfolio-stat-card-top">
+    <div className="employee-agenda-card-container">
+      <BoxShadow className="usa-grid-full employee-agenda-card">
+        <div className="employee-agenda-card-top">
           <div className="employee-ribbon-container">
             <div className="ribbon-container-condensed">
-              <Handshake showText={false} className="ribbon-condensed-card" />
+              {
+                <Tooltip
+                  title="Handshake"
+                  arrow
+                  offset={-60}
+                >
+                  <Handshake showText={false} className="ribbon-condensed-card" />
+                </Tooltip>
+              }
             </div>
           </div>
-          <div className="stat-card-data-point">
-            <Link to="/profile/public/4">{data.bidder}</Link>
+          <div>
+            <h3>
+              <Link to="/profile/public/4">{data.bidder}</Link>
+            </h3>
           </div>
-          <div className="stat-card-data-point">
+          <div className="employee-card-data-point">
             <FA name="building-o" />
             <dt>ORG:</dt><dd>{data.currentPost} <FA name="long-arrow-right" /> {data.futurePost}</dd>
           </div>
-          <div className="stat-card-data-point">
+          <div className="employee-card-data-point">
             <FA name="clock-o" />
             <dt>TED:</dt><dd>{data.ted}</dd>
           </div>
-          <div className="stat-card-data-point">
+          <div className="employee-card-data-point">
             <FA name="user-o" />
             <dt>CDO:</dt><dd>{data.cdo}</dd>
           </div>
-          <div className="stat-card-data-point">
+          <div className="employee-card-data-point">
             <FA name="pencil-square" />
             <dt>Author:</dt><dd>{data.author}</dd>
           </div>
-          <div className="stat-card-data-point">
+          <div className="employee-card-data-point">
             <FA name="calendar-o" />
             <dt>Panel Meeting Date:</dt><dd>{data.panelDate}</dd>
           </div>
-          <div className="stat-card-data-point">
+          <div className="employee-card-data-point">
             <FA name="sticky-note-o" />
             <dt>Agenda Status:</dt><dd>{data.agendaStatus}</dd>
           </div>
         </div>
-        <div className="bidder-portfolio-stat-card-bottom">
+        <div className="employee-agenda-card-top-bottom">
           {useCDOBidding() &&
         <div className="button-container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           <div className="eas-button">

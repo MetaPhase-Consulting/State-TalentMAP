@@ -22,6 +22,130 @@
   }
 }
 
+.employee-agenda-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// IE11 fix for input text not displaying
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+  .employee-agenda-card-list {
+    max-width: calc(100vw - 260px);
+  }
+}
+
+.employee-agenda-card-container:last-child {
+  flex-grow: 100;
+}
+
+.employee-agenda-card {
+  border-top: 11px solid $primary-blue;
+  display: flex;
+  flex-direction: column;
+  height: 386px;
+  margin-bottom: 25px;
+  margin-left: 15px;
+  margin-right: 25px;
+  width: 330px;
+
+  a {
+    display: inline-block;
+  }
+
+  h3 {
+    display: inline-block;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 0 5px 0 0;
+    text-decoration: underline;
+
+    a {
+      align-items: center;
+      display: flex;
+      font-size: 1.8rem;
+      text-decoration: none;
+    }
+
+    .fa {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+  }
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 5px;
+  }
+
+  .employee-agenda-card-top {
+    display: flex;
+    flex: 5;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+  }
+
+  .employee-agenda-card-top-bottom {
+    border-top: 1px solid $color-gray-lighter;
+    display: flex;
+    flex: 5;
+    flex-direction: column;
+    margin-top: 100px;
+    padding-bottom: 20px;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px 16px 0;
+      width: 100%;
+
+      .updates {
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+    }
+
+    > div:nth-child(2) {
+      padding-bottom: 0;
+    }
+  }
+
+  .employee-card-data-point {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .button-container {
+    margin-top: 10px;
+
+    span,
+    a,
+    button {
+      margin: 0;
+      margin-bottom: 0;
+    }
+
+    > span,
+    > button {
+      width: 48%;
+    }
+
+    a,
+    button {
+      font-size: .9em;
+      padding: 10px 5px;
+    }
+  }
+}
+
 .employee-agenda-search-button {
   border: 1px solid blue;
   padding: 1rem;
@@ -40,9 +164,6 @@
     .ribbon-container-condensed {
       position: absolute;
       margin-left: 28rem;
-      top: 63px
-      // right: -2px;
-      // top: -1px;
-      // z-index: $ribbon-condensed-card-z + 1;
+      top: 66px
     }
 }

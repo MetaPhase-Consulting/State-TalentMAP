@@ -5,7 +5,9 @@ import EmployeeAgendaSearchCards from '../EmployeeAgendaSearchCards/EmployeeAgen
 const EmployeeAgendaSearch = ({ isCDO }) => (
   <div className="usa-grid-full profile-content-inner-container">
     <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
-    <EmployeeAgendaSearchCards isCDO={isCDO} />
+    <div className="usa-grid-full employee-agenda-card-list">
+      <EmployeeAgendaSearchCards isCDO={isCDO} />
+    </div>
   </div>
 );
 
