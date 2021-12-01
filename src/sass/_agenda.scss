@@ -30,3 +30,19 @@
     text-decoration: none;
   }
 }
+
+.employee-ribbon-container {
+  display: flex;
+
+  div:nth-of-type(1) { flex: 3; }
+    div:nth-of-type(2) { flex: 2; }
+
+    .ribbon-container-condensed {
+      position: absolute;
+      margin-left: 28rem;
+      top: 63px
+      // right: -2px;
+      // top: -1px;
+      // z-index: $ribbon-condensed-card-z + 1;
+    }
+}
