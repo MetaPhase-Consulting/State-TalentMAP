@@ -43,21 +43,23 @@ const EmployeeAgendaSearchCards = ({ isCDO }) => {
               <Link to="/profile/public/4">{data.bidder}</Link>
             </h3>
           </div>
-          <div className="employee-card-data-point">
-            <FA name="building-o" />
-            <dt>ORG:</dt><dd>{data.currentPost} <FA name="long-arrow-right" /> {data.futurePost}</dd>
-          </div>
-          <div className="employee-card-data-point">
-            <FA name="clock-o" />
-            <dt>TED:</dt><dd>{data.ted}</dd>
-          </div>
-          <div className="employee-card-data-point">
-            <FA name="user-o" />
-            <dt>CDO:</dt><dd>{data.cdo}</dd>
+          <div className="employee-agenda-card-data-point-top">
+            <div className="employee-card-data-point">
+              <FA name="building-o" />
+              <dt>ORG:</dt><dd>{data.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {data.futurePost}</dd>
+            </div>
+            <div className="employee-card-data-point">
+              <FA name="clock-o" />
+              <dt>TED:</dt><dd>{data.ted}</dd>
+            </div>
+            <div className="employee-card-data-point">
+              <FA name="user-o" />
+              <dt>CDO:</dt><dd>{data.cdo}</dd>
+            </div>
           </div>
           <div className="employee-card-data-point">
             <FA name="pencil-square" />
-            <dt>Author:</dt><dd>{data.author}</dd>
+            <dt>Author:</dt><dd className="author-name">{data.author}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="calendar-o" />

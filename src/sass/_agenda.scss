@@ -45,7 +45,7 @@
   border-top: 11px solid $primary-blue;
   display: flex;
   flex-direction: column;
-  height: 386px;
+  height: 340px;
   margin-bottom: 25px;
   margin-left: 15px;
   margin-right: 25px;
@@ -83,6 +83,10 @@
   dd {
     margin-left: 5px;
   }
+  
+  .author-name {
+    font-weight: 500;
+  }
 
   .employee-agenda-card-top {
     display: flex;
@@ -97,7 +101,7 @@
     display: flex;
     flex: 5;
     flex-direction: column;
-    margin-top: 100px;
+    margin-top: -10px;
     padding-bottom: 20px;
 
     > div {
@@ -118,9 +122,23 @@
     }
   }
 
+  .employee-agenda-card-data-point-top {
+    margin-bottom: 4rem;
+    margin-top: .5rem;
+  }
+  
   .employee-card-data-point {
     display: flex;
     flex-direction: row;
+    margin-bottom: 5px;
+
+    .fa {
+      padding: 3px 6px 3px 0;
+    }
+
+    .org-fa-arrow {
+      padding: 0px 5px;
+    }
   }
 
   .button-container {
