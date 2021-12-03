@@ -45,7 +45,7 @@
   border-top: 11px solid $primary-blue;
   display: flex;
   flex-direction: column;
-  height: 340px;
+  height: 350px;
   margin-bottom: 25px;
   margin-left: 15px;
   margin-right: 25px;
@@ -184,4 +184,38 @@
       margin-left: 28rem;
       top: 66px
     }
+}
+
+.view-agenda-item-container {
+  margin-right: 2rem;
+  
+  .view-agenda-item-button {
+    background-color: $color-white;
+    border: 1px solid $blue-primary;
+    border-radius: 3px;
+    color: $blue-primary;
+    padding: 3px;
+    text-align: center;
+    width: 130px;
+
+    .view-agenda-item-text{
+      color: $blue-primary;
+      text-decoration: none;
+    }
+  }
+}
+
+.create-pai-box-container {
+  
+  .create-pai-box-button {
+    background-color: $blue-primary;
+    border: 1px solid $blue-primary;
+    border-radius: 3px;
+    color: $color-white;
+    font-size: 1.4rem;
+    line-height: 37px;
+    padding: 3px;
+    text-align: center;
+    width: 150px;
+  }
 }
