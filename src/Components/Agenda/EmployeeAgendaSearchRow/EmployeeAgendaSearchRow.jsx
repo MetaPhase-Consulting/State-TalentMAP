@@ -13,32 +13,35 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
   // does Handshake Status need to be added below?
   return (
     <div className="usa-grid-full employee-agenda-stat-row">
-      <div className="employee-row-data-point employee-agenda-row-name">
-        <Link to="/profile/public/4">{results.bidder}</Link>
+      <div className="initials-circle-container">
+        <div className="initials-circle">
+          {results.initials}
+        </div>
       </div>
-      <div>
-        <div>
-          <div className="employee-agenda-row-data-points">
-            <div className="employee-agenda-row-data-point">
-              <FA name="building-o" />
-              <dt>ORG:</dt><dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
-            </div>
-            <div className="employee-agenda-row-data-point">
-              <FA name="clock-o" />
-              <dt>TED:</dt><dd>{results.ted}</dd>
-            </div>
-            <div className="employee-agenda-row-data-point">
-              <FA name="user-o" />
-              <dt>CDO:</dt><dd>{results.cdo}</dd>
-            </div>
-            <div className="employee-agenda-row-data-point">
-              <FA name="handshake-o" />
-              <dt>Handshake Status:</dt><dd>{results.hs_status}</dd>
-            </div>
-            <div className="employee-agenda-row-data-point">
-              <FA className="fa-calendar" name="calendar-o" />
-              <dt>Panel Meeting Date:</dt><dd>{results.panelDate}</dd>
-            </div>
+      <div className="employee-row-data-point employee-agenda-row-name">
+        <Link className="row-name-text" to="/profile/public/4">{results.bidder}</Link>
+      </div>
+      <div className="employee-agenda-row-data-container">
+        <div className="employee-agenda-row-data-points">
+          <div className="employee-agenda-row-data-point">
+            <FA name="building-o" />
+            <dt>ORG:</dt><dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
+          </div>
+          <div className="employee-agenda-row-data-point">
+            <FA name="clock-o" />
+            <dt>TED:</dt><dd>{results.ted}</dd>
+          </div>
+          <div className="employee-agenda-row-data-point">
+            <FA name="user-o" />
+            <dt>CDO:</dt><dd>{results.cdo}</dd>
+          </div>
+          <div className="employee-agenda-row-data-point">
+            <FA name="handshake-o" />
+            <dt>Handshake Status:</dt><dd>{results.hs_status}</dd>
+          </div>
+          <div className="employee-agenda-row-data-point">
+            <FA className="fa-calendar" name="calendar-o" />
+            <dt>Panel Meeting Date:</dt><dd>{results.panelDate}</dd>
           </div>
         </div>
         {

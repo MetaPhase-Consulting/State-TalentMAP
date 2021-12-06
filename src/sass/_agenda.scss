@@ -169,6 +169,10 @@
   }
 }
 
+.employee-agenda-row-data-container {
+  margin-left: 15rem;
+}
+
 .employee-agenda-row-data-points {
   display: inline-grid;
   flex-flow: column wrap;
@@ -254,6 +258,22 @@
   margin-bottom: 1rem;
   width: 90%; // may need to change to align with export/sort row
 
+.initials-circle-container {
+  position: absolute;
+
+  .initials-circle {
+    background: $primary-blue;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    width: 90px;
+  }
+}
+
   > div:nth-child(2) {
 
     align-items: flex-start;
@@ -303,9 +323,14 @@
   }
 
   .employee-agenda-row-name {
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: bold;
     margin-bottom: .3rem;
+    margin-left: 15rem;
+
+    .row-name-text {
+      font-weight: bold;
+    }
 
     a {
       font-size: .9em;
@@ -330,7 +355,7 @@
 
   .button-container {
     display: flex;
-    justify-content: flex-end;
+    float: right;
 
     .view-agenda-item-button {
       padding: 12px;
