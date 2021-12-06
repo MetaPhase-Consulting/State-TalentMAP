@@ -57,7 +57,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
         </div>
         {
           useCDOBidding() &&
-            <div className="button-container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <div className="button-container">
               <div className="view-agenda-item-container">
                 <InteractiveElement className="view-agenda-item-button">
                   <Link className="view-agenda-item-text" to={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</Link>
