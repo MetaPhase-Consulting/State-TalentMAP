@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
+<div
+  className="usa-grid-full employee-agenda-stat-row"
+>
+  <div
+    className="initials-circle-container"
+  >
+    <div
+      className="initials-circle"
+    />
+  </div>
+  <div
+    className="employee-row-data-point employee-agenda-row-name"
+  >
+    <Link
+      className="row-name-text"
+      replace={false}
+      to="/profile/public/4"
+    />
+  </div>
+  <div
+    className="employee-agenda-row-data-container"
+  >
+    <div
+      className="employee-agenda-row-data-points"
+    >
+      <div
+        className="employee-agenda-row-data-point"
+      >
+        <FontAwesome
+          name="building-o"
+        />
+        <dt>
+          ORG:
+        </dt>
+        <dd>
+           
+          <FontAwesome
+            className="org-fa-arrow"
+            name="long-arrow-right"
+          />
+           
+        </dd>
+      </div>
+      <div
+        className="employee-agenda-row-data-point"
+      >
+        <FontAwesome
+          name="clock-o"
+        />
+        <dt>
+          TED:
+        </dt>
+        <dd />
+      </div>
+      <div
+        className="employee-agenda-row-data-point"
+      >
+        <FontAwesome
+          name="user-o"
+        />
+        <dt>
+          CDO:
+        </dt>
+        <dd />
+      </div>
+      <div
+        className="employee-agenda-row-data-point"
+      >
+        <FontAwesome
+          name="handshake-o"
+        />
+        <dt>
+          Handshake Status:
+        </dt>
+        <dd />
+      </div>
+      <div
+        className="employee-agenda-row-data-point"
+      >
+        <FontAwesome
+          className="fa-calendar"
+          name="calendar-o"
+        />
+        <dt>
+          Panel Meeting Date:
+        </dt>
+        <dd />
+      </div>
+    </div>
+    <div
+      className="button-container"
+    >
+      <div
+        className="view-agenda-item-container"
+      >
+        <InteractiveElement
+          className="view-agenda-item-button"
+          type="div"
+        >
+          <Link
+            className="view-agenda-item-text"
+            replace={false}
+            to="/profile/ao/agendaitemhistory/perdet"
+          >
+            View History
+          </Link>
+        </InteractiveElement>
+      </div>
+      <div
+        className="create-pai-box-container"
+      >
+        <InteractiveElement
+          className="create-pai-box-button"
+          type="div"
+        >
+          Create Agenda Item
+        </InteractiveElement>
+      </div>
+    </div>
+  </div>
+</div>
+`;

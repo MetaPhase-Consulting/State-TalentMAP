@@ -8,14 +8,160 @@ exports[`EmployeeAgendaSearchComponent matches snapshot when CDO 1`] = `
     icon="user-circle-o"
     title="Employee Agenda Search"
   />
-  <h4>
-    <Link
-      replace={false}
-      to="/profile/cdo/agendaitemhistory/perdet"
-    >
-      View Employee History
-    </Link>
-  </h4>
+  <button
+    onClick={[Function]}
+  >
+    row
+     view
+  </button>
+  <div
+    className="usa-grid-full employee-agenda-card-list"
+  >
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": true,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "04/2022",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Offered",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "04/2025",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Extended",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "09/2023",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": true,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "11/2022",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "07/2024",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Offered",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "09/2023",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Extended",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "03/2023",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={true}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": true,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "06/2023",
+        }
+      }
+    />
+  </div>
 </div>
 `;
 
@@ -27,13 +173,159 @@ exports[`EmployeeAgendaSearchComponent matches snapshot when not CDO 1`] = `
     icon="user-circle-o"
     title="Employee Agenda Search"
   />
-  <h4>
-    <Link
-      replace={false}
-      to="/profile/ao/agendaitemhistory/perdet"
-    >
-      View Employee History
-    </Link>
-  </h4>
+  <button
+    onClick={[Function]}
+  >
+    row
+     view
+  </button>
+  <div
+    className="usa-grid-full employee-agenda-card-list"
+  >
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": true,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "04/2022",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Offered",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "04/2025",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Extended",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "09/2023",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": true,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "11/2022",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "07/2024",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Offered",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "09/2023",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": false,
+          "hs_status": "Extended",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "03/2023",
+        }
+      }
+    />
+    <EmployeeAgendaSearchCards
+      isCDO={false}
+      results={
+        Object {
+          "agendaStatus": "Complete",
+          "author": "Last, First MI Author",
+          "bidder": "Last, First MI",
+          "cdo": "Last, First MI CDO",
+          "currentPost": "Paris (EUR)",
+          "futurePost": "Djbouti (AF)",
+          "hs_accepted": true,
+          "hs_status": "Accepted",
+          "initials": "FL",
+          "panelDate": "12/25/2021",
+          "ted": "06/2023",
+        }
+      }
+    />
+  </div>
 </div>
 `;
