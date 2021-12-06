@@ -182,6 +182,10 @@
       padding: 3px 6px 3px 0;
     }
 
+    .fa-calendar {
+      padding: 3px 10px 3px 3px;
+    }
+
     .org-fa-arrow {
       padding: 0px 5px;
     }
@@ -234,16 +238,15 @@
   }
 }
 
-.employee-agenda-row {
-  border-left: 11px solid $primary-blue;
-}
-
 .employee-agenda-stat-row {
   border: 1px solid $color-gray-light;
-  border-left: none;
+  border-left: 11px solid $primary-blue;
+  box-shadow: rgb(0 0 0 / 15%) 3px 2px;
   display: flex;
   flex-direction: column;
-  padding: 12px 20px;
+  padding: 15px 20px;
+  margin-bottom: 1rem;
+  width: 90%; // may need to change to align with export/sort row
 
   > div:nth-child(2) {
 
@@ -269,7 +272,7 @@
 
     // setup flex values
     > div:nth-child(1) {
-      flex: 3 1 280px;
+      flex: 3 1 300px;
     }
 
     > div:nth-child(2) {

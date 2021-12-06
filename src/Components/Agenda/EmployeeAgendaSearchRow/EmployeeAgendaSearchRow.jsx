@@ -32,16 +32,12 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
               <dt>CDO:</dt><dd>{results.cdo}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
-              <FA name="pencil-square" />
-              <dt>Author:</dt><dd className="author-name">{results.author}</dd>
+              <FA name="handshake-o" />
+              <dt>Handshake Status:</dt><dd>Extened</dd>
             </div>
             <div className="employee-agenda-row-data-point">
-              <FA name="calendar-o" />
+              <FA className="fa-calendar" name="calendar-o" />
               <dt>Panel Meeting Date:</dt><dd>{results.panelDate}</dd>
-            </div>
-            <div className="employee-agenda-row-data-point">
-              <FA name="sticky-note-o" />
-              <dt>Agenda Status:</dt><dd>{results.agendaStatus}</dd>
             </div>
           </div>
         </div>
