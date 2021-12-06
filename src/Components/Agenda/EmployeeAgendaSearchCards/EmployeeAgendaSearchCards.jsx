@@ -16,18 +16,20 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
   return (
     <div className="employee-agenda-card-container">
       <BoxShadow className="usa-grid-full employee-agenda-card">
-        <div className="employee-agenda-card-top">
-          <div className="employee-ribbon-container">
-            <div className="ribbon-container-condensed">
-              {showHandshakeIcon &&
-                <Tooltip
-                  title="Handshake"
-                  arrow
-                  offset={-60}
-                >
-                  <Handshake showText={false} className="ribbon-condensed-card" />
-                </Tooltip>
-              }
+        <div className="employee-agenda-card-inner">
+          <div className="employee-agenda-card-top">
+            <div className="employee-ribbon-container">
+              <div className="ribbon-container-condensed">
+                {showHandshakeIcon &&
+                  <Tooltip
+                    title="Handshake"
+                    arrow
+                    offset={-60}
+                  >
+                    <Handshake showText={false} className="ribbon-condensed-card" />
+                  </Tooltip>
+                }
+              </div>
             </div>
           </div>
           <div>
