@@ -33,7 +33,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
             </div>
             <div className="employee-agenda-row-data-point">
               <FA name="handshake-o" />
-              <dt>Handshake Status:</dt><dd>Extened</dd>
+              <dt>Handshake Status:</dt><dd>{results.hs_status}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
               <FA className="fa-calendar" name="calendar-o" />

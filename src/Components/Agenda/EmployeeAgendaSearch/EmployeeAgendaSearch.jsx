@@ -17,9 +17,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: true, // for testing only
+      hs_status: 'Accepted', // for testing only
       panelDate: '12/25/2021',
       ted: '04/2022',
-      handshake: true, // for testing only
     },
     {
       agendaStatus: 'Complete',
@@ -28,9 +29,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Offered',
       panelDate: '12/25/2021',
       ted: '04/2025',
-      handshake: false,
     },
     {
       agendaStatus: 'Complete',
@@ -39,9 +41,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Extended',
       panelDate: '12/25/2021',
       ted: '09/2023',
-      handshake: true,
     },
     {
       agendaStatus: 'Complete',
@@ -50,9 +53,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: true,
+      hs_status: 'Accepted',
       panelDate: '12/25/2021',
       ted: '11/2022',
-      handshake: true,
     },
     {
       agendaStatus: 'Complete',
@@ -61,9 +65,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Accepted',
       panelDate: '12/25/2021',
       ted: '07/2024',
-      handshake: true,
     },
     {
       agendaStatus: 'Complete',
@@ -72,9 +77,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Offered',
       panelDate: '12/25/2021',
       ted: '09/2023',
-      handshake: true,
     },
     {
       agendaStatus: 'Complete',
@@ -83,9 +89,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Extended',
       panelDate: '12/25/2021',
       ted: '03/2023',
-      handshake: true,
     },
     {
       agendaStatus: 'Complete',
@@ -94,35 +101,31 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       cdo: 'Last, First MI CDO',
       currentPost: 'Paris (EUR)',
       futurePost: 'Djbouti (AF)',
+      hs_accepted: true,
+      hs_status: 'Accepted',
       panelDate: '12/25/2021',
       ted: '06/2023',
-      handshake: true,
     },
   ];
 
   return (
     <div className="usa-grid-full profile-content-inner-container">
       <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
-      <div className="usa-grid-full employee-agenda-row">
-        {/* card/row functionality will be added on another ticket */}
-        {
-          data.map(result => (
-            <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
-          ))
-        }
-        {/* {
+      {/* <div className="usa-grid-full employee-agenda-row"> */}
+      {/* card/row functionality will be added on another ticket */}
+      {/* {
           data.map(result => (
             <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
           ))
         } */}
-      </div>
-      {/* <div className="usa-grid-full employee-agenda-card-list">
+      {/* </div> */}
+      <div className="usa-grid-full employee-agenda-card-list">
         {
           data.map(result => (
             <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
           ))
         }
-      </div> */}
+      </div>
       {/* {
         cardView &&
           <div className="usa-grid-full employee-agenda-card-list">

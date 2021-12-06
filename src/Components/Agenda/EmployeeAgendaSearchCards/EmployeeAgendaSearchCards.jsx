@@ -9,6 +9,7 @@ import { Handshake } from '../../Ribbon';
 import InteractiveElement from '../../InteractiveElement';
 
 const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
+  const showHandshakeIcon = results.hs_accepted;
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
@@ -18,7 +19,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
         <div className="employee-agenda-card-top">
           <div className="employee-ribbon-container">
             <div className="ribbon-container-condensed">
-              {
+              {showHandshakeIcon &&
                 <Tooltip
                   title="Handshake"
                   arrow
