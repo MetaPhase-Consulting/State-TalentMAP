@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import EmployeeAgendaSearchCards from '../EmployeeAgendaSearchCards/EmployeeAgendaSearchCards';
-// import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
+import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
   const [cardView, setCardView] = useState(false);
@@ -103,13 +103,21 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   return (
     <div className="usa-grid-full profile-content-inner-container">
       <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
-      <div className="usa-grid-full employee-agenda-card-list">
+      <div className="usa-grid-full employee-agenda-row">
+        <EmployeeAgendaSearchRow results isCDO={isCDO} />
+        {/* {
+          data.map(result => (
+            <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
+          ))
+        } */}
+      </div>
+      {/* <div className="usa-grid-full employee-agenda-card-list">
         {
           data.map(result => (
             <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
           ))
         }
-      </div>
+      </div> */}
       {/* {
         cardView &&
           <div className="usa-grid-full employee-agenda-card-list">

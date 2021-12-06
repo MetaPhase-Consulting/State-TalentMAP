@@ -164,6 +164,36 @@
   }
 }
 
+// .employee-agenda-row {
+
+// }
+
+// .employee-agenda-row-name {
+//   font-size: 1.1em;
+//   font-weight: bold;
+//   margin-bottom: 0.4rem;
+// }
+
+.employee-agenda-row-data-points {
+  display: inline-grid;
+  flex-flow: column wrap;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, auto);
+  margin-left: 1.5rem;
+}
+
+.employee-agenda-row-data-point {
+    display: flex;
+    flex-direction: row;
+    line-height: 1.3em;
+    margin: 0 8rem .5rem 0;
+
+    .fa {
+      padding: 3px 6px 3px 0;
+    }
+}
+
+
 .employee-agenda-search-button {
   border: 1px solid blue;
   padding: 1rem;
