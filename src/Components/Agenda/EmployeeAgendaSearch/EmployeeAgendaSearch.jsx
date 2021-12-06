@@ -71,6 +71,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       futurePost: 'Djbouti (AF)',
       hs_accepted: false,
       hs_status: 'Accepted',
+      initials: 'FL',
       panelDate: '12/25/2021',
       ted: '07/2024',
     },
