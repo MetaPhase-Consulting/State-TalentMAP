@@ -104,7 +104,12 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     <div className="usa-grid-full profile-content-inner-container">
       <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
       <div className="usa-grid-full employee-agenda-row">
-        <EmployeeAgendaSearchRow results isCDO={isCDO} />
+        {/* card/row functionality will be added on another ticket */}
+        {
+          data.map(result => (
+            <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
+          ))
+        }
         {/* {
           data.map(result => (
             <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />

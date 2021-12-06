@@ -10,48 +10,38 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
-  const data = {
-    agendaStatus: 'Complete',
-    author: 'Last, First MI Author',
-    bidder: 'Last, First MI',
-    cdo: 'Last, First MI CDO',
-    currentPost: 'Paris (EUR)',
-    futurePost: 'Djbouti (AF)',
-    panelDate: '12/25/2021',
-    ted: '11/29/2021',
-  };
   // does Handshake Status need to be added below?
   return (
     <div className="usa-grid-full employee-agenda-stat-row">
       <div className="employee-row-data-point employee-agenda-row-name">
-        <Link to="/profile/public/4">{data.bidder}</Link>
+        <Link to="/profile/public/4">{results.bidder}</Link>
       </div>
       <div>
         <div>
           <div className="employee-agenda-row-data-points">
             <div className="employee-agenda-row-data-point">
               <FA name="building-o" />
-              <dt>ORG:</dt><dd>{data.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {data.futurePost}</dd>
+              <dt>ORG:</dt><dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
               <FA name="clock-o" />
-              <dt>TED:</dt><dd>{data.ted}</dd>
+              <dt>TED:</dt><dd>{results.ted}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
               <FA name="user-o" />
-              <dt>CDO:</dt><dd>{data.cdo}</dd>
+              <dt>CDO:</dt><dd>{results.cdo}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
               <FA name="pencil-square" />
-              <dt>Author:</dt><dd className="author-name">{data.author}</dd>
+              <dt>Author:</dt><dd className="author-name">{results.author}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
               <FA name="calendar-o" />
-              <dt>Panel Meeting Date:</dt><dd>{data.panelDate}</dd>
+              <dt>Panel Meeting Date:</dt><dd>{results.panelDate}</dd>
             </div>
             <div className="employee-agenda-row-data-point">
               <FA name="sticky-note-o" />
-              <dt>Agenda Status:</dt><dd>{data.agendaStatus}</dd>
+              <dt>Agenda Status:</dt><dd>{results.agendaStatus}</dd>
             </div>
           </div>
         </div>
