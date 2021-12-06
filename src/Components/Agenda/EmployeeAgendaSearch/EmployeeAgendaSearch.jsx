@@ -6,8 +6,8 @@ import EmployeeAgendaSearchCards from '../EmployeeAgendaSearchCards/EmployeeAgen
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
-  const [cardView, setCardView] = useState(false);
-  const view = cardView ? 'card' : 'grid';
+  const [cardView, setCardView] = useState(true);
+  const view = cardView ? 'row' : 'card';
 
   const data = [
     {
@@ -111,33 +111,28 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   return (
     <div className="usa-grid-full profile-content-inner-container">
       <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
-      {/* <div className="usa-grid-full employee-agenda-row"> */}
       {/* card/row functionality will be added on another ticket */}
-      {/* {
-          data.map(result => (
-            <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
-          ))
-        } */}
-      {/* </div> */}
-      <div className="usa-grid-full employee-agenda-card-list">
-        {
-          data.map(result => (
-            <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
-          ))
-        }
-      </div>
-      {/* {
+      <button onClick={() => setCardView(!cardView)}>{view} view</button>
+      {
         cardView &&
           <div className="usa-grid-full employee-agenda-card-list">
-            <EmployeeAgendaSearchCards isCDO={isCDO} />
+            {
+              data.map(result => (
+                <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
+              ))
+            }
           </div>
       }
       {
         !cardView &&
-          <div className="usa-grid-full employee-agenda-card-list">
-            <EmployeeAgendaSearchRow isCDO={isCDO} />
+          <div className="usa-grid-full employee-agenda-row">
+            {
+              data.map(result => (
+                <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
+              ))
+            }
           </div>
-      } */}
+      }
     </div>
   );
 };
