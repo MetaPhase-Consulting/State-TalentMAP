@@ -22,8 +22,8 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
   };
   // does Handshake Status need to be added below?
   return (
-    <div className="usa-grid-full bidder-portfolio-stat-row">
-      <div className="stat-card-data-point stat-card-data-point--name employee-agenda-row-name">
+    <div className="usa-grid-full employee-agenda-stat-row">
+      <div className="employee-row-data-point employee-agenda-row-name">
         <Link to="/profile/public/4">{data.bidder}</Link>
       </div>
       <div>

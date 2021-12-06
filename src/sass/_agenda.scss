@@ -164,16 +164,6 @@
   }
 }
 
-// .employee-agenda-row {
-
-// }
-
-// .employee-agenda-row-name {
-//   font-size: 1.1em;
-//   font-weight: bold;
-//   margin-bottom: 0.4rem;
-// }
-
 .employee-agenda-row-data-points {
   display: inline-grid;
   flex-flow: column wrap;
@@ -191,16 +181,10 @@
     .fa {
       padding: 3px 6px 3px 0;
     }
-}
 
-
-.employee-agenda-search-button {
-  border: 1px solid blue;
-  padding: 1rem;
-
-  a {
-    text-decoration: none;
-  }
+    .org-fa-arrow {
+      padding: 0px 5px;
+    }
 }
 
 .employee-ribbon-container {
@@ -247,5 +231,112 @@
     padding: 3px;
     text-align: center;
     width: 150px;
+  }
+}
+
+.employee-agenda-row {
+  border-left: 11px solid $primary-blue;
+}
+
+.employee-agenda-stat-row {
+  border: 1px solid $color-gray-light;
+  border-left: none;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 20px;
+
+  > div:nth-child(2) {
+
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    > div {
+      margin-right: 1em;
+
+      > .tm-avatar {
+        font-size: 3rem;
+        height: 65px;
+        line-height: 6.5rem;
+        width: 65px;
+      }
+    }
+
+    > div:last-child {
+      margin-right: 0;
+    }
+
+    // setup flex values
+    > div:nth-child(1) {
+      flex: 3 1 280px;
+    }
+
+    > div:nth-child(2) {
+      display: flex;
+      flex: 6 0 100px;
+    }
+
+    > div:nth-child(3) {
+      flex: 8 0 225px;
+      padding-top: 1em;
+
+      > span {
+        display: flex;
+      }
+    }
+
+    @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+      > div:nth-child(3) {
+        flex: 8 0 50%;
+      }
+    }
+  }
+
+  .employee-agenda-row-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: .3rem;
+
+    a {
+      font-size: .9em;
+      font-weight: normal;
+      margin-left: 15px;
+    }
+  }
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 5px;
+  }
+
+  .employee-row-data-point {
+    display: flex;
+    flex-direction: row;
+    line-height: 1.3em;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0;
+
+    > span {
+      margin-right: 10px;
+    }
+
+    span,
+    a,
+    button {
+      margin: 0;
+      margin-bottom: 0;
+    }
+
+    .link-button-wrapper {
+      margin-right: 10px;
+    }
   }
 }
