@@ -22,7 +22,7 @@
   }
 }
 
-.employee-agenda-card-list {
+.employee-agenda-card {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
@@ -32,7 +32,7 @@
 
 // IE11 fix for input text not displaying
 @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-  .employee-agenda-card-list {
+  .employee-agenda-card {
     max-width: calc(100vw - 260px);
   }
 }
@@ -41,7 +41,7 @@
   flex-grow: 100;
 }
 
-.employee-agenda-card {
+.employee-agenda-stat-card {
   border-top: 11px solid $primary-blue;
   display: flex;
   flex-direction: column;
@@ -146,9 +146,9 @@
   }
 }
 
-.create-pai-box-container {
+.create-ai-box-container {
 
-  .create-pai-box-button {
+  .create-ai-box-button {
     background-color: $blue-primary;
     border: 1px solid $blue-primary;
     border-radius: 3px;
@@ -235,7 +235,8 @@
             padding: 3px 6px 3px 0;
           }
           
-          .fa-calendar {
+          .fa-calendar,
+          .fa-pencil {
             padding: 3px 10px 3px 3px;
           }
           

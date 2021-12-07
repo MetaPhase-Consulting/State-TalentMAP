@@ -124,9 +124,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       </button>
       {
         cardView &&
-          <div className="employee-agenda-card-list">
+          <div className="employee-agenda-card">
             {data.map(result => (
-              <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
+              // TODO: include React keys once we have real data
+              <EmployeeAgendaSearchCards result={result} isCDO={isCDO} />
             ))}
           </div>
       }
@@ -134,7 +135,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
         !cardView &&
           <div className="employee-agenda-row">
             {data.map(result => (
-              <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
+              // TODO: include React keys once we have real data
+              <EmployeeAgendaSearchRow result={result} isCDO={isCDO} />
             ))}
           </div>
       }

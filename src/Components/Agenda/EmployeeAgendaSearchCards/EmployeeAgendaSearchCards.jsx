@@ -8,14 +8,14 @@ import BoxShadow from '../../BoxShadow';
 import { Handshake } from '../../Ribbon';
 import InteractiveElement from '../../InteractiveElement';
 
-const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
-  const showHandshakeIcon = results.hs_accepted;
+const EmployeeAgendaSearchCards = ({ isCDO, result }) => {
+  const showHandshakeIcon = result.hs_accepted;
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
   return (
     <div className="employee-agenda-card-container">
-      <BoxShadow className="employee-agenda-card">
+      <BoxShadow className="employee-agenda-stat-card">
         <div className="employee-agenda-card-inner">
           <div className="employee-agenda-card-top">
             <div className="employee-ribbon-container">
@@ -34,8 +34,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
           </div>
           <div>
             <h3>
-              {/* may want to disable link for prod, only show name? */}
-              <Link to="/profile/public/4">{results.bidder}</Link>
+              <Link to="/profile/public/4">{result.bidder}</Link>
             </h3>
           </div>
           <div className="employee-agenda-card-data-point-top">
@@ -43,34 +42,34 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
               <FA name="building-o" />
               <dt>Org:</dt>
               <dd>
-                {results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}
+                {result.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {result.futurePost}
               </dd>
             </div>
             <div className="employee-card-data-point">
               <FA name="clock-o" />
               <dt>TED:</dt>
-              <dd>{results.ted}</dd>
+              <dd>{result.ted}</dd>
             </div>
             <div className="employee-card-data-point">
               <FA name="user-o" />
               <dt>CDO:</dt>
-              <dd>{results.cdo}</dd>
+              <dd>{result.cdo}</dd>
             </div>
           </div>
           <div className="employee-card-data-point">
             <FA name="pencil-square" />
             <dt>Author:</dt>
-            <dd>{results.author}</dd>
+            <dd>{result.author}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="calendar-o" />
             <dt>Panel Meeting Date:</dt>
-            <dd>{results.panelDate}</dd>
+            <dd>{result.panelDate}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="sticky-note-o" />
             <dt>Agenda Status:</dt>
-            <dd>{results.agendaStatus}</dd>
+            <dd>{result.agendaStatus}</dd>
           </div>
         </div>
         <div className="employee-agenda-card-bottom">
@@ -81,8 +80,8 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
               <Link className="view-agenda-item-text" to={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</Link>
             </InteractiveElement>
           </div>
-          <div className="create-pai-box-container">
-            <InteractiveElement className="create-pai-box-button">
+          <div className="create-ai-box-container">
+            <InteractiveElement className="create-ai-box-button">
                 Create Agenda Item
             </InteractiveElement>
           </div>
@@ -95,7 +94,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
 
 EmployeeAgendaSearchCards.propTypes = {
   isCDO: PropTypes.bool,
-  results: BIDDER_OBJECT.isRequired,
+  result: BIDDER_OBJECT.isRequired,
 };
 
 EmployeeAgendaSearchCards.defaultProps = {
