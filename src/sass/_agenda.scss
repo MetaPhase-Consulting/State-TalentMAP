@@ -56,24 +56,9 @@
   }
 
   h3 {
-    display: inline-block;
     font-family: inherit;
-    font-size: inherit;
+    font-size: 1.6rem;
     margin: 0 5px 0 0;
-    text-decoration: underline;
-
-    a {
-      align-items: center;
-      display: flex;
-      font-size: 1.8rem;
-      text-decoration: none;
-    }
-
-    .fa {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-left: 5px;
-    }
   }
 
   dt {
@@ -89,39 +74,20 @@
   }
 
   .employee-agenda-card-inner {
-    display: flex;
-    flex: 5;
-    flex-direction: column;
-    justify-content: space-between;
     padding: 16px;
   }
 
   .employee-agenda-card-top {
     position: relative;
-    z-index: $condensed-card-top-z;
   }
 
   .employee-agenda-card-top-bottom {
     border-top: 1px solid $color-gray-lighter;
-    display: flex;
-    flex: 5;
-    flex-direction: column;
     margin-top: -10px;
-    padding-bottom: 20px;
 
     > div {
       display: flex;
       padding: 10px 16px 0;
-      width: 100%;
-
-      .updates {
-        font-weight: bold;
-        margin-bottom: 15px;
-      }
-    }
-
-    > div:nth-child(2) {
-      padding-bottom: 0;
     }
   }
 
@@ -132,7 +98,6 @@
 
   .employee-card-data-point {
     display: flex;
-    flex-direction: row;
     margin-bottom: 5px;
 
     .fa {
@@ -145,56 +110,12 @@
   }
 
   .button-container {
-    margin-top: 10px;
+    margin-top: 1.1rem;
 
-    span,
-    a,
-    button {
-      margin: 0;
-      margin-bottom: 0;
-    }
-
-    > span,
-    > button {
-      width: 48%;
-    }
-
-    a,
-    button {
+    a {
       font-size: .9em;
       padding: 10px 5px;
     }
-  }
-}
-
-.employee-agenda-row-data-container {
-  margin-left: 15rem;
-}
-
-.employee-agenda-row-data-points {
-  display: inline-grid;
-  flex-flow: column wrap;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(3, auto);
-  margin-left: 1.5rem;
-}
-
-.employee-agenda-row-data-point {
-  display: flex;
-  flex-direction: row;
-  line-height: 1.3em;
-  margin: 0 8rem .5rem 0;
-
-  .fa {
-    padding: 3px 6px 3px 0;
-  }
-
-  .fa-calendar {
-    padding: 3px 10px 3px 3px;
-  }
-
-  .org-fa-arrow {
-    padding: 0 5px;
   }
 }
 
@@ -227,6 +148,7 @@
     .view-agenda-item-text {
       color: $blue-primary;
       text-decoration: none;
+      width: 100%;
     }
   }
 }
@@ -250,12 +172,38 @@
   margin-top: 1rem;
 }
 
+.employee-agenda-row-data-container {
+  margin-left: 15rem;
+}
+
+.employee-agenda-row-data-points {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, auto);
+  margin-left: 1.5rem;
+}
+
+.employee-agenda-row-data-point {
+  display: flex;
+  margin: 0 8rem .5rem 0;
+
+  .fa {
+    padding: 3px 6px 3px 0;
+  }
+
+  .fa-calendar {
+    padding: 3px 10px 3px 3px;
+  }
+
+  .org-fa-arrow {
+    padding: 0 5px;
+  }
+}
+
 .employee-agenda-stat-row {
   border: 1px solid $color-gray-light;
   border-left: 11px solid $primary-blue;
   box-shadow: rgb(0 0 0 / 15%) 3px 2px;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1rem;
   padding: 15px 20px;
   width: 90%; // may need to change to align with export/sort row
@@ -277,66 +225,14 @@
     }
 }
 
-  > div:nth-child(2) {
-
-    align-items: flex-start;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-    > div {
-      margin-right: 1em;
-
-      > .tm-avatar {
-        font-size: 3rem;
-        height: 65px;
-        line-height: 6.5rem;
-        width: 65px;
-      }
-    }
-
-    > div:last-child {
-      margin-right: 0;
-    }
-
-    // setup flex values
-    > div:nth-child(1) {
-      flex: 3 1 300px;
-    }
-
-    > div:nth-child(2) {
-      display: flex;
-      flex: 6 0 100px;
-    }
-
-    > div:nth-child(3) {
-      flex: 8 0 225px;
-      padding-top: 1em;
-
-      > span {
-        display: flex;
-      }
-    }
-
-    @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-      > div:nth-child(3) {
-        flex: 8 0 50%;
-      }
-    }
-  }
-
   .employee-agenda-row-name {
     font-size: 1.2em;
-    font-weight: bold;
+    line-height: 1.3em;
     margin: 8px 0 .3rem 15rem;
-
-    .row-name-text {
-      font-weight: bold;
-    }
 
     a {
       font-size: .9em;
-      font-weight: normal;
+      font-weight: bold;
       margin-left: 15px;
     }
   }
@@ -349,33 +245,12 @@
     margin-left: 5px;
   }
 
-  .employee-row-data-point {
-    display: flex;
-    flex-direction: row;
-    line-height: 1.3em;
-  }
-
   .button-container {
     display: flex;
     float: right;
 
     .view-agenda-item-button {
       padding: 12px;
-    }
-
-    > span {
-      margin-right: 10px;
-    }
-
-    span,
-    a,
-    button {
-      margin: 0;
-      margin-bottom: 0;
-    }
-
-    .link-button-wrapper {
-      margin-right: 10px;
     }
   }
 }

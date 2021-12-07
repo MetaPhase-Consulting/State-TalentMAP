@@ -17,8 +17,8 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
           {results.initials}
         </div>
       </div>
-      <div className="employee-row-data-point employee-agenda-row-name">
-        <Link className="row-name-text" to="/profile/public/4">{results.bidder}</Link>
+      <div className="employee-agenda-row-name">
+        <Link to="/profile/public/4">{results.bidder}</Link>
       </div>
       <div className="employee-agenda-row-data-container">
         <div className="employee-agenda-row-data-points">
