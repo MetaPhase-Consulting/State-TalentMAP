@@ -24,7 +24,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
         <div className="employee-agenda-row-data-points">
           <div className="employee-agenda-row-data-point">
             <FA name="building-o" />
-            <dt>ORG:</dt>
+            <dt>Org:</dt>
             <dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
           </div>
           <div className="employee-agenda-row-data-point">

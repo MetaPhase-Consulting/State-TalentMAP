@@ -41,7 +41,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
           <div className="employee-agenda-card-data-point-top">
             <div className="employee-card-data-point">
               <FA name="building-o" />
-              <dt>ORG:</dt>
+              <dt>Org:</dt>
               <dd>
                 {results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}
               </dd>
@@ -60,7 +60,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
           <div className="employee-card-data-point">
             <FA name="pencil-square" />
             <dt>Author:</dt>
-            <dd className="author-name">{results.author}</dd>
+            <dd>{results.author}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="calendar-o" />
