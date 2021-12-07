@@ -41,28 +41,34 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
           <div className="employee-agenda-card-data-point-top">
             <div className="employee-card-data-point">
               <FA name="building-o" />
-              <dt>ORG:</dt><dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
+              <dt>ORG:</dt>
+              <dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
             </div>
             <div className="employee-card-data-point">
               <FA name="clock-o" />
-              <dt>TED:</dt><dd>{results.ted}</dd>
+              <dt>TED:</dt>
+              <dd>{results.ted}</dd>
             </div>
             <div className="employee-card-data-point">
               <FA name="user-o" />
-              <dt>CDO:</dt><dd>{results.cdo}</dd>
+              <dt>CDO:</dt>
+              <dd>{results.cdo}</dd>
             </div>
           </div>
           <div className="employee-card-data-point">
             <FA name="pencil-square" />
-            <dt>Author:</dt><dd className="author-name">{results.author}</dd>
+            <dt>Author:</dt>
+            <dd className="author-name">{results.author}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="calendar-o" />
-            <dt>Panel Meeting Date:</dt><dd>{results.panelDate}</dd>
+            <dt>Panel Meeting Date:</dt>
+            <dd>{results.panelDate}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="sticky-note-o" />
-            <dt>Agenda Status:</dt><dd>{results.agendaStatus}</dd>
+            <dt>Agenda Status:</dt>
+            <dd>{results.agendaStatus}</dd>
           </div>
         </div>
         <div className="employee-agenda-card-top-bottom">
@@ -92,7 +98,6 @@ EmployeeAgendaSearchCards.propTypes = {
 
 EmployeeAgendaSearchCards.defaultProps = {
   isCDO: false,
-  results: {},
 };
 
 export default EmployeeAgendaSearchCards;

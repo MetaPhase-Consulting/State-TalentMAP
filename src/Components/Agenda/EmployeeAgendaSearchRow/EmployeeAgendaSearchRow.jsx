@@ -25,23 +25,28 @@ const EmployeeAgendaSearchRow = ({ isCDO, results }) => {
         <div className="employee-agenda-row-data-points">
           <div className="employee-agenda-row-data-point">
             <FA name="building-o" />
-            <dt>ORG:</dt><dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
+            <dt>ORG:</dt>
+            <dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="clock-o" />
-            <dt>TED:</dt><dd>{results.ted}</dd>
+            <dt>TED:</dt>
+            <dd>{results.ted}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="user-o" />
-            <dt>CDO:</dt><dd>{results.cdo}</dd>
+            <dt>CDO:</dt>
+            <dd>{results.cdo}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="handshake-o" />
-            <dt>Handshake Status:</dt><dd>{results.hs_status}</dd>
+            <dt>Handshake Status:</dt>
+            <dd>{results.hs_status}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA className="fa-calendar" name="calendar-o" />
-            <dt>Panel Meeting Date:</dt><dd>{results.panelDate}</dd>
+            <dt>Panel Meeting Date:</dt>
+            <dd>{results.panelDate}</dd>
           </div>
         </div>
         {
@@ -70,7 +75,6 @@ EmployeeAgendaSearchRow.propTypes = {
 
 EmployeeAgendaSearchRow.defaultProps = {
   isCDO: false,
-  results: {},
 };
 
 export default EmployeeAgendaSearchRow;

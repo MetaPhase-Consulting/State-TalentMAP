@@ -120,25 +120,23 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     <div className="usa-grid-full profile-content-inner-container">
       <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
       {/* card/row functionality will be added on another ticket */}
-      <button onClick={() => setCardView(!cardView)}>{view} view</button>
+      <button onClick={() => setCardView(!cardView)}>
+        {view} view
+      </button>
       {
         cardView &&
           <div className="usa-grid-full employee-agenda-card-list">
-            {
-              data.map(result => (
-                <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
-              ))
-            }
+            {data.map(result => (
+              <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
+            ))}
           </div>
       }
       {
         !cardView &&
           <div className="usa-grid-full employee-agenda-row">
-            {
-              data.map(result => (
-                <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
-              ))
-            }
+            {data.map(result => (
+              <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
+            ))}
           </div>
       }
     </div>

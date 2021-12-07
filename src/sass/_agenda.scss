@@ -83,7 +83,7 @@
   dd {
     margin-left: 5px;
   }
-  
+
   .author-name {
     font-weight: 500;
   }
@@ -131,7 +131,7 @@
     margin-bottom: 4rem;
     margin-top: .5rem;
   }
-  
+
   .employee-card-data-point {
     display: flex;
     flex-direction: row;
@@ -182,22 +182,22 @@
 }
 
 .employee-agenda-row-data-point {
-    display: flex;
-    flex-direction: row;
-    line-height: 1.3em;
-    margin: 0 8rem .5rem 0;
+  display: flex;
+  flex-direction: row;
+  line-height: 1.3em;
+  margin: 0 8rem .5rem 0;
 
-    .fa {
-      padding: 3px 6px 3px 0;
-    }
+  .fa {
+    padding: 3px 6px 3px 0;
+  }
 
-    .fa-calendar {
-      padding: 3px 10px 3px 3px;
-    }
+  .fa-calendar {
+    padding: 3px 10px 3px 3px;
+  }
 
-    .org-fa-arrow {
-      padding: 0px 5px;
-    }
+  .org-fa-arrow {
+    padding: 0 5px;
+  }
 }
 
 .employee-ribbon-container {
@@ -206,17 +206,17 @@
   div:nth-of-type(1) { flex: 3; }
   div:nth-of-type(2) { flex: 2; }
 
-    .ribbon-container-condensed {
-      position: absolute;
-      right: -16px;
-      top: -17px;
-      z-index: 2;
-    }
+  .ribbon-container-condensed {
+    position: absolute;
+    right: -16px;
+    top: -17px;
+    z-index: 2;
+  }
 }
 
 .view-agenda-item-container {
   margin-right: 2rem;
-  
+
   .view-agenda-item-button {
     background-color: $color-white;
     border: 1px solid $blue-primary;
@@ -226,7 +226,7 @@
     text-align: center;
     width: 130px;
 
-    .view-agenda-item-text{
+    .view-agenda-item-text {
       color: $blue-primary;
       text-decoration: none;
     }
@@ -234,7 +234,7 @@
 }
 
 .create-pai-box-container {
-  
+
   .create-pai-box-button {
     background-color: $blue-primary;
     border: 1px solid $blue-primary;
@@ -254,24 +254,25 @@
   box-shadow: rgb(0 0 0 / 15%) 3px 2px;
   display: flex;
   flex-direction: column;
-  padding: 15px 20px;
   margin-bottom: 1rem;
+  padding: 15px 20px;
   width: 90%; // may need to change to align with export/sort row
 
-.initials-circle-container {
-  position: absolute;
+  .initials-circle-container {
+    position: absolute;
+    margin-top: 8px;
 
-  .initials-circle {
-    background: $primary-blue;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 50px;
-    font-weight: bold;
-    height: 90px;
-    line-height: 90px;
-    text-align: center;
-    width: 90px;
-  }
+    .initials-circle {
+      background: $primary-blue;
+      border-radius: 50%;
+      color: $color-white;
+      font-size: 50px;
+      font-weight: bold;
+      height: 90px;
+      line-height: 90px;
+      text-align: center;
+      width: 90px;
+    }
 }
 
   > div:nth-child(2) {
@@ -325,8 +326,7 @@
   .employee-agenda-row-name {
     font-size: 1.2em;
     font-weight: bold;
-    margin-bottom: .3rem;
-    margin-left: 15rem;
+    margin: 8px 0 .3rem 15rem;
 
     .row-name-text {
       font-weight: bold;
