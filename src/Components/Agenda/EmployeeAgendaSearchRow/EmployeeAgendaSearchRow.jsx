@@ -9,7 +9,6 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
-  // does Handshake Status need to be added below?
   return (
     <div className="usa-grid-full employee-agenda-stat-row">
       <div className="initials-circle-container">
