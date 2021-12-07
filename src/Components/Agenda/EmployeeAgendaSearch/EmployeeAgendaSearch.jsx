@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
-import EmployeeAgendaSearchCards from '../EmployeeAgendaSearchCards/EmployeeAgendaSearchCards';
+import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
@@ -127,7 +127,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
           <div className="employee-agenda-card">
             {data.map(result => (
               // TODO: include React keys once we have real data
-              <EmployeeAgendaSearchCards result={result} isCDO={isCDO} />
+              <EmployeeAgendaSearchCard result={result} isCDO={isCDO} />
             ))}
           </div>
       }

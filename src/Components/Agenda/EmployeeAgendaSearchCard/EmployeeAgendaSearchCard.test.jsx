@@ -1,15 +1,15 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import EmployeeAgendaSearchCards from './EmployeeAgendaSearchCards';
+import EmployeeAgendaSearchCard from './EmployeeAgendaSearchCard';
 
 describe('EmployeeAgendaSearchCards', () => {
   it('is defined', () => {
-    const wrapper = shallow(<EmployeeAgendaSearchCards />);
+    const wrapper = shallow(<EmployeeAgendaSearchCard />);
     expect(wrapper).toBeDefined();
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<EmployeeAgendaSearchCards />);
+    const wrapper = shallow(<EmployeeAgendaSearchCard />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });

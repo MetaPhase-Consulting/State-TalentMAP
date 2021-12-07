@@ -8,7 +8,7 @@ import BoxShadow from '../../BoxShadow';
 import { Handshake } from '../../Ribbon';
 import InteractiveElement from '../../InteractiveElement';
 
-const EmployeeAgendaSearchCards = ({ isCDO, result }) => {
+const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
   const showHandshakeIcon = result.hs_accepted;
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
@@ -92,13 +92,13 @@ const EmployeeAgendaSearchCards = ({ isCDO, result }) => {
   );
 };
 
-EmployeeAgendaSearchCards.propTypes = {
+EmployeeAgendaSearchCard.propTypes = {
   isCDO: PropTypes.bool,
   result: BIDDER_OBJECT.isRequired,
 };
 
-EmployeeAgendaSearchCards.defaultProps = {
+EmployeeAgendaSearchCard.defaultProps = {
   isCDO: false,
 };
 
-export default EmployeeAgendaSearchCards;
+export default EmployeeAgendaSearchCard;
