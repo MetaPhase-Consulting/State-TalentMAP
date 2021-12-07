@@ -42,7 +42,9 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
             <div className="employee-card-data-point">
               <FA name="building-o" />
               <dt>ORG:</dt>
-              <dd>{results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}</dd>
+              <dd>
+                {results.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {results.futurePost}
+              </dd>
             </div>
             <div className="employee-card-data-point">
               <FA name="clock-o" />
@@ -73,7 +75,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
         </div>
         <div className="employee-agenda-card-top-bottom">
           {useCDOBidding() &&
-        <div className="button-container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <div className="button-container">
           <div className="view-agenda-item-container">
             <InteractiveElement className="view-agenda-item-button">
               <Link className="view-agenda-item-text" to={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</Link>

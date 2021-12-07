@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
@@ -121,7 +120,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
       {/* card/row functionality will be added on another ticket */}
       <button onClick={() => setCardView(!cardView)}>
-        {view} view
+        {`${view} view`}
       </button>
       {
         cardView &&

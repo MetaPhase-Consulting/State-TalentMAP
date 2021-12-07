@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
