@@ -73,7 +73,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
             <dd>{results.agendaStatus}</dd>
           </div>
         </div>
-        <div className="employee-agenda-card-top-bottom">
+        <div className="employee-agenda-card-bottom">
           {useCDOBidding() &&
         <div className="button-container">
           <div className="view-agenda-item-container">
