@@ -15,7 +15,7 @@ const EmployeeAgendaSearchCards = ({ isCDO, results }) => {
 
   return (
     <div className="employee-agenda-card-container">
-      <BoxShadow className="usa-grid-full employee-agenda-card">
+      <BoxShadow className="employee-agenda-card">
         <div className="employee-agenda-card-inner">
           <div className="employee-agenda-card-top">
             <div className="employee-ribbon-container">

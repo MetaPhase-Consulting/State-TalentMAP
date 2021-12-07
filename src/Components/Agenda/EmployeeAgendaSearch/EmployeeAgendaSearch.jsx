@@ -124,7 +124,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       </button>
       {
         cardView &&
-          <div className="usa-grid-full employee-agenda-card-list">
+          <div className="employee-agenda-card-list">
             {data.map(result => (
               <EmployeeAgendaSearchCards results={result} isCDO={isCDO} />
             ))}
@@ -132,7 +132,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       }
       {
         !cardView &&
-          <div className="usa-grid-full employee-agenda-row">
+          <div className="employee-agenda-row">
             {data.map(result => (
               <EmployeeAgendaSearchRow results={result} isCDO={isCDO} />
             ))}
