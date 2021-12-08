@@ -170,16 +170,11 @@
     position: relative;
 
     .initials-circle-container {
-      margin-top: 8px;
       position: absolute;
-
-      @media screen and (max-width: 1520px) {
-        margin: 0;
-        -ms-transform: translateY(-50%);
-        position: absolute;
-        transform: translateY(-50%);
-        top: 50%;
-      }
+      margin: 0;
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      top: 50%;
 
       .initials-circle {
         background: $primary-blue;
