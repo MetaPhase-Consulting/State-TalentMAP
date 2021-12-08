@@ -57,7 +57,7 @@
 
     .employee-agenda-card-inner {
       padding: 16px;
-      
+
       .employee-agenda-card-top {
         position: relative;
 
@@ -88,7 +88,7 @@
       }
 
       .org-fa-arrow {
-        padding: 0px 5px;
+        padding: 0 9px;
       }
     }
 
@@ -169,8 +169,8 @@
     width: 90%; // may need to change to align with export/sort row
 
     .initials-circle-container {
-      position: absolute;
       margin-top: 8px;
+      position: absolute;
 
       .initials-circle {
         background: $primary-blue;
@@ -218,7 +218,7 @@
         grid-auto-flow: column;
         grid-template-rows: repeat(3, auto);
         margin-left: 1.5rem;
-        
+
         .employee-agenda-row-data-point {
           display: flex;
           margin: 0 8rem .5rem 0;
@@ -228,7 +228,7 @@
           }
 
           .org-fa-arrow {
-            padding: 0 5px;
+            padding: 0 9px;
           }
         }
       }

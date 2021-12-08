@@ -35,7 +35,10 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
           <div className="employee-agenda-row-data-point">
             <FA name="building-o" />
             <dt>Org:</dt>
-            <dd>{currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {futurePost}</dd>
+            <dd>
+              {currentPost}
+              <FA className="org-fa-arrow" name="long-arrow-right" />
+              {futurePost}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="clock-o" />
