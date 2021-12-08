@@ -33,7 +33,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
         </div>
         <div>
           <h3>
-            <Link to="/profile/public/4">{result.bidder}</Link>
+            <Link to="/profile/public/6">{result.bidder}</Link>
           </h3>
         </div>
         <div className="employee-agenda-card-data-point-top">

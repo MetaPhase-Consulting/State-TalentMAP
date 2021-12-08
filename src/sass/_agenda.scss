@@ -129,6 +129,11 @@
     text-align: center;
     width: 130px;
   }
+
+  .view-agenda-item-button:hover {
+    border-color: $primary-blue-darker;
+    color: $primary-blue-darker;
+  }
 }
 
 .create-ai-box-container {
@@ -144,6 +149,10 @@
     padding: 3px;
     text-align: center;
     width: 150px;
+  }
+
+  .create-ai-box-button:hover {
+    background-color: $primary-blue-darker;
   }
 }
 
