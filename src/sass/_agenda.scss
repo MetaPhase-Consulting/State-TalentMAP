@@ -172,6 +172,10 @@
       margin-top: 8px;
       position: absolute;
 
+      @media screen and (max-width: 1470px) {
+        padding-top: 2rem;
+      }
+
       .initials-circle {
         background: $primary-blue;
         border-radius: 50%;
