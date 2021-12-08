@@ -38,12 +38,10 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
         </dt>
         <dd>
           None listed
-           
           <FontAwesome
             className="org-fa-arrow"
             name="long-arrow-right"
           />
-           
           None listed
         </dd>
       </div>
