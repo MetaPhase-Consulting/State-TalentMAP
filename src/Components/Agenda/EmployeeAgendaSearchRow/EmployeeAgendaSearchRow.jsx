@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
+import LinkButton from 'Components/LinkButton';
 import { BIDDER_OBJECT } from 'Constants/PropTypes'; // for dummy data purposes only
-import InteractiveElement from 'Components/InteractiveElement';
 
 const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const userRole = isCDO ? 'cdo' : 'ao';
@@ -56,14 +56,10 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
           useCDOBidding() &&
             <div className="button-container">
               <div className="view-agenda-item-container">
-                <InteractiveElement className="view-agenda-item-button">
-                  <Link className="view-agenda-item-text" to={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</Link>
-                </InteractiveElement>
+                <LinkButton className="view-agenda-item-button" toLink={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</LinkButton>
               </div>
               <div className="create-ai-box-container">
-                <InteractiveElement className="create-ai-box-button">
-                Create Agenda Item
-                </InteractiveElement>
+                <LinkButton className="create-ai-box-button" toLink="#">Create Agenda Item</LinkButton>
               </div>
             </div>}
       </div>

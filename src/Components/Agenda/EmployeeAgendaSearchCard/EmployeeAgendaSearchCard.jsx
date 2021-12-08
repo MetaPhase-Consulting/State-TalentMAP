@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
-import InteractiveElement from 'Components/InteractiveElement';
 import { Handshake } from 'Components/Ribbon';
+import LinkButton from 'Components/LinkButton';
 import { BIDDER_OBJECT } from 'Constants/PropTypes'; // for dummy data purposes only
 import BoxShadow from '../../BoxShadow';
 
@@ -75,16 +75,12 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
         {/* will need to add a flag for both buttons during integration */}
         <div className="button-container">
           <div className="view-agenda-item-container">
-            <InteractiveElement className="view-agenda-item-button">
-              <Link className="view-agenda-item-text" to={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</Link>
-            </InteractiveElement>
+            <LinkButton className="view-agenda-item-button" toLink={`/profile/${userRole}/agendaitemhistory/perdet`}>View History</LinkButton>
           </div>
           {/* update the flag during integration */}
           {useCDOBidding() &&
             <div className="create-ai-box-container">
-              <InteractiveElement className="create-ai-box-button">
-                    Create Agenda Item
-              </InteractiveElement>
+              <LinkButton className="create-ai-box-button" toLink="#">Create Agenda Item</LinkButton>
             </div>
           }
         </div>
