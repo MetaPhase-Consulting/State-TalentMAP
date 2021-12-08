@@ -80,11 +80,12 @@
     }
 
     .employee-card-data-point {
+      align-items: center;
       display: flex;
       margin-bottom: 5px;
 
       .fa {
-        padding: 2px 6px 6px 0;
+        padding: 0 6px 0 0;
       }
 
       .org-fa-arrow {
@@ -218,11 +219,12 @@
         margin-left: 1.5rem;
 
         .employee-agenda-row-data-point {
+          align-items: center;
           display: flex;
           margin: 0 8rem .5rem 0;
 
           .fa {
-            padding: 3px 6px 3px 0;
+            padding: 0 6px 0 0;
           }
 
           .org-fa-arrow {
