@@ -167,13 +167,18 @@
     margin-bottom: 1rem;
     margin-left: 0;
     padding: 15px 20px;
+    position: relative;
 
     .initials-circle-container {
       margin-top: 8px;
       position: absolute;
 
-      @media screen and (max-width: 1470px) {
-        padding-top: 2rem;
+      @media screen and (max-width: 1520px) {
+        margin: 0;
+        -ms-transform: translateY(-50%);
+        position: absolute;
+        transform: translateY(-50%);
+        top: 50%;
       }
 
       .initials-circle {
@@ -226,6 +231,10 @@
           align-items: center;
           display: flex;
           margin: 0 8rem .5rem 0;
+
+          @media screen and (max-width: 1650px) {
+            margin-right: 2rem;
+          }
 
           .fa {
             padding-right: 6px;
