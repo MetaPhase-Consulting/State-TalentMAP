@@ -25,104 +25,97 @@
 .employee-agenda-card {
   display: flex;
   flex-wrap: wrap;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+
+  .employee-agenda-stat-card {
+    border-top: 11px solid $primary-blue;
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    margin-bottom: 25px;
+    margin-left: 15px;
+    margin-right: 25px;
+    width: 335px;
+
+    a {
+      display: inline-block;
+    }
+
+    h3 {
+      font-family: inherit;
+      font-size: 1.6rem;
+      margin: 0 5px 0 0;
+    }
+
+    dt {
+      font-weight: bold;
+    }
+
+    dd {
+      margin-left: 5px;
+    }
+
+    .employee-agenda-card-inner {
+      padding: 16px;
+      
+      .employee-agenda-card-top {
+        position: relative;
+
+        .employee-ribbon-container {
+          display: flex;
+
+          .ribbon-container-condensed {
+            position: absolute;
+            right: -16px;
+            top: -17px;
+            z-index: 2;
+          }
+        }
+      }
+
+      .employee-agenda-card-data-point-top {
+        margin-bottom: 4rem;
+        margin-top: .5rem;
+      }
+    }
+
+    .employee-card-data-point {
+      display: flex;
+      margin-bottom: 5px;
+
+      .fa {
+        padding: 0 6px 6px 0;
+      }
+
+      .org-fa-arrow {
+        padding: 0px 5px;
+      }
+    }
+
+    .employee-agenda-card-bottom {
+      border-top: 1px solid $color-gray-lighter;
+      margin-top: -10px;
+
+      > div {
+        display: flex;
+        padding: 10px 16px 0;
+      }
+
+      .button-container {
+        margin-top: 1.1rem;
+
+        a {
+          font-size: .9em;
+          padding: 10px 5px;
+        }
+      }
+    }
+  }
 }
 
 // IE11 fix for input text not displaying
 @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
   .employee-agenda-card {
     max-width: calc(100vw - 260px);
-  }
-}
-
-.employee-agenda-card-container:last-child {
-  flex-grow: 100;
-}
-
-.employee-agenda-stat-card {
-  border-top: 11px solid $primary-blue;
-  display: flex;
-  flex-direction: column;
-  height: 350px;
-  margin-bottom: 25px;
-  margin-left: 15px;
-  margin-right: 25px;
-  width: 335px;
-
-  a {
-    display: inline-block;
-  }
-
-  h3 {
-    font-family: inherit;
-    font-size: 1.6rem;
-    margin: 0 5px 0 0;
-  }
-
-  dt {
-    font-weight: bold;
-  }
-
-  dd {
-    margin-left: 5px;
-  }
-
-  .employee-agenda-card-inner {
-    padding: 16px;
-    
-    .employee-agenda-card-top {
-      position: relative;
-
-      .employee-ribbon-container {
-        display: flex;
-
-        .ribbon-container-condensed {
-          position: absolute;
-          right: -16px;
-          top: -17px;
-          z-index: 2;
-        }
-      }
-    }
-
-    .employee-agenda-card-data-point-top {
-      margin-bottom: 4rem;
-      margin-top: .5rem;
-    }
-  }
-
-  .employee-card-data-point {
-    display: flex;
-    margin-bottom: 5px;
-
-    .fa {
-      padding: 0 6px 6px 0;
-    }
-
-    .org-fa-arrow {
-      padding: 0px 5px;
-    }
-  }
-
-  .employee-agenda-card-bottom {
-    border-top: 1px solid $color-gray-lighter;
-    margin-top: -10px;
-
-    > div {
-      display: flex;
-      padding: 10px 16px 0;
-    }
-
-    .button-container {
-      margin-top: 1.1rem;
-
-      a {
-        font-size: .9em;
-        padding: 10px 5px;
-      }
-    }
   }
 }
 

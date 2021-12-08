@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import { BIDDER_OBJECT } from 'Constants/PropTypes'; // for dummy data purposes only
-import InteractiveElement from '../../InteractiveElement';
+import InteractiveElement from 'Components/InteractiveElement';
 
 const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const userRole = isCDO ? 'cdo' : 'ao';
