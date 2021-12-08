@@ -21,3 +21,49 @@
     }
   }
 }
+
+.employee-search-filters-container {
+  input {
+    display: inline;
+  }
+  background-color: $bg-blue-dark-1;
+
+  .hello-greeting {
+    color: $color-white;
+  };
+
+  .homepage-search-legend {
+    color: $color-white;
+  }
+
+  .empl-filters {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    .filter-div {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 310px;
+
+      .label {
+        color: $color-white;
+        margin-right: 5px;
+      }
+    }
+
+    .picky {
+      width: 200px;
+    }
+
+    .split-filter-div {
+      .picky {
+        width: 100px;
+      }
+      .picky__dropdown {
+        width: 200px;
+      }
+    }
+  }
+}
