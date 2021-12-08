@@ -12,13 +12,14 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
     />
   </div>
   <div
-    className="employee-row-data-point employee-agenda-row-name"
+    className="employee-agenda-row-name"
   >
     <Link
-      className="row-name-text"
       replace={false}
-      to="/profile/public/4"
-    />
+      to="/profile/public/6"
+    >
+      None listed
+    </Link>
   </div>
   <div
     className="employee-agenda-row-data-container"
@@ -33,15 +34,17 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
           name="building-o"
         />
         <dt>
-          ORG:
+          Org:
         </dt>
         <dd>
+          None listed
            
           <FontAwesome
             className="org-fa-arrow"
             name="long-arrow-right"
           />
            
+          None listed
         </dd>
       </div>
       <div
@@ -53,7 +56,9 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
         <dt>
           TED:
         </dt>
-        <dd />
+        <dd>
+          None listed
+        </dd>
       </div>
       <div
         className="employee-agenda-row-data-point"
@@ -64,30 +69,48 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
         <dt>
           CDO:
         </dt>
-        <dd />
+        <dd>
+          None listed
+        </dd>
       </div>
       <div
         className="employee-agenda-row-data-point"
       >
         <FontAwesome
-          name="handshake-o"
+          name="pencil-square"
         />
         <dt>
-          Handshake Status:
+          Author:
         </dt>
-        <dd />
+        <dd>
+          None listed
+        </dd>
       </div>
       <div
         className="employee-agenda-row-data-point"
       >
         <FontAwesome
-          className="fa-calendar"
           name="calendar-o"
         />
         <dt>
           Panel Meeting Date:
         </dt>
-        <dd />
+        <dd>
+          None listed
+        </dd>
+      </div>
+      <div
+        className="employee-agenda-row-data-point"
+      >
+        <FontAwesome
+          name="sticky-note-o"
+        />
+        <dt>
+          Agenda Status:
+        </dt>
+        <dd>
+          None listed
+        </dd>
       </div>
     </div>
     <div
@@ -96,28 +119,22 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
       <div
         className="view-agenda-item-container"
       >
-        <InteractiveElement
+        <LinkButton
           className="view-agenda-item-button"
-          type="div"
+          toLink="/profile/ao/agendaitemhistory/perdet"
         >
-          <Link
-            className="view-agenda-item-text"
-            replace={false}
-            to="/profile/ao/agendaitemhistory/perdet"
-          >
-            View History
-          </Link>
-        </InteractiveElement>
+          View History
+        </LinkButton>
       </div>
       <div
-        className="create-pai-box-container"
+        className="create-ai-box-container"
       >
-        <InteractiveElement
-          className="create-pai-box-button"
-          type="div"
+        <LinkButton
+          className="create-ai-box-button"
+          toLink="#"
         >
           Create Agenda Item
-        </InteractiveElement>
+        </LinkButton>
       </div>
     </div>
   </div>

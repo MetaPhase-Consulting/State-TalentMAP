@@ -4,8 +4,19 @@ import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import LinkButton from 'Components/LinkButton';
 import { BIDDER_OBJECT } from 'Constants/PropTypes'; // for dummy data purposes only
+import { get } from 'lodash';
 
 const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
+  // will need to update during integration
+  const agendaStatus = get(result, 'agendaStatus') || 'None listed';
+  const author = get(result, 'author') || 'None listed';
+  const bidder = get(result, 'bidder') || 'None listed';
+  const cdo = get(result, 'cdo') || 'None listed';
+  const currentPost = get(result, 'currentPost') || 'None listed';
+  const futurePost = get(result, 'futurePost') || 'None listed';
+  const initials = get(result, 'initials') || '';
+  const panelDate = get(result, 'panelDate') || 'None listed';
+  const ted = get(result, 'ted') || 'None listed';
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 
@@ -13,43 +24,43 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
     <div className="usa-grid-full employee-agenda-stat-row">
       <div className="initials-circle-container">
         <div className="initials-circle">
-          {result.initials}
+          {initials}
         </div>
       </div>
       <div className="employee-agenda-row-name">
-        <Link to="/profile/public/6">{result.bidder}</Link>
+        <Link to="/profile/public/6">{bidder}</Link>
       </div>
       <div className="employee-agenda-row-data-container">
         <div className="employee-agenda-row-data-points">
           <div className="employee-agenda-row-data-point">
             <FA name="building-o" />
             <dt>Org:</dt>
-            <dd>{result.currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {result.futurePost}</dd>
+            <dd>{currentPost} <FA className="org-fa-arrow" name="long-arrow-right" /> {futurePost}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="clock-o" />
             <dt>TED:</dt>
-            <dd>{result.ted}</dd>
+            <dd>{ted}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="user-o" />
             <dt>CDO:</dt>
-            <dd>{result.cdo}</dd>
+            <dd>{cdo}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="pencil-square" />
             <dt>Author:</dt>
-            <dd>{result.author}</dd>
+            <dd>{author}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="calendar-o" />
             <dt>Panel Meeting Date:</dt>
-            <dd>{result.panelDate}</dd>
+            <dd>{panelDate}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="sticky-note-o" />
             <dt>Agenda Status:</dt>
-            <dd>{result.agendaStatus}</dd>
+            <dd>{agendaStatus}</dd>
           </div>
         </div>
         {
