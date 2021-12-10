@@ -59,7 +59,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [clearFilters, setClearFilters] = useState(false);
   const [cardView, setCardView] = useState(true);
 
-  const view = cardView ? 'row' : 'card';
+  const view = cardView ? 'card' : 'row';
 
   // ADD get agents call to fill out agents menu
 
