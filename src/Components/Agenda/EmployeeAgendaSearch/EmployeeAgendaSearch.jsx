@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,10 +14,12 @@ import PaginationWrapper from 'Components/PaginationWrapper';
 import ExportButton from 'Components/ExportButton';
 import SelectForm from 'Components/SelectForm';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
+import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
+import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 
 
-const EmployeeAgendaSearch = () => {
+const EmployeeAgendaSearch = ({ isCDO }) => {
   const dispatch = useDispatch();
 
   const filterData = useSelector(state => state.filters);
@@ -54,6 +56,9 @@ const EmployeeAgendaSearch = () => {
   // const [textSearch, setTextSearch] = useState('');
   // const [textInput, setTextInput] = useState('');
   const [clearFilters, setClearFilters] = useState(false);
+  const [cardView, setCardView] = useState(true);
+
+  const view = cardView ? 'row' : 'card';
 
   // ADD get agents call to fill out agents menu
 
@@ -119,6 +124,113 @@ const EmployeeAgendaSearch = () => {
     setSelectedTED([new Date(), new Date()]);
     setClearFilters(false);
   };
+
+  const data = [
+    {
+      agendaStatus: 'Complete',
+      author: 'Abella, Hewett S',
+      bidder: 'Townpost, Jenny Y',
+      cdo: 'Shadtrach, Leah',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: true, // for testing only
+      hs_status: 'Accepted', // for testing only
+      initials: 'JT',
+      panelDate: '12/25/2021',
+      ted: '04/2022',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Crackel, Pooh M',
+      bidder: 'Rehman, Tarek A',
+      cdo: 'Shadtrach, Leah',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Offered',
+      initials: 'TR',
+      panelDate: '12/25/2021',
+      ted: '04/2025',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Graham, Aubrey D',
+      bidder: 'Bayliss, Jaye Y',
+      cdo: 'NA',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Extended',
+      initials: 'JB',
+      panelDate: '12/25/2021',
+      ted: '09/2023',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Tinman, Chanda R',
+      bidder: 'Malpass, Izzy A',
+      cdo: 'MacMaster, Massimiliano M',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: true,
+      hs_status: 'Accepted',
+      initials: 'IM',
+      panelDate: '12/25/2021',
+      ted: '11/2022',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Lempel, Mandie B',
+      bidder: 'Jikovsky, Lelia D',
+      cdo: 'Peters, Jeremy W',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Accepted',
+      initials: 'LG',
+      panelDate: '12/25/2021',
+      ted: '07/2024',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Swift, Taylor A',
+      bidder: 'Jessep, Des D',
+      cdo: 'NA',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Offered',
+      initials: 'DJ',
+      panelDate: '12/25/2021',
+      ted: '09/2023',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Hallworth, Terrence L',
+      bidder: 'Franies, Normie G',
+      cdo: 'Alesi, Reina W',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: false,
+      hs_status: 'Extended',
+      initials: 'NF',
+      panelDate: '12/25/2021',
+      ted: '03/2023',
+    },
+    {
+      agendaStatus: 'Complete',
+      author: 'Fronsek, Ahmad M',
+      bidder: 'Drakes, Price P',
+      cdo: 'Ranns, Natty L',
+      currentPost: 'Paris (EUR)',
+      futurePost: 'Djbouti (AF)',
+      hs_accepted: true,
+      hs_status: 'Accepted',
+      initials: 'PD',
+      panelDate: '12/25/2021',
+      ted: '06/2023',
+    },
+  ];
 
   return (
     isLoading ?
@@ -322,6 +434,9 @@ const EmployeeAgendaSearch = () => {
               isHidden={isLoading}
             />
             <div className="empl-search-controls-right">
+              <button onClick={() => setCardView(!cardView)}>
+                {`${view} view`}
+              </button>
               <div className="empl-search-results-controls">
                 <SelectForm
                   id="empl-search-num-results"
@@ -349,7 +464,26 @@ const EmployeeAgendaSearch = () => {
               </div>
             </div>
           </div>
-          <div className="usa-width-one-whole empl-search-lower-section results-dropdown" />
+          <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
+            {
+              cardView &&
+          <div className="employee-agenda-card">
+            {data.map(result => (
+              // TODO: include React keys once we have real data
+              <EmployeeAgendaSearchCard result={result} isCDO={isCDO} />
+            ))}
+          </div>
+            }
+            {
+              !cardView &&
+          <div className="employee-agenda-row">
+            {data.map(result => (
+              // TODO: include React keys once we have real data
+              <EmployeeAgendaSearchRow result={result} isCDO={isCDO} />
+            ))}
+          </div>
+            }
+          </div>
           <div className="usa-grid-full react-paginate empl-search-pagination-controls">
             <PaginationWrapper
               pageSize={limit}
@@ -364,11 +498,11 @@ const EmployeeAgendaSearch = () => {
 };
 
 EmployeeAgendaSearch.propTypes = {
-
+  isCDO: PropTypes.bool,
 };
 
 EmployeeAgendaSearch.defaultProps = {
-
+  isCDO: false,
 };
 
 export default EmployeeAgendaSearch;
