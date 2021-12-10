@@ -193,7 +193,7 @@
     "thread-loader": "^3.0.4",
     "ts-jest": "24.3.0",
     "ts-loader": "8.3.0",
-    "typescript": "^4.5.2",
+    "typescript": "^4.5.3",
     "url-loader": "^4.1.0",
     "webpack": "^4.46.0",
     "webpack-dashboard": "^3.3.6",
@@ -201,7 +201,7 @@
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-plugin-ramdisk": "^0.2.0",
     "whatwg-fetch": "2.0.3",
-    "workbox-webpack-plugin": "^6.4.1",
+    "workbox-webpack-plugin": "^6.4.2",
     "yarn": "^1.22.17"
   },
   "scripts": {
