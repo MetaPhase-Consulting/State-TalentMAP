@@ -134,56 +134,46 @@ exports[`AgendaItemLegs Component matches snapshot 1`] = `
     >
       Remarks:
     </div>
-    <div
-      className="remarks-pill-container"
-      style={
+    <RemarksPill
+      fakeRemark={
         Object {
-          "backgroundColor": "#F07011",
+          "color": "#F07011",
+          "remark": "Opts for SND",
         }
       }
-    >
-      Opts for SND
-    </div>
-    <div
-      className="remarks-pill-container"
-      style={
+    />
+    <RemarksPill
+      fakeRemark={
         Object {
-          "backgroundColor": "#F07011",
+          "color": "#F07011",
+          "remark": "Decline SND",
         }
       }
-    >
-      Decline SND
-    </div>
-    <div
-      className="remarks-pill-container"
-      style={
+    />
+    <RemarksPill
+      fakeRemark={
         Object {
-          "backgroundColor": "#4BB6CF",
+          "color": "#4BB6CF",
+          "remark": "Tandem, No Issues",
         }
       }
-    >
-      Tandem, No Issues
-    </div>
-    <div
-      className="remarks-pill-container"
-      style={
+    />
+    <RemarksPill
+      fakeRemark={
         Object {
-          "backgroundColor": "#6E2CC9",
+          "color": "#6E2CC9",
+          "remark": "High Differential Post",
         }
       }
-    >
-      High Differential Post
-    </div>
-    <div
-      className="remarks-pill-container"
-      style={
+    />
+    <RemarksPill
+      fakeRemark={
         Object {
-          "backgroundColor": "#E62CD5",
+          "color": "#E62CD5",
+          "remark": "Early Handshake",
         }
       }
-    >
-      Early Handshake
-    </div>
+    />
   </div>
 </div>
 `;
