@@ -17,6 +17,7 @@ import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/List
 import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
+import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
@@ -243,7 +244,6 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                 <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
                 <PositionManagerSearch
                   id="bureau-search-keyword-field"
-                  label="Keywords"
                   labelSrOnly
                   noButton
                   noForm
@@ -253,6 +253,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   showClear
                   submitText="Search"
                   type="medium"
+                  label="Search for an Employee"
                 />
                 <div className="filterby-container">
                   <div className="filterby-label">Filter by:</div>
@@ -269,7 +270,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   <div className="filter-div">
                     <div className="label">Cycle:</div>
                     <Picky
-                      placeholder="Select cycle(s)"
+                      placeholder="Select Cycle(s)"
                       value={selectedCycles}
                       options={cycleOptions}
                       onChange={setSelectedCycles}
@@ -284,9 +285,9 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     />
                   </div>
                   <div className="filter-div">
-                    <div className="label">Panel Meeting:</div>
+                    <div className="label">Panel:</div>
                     <Picky
-                      placeholder="Select TOD(s)"
+                      placeholder="Select Panel Date(s)"
                       value={selectedTODs}
                       options={todOptions}
                       onChange={setSelectedTODs}
@@ -434,9 +435,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
               isHidden={isLoading}
             />
             <div className="empl-search-controls-right">
-              <button onClick={() => setCardView(!cardView)}>
-                {`${view} view`}
-              </button>
+              <ResultsViewBy initial={view} onClick={() => setCardView(!cardView)} />
               <div className="empl-search-results-controls">
                 <SelectForm
                   id="empl-search-num-results"
