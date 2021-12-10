@@ -126,5 +126,64 @@ exports[`AgendaItemLegs Component matches snapshot 1`] = `
       </tr>
     </tbody>
   </table>
+  <div
+    className="remarks-container"
+  >
+    <div
+      className="remarks-text"
+    >
+      Remarks:
+    </div>
+    <div
+      className="remarks-pill-container"
+      style={
+        Object {
+          "backgroundColor": "#F07011",
+        }
+      }
+    >
+      Opts for SND
+    </div>
+    <div
+      className="remarks-pill-container"
+      style={
+        Object {
+          "backgroundColor": "#F07011",
+        }
+      }
+    >
+      Decline SND
+    </div>
+    <div
+      className="remarks-pill-container"
+      style={
+        Object {
+          "backgroundColor": "#4BB6CF",
+        }
+      }
+    >
+      Tandem, No Issues
+    </div>
+    <div
+      className="remarks-pill-container"
+      style={
+        Object {
+          "backgroundColor": "#6E2CC9",
+        }
+      }
+    >
+      High Differential Post
+    </div>
+    <div
+      className="remarks-pill-container"
+      style={
+        Object {
+          "backgroundColor": "#E62CD5",
+        }
+      }
+    >
+      Early Handshake
+    </div>
+  </div>
 </div>
 `;

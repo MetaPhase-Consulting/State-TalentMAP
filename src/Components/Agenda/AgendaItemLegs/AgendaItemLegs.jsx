@@ -3,6 +3,7 @@ import { shortenString } from 'utilities';
 import { filter } from 'lodash';
 import { format, isDate } from 'date-fns-v2';
 import FA from 'react-fontawesome';
+import RemarksPill from '../RemarksPill';
 
 const AgendaItemLegs = props => {
   const {
@@ -152,10 +153,8 @@ const AgendaItemLegs = props => {
       <div className="remarks-container">
         <div className="remarks-text">Remarks:</div>
         {
-          fakeRemarks.map(r => (
-            <div className="remarks-pill-container" style={{ backgroundColor: r.color }}>
-              {r.remark}
-            </div>
+          fakeRemarks.map(fakeRemark => (
+            <RemarksPill fakeRemark={fakeRemark} />
           ))
         }
       </div>
