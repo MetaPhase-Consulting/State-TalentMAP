@@ -107,6 +107,29 @@ const AgendaItemLegs = props => {
 
   const tableData$ = isCard ? filter(tableData, 'cardView') : tableData;
 
+  const fakeRemarks = [
+    {
+      remark: 'Opts for SND',
+      color: '#F07011',
+    },
+    {
+      remark: 'Decline SND',
+      color: '#F07011',
+    },
+    {
+      remark: 'Tandem, No Issues',
+      color: '#4BB6CF',
+    },
+    {
+      remark: 'High Differential Post',
+      color: '#6E2CC9',
+    },
+    {
+      remark: 'Early Handshake',
+      color: '#E62CD5',
+    },
+  ];
+
   return (
     <div className="ai-history-card-legs">
       <table>
@@ -126,6 +149,16 @@ const AgendaItemLegs = props => {
           }
         </tbody>
       </table>
+      <div className="remarks-container">
+        <div className="remarks-text">Remarks:</div>
+        {
+          fakeRemarks.map(r => (
+            <div className="remarks-pill-container" style={{ backgroundColor: r.color }}>
+              {r.remark}
+            </div>
+          ))
+        }
+      </div>
     </div>
   );
 };
