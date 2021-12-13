@@ -150,14 +150,17 @@ const AgendaItemLegs = props => {
           }
         </tbody>
       </table>
-      <div className="remarks-container">
-        <div className="remarks-text">Remarks:</div>
-        {
-          fakeRemarks.map(fakeRemark => (
-            <RemarksPill fakeRemark={fakeRemark} />
-          ))
-        }
-      </div>
+      {
+        !isCard &&
+        <div className="remarks-container">
+          <div className="remarks-text">Remarks:</div>
+          {
+            fakeRemarks.map(fakeRemark => (
+              <RemarksPill fakeRemark={fakeRemark} />
+            ))
+          }
+        </div>
+      }
     </div>
   );
 };
