@@ -14,13 +14,13 @@ import TotalResults from 'Components/TotalResults';
 import PaginationWrapper from 'Components/PaginationWrapper';
 import ExportButton from 'Components/ExportButton';
 import SelectForm from 'Components/SelectForm';
-import CDOAutoSuggest from 'Components/BidderPortfolio/CDOAutoSuggest/CDOAutoSuggest';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
 import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 
+const fakeAction = (sel) => console.log(sel);
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
   const dispatch = useDispatch();
@@ -28,17 +28,16 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
   const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
+  const cdos = useSelector(state => state.bidderPortfolioCDOs);
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
   const filters = filterData.filters;
 
-  const tods = filters.find(f => f.item.description === 'tod');
-  const todOptions = uniqBy(tods.data, 'code');
+  const panels = [new Date(), new Date(), new Date(), new Date(), new Date()];
   const bureaus = filters.find(f => f.item.description === 'region');
   const bureauOptions = uniqBy(sortBy(bureaus.data, [(b) => b.long_description]), 'long_description');
   // To-Do: Missing org/post data - using location as placeholder
-  // To-Do: Missing CDO agents data
   const posts = filters.find(f => f.item.description === 'post');
   const postOptions = uniqBy(sortBy(posts.data, [(p) => p.city]), 'code');
   const cycles = filters.find(f => f.item.description === 'bidCycle');
@@ -48,21 +47,37 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [ordering, setOrdering] = useState();
+  const [ordering, setOrdering] = useState('None');
   const [selectedCurrentPosts, setSelectedCurrentPosts] = useState([]);
   const [selectedOngoingPosts, setSelectedOngoingPosts] = useState([]);
-  const [selectedTODs, setSelectedTODs] = useState([]);
+  const [selectedPanels, setSelectedPanels] = useState([]);
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedCurrentBureaus, setSelectedCurrentBureaus] = useState([]);
   const [selectedOngoingBureaus, setSelectedOngoingBureaus] = useState([]);
   const [selectedHandshakeStatus, setSelectedHandshakeStatus] = useState([]);
   const [selectedTED, setSelectedTED] = useState([new Date(), new Date()]);
+  const [selectedCDOs, setSelectedCDOs] = useState([]);
   // const [textSearch, setTextSearch] = useState('');
   // const [textInput, setTextInput] = useState('');
   const [clearFilters, setClearFilters] = useState(false);
   const [cardView, setCardView] = useState(true);
 
   const view = cardView ? 'card' : 'row';
+
+  const query = {
+    [`${posts.item.selectionRef}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
+    [`${posts.item.selectionRef}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
+    [`${bureaus.item.selectionRef}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    [`${bureaus.item.selectionRef}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    [cycles.item.selectionRef]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
+    [fsbidHandshakeStatus.item.selectionRef]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
+    selectedTED,
+    selectedPanels,
+    ordering,
+    page,
+    limit,
+    // q: textInput || textSearch,
+  };
 
 
   useEffect(() => {
@@ -74,25 +89,33 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     const filters$ = [
       selectedCurrentPosts,
       selectedOngoingPosts,
-      selectedTODs,
+      selectedPanels,
+      selectedCycles,
       selectedCurrentBureaus,
       selectedOngoingBureaus,
       selectedHandshakeStatus,
       selectedTED,
+      selectedCDOs,
     ];
     if (isEmpty(flatten(filters$))) {
       setClearFilters(false);
     } else {
       setClearFilters(true);
     }
+    fakeAction(query);
   }, [
+    page,
+    limit,
+    ordering,
     selectedCurrentPosts,
     selectedOngoingPosts,
-    selectedTODs,
+    selectedPanels,
+    selectedCycles,
     selectedCurrentBureaus,
     selectedOngoingBureaus,
     selectedHandshakeStatus,
     selectedTED,
+    selectedCDOs,
   ]);
 
 
@@ -106,6 +129,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     let queryProp = 'description';
     if (get(items, '[0].custom_description', false)) queryProp = 'custom_description';
     else if (get(items, '[0].long_description', false)) queryProp = 'long_description';
+    else if (get(items, '[0].description', false)) queryProp = 'description';
+    else queryProp = 'name';
     return items.map(item =>
       (<ListItem
         key={item[codeOrID]}
@@ -129,13 +154,14 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const resetFilters = () => {
     setSelectedCurrentPosts([]);
     setSelectedOngoingPosts([]);
-    setSelectedTODs([]);
+    setSelectedPanels([]);
     setSelectedCycles([]);
     setSelectedCurrentBureaus([]);
     setSelectedOngoingBureaus([]);
     setSelectedHandshakeStatus([]);
     setSelectedTED([new Date(), new Date()]);
     setClearFilters(false);
+    setSelectedCDOs([]);
   };
 
   const data = [
@@ -296,9 +322,9 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <Picky
                       {...pickyProps}
                       placeholder="Select Panel Date(s)"
-                      value={selectedTODs}
-                      options={todOptions}
-                      onChange={setSelectedTODs}
+                      value={selectedPanels}
+                      options={panels}
+                      onChange={setSelectedPanels}
                       valueKey="code"
                       labelKey="long_description"
                     />
@@ -329,15 +355,16 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <Picky
                       {...pickyProps}
                       placeholder="Current"
-                      value={selectedCurrentBureaus.filter(f => f)}
+                      value={selectedCurrentBureaus}
                       options={bureauOptions}
                       onChange={setSelectedCurrentBureaus}
                       valueKey="code"
                       labelKey="long_description"
                     />
                     <Picky
+                      {...pickyProps}
                       placeholder="Ongoing"
-                      value={selectedOngoingBureaus.filter(f => f)}
+                      value={selectedOngoingBureaus}
                       options={bureauOptions}
                       onChange={setSelectedOngoingBureaus}
                       valueKey="code"
@@ -358,7 +385,15 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   </div>
                   <div className="filter-div">
                     <div className="label">CDO:</div>
-                    <CDOAutoSuggest />
+                    <Picky
+                      {...pickyProps}
+                      placeholder="Select CDOs"
+                      value={selectedCDOs}
+                      options={cdos}
+                      onChange={setSelectedCDOs}
+                      valueKey="id"
+                      labelKey="name"
+                    />
                   </div>
                   <div className="filter-div">
                     <div className="label">Creator:</div>
