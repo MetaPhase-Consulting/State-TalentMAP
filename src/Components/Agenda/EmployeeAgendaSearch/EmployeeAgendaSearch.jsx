@@ -64,7 +64,6 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const view = cardView ? 'card' : 'row';
 
-  // ADD get agents call to fill out agents menu
 
   useEffect(() => {
     dispatch(filtersFetchData(filterData, {}));
@@ -116,6 +115,15 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
         getIsSelected={getSelected}
       />),
     );
+  };
+
+  const pickyProps = {
+    numberDisplayed: 2,
+    multiple: true,
+    includeFilter: true,
+    dropdownHeight: 255,
+    renderList: renderSelectionList,
+    includeSelectAll: true,
   };
 
   const resetFilters = () => {
@@ -274,62 +282,44 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   <div className="filter-div">
                     <div className="label">Cycle:</div>
                     <Picky
+                      {...pickyProps}
                       placeholder="Select Cycle(s)"
                       value={selectedCycles}
                       options={cycleOptions}
                       onChange={setSelectedCycles}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="id"
                       labelKey="custom_description"
-                      includeSelectAll
                     />
                   </div>
                   <div className="filter-div">
                     <div className="label">Panel:</div>
                     <Picky
+                      {...pickyProps}
                       placeholder="Select Panel Date(s)"
                       value={selectedTODs}
                       options={todOptions}
                       onChange={setSelectedTODs}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="code"
                       labelKey="long_description"
-                      includeSelectAll
                     />
                   </div>
                   <div className="filter-div split-filter-div">
                     <div className="label">Post:</div>
                     <Picky
+                      {...pickyProps}
                       placeholder="Current"
                       value={selectedCurrentPosts}
                       options={postOptions}
                       onChange={setSelectedCurrentPosts}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="code"
                       labelKey="custom_description"
                     />
                     <Picky
+                      {...pickyProps}
                       placeholder="Ongoing"
                       value={selectedOngoingPosts}
                       options={postOptions}
                       onChange={setSelectedOngoingPosts}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="code"
                       labelKey="custom_description"
                     />
@@ -337,49 +327,33 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   <div className="filter-div split-filter-div">
                     <div className="label">Bureau:</div>
                     <Picky
+                      {...pickyProps}
                       placeholder="Current"
                       value={selectedCurrentBureaus.filter(f => f)}
                       options={bureauOptions}
                       onChange={setSelectedCurrentBureaus}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="code"
                       labelKey="long_description"
-                      includeSelectAll
                     />
                     <Picky
                       placeholder="Ongoing"
                       value={selectedOngoingBureaus.filter(f => f)}
                       options={bureauOptions}
                       onChange={setSelectedOngoingBureaus}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="code"
                       labelKey="long_description"
-                      includeSelectAll
                     />
                   </div>
                   <div className="filter-div handshake-filter-div">
                     <div className="label">Handshake:</div>
                     <Picky
+                      {...pickyProps}
                       placeholder="Select Handshake Register Status"
                       value={selectedHandshakeStatus}
                       options={fsbidHandshakeStatusOptions}
                       onChange={setSelectedHandshakeStatus}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="code"
                       labelKey="description"
-                      includeSelectAll
                     />
                   </div>
                   <div className="filter-div">
@@ -389,18 +363,13 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   <div className="filter-div">
                     <div className="label">Creator:</div>
                     <Picky
+                      {...pickyProps}
                       placeholder="Select Creator(s)"
                       value={selectedCycles}
                       options={cycleOptions}
                       onChange={setSelectedCycles}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
                       valueKey="id"
                       labelKey="custom_description"
-                      includeSelectAll
                     />
                   </div>
                   <div className="filter-div">
