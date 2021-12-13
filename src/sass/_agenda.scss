@@ -129,10 +129,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 15px;
-
-  div:first-child {
-    padding-left: 35px;
-  }
+  padding-left: 35px;
 }
 
 .empl-search-results-controls {
@@ -156,6 +153,10 @@
   align-items: center;
   justify-content: center;
   padding-right: 35px;
+
+  .results-viewby-container {
+    min-width: 120px;
+  }
 }
 
 .empl-search-page-size {
