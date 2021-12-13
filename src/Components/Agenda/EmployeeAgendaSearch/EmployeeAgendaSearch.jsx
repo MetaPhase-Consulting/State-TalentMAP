@@ -7,12 +7,14 @@ import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { flatten, get, has, isEmpty, sortBy, uniqBy } from 'lodash';
 import FA from 'react-fontawesome';
 import { filtersFetchData } from 'actions/filters/filters';
+import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import Spinner from 'Components/Spinner';
 import TotalResults from 'Components/TotalResults';
 import PaginationWrapper from 'Components/PaginationWrapper';
 import ExportButton from 'Components/ExportButton';
 import SelectForm from 'Components/SelectForm';
+import CDOAutoSuggest from 'Components/BidderPortfolio/CDOAutoSuggest/CDOAutoSuggest';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
 import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
@@ -25,8 +27,9 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
+  const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
 
-  const isLoading = filtersIsLoading;
+  const isLoading = filtersIsLoading || cdosIsLoading;
 
   const filters = filterData.filters;
 
@@ -65,6 +68,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   useEffect(() => {
     dispatch(filtersFetchData(filterData, {}));
+    dispatch(bidderPortfolioCDOsFetchData());
   }, []);
 
   useEffect(() => {
@@ -380,20 +384,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   </div>
                   <div className="filter-div">
                     <div className="label">CDO:</div>
-                    <Picky
-                      placeholder="Select CDO(s)"
-                      value={selectedCycles}
-                      options={cycleOptions}
-                      onChange={setSelectedCycles}
-                      numberDisplayed={2}
-                      multiple
-                      includeFilter
-                      dropdownHeight={255}
-                      renderList={renderSelectionList}
-                      valueKey="id"
-                      labelKey="custom_description"
-                      includeSelectAll
-                    />
+                    <CDOAutoSuggest />
                   </div>
                   <div className="filter-div">
                     <div className="label">Creator:</div>
