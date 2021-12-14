@@ -134,26 +134,6 @@ const AgendaItemLegs = props => {
       color: '#E62CD5',
       key: 5,
     },
-    {
-      remark: 'Opts for SND',
-      color: '#F07011',
-    },
-    {
-      remark: 'Decline SND',
-      color: '#F07011',
-    },
-    {
-      remark: 'Tandem, No Issues',
-      color: '#4BB6CF',
-    },
-    {
-      remark: 'High Differential Post',
-      color: '#6E2CC9',
-    },
-    {
-      remark: 'Early Handshake',
-      color: '#E62CD5',
-    },
   ];
 
   return (
