@@ -54,6 +54,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [selectedCurrentBureaus, setSelectedCurrentBureaus] = useState([]);
   const [selectedOngoingBureaus, setSelectedOngoingBureaus] = useState([]);
   const [selectedCDOs, setSelectedCDOs] = useState([]);
+  // To-Do: Fake creator data
+  const [selectedCreators, setSelectedCreators] = useState([]);
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedHandshakeStatus, setSelectedHandshakeStatus] = useState([]);
   const [selectedPanels, setSelectedPanels] = useState([]);
@@ -416,11 +418,11 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <Picky
                       {...pickyProps}
                       placeholder="Select Creator(s)"
-                      value={selectedCycles}
-                      options={cycleOptions}
-                      onChange={setSelectedCycles}
+                      value={selectedCreators}
+                      options={cdos}
+                      onChange={setSelectedCreators}
                       valueKey="id"
-                      labelKey="custom_description"
+                      labelKey="name"
                     />
                   </div>
                   <div className="filter-div">
