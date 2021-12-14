@@ -23,13 +23,13 @@ import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 const fakeAction = (sel) => console.log(sel);
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
-  const dispatch = useDispatch();
   const childRef = useRef();
+  const dispatch = useDispatch();
 
+  const cdos = useSelector(state => state.bidderPortfolioCDOs);
+  const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
-  const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
-  const cdos = useSelector(state => state.bidderPortfolioCDOs);
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
@@ -105,7 +105,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       selectedOngoingPosts,
       selectedTED,
     ];
-    if (isEmpty(flatten(filters$))) {
+    if (isEmpty(flatten(filters$)) && isEmpty(textSearch)) {
       setClearFilters(false);
     } else {
       setClearFilters(true);
@@ -124,6 +124,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     selectedCurrentPosts,
     selectedOngoingPosts,
     selectedTED,
+    textSearch,
   ]);
 
   function submitSearch(text) {
@@ -180,6 +181,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     setSelectedCurrentPosts([]);
     setSelectedOngoingPosts([]);
     setSelectedTED(null);
+    setTextSearch('');
+    childRef.current.clearText();
     setClearFilters(false);
   };
 
