@@ -491,6 +491,8 @@
         }
 
         .remarks-container {
+          display: flex;
+          flex-wrap: wrap;
           margin: 25px;
 
           .remarks-text {
@@ -504,6 +506,7 @@
             color: $color-white;
             display: inline;
             font-size: .8em;
+            margin-bottom: 1rem;
             margin-right: 1.5rem;
             padding: .5em;
           }

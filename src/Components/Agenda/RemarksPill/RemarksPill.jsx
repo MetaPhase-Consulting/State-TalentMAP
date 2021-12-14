@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
 
 const RemarksPill = props => {
-  const { fakeRemark } = props;
+  const { remark } = props;
   return (
-    <div className="remarks-pill-container" style={{ backgroundColor: fakeRemark.color }}>
-      {fakeRemark.remark}
+    <div className="remarks-pill-container" style={{ backgroundColor: remark.color }}>
+      {remark.remark}
     </div>
   );
 };
 
 RemarksPill.propTypes = {
-  fakeRemark: PropTypes.arrayOf(PropTypes.shape({})),
+  remark: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 
 RemarksPill.defaultProps = {
-  fakeRemark: [],
+  remark: [],
 };
 
 export default RemarksPill;
