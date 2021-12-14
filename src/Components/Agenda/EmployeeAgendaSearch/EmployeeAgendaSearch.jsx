@@ -55,7 +55,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [selectedCurrentBureaus, setSelectedCurrentBureaus] = useState([]);
   const [selectedOngoingBureaus, setSelectedOngoingBureaus] = useState([]);
   const [selectedHandshakeStatus, setSelectedHandshakeStatus] = useState([]);
-  const [selectedTED, setSelectedTED] = useState([new Date(), new Date()]);
+  const [selectedTED, setSelectedTED] = useState(null);
   const [selectedCDOs, setSelectedCDOs] = useState([]);
   // const [textSearch, setTextSearch] = useState('');
   // const [textInput, setTextInput] = useState('');
@@ -159,7 +159,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     setSelectedCurrentBureaus([]);
     setSelectedOngoingBureaus([]);
     setSelectedHandshakeStatus([]);
-    setSelectedTED([new Date(), new Date()]);
+    setSelectedTED(null);
     setClearFilters(false);
     setSelectedCDOs([]);
   };
