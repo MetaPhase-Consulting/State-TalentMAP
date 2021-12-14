@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Picky from 'react-picky';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
-import { flatten, get, has, isEmpty, sortBy, uniqBy } from 'lodash';
+import { flatten, get, has, isEmpty, sortBy, throttle, uniqBy } from 'lodash';
 import FA from 'react-fontawesome';
 import { filtersFetchData } from 'actions/filters/filters';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
@@ -24,6 +24,7 @@ const fakeAction = (sel) => console.log(sel);
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
   const dispatch = useDispatch();
+  const childRef = useRef();
 
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
@@ -34,49 +35,56 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const filters = filterData.filters;
 
-  const panels = [new Date(), new Date(), new Date(), new Date(), new Date()];
   const bureaus = filters.find(f => f.item.description === 'region');
   const bureauOptions = uniqBy(sortBy(bureaus.data, [(b) => b.long_description]), 'long_description');
-  // To-Do: Missing org/post data - using location as placeholder
-  const posts = filters.find(f => f.item.description === 'post');
-  const postOptions = uniqBy(sortBy(posts.data, [(p) => p.city]), 'code');
   const cycles = filters.find(f => f.item.description === 'bidCycle');
   const cycleOptions = uniqBy(sortBy(cycles.data, [(c) => c.custom_description]), 'custom_description');
   const fsbidHandshakeStatus = filters.find(f => f.item.description === 'handshake');
   const fsbidHandshakeStatusOptions = uniqBy(fsbidHandshakeStatus.data, 'code');
+  const panels = [new Date(), new Date(), new Date(), new Date(), new Date()];
+  // To-Do: Missing org/post data - using location as placeholder
+  const posts = filters.find(f => f.item.description === 'post');
+  const postOptions = uniqBy(sortBy(posts.data, [(p) => p.city]), 'code');
 
+  // Pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [ordering, setOrdering] = useState('None');
-  const [selectedCurrentPosts, setSelectedCurrentPosts] = useState([]);
-  const [selectedOngoingPosts, setSelectedOngoingPosts] = useState([]);
-  const [selectedPanels, setSelectedPanels] = useState([]);
-  const [selectedCycles, setSelectedCycles] = useState([]);
+  // Filters
   const [selectedCurrentBureaus, setSelectedCurrentBureaus] = useState([]);
   const [selectedOngoingBureaus, setSelectedOngoingBureaus] = useState([]);
-  const [selectedHandshakeStatus, setSelectedHandshakeStatus] = useState([]);
-  const [selectedTED, setSelectedTED] = useState(null);
   const [selectedCDOs, setSelectedCDOs] = useState([]);
-  // const [textSearch, setTextSearch] = useState('');
-  // const [textInput, setTextInput] = useState('');
-  const [clearFilters, setClearFilters] = useState(false);
+  const [selectedCycles, setSelectedCycles] = useState([]);
+  const [selectedHandshakeStatus, setSelectedHandshakeStatus] = useState([]);
+  const [selectedPanels, setSelectedPanels] = useState([]);
+  const [selectedCurrentPosts, setSelectedCurrentPosts] = useState([]);
+  const [selectedOngoingPosts, setSelectedOngoingPosts] = useState([]);
+  const [selectedTED, setSelectedTED] = useState(null);
+  // Free Text
+  const [textInput, setTextInput] = useState('');
+  const [textSearch, setTextSearch] = useState('');
+  // Controls
   const [cardView, setCardView] = useState(true);
+  const [clearFilters, setClearFilters] = useState(false);
 
   const view = cardView ? 'card' : 'row';
 
   const query = {
-    [`${posts.item.selectionRef}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
-    [`${posts.item.selectionRef}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
+    // Pagination
+    page,
+    limit,
+    ordering,
+    // User Filters
     [`${bureaus.item.selectionRef}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
     [`${bureaus.item.selectionRef}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
     [cycles.item.selectionRef]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
     [fsbidHandshakeStatus.item.selectionRef]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
-    selectedTED,
     selectedPanels,
-    ordering,
-    page,
-    limit,
-    // q: textInput || textSearch,
+    [`${posts.item.selectionRef}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
+    [`${posts.item.selectionRef}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
+    selectedTED,
+    // Free Text
+    q: textInput || textSearch,
   };
 
 
@@ -87,15 +95,15 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   useEffect(() => {
     const filters$ = [
-      selectedCurrentPosts,
-      selectedOngoingPosts,
-      selectedPanels,
-      selectedCycles,
       selectedCurrentBureaus,
       selectedOngoingBureaus,
-      selectedHandshakeStatus,
-      selectedTED,
       selectedCDOs,
+      selectedCycles,
+      selectedHandshakeStatus,
+      selectedPanels,
+      selectedCurrentPosts,
+      selectedOngoingPosts,
+      selectedTED,
     ];
     if (isEmpty(flatten(filters$))) {
       setClearFilters(false);
@@ -107,16 +115,27 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     page,
     limit,
     ordering,
-    selectedCurrentPosts,
-    selectedOngoingPosts,
-    selectedPanels,
-    selectedCycles,
     selectedCurrentBureaus,
     selectedOngoingBureaus,
-    selectedHandshakeStatus,
-    selectedTED,
     selectedCDOs,
+    selectedCycles,
+    selectedHandshakeStatus,
+    selectedPanels,
+    selectedCurrentPosts,
+    selectedOngoingPosts,
+    selectedTED,
   ]);
+
+  function submitSearch(text) {
+    setTextSearch(text);
+  }
+
+  const throttledTextInput = () =>
+    throttle(q => setTextInput(q), 300, { leading: false, trailing: true });
+
+  const setTextInputThrottled = (q) => {
+    throttledTextInput(q);
+  };
 
 
   const renderSelectionList = ({ items, selected, ...rest }) => {
@@ -152,16 +171,16 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   };
 
   const resetFilters = () => {
-    setSelectedCurrentPosts([]);
-    setSelectedOngoingPosts([]);
-    setSelectedPanels([]);
-    setSelectedCycles([]);
     setSelectedCurrentBureaus([]);
     setSelectedOngoingBureaus([]);
+    setSelectedCDOs([]);
+    setSelectedCycles([]);
     setSelectedHandshakeStatus([]);
+    setSelectedPanels([]);
+    setSelectedCurrentPosts([]);
+    setSelectedOngoingPosts([]);
     setSelectedTED(null);
     setClearFilters(false);
-    setSelectedCDOs([]);
   };
 
   const data = [
@@ -281,16 +300,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
               <div className="usa-grid-full results-search-bar-container">
                 <ProfileSectionTitle title="Employee Agenda Search" icon="user-circle-o" />
                 <PositionManagerSearch
-                  id="bureau-search-keyword-field"
-                  labelSrOnly
-                  noButton
-                  noForm
-                  onChangeText={() => {}}
-                  onClear={() => {}}
-                  placeholder="Type keywords here"
-                  showClear
-                  submitText="Search"
-                  type="medium"
+                  submitSearch={submitSearch}
+                  onChange={setTextInputThrottled}
+                  ref={childRef}
+                  textSearch={textSearch}
                   label="Search for an Employee"
                 />
                 <div className="filterby-container">
