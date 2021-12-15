@@ -2,12 +2,12 @@
   .section {
     background-color: $color-white;
     border: 3px solid $tm-gray;
+    box-shadow: rgba(0, 0, 0, .15) 3px 2px 10px 1px;
     display: flex;
     flex-direction: column;
     margin-bottom: 1em;
     min-height: 200px;
     padding: 25px;
-    box-shadow: rgba(0, 0, 0, 0.15) 3px 2px 10px 1px;
   }
 
   .padded-section {
@@ -19,7 +19,7 @@
   }
   .align-middle {
     margin: auto;
-    text-align: center
+    text-align: center;
   }
 
   .all-inline {
@@ -37,17 +37,17 @@
   }
 
   .empl-search-upper-section {
+    background-color: $bg-blue-dark-1;
     box-shadow: 20px 20px 20px $bg-gray-medium-2;
     padding: 20px 35px;
-    background-color: $bg-blue-dark-1;
   }
 
   .filterby-container {
     margin-top: 20px;
     .filterby-label {
+      float: left;
       font-size: 20px;
       margin-bottom: 10px;
-      float: left;
       width: 115px;
     }
     .filterby-clear {
@@ -60,11 +60,11 @@
   }
   .empl-search-filters {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     .filter-div {
       align-items: center;
-      margin-right: 10px;
       display: flex;
+      margin-right: 10px;
       .label {
         margin-right: 10px;
         min-width: 115px;
@@ -97,19 +97,19 @@
       display: inline;
     }
     .react-daterange-picker {
-      background: $color-white;
       align-items: center;
+      background: $color-white;
+      font-size: 1.5rem;
       height: 28px;
       width: 240px;
-      font-size: 1.5rem;
 
       .react-daterange-picker__wrapper {
         border: none;
       }
       .react-daterange-picker__inputGroup {
+        align-items: center;
         display: flex;
         justify-content: center;
-        align-items: center;
       }
       .react-daterange-picker__range-divider,
       .react-daterange-picker__inputGroup__leadingZero,
@@ -130,11 +130,11 @@
 }
 
 .empl-search-controls-container {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-between;
-  padding-top: 15px;
   padding-left: 35px;
+  padding-top: 15px;
 }
 
 .empl-search-pagination-controls {
@@ -145,21 +145,21 @@
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  padding: 0px 35px;
+  padding: 0 35px;
 
   div:first-child {
     margin-right: 10px;
   }
 
   div {
-    display: flex;
     align-items: baseline;
+    display: flex;
   }
 }
 
 .empl-search-controls-right {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
   padding-right: 35px;
 
