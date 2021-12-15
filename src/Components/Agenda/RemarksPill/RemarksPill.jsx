@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const RemarksPill = props => {
   const { remark } = props;
   return (
-    <div className="remarks-pill-container" style={{ backgroundColor: remark.color }}>
+    <div className="remarks-pill" style={{ backgroundColor: remark.color }}>
       {remark.remark}
     </div>
   );
