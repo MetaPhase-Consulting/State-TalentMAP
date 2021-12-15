@@ -23,4 +23,9 @@ describe('RemarksPill', () => {
     const wrapper = shallow(<RemarksPill {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
+
+  it('displays a remark when remark.remark !== null', () => {
+    const wrapper = shallow(<RemarksPill {...props} />);
+    expect(wrapper.find('div').text()).toBe('Opts for SND');
+  });
 });
