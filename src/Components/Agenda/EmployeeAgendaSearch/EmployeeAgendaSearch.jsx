@@ -33,18 +33,18 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
-  const filters = filterData.filters;
+  const filters = get(filterData, 'filters', []);
 
   const bureaus = filters.find(f => f.item.description === 'region');
-  const bureauOptions = uniqBy(sortBy(bureaus.data, [(b) => b.long_description]), 'long_description');
+  const bureauOptions = uniqBy(sortBy(get(bureaus, 'data', []), [(b) => b.long_description]), 'long_description');
   const cycles = filters.find(f => f.item.description === 'bidCycle');
-  const cycleOptions = uniqBy(sortBy(cycles.data, [(c) => c.custom_description]), 'custom_description');
+  const cycleOptions = uniqBy(sortBy(get(cycles, 'data', []), [(c) => c.custom_description]), 'custom_description');
   const fsbidHandshakeStatus = filters.find(f => f.item.description === 'handshake');
-  const fsbidHandshakeStatusOptions = uniqBy(fsbidHandshakeStatus.data, 'code');
+  const fsbidHandshakeStatusOptions = uniqBy(get(fsbidHandshakeStatus, 'data', []), 'code');
   const panels = [new Date(), new Date(), new Date(), new Date(), new Date()];
   // To-Do: Missing org/post data - using location as placeholder
   const posts = filters.find(f => f.item.description === 'post');
-  const postOptions = uniqBy(sortBy(posts.data, [(p) => p.city]), 'code');
+  const postOptions = uniqBy(sortBy(get(posts, 'data', []), [(p) => p.city]), 'code');
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -77,13 +77,13 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     limit,
     ordering,
     // User Filters
-    [`${bureaus.item.selectionRef}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    [`${bureaus.item.selectionRef}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    [cycles.item.selectionRef]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
-    [fsbidHandshakeStatus.item.selectionRef]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
+    [`${get(bureaus, 'item.selectionRef', '')}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    [`${get(bureaus, 'item.selectionRef', '')}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    [get(cycles, 'item.selectionRef', '')]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
+    [get(fsbidHandshakeStatus, 'item.selectionRef', '')]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
     selectedPanels,
-    [`${posts.item.selectionRef}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
-    [`${posts.item.selectionRef}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
+    [`${get(posts, 'item.selectionRef', '')}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
+    [`${get(posts, 'item.selectionRef', '')}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
     selectedTED,
     // Free Text
     q: textInput || textSearch,
