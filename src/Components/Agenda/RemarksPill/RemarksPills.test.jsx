@@ -3,11 +3,11 @@ import toJSON from 'enzyme-to-json';
 import RemarksPill from './RemarksPill';
 
 describe('RemarksPill', () => {
-  const props = [{
-    remark: 'Opts for SND',
+  const props = {
+    text: 'Opts for SND',
     color: '#F07011',
     key: 1,
-  }];
+  };
 
   it('is defined', () => {
     const wrapper = shallow(<RemarksPill />);
@@ -26,6 +26,6 @@ describe('RemarksPill', () => {
 
   it('displays a remark', () => {
     const wrapper = shallow(<RemarksPill {...props} />);
-    expect(wrapper.find('div').text()).toBe('');
+    expect(wrapper.find('div').text()).toBe(props.text);
   });
 });

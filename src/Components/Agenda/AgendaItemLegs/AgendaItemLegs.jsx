@@ -110,27 +110,27 @@ const AgendaItemLegs = props => {
 
   const fakeRemarks = [
     {
-      remark: 'Opts for SND',
+      text: 'Opts for SND',
       color: '#F07011',
       key: 1,
     },
     {
-      remark: 'Decline SND',
+      text: 'Decline SND',
       color: '#F07011',
       key: 2,
     },
     {
-      remark: 'Tandem, No Issues',
+      text: 'Tandem, No Issues',
       color: '#4BB6CF',
       key: 3,
     },
     {
-      remark: 'High Differential Post',
+      text: 'High Differential Post',
       color: '#6E2CC9',
       key: 4,
     },
     {
-      remark: 'Early Handshake',
+      text: 'Early Handshake',
       color: '#E62CD5',
       key: 5,
     },
@@ -161,7 +161,7 @@ const AgendaItemLegs = props => {
           <div className="remarks-text">Remarks:</div>
           {
             fakeRemarks.map(fakeRemark => (
-              <RemarksPill key={fakeRemark.key} remark={fakeRemark} />
+              <RemarksPill key={fakeRemark.key} {...fakeRemark} />
             ))
           }
         </div>
