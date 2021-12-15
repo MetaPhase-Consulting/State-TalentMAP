@@ -135,54 +135,29 @@ exports[`AgendaItemLegs Component matches snapshot 1`] = `
       Remarks:
     </div>
     <RemarksPill
+      color="#F07011"
       key="1"
-      remark={
-        Object {
-          "color": "#F07011",
-          "key": 1,
-          "remark": "Opts for SND",
-        }
-      }
+      text="Opts for SND"
     />
     <RemarksPill
+      color="#F07011"
       key="2"
-      remark={
-        Object {
-          "color": "#F07011",
-          "key": 2,
-          "remark": "Decline SND",
-        }
-      }
+      text="Decline SND"
     />
     <RemarksPill
+      color="#4BB6CF"
       key="3"
-      remark={
-        Object {
-          "color": "#4BB6CF",
-          "key": 3,
-          "remark": "Tandem, No Issues",
-        }
-      }
+      text="Tandem, No Issues"
     />
     <RemarksPill
+      color="#6E2CC9"
       key="4"
-      remark={
-        Object {
-          "color": "#6E2CC9",
-          "key": 4,
-          "remark": "High Differential Post",
-        }
-      }
+      text="High Differential Post"
     />
     <RemarksPill
+      color="#E62CD5"
       key="5"
-      remark={
-        Object {
-          "color": "#E62CD5",
-          "key": 5,
-          "remark": "Early Handshake",
-        }
-      }
+      text="Early Handshake"
     />
   </div>
 </div>
