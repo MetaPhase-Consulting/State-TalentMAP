@@ -199,6 +199,14 @@ jobs:
       #    name: Replace config.json
       #    command: cp ${STATIC_PATH}/config/config_dev.json ${STATIC_PATH}/config/config.json
       - run:
+          name: Install Docker Compose
+          environment:
+            COMPOSE_VERSION: '1.29.2'
+          command: |
+            curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - run:
           name: Build API
           command: |
             git clone https://github.com/MetaPhase-Consulting/State-TalentMAP-API.git
