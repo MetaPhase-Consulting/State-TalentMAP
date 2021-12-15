@@ -20,6 +20,7 @@ import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSe
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 
+// eslint-disable-next-line no-console
 const fakeAction = (sel) => console.log(sel);
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
