@@ -26,6 +26,6 @@ describe('RemarksPill', () => {
 
   it('displays a remark', () => {
     const wrapper = shallow(<RemarksPill {...props} />);
-    expect(wrapper.find('div').text()).toBe('Opts for SND');
+    expect(wrapper.find('div').text()).toBe('');
   });
 });
