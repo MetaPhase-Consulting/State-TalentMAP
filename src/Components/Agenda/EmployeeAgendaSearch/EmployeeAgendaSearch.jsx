@@ -480,21 +480,21 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
           <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
             {
               cardView &&
-          <div className="employee-agenda-card">
-            {data.map(result => (
-              // TODO: include React keys once we have real data
-              <EmployeeAgendaSearchCard result={result} isCDO={isCDO} />
-            ))}
-          </div>
+              <div className="employee-agenda-card">
+                {data.map(result => (
+                  // TODO: include React keys once we have real data
+                  <EmployeeAgendaSearchCard result={result} isCDO={isCDO} />
+                ))}
+              </div>
             }
             {
               !cardView &&
-          <div className="employee-agenda-row">
-            {data.map(result => (
-              // TODO: include React keys once we have real data
-              <EmployeeAgendaSearchRow result={result} isCDO={isCDO} />
-            ))}
-          </div>
+              <div className="employee-agenda-row">
+                {data.map(result => (
+                  // TODO: include React keys once we have real data
+                  <EmployeeAgendaSearchRow result={result} isCDO={isCDO} />
+                ))}
+              </div>
             }
           </div>
           <div className="usa-grid-full react-paginate empl-search-pagination-controls">
