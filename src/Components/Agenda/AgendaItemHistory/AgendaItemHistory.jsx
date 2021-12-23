@@ -1,17 +1,19 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import BackButton from 'Components/BackButton';
 import { AGENDA_ITEM_HISTORY_FILTERS } from 'Constants/Sort';
 import shortid from 'shortid';
 import SelectForm from 'Components/SelectForm';
+import ExportButton from 'Components/ExportButton';
 import { slice } from 'lodash';
+import { agendaItemHistoryExport } from 'actions/agenda';
 import AgendaItemCard from '../AgendaItemCard';
 import AgendaItemRow from '../AgendaItemRow';
-import ExportLink from '../../BidderPortfolio/ExportLink';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 import ScrollUpButton from '../../ScrollUpButton';
 
-const AgendaItemHistory = () => {
+const AgendaItemHistory = ({ isCDO }) => {
   const [cardView, setCardView] = useState(false);
   const view = cardView ? 'card' : 'grid';
   const fakeArr = [2, 3, 4, 2, 7, 3, 4, 7, 1, 1, 2, 3, 4, 5, 6, 1, 3, 2, 3, 2, 2, 3];
@@ -108,6 +110,22 @@ const AgendaItemHistory = () => {
     return aIDataC;
   };
 
+  const sort = 'Name';
+  const [exportIsLoading, setExportIsLoading] = useState(false);
+  const exportAgendaItem = () => {
+    // eslint-disable-next-line no-constant-condition
+    if (true) {
+      setExportIsLoading(true);
+      agendaItemHistoryExport(isCDO, sort)
+        .then(() => {
+          setExportIsLoading(false);
+        })
+        .catch(() => {
+          setExportIsLoading(false);
+        });
+    }
+  };
+
   return (
     <div className="agenda-item-history-container">
       <div className="usa-grid-full profile-content-inner-container">
@@ -122,7 +140,13 @@ const AgendaItemHistory = () => {
                 options={sorts.options}
                 label="Sort by:"
               />
-              <ExportLink disabled />
+              <div className="export-button-container">
+                <ExportButton
+                  onClick={exportAgendaItem}
+                  // disabled
+                  isLoading={exportIsLoading}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -159,6 +183,14 @@ const AgendaItemHistory = () => {
       </div>
     </div>
   );
+};
+
+AgendaItemHistory.propTypes = {
+  isCDO: PropTypes.bool,
+};
+
+AgendaItemHistory.defaultProps = {
+  isCDO: false,
 };
 
 export default AgendaItemHistory;
