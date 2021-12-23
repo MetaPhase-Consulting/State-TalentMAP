@@ -78,15 +78,4 @@ describe('EmployeeAgendaSearchComponent', () => {
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
-
-  it('should resets filters on click', () => {
-    const wrapper = shallow(
-      <Provider store={mockStore({})}>
-        <MemoryRouter>
-          <EmployeeAgendaSearch isCDO={false} />
-        </MemoryRouter>
-      </Provider>,
-    );
-    expect(wrapper.find('.unstyled-button').exists()).toBe(true);
-  });
 });
