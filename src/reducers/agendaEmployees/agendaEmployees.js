@@ -1,0 +1,25 @@
+export function agendaEmployeesFetchDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'AGENDA_EMPLOYEES_FETCH_HAS_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function agendaEmployeesFetchDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'AGENDA_EMPLOYEES_FETCH_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function agendaEmployeesFetchDataSuccess(state = {}, action) {
+  switch (action.type) {
+    case 'AGENDA_EMPLOYEES_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+

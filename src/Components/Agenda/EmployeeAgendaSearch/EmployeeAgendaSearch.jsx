@@ -7,6 +7,7 @@ import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { flatten, get, has, isEmpty, sortBy, throttle, uniqBy } from 'lodash';
 import FA from 'react-fontawesome';
 import { filtersFetchData } from 'actions/filters/filters';
+import { agendaEmployeesFetchData } from 'actions/agendaEmployees';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import Spinner from 'Components/Spinner';
@@ -114,6 +115,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       setClearFilters(true);
     }
     fakeAction(query);
+    dispatch(agendaEmployeesFetchData);
   }, [
     page,
     limit,
