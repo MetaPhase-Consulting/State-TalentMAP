@@ -14,7 +14,7 @@ export function agendaEmployeesFetchDataLoading(state = false, action) {
       return state;
   }
 }
-export function agendaEmployeesFetchDataSuccess(state = {}, action) {
+export function agendaEmployees(state = {}, action) {
   switch (action.type) {
     case 'AGENDA_EMPLOYEES_FETCH_SUCCESS':
       return action.results;

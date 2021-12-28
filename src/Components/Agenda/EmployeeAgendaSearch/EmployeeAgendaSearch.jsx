@@ -32,6 +32,12 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
+  const agendaEmployees = useSelector(state => state.agendaEmployees);
+  const agendaEmployeesIsLoading = useSelector(state => state.agendaEmployeesFetchDataLoading);
+  console.log('----loading-----');
+  console.log(agendaEmployeesIsLoading);
+  console.log('------result-----');
+  console.log(agendaEmployees);
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
@@ -95,6 +101,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   useEffect(() => {
     dispatch(filtersFetchData(filterData, {}));
     dispatch(bidderPortfolioCDOsFetchData());
+    dispatch(agendaEmployeesFetchData());
   }, []);
 
   useEffect(() => {
@@ -115,7 +122,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       setClearFilters(true);
     }
     fakeAction(query);
-    dispatch(agendaEmployeesFetchData);
+    // dispatch(agendaEmployeesFetchData());
   }, [
     page,
     limit,

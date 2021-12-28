@@ -1,12 +1,12 @@
 import {
+  agendaEmployees,
   agendaEmployeesFetchDataErrored,
   agendaEmployeesFetchDataLoading,
-  agendaEmployeesFetchDataSuccess,
 } from './agendaEmployees';
 
 export default {
+  agendaEmployees,
   agendaEmployeesFetchDataErrored,
   agendaEmployeesFetchDataLoading,
-  agendaEmployeesFetchDataSuccess,
 };
 
