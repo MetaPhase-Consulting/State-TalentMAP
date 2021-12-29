@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import BackButton from 'Components/BackButton';
@@ -116,7 +117,7 @@ const AgendaItemHistory = ({ isCDO }) => {
     // eslint-disable-next-line no-constant-condition
     if (true) {
       setExportIsLoading(true);
-      agendaItemHistoryExport(isCDO, sort)
+      agendaItemHistoryExport()
         .then(() => {
           setExportIsLoading(false);
         })
