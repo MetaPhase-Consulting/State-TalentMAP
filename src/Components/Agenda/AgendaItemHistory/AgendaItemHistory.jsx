@@ -14,7 +14,7 @@ import ProfileSectionTitle from '../../ProfileSectionTitle';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 import ScrollUpButton from '../../ScrollUpButton';
 
-const AgendaItemHistory = ({ isCDO }) => {
+const AgendaItemHistory = () => {
   const [cardView, setCardView] = useState(false);
   const view = cardView ? 'card' : 'grid';
   const fakeArr = [2, 3, 4, 2, 7, 3, 4, 7, 1, 1, 2, 3, 4, 5, 6, 1, 3, 2, 3, 2, 2, 3];
@@ -114,17 +114,14 @@ const AgendaItemHistory = ({ isCDO }) => {
   const sort = 'Name';
   const [exportIsLoading, setExportIsLoading] = useState(false);
   const exportAgendaItem = () => {
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
-      setExportIsLoading(true);
-      agendaItemHistoryExport()
-        .then(() => {
-          setExportIsLoading(false);
-        })
-        .catch(() => {
-          setExportIsLoading(false);
-        });
-    }
+    setExportIsLoading(true);
+    agendaItemHistoryExport()
+      .then(() => {
+        setExportIsLoading(false);
+      })
+      .catch(() => {
+        setExportIsLoading(false);
+      });
   };
 
   return (
@@ -184,14 +181,6 @@ const AgendaItemHistory = ({ isCDO }) => {
       </div>
     </div>
   );
-};
-
-AgendaItemHistory.propTypes = {
-  isCDO: PropTypes.bool,
-};
-
-AgendaItemHistory.defaultProps = {
-  isCDO: false,
 };
 
 export default AgendaItemHistory;
