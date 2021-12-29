@@ -19,14 +19,14 @@ export function aihFetchDataSuccess(data) {
   };
 }
 
-export function aihFetchData(perdet = '') {
+export function aihFetchData(perdet = '', ordering = '') {
   return (dispatch) => {
     if (!perdet) {
       dispatch(aihHasErrored(true));
       dispatch(aihIsLoading(false));
     } else {
       api()
-        .get(`/fsbid/agenda/agenda_items/?perdet=${perdet}`)
+        .get(`/fsbid/agenda/agenda_items/?perdet=${perdet}&ordering=${ordering}`)
         .then(({ data }) => data.results || [])
         .then((data$) => {
           dispatch(aihFetchDataSuccess(data$));

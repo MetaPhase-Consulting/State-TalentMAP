@@ -6,6 +6,7 @@ import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import { aihFetchData } from 'actions/agendaItemHistory';
+import { useMount } from 'hooks';
 import AgendaItemCard from '../AgendaItemCard';
 import AgendaItemRow from '../AgendaItemRow';
 import ExportLink from '../../BidderPortfolio/ExportLink';
@@ -14,7 +15,10 @@ import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 import ScrollUpButton from '../../ScrollUpButton';
 
 const AgendaItemHistory = (props) => {
+  const sorts = AGENDA_ITEM_HISTORY_FILTERS;
+
   const [cardView, setCardView] = useState(false);
+  const [sort, setSort] = useState(sorts.defaultSort.value);
   const view = cardView ? 'card' : 'grid';
 
   const aih = useSelector(state => state.aih);
@@ -24,12 +28,18 @@ const AgendaItemHistory = (props) => {
   // Actions
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const getData = () => {
     const id = get(props, 'match.params.id'); // client's perdet
-    dispatch(aihFetchData(id));
-  }, []);
+    dispatch(aihFetchData(id, sort));
+  };
 
-  const sorts = AGENDA_ITEM_HISTORY_FILTERS;
+  useMount(() => {
+    getData();
+  });
+
+  useEffect(() => {
+    getData();
+  }, [sort]);
 
   return (
     <div className="agenda-item-history-container">
@@ -47,6 +57,8 @@ const AgendaItemHistory = (props) => {
                     id="agenda-item-history-results"
                     options={sorts.options}
                     label="Sort by:"
+                    defaultSort={sort}
+                    onSelectOption={e => setSort(get(e, 'target.value'))}
                   />
                   <ExportLink disabled />
                 </div>

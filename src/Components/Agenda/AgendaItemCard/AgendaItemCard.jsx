@@ -52,7 +52,7 @@ const AgendaItemCard = props => {
             { formatStr(get(legs$, '[0].pos_title')) }
             <div className="arrow">
               <div className="arrow-tail" />
-              {agenda.legs.length}
+              {legs$.length || '0'}
               <div className="arrow-tail" />
               <div className="arrow-right" />
             </div>
