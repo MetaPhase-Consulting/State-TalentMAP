@@ -25,6 +25,8 @@ export function aihFetchData(perdet = '', ordering = '') {
       dispatch(aihHasErrored(true));
       dispatch(aihIsLoading(false));
     } else {
+      dispatch(aihHasErrored(false));
+      dispatch(aihIsLoading(true));
       api()
         .get(`/fsbid/agenda/agenda_items/?perdet=${perdet}&ordering=${ordering}`)
         .then(({ data }) => data.results || [])
