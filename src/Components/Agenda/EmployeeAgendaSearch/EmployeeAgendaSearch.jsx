@@ -343,6 +343,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedCycles}
                       valueKey="id"
                       labelKey="custom_description"
+                      disabled
                     />
                   </div>
                   <div className="filter-div">
@@ -355,6 +356,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedPanels}
                       valueKey="code"
                       labelKey="long_description"
+                      disabled
                     />
                   </div>
                   <div className="filter-div split-filter-div">
@@ -367,6 +369,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedCurrentPosts}
                       valueKey="code"
                       labelKey="custom_description"
+                      disabled
                     />
                     <Picky
                       {...pickyProps}
@@ -376,6 +379,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedOngoingPosts}
                       valueKey="code"
                       labelKey="custom_description"
+                      disabled
                     />
                   </div>
                   <div className="filter-div split-filter-div">
@@ -388,6 +392,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedCurrentBureaus}
                       valueKey="code"
                       labelKey="long_description"
+                      disabled
                     />
                     <Picky
                       {...pickyProps}
@@ -397,6 +402,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedOngoingBureaus}
                       valueKey="code"
                       labelKey="long_description"
+                      disabled
                     />
                   </div>
                   <div className="filter-div handshake-filter-div">
@@ -409,6 +415,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedHandshakeStatus}
                       valueKey="code"
                       labelKey="description"
+                      disabled
                     />
                   </div>
                   <div className="filter-div">
@@ -421,6 +428,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedCDOs}
                       valueKey="id"
                       labelKey="name"
+                      disabled
                     />
                   </div>
                   <div className="filter-div">
@@ -433,6 +441,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       onChange={setSelectedCreators}
                       valueKey="id"
                       labelKey="name"
+                      disabled
                     />
                   </div>
                   <div className="filter-div">
@@ -443,6 +452,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       maxDetail="month"
                       calendarIcon={null}
                       showLeadingZeros
+                      disabled
                     />
                   </div>
                 </div>
