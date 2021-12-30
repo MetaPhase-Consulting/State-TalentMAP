@@ -9,6 +9,7 @@ const AgendaItemRow = props => {
   const {
     isFirst,
     agenda,
+    showEdit,
   } = props;
 
   const pillColors = {
@@ -49,11 +50,14 @@ const AgendaItemRow = props => {
             </div>
           </div>
           <AgendaItemLegs legs={agenda.legs} remarks={agenda.remarks} />
-          <div className="ai-history-footer">
-            <InteractiveElement title="Edit Agenda" onClick={editAI()}>
-              <FA name="pencil" />
-            </InteractiveElement>
-          </div>
+          {
+            showEdit &&
+            <div className="ai-history-footer">
+              <InteractiveElement title="Edit Agenda" onClick={editAI()}>
+                <FA name="pencil" />
+              </InteractiveElement>
+            </div>
+          }
         </div>
       }
     </>
@@ -91,12 +95,14 @@ AgendaItemRow.propTypes = {
     modifier_name: PropTypes.number,
     creator_name: PropTypes.number,
   }),
+  showEdit: PropTypes.bool,
 };
 
 
 AgendaItemRow.defaultProps = {
   isFirst: false,
   agenda: {},
+  showEdit: false,
 };
 
 export default AgendaItemRow;

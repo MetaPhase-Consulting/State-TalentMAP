@@ -10,6 +10,7 @@ const AgendaItemCard = props => {
   const {
     isCreate,
     agenda,
+    showEdit,
   } = props;
 
   const legs = get(agenda, 'legs') || [];
@@ -73,11 +74,14 @@ const AgendaItemCard = props => {
             </div>
           </div>
           <AgendaItemLegs legs={agenda.legs} remarks={agenda.remarks} isCard />
-          <div className="ai-history-footer">
-            <InteractiveElement title="Edit Agenda" onClick={editAI()}>
-              <FA name="pencil" />
-            </InteractiveElement>
-          </div>
+          {
+            showEdit &&
+            <div className="ai-history-footer">
+              <InteractiveElement title="Edit Agenda" onClick={editAI()}>
+                <FA name="pencil" />
+              </InteractiveElement>
+            </div>
+          }
         </div>
       }
     </>
@@ -116,12 +120,14 @@ AgendaItemCard.propTypes = {
     modifier_name: PropTypes.number,
     creator_name: PropTypes.number,
   }),
+  showEdit: PropTypes.bool,
 };
 
 
 AgendaItemCard.defaultProps = {
   isCreate: false,
   agenda: {},
+  showEdit: false,
 };
 
 export default AgendaItemCard;
