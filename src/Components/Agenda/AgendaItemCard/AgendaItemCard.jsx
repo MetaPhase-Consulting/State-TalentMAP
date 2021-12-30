@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
-import { get, take, takeRight } from 'lodash';
+import { clone, get, take, takeRight } from 'lodash';
 import { formatDate, shortenString } from 'utilities';
 // import { TEMP_FAKE_DATA } from 'Constants/PropTypes'; TODO - update
 import InteractiveElement from 'Components/InteractiveElement';
@@ -12,9 +12,15 @@ const AgendaItemCard = props => {
     agenda,
   } = props;
 
-  let legs$ = get(agenda, 'legs') || [];
+  const legs = get(agenda, 'legs') || [];
+  let legs$ = clone(legs);
+  let legsLength = 0;
   if (legs$.length > 2) {
     legs$ = [take(legs$)[0], takeRight(legs$)[0]];
+    legsLength = legs.length - 2;
+    if (legsLength < 0) {
+      legsLength = 0;
+    }
   }
 
   const pillColors = {
@@ -52,7 +58,7 @@ const AgendaItemCard = props => {
             { formatStr(get(legs$, '[0].pos_title')) }
             <div className="arrow">
               <div className="arrow-tail" />
-              {legs$.length || '0'}
+              {legsLength}
               <div className="arrow-tail" />
               <div className="arrow-right" />
             </div>

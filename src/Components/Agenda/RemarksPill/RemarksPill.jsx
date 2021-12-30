@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 const RemarksPill = props => {
+  // TODO - make use of colors?
   const { color, title } = props; // eslint-disable-line
   return (
     <div className="remarks-pill" style={{ backgroundColor: '#0071bc' }}>
