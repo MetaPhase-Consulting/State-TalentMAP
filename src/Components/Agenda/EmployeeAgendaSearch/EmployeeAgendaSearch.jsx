@@ -18,6 +18,7 @@ import ExportButton from 'Components/ExportButton';
 import SelectForm from 'Components/SelectForm';
 import shortid from 'shortid';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
+import Alert from 'Components/Alert';
 import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
 import ProfileSectionTitle from '../../ProfileSectionTitle';
@@ -32,12 +33,17 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
-  const agendaEmployees = useSelector(state => state.agendaEmployees.results);
+  const agendaEmployees$ = useSelector(state => state.agendaEmployees);
   const agendaEmployeesIsLoading = useSelector(state => state.agendaEmployeesFetchDataLoading);
+  const agendaEmployeesHasErrored = useSelector(state => state.agendaEmployeesFetchDataErrored);
+
+  const agendaEmployees = agendaEmployees$.results;
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
   const filters = get(filterData, 'filters', []);
+
+  const hideFilters = true;
 
   const bureaus = filters.find(f => f.item.description === 'region');
   const bureauOptions = uniqBy(sortBy(get(bureaus, 'data', []), [(b) => b.long_description]), 'long_description');
@@ -53,7 +59,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   // Pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
-  const [ordering, setOrdering] = useState('None');
+  const [ordering, setOrdering] = useState('Name');
   // Filters
   const [selectedCurrentBureaus, setSelectedCurrentBureaus] = useState([]);
   const [selectedOngoingBureaus, setSelectedOngoingBureaus] = useState([]);
@@ -72,6 +78,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   // Controls
   const [cardView, setCardView] = useState(true);
   const [clearFilters, setClearFilters] = useState(false);
+
+  const count = agendaEmployees ? agendaEmployees.length : 0;
 
   const view = cardView ? 'card' : 'row';
 
@@ -193,6 +201,19 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     setClearFilters(false);
   };
 
+  const getOverlay = () => {
+    if (agendaEmployeesHasErrored) {
+      return <Alert type="error" title="Error loading employees" messages={[{ body: 'Please try again.' }]} />;
+    }
+    if (agendaEmployeesIsLoading) {
+      return <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
+    }
+    if (count <= 0) {
+      return <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
+    }
+    return false;
+  };
+
   return (
     isLoading ?
       <Spinner type="bureau-filters" size="small" /> :
@@ -209,184 +230,194 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   textSearch={textSearch}
                   label="Search for an Employee"
                 />
-                <div className="filterby-container">
-                  <div className="filterby-label">Filter by:</div>
-                  <div className="filterby-clear">
-                    {clearFilters &&
-                        <button className="unstyled-button" onClick={resetFilters}>
-                          <FA name="times" />
-                              Clear Filters
-                        </button>
-                    }
-                  </div>
-                </div>
-                <div className="usa-width-one-whole empl-search-filters results-dropdown">
-                  <div className="filter-div">
-                    <div className="label">Cycle:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Select Cycle(s)"
-                      value={selectedCycles}
-                      options={cycleOptions}
-                      onChange={setSelectedCycles}
-                      valueKey="id"
-                      labelKey="custom_description"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div">
-                    <div className="label">Panel:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Select Panel Date(s)"
-                      value={selectedPanels}
-                      options={panels}
-                      onChange={setSelectedPanels}
-                      valueKey="code"
-                      labelKey="long_description"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div split-filter-div">
-                    <div className="label">Post:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Current"
-                      value={selectedCurrentPosts}
-                      options={postOptions}
-                      onChange={setSelectedCurrentPosts}
-                      valueKey="code"
-                      labelKey="custom_description"
-                      disabled
-                    />
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Ongoing"
-                      value={selectedOngoingPosts}
-                      options={postOptions}
-                      onChange={setSelectedOngoingPosts}
-                      valueKey="code"
-                      labelKey="custom_description"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div split-filter-div">
-                    <div className="label">Bureau:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Current"
-                      value={selectedCurrentBureaus}
-                      options={bureauOptions}
-                      onChange={setSelectedCurrentBureaus}
-                      valueKey="code"
-                      labelKey="long_description"
-                      disabled
-                    />
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Ongoing"
-                      value={selectedOngoingBureaus}
-                      options={bureauOptions}
-                      onChange={setSelectedOngoingBureaus}
-                      valueKey="code"
-                      labelKey="long_description"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div handshake-filter-div">
-                    <div className="label">Handshake:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Select Handshake Register Status"
-                      value={selectedHandshakeStatus}
-                      options={fsbidHandshakeStatusOptions}
-                      onChange={setSelectedHandshakeStatus}
-                      valueKey="code"
-                      labelKey="description"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div">
-                    <div className="label">CDO:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Select CDOs"
-                      value={selectedCDOs}
-                      options={cdos}
-                      onChange={setSelectedCDOs}
-                      valueKey="id"
-                      labelKey="name"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div">
-                    <div className="label">Creator:</div>
-                    <Picky
-                      {...pickyProps}
-                      placeholder="Select Creator(s)"
-                      value={selectedCreators}
-                      options={cdos}
-                      onChange={setSelectedCreators}
-                      valueKey="id"
-                      labelKey="name"
-                      disabled
-                    />
-                  </div>
-                  <div className="filter-div">
-                    <div className="label">TED:</div>
-                    <DateRangePicker
-                      onChange={setSelectedTED}
-                      value={selectedTED}
-                      maxDetail="month"
-                      calendarIcon={null}
-                      showLeadingZeros
-                      disabled
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="usa-width-one-whole results-dropdown empl-search-controls-container">
-            <TotalResults
-              total={agendaEmployees.length}
-              pageNumber={1}
-              pageSize={agendaEmployees.length}
-              suffix="Results"
-              isHidden={isLoading}
-            />
-            <div className="empl-search-controls-right">
-              <ResultsViewBy initial={view} onClick={() => setCardView(!cardView)} />
-              <div className="empl-search-results-controls">
-                <SelectForm
-                  id="empl-search-num-results"
-                  options={[]}
-                  label="Sort by:"
-                  defaultSort={ordering}
-                  onSelectOption={value => setOrdering(value.target.value)}
-                  disabled={isLoading}
-                />
-                <SelectForm
-                  id="empl-search-num-results"
-                  options={[]}
-                  label="Results:"
-                  defaultSort={limit}
-                  onSelectOption={value => setLimit(value.target.value)}
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="export-button-container">
-                <ExportButton
-                  onClick={() => {}}
-                  isLoading={isLoading}
-                  disabled
-                />
+                {
+                  !hideFilters &&
+                  <>
+                    <div className="filterby-container">
+                      <div className="filterby-label">Filter by:</div>
+                      <div className="filterby-clear">
+                        {clearFilters &&
+                            <button className="unstyled-button" onClick={resetFilters}>
+                              <FA name="times" />
+                                  Clear Filters
+                            </button>
+                        }
+                      </div>
+                    </div>
+                    <div className="usa-width-one-whole empl-search-filters results-dropdown">
+                      <div className="filter-div">
+                        <div className="label">Cycle:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Select Cycle(s)"
+                          value={selectedCycles}
+                          options={cycleOptions}
+                          onChange={setSelectedCycles}
+                          valueKey="id"
+                          labelKey="custom_description"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div">
+                        <div className="label">Panel:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Select Panel Date(s)"
+                          value={selectedPanels}
+                          options={panels}
+                          onChange={setSelectedPanels}
+                          valueKey="code"
+                          labelKey="long_description"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div split-filter-div">
+                        <div className="label">Post:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Current"
+                          value={selectedCurrentPosts}
+                          options={postOptions}
+                          onChange={setSelectedCurrentPosts}
+                          valueKey="code"
+                          labelKey="custom_description"
+                          disabled
+                        />
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Ongoing"
+                          value={selectedOngoingPosts}
+                          options={postOptions}
+                          onChange={setSelectedOngoingPosts}
+                          valueKey="code"
+                          labelKey="custom_description"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div split-filter-div">
+                        <div className="label">Bureau:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Current"
+                          value={selectedCurrentBureaus}
+                          options={bureauOptions}
+                          onChange={setSelectedCurrentBureaus}
+                          valueKey="code"
+                          labelKey="long_description"
+                          disabled
+                        />
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Ongoing"
+                          value={selectedOngoingBureaus}
+                          options={bureauOptions}
+                          onChange={setSelectedOngoingBureaus}
+                          valueKey="code"
+                          labelKey="long_description"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div handshake-filter-div">
+                        <div className="label">Handshake:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Select Handshake Register Status"
+                          value={selectedHandshakeStatus}
+                          options={fsbidHandshakeStatusOptions}
+                          onChange={setSelectedHandshakeStatus}
+                          valueKey="code"
+                          labelKey="description"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div">
+                        <div className="label">CDO:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Select CDOs"
+                          value={selectedCDOs}
+                          options={cdos}
+                          onChange={setSelectedCDOs}
+                          valueKey="id"
+                          labelKey="name"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div">
+                        <div className="label">Creator:</div>
+                        <Picky
+                          {...pickyProps}
+                          placeholder="Select Creator(s)"
+                          value={selectedCreators}
+                          options={cdos}
+                          onChange={setSelectedCreators}
+                          valueKey="id"
+                          labelKey="name"
+                          disabled
+                        />
+                      </div>
+                      <div className="filter-div">
+                        <div className="label">TED:</div>
+                        <DateRangePicker
+                          onChange={setSelectedTED}
+                          value={selectedTED}
+                          maxDetail="month"
+                          calendarIcon={null}
+                          showLeadingZeros
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </>
+                }
               </div>
             </div>
           </div>
           {
-            agendaEmployeesIsLoading ?
-              <Spinner type="bureau-filters" size="small" /> :
+            !agendaEmployeesIsLoading && !isLoading && !agendaEmployeesHasErrored &&
+            <div className="usa-width-one-whole results-dropdown empl-search-controls-container">
+              <TotalResults
+                total={count}
+                pageNumber={1}
+                pageSize={count}
+                suffix="Results"
+                isHidden={isLoading || agendaEmployeesIsLoading}
+              />
+              <div className="empl-search-controls-right">
+                <ResultsViewBy initial={view} onClick={() => setCardView(!cardView)} />
+                {
+                  !hideFilters &&
+                  <div className="empl-search-results-controls">
+                    <SelectForm
+                      id="empl-search-num-results"
+                      options={[]}
+                      label="Sort by:"
+                      defaultSort={ordering}
+                      onSelectOption={value => setOrdering(value.target.value)}
+                      disabled={isLoading}
+                    />
+                    <SelectForm
+                      id="empl-search-num-results"
+                      options={[]}
+                      label="Results:"
+                      defaultSort={limit}
+                      onSelectOption={value => setLimit(value.target.value)}
+                      disabled={isLoading}
+                    />
+                  </div>
+                }
+                <div className="export-button-container">
+                  <ExportButton
+                    onClick={() => {}}
+                    isLoading={isLoading}
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
+            getOverlay() ||
               <>
                 <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
                   {
@@ -409,13 +440,26 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   }
                 </div>
                 <div className="usa-grid-full react-paginate empl-search-pagination-controls">
-                  <PaginationWrapper
-                    pageSize={limit}
-                    onPageChange={p => setPage(p.page)}
-                    forcePage={page}
-                    totalResults={agendaEmployees.length}
-                  />
+                  {
+                    !hideFilters &&
+                    <PaginationWrapper
+                      pageSize={limit}
+                      onPageChange={p => setPage(p.page)}
+                      forcePage={page}
+                      totalResults={count}
+                    />
+                  }
                 </div>
+                {
+                  (count >= 50) &&
+                  <div className="empl-search-controls-container">
+                    <Alert
+                      type="info"
+                      title="Page Max: 50 results"
+                      messages={[{ body: 'Please refine search to see different results.' }]}
+                    />
+                  </div>
+                }
               </>
           }
         </div>
