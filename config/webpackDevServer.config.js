@@ -93,6 +93,7 @@ module.exports = function(proxy, allowedHost) {
       app.get('/', redirectToLogin);
       app.get('/login', redirectToLogin);
       app.get('/logout', redirectToLogin);
+      // Fix name mismatch between dev server and prod builds
       app.get('/static/js/pdf.worker.js', function (req, res) {
         res.redirect('/static/js/bundle.worker.js')
       });
