@@ -4,6 +4,7 @@ import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import LinkButton from 'Components/LinkButton';
 import { get } from 'lodash';
+import { format, isDate } from 'date-fns-v2';
 
 const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   // will need to update during integration
@@ -16,9 +17,11 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const futurePost = get(result, 'futurePost') || 'None listed';
   const initials = get(person, 'initials') || '';
   const panelDate = get(result, 'panelDate') || 'None listed';
-  const ted = get(currentAssignment, 'TED') || 'None listed';
+  const ted = get(currentAssignment, 'TED') || '';
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
+
+  const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 
   return (
     <div className="usa-grid-full employee-agenda-stat-row">
@@ -28,7 +31,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
         </div>
       </div>
       <div className="employee-agenda-row-name">
-        <Link to="/profile/public/6">{bidder}</Link>
+        <Link tto={`/profile/public/${get(person, 'perdet')}`}>{bidder}</Link>
       </div>
       <div className="employee-agenda-row-data-container">
         <div className="employee-agenda-row-data-points">
@@ -43,7 +46,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
           <div className="employee-agenda-row-data-point">
             <FA name="clock-o" />
             <dt>TED:</dt>
-            <dd>{ted}</dd>
+            <dd>{ted ? formatDate(ted) : 'None listed'}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="user-o" />
@@ -83,12 +86,12 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
 
 EmployeeAgendaSearchRow.propTypes = {
   isCDO: PropTypes.bool,
-  result: PropTypes.arrayOf(PropTypes.shape({})),
+  result: PropTypes.PropTypes.shape({}),
 };
 
 EmployeeAgendaSearchRow.defaultProps = {
   isCDO: false,
-  result: [],
+  result: {},
 };
 
 export default EmployeeAgendaSearchRow;

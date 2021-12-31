@@ -16,6 +16,7 @@ import TotalResults from 'Components/TotalResults';
 import PaginationWrapper from 'Components/PaginationWrapper';
 import ExportButton from 'Components/ExportButton';
 import SelectForm from 'Components/SelectForm';
+import shortid from 'shortid';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
 import EmployeeAgendaSearchCard from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSearchRow';
@@ -348,9 +349,9 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
           </div>
           <div className="usa-width-one-whole results-dropdown empl-search-controls-container">
             <TotalResults
-              total={10}
+              total={agendaEmployees.length}
               pageNumber={1}
-              pageSize={10}
+              pageSize={agendaEmployees.length}
               suffix="Results"
               isHidden={isLoading}
             />
@@ -393,7 +394,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <div className="employee-agenda-card">
                       {agendaEmployees.map(emp => (
                         // TODO: include React keys once we have real data
-                        <EmployeeAgendaSearchCard result={emp} isCDO={isCDO} />
+                        <EmployeeAgendaSearchCard key={shortid.generate()} result={emp} isCDO={isCDO} />
                       ))}
                     </div>
                   }
@@ -402,7 +403,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <div className="employee-agenda-row">
                       {agendaEmployees.map(emp => (
                         // TODO: include React keys once we have real data
-                        <EmployeeAgendaSearchRow result={emp} isCDO={isCDO} />
+                        <EmployeeAgendaSearchRow key={shortid.generate()} result={emp} isCDO={isCDO} />
                       ))}
                     </div>
                   }

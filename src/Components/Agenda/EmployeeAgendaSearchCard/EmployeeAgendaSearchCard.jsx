@@ -6,6 +6,7 @@ import { Tooltip } from 'react-tippy';
 import { Handshake } from 'Components/Ribbon';
 import LinkButton from 'Components/LinkButton';
 import { get } from 'lodash';
+import { format, isDate } from 'date-fns-v2';
 import BoxShadow from '../../BoxShadow';
 
 const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
@@ -19,9 +20,11 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
   const futurePost = get(result, 'futurePost') || 'None listed';
   const panelDate = get(result, 'panelDate') || 'None listed';
   const showHandshakeIcon = get(result, 'hs_accepted') || false;
-  const ted = get(currentAssignment, 'TED') || 'None listed';
+  const ted = get(currentAssignment, 'TED') || '';
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
+
+  const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 
   return (
     <BoxShadow className="employee-agenda-stat-card">
@@ -43,7 +46,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
         </div>
         <div>
           <h3>
-            <Link to="/profile/public/6">{bidder}</Link>
+            <Link to={`/profile/public/${get(person, 'perdet')}`}>{bidder}</Link>
           </h3>
         </div>
         <div className="employee-agenda-card-data-point-top">
@@ -59,7 +62,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
           <div className="employee-card-data-point">
             <FA name="clock-o" />
             <dt>TED:</dt>
-            <dd>{ted}</dd>
+            <dd>{ted ? formatDate(ted) : 'None listed'}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="user-o" />
@@ -103,12 +106,12 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
 
 EmployeeAgendaSearchCard.propTypes = {
   isCDO: PropTypes.bool,
-  result: PropTypes.arrayOf(PropTypes.shape({})),
+  result: PropTypes.PropTypes.shape({}),
 };
 
 EmployeeAgendaSearchCard.defaultProps = {
   isCDO: false,
-  result: [],
+  result: {},
 };
 
 export default EmployeeAgendaSearchCard;
