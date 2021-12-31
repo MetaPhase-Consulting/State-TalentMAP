@@ -11,7 +11,6 @@ default-docker-node: &default-docker-node
         PUBLIC_URL: /talentmap/
         STATIC_PATH: /home/circleci/project/public
         API_ROOT: http://app:8000/
-        NODE_OPTIONS: --optimize-for-size
 jobs:
   build:
     <<: *default-docker-node
@@ -118,7 +117,7 @@ jobs:
       - run: yarn install --pure-lockfile
       - run:
           name: Build site
-          command: yarn build
+          command: FAST_BUILD=1 && yarn build
       - run:
           name: Zip artifact
           command: zip talentmap.zip -r build/*
