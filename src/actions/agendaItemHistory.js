@@ -1,5 +1,9 @@
+import { get } from 'lodash';
 import { downloadFromResponse, formatDate } from 'utilities';
+import { CancelToken } from 'axios';
 import api from '../api';
+
+let cancel;
 
 export function aihHasErrored(bool) {
   return {
@@ -31,6 +35,7 @@ export function agendaItemHistoryExport(perdet = '', ordering = '') {
 
 export function aihFetchData(perdet = '', ordering = '') {
   return (dispatch) => {
+    if (cancel) { cancel('cancel'); }
     if (!perdet) {
       dispatch(aihHasErrored(true));
       dispatch(aihIsLoading(false));
@@ -38,16 +43,23 @@ export function aihFetchData(perdet = '', ordering = '') {
       dispatch(aihHasErrored(false));
       dispatch(aihIsLoading(true));
       api()
-        .get(`/fsbid/agenda/agenda_items/?perdet=${perdet}&ordering=${ordering}`)
+        .get(`/fsbid/agenda/agenda_items/?perdet=${perdet}&ordering=${ordering}`, { cancelToken: new CancelToken((c) => {
+          cancel = c;
+        }) })
         .then(({ data }) => data.results || [])
         .then((data$) => {
           dispatch(aihFetchDataSuccess(data$));
           dispatch(aihHasErrored(false));
           dispatch(aihIsLoading(false));
         })
-        .catch(() => {
-          dispatch(aihHasErrored(true));
-          dispatch(aihIsLoading(false));
+        .catch((err) => {
+          if (get(err, 'message') === 'cancel') {
+            dispatch(aihHasErrored(false));
+            dispatch(aihIsLoading(true));
+          } else {
+            dispatch(aihHasErrored(true));
+            dispatch(aihIsLoading(false));
+          }
         });
     }
   };

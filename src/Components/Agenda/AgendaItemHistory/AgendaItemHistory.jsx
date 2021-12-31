@@ -25,6 +25,7 @@ const AgendaItemHistory = (props) => {
   const [sort, setSort] = useState(sorts.defaultSort);
   const [client, setClient] = useState('');
   const [clientIsLoading, setClientIsLoading] = useState(false);
+  const [clientHasErrored, setClientHasErrored] = useState(false);
   const [exportIsLoading, setExportIsLoading] = useState(false);
   const view = cardView ? 'card' : 'grid';
 
@@ -55,12 +56,17 @@ const AgendaItemHistory = (props) => {
 
   const getClient = () => {
     setClientIsLoading(true);
+    setClientHasErrored(false);
     Promise.all([fetchClient(id)])
       .then((res) => {
         setClient(get(res, '[0].name'));
+        setClientHasErrored(false);
         setClientIsLoading(false);
       })
-      .catch(() => setClientIsLoading(false));
+      .catch(() => {
+        setClientHasErrored(true);
+        setClientIsLoading(false);
+      });
   };
 
   useMount(() => {
@@ -79,7 +85,7 @@ const AgendaItemHistory = (props) => {
   if (client) {
     title = `${client}'s ${title}`;
   }
-  if (clientIsLoading) {
+  if (clientIsLoading || clientHasErrored) {
     title = '';
   }
 
