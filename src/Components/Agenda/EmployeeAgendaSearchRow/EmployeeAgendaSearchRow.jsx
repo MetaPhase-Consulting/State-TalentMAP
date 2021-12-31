@@ -20,6 +20,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const userRole = isCDO ? 'cdo' : 'ao';
   const perdet = get(person, 'perdet', '');
   const hideCreate = true;
+  const { employeeID } = person;
 
   const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 
@@ -31,7 +32,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
         </div>
       </div>
       <div className="employee-agenda-row-name">
-        <Link to={`/profile/public/${perdet}`}>{bidder}</Link>
+        <Link to={`/profile/public/${perdet}`}>{bidder} {`(${employeeID})`}</Link>
       </div>
       <div className="employee-agenda-row-data-container">
         <div className="employee-agenda-row-data-points">
