@@ -10,15 +10,16 @@ import BoxShadow from '../../BoxShadow';
 
 const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
   // will need to update during integration
+  const { person, currentAssignment } = result;
   const agendaStatus = get(result, 'agendaStatus') || 'None listed';
   const author = get(result, 'author') || 'None listed';
-  const bidder = get(result, 'bidder') || 'None listed';
+  const bidder = get(person, 'fullName') || 'None listed';
   const cdo = get(result, 'cdo') || 'None listed';
-  const currentPost = get(result, 'currentPost') || 'None listed';
+  const currentPost = get(currentAssignment, 'orgDescription') || 'None listed';
   const futurePost = get(result, 'futurePost') || 'None listed';
   const panelDate = get(result, 'panelDate') || 'None listed';
   const showHandshakeIcon = get(result, 'hs_accepted') || false;
-  const ted = get(result, 'ted') || 'None listed';
+  const ted = get(currentAssignment, 'TED') || 'None listed';
   const userRole = isCDO ? 'cdo' : 'ao';
   const useCDOBidding = () => checkFlag('flags.cdo_bidding');
 

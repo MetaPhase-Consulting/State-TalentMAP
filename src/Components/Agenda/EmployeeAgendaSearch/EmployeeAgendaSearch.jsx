@@ -32,12 +32,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
   const filterData = useSelector(state => state.filters);
   const filtersIsLoading = useSelector(state => state.filtersIsLoading);
-  const agendaEmployees = useSelector(state => state.agendaEmployees);
+  const agendaEmployees = useSelector(state => state.agendaEmployees.results);
   const agendaEmployeesIsLoading = useSelector(state => state.agendaEmployeesFetchDataLoading);
-  console.log('----loading-----');
-  console.log(agendaEmployeesIsLoading);
-  console.log('------result-----');
-  console.log(agendaEmployees);
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
@@ -197,113 +193,6 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     childRef.current.clearText();
     setClearFilters(false);
   };
-
-  const data = [
-    {
-      agendaStatus: 'Complete',
-      author: 'Abella, Hewett S',
-      bidder: 'Townpost, Jenny Y',
-      cdo: 'Shadtrach, Leah',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: true, // for testing only
-      hs_status: 'Accepted', // for testing only
-      initials: 'JT',
-      panelDate: '12/25/2021',
-      ted: '04/2022',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Crackel, Pooh M',
-      bidder: 'Rehman, Tarek A',
-      cdo: 'Shadtrach, Leah',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: false,
-      hs_status: 'Offered',
-      initials: 'TR',
-      panelDate: '12/25/2021',
-      ted: '04/2025',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Graham, Aubrey D',
-      bidder: 'Bayliss, Jaye Y',
-      cdo: 'NA',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: false,
-      hs_status: 'Extended',
-      initials: 'JB',
-      panelDate: '12/25/2021',
-      ted: '09/2023',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Tinman, Chanda R',
-      bidder: 'Malpass, Izzy A',
-      cdo: 'MacMaster, Massimiliano M',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: true,
-      hs_status: 'Accepted',
-      initials: 'IM',
-      panelDate: '12/25/2021',
-      ted: '11/2022',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Lempel, Mandie B',
-      bidder: 'Jikovsky, Lelia D',
-      cdo: 'Peters, Jeremy W',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: false,
-      hs_status: 'Accepted',
-      initials: 'LG',
-      panelDate: '12/25/2021',
-      ted: '07/2024',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Swift, Taylor A',
-      bidder: 'Jessep, Des D',
-      cdo: 'NA',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: false,
-      hs_status: 'Offered',
-      initials: 'DJ',
-      panelDate: '12/25/2021',
-      ted: '09/2023',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Hallworth, Terrence L',
-      bidder: 'Franies, Normie G',
-      cdo: 'Alesi, Reina W',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: false,
-      hs_status: 'Extended',
-      initials: 'NF',
-      panelDate: '12/25/2021',
-      ted: '03/2023',
-    },
-    {
-      agendaStatus: 'Complete',
-      author: 'Fronsek, Ahmad M',
-      bidder: 'Drakes, Price P',
-      cdo: 'Ranns, Natty L',
-      currentPost: 'Paris (EUR)',
-      futurePost: 'Djbouti (AF)',
-      hs_accepted: true,
-      hs_status: 'Accepted',
-      initials: 'PD',
-      panelDate: '12/25/2021',
-      ted: '06/2023',
-    },
-  ];
 
   return (
     isLoading ?
@@ -498,20 +387,24 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
           </div>
           <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
             {
-              cardView &&
+              agendaEmployeesIsLoading &&
+              <Spinner type="bureau-filters" size="small" />
+            }
+            {
+              cardView && !agendaEmployeesIsLoading &&
               <div className="employee-agenda-card">
-                {data.map(result => (
+                {agendaEmployees.map(emp => (
                   // TODO: include React keys once we have real data
-                  <EmployeeAgendaSearchCard result={result} isCDO={isCDO} />
+                  <EmployeeAgendaSearchCard result={emp} isCDO={isCDO} />
                 ))}
               </div>
             }
             {
-              !cardView &&
+              !cardView && !agendaEmployeesIsLoading &&
               <div className="employee-agenda-row">
-                {data.map(result => (
+                {agendaEmployees.map(emp => (
                   // TODO: include React keys once we have real data
-                  <EmployeeAgendaSearchRow result={result} isCDO={isCDO} />
+                  <EmployeeAgendaSearchRow result={emp} isCDO={isCDO} />
                 ))}
               </div>
             }
