@@ -406,6 +406,10 @@
     display: flex;
     flex-wrap: wrap;
 
+    .usa-alert {
+      width: 50%;
+    }
+
     .ai-history-card {
       background-color: $color-white;
       border-radius: 10px;
