@@ -106,7 +106,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
 
 EmployeeAgendaSearchCard.propTypes = {
   isCDO: PropTypes.bool,
-  result: PropTypes.PropTypes.shape({}),
+  result: PropTypes.PropTypes.shape({ person: {}, currentAssignment: {} }),
 };
 
 EmployeeAgendaSearchCard.defaultProps = {

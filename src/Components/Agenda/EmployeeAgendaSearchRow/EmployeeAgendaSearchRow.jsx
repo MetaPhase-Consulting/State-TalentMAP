@@ -86,7 +86,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
 
 EmployeeAgendaSearchRow.propTypes = {
   isCDO: PropTypes.bool,
-  result: PropTypes.PropTypes.shape({}),
+  result: PropTypes.PropTypes.shape({ person: {}, currentAssignment: {} }),
 };
 
 EmployeeAgendaSearchRow.defaultProps = {
