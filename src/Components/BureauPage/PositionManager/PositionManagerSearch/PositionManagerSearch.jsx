@@ -47,7 +47,7 @@ const PositionManagerSearch = forwardRef((props, ref) => {
             noForm
             onChangeText={changeText}
             onClear={onClear}
-            placeholder="Type keywords here"
+            placeholder={props.placeHolder}
             showClear
             submitText="Search"
             type="medium"
@@ -71,6 +71,7 @@ PositionManagerSearch.propTypes = {
   defaultValue: PropTypes.string,
   textSearch: PropTypes.string,
   label: PropTypes.string,
+  placeHolder: PropTypes.string,
 };
 
 PositionManagerSearch.defaultProps = {
@@ -79,6 +80,7 @@ PositionManagerSearch.defaultProps = {
   defaultValue: '',
   textSearch: '',
   label: '',
+  placeHolder: 'Type keywords here',
 };
 
 export default PositionManagerSearch;

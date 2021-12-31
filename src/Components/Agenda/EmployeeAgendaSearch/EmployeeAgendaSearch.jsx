@@ -229,6 +229,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                   ref={childRef}
                   textSearch={textSearch}
                   label="Search for an Employee"
+                  placeHolder="Search using Employee ID or Name here"
                 />
                 {
                   !hideFilters &&
