@@ -26,7 +26,7 @@ const EmployeeProfileModal = props => {
   return (
     <div className="checklist-modal">
       <div>
-        <Worker workerUrl={getAssetPath('/static/js/bundle.worker.js')}>
+        <Worker workerUrl={getAssetPath('/static/js/pdf.worker.js')}>
           {/* <Viewer fileUrl={this.state.data} />; */}
           <Viewer
             fileUrl={url}

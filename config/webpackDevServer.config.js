@@ -93,6 +93,9 @@ module.exports = function(proxy, allowedHost) {
       app.get('/', redirectToLogin);
       app.get('/login', redirectToLogin);
       app.get('/logout', redirectToLogin);
+      app.get('/static/js/pdf.worker.js', function (req, res) {
+        res.redirect('/static/js/bundle.worker.js')
+      });
     },
   };
 };
