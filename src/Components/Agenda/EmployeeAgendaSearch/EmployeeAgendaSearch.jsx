@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
@@ -21,8 +22,6 @@ import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSe
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 
-// eslint-disable-next-line no-console
-const fakeAction = (sel) => console.log(sel);
 
 const EmployeeAgendaSearch = ({ isCDO }) => {
   const childRef = useRef();
@@ -52,7 +51,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   // Pagination
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
   const [ordering, setOrdering] = useState('None');
   // Filters
   const [selectedCurrentBureaus, setSelectedCurrentBureaus] = useState([]);
@@ -81,14 +80,14 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     limit,
     ordering,
     // User Filters
-    [`${get(bureaus, 'item.selectionRef', '')}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    [`${get(bureaus, 'item.selectionRef', '')}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    [get(cycles, 'item.selectionRef', '')]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
-    [get(fsbidHandshakeStatus, 'item.selectionRef', '')]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
-    selectedPanels,
-    [`${get(posts, 'item.selectionRef', '')}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
-    [`${get(posts, 'item.selectionRef', '')}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
-    selectedTED,
+    // [`${get(bureaus, 'item.selectionRef', '')}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    // [`${get(bureaus, 'item.selectionRef', '')}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    // [get(cycles, 'item.selectionRef', '')]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
+    // [get(fsbidHandshakeStatus, 'item.selectionRef', '')]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
+    // selectedPanels,
+    // [`${get(posts, 'item.selectionRef', '')}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
+    // [`${get(posts, 'item.selectionRef', '')}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
+    // selectedTED,
     // Free Text
     q: textInput || textSearch,
   };
@@ -97,7 +96,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   useEffect(() => {
     dispatch(filtersFetchData(filterData, {}));
     dispatch(bidderPortfolioCDOsFetchData());
-    dispatch(agendaEmployeesFetchData());
+    dispatch(agendaEmployeesFetchData(query));
   }, []);
 
   useEffect(() => {
@@ -117,8 +116,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     } else {
       setClearFilters(true);
     }
-    fakeAction(query);
-    // dispatch(agendaEmployeesFetchData());
+    dispatch(agendaEmployeesFetchData(query));
   }, [
     page,
     limit,
@@ -385,38 +383,40 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
               </div>
             </div>
           </div>
-          <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
-            {
-              agendaEmployeesIsLoading &&
-              <Spinner type="bureau-filters" size="small" />
-            }
-            {
-              cardView && !agendaEmployeesIsLoading &&
-              <div className="employee-agenda-card">
-                {agendaEmployees.map(emp => (
-                  // TODO: include React keys once we have real data
-                  <EmployeeAgendaSearchCard result={emp} isCDO={isCDO} />
-                ))}
-              </div>
-            }
-            {
-              !cardView && !agendaEmployeesIsLoading &&
-              <div className="employee-agenda-row">
-                {agendaEmployees.map(emp => (
-                  // TODO: include React keys once we have real data
-                  <EmployeeAgendaSearchRow result={emp} isCDO={isCDO} />
-                ))}
-              </div>
-            }
-          </div>
-          <div className="usa-grid-full react-paginate empl-search-pagination-controls">
-            <PaginationWrapper
-              pageSize={limit}
-              onPageChange={p => setPage(p.page)}
-              forcePage={page}
-              totalResults={10}
-            />
-          </div>
+          {
+            agendaEmployeesIsLoading ?
+              <Spinner type="bureau-filters" size="small" /> :
+              <>
+                <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
+                  {
+                    cardView && !agendaEmployeesIsLoading &&
+                    <div className="employee-agenda-card">
+                      {agendaEmployees.map(emp => (
+                        // TODO: include React keys once we have real data
+                        <EmployeeAgendaSearchCard result={emp} isCDO={isCDO} />
+                      ))}
+                    </div>
+                  }
+                  {
+                    !cardView && !agendaEmployeesIsLoading &&
+                    <div className="employee-agenda-row">
+                      {agendaEmployees.map(emp => (
+                        // TODO: include React keys once we have real data
+                        <EmployeeAgendaSearchRow result={emp} isCDO={isCDO} />
+                      ))}
+                    </div>
+                  }
+                </div>
+                <div className="usa-grid-full react-paginate empl-search-pagination-controls">
+                  <PaginationWrapper
+                    pageSize={limit}
+                    onPageChange={p => setPage(p.page)}
+                    forcePage={page}
+                    totalResults={agendaEmployees.length}
+                  />
+                </div>
+              </>
+          }
         </div>
       </>
   );
