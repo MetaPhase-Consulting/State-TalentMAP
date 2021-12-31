@@ -11,7 +11,7 @@ default-docker-node: &default-docker-node
         PUBLIC_URL: /talentmap/
         STATIC_PATH: /home/circleci/project/public
         API_ROOT: http://app:8000/
-        NODE_OPTIONS: --max-old-space-size=3584
+        NODE_OPTIONS: --max-old-space-size=3584 --optimize-for-size
 jobs:
   build:
     <<: *default-docker-node
