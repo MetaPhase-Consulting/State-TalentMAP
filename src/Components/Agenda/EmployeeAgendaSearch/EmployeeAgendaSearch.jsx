@@ -78,7 +78,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [textInput, setTextInput] = useState(get(userSelections, 'textInput', ''));
   const [textSearch, setTextSearch] = useState(get(userSelections, 'textSearch', ''));
   // Controls
-  const [cardView, setCardView] = useState(true);
+  const [cardView, setCardView] = useState(get(userSelections, 'cardView', true));
   const [clearFilters, setClearFilters] = useState(false);
 
   const count = agendaEmployees ? agendaEmployees.length : 0;
@@ -119,6 +119,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     selectedTED,
     textInput,
     textSearch,
+    cardView,
   };
 
   useEffect(() => {
@@ -162,6 +163,10 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     selectedTED,
     textSearch,
   ]);
+
+  useEffect(() => {
+    dispatch(saveAgendaEmployeesSelections(currentInputs));
+  }, [cardView]);
 
   function submitSearch(text) {
     setTextSearch(text);
