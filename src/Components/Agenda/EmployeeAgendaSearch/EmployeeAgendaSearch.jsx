@@ -75,8 +75,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [selectedOngoingPosts, setSelectedOngoingPosts] = useState([]);
   const [selectedTED, setSelectedTED] = useState(null);
   // Free Text
-  const [textInput, setTextInput] = useState(userSelections.textInput || '');
-  const [textSearch, setTextSearch] = useState(userSelections.textSearch || '');
+  const [textInput, setTextInput] = useState(get(userSelections, 'textInput', ''));
+  const [textSearch, setTextSearch] = useState(get(userSelections, 'textSearch', ''));
   // Controls
   const [cardView, setCardView] = useState(true);
   const [clearFilters, setClearFilters] = useState(false);
