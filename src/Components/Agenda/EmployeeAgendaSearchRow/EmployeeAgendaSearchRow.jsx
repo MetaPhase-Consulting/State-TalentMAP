@@ -20,7 +20,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const userRole = isCDO ? 'cdo' : 'ao';
   const perdet = get(person, 'perdet', '');
   const hideCreate = true;
-  const { employeeID } = person;
+  const employeeID = get(person, 'employeeID', '');
 
   const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 

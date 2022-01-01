@@ -23,7 +23,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
   const perdet = get(person, 'perdet', '');
   const userRole = isCDO ? 'cdo' : 'ao';
   const hideCreate = true;
-  const { employeeID } = person;
+  const employeeID = get(person, 'employeeID', '');
 
   const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 
