@@ -405,6 +405,14 @@
 
   .agenda-controls-container {
     justify-content: flex-end;
+
+    .agenda-results-controls {
+      align-items: center;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+      padding: 0 35px;
+    }
   }
 
   .ai-history-cards-container {
