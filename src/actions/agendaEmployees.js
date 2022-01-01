@@ -67,3 +67,14 @@ export function agendaEmployeesFetchData(query = {}) {
   };
 }
 
+export function agendaEmployeesSelectionsSaveSuccess(result) {
+  return {
+    type: 'AGENDA_EMPLOYEES_SELECTIONS_SAVE_SUCCESS',
+    result,
+  };
+}
+
+export function saveAgendaEmployeesSelections(queryObject) {
+  return (dispatch) => dispatch(agendaEmployeesSelectionsSaveSuccess(queryObject));
+}
+

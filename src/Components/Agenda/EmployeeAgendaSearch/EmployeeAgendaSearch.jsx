@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
@@ -103,8 +104,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
 
   useEffect(() => {
-    dispatch(filtersFetchData(filterData, {}));
-    dispatch(bidderPortfolioCDOsFetchData());
+    // dispatch(filtersFetchData(filterData, {}));
+    // dispatch(bidderPortfolioCDOsFetchData());
     dispatch(agendaEmployeesFetchData(query));
   }, []);
 

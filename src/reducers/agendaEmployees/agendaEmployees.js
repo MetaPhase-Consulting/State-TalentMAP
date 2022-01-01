@@ -23,3 +23,11 @@ export function agendaEmployees(state = {}, action) {
   }
 }
 
+export function agendaEmployeesSelections(state = {}, action) {
+  switch (action.type) {
+    case 'AGENDA_EMPLOYEES_SELECTIONS_SAVE_SUCCESS':
+      return action.result;
+    default:
+      return state;
+  }
+}
