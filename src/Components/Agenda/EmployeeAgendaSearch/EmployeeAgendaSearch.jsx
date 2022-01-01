@@ -9,7 +9,7 @@ import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { flatten, get, has, isEmpty, sortBy, throttle, uniqBy } from 'lodash';
 import FA from 'react-fontawesome';
 import { filtersFetchData } from 'actions/filters/filters';
-import { agendaEmployeesFetchData } from 'actions/agendaEmployees';
+import { agendaEmployeesFetchData, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import Spinner from 'Components/Spinner';
@@ -37,10 +37,11 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const agendaEmployees$ = useSelector(state => state.agendaEmployees);
   const agendaEmployeesIsLoading = useSelector(state => state.agendaEmployeesFetchDataLoading);
   const agendaEmployeesHasErrored = useSelector(state => state.agendaEmployeesFetchDataErrored);
+  const userSelections = useSelector(state => state.agendaEmployeesSelections);
 
   const agendaEmployees = get(agendaEmployees$, 'results', []);
 
-  const isLoading = filtersIsLoading || cdosIsLoading;
+  const isLoading = false; // filtersIsLoading || cdosIsLoading;
 
   const filters = get(filterData, 'filters', []);
 
@@ -74,8 +75,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [selectedOngoingPosts, setSelectedOngoingPosts] = useState([]);
   const [selectedTED, setSelectedTED] = useState(null);
   // Free Text
-  const [textInput, setTextInput] = useState('');
-  const [textSearch, setTextSearch] = useState('');
+  const [textInput, setTextInput] = useState(userSelections.textInput || '');
+  const [textSearch, setTextSearch] = useState(userSelections.textSearch || '');
   // Controls
   const [cardView, setCardView] = useState(true);
   const [clearFilters, setClearFilters] = useState(false);
@@ -102,11 +103,29 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     q: textInput || textSearch,
   };
 
+  const currentInputs = {
+    page,
+    limit,
+    ordering,
+    selectedCurrentBureaus,
+    selectedOngoingBureaus,
+    selectedCDOs,
+    selectedCreators,
+    selectedCycles,
+    selectedHandshakeStatus,
+    selectedPanels,
+    selectedCurrentPosts,
+    selectedOngoingPosts,
+    selectedTED,
+    textInput,
+    textSearch,
+  };
 
   useEffect(() => {
     // dispatch(filtersFetchData(filterData, {}));
     // dispatch(bidderPortfolioCDOsFetchData());
     dispatch(agendaEmployeesFetchData(query));
+    dispatch(saveAgendaEmployeesSelections(currentInputs));
   }, []);
 
   useEffect(() => {
@@ -127,6 +146,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       setClearFilters(true);
     }
     dispatch(agendaEmployeesFetchData(query));
+    dispatch(saveAgendaEmployeesSelections(currentInputs));
   }, [
     page,
     limit,
