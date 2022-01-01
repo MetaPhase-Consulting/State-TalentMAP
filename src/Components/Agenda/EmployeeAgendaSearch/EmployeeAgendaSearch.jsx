@@ -37,7 +37,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const agendaEmployeesIsLoading = useSelector(state => state.agendaEmployeesFetchDataLoading);
   const agendaEmployeesHasErrored = useSelector(state => state.agendaEmployeesFetchDataErrored);
 
-  const agendaEmployees = agendaEmployees$.results;
+  const agendaEmployees = get(agendaEmployees$, 'results', []);
 
   const isLoading = filtersIsLoading || cdosIsLoading;
 
