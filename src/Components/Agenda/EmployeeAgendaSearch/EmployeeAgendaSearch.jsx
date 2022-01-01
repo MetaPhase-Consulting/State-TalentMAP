@@ -223,17 +223,23 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   };
 
   const getOverlay = () => {
-    if (agendaEmployeesHasErrored) {
-      return <Alert type="error" title="Error loading employees" messages={[{ body: 'Please try again.' }]} />;
-    }
+    let toReturn;
     if (agendaEmployeesIsLoading) {
-      return <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
+      toReturn = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
+    } else if (agendaEmployeesHasErrored) {
+      toReturn = <Alert type="error" title="Error loading employees" messages={[{ body: 'Please try again.' }]} />;
+    } else if (count <= 0) {
+      toReturn = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
+    } else {
+      toReturn = false;
     }
-    if (count <= 0) {
-      return <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
+    if (toReturn) {
+      return <div className="usa-width-one-whole empl-search-lower-section results-dropdown">{toReturn}</div>;
     }
     return false;
   };
+
+  const overlay = getOverlay();
 
   return (
     isLoading ?
@@ -396,7 +402,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
             </div>
           </div>
           {
-            !agendaEmployeesIsLoading && !isLoading && !agendaEmployeesHasErrored &&
+            !agendaEmployeesIsLoading && !isLoading &&
             <div className="usa-width-one-whole results-dropdown empl-search-controls-container">
               <TotalResults
                 total={count}
@@ -439,7 +445,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
             </div>
           }
           {
-            getOverlay() ||
+            overlay ||
               <>
                 <div className="usa-width-one-whole empl-search-lower-section results-dropdown">
                   {

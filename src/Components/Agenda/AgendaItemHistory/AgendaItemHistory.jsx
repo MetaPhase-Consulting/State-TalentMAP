@@ -43,15 +43,17 @@ const AgendaItemHistory = (props) => {
   const prevSort = usePrevious(sort);
 
   const exportAgendaItem = () => {
-    setExportIsLoading(true);
-    agendaItemHistoryExport(id, sort)
-      .then(() => {
-        setExportIsLoading(false);
+    if (!exportIsLoading) {
+      setExportIsLoading(true);
+      agendaItemHistoryExport(id, sort)
+        .then(() => {
+          setExportIsLoading(false);
         // downloadFromResponse(res);
-      })
-      .catch(() => {
-        setExportIsLoading(false);
-      });
+        })
+        .catch(() => {
+          setExportIsLoading(false);
+        });
+    }
   };
 
   const getClient = () => {
@@ -89,6 +91,8 @@ const AgendaItemHistory = (props) => {
     title = '';
   }
 
+  const exportDisabled = (aih || []).length <= 0;
+
   return (
     <div className="agenda-item-history-container">
       <div className="usa-grid-full profile-content-inner-container">
@@ -109,6 +113,7 @@ const AgendaItemHistory = (props) => {
                 <ExportButton
                   onClick={exportAgendaItem}
                   isLoading={exportIsLoading}
+                  disabled={exportDisabled}
                 />
               </div>
             </div>

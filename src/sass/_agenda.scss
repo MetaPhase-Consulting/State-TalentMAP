@@ -127,6 +127,11 @@
 
 .empl-search-lower-section {
   padding: 0 35px 20px;
+  position: relative;
+
+  .tm-spinner {
+    top: 0;
+  }
 }
 
 .empl-search-controls-container {
