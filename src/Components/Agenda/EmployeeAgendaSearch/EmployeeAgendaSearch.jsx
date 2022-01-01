@@ -83,7 +83,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const count = agendaEmployees ? agendaEmployees.length : 0;
 
-  const view = cardView ? 'card' : 'row';
+  const view = cardView ? 'card' : 'grid';
 
   const query = {
     // Pagination
