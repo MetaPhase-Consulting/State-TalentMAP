@@ -1,4 +1,6 @@
 version: 2.1
+orbs: 
+  node: circleci/node@5.0.0
 default-docker-node: &default-docker-node
   docker:
     - image: circleci/node:12.14.0
@@ -106,9 +108,14 @@ jobs:
             ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
 
   site:
-    <<: *default-docker-node
+    machine:
+      image: ubuntu-1604:202007-01
     steps:
       - checkout
+      - node/install:
+          install-yarn: true
+          node-version: '12.13'
+      - run: node --version
       - restore_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run: mkdir ~/.npm-global
@@ -261,16 +268,16 @@ workflows:
       #           - dev
       #           - staging
       #           - master
-      - yarn
-      - upload-coverage:
-          requires:
-            - yarn
-      - site:
-          requires:
-            - yarn
-      - server:
-          requires:
-            - yarn
+      #- yarn
+      #- upload-coverage:
+      #    requires:
+      #      - yarn
+      - site
+      #    requires:
+      #      - yarn
+      #- server:
+      #    requires:
+      #      - yarn
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
