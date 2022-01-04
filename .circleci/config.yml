@@ -112,7 +112,7 @@ jobs:
       image: ubuntu-1604:202007-01
     steps:
       - checkout
-      - install-yarn
+      - node/install-yarn
       - run: node --version
       - restore_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
