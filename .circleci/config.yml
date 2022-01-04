@@ -110,12 +110,12 @@ jobs:
       image: ubuntu-1604:202007-01
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt-get upgrade
-      - run: sudo apt-get install build-essential libssl-dev -y
+      - run: apt-get update && sudo apt-get upgrade
+      - run: apt-get install build-essential libssl-dev -y
       - run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
       - run: nvm install 12.13.0
       - run: nvm use 12.13.0
-      - run: sudo apt install yarn
+      - run: apt install yarn
       - run: node --version
       - restore_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
