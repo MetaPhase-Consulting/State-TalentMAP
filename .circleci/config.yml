@@ -281,12 +281,12 @@ workflows:
       # Disabled see 1368 - pa11y:
       #    requires:
       #      - docker-build
-      - deploy:
-          requires:
-            - yarn
-          filters:
-            branches:
-              only: dev
+      #- deploy:
+      #    requires:
+      #      - yarn
+      #    filters:
+      #      branches:
+      #        only: dev
       # - zap:s
       #     requires:
       #       - docker-build
