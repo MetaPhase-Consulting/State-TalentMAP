@@ -114,7 +114,6 @@ jobs:
       - checkout
       - node/install:
           install-yarn: true
-          node-version: '12.13'
       - run: node --version
       - restore_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
