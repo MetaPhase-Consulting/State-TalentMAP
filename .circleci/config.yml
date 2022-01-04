@@ -1,6 +1,4 @@
 version: 2.1
-orbs: 
-  node: circleci/node@3.0.1
 default-docker-node: &default-docker-node
   docker:
     - image: circleci/node:12.14.0
@@ -112,7 +110,10 @@ jobs:
       image: ubuntu-1604:202007-01
     steps:
       - checkout
-      - node/install-yarn
+      - run: nvm install 12.13.0
+      - run: nvm use 12.13.0
+      - run: sudo apt-get update && sudo apt-get upgrade
+      - run: sudo apt install yarn
       - run: node --version
       - restore_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
