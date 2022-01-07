@@ -2,10 +2,10 @@ import createLoader from '../../../Loadable';
 
 export const path = () => import('./EmployeeProfileLink');
 
-const PostPage = createLoader({ path, shouldPreload: false, usePlaceholder: false });
+const Loadable = createLoader({ path, shouldPreload: false, usePlaceholder: false });
 
 const EPLLoadable = ({ ...rest }) => (
-  <PostPage {...rest} />
+  <Loadable {...rest} />
 );
 
 export default EPLLoadable;
