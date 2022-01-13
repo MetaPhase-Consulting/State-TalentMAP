@@ -35,7 +35,7 @@ const AvailableBidderTable = props => {
   const isLoading = availableBiddersIsLoading || filtersIsLoading;
 
 
-  const bureaus = filterData.filters.find(f => f.item.description === 'region');
+  const bureaus = (get(filterData, 'filters') || []).find(f => f.item.description === 'region');
 
   const bidders = isLoading ? [...new Array(10)] : get(biddersData, 'results', []);
 
