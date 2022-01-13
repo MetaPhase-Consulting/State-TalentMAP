@@ -13,6 +13,7 @@ import Alert from 'Components/Alert/Alert';
 import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import shortid from 'shortid';
+import { useMount, usePrevious } from 'hooks';
 
 
 const AvailableBidderTable = props => {
@@ -38,16 +39,20 @@ const AvailableBidderTable = props => {
 
   const bidders = isLoading ? [...new Array(10)] : get(biddersData, 'results', []);
 
+  const prevSort = usePrevious(sort);
+
   // Actions
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useMount(() => {
     dispatch(availableBiddersFetchData(isCDO, sort));
     dispatch(filtersFetchData(filterData, {}));
-  }, []);
+  });
 
   useEffect(() => {
-    dispatch(availableBiddersFetchData(isCDO, sort));
+    if (prevSort && sort && sort !== prevSort) {
+      dispatch(availableBiddersFetchData(isCDO, sort));
+    }
   }, [sort]);
 
   const tableHeaders = isCDO ? [
