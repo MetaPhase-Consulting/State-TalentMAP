@@ -88,7 +88,7 @@ The front end application is Dockerized and available in a `docker-compose` stac
 ## Node.js
 
 Use NVM to manage different Node.js versions. Here's a link to the GitHub repo (https://github.com/nvm-sh/nvm) where you can find a curl command under "Installing and Updating"
-to install NVM.
+to install NVM
 
 ## Deploying
 
