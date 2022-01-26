@@ -47,6 +47,7 @@ jobs:
   yarn:
     <<: *default-docker-node
     parallelism: 16
+    resource_class: xlarge
     steps:
       - checkout
       - run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
