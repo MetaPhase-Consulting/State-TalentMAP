@@ -1,0 +1,46 @@
+.navTabs {
+  .menu-style {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(150px, 1fr));
+    .tab {
+      text-align: center;
+      padding: 5px 10px;
+      font-size: 13px;
+      background-color: $bg-gray-medium-4;
+      //border: 1px solid $dos-blue; //styling 1
+      //background-color: $primary-alt-lightest; //styling 3
+      //border: 1px solid $blue-primary; //styling 3
+      //color: $blue-primary; //styling 3
+      border-top: 3px solid $bg-gray-medium-4; //styling 4
+    }
+    .tab-active {
+      background-color: white; //styling 4
+      border-top: 3px solid $dos-blue; //styling 4
+      color: $dos-blue; //styling 4
+    }
+    .tab:hover {
+      //background-color: $dos-blue; //styling 1
+      //color: white; //styling 1
+      //background-color: white; //styling 2
+      //border-bottom: 3px solid $dos-blue; //styling 2
+      //color: $dos-blue; //styling 2
+      //background-color: $blue-primary; //styling 3
+      //color: white; //styling 3
+      background-color: white; //styling 4
+      border-top: 3px solid $dos-blue; //styling 4
+      color: $dos-blue; //styling 4
+      cursor: pointer;
+    }
+  }
+
+  .dd-style {
+    select {
+      text-align: center;
+      font-size: 13px;
+      padding: 5px 10px 5px;
+    }
+  }
+  .dd-style-center {
+    margin: auto;
+  }
+}

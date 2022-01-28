@@ -1,39 +1,68 @@
-/* eslint-disable */
-// import PropTypes from 'prop-types';
-// import FA from 'react-fontawesome';
-// import { clone, get, take, takeRight } from 'lodash';
-// import { Tooltip } from 'react-tippy';
-// import { formatDate, shortenString } from 'utilities';
-// import { TEMP_FAKE_DATA } from 'Constants/PropTypes'; TODO - update
-// import InteractiveElement from 'Components/InteractiveElement';
-// import AgendaItemLegs from '../AgendaItemLegs';
-// import { pillColors } from '../Constants';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { get, isEqual } from 'lodash';
+import SelectForm from 'Components/SelectForm';
+import InteractiveElement from 'Components/InteractiveElement';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 
-// eslint-disable-next-line no-unused-vars
 const NavTabs = props => {
-  // const {
-  //   isCreate,
-  //   agenda,
-  //   showEdit,
-  // } = props;
+  const {
+    collapseToDd,
+    ddCenter,
+    ddWidth,
+    passNavValue,
+    tabs,
+  } = props;
+
+  const [menuItem, setMenuItem] = useState(get(tabs, '[0].value') || '');
+
+  useEffect(() => {
+    passNavValue(menuItem);
+  }, [menuItem]);
 
   return (
-    <>
-      <div>
-        =-]
+    <div className="navTabs">
+      <div className="menu-style">
+        {
+          !collapseToDd &&
+          tabs.map(tab => (
+            <InteractiveElement onClick={() => setMenuItem(tab.value)}>
+              <div className={`tab ${isEqual(tab.value, menuItem) ? ' tab-active' : ''} `} id={tab.value}> {tab.text} </div>
+            </InteractiveElement>
+          ))
+        }
       </div>
-    </>
+      <div className={`dd-style ${ddCenter ? 'dd-style-center' : ''} `} style={{ width: ddWidth }}>
+        {
+          collapseToDd &&
+          <SelectForm
+            id="navTabs-dd"
+            options={tabs}
+            defaultSort={menuItem}
+            onSelectOption={value => setMenuItem(value.target.value)}
+          />
+        }
+      </div>
+    </div>
   );
 };
 
-
 NavTabs.propTypes = {
+  collapseToDd: PropTypes.Boolean,
+  ddCenter: PropTypes.Boolean,
+  ddWidth: PropTypes.string,
+  passNavValue: PropTypes.func,
+  tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
 
 };
 
 
 NavTabs.defaultProps = {
-
+  collapseToDd: false,
+  ddCenter: true,
+  ddWidth: '180px',
+  passNavValue: EMPTY_FUNCTION,
+  tabs: [],
 };
 
 export default NavTabs;

@@ -6,19 +6,19 @@ import AgendaItemResearchPane from '../AgendaItemResearchPane';
 import BackButton from '../../BackButton';
 
 const AgendaItemMaintenanceContainer = () => {
-  const [containerExpanded, setContainerExpanded] = useState(true);
+  const [containerExpanded, setContainerExpanded] = useState(false);
 
   function toggleExpand() {
     setContainerExpanded(!containerExpanded);
   }
 
-  const rotate = containerExpanded ? 'rotate(-180deg)' : 'rotate(0)';
+  const rotate = containerExpanded ? 'rotate(0)' : 'rotate(-180deg)';
 
   return (
     <div className="agenda-item-maintenance-container">
       <BackButton />
       <div className="ai-maintenance-containers">
-        <div className={`maintenance-container-left${containerExpanded ? '' : '-expanded'}`}>
+        <div className={`maintenance-container-left${containerExpanded ? '-expanded' : ''}`}>
           Left Maintenance Container
           <div className="expand-arrow">
             <InteractiveElement onClick={toggleExpand}>
@@ -36,7 +36,7 @@ const AgendaItemMaintenanceContainer = () => {
           </div>
         </div>
         {
-          containerExpanded &&
+          !containerExpanded &&
           <div className="maintenance-container-right">
             <AgendaItemResearchPane />
           </div>
