@@ -2,27 +2,28 @@ import { useState } from 'react';
 import FontAwesome from 'react-fontawesome';
 import InteractiveElement from 'Components/InteractiveElement';
 import { Tooltip } from 'react-tippy';
+import AgendaItemResearchPane from '../AgendaItemResearchPane';
 import BackButton from '../../BackButton';
 
 const AgendaItemMaintenanceContainer = () => {
-  const [expandContainer, setExpandContainer] = useState(true);
+  const [containerExpanded, setContainerExpanded] = useState(true);
 
   function toggleExpand() {
-    setExpandContainer(!expandContainer);
+    setContainerExpanded(!containerExpanded);
   }
 
-  const rotate = expandContainer ? 'rotate(-180deg)' : 'rotate(0)';
+  const rotate = containerExpanded ? 'rotate(-180deg)' : 'rotate(0)';
 
   return (
-    <div className="agenda-item-maintenace-container">
+    <div className="agenda-item-maintenance-container">
       <BackButton />
       <div className="ai-maintenance-containers">
-        <div className={`maintenance-container-left${expandContainer ? '' : '-expanded'}`}>
+        <div className={`maintenance-container-left${containerExpanded ? '' : '-expanded'}`}>
           Left Maintenance Container
           <div className="expand-arrow">
             <InteractiveElement onClick={toggleExpand}>
               <Tooltip
-                title={expandContainer ? 'Expand container' : 'Collapse container'}
+                title={containerExpanded ? 'Collapse container' : 'Expand container'}
                 arrow
               >
                 <FontAwesome
@@ -35,9 +36,9 @@ const AgendaItemMaintenanceContainer = () => {
           </div>
         </div>
         {
-          expandContainer &&
+          containerExpanded &&
           <div className="maintenance-container-right">
-            Right Maintenance Container
+            <AgendaItemResearchPane />
           </div>
         }
       </div>
