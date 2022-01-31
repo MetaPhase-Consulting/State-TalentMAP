@@ -35,12 +35,9 @@ const AgendaItemMaintenanceContainer = () => {
             </InteractiveElement>
           </div>
         </div>
-        {
-          !legsContainerExpanded &&
-          <div className="maintenance-container-right">
-            <AgendaItemResearchPane />
-          </div>
-        }
+        <div className={`maintenance-container-right${legsContainerExpanded ? ' hidden' : ''}`}>
+          <AgendaItemResearchPane />
+        </div>
       </div>
     </div>
   );
