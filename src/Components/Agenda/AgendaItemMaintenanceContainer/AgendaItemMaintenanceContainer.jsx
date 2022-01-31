@@ -6,24 +6,24 @@ import AgendaItemResearchPane from '../AgendaItemResearchPane';
 import BackButton from '../../BackButton';
 
 const AgendaItemMaintenanceContainer = () => {
-  const [containerExpanded, setContainerExpanded] = useState(false);
+  const [legsContainerExpanded, setLegsContainerExpanded] = useState(false);
 
   function toggleExpand() {
-    setContainerExpanded(!containerExpanded);
+    setLegsContainerExpanded(!legsContainerExpanded);
   }
 
-  const rotate = containerExpanded ? 'rotate(0)' : 'rotate(-180deg)';
+  const rotate = legsContainerExpanded ? 'rotate(0)' : 'rotate(-180deg)';
 
   return (
     <div className="agenda-item-maintenance-container">
       <BackButton />
       <div className="ai-maintenance-containers">
-        <div className={`maintenance-container-left${containerExpanded ? '-expanded' : ''}`}>
+        <div className={`maintenance-container-left${legsContainerExpanded ? '-expanded' : ''}`}>
           Left Maintenance Container
           <div className="expand-arrow">
             <InteractiveElement onClick={toggleExpand}>
               <Tooltip
-                title={containerExpanded ? 'Collapse container' : 'Expand container'}
+                title={legsContainerExpanded ? 'Expand Research' : 'Collapse Research'}
                 arrow
               >
                 <FontAwesome
@@ -36,7 +36,7 @@ const AgendaItemMaintenanceContainer = () => {
           </div>
         </div>
         {
-          !containerExpanded &&
+          !legsContainerExpanded &&
           <div className="maintenance-container-right">
             <AgendaItemResearchPane />
           </div>
