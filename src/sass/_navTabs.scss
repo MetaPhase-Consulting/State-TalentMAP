@@ -14,7 +14,7 @@
       border-top: 3px solid $dos-blue;
       color: $dos-blue;
     }
-    .tab:hover {
+    .tab:hover:not(.tab-active) {
       color: $color-black;
       background-color: $bg-gray-medium-2;
       border-top: 3px solid $bg-gray-medium-2;
