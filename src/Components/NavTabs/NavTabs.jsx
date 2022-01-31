@@ -9,7 +9,7 @@ const NavTabs = props => {
   const {
     collapseToDd,
     ddCenter,
-    ddWidth,
+    ddStyle,
     passNavValue,
     tabs,
   } = props;
@@ -32,7 +32,7 @@ const NavTabs = props => {
           ))
         }
       </div>
-      <div className={`dd-style ${ddCenter ? 'dd-style-center' : ''} `} style={{ width: ddWidth }}>
+      <div className={`dd-style ${ddCenter ? 'dd-style-center' : ''} `} style={ddStyle}>
         {
           collapseToDd &&
           <SelectForm
@@ -50,7 +50,7 @@ const NavTabs = props => {
 NavTabs.propTypes = {
   collapseToDd: PropTypes.Boolean,
   ddCenter: PropTypes.Boolean,
-  ddWidth: PropTypes.string,
+  ddStyle: PropTypes.shape({}),
   passNavValue: PropTypes.func,
   tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
 
@@ -60,7 +60,7 @@ NavTabs.propTypes = {
 NavTabs.defaultProps = {
   collapseToDd: false,
   ddCenter: true,
-  ddWidth: '180px',
+  ddStyle: { width: '180px' },
   passNavValue: EMPTY_FUNCTION,
   tabs: [],
 };
