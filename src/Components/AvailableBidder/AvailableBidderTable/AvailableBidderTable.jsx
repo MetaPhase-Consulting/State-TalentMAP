@@ -58,6 +58,7 @@ const AvailableBidderTable = props => {
   const tableHeaders = isCDO ? [
     'Name',
     'Status',
+    'Step Letters',
     'Skill',
     'Grade',
     'Languages',
