@@ -8,7 +8,7 @@ describe('AgendaResearchPane Component', () => {
     expect(wrapper).toBeDefined();
   });
 
-  xit('matches snapshot', () => {
+  it('matches snapshot', () => {
     const wrapper = shallow(<AgendaItemResearchPane />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
