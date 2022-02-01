@@ -746,7 +746,10 @@
       color: $tertiary-cool-blue;
       font-size: 20px;
     }
+  }
 
+  .button-back-link {
+    margin: 15px 0 0 0;
   }
 
   @media screen and (max-width: 1400px) {
@@ -759,6 +762,6 @@
       }
 
     }
-
   }
 }
+
