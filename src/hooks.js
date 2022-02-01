@@ -64,11 +64,11 @@ export const useDataLoader = (getData, ...args) => {
     dispatch({ type: 'get' });
     getData(...args)
       .then(data => {
-        // eslint-disable-next-line
+        // eslint-disable-next-line no-unused-expressions
         !cancel && dispatch({ type: 'success', payload: { data } });
       })
       .catch(error => {
-        // eslint-disable-next-line
+        // eslint-disable-next-line no-unused-expressions
         !cancel && dispatch({ type: 'error', payload: { error } });
       });
 
