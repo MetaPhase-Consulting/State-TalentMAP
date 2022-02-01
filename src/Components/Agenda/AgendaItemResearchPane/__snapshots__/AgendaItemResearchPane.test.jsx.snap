@@ -12,11 +12,6 @@ exports[`AgendaResearchPane Component matches snapshot 1`] = `
   </MediaQueryWrapper>
   <div
     className="ai-research-content"
-    style={
-      Object {
-        "position": "relative",
-      }
-    }
   >
     <Spinner
       size="small"
