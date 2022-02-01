@@ -21,11 +21,9 @@ const AgendaItemResearchPane = props => {
     { text: 'another another', value: 'AA' },
   ];
 
-  // eslint-disable-next-line no-unused-vars
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
 
   // assignments
-  // const [assignments, setAssignments] = useState([]);
   const { data, error, loading /* , retry */ } = useDataLoader(api().get, `/fsbid/client/${perdet}/`);
   const assignments = get(data, 'data.assignments') || [];
 

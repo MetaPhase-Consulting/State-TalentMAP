@@ -27,7 +27,7 @@ export default function useUpdate(fn, { hook = useEffect } = {}) {
   });
 }
 
-const dataReducer = (state, action) => {
+export const dataReducer = (state, action) => {
   switch (action.type) {
     case 'get':
       return { ...state, loading: true };
