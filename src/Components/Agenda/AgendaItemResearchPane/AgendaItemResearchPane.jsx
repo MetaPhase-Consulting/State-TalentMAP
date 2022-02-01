@@ -39,7 +39,7 @@ const AgendaItemResearchPane = props => {
           />
         )}
       </MediaQuery>
-      <div className="ai-research-content" style={{ position: 'relative' }}>
+      <div className="ai-research-content">
         {
           loading && !error &&
             <Spinner type="homepage-position-results" size="small" />
