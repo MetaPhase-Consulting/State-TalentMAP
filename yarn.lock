@@ -12187,19 +12187,20 @@ react-themeable@^1.1.0:
   dependencies:
     object-assign "^3.0.0"
 
-react-time-picker@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/react-time-picker/-/react-time-picker-4.3.0.tgz#c88771c474c9a05a1970a7dfbb55d3f0846241b0"
-  integrity sha512-MpbPl+05Rdk9GPTTGAa7bECzjxvCu/tbwBGGgIQDJ3RKXwsPpgdhLoRDeXv/ECFQoBhkJFuXovrhOGxTr/+PxQ==
+react-time-picker@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/react-time-picker/-/react-time-picker-4.4.4.tgz#a67ca5fd88f51eac0919df802e416d9a25ad726a"
+  integrity sha512-WMdrpGnegug0871Do+SU1Fe91uZGmS6JUo1Yw7eLfU3VHMXCFj9sL9FAT6BuXe7lfILBbXq4tQQOqa/rLDASQg==
   dependencies:
     "@wojtekmaj/date-utils" "^1.0.0"
     get-user-locale "^1.2.0"
     make-event-props "^1.1.0"
     merge-class-names "^1.1.1"
+    merge-refs "^1.0.0"
     prop-types "^15.6.0"
     react-clock "^3.0.0"
     react-fit "^1.0.3"
-    update-input-width "^1.1.1"
+    update-input-width "^1.2.2"
 
 react-tippy@^1.4.0:
   version "1.4.0"
@@ -14764,11 +14765,6 @@ unzip-response@^2.0.1:
 upath@^1.1.1, upath@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
-
-update-input-width@^1.1.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/update-input-width/-/update-input-width-1.2.1.tgz#769d6182413590c3b50b52ffa9c65d79e2c17f95"
-  integrity sha512-zygDshqDb2C2/kgfoD423n5htv/3OBF7aTaz2u2zZy998EJki8njOHOeZjKEd8XSYeDziIX1JXfMsKaIRJeJ/Q==
 
 update-input-width@^1.2.2:
   version "1.2.2"
