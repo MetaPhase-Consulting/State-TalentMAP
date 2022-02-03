@@ -1,24 +1,22 @@
 import PropTypes from 'prop-types';
 import { format, isValid } from 'date-fns-v2';
 import { get } from 'lodash';
-import shortid from 'shortid';
-import SectionTitle from '../SectionTitle';
-import InformationDataPoint from '../InformationDataPoint';
+import InformationDataPoint from 'Components/ProfileDashboard/InformationDataPoint';
 
-const Languages = props => {
-  const { languagesArray, useWrapper } = props;
+
+const Languages = (props) => {
+  const { languagesArray } = props;
   const languagesArray$ = languagesArray || [];
 
   const getTestDate = (langObj) => {
     const testDate = get(langObj, 'test_date') || '';
     return isValid(new Date(testDate)) ? format(new Date(testDate), 'P') : '--/--/----';
   };
-
-  let content = ( // eslint-disable-line
-    <>
+  return (
+    <div className="usa-grid-full">
       {
         !languagesArray$.length &&
-      <div>No language history</div>
+        <div>No language history</div>
       }
       <div className="languages-list-container">
         {languagesArray.map(l => (
@@ -26,7 +24,6 @@ const Languages = props => {
             {
               get(l, 'language') ?
                 <InformationDataPoint
-                  key={shortid.generate()}
                   title={get(l, 'language') || 'N/A'}
                   content={
                     <div className="language-details">
@@ -39,30 +36,7 @@ const Languages = props => {
           </>
         ))}
       </div>
-    </>
-  );
-
-  if (useWrapper) {
-    content = (
-      <div className="usa-grid-full profile-section-container languages-container">
-        <div className="usa-grid-full section-padded-inner-container">
-          <div className="usa-width-one-whole">
-            <SectionTitle title="Language History" len={languagesArray$.length} icon="language" />
-          </div>
-          {content}
-        </div>
-      </div>
-    );
-  } else {
-    content = (
-      <div className="usa-grid-full">
-        {content}
-      </div>
-    );
-  }
-
-  return (
-    content
+    </div>
   );
 };
 
@@ -77,12 +51,10 @@ Languages.propTypes = {
       },
     ),
   ),
-  useWrapper: PropTypes.bool,
 };
 
 Languages.defaultProps = {
   languagesArray: [],
-  useWrapper: true,
 };
 
 export default Languages;
