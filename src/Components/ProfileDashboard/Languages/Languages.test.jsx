@@ -11,7 +11,7 @@ describe('LanguagesComponent', () => {
         language: 'Georgian',
         reading_score: '2',
         speaking_score: '2+',
-        test_date: '2003-05-28T04:00:00Z',
+        test_date: '2003-05-28T12:00:00Z',
       },
     ],
     useWrapper: true,
