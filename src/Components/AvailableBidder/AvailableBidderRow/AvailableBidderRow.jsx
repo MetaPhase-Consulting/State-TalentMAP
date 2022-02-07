@@ -39,6 +39,10 @@ const AvailableBidderRow = (props) => {
   const bidderBureau = get(bidder, 'current_assignment.position.bureau_code');
   const created = get(bidder, 'available_bidder_details.date_created');
   const formattedCreated = created ? formatDate(created) : NO_DATE;
+  const stepLetterOne = get(bidder, 'available_bidder_details.step_letter_one');
+  const formattedStepLetterOne = stepLetterOne ? formatDate(stepLetterOne) : NO_DATE;
+  const stepLetterTwo = get(bidder, 'available_bidder_details.step_letter_two');
+  const formattedStepLetterTwo = stepLetterTwo ? formatDate(stepLetterTwo) : NO_DATE;
 
   const getStatus = () => {
     if (status === 'OC') {
@@ -106,6 +110,8 @@ const AvailableBidderRow = (props) => {
   const sections = isCDO ? {
     name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
     status: getStatus(),
+    step_letters: formattedStepLetterOne !== NO_DATE ?
+      `${formattedStepLetterOne}, ${formattedStepLetterTwo}` : formattedStepLetterOne,
     skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
     grade: get(bidder, 'grade') || NO_GRADE,
     languages: languages.length ? getLanguages() : NO_LANGUAGES,
@@ -154,7 +160,9 @@ const AvailableBidderRow = (props) => {
             shared,
             languages,
             bidderBureau,
-            formattedCreated }}
+            formattedCreated,
+            stepLetterOne,
+            stepLetterTwo }}
         />
       ),
     });

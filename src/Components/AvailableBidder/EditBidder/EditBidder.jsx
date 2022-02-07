@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AB_EDIT_DETAILS_OBJECT, AB_EDIT_SECTIONS_OBJECT, EMPTY_FUNCTION, FILTER } from 'Constants/PropTypes';
-import { find, forEach, uniqBy } from 'lodash';
+import { find, forEach, get, uniqBy } from 'lodash';
 import swal from '@sweetalert/with-react';
 import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
@@ -15,8 +15,11 @@ const EditBidder = (props) => {
   const [ocReason, setOCReason] = useState(details.ocReason);
   const [ocBureau, setOCBureau] = useState(details.ocBureau);
   const [shared, setShared] = useState(details.shared);
-  const [date, setDate] = useState(new Date());
   const { languages, bidderBureau } = details;
+  const stepLetterOneDate = get(details, 'stepLetterOne') === null ? new Date() : new Date(get(details, 'stepLetterOne'));
+  const stepLetterTwoDate = get(details, 'stepLetterTwo') === null ? new Date() : new Date(get(details, 'stepLetterTwo'));
+  const [stepLetterOne, setStepLetterOne] = useState(stepLetterOneDate);
+  const [stepLetterTwo, setStepLetterTwo] = useState(stepLetterTwoDate);
 
   const bureauOptions = uniqBy(bureaus.data, 'code');
 
@@ -42,6 +45,8 @@ const EditBidder = (props) => {
       status,
       comments: comment || '',
       is_shared: shared,
+      step_letter_one: stepLetterOne,
+      step_letter_two: stepLetterTwo,
     };
 
     // Remap unmodified local defaults from None Listed to empty string for patch
@@ -86,10 +91,13 @@ const EditBidder = (props) => {
   const ocReasonError = ocSelected && !ocReason;
   const ocBureauError = ocSelected && !ocBureau;
   const submitDisabled = ocReasonError || ocBureauError;
-  const time = new Date(date);
 
-  const updateDate = (newDate) => {
-    setDate(newDate);
+  const updateStepLetterOne = (date) => {
+    setStepLetterOne(date);
+  };
+
+  const updateStepLetterTwo = (date) => {
+    setStepLetterTwo(date);
   };
 
   return (
@@ -182,15 +190,19 @@ const EditBidder = (props) => {
           </select>
         </div>
         <div>
-          <dt>Step Letters:</dt>
+          <dt>Step Letter 1:</dt>
           <DatePicker
-            selected={time}
-            onChange={d => { updateDate(d); }}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            timeCaption="time"
-            dateFormat="MMMM d, yyyy h:mm aa"
+            selected={stepLetterOne}
+            onChange={d => { updateStepLetterOne(d); }}
+            dateFormat="MMMM d, yyyy"
+          />
+        </div>
+        <div>
+          <dt>Step Letter 2:</dt>
+          <DatePicker
+            selected={stepLetterTwo}
+            onChange={d => { updateStepLetterTwo(d); }}
+            dateFormat="MMMM d, yyyy"
           />
         </div>
         <div>
