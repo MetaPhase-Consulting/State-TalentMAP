@@ -9,7 +9,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.16",
+    "@fortawesome/react-fontawesome": "^0.1.17",
     "@react-pdf-viewer/core": "2.11.0",
     "@react-pdf-viewer/default-layout": "^2.11.0",
     "@sweetalert/with-react": "^0.1.1",
