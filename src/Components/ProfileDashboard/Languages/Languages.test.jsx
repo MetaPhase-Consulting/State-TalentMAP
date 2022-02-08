@@ -37,12 +37,12 @@ describe('LanguagesComponent', () => {
   });
 
   it('matches snapshot', () => {
-    const wrapper = shallow(<Languages content="content" {...props} />);
+    const wrapper = shallow(<Languages {...props} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 
   it('matches snapshot when useWrapper is false', () => {
-    const wrapper = shallow(<Languages content="content" {...props} useWrapper={false} />);
+    const wrapper = shallow(<Languages {...props} useWrapper={false} />);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
 });
