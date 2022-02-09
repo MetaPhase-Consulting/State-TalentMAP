@@ -16,8 +16,8 @@ const EditBidder = (props) => {
   const [ocBureau, setOCBureau] = useState(details.ocBureau);
   const [shared, setShared] = useState(details.shared);
   const { languages, bidderBureau } = details;
-  const stepLetterOneDate = get(details, 'stepLetterOne') === null ? new Date() : new Date(get(details, 'stepLetterOne'));
-  const stepLetterTwoDate = get(details, 'stepLetterTwo') === null ? new Date() : new Date(get(details, 'stepLetterTwo'));
+  const stepLetterOneDate = get(details, 'stepLetterOne') === null ? null : new Date(get(details, 'stepLetterOne'));
+  const stepLetterTwoDate = get(details, 'stepLetterTwo') === null ? null : new Date(get(details, 'stepLetterTwo'));
   const [stepLetterOne, setStepLetterOne] = useState(stepLetterOneDate);
   const [stepLetterTwo, setStepLetterTwo] = useState(stepLetterTwoDate);
 
