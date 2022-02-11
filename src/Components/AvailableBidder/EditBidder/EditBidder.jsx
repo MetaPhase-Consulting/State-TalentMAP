@@ -7,7 +7,7 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import InteractiveElement from 'Components/InteractiveElement';
 import DatePicker from 'react-datepicker';
-import { formatDate } from 'utilities';
+import { format, isDate } from 'date-fns-v2';
 
 const EditBidder = (props) => {
   const { name, sections, submitAction, bureaus, details } = props;
@@ -101,6 +101,7 @@ const EditBidder = (props) => {
     setStepLetterTwo(date);
   };
 
+  const formatStepLetterDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'LLLL, d, yyyy') : 'None listed';
   const stepLetterOneFlag = stepLetterOneDate === null;
   const stepLetterTwoFlag = stepLetterTwoDate === null;
   const disableStepLetterOne = !stepLetterOneFlag && !stepLetterTwoFlag;
@@ -201,7 +202,7 @@ const EditBidder = (props) => {
               id="stepLetter"
               disabled={!stepLetterTwoFlag}
             >
-              <option value="">{formatDate(stepLetterOne)}</option>
+              <option value="">{formatStepLetterDate(stepLetterOne)}</option>
             </select>
           }
           {!disableStepLetterOne &&
