@@ -7,6 +7,7 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import InteractiveElement from 'Components/InteractiveElement';
 import DatePicker from 'react-datepicker';
+import { formatDate } from 'utilities';
 
 const EditBidder = (props) => {
   const { name, sections, submitAction, bureaus, details } = props;
@@ -101,6 +102,8 @@ const EditBidder = (props) => {
   };
 
   const stepLetterOneFlag = stepLetterOneDate === null;
+  const stepLetterTwoFlag = stepLetterTwoDate === null;
+  const disableStepLetterOne = !stepLetterOneFlag && !stepLetterTwoFlag;
 
   return (
     <div>
@@ -193,17 +196,27 @@ const EditBidder = (props) => {
         </div>
         <div>
           <dt>Step Letter 1:</dt>
-          <DatePicker
-            selected={stepLetterOne}
-            onChange={d => { updateStepLetterOne(d); }}
-            dateFormat="MMMM d, yyyy"
-          />
+          {disableStepLetterOne &&
+            <select
+              id="stepLetter"
+              disabled={!stepLetterTwoFlag}
+            >
+              <option value="">{formatDate(stepLetterOne)}</option>
+            </select>
+          }
+          {!disableStepLetterOne &&
+            <DatePicker
+              selected={stepLetterOne}
+              onChange={d => { updateStepLetterOne(d); }}
+              dateFormat="MMMM d, yyyy"
+            />
+          }
         </div>
         <div>
           <dt>Step Letter 2:</dt>
           {stepLetterOneFlag &&
             <select
-              id="stepLetterTwo"
+              id="stepLetter"
               disabled={stepLetterOneFlag}
             >
               <option value="">None listed</option>
