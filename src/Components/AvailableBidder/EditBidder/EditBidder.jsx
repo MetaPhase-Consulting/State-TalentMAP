@@ -100,6 +100,8 @@ const EditBidder = (props) => {
     setStepLetterTwo(date);
   };
 
+  const stepLetterOneFlag = stepLetterOneDate === null;
+
   return (
     <div>
       <form className="available-bidder-form">
@@ -199,11 +201,21 @@ const EditBidder = (props) => {
         </div>
         <div>
           <dt>Step Letter 2:</dt>
-          <DatePicker
-            selected={stepLetterTwo}
-            onChange={d => { updateStepLetterTwo(d); }}
-            dateFormat="MMMM d, yyyy"
-          />
+          {stepLetterOneFlag &&
+            <select
+              id="stepLetterTwo"
+              disabled={stepLetterOneFlag}
+            >
+              <option value="">None listed</option>
+            </select>
+          }
+          {!stepLetterOneFlag &&
+            <DatePicker
+              selected={stepLetterTwo}
+              onChange={d => { updateStepLetterTwo(d); }}
+              dateFormat="MMMM d, yyyy"
+            />
+          }
         </div>
         <div>
           <dt>Skill:</dt>

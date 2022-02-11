@@ -45,6 +45,12 @@ const AvailableBidderRow = (props) => {
   const formattedStepLetterOne = stepLetterOne ? formatStepLetterDate(stepLetterOne) : NO_DATE;
   const stepLetterTwo = get(bidder, 'available_bidder_details.step_letter_two');
   const formattedStepLetterTwo = stepLetterTwo ? formatStepLetterDate(stepLetterTwo) : NO_DATE;
+  const stepLetters = {
+    letter_one: formattedStepLetterOne,
+    letter_two: formattedStepLetterTwo,
+  };
+
+  const stepLettersIconStyling = formattedStepLetterOne === NO_DATE ? 'no-step-letters-icon' : '';
 
   const getStatus = () => {
     if (status === 'OC') {
@@ -112,8 +118,28 @@ const AvailableBidderRow = (props) => {
   const sections = isCDO ? {
     name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
     status: getStatus(),
-    step_letters: formattedStepLetterTwo !== NO_DATE ?
-      `${formattedStepLetterOne}, ${formattedStepLetterTwo}` : formattedStepLetterOne,
+    step_letters:
+      <Tooltip
+        html={
+          <div>
+            <div className="step-letter-tooltip-wrapper">
+              <div>
+                <span className="title">Letter 1: <span className="step-letter-date">{stepLetters.letter_one}</span></span>
+              </div>
+              <div>
+                <span className="title">Letter 2: <span className="step-letter-date">{stepLetters.letter_two}</span></span>
+              </div>
+            </div>
+          </div>
+        }
+        theme="step-letters"
+        arrow
+        tabIndex="0"
+        interactive
+        useContext
+      >
+        <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling}`} />
+      </Tooltip>,
     skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
     grade: get(bidder, 'grade') || NO_GRADE,
     languages: languages.length ? getLanguages() : NO_LANGUAGES,
