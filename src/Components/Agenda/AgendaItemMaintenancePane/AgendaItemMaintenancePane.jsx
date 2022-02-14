@@ -10,7 +10,7 @@ import RemarksPill from '../RemarksPill';
 
 const AgendaItemMaintenancePane = (props) => {
 
-  const width = get(props, 'leftExpanded') ? '51%' : '100%';
+  const leftExpanded = get(props, 'leftExpanded');
 
   const aiStatuses = [
     {text: "Approved", value: 'A'},
@@ -41,13 +41,13 @@ const AgendaItemMaintenancePane = (props) => {
   return (
     <div className="ai-maintenance-pane">
       <div className="ai-maintenance-header">
-        <div className="back-save-btns-container" style={{width: `${width}`}}>
+        <div className={`back-save-btns-container ${leftExpanded ? ' half-width' : ''}`}>
           <BackButton />
-          <InteractiveElement title="Save Agenda Item" type="div" onClick={saveAI} className="save-ai-btn">
+          <button className='save-ai-btn' onClick={saveAI}>
             Save Agenda Item
-          </InteractiveElement>
+          </button>
         </div>
-        <div className="ai-maintenance-header-dd" style={{width: `${width}`}}>
+        <div className={`ai-maintenance-header-dd ${leftExpanded ? ' half-width' : ''}`} >
           <SelectForm
             id="ai-maintenance-dd-asg"
             options={asg}

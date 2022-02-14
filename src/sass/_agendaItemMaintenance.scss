@@ -178,6 +178,10 @@
         max-width: 36rem;
       }
 
+      .half-width {
+        width: 51% !important;
+      }
+
       label {
         font-weight: bold;
         margin: 10px 10px;
@@ -187,6 +191,7 @@
       .back-save-btns-container {
         padding-top: 2.5rem;
         min-height: 70px;
+        width: 95%;
 
         button {
           margin: 0!important;
@@ -201,6 +206,10 @@
           padding: 10px 20px;
           float: right;
           font-size: 1.4rem;
+        }
+        .save-ai-btn:hover {
+          border-color: $primary-blue-darker;
+          color: $primary-blue-darker;
         }
       }
 
@@ -242,9 +251,6 @@
         }
         #add-pos-num-icon {
           color: $primary-blue;
-          border: 1px solid $primary-blue;
-          padding: 0 3px;
-          border-radius: 50%;
           margin-left: -25px;
         }
 
