@@ -207,7 +207,7 @@ const EditBidder = (props) => {
           <dt>Step Letter 1:</dt>
           {disableStepLetterOne &&
             <select
-              id="stepLetter"
+              id="stepLetterOne"
               disabled={!stepLetterTwoFlag}
             >
               <option value="">{formatStepLetterDate(stepLetterOne)}</option>
@@ -234,7 +234,7 @@ const EditBidder = (props) => {
           <dt>Step Letter 2:</dt>
           {stepLetterOneFlag &&
             <select
-              id="stepLetter"
+              id="stepLetterTwo"
               disabled={stepLetterOneFlag}
             >
               <option value="">None listed</option>
