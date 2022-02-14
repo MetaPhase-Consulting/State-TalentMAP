@@ -51,6 +51,8 @@ const AvailableBidderRow = (props) => {
   };
 
   const stepLettersIconStyling = formattedStepLetterOne === NO_DATE ? 'no-step-letters-icon' : '';
+  const stepLettersOneAndTwoIconStyling = (formattedStepLetterOne !== NO_DATE)
+    && (formattedStepLetterTwo !== NO_DATE) ? 'both-step-letters-icon' : '';
 
   const getStatus = () => {
     if (status === 'OC') {
@@ -138,7 +140,7 @@ const AvailableBidderRow = (props) => {
         interactive
         useContext
       >
-        <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling}`} />
+        <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling} ${stepLettersOneAndTwoIconStyling}`} />
       </Tooltip>,
     skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
     grade: get(bidder, 'grade') || NO_GRADE,
