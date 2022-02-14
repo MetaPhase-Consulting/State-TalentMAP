@@ -208,8 +208,8 @@
           font-size: 1.4rem;
         }
         .save-ai-btn:hover {
-          border-color: $primary-blue-darker;
-          color: $primary-blue-darker;
+          border-color: $primary-blue-darkest;
+          color: $primary-blue-darkest;
         }
       }
 
@@ -252,6 +252,9 @@
         #add-pos-num-icon {
           color: $primary-blue;
           margin-left: -25px;
+        }
+        #add-pos-num-icon:hover {
+          color: $primary-blue-darkest;
         }
 
         div {

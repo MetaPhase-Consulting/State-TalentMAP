@@ -750,9 +750,13 @@
   margin: 15px;
 
   #add-remark {
-    color: #0071BC;
+    color: $primary-blue;
     font-size: 20px;
     margin: 0 10px 0 -15px;
+  }
+
+  #add-remark:hover {
+    color: $primary-blue-darkest;
   }
 
   .remarks-text {

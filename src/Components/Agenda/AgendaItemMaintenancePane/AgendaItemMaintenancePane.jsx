@@ -38,6 +38,12 @@ const AgendaItemMaintenancePane = (props) => {
     console.log('save AI');
   };
 
+  const addPos = (e) => {
+    e.preventDefault();
+    // eslint-disable-next-line
+    console.log('add pos');
+  };
+
   return (
     <div className="ai-maintenance-pane">
       <div className="ai-maintenance-header">
@@ -63,21 +69,23 @@ const AgendaItemMaintenancePane = (props) => {
             onSelectOption={value => setAIStatus(value.target.value)}
             disabled={false}
           />
-          <div className="usa-form">
-            <label>Add Position Number:</label>
-              <input
-                id='add-pos-num-input'
-                value={'1234578'}
-                onChange={value => setAIStatus(value.target.value)}
-                type="add"
-                name="add"
-                // disabled
-              />
-            <InteractiveElement onClick={saveAI} type="span" role="button"
-                                title="Add position" id='add-pos-num-icon'>
-                <FA name="plus" />
-            </InteractiveElement>
-          </div>
+          <form onSubmit={addPos}>
+            <div className="usa-form">
+              <label>Add Position Number:</label>
+                <input
+                  id='add-pos-num-input'
+                  value={'1234578'}
+                  onChange={value => setAIStatus(value.target.value)}
+                  type="add"
+                  name="add"
+                  // disabled
+                />
+              <InteractiveElement onClick={addPos} type="span" role="button"
+                title="Add position" id='add-pos-num-icon'>
+                  <FA name="plus" />
+              </InteractiveElement>
+            </div>
+          </form>
           <SelectForm
             id="ai-maintenance-status"
             options={aiStatuses}

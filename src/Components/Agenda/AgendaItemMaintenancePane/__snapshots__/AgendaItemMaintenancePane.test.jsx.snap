@@ -8,30 +8,18 @@ exports[`AgendaItemMaintenancePane Component matches snapshot 1`] = `
     className="ai-maintenance-header"
   >
     <div
-      className="back-save-btns-container"
-      style={
-        Object {
-          "width": "100%",
-        }
-      }
+      className="back-save-btns-container "
     >
       <Connect(withRouter(BackButton)) />
-      <InteractiveElement
+      <button
         className="save-ai-btn"
         onClick={[Function]}
-        title="Save Agenda Item"
-        type="div"
       >
         Save Agenda Item
-      </InteractiveElement>
+      </button>
     </div>
     <div
-      className="ai-maintenance-header-dd"
-      style={
-        Object {
-          "width": "100%",
-        }
-      }
+      className="ai-maintenance-header-dd "
     >
       <SelectForm
         className="select-offset select-black"
@@ -117,32 +105,36 @@ exports[`AgendaItemMaintenancePane Component matches snapshot 1`] = `
         }
         transformValue={[Function]}
       />
-      <div
-        className="usa-form"
+      <form
+        onSubmit={[Function]}
       >
-        <label>
-          Add Position Number:
-        </label>
-        <input
-          id="add-pos-num-input"
-          name="add"
-          onChange={[Function]}
-          type="add"
-          value="1234578"
-        />
-        <InteractiveElement
-          className=""
-          id="add-pos-num-icon"
-          onClick={[Function]}
-          role="button"
-          title="Add position"
-          type="span"
+        <div
+          className="usa-form"
         >
-          <FontAwesome
-            name="plus"
+          <label>
+            Add Position Number:
+          </label>
+          <input
+            id="add-pos-num-input"
+            name="add"
+            onChange={[Function]}
+            type="add"
+            value="1234578"
           />
-        </InteractiveElement>
-      </div>
+          <InteractiveElement
+            className=""
+            id="add-pos-num-icon"
+            onClick={[Function]}
+            role="button"
+            title="Add position"
+            type="span"
+          >
+            <FontAwesome
+              name="plus"
+            />
+          </InteractiveElement>
+        </div>
+      </form>
       <SelectForm
         className="select-offset select-black"
         defaultSort="A"
