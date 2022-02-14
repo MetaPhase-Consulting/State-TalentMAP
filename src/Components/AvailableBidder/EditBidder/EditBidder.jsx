@@ -101,10 +101,20 @@ const EditBidder = (props) => {
     setStepLetterTwo(date);
   };
 
-  const formatStepLetterDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'LLLL, d, yyyy') : 'None listed';
+  const formatStepLetterDate = (d) => d && isDate(new Date(d)) ? format(new Date(d), 'LLLL, d, yyyy') : 'None listed';
   const stepLetterOneFlag = stepLetterOneDate === null;
   const stepLetterTwoFlag = stepLetterTwoDate === null;
   const disableStepLetterOne = !stepLetterOneFlag && !stepLetterTwoFlag;
+
+  const clearStepLetterOneDate = () => {
+    console.log(stepLetterOne);
+    // setStepLetterOne(null);
+  };
+
+  const clearStepLetterTwoDate = () => {
+    console.log(stepLetterTwo);
+    // setStepLetterTwo(null);
+  };
 
   return (
     <div>
@@ -208,9 +218,18 @@ const EditBidder = (props) => {
           {!disableStepLetterOne &&
             <DatePicker
               selected={stepLetterOne}
-              onChange={d => { updateStepLetterOne(d); }}
+              onChange={updateStepLetterOne}
               dateFormat="MMMM d, yyyy"
             />
+          }
+          {!stepLetterOneFlag && stepLetterTwoFlag &&
+            <div className="step-letter-icon">
+              <InteractiveElement
+                onClick={clearStepLetterOneDate()}
+              >
+                <FA name="times-circle fa-lg" />
+              </InteractiveElement>
+            </div>
           }
         </div>
         <div>
@@ -226,9 +245,18 @@ const EditBidder = (props) => {
           {!stepLetterOneFlag &&
             <DatePicker
               selected={stepLetterTwo}
-              onChange={d => { updateStepLetterTwo(d); }}
+              onChange={updateStepLetterTwo}
               dateFormat="MMMM d, yyyy"
             />
+          }
+          {!stepLetterTwoFlag &&
+            <div className="step-letter-icon">
+              <InteractiveElement
+                onClick={clearStepLetterTwoDate()}
+              >
+                <FA name="times-circle fa-lg" />
+              </InteractiveElement>
+            </div>
           }
         </div>
         <div>

@@ -23,7 +23,7 @@ import SkillCodeList from '../../SkillCodeList';
 
 const AvailableBidderRow = (props) => {
   const { bidder, CDOView, isLoading, isCDO, bureaus } = props;
-  const formatStepLetterDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'M/d/yy') : 'None listed';
+  const formatStepLetterDate = (d) => d && isDate(new Date(d)) ? format(new Date(d), 'M/d/yy') : 'None listed';
 
   useCloseSwalOnUnmount();
 
