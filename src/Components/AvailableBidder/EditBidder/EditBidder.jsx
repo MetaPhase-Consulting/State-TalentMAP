@@ -107,13 +107,11 @@ const EditBidder = (props) => {
   const disableStepLetterOne = !stepLetterOneFlag && !stepLetterTwoFlag;
 
   const clearStepLetterOneDate = () => {
-    console.log(stepLetterOne);
-    // setStepLetterOne(null);
+    setStepLetterOne(null);
   };
 
   const clearStepLetterTwoDate = () => {
-    console.log(stepLetterTwo);
-    // setStepLetterTwo(null);
+    setStepLetterTwo(null);
   };
 
   return (
@@ -225,7 +223,7 @@ const EditBidder = (props) => {
           {!stepLetterOneFlag && stepLetterTwoFlag &&
             <div className="step-letter-icon">
               <InteractiveElement
-                onClick={clearStepLetterOneDate()}
+                onClick={clearStepLetterOneDate}
               >
                 <FA name="times-circle fa-lg" />
               </InteractiveElement>
@@ -252,7 +250,7 @@ const EditBidder = (props) => {
           {!stepLetterTwoFlag &&
             <div className="step-letter-icon">
               <InteractiveElement
-                onClick={clearStepLetterTwoDate()}
+                onClick={clearStepLetterTwoDate}
               >
                 <FA name="times-circle fa-lg" />
               </InteractiveElement>
