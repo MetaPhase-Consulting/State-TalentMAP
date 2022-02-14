@@ -749,6 +749,14 @@
   flex-wrap: wrap;
   margin: 15px;
 
+  #add-remark {
+    color: #0071BC;
+    border: 1px solid #0071BC;
+    padding: 0 3px;
+    border-radius: 50%;
+    margin: 0 10px 0 -15px;
+  }
+
   .remarks-text {
     float: left;
     font-size: 1.1em;
@@ -764,6 +772,13 @@
     margin-bottom: 1rem;
     margin-right: 1.5rem;
     padding: .5em;
+
+    .fa-times {
+      margin-left: 10px;
+    }
+    .fa-times:hover {
+      cursor: pointer;
+    }
   }
 }
 

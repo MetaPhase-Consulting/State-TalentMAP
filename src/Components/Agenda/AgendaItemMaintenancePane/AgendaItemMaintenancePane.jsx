@@ -10,7 +10,7 @@ import RemarksPill from '../RemarksPill';
 
 const AgendaItemMaintenancePane = (props) => {
 
-  const width = get(props, 'leftExpanded') ? '50%' : '100%';
+  const width = get(props, 'leftExpanded') ? '51%' : '100%';
 
   const aiStatuses = [
     {text: "Approved", value: 'A'},
@@ -86,16 +86,6 @@ const AgendaItemMaintenancePane = (props) => {
             onSelectOption={value => setAIStatus(value.target.value)}
             disabled={false}
           />
-          <div className="usa-form">
-            <label>Remarks:</label>
-            <div className="remarks-container">
-              {
-                remarks.map(remark => (
-                  <RemarksPill key={remark.title} {...remark} />
-                ))
-              }
-            </div>
-          </div>
           <SelectForm
             id="ai-maintenance-status"
             options={aiStatuses}
@@ -104,9 +94,25 @@ const AgendaItemMaintenancePane = (props) => {
             onSelectOption={value => setAIStatus(value.target.value)}
             disabled={false}
           />
-          <div className="usa-form">
-            <label>Corrections:</label>
-            Lorem ipsum dolor sit amet
+        </div>
+        <div className="usa-form remarks">
+          <label>Remarks:</label>
+          <div className="remarks-container">
+            <InteractiveElement onClick={saveAI} type="span" role="button" className="save-ai-btn"
+                                title="Add remark" id='add-remark'>
+              <FA name="plus" />
+            </InteractiveElement>
+            {
+              remarks.map(remark => (
+                <RemarksPill isEditable key={remark.title} {...remark} />
+              ))
+            }
+          </div>
+        </div>
+        <div className="usa-form corrections">
+          <label>Corrections:</label>
+          <div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tincidunt tincidunt imperdiet. Proin nisi diam, tincidunt rhoncus placerat et, fringilla non ligula. Suspendisse sed nibh nisl. Cras varius lacinia commodo. Sed consequat porttitor lacus id aliquam. Praesent et tortor ut erat varius pharetra. Nunc imperdiet metus nec ipsum interdum rutrum.
           </div>
         </div>
       </div>

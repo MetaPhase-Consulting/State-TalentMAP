@@ -170,8 +170,14 @@
     .ai-maintenance-header {
       background-color: $bg-gray-medium-4;
 
-      .usa-form {
+      .usa-form:not(.remarks, .corrections) {
         max-width: 36rem;
+      }
+
+      label {
+        font-weight: bold;
+        margin: 10px 10px;
+        text-align: end;
       }
 
       .back-save-btns-container {
@@ -194,8 +200,23 @@
         }
       }
 
+      .corrections, .remarks {
+        max-width: fit-content;
+        margin: 10px;
+
+        label {
+          display: inline;
+          margin: 0 10px 0 0;
+        }
+        div:not(.remarks-pill) {
+          display: inline;
+        }
+        .remarks-pill {
+          display: inline-block;
+        }
+      }
+
       .ai-maintenance-header-dd {
-        align-items: center;
         margin-right: 10px;
         display: flex;
         flex-wrap: wrap;
@@ -223,7 +244,7 @@
           margin-left: -25px;
         }
 
-        div:not(.remarks-container, .remarks-pill) {
+        div {
           display: flex;
           flex: 70%;
           align-items: baseline;
@@ -238,14 +259,7 @@
           text-overflow: ellipsis;
           max-width: 150px;
         }
-
-        label {
-          font-weight: bold;
-          margin: 10px 10px;
-          text-align: end;
-        }
       }
-
     }
   }
 }
