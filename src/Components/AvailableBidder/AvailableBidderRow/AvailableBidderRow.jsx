@@ -49,7 +49,9 @@ const AvailableBidderRow = (props) => {
     letter_two: formattedStepLetterTwo,
   };
 
-  const stepLettersIconStyling = formattedStepLetterOne === NO_DATE ? 'no-step-letters-icon' : '';
+  const noStepLettersIconStyling = formattedStepLetterOne === NO_DATE ? 'no-step-letters-icon' : '';
+  const stepLetterOneIconStyling = (formattedStepLetterOne !== NO_DATE)
+    && (formattedStepLetterTwo === NO_DATE) ? 'one-step-letter-icon' : '';
   const stepLettersOneAndTwoIconStyling = (formattedStepLetterOne !== NO_DATE)
     && (formattedStepLetterTwo !== NO_DATE) ? 'both-step-letters-icon' : '';
   const comments = get(bidder, 'available_bidder_details.comments') || NO_COMMENTS;
@@ -135,7 +137,10 @@ const AvailableBidderRow = (props) => {
       interactive
       useContext
     >
-      <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling} ${stepLettersOneAndTwoIconStyling}`} />
+      <FA
+        name="envelope-square"
+        className={`fa-2x ${noStepLettersIconStyling} ${stepLetterOneIconStyling} ${stepLettersOneAndTwoIconStyling}`}
+      />
     </Tooltip>);
 
   const tedToolTip =
