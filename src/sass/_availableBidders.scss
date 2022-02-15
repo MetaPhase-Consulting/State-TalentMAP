@@ -500,10 +500,14 @@
   }
 }
 
-.fa-times-circle {
-  color: $alert-red;
-}
-
-.step-letter-icon {
+.step-letter-clear-icon {
   margin-left: 5px;
+
+  .active {
+    color: $alert-red;
+  }
+
+  .inactive {
+    color: $color-gray-light;
+  }
 }

@@ -90,9 +90,12 @@ const EditBidder = (props) => {
   const ocSelected = status === 'OC';
   const ocReasonError = ocSelected && !ocReason;
   const ocBureauError = ocSelected && !ocBureau;
-  const submitDisabled = ocReasonError || ocBureauError;
   const stepLetterOneFlag = stepLetterOne === null;
   const stepLetterTwoFlag = stepLetterTwo === null;
+  const stepLetterError = stepLetterOneFlag && !stepLetterTwoFlag;
+  const stepLetterOneClearIconInactive = ((stepLetterOneFlag) ||
+    ((!stepLetterOneFlag) && (!stepLetterTwoFlag)));
+  const submitDisabled = ocReasonError || ocBureauError || stepLetterError;
 
   const updateStepLetterOne = (date) => {
     setStepLetterOne(date);
@@ -200,24 +203,30 @@ const EditBidder = (props) => {
           </select>
         </div>
         <div>
-          <dt>Step Letter 1:</dt>
+          <dt>*Step Letter 1:</dt>
           <DatePicker
             selected={stepLetterOne}
             onChange={updateStepLetterOne}
             dateFormat="MMMM d, yyyy"
+            className={stepLetterError ? 'select-error' : ''}
           />
+          {stepLetterOneClearIconInactive &&
+            <div className="step-letter-clear-icon">
+              <FA name="times-circle fa-lg inactive" />
+            </div>
+          }
           {!stepLetterOneFlag && stepLetterTwoFlag &&
-            <div className="step-letter-icon">
+            <div className="step-letter-clear-icon">
               <InteractiveElement
                 onClick={clearStepLetterOneDate}
               >
-                <FA name="times-circle fa-lg" />
+                <FA name="times-circle fa-lg active" />
               </InteractiveElement>
             </div>
           }
         </div>
         <div>
-          <dt>Step Letter 2:</dt>
+          <dt>*Step Letter 2:</dt>
           {stepLetterOneFlag &&
             <select
               id="stepLetterTwo"
@@ -233,12 +242,17 @@ const EditBidder = (props) => {
               dateFormat="MMMM d, yyyy"
             />
           }
+          {stepLetterTwoFlag &&
+            <div className="step-letter-clear-icon">
+              <FA name="times-circle fa-lg inactive" />
+            </div>
+          }
           {!stepLetterTwoFlag &&
-            <div className="step-letter-icon">
+            <div className="step-letter-clear-icon">
               <InteractiveElement
                 onClick={clearStepLetterTwoDate}
               >
-                <FA name="times-circle fa-lg" />
+                <FA name="times-circle fa-lg active" />
               </InteractiveElement>
             </div>
           }
