@@ -234,6 +234,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        width: 94%;
 
         #ai-maintenance-dd-asg {
           max-width: fit-content;
@@ -252,6 +253,8 @@
         #add-pos-num-icon {
           color: $primary-blue;
           margin-left: -25px;
+          position: relative;
+          top: 1px
         }
         #add-pos-num-icon:hover {
           color: $primary-blue-darkest;
