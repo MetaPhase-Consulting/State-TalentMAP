@@ -28,7 +28,8 @@ const AvailableBidderRow = (props) => {
   // Formatting
   const shared = get(bidder, 'available_bidder_details.is_shared', false);
   const ted = get(bidder, 'current_assignment.end_date');
-  const formattedTed = ted ? formatDate(ted) : NO_END_DATE;
+  const formattedTed = ted ? formatDate(ted, 'MM/YYYY') : NO_END_DATE;
+  const formattedTedTooltip = ted ? formatDate(ted) : NO_END_DATE;
   const id = get(bidder, 'bidder_perdet') || get(bidder, 'perdet_seq_number');
   const name = get(bidder, 'name');
   const ocBureau = get(bidder, 'available_bidder_details.oc_bureau');
@@ -51,7 +52,7 @@ const AvailableBidderRow = (props) => {
   const stepLettersIconStyling = formattedStepLetterOne === NO_DATE ? 'no-step-letters-icon' : '';
   const stepLettersOneAndTwoIconStyling = (formattedStepLetterOne !== NO_DATE)
     && (formattedStepLetterTwo !== NO_DATE) ? 'both-step-letters-icon' : '';
-
+  const comments = get(bidder, 'available_bidder_details.comments') || NO_COMMENTS;
   const getStatus = () => {
     if (status === 'OC') {
       return (
@@ -137,31 +138,77 @@ const AvailableBidderRow = (props) => {
       <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling} ${stepLettersOneAndTwoIconStyling}`} />
     </Tooltip>);
 
+  const tedToolTip =
+    (<Tooltip
+      html={
+        <div>
+          <div className="ab-row-tooltip-wrapper">
+            <div>
+              <span className="title">TED: <span className="ab-row-tooltip-data">{formattedTedTooltip}</span></span>
+            </div>
+          </div>
+        </div>
+      }
+      theme="ab-row"
+      arrow
+      tabIndex="0"
+      interactive
+      useContext
+    >
+      {formattedTed}
+    </Tooltip>);
 
-  const sections = isCDO ? {
-    name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
-    status: getStatus(),
-    step_letters: stepLettersToolTip,
-    skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
-    grade: get(bidder, 'grade') || NO_GRADE,
-    languages: languages.length ? getLanguages() : NO_LANGUAGES,
-    ted: formattedTed,
-    current_post: currentPost,
-    cdo: cdo ? getCDO() : NO_CDO,
-    comments: get(bidder, 'available_bidder_details.comments') || NO_COMMENTS,
-  } : {
-    name: (<Link to={`/profile/public/${id}/bureau`}>{name}</Link>),
-    skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
-    grade: get(bidder, 'grade') || NO_GRADE,
-    languages: languages ? getLanguages() : NO_LANGUAGES,
-    ted: formattedTed,
-    current_post: currentPost,
-    cdo: cdo ? getCDO() : NO_CDO,
+  const commentsToolTip = comments !== NO_COMMENTS ?
+    (<Tooltip
+      html={
+        <div>
+          <div className="ab-row-tooltip-wrapper">
+            <div>
+              <span className="title">Comments: <span className="ab-row-tooltip-data">{comments}</span></span>
+            </div>
+          </div>
+        </div>
+      }
+      theme="ab-row"
+      arrow
+      tabIndex="0"
+      interactive
+      useContext
+    >
+      <FA name="comments" className="fa-lg comments-icon" />
+    </Tooltip>) : comments;
+
+  const getSections = (isModal = false) => {
+    const comments$ = isModal ? get(bidder, 'available_bidder_details.comments') || NO_COMMENTS : commentsToolTip;
+    const ted$ = isModal ? formattedTedTooltip : tedToolTip;
+    return isCDO ? {
+      name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
+      status: getStatus(),
+      step_letters: stepLettersToolTip,
+      skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
+      grade: get(bidder, 'grade') || NO_GRADE,
+      languages: languages.length ? getLanguages() : NO_LANGUAGES,
+      ted: ted$,
+      current_post: currentPost,
+      cdo: cdo ? getCDO() : NO_CDO,
+      comments: comments$,
+    } : {
+      name: (<Link to={`/profile/public/${id}/bureau`}>{name}</Link>),
+      skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
+      grade: get(bidder, 'grade') || NO_GRADE,
+      languages: languages ? getLanguages() : NO_LANGUAGES,
+      ted: ted$,
+      current_post: currentPost,
+      cdo: cdo ? getCDO() : NO_CDO,
+    };
   };
 
+  const modalSections = getSections(true);
+  const rowSections = getSections(false);
+
   if (isLoading) {
-    keys(sections).forEach(k => {
-      sections[k] = <Skeleton />;
+    keys(rowSections).forEach(k => {
+      rowSections[k] = <Skeleton />;
     });
   }
 
@@ -181,7 +228,7 @@ const AvailableBidderRow = (props) => {
       content: (
         <EditBidder
           name={name}
-          sections={sections}
+          sections={modalSections}
           submitAction={submitAction}
           bureaus={bureaus}
           details={{ ocBureau,
@@ -210,12 +257,12 @@ const AvailableBidderRow = (props) => {
   return (
     <tr className={getTRClass()}>
       {
-        keys(sections).map(i => {
-          if (i === 'comments' && sections[i] === NO_COMMENTS) {
-            return (<td key={i}><text aria-disabled="true" className="no-comments">{sections[i]}</text></td>);
+        keys(rowSections).map(i => {
+          if (i === 'comments' && rowSections[i] === NO_COMMENTS) {
+            return (<td key={i}><text aria-disabled="true" className="no-comments">{rowSections[i]}</text></td>);
           }
           return (
-            <td key={i}>{sections[i]}</td>
+            <td key={i}>{rowSections[i]}</td>
           );
         })
       }

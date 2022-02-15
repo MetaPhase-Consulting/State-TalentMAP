@@ -43,7 +43,7 @@
       grid-auto-flow: column;
       grid-template-rows: repeat(9, auto);
     }
-    
+
     .legend-large {
       display: inline-grid;
       flex-flow: column wrap;
@@ -120,7 +120,7 @@
     margin: 0;
     width: 100%;
     border: 1px solid $dos-blue;
-    
+
     thead {
       tr {
         th {
@@ -128,7 +128,7 @@
           color: $color-white;
           background-color: $dos-blue;
           // Position sticky not supported on ie11
-          // Position sticky has partial support on browsers (Must target th; not thead) 
+          // Position sticky has partial support on browsers (Must target th; not thead)
           position: -webkit-sticky;
           position: sticky;
           top: 0;
@@ -291,11 +291,11 @@
   .react-datepicker {
     font-size: 1em;
   }
-  
+
   .react-datepicker__header {
     padding-top: 0.8em;
   }
-  
+
   .react-datepicker__month {
     margin: 0.4em 1em;
   }
@@ -371,7 +371,7 @@
   }
 }
 
-#ocReason:disabled, #ocBureau:disabled, 
+#ocReason:disabled, #ocBureau:disabled,
 #stepLetterOne:disabled, #stepLetterTwo:disabled {
   background: darkgrey;
 }
@@ -457,6 +457,41 @@
 }
 
 .tippy-popper {
+  // TODO - consolidate these two classes
+  .tippy-tooltip.ab-row-theme {
+    background-color: $color-white;
+    color: $color-black;
+    border: 2px solid $tm-gray;
+    font-size: 14px;
+    font-family: Roboto;
+    padding: 15px;
+    text-align: left;
+    box-shadow: $tm-gray 3px 14px 29px;
+    .arrow-regular {
+      border: none;
+    }
+    .ab-row-tooltip-wrapper {
+      display: flex;
+      padding-bottom: 10px;
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .ab-row-tooltip-data {
+        font-weight: 400;
+        font-style: italic;
+      }
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
   .tippy-tooltip.step-letters-theme {
     background-color: $color-white;
     color: $color-black;
@@ -510,4 +545,8 @@
   .inactive {
     color: $color-gray-light;
   }
+}
+
+.comments-icon {
+  color: $color-dodger-blue;
 }
