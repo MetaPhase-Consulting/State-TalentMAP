@@ -91,6 +91,8 @@ const EditBidder = (props) => {
   const ocReasonError = ocSelected && !ocReason;
   const ocBureauError = ocSelected && !ocBureau;
   const submitDisabled = ocReasonError || ocBureauError;
+  const stepLetterOneFlag = stepLetterOne === null;
+  const stepLetterTwoFlag = stepLetterTwo === null;
 
   const updateStepLetterOne = (date) => {
     setStepLetterOne(date);
@@ -99,9 +101,6 @@ const EditBidder = (props) => {
   const updateStepLetterTwo = (date) => {
     setStepLetterTwo(date);
   };
-
-  const stepLetterOneFlag = stepLetterOneDate === null;
-  const stepLetterTwoFlag = stepLetterTwoDate === null;
 
   const clearStepLetterOneDate = () => {
     setStepLetterOne(null);
