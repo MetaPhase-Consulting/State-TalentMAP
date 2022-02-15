@@ -114,32 +114,34 @@ const AvailableBidderRow = (props) => {
     <MailToButton email={get(cdo, 'email')} textBefore={`${get(cdo, 'first_name[0]')}. ${get(cdo, 'last_name')}`} />
   );
 
+  const stepLettersToolTip =
+    (<Tooltip
+      html={
+        <div>
+          <div className="step-letter-tooltip-wrapper">
+            <div>
+              <span className="title">Letter 1: <span className="step-letter-date">{stepLetters.letter_one}</span></span>
+            </div>
+            <div>
+              <span className="title">Letter 2: <span className="step-letter-date">{stepLetters.letter_two}</span></span>
+            </div>
+          </div>
+        </div>
+      }
+      theme="step-letters"
+      arrow
+      tabIndex="0"
+      interactive
+      useContext
+    >
+      <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling} ${stepLettersOneAndTwoIconStyling}`} />
+    </Tooltip>);
+
 
   const sections = isCDO ? {
     name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
     status: getStatus(),
-    step_letters:
-      <Tooltip
-        html={
-          <div>
-            <div className="step-letter-tooltip-wrapper">
-              <div>
-                <span className="title">Letter 1: <span className="step-letter-date">{stepLetters.letter_one}</span></span>
-              </div>
-              <div>
-                <span className="title">Letter 2: <span className="step-letter-date">{stepLetters.letter_two}</span></span>
-              </div>
-            </div>
-          </div>
-        }
-        theme="step-letters"
-        arrow
-        tabIndex="0"
-        interactive
-        useContext
-      >
-        <FA name="envelope-o" className={`fa-lg ${stepLettersIconStyling} ${stepLettersOneAndTwoIconStyling}`} />
-      </Tooltip>,
+    step_letters: stepLettersToolTip,
     skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
     grade: get(bidder, 'grade') || NO_GRADE,
     languages: languages.length ? getLanguages() : NO_LANGUAGES,
