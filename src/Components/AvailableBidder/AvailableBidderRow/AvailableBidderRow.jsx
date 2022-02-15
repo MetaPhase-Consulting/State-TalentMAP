@@ -145,29 +145,36 @@ const AvailableBidderRow = (props) => {
     </Tooltip>) : comments;
 
 
-  const sections = isCDO ? {
-    name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
-    status: getStatus(),
-    skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
-    grade: get(bidder, 'grade') || NO_GRADE,
-    languages: languages.length ? getLanguages() : NO_LANGUAGES,
-    ted: tedToolTip,
-    current_post: currentPost,
-    cdo: cdo ? getCDO() : NO_CDO,
-    comments: commentsToolTip,
-  } : {
-    name: (<Link to={`/profile/public/${id}/bureau`}>{name}</Link>),
-    skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
-    grade: get(bidder, 'grade') || NO_GRADE,
-    languages: languages ? getLanguages() : NO_LANGUAGES,
-    ted: tedToolTip,
-    current_post: currentPost,
-    cdo: cdo ? getCDO() : NO_CDO,
+  const getSections = (isModal = false) => {
+    const comments$ = isModal ? get(bidder, 'available_bidder_details.comments') || NO_COMMENTS : commentsToolTip;
+    const ted$ = isModal ? formattedTedTooltip : tedToolTip;
+    return isCDO ? {
+      name: (<Link to={`/profile/public/${id}`}>{name}</Link>),
+      status: getStatus(),
+      skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
+      grade: get(bidder, 'grade') || NO_GRADE,
+      languages: languages.length ? getLanguages() : NO_LANGUAGES,
+      ted: ted$,
+      current_post: currentPost,
+      cdo: cdo ? getCDO() : NO_CDO,
+      comments: comments$,
+    } : {
+      name: (<Link to={`/profile/public/${id}/bureau`}>{name}</Link>),
+      skill: <SkillCodeList skillCodes={get(bidder, 'skills')} />,
+      grade: get(bidder, 'grade') || NO_GRADE,
+      languages: languages ? getLanguages() : NO_LANGUAGES,
+      ted: ted$,
+      current_post: currentPost,
+      cdo: cdo ? getCDO() : NO_CDO,
+    };
   };
 
+  const modalSections = getSections(true);
+  const rowSections = getSections(false);
+
   if (isLoading) {
-    keys(sections).forEach(k => {
-      sections[k] = <Skeleton />;
+    keys(rowSections).forEach(k => {
+      rowSections[k] = <Skeleton />;
     });
   }
 
@@ -187,7 +194,7 @@ const AvailableBidderRow = (props) => {
       content: (
         <EditBidder
           name={name}
-          sections={sections}
+          sections={modalSections}
           submitAction={submitAction}
           bureaus={bureaus}
           details={{ ocBureau,
@@ -214,12 +221,12 @@ const AvailableBidderRow = (props) => {
   return (
     <tr className={getTRClass()}>
       {
-        keys(sections).map(i => {
-          if (i === 'comments' && sections[i] === NO_COMMENTS) {
-            return (<td key={i}><text aria-disabled="true" className="no-comments">{sections[i]}</text></td>);
+        keys(rowSections).map(i => {
+          if (i === 'comments' && rowSections[i] === NO_COMMENTS) {
+            return (<td key={i}><text aria-disabled="true" className="no-comments">{rowSections[i]}</text></td>);
           }
           return (
-            <td key={i}>{sections[i]}</td>
+            <td key={i}>{rowSections[i]}</td>
           );
         })
       }
