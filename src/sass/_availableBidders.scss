@@ -258,7 +258,9 @@
     background: none;
   }
 
-  div {
+  // styling for step letter date picker
+  div:not(.react-datepicker-wrapper, .react-datepicker-wrapper div,
+   .react-datepicker__tab-loop, .react-datepicker__tab-loop div) {
     display: flex;
     align-items: baseline;
   }

@@ -7,7 +7,6 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import InteractiveElement from 'Components/InteractiveElement';
 import DatePicker from 'react-datepicker';
-import { format, isDate } from 'date-fns-v2';
 
 const EditBidder = (props) => {
   const { name, sections, submitAction, bureaus, details } = props;
@@ -101,10 +100,8 @@ const EditBidder = (props) => {
     setStepLetterTwo(date);
   };
 
-  const formatStepLetterDate = (d) => d && isDate(new Date(d)) ? format(new Date(d), 'LLLL, d, yyyy') : 'None listed';
   const stepLetterOneFlag = stepLetterOneDate === null;
   const stepLetterTwoFlag = stepLetterTwoDate === null;
-  const disableStepLetterOne = !stepLetterOneFlag && !stepLetterTwoFlag;
 
   const clearStepLetterOneDate = () => {
     setStepLetterOne(null);
@@ -205,21 +202,11 @@ const EditBidder = (props) => {
         </div>
         <div>
           <dt>Step Letter 1:</dt>
-          {disableStepLetterOne &&
-            <select
-              id="stepLetterOne"
-              disabled={!stepLetterTwoFlag}
-            >
-              <option value="">{formatStepLetterDate(stepLetterOne)}</option>
-            </select>
-          }
-          {!disableStepLetterOne &&
-            <DatePicker
-              selected={stepLetterOne}
-              onChange={updateStepLetterOne}
-              dateFormat="MMMM d, yyyy"
-            />
-          }
+          <DatePicker
+            selected={stepLetterOne}
+            onChange={updateStepLetterOne}
+            dateFormat="MMMM d, yyyy"
+          />
           {!stepLetterOneFlag && stepLetterTwoFlag &&
             <div className="step-letter-icon">
               <InteractiveElement

@@ -16,14 +16,12 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import swal from '@sweetalert/with-react';
 import { AVAILABLE_BIDDER_OBJECT, FILTER } from 'Constants/PropTypes';
-import { format, isDate } from 'date-fns-v2';
 
 import SkillCodeList from '../../SkillCodeList';
 
 
 const AvailableBidderRow = (props) => {
   const { bidder, CDOView, isLoading, isCDO, bureaus } = props;
-  const formatStepLetterDate = (d) => d && isDate(new Date(d)) ? format(new Date(d), 'M/d/yy') : 'None listed';
 
   useCloseSwalOnUnmount();
 
@@ -42,9 +40,9 @@ const AvailableBidderRow = (props) => {
   const created = get(bidder, 'available_bidder_details.date_created');
   const formattedCreated = created ? formatDate(created) : NO_DATE;
   const stepLetterOne = get(bidder, 'available_bidder_details.step_letter_one');
-  const formattedStepLetterOne = stepLetterOne ? formatStepLetterDate(stepLetterOne) : NO_DATE;
+  const formattedStepLetterOne = stepLetterOne ? formatDate(stepLetterOne, 'M/D/YY') : NO_DATE;
   const stepLetterTwo = get(bidder, 'available_bidder_details.step_letter_two');
-  const formattedStepLetterTwo = stepLetterTwo ? formatStepLetterDate(stepLetterTwo) : NO_DATE;
+  const formattedStepLetterTwo = stepLetterTwo ? formatDate(stepLetterTwo, 'M/D/YY') : NO_DATE;
   const stepLetters = {
     letter_one: formattedStepLetterOne,
     letter_two: formattedStepLetterTwo,
