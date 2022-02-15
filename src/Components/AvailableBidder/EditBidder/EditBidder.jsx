@@ -8,7 +8,6 @@ import { Tooltip } from 'react-tippy';
 import InteractiveElement from 'Components/InteractiveElement';
 import DatePicker from 'react-datepicker';
 
-// eslint-disable-next-line complexity
 const EditBidder = (props) => {
   const { name, sections, submitAction, bureaus, details } = props;
   const [status, setStatus] = useState(details.status);
@@ -95,11 +94,9 @@ const EditBidder = (props) => {
   const stepLetterOneFlag = stepLetterOne === null;
   const stepLetterTwoFlag = stepLetterTwo === null;
   const stepLetterOneError = stepLetterOneFlag && !stepLetterTwoFlag;
-  const stepLetterTwoError = ((!stepLetterTwoFlag) && ((stepLetterOne) > (stepLetterTwo)));
   const stepLetterOneClearIconInactive = ((stepLetterOneFlag) ||
     ((!stepLetterOneFlag) && (!stepLetterTwoFlag)));
-  const submitDisabled = ocReasonError || ocBureauError ||
-    stepLetterOneError || stepLetterTwoError;
+  const submitDisabled = ocReasonError || ocBureauError || stepLetterOneError;
 
   const updateStepLetterOne = (date) => {
     setStepLetterOne(date);
@@ -244,7 +241,7 @@ const EditBidder = (props) => {
               selected={stepLetterTwo}
               onChange={updateStepLetterTwo}
               dateFormat="MMMM d, yyyy"
-              className={stepLetterTwoError ? 'select-error' : ''}
+              minDate={stepLetterOne}
             />
           }
           {stepLetterTwoFlag &&
