@@ -231,15 +231,14 @@ const EditBidder = (props) => {
         </div>
         <div>
           <dt>*Step Letter 2:</dt>
-          {stepLetterOneFlag &&
+          {stepLetterOneFlag ?
             <select
               id="stepLetterTwo"
               disabled={stepLetterOneFlag}
             >
               <option value="">None listed</option>
             </select>
-          }
-          {!stepLetterOneFlag &&
+            :
             <DatePicker
               selected={stepLetterTwo}
               onChange={updateStepLetterTwo}
