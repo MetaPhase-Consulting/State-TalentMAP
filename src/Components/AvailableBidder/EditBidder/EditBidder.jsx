@@ -248,12 +248,11 @@ const EditBidder = (props) => {
               minDate={stepLetterOne}
             />
           }
-          {stepLetterTwoFlag &&
+          {stepLetterTwoFlag ?
             <div className="step-letter-clear-icon">
               <FA name="times-circle fa-lg inactive" />
             </div>
-          }
-          {!stepLetterTwoFlag &&
+            :
             <div className="step-letter-clear-icon">
               <InteractiveElement
                 onClick={clearStepLetterTwoDate}
