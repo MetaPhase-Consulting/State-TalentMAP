@@ -169,6 +169,7 @@ exports[`EditBidders Component matches snapshot 1`] = `
       </dt>
       <r
         allowSameDay={false}
+        className=""
         customTimeInput={null}
         dateFormat="MMMM d, yyyy"
         dateFormatCalendar="LLLL yyyy"
