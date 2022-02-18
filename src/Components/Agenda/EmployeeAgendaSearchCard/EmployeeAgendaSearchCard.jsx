@@ -5,26 +5,26 @@ import { Tooltip } from 'react-tippy';
 import { Handshake } from 'Components/Ribbon';
 import LinkButton from 'Components/LinkButton';
 import { get } from 'lodash';
-import { format, isDate } from 'date-fns-v2';
-import BoxShadow from '../../BoxShadow';
+import BoxShadow from 'Components/BoxShadow';
+import { formatDate } from 'utilities';
+
+const FALLBACK = 'None listed';
 
 const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
   // will need to update during integration
-  const { person, currentAssignment } = result;
-  const agendaStatus = get(result, 'agendaStatus') || 'Coming soon';
+  const { person, currentAssignment, hsAssignment, agenda } = result;
+  const agendaStatus = get(agenda, 'status') || FALLBACK;
   const author = get(result, 'author') || 'Coming soon';
-  const bidder = get(person, 'fullName') || 'None listed';
+  const bidder = get(person, 'fullName') || FALLBACK;
   const cdo = get(result, 'cdo') || 'Coming soon';
-  const currentPost = get(currentAssignment, 'orgDescription') || 'None listed';
-  const futurePost = get(result, 'futurePost') || 'Coming soon';
-  const panelDate = get(result, 'panelDate') || 'Coming soon';
+  const currentPost = get(currentAssignment, 'orgDescription') || FALLBACK;
+  const futurePost = get(hsAssignment, 'orgDescription') || FALLBACK;
+  const panelDate = get(agenda, 'panelDate') ? formatDate(agenda.panelDate) : FALLBACK;
   const showHandshakeIcon = get(result, 'hs_accepted') || false;
-  const ted = get(currentAssignment, 'TED') || '';
+  const ted = get(currentAssignment, 'TED') ? formatDate(currentAssignment.TED) : FALLBACK;
   const perdet = get(person, 'perdet', '');
   const userRole = isCDO ? 'cdo' : 'ao';
   const employeeID = get(person, 'employeeID', '');
-
-  const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 
   return (
     <BoxShadow className="employee-agenda-stat-card">
@@ -67,7 +67,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
           <div className="employee-card-data-point">
             <FA name="clock-o" />
             <dt>TED:</dt>
-            <dd>{ted ? formatDate(ted) : 'None listed'}</dd>
+            <dd>{ted}</dd>
           </div>
           <div className="employee-card-data-point">
             <FA name="user-o" />
@@ -107,7 +107,16 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
 
 EmployeeAgendaSearchCard.propTypes = {
   isCDO: PropTypes.bool,
-  result: PropTypes.PropTypes.shape({ person: {}, currentAssignment: {} }),
+  result: PropTypes.PropTypes.shape({
+    person: PropTypes.shape({}),
+    currentAssignment: PropTypes.shape({
+      TED: PropTypes.string,
+    }),
+    hsAssignment: PropTypes.shape({}),
+    agenda: PropTypes.shape({
+      panelDate: PropTypes.string,
+    }),
+  }),
 };
 
 EmployeeAgendaSearchCard.defaultProps = {

@@ -1,15 +1,12 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Picky from 'react-picky';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
-import { flatten, get, has, isEmpty, sortBy, throttle, uniqBy } from 'lodash';
+import { flatten, get, has, isEmpty, throttle } from 'lodash';
 import FA from 'react-fontawesome';
-import { filtersFetchData } from 'actions/filters/filters';
-import { agendaEmployeesFetchData, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
+import { isDate } from 'date-fns-v2';
+import { agendaEmployeesFetchData, agendaEmployeesFiltersFetchData, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import Spinner from 'Components/Spinner';
@@ -31,10 +28,15 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const childRef = useRef();
   const dispatch = useDispatch();
 
+  const agendaEmployeesFilters = useSelector(state => state.agendaEmployeesFilters);
+  const agendaEmployeesFiltersIsLoading = useSelector(state =>
+    state.agendaEmployeesFiltersFetchDataLoading);
+  // const agendaEmployeesFiltersHasErrored = useSelector(state =>
+  //  state.agendaEmployeesFiltersFetchDataErrored);
+
   const cdos = useSelector(state => state.bidderPortfolioCDOs);
-  const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
-  const filterData = useSelector(state => state.filters);
-  const filtersIsLoading = useSelector(state => state.filtersIsLoading);
+  // const cdosIsLoading = useSelector(state => state.bidderPortfolioCDOsIsLoading);
+
   const agendaEmployees$ = useSelector(state => state.agendaEmployees);
   const agendaEmployeesIsLoading = useSelector(state => state.agendaEmployeesFetchDataLoading);
   const agendaEmployeesHasErrored = useSelector(state => state.agendaEmployeesFetchDataErrored);
@@ -42,23 +44,12 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
 
   const agendaEmployees = get(agendaEmployees$, 'results', []);
 
-  const isLoading = false; // filtersIsLoading || cdosIsLoading;
-
-  const filters = get(filterData, 'filters', []);
-
   const useEmployeeAgendaFilters = () => checkFlag('flags.agenda_filters');
   const displayEmployeeAgendaFilters = useEmployeeAgendaFilters();
 
-  const bureaus = filters.find(f => f.item.description === 'region');
-  const bureauOptions = uniqBy(sortBy(get(bureaus, 'data', []), [(b) => b.long_description]), 'long_description');
-  const cycles = filters.find(f => f.item.description === 'bidCycle');
-  const cycleOptions = uniqBy(sortBy(get(cycles, 'data', []), [(c) => c.custom_description]), 'custom_description');
-  const fsbidHandshakeStatus = filters.find(f => f.item.description === 'handshake');
-  const fsbidHandshakeStatusOptions = uniqBy(get(fsbidHandshakeStatus, 'data', []), 'code');
-  const panels = [new Date(), new Date(), new Date(), new Date(), new Date()];
-  // To-Do: Missing org/post data - using location as placeholder
-  const posts = filters.find(f => f.item.description === 'post');
-  const postOptions = uniqBy(sortBy(get(posts, 'data', []), [(p) => p.city]), 'code');
+  const fsbidHandshakeStatusOptions = [{ description: 'Handshake', code: 'Y' }, { description: 'No Handshake', code: 'N' }];
+
+  const isLoading = agendaEmployeesFiltersIsLoading;
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -69,10 +60,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [selectedOngoingBureaus, setSelectedOngoingBureaus] = useState([]);
   const [selectedCDOs, setSelectedCDOs] = useState([]);
   // To-Do: Fake creator data
-  const [selectedCreators, setSelectedCreators] = useState([]);
-  const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedHandshakeStatus, setSelectedHandshakeStatus] = useState([]);
-  const [selectedPanels, setSelectedPanels] = useState([]);
   const [selectedCurrentPosts, setSelectedCurrentPosts] = useState([]);
   const [selectedOngoingPosts, setSelectedOngoingPosts] = useState([]);
   const [selectedTED, setSelectedTED] = useState(null);
@@ -96,14 +84,14 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     limit,
     ordering,
     // User Filters
-    // [`${get(bureaus, 'item.selectionRef', '')}-current`]: selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    // [`${get(bureaus, 'item.selectionRef', '')}-ongoing`]: selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    // [get(cycles, 'item.selectionRef', '')]: selectedCycles.map(cycleObject => (get(cycleObject, 'id'))),
-    // [get(fsbidHandshakeStatus, 'item.selectionRef', '')]: selectedHandshakeStatus.map(fsbidHSStatusObject => (get(fsbidHSStatusObject, 'code'))),
-    // selectedPanels,
-    // [`${get(posts, 'item.selectionRef', '')}-current`]: selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
-    // [`${get(posts, 'item.selectionRef', '')}-ongoing`]: selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
-    // selectedTED,
+    'current-bureaus': selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    'handshake-bureaus': selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
+    cdo: selectedCDOs.map(cdoObject => get(cdoObject, 'code')),
+    'current-organizations': selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
+    'handshake-organizations': selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
+    handshake: selectedHandshakeStatus.map(hsObject => (get(hsObject, 'code'))),
+    'ted-start': isDate(get(selectedTED, '[0]')) ? get(selectedTED, '[0]').toJSON() : '',
+    'ted-end': isDate(get(selectedTED, '[1]')) ? get(selectedTED, '[1]').toJSON() : '',
     // Free Text
     q: textInput || textSearch,
   };
@@ -115,10 +103,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     selectedCurrentBureaus,
     selectedOngoingBureaus,
     selectedCDOs,
-    selectedCreators,
-    selectedCycles,
     selectedHandshakeStatus,
-    selectedPanels,
     selectedCurrentPosts,
     selectedOngoingPosts,
     selectedTED,
@@ -128,10 +113,13 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   };
 
   useEffect(() => {
-    // dispatch(filtersFetchData(filterData, {}));
-    // dispatch(bidderPortfolioCDOsFetchData());
     dispatch(agendaEmployeesFetchData(query));
     dispatch(saveAgendaEmployeesSelections(currentInputs));
+  }, []);
+
+  useEffect(() => {
+    dispatch(agendaEmployeesFiltersFetchData());
+    dispatch(bidderPortfolioCDOsFetchData());
   }, []);
 
   useEffect(() => {
@@ -139,9 +127,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       selectedCurrentBureaus,
       selectedOngoingBureaus,
       selectedCDOs,
-      selectedCycles,
       selectedHandshakeStatus,
-      selectedPanels,
       selectedCurrentPosts,
       selectedOngoingPosts,
       selectedTED,
@@ -160,9 +146,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     selectedCurrentBureaus,
     selectedOngoingBureaus,
     selectedCDOs,
-    selectedCycles,
     selectedHandshakeStatus,
-    selectedPanels,
     selectedCurrentPosts,
     selectedOngoingPosts,
     selectedTED,
@@ -221,9 +205,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     setSelectedCurrentBureaus([]);
     setSelectedOngoingBureaus([]);
     setSelectedCDOs([]);
-    setSelectedCycles([]);
     setSelectedHandshakeStatus([]);
-    setSelectedPanels([]);
     setSelectedCurrentPosts([]);
     setSelectedOngoingPosts([]);
     setSelectedTED(null);
@@ -283,53 +265,25 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                       </div>
                     </div>
                     <div className="usa-width-one-whole empl-search-filters results-dropdown">
-                      <div className="filter-div">
-                        <div className="label">Cycle:</div>
-                        <Picky
-                          {...pickyProps}
-                          placeholder="Select Cycle(s)"
-                          value={selectedCycles}
-                          options={cycleOptions}
-                          onChange={setSelectedCycles}
-                          valueKey="id"
-                          labelKey="custom_description"
-                          disabled
-                        />
-                      </div>
-                      <div className="filter-div">
-                        <div className="label">Panel:</div>
-                        <Picky
-                          {...pickyProps}
-                          placeholder="Select Panel Date(s)"
-                          value={selectedPanels}
-                          options={panels}
-                          onChange={setSelectedPanels}
-                          valueKey="code"
-                          labelKey="long_description"
-                          disabled
-                        />
-                      </div>
                       <div className="filter-div split-filter-div">
                         <div className="label">Post:</div>
                         <Picky
                           {...pickyProps}
                           placeholder="Current"
                           value={selectedCurrentPosts}
-                          options={postOptions}
+                          options={get(agendaEmployeesFilters, 'currentOrganizations', [])}
                           onChange={setSelectedCurrentPosts}
                           valueKey="code"
-                          labelKey="custom_description"
-                          disabled
+                          labelKey="name"
                         />
                         <Picky
                           {...pickyProps}
                           placeholder="Ongoing"
                           value={selectedOngoingPosts}
-                          options={postOptions}
+                          options={get(agendaEmployeesFilters, 'handshakeOrganizations', [])}
                           onChange={setSelectedOngoingPosts}
                           valueKey="code"
-                          labelKey="custom_description"
-                          disabled
+                          labelKey="name"
                         />
                       </div>
                       <div className="filter-div split-filter-div">
@@ -338,21 +292,19 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                           {...pickyProps}
                           placeholder="Current"
                           value={selectedCurrentBureaus}
-                          options={bureauOptions}
+                          options={get(agendaEmployeesFilters, 'currentBureaus', [])}
                           onChange={setSelectedCurrentBureaus}
                           valueKey="code"
-                          labelKey="long_description"
-                          disabled
+                          labelKey="name"
                         />
                         <Picky
                           {...pickyProps}
                           placeholder="Ongoing"
                           value={selectedOngoingBureaus}
-                          options={bureauOptions}
+                          options={get(agendaEmployeesFilters, 'handshakeBureaus', [])}
                           onChange={setSelectedOngoingBureaus}
                           valueKey="code"
-                          labelKey="long_description"
-                          disabled
+                          labelKey="name"
                         />
                       </div>
                       <div className="filter-div handshake-filter-div">
@@ -365,7 +317,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                           onChange={setSelectedHandshakeStatus}
                           valueKey="code"
                           labelKey="description"
-                          disabled
+                          disabled={isLoading}
                         />
                       </div>
                       <div className="filter-div">
@@ -378,20 +330,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                           onChange={setSelectedCDOs}
                           valueKey="id"
                           labelKey="name"
-                          disabled
-                        />
-                      </div>
-                      <div className="filter-div">
-                        <div className="label">Creator:</div>
-                        <Picky
-                          {...pickyProps}
-                          placeholder="Select Creator(s)"
-                          value={selectedCreators}
-                          options={cdos}
-                          onChange={setSelectedCreators}
-                          valueKey="id"
-                          labelKey="name"
-                          disabled
+                          disabled={isLoading}
                         />
                       </div>
                       <div className="filter-div">
@@ -402,7 +341,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                           maxDetail="month"
                           calendarIcon={null}
                           showLeadingZeros
-                          disabled
+                          disabled={isLoading}
                         />
                       </div>
                     </div>
@@ -463,7 +402,11 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <div className="employee-agenda-card">
                       {agendaEmployees.map(emp => (
                         // TODO: include React keys once we have real data
-                        <EmployeeAgendaSearchCard key={shortid.generate()} result={emp} isCDO={isCDO} />
+                        <EmployeeAgendaSearchCard
+                          key={shortid.generate()}
+                          result={emp}
+                          isCDO={isCDO}
+                        />
                       ))}
                     </div>
                   }
@@ -472,7 +415,11 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     <div className="employee-agenda-row">
                       {agendaEmployees.map(emp => (
                         // TODO: include React keys once we have real data
-                        <EmployeeAgendaSearchRow key={shortid.generate()} result={emp} isCDO={isCDO} />
+                        <EmployeeAgendaSearchRow
+                          key={shortid.generate()}
+                          result={emp}
+                          isCDO={isCDO}
+                        />
                       ))}
                     </div>
                   }
