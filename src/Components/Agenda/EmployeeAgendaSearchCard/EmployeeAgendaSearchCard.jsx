@@ -8,7 +8,7 @@ import { get } from 'lodash';
 import BoxShadow from 'Components/BoxShadow';
 import { formatDate } from 'utilities';
 
-const FALLBACK = 'None listed';
+export const FALLBACK = 'None listed';
 
 const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
   // will need to update during integration

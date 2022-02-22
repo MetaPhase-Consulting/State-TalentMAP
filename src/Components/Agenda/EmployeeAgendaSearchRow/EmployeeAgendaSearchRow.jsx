@@ -3,25 +3,25 @@ import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
 import LinkButton from 'Components/LinkButton';
 import { get } from 'lodash';
-import { format, isDate } from 'date-fns-v2';
+import { formatDate } from 'utilities';
+import { FALLBACK } from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 
 const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   // will need to update during integration
-  const { person, currentAssignment } = result;
-  const agendaStatus = get(result, 'agendaStatus') || 'Coming soon';
+  const { person, currentAssignment, hsAssignment, agenda } = result;
+  const agendaStatus = get(agenda, 'status') || FALLBACK;
   const author = get(result, 'author') || 'Coming soon';
-  const bidder = get(person, 'fullName') || 'None listed';
+  const bidder = get(person, 'fullName') || FALLBACK;
   const cdo = get(result, 'cdo') || 'Coming soon';
-  const currentPost = get(currentAssignment, 'orgDescription') || 'None listed';
-  const futurePost = get(result, 'futurePost') || 'Coming soon';
+  const currentPost = get(currentAssignment, 'orgDescription') || FALLBACK;
+  const futurePost = get(hsAssignment, 'orgDescription') || FALLBACK;
   const initials = get(person, 'initials') || '';
-  const panelDate = get(result, 'panelDate') || 'Coming soon';
-  const ted = get(currentAssignment, 'TED') || '';
-  const userRole = isCDO ? 'cdo' : 'ao';
+  const panelDate = get(agenda, 'panelDate') ? formatDate(agenda.panelDate) : FALLBACK;
+  // const showHandshakeIcon = get(result, 'hs_accepted') || false;
+  const ted = get(currentAssignment, 'TED') ? formatDate(currentAssignment.TED) : FALLBACK;
   const perdet = get(person, 'perdet', '');
+  const userRole = isCDO ? 'cdo' : 'ao';
   const employeeID = get(person, 'employeeID', '');
-
-  const formatDate = (d) => isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : 'None listed';
 
   return (
     <div className="usa-grid-full employee-agenda-stat-row">
@@ -50,7 +50,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
           <div className="employee-agenda-row-data-point">
             <FA name="clock-o" />
             <dt>TED:</dt>
-            <dd>{ted ? formatDate(ted) : 'None listed'}</dd>
+            <dd>{ted}</dd>
           </div>
           <div className="employee-agenda-row-data-point">
             <FA name="user-o" />
@@ -89,7 +89,16 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
 
 EmployeeAgendaSearchRow.propTypes = {
   isCDO: PropTypes.bool,
-  result: PropTypes.PropTypes.shape({ person: {}, currentAssignment: {} }),
+  result: PropTypes.PropTypes.shape({
+    person: PropTypes.shape({}),
+    currentAssignment: PropTypes.shape({
+      TED: PropTypes.string,
+    }),
+    hsAssignment: PropTypes.shape({}),
+    agenda: PropTypes.shape({
+      panelDate: PropTypes.string,
+    }),
+  }),
 };
 
 EmployeeAgendaSearchRow.defaultProps = {

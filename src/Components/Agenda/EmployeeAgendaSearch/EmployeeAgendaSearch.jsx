@@ -86,7 +86,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     // User Filters
     'current-bureaus': selectedCurrentBureaus.map(bureauObject => (get(bureauObject, 'code'))),
     'handshake-bureaus': selectedOngoingBureaus.map(bureauObject => (get(bureauObject, 'code'))),
-    cdo: selectedCDOs.map(cdoObject => get(cdoObject, 'code')),
+    cdos: selectedCDOs.map(cdoObject => get(cdoObject, 'id')),
     'current-organizations': selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
     'handshake-organizations': selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
     handshake: selectedHandshakeStatus.map(hsObject => (get(hsObject, 'code'))),

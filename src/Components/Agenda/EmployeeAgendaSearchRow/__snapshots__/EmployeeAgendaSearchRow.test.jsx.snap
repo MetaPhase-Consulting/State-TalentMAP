@@ -43,7 +43,7 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
             className="org-fa-arrow"
             name="long-arrow-right"
           />
-          Coming soon
+          None listed
         </dd>
       </div>
       <div
@@ -95,7 +95,7 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
           Panel Meeting Date:
         </dt>
         <dd>
-          Coming soon
+          None listed
         </dd>
       </div>
       <div
@@ -108,7 +108,7 @@ exports[`EmployeeAgendaSearchRow matches snapshot 1`] = `
           Agenda Status:
         </dt>
         <dd>
-          Coming soon
+          None listed
         </dd>
       </div>
     </div>
