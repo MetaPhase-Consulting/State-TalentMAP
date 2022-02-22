@@ -71,7 +71,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const [cardView, setCardView] = useState(get(userSelections, 'cardView', true));
   const [clearFilters, setClearFilters] = useState(false);
 
-  const count = agendaEmployees ? agendaEmployees.length : 0;
+  const count = get(agendaEmployees$, 'count') || 0;
 
   const view = cardView ? 'card' : 'grid';
 
@@ -355,8 +355,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
             <div className="usa-width-one-whole results-dropdown empl-search-controls-container">
               <TotalResults
                 total={count}
-                pageNumber={1}
-                pageSize={count}
+                pageNumber={page}
+                pageSize={limit}
                 suffix="Results"
                 isHidden={isLoading || agendaEmployeesIsLoading}
               />
@@ -435,16 +435,6 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                     />
                   }
                 </div>
-                {
-                  (count >= 50) &&
-                  <div className="empl-search-controls-container">
-                    <Alert
-                      type="info"
-                      title="Page Max: 50 results"
-                      messages={[{ body: 'Please refine search to see different results.' }]}
-                    />
-                  </div>
-                }
               </>
           }
         </div>
