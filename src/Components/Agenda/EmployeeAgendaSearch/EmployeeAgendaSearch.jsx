@@ -6,7 +6,7 @@ import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { filter, flatten, get, has, identity, isEmpty, throttle } from 'lodash';
 import FA from 'react-fontawesome';
 import { isDate } from 'date-fns-v2';
-import { agendaEmployeesFetchData, agendaEmployeesFiltersFetchData, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
+import { agendaEmployeesFetchData, agendaEmployeesFiltersFetchData, agendaItemHistoryExport, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import Spinner from 'Components/Spinner';
@@ -70,6 +70,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   // Controls
   const [cardView, setCardView] = useState(get(userSelections, 'cardView', true));
   const [clearFilters, setClearFilters] = useState(false);
+  // Export
+  const [exportIsLoading, setExportIsLoading] = useState(false);
 
   const count = get(agendaEmployees$, 'count') || 0;
 
@@ -168,6 +170,18 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     throttledTextInput(q);
   };
 
+  const exportAgendaEmployees = () => {
+    if (!exportIsLoading) {
+      setExportIsLoading(true);
+      agendaItemHistoryExport(query)
+        .then(() => {
+          setExportIsLoading(false);
+        })
+        .catch(() => {
+          setExportIsLoading(false);
+        });
+    }
+  };
 
   const renderSelectionList = ({ items, selected, ...rest }) => {
     let codeOrID = 'code';
@@ -232,6 +246,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   };
 
   const overlay = getOverlay();
+
+  const exportDisabled = (agendaEmployees || []).length <= 0;
 
   return (
     isLoading ?
@@ -385,9 +401,9 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                 }
                 <div className="export-button-container">
                   <ExportButton
-                    onClick={() => {}}
-                    isLoading={isLoading}
-                    disabled
+                    onClick={exportAgendaEmployees}
+                    isLoading={exportIsLoading}
+                    disabled={exportDisabled}
                   />
                 </div>
               </div>

@@ -3,6 +3,7 @@ import { batch } from 'react-redux';
 import { get, identity, isArray, isString, pickBy } from 'lodash';
 import { stringify } from 'query-string';
 import { CancelToken } from 'axios';
+import { downloadFromResponse, formatDate } from 'utilities';
 import Q from 'q';
 import api from '../api';
 
@@ -50,6 +51,29 @@ export function agendaEmployeesFiltersFetchDataSuccess(results) {
   };
 }
 
+const convertQueryToString = query => {
+  let q = pickBy(query, identity);
+  Object.keys(q).forEach(queryk => {
+    if (isArray(q[queryk])) { q[queryk] = q[queryk].join(); }
+    if (isString(q[queryk]) && !q[queryk]) {
+      q[queryk] = undefined;
+    }
+  });
+  q = stringify(q);
+  return q;
+};
+
+export function agendaItemHistoryExport(query = {}) {
+  const q = convertQueryToString(query);
+  const endpoint = '/fsbid/agenda_employees/export/';
+  const ep = `${endpoint}?${q}`;
+  return api()
+    .get(ep)
+    .then((response) => {
+      downloadFromResponse(response, `Agenda_Item_Employees_${formatDate(new Date().getTime(), 'YYYY_M_D_Hms')}`);
+    });
+}
+
 export function agendaEmployeesFetchData(query = {}) {
   return (dispatch) => {
     if (cancelAgendaEmployees) { cancelAgendaEmployees('cancel'); }
@@ -57,14 +81,7 @@ export function agendaEmployeesFetchData(query = {}) {
       dispatch(agendaEmployeesFetchDataLoading(true));
       dispatch(agendaEmployeesFetchDataErrored(false));
     });
-    let q = pickBy(query, identity);
-    Object.keys(q).forEach(queryk => {
-      if (isArray(q[queryk])) { q[queryk] = q[queryk].join(); }
-      if (isString(q[queryk]) && !q[queryk]) {
-        q[queryk] = undefined;
-      }
-    });
-    q = stringify(q);
+    const q = convertQueryToString(query);
     const endpoint = '/fsbid/agenda_employees/';
     const ep = `${endpoint}?${q}`;
     api().get(ep, {
