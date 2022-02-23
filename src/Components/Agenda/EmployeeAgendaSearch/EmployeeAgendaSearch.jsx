@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Picky from 'react-picky';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
-import { flatten, get, has, isEmpty, throttle } from 'lodash';
+import { filter, flatten, get, has, identity, isEmpty, throttle } from 'lodash';
 import FA from 'react-fontawesome';
 import { isDate } from 'date-fns-v2';
 import { agendaEmployeesFetchData, agendaEmployeesFiltersFetchData, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
@@ -132,7 +132,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
       selectedOngoingPosts,
       selectedTED,
     ];
-    if (isEmpty(flatten(filters$)) && isEmpty(textSearch)) {
+    if (isEmpty(filter(flatten(filters$), identity)) && isEmpty(textSearch)) {
       setClearFilters(false);
     } else {
       setClearFilters(true);

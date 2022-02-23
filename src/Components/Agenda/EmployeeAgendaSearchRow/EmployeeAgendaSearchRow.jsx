@@ -10,7 +10,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   // will need to update during integration
   const { person, currentAssignment, hsAssignment, agenda } = result;
   const agendaStatus = get(agenda, 'status') || FALLBACK;
-  const author = get(result, 'author') || 'Coming soon';
+  // const author = get(result, 'author') || 'Coming soon';
   const bidder = get(person, 'fullName') || FALLBACK;
   const cdo = get(result, 'cdo') || 'Coming soon';
   const currentPost = get(currentAssignment, 'orgDescription') || FALLBACK;
@@ -21,7 +21,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const ted = get(currentAssignment, 'TED') ? formatDate(currentAssignment.TED) : FALLBACK;
   const perdet = get(person, 'perdet', '');
   const userRole = isCDO ? 'cdo' : 'ao';
-  const employeeID = get(person, 'employeeID', '');
+  const employeeID = get(person, 'employeeID', '') || FALLBACK;
 
   return (
     <div className="usa-grid-full employee-agenda-stat-row">
@@ -57,11 +57,14 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
             <dt>CDO:</dt>
             <dd>{cdo}</dd>
           </div>
-          <div className="employee-agenda-row-data-point">
+          {/*
+            // TODO - do we want to include and/or filter by Author?
+            <div className="employee-agenda-row-data-point">
             <FA name="pencil-square" />
             <dt>Author:</dt>
             <dd>{author}</dd>
           </div>
+          */}
           <div className="employee-agenda-row-data-point">
             <FA name="calendar-o" />
             <dt>Panel Meeting Date:</dt>
