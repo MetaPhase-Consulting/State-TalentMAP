@@ -19,6 +19,14 @@ describe('async actions', () => {
     expectMockWasCalled({ spy, cb: done });
   });
 
+  it('can fetch agenda employees export', (done) => {
+    ({ mock, spy } = spyMockAdapter({
+      url: '/fsbid/agenda_employees/export/?', response: [200, { results: [] }],
+    })); mock();
+    actions.agendaItemHistoryExport();
+    expectMockWasCalled({ spy, cb: done });
+  });
+
   [
     '/fsbid/agenda_employees/reference/current-bureaus/',
     '/fsbid/agenda_employees/reference/handshake-bureaus/',
