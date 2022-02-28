@@ -12,7 +12,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
   const agendaStatus = get(agenda, 'status') || FALLBACK;
   // const author = get(result, 'author') || 'Coming soon';
   const bidder = get(person, 'fullName') || FALLBACK;
-  const cdo = get(result, 'cdo') || 'Coming soon';
+  const cdo = get(person, 'cdo') || FALLBACK;
   const currentPost = get(currentAssignment, 'orgDescription') || FALLBACK;
   const futurePost = get(hsAssignment, 'orgDescription') || FALLBACK;
   const initials = get(person, 'initials') || '';
