@@ -50,6 +50,7 @@ const AgendaItemResearchPane = props => {
 
   // assignments
   const { data, error, loading /* , retry */ } = useDataLoader(api().get, `/fsbid/client/${perdet}/`);
+  console.log('assign hist testing', useDataLoader(api().get, `/fsbid/client/${perdet}/assignments/`));
   const assignments = get(data, 'data.assignments') || [];
   const languages = get(data, 'data.languages') || [];
 
