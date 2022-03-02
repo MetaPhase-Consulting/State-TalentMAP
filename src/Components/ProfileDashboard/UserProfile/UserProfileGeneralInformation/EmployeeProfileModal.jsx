@@ -25,6 +25,9 @@ const EmployeeProfileModal = props => {
 
   return (
     <div className="checklist-modal">
+      <div className="checklist-modal-x-button-container">
+        <button type="button" onClick={cancel}>x</button>
+      </div>
       <div>
         <Worker workerUrl={getAssetPath('/static/js/pdf.worker.js')}>
           {/* <Viewer fileUrl={this.state.data} />; */}

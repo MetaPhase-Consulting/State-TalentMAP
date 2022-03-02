@@ -32,6 +32,13 @@
     }
   }
 
+  .checklist-modal-x-button-container {
+    button {
+      float: right;
+      position: 'absolute';
+    }
+  }
+
   .title-divider {
     border-top: 1px solid $color-black;
   }
