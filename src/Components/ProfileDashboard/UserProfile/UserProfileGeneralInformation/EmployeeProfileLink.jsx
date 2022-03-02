@@ -25,7 +25,6 @@ class EmployeeProfileLink extends Component {
       title: 'Employee Profile Report:',
       button: false,
       className: 'modal-1300',
-      showCloseButton: true,
       content: (
         <EmployeeProfileModal
           url={url$}
