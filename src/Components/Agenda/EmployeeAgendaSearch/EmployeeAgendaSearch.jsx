@@ -80,7 +80,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const pageSizes = AGENDA_EMPLOYEES_PAGE_SIZES;
   const sorts = AGENDA_EMPLOYEES_SORT;
 
-  const query = {
+  const getQuery = () => ({
     // Pagination
     page,
     limit,
@@ -96,9 +96,9 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     'ted-end': isDate(get(selectedTED, '[1]')) ? get(selectedTED, '[1]').toJSON() : '',
     // Free Text
     q: textInput || textSearch,
-  };
+  });
 
-  const currentInputs = {
+  const getCurrentInputs = () => ({
     page,
     limit,
     ordering,
@@ -112,11 +112,11 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     textInput,
     textSearch,
     cardView,
-  };
+  });
 
   useEffect(() => {
-    dispatch(agendaEmployeesFetchData(query));
-    dispatch(saveAgendaEmployeesSelections(currentInputs));
+    dispatch(agendaEmployeesFetchData(getQuery()));
+    dispatch(saveAgendaEmployeesSelections(getCurrentInputs()));
   }, []);
 
   useEffect(() => {
@@ -142,8 +142,8 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     if (resetPage) {
       setPage(1);
     }
-    dispatch(agendaEmployeesFetchData(query));
-    dispatch(saveAgendaEmployeesSelections(currentInputs));
+    dispatch(agendaEmployeesFetchData(getQuery()));
+    dispatch(saveAgendaEmployeesSelections(getCurrentInputs));
   };
 
   useEffect(() => {
@@ -168,7 +168,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   ]);
 
   useEffect(() => {
-    dispatch(saveAgendaEmployeesSelections(currentInputs));
+    dispatch(saveAgendaEmployeesSelections(getCurrentInputs));
   }, [cardView]);
 
   function submitSearch(text) {
@@ -185,7 +185,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
   const exportAgendaEmployees = () => {
     if (!exportIsLoading) {
       setExportIsLoading(true);
-      agendaItemHistoryExport(query)
+      agendaItemHistoryExport(getQuery())
         .then(() => {
           setExportIsLoading(false);
         })
