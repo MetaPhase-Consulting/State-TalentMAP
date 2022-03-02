@@ -124,7 +124,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     dispatch(bidderPortfolioCDOsFetchData());
   }, []);
 
-  useEffect(() => {
+  const fetchAndSet = (resetPage = false) => {
     const filters$ = [
       selectedCurrentBureaus,
       selectedOngoingBureaus,
@@ -139,10 +139,16 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     } else {
       setClearFilters(true);
     }
+    if (resetPage) {
+      setPage(1);
+    }
     dispatch(agendaEmployeesFetchData(query));
     dispatch(saveAgendaEmployeesSelections(currentInputs));
+  };
+
+  useEffect(() => {
+    fetchAndSet(true);
   }, [
-    page,
     limit,
     ordering,
     selectedCurrentBureaus,
@@ -153,6 +159,12 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     selectedOngoingPosts,
     selectedTED,
     textSearch,
+  ]);
+
+  useEffect(() => {
+    fetchAndSet(false);
+  }, [
+    page,
   ]);
 
   useEffect(() => {
