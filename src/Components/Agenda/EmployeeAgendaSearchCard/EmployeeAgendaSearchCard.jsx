@@ -20,7 +20,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result, showCreate }) => {
   const currentPost = get(currentAssignment, 'orgDescription') || FALLBACK;
   const futurePost = get(hsAssignment, 'orgDescription') || FALLBACK;
   const panelDate = get(agenda, 'panelDate') ? formatDate(agenda.panelDate) : FALLBACK;
-  const showHandshakeIcon = get(result, 'hs_accepted') || false;
+  const showHandshakeIcon = get(result, 'hsAssignment.orgDescription') || false;
   const ted = get(currentAssignment, 'TED') ? formatDate(currentAssignment.TED) : FALLBACK;
   const perdet = get(person, 'perdet', '');
   const userRole = isCDO ? 'cdo' : 'ao';

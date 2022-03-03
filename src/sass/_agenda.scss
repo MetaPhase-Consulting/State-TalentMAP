@@ -322,6 +322,11 @@
 .employee-agenda-row {
   margin-top: 1rem;
 
+  .employee-ribbon-container {
+    float: right;
+    width: auto;
+  }
+
   .employee-agenda-stat-row {
     border: 1px solid $color-gray-light;
     border-left: 11px solid $primary-blue;

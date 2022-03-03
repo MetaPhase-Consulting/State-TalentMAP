@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
+import { Handshake } from 'Components/Ribbon';
 import LinkButton from 'Components/LinkButton';
 import { get } from 'lodash';
 import { formatDate } from 'utilities';
@@ -17,7 +18,7 @@ const EmployeeAgendaSearchRow = ({ isCDO, result, showCreate }) => {
   const futurePost = get(hsAssignment, 'orgDescription') || FALLBACK;
   const initials = get(person, 'initials') || '';
   const panelDate = get(agenda, 'panelDate') ? formatDate(agenda.panelDate) : FALLBACK;
-  // const showHandshakeIcon = get(result, 'hs_accepted') || false;
+  const showHandshakeIcon = get(result, 'hsAssignment.orgDescription') || false;
   const ted = get(currentAssignment, 'TED') ? formatDate(currentAssignment.TED) : FALLBACK;
   const perdet = get(person, 'perdet', '');
   const userRole = isCDO ? 'cdo' : 'ao';
@@ -28,6 +29,15 @@ const EmployeeAgendaSearchRow = ({ isCDO, result, showCreate }) => {
       <div className="initials-circle-container">
         <div className="initials-circle">
           {initials}
+        </div>
+      </div>
+      <div className="employee-agenda-card-top">
+        <div className="employee-ribbon-container">
+          <div className="ribbon-container-condensed">
+            {showHandshakeIcon &&
+                <Handshake />
+            }
+          </div>
         </div>
       </div>
       <div className="employee-agenda-row-name">
