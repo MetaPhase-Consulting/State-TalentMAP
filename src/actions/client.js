@@ -41,9 +41,3 @@ export const fetchAllClientData = clientId => (
     })
     .catch(error => error)
 );
-
-export const fetchClientAssignmentHistory = clientId =>
-  api().get(`/fsbid/client/${clientId}/assignments/`)
-    .then(({ data }) => data)
-    .then(client => client)
-    .catch(error => error);
