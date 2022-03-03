@@ -5,7 +5,7 @@ import Picky from 'react-picky';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { filter, flatten, get, has, identity, isEmpty, throttle } from 'lodash';
 import FA from 'react-fontawesome';
-import { isDate } from 'date-fns-v2';
+import { isDate, startOfDay } from 'date-fns-v2';
 import { agendaEmployeesFetchData, agendaEmployeesFiltersFetchData, agendaItemHistoryExport, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
@@ -95,8 +95,11 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
     'current-organizations': selectedCurrentPosts.map(postObject => (get(postObject, 'code'))),
     'handshake-organizations': selectedOngoingPosts.map(postObject => (get(postObject, 'code'))),
     handshake: selectedHandshakeStatus.map(hsObject => (get(hsObject, 'code'))),
-    'ted-start': isDate(get(selectedTED, '[0]')) ? get(selectedTED, '[0]').toJSON() : '',
-    'ted-end': isDate(get(selectedTED, '[1]')) ? get(selectedTED, '[1]').toJSON() : '',
+
+    // need to set to beginning of the day to avoid timezone issues
+    'ted-start': isDate(get(selectedTED, '[0]')) ? startOfDay(get(selectedTED, '[0]')).toJSON() : '',
+    'ted-end': isDate(get(selectedTED, '[1]')) ? startOfDay(get(selectedTED, '[1]')).toJSON() : '',
+
     // Free Text
     q: textInput || textSearch,
   });
