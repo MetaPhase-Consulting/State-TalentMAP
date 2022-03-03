@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import { formatDate } from 'utilities';
 import { FALLBACK } from '../EmployeeAgendaSearchCard/EmployeeAgendaSearchCard';
 
-const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
+const EmployeeAgendaSearchRow = ({ isCDO, result, showCreate }) => {
   // will need to update during integration
   const { person, currentAssignment, hsAssignment, agenda } = result;
   const agendaStatus = get(agenda, 'status') || FALLBACK;
@@ -80,9 +80,12 @@ const EmployeeAgendaSearchRow = ({ isCDO, result }) => {
           <div className="view-agenda-item-container">
             <LinkButton className="view-agenda-item-button" toLink={`/profile/${userRole}/agendaitemhistory/${perdet}`}>View History</LinkButton>
           </div>
-          <div className="create-ai-box-container">
-            <LinkButton className="create-ai-box-button" toLink={`/profile/${userRole}/createagendaitem/${perdet}`}>Create Agenda Item</LinkButton>
-          </div>
+          {
+            !!showCreate &&
+            <div className="create-ai-box-container">
+              <LinkButton className="create-ai-box-button" toLink={`/profile/${userRole}/createagendaitem/${perdet}`}>Create Agenda Item</LinkButton>
+            </div>
+          }
         </div>
 
       </div>
@@ -102,11 +105,13 @@ EmployeeAgendaSearchRow.propTypes = {
       panelDate: PropTypes.string,
     }),
   }),
+  showCreate: PropTypes.bool,
 };
 
 EmployeeAgendaSearchRow.defaultProps = {
   isCDO: false,
   result: {},
+  showCreate: true,
 };
 
 export default EmployeeAgendaSearchRow;

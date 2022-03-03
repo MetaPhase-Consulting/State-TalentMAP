@@ -24,9 +24,12 @@ import EmployeeAgendaSearchRow from '../EmployeeAgendaSearchRow/EmployeeAgendaSe
 import ProfileSectionTitle from '../../ProfileSectionTitle';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
 
+const useCreateAI = () => checkFlag('flags.create_agenda_item');
+
 const EmployeeAgendaSearch = ({ isCDO }) => {
   const childRef = useRef();
   const dispatch = useDispatch();
+  const createAI = useCreateAI();
 
   const agendaEmployeesFilters = useSelector(state => state.agendaEmployeesFilters);
   const agendaEmployeesFiltersIsLoading = useSelector(state =>
@@ -434,6 +437,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                           key={shortid.generate()}
                           result={emp}
                           isCDO={isCDO}
+                          showCreate={createAI}
                         />
                       ))}
                     </div>
@@ -447,6 +451,7 @@ const EmployeeAgendaSearch = ({ isCDO }) => {
                           key={shortid.generate()}
                           result={emp}
                           isCDO={isCDO}
+                          showCreate={createAI}
                         />
                       ))}
                     </div>

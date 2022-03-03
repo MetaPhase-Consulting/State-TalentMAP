@@ -10,7 +10,7 @@ import { formatDate } from 'utilities';
 
 export const FALLBACK = 'None listed';
 
-const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
+const EmployeeAgendaSearchCard = ({ isCDO, result, showCreate }) => {
   // will need to update during integration
   const { person, currentAssignment, hsAssignment, agenda } = result;
   const agendaStatus = get(agenda, 'status') || FALLBACK;
@@ -99,9 +99,12 @@ const EmployeeAgendaSearchCard = ({ isCDO, result }) => {
           <div className="view-agenda-item-container">
             <LinkButton className="view-agenda-item-button" toLink={`/profile/${userRole}/agendaitemhistory/${perdet}`}>View History</LinkButton>
           </div>
-          <div className="create-ai-box-container">
-            <LinkButton className="create-ai-box-button" toLink={`/profile/${userRole}/createagendaitem/${perdet}`}>Create Agenda Item</LinkButton>
-          </div>
+          {
+            !!showCreate &&
+            <div className="create-ai-box-container">
+              <LinkButton className="create-ai-box-button" toLink={`/profile/${userRole}/createagendaitem/${perdet}`}>Create Agenda Item</LinkButton>
+            </div>
+          }
         </div>
       </div>
     </BoxShadow>
@@ -120,11 +123,13 @@ EmployeeAgendaSearchCard.propTypes = {
       panelDate: PropTypes.string,
     }),
   }),
+  showCreate: PropTypes.bool,
 };
 
 EmployeeAgendaSearchCard.defaultProps = {
   isCDO: false,
   result: {},
+  showCreate: true,
 };
 
 export default EmployeeAgendaSearchCard;
