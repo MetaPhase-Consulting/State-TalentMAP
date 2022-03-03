@@ -96,6 +96,9 @@
     input {
       display: inline;
     }
+    .react-daterange-picker__calendar--open {
+      z-index: $daterange-z;
+    }
     .react-daterange-picker {
       align-items: center;
       background: $color-white;
