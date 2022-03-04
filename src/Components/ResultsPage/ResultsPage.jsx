@@ -108,11 +108,9 @@ class Results extends Component {
         }
         <div className="usa-grid-full results-section-container">
           <MediaQuery breakpoint="screenMdMin" widthType="min">
-            {matches => matches ? filterContainer : shouldShowMobileFilter && filterContainer}
-          </MediaQuery>
-          <MediaQuery breakpoint="screenMdMin" widthType="min">
             {matches => matches ?
               <>
+                {filterContainer}
                 <InteractiveElement
                   onClick={this.handleTutorialButtonClick}
                   className="tutorial-button"
@@ -139,7 +137,8 @@ class Results extends Component {
                     },
                   }}
                   locale={{ skip: 'Exit', last: 'Exit' }}
-                /></> : null}
+                /></> : <>{shouldShowMobileFilter} {filterContainer}</>
+            }
           </MediaQuery>
           <ResultsContainer
             results={results}
