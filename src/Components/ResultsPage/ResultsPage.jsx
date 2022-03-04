@@ -137,7 +137,7 @@ class Results extends Component {
                     },
                   }}
                   locale={{ skip: 'Exit', last: 'Exit' }}
-                /></> : <>{shouldShowMobileFilter} {filterContainer}</>
+                /></> : <>{shouldShowMobileFilter && filterContainer}</>
             }
           </MediaQuery>
           <ResultsContainer
