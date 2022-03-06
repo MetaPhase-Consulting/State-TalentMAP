@@ -36,13 +36,13 @@ const AssignmentsContent = ({ assignment }) => (
     <div>
       <span className="bid-list-card-title-post">Status: </span>
       {/* need to update */}
-      {get(assignment, 'position.status', NO_STATUS)}
+      {get(assignment[0], 'asgscode', NO_STATUS)}
     </div>
     <div>
       <span className="bid-list-card-title-post">Start date and End date: </span>
       <StartEnd
-        start={formatDate(assignment.start_date)}
-        end={formatDate(assignment.end_date)}
+        start={formatDate(get(assignment[0], 'asgdetadate'))}
+        end={formatDate(get(assignment[0], 'asgdetdteddate'))}
       />
     </div>
   </div>

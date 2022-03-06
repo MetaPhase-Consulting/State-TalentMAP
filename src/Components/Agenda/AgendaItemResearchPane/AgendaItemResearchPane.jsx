@@ -49,9 +49,10 @@ const AgendaItemResearchPane = props => {
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
 
   // assignments
-  const { data, error, loading /* , retry */ } = useDataLoader(api().get, `/fsbid/client/${perdet}/`);
-  console.log('assign hist testing', useDataLoader(api().get, `/fsbid/assignment_history/${perdet}/`));
-  const assignments = get(data, 'data.assignments') || [];
+  // eslint-disable-next-line max-len
+  // const { data, error, loading /* , retry */ } = useDataLoader(api().get, `/fsbid/client/${perdet}/`);
+  const { data, error, loading } = useDataLoader(api().get, `/fsbid/assignment_history/${perdet}/`);
+  const assignments = get(data, 'data.results') || [];
   const languages = get(data, 'data.languages') || [];
 
   const onFPClick = pos => {
