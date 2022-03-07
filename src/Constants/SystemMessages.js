@@ -14,6 +14,7 @@ export const DEFAULT_TEXT = 'None listed';
 
 export const NO_ASSIGNMENT_DATE = DEFAULT_TEXT;
 export const NO_ASSIGNMENT_POSITION = DEFAULT_TEXT;
+export const NO_ASSIGNMENT_STATUS = DEFAULT_TEXT;
 export const NO_BID_CYCLE = DEFAULT_TEXT;
 export const NO_BIRTHDAY = DEFAULT_TEXT;
 export const NO_BUREAU = DEFAULT_TEXT;

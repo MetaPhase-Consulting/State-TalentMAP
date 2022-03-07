@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 // import { Link } from 'react-router-dom';
-import { NO_LANGUAGES, NO_POSITION_NUMBER, NO_POST, NO_SKILL, NO_STATUS } from 'Constants/SystemMessages';
+import { NO_ASSIGNMENT_STATUS, NO_LANGUAGES, NO_POSITION_NUMBER, NO_POST, NO_SKILL } from 'Constants/SystemMessages';
 import { POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDate, getPostName } from '../../../../../utilities';
 import StartEnd from '../../../PositionInformation/StartEnd';
@@ -36,7 +36,7 @@ const AssignmentsContent = ({ assignment }) => (
     <div>
       <span className="bid-list-card-title-post">Status: </span>
       {/* need to update */}
-      {get(assignment[0], 'asgscode', NO_STATUS)}
+      {get(assignment[0], 'asgscode', NO_ASSIGNMENT_STATUS)}
     </div>
     <div>
       <span className="bid-list-card-title-post">Start date and End date: </span>
