@@ -1,9 +1,9 @@
 
 import { batch } from 'react-redux';
-import { get, identity, isArray, isString, pickBy } from 'lodash';
+import { get, identity, isArray, isString, keys, orderBy, pickBy } from 'lodash';
 import { stringify } from 'query-string';
 import { CancelToken } from 'axios';
-import { downloadFromResponse, formatDate } from 'utilities';
+import { downloadFromResponse, formatDate, mapDuplicates } from 'utilities';
 import Q from 'q';
 import api from '../api';
 
@@ -159,6 +159,11 @@ export function agendaEmployeesFiltersFetchData() {
           const filters = {
             currentBureaus, handshakeBureaus, currentOrganizations, handshakeOrganizations,
           };
+          const transformFunction = e => ({ ...e, name: e.code ? `${e.name} (${e.code})` : e.name });
+          keys(filters).forEach(k => {
+            filters[k] = mapDuplicates(filters[k], 'name', transformFunction);
+            filters[k] = orderBy(filters[k], 'name');
+          });
           batch(() => {
             dispatch(agendaEmployeesFiltersFetchDataSuccess(filters));
             dispatch(agendaEmployeesFiltersFetchDataErrored(false));
