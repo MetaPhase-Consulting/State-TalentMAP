@@ -54,11 +54,19 @@ exports[`AssignmentsContentComponent matches snapshot 1`] = `
     <span
       className="bid-list-card-title-post"
     >
+      Status: 
+    </span>
+    None listed
+  </div>
+  <div>
+    <span
+      className="bid-list-card-title-post"
+    >
       Start date and End date: 
     </span>
     <StartEnd
-      end="10/10/2018"
-      start="10/10/2016"
+      end={null}
+      start={null}
     />
   </div>
 </div>
