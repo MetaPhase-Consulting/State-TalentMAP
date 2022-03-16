@@ -1,51 +1,70 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 import { get } from 'lodash';
 // import { Link } from 'react-router-dom';
-import { NO_ASSIGNMENT_STATUS, NO_LANGUAGES, NO_POSITION_NUMBER, NO_POST, NO_SKILL } from 'Constants/SystemMessages';
+import {
+  NO_ASSIGNMENT_STATUS,
+  NO_ASSIGNMENT_TOD_DESC,
+  NO_LANGUAGES,
+  NO_POSITION_NUMBER,
+  NO_POST,
+  NO_SKILL,
+} from 'Constants/SystemMessages';
 import { POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDate, getPostName } from '../../../../../utilities';
 import StartEnd from '../../../PositionInformation/StartEnd';
 
 
 const AssignmentsContent = ({ assignment }) => (
-  <div className="usa-grid-full bid-content-container">
-    <div className="bid-list-card-title-lg">
-      <span className="bid-list-card-title-post">{get(assignment, 'position.title')} </span>
-    </div>
-    <div>
-      <span className="usa-sr-only">Position number: </span>
-      <span className="bid-list-card-title-post bid-list-card-title-lg">
-        {
-          get(assignment, 'position.position_number') ?
-            `(${get(assignment, 'position.position_number')}) ` : NO_POSITION_NUMBER
-        }
-      </span>
-      {/* <Link to={`/archived/${get(assignment, 'position.position_id')}`}>View Position</Link> */}
-    </div>
-    <div>
-      <span className="bid-list-card-title-post">Location: </span>
-      {getPostName(get(assignment, 'position.post', NO_POST))}
-    </div>
-    <div>
-      <span className="bid-list-card-title-post">Skill: </span>
-      {get(assignment, 'position.skill', NO_SKILL)}
-    </div>
-    <div>
-      <span className="bid-list-card-title-post">Language: </span>
-      {get(assignment, 'position.language', NO_LANGUAGES)}
-    </div>
-    <div>
-      <span className="bid-list-card-title-post">Status: </span>
-      {/* need to update */}
-      {get(assignment[0], 'asgscode', NO_ASSIGNMENT_STATUS)}
-    </div>
-    <div>
-      <span className="bid-list-card-title-post">Start date and End date: </span>
-      <StartEnd
-        start={formatDate(get(assignment[0], 'asgdetadate'))}
-        end={formatDate(get(assignment[0], 'asgdetdteddate'))}
-      />
-    </div>
-  </div>
+  // TO-DO:
+  // integrate fully with new EP
+  // once data is coming through
+  [assignment].map(a =>
+    (<div className="usa-grid-full bid-content-container">
+      <div className="bid-list-card-title-lg">
+        {/* <span className="bid-list-card-title-post">{get(assignment, 'position.title')} </span> */}
+        <span className="bid-list-card-title-post">{'INFORMATION MANAGEMENT SPEC'} </span>
+      </div>
+      <div>
+        <span className="usa-sr-only">Position number: </span>
+        <span className="bid-list-card-title-post bid-list-card-title-lg">
+          {
+            get(a, 'asg_pos_seq_num') ?
+              `(${get(a, 'asg_pos_seq_num')}) ` : NO_POSITION_NUMBER
+          }
+        </span>
+        {/* <Link to={`/archived/${get(assignment, 'position.position_id')}`}>View Position</Link> */}
+      </div>
+      <div>
+        <span className="bid-list-card-title-post">Location: </span>
+        {/* {getPostName(get(assignment, 'position.post', NO_POST))} */}
+        {'Hackneyville, Comoros'}
+      </div>
+      <div>
+        <span className="bid-list-card-title-post">Skill: </span>
+        {get(assignment, 'position.skill', NO_SKILL)}
+      </div>
+      <div>
+        <span className="bid-list-card-title-post">Language: </span>
+        {get(assignment, 'position.language', NO_LANGUAGES)}
+      </div>
+      <div>
+        <span className="bid-list-card-title-post">Status: </span>
+        {get(a, 'asgs_code', NO_ASSIGNMENT_STATUS)}
+      </div>
+      <div>
+        <span className="bid-list-card-title-post">TOD Description: </span>
+        {get(a, 'asgd_tod_desc_text', NO_ASSIGNMENT_TOD_DESC)}
+      </div>
+      <div>
+        <span className="bid-list-card-title-post">Start date and End date: </span>
+        <StartEnd
+          start={formatDate(get(a, 'asgd_eta_date'))}
+          end={formatDate(get(a, 'asgd_etd_ted_date'))}
+        />
+      </div>
+    </div>),
+  )
 );
 
 AssignmentsContent.propTypes = {
