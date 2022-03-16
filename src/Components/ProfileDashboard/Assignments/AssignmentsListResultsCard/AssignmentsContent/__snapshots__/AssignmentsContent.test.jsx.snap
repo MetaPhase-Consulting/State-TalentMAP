@@ -10,7 +10,7 @@ exports[`AssignmentsContentComponent matches snapshot 1`] = `
     <span
       className="bid-list-card-title-post"
     >
-      PROJECT DIRECTOR
+      INFORMATION MANAGEMENT SPEC
        
     </span>
   </div>
@@ -22,9 +22,7 @@ exports[`AssignmentsContentComponent matches snapshot 1`] = `
     </span>
     <span
       className="bid-list-card-title-post bid-list-card-title-lg"
-    >
-      (58348065) 
-    </span>
+    />
   </div>
   <div>
     <span
@@ -32,7 +30,7 @@ exports[`AssignmentsContentComponent matches snapshot 1`] = `
     >
       Location: 
     </span>
-    Washington, DC
+    Hackneyville, Comoros
   </div>
   <div>
     <span
@@ -55,6 +53,14 @@ exports[`AssignmentsContentComponent matches snapshot 1`] = `
       className="bid-list-card-title-post"
     >
       Status: 
+    </span>
+    None listed
+  </div>
+  <div>
+    <span
+      className="bid-list-card-title-post"
+    >
+      TOD Description: 
     </span>
     None listed
   </div>
