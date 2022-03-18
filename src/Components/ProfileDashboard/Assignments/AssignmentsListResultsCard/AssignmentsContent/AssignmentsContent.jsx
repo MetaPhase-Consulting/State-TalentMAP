@@ -23,7 +23,7 @@ const AssignmentsContent = ({ assignment }) => (
     (<div className="usa-grid-full bid-content-container">
       <div className="bid-list-card-title-lg">
         {/* <span className="bid-list-card-title-post">{get(assignment, 'position.title')} </span> */}
-        <span className="bid-list-card-title-post">{'INFORMATION MANAGEMENT SPEC'} </span>
+        <span className="bid-list-card-title-post">{get(assignment, 'position.title', 'POSITION TITLE: Coming soon')} </span>
       </div>
       <div>
         <span className="usa-sr-only">Position number: </span>
@@ -38,15 +38,17 @@ const AssignmentsContent = ({ assignment }) => (
       <div>
         <span className="bid-list-card-title-post">Location: </span>
         {/* {getPostName(get(assignment, 'position.post', NO_POST))} */}
-        {'Hackneyville, Comoros'}
+        {'Coming Soon'}
       </div>
       <div>
         <span className="bid-list-card-title-post">Skill: </span>
-        {get(assignment, 'position.skill', NO_SKILL)}
+        {/* {get(assignment, 'position.skill', NO_SKILL)} */}
+        {'Coming Soon'}
       </div>
       <div>
         <span className="bid-list-card-title-post">Language: </span>
-        {get(assignment, 'position.language', NO_LANGUAGES)}
+        {/* {get(assignment, 'position.language', NO_LANGUAGES)} */}
+        {'Coming Soon'}
       </div>
       <div>
         <span className="bid-list-card-title-post">Status: </span>
