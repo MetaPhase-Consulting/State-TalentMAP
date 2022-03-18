@@ -23,7 +23,6 @@ jobs:
           securityLabel: '### 🛡️ Security'
           issuesLabel: '### 📁 Other issues'
           prLabel: '### 📁 Other pull requests'
-          addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
           issues: true
           issuesWoLabels: true
           pullRequests: true
