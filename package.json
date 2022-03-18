@@ -7,7 +7,7 @@
     "@babel/polyfill": "^7.12.1",
     "@cmsgov/design-system-core": "^1.18.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@react-pdf-viewer/core": "2.11.0",
@@ -110,7 +110,7 @@
     "react-styleguidist 11.1.7 requires node 14"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.17.0",
+    "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.2",
     "@babel/plugin-proposal-class-properties": "^7.16.5",
     "@babel/plugin-syntax-dynamic-import": "7.8.3",
