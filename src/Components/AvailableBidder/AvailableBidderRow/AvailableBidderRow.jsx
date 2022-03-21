@@ -340,6 +340,7 @@ AvailableBidderRow.propTypes = {
   CDOView: PropTypes.bool,
   isLoading: PropTypes.bool,
   isCDO: PropTypes.bool,
+  // isAO: PropTypes.bool,
   bureaus: FILTER,
 };
 
@@ -348,6 +349,7 @@ AvailableBidderRow.defaultProps = {
   CDOView: false,
   isLoading: false,
   isCDO: false,
+  // isAO: false,
   bureaus: [],
 };
 

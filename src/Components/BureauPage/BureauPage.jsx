@@ -28,10 +28,11 @@ const BureauPage = () => {
         <Route path="/profile/ao/agendaitemhistory/:id" render={() => <AgendaItemHistory isCDO={false} />} />
         <Route path="/profile/ao/createagendaitem/:id" render={() => <AgendaItemMaintenanceContainer />} />
         <Route path="/profile/(bureau|ao)/dashboard" render={() => <Dashboard {...dashboardProps} />} />
+        <Route path="/profile/(cdo|ao)/availablebidders" render={() => <AvailableBidderContainer isCDO={false} isAO={false} />} />
         <Route path="/profile/bureau/stats" render={() => <Stats {...statsProps} />} />
         <Route path="/profile/bureau/positionmanager/:type/:id" render={() => <PositionManagerDetails />} />
         <Route path="/profile/bureau/positionmanager" render={() => <PositionManager {...posManagerProps} />} />
-        <Route path="/profile/bureau/availablebidders" render={() => <AvailableBidderContainer isCDO={false} />} />
+        <Route path="/profile/bureau/availablebidders" render={() => <AvailableBidderContainer isCDO={false} isAO={false} />} />
       </Switch>
     </div>
   );

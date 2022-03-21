@@ -20,7 +20,7 @@ const useStepLetter = () => checkFlag('flags.step_letters');
 
 const AvailableBidderTable = props => {
   // CDO or Bureau version
-  const { isCDO } = props;
+  const { isCDO, isAO } = props;
 
   // Local state
   // Toggle view state within CDO version
@@ -221,6 +221,7 @@ const AvailableBidderTable = props => {
                     bidder={bidder}
                     CDOView={cdoView}
                     isCDO={isCDO}
+                    isAO={isAO}
                     isLoading={isLoading}
                     bureaus={bureaus}
                   />
@@ -235,6 +236,7 @@ const AvailableBidderTable = props => {
 
 AvailableBidderTable.propTypes = {
   isCDO: PropTypes.bool,
+  isAO: PropTypes.bool,
 };
 
 AvailableBidderTable.defaultProps = {
@@ -242,6 +244,7 @@ AvailableBidderTable.defaultProps = {
   onSort: EMPTY_FUNCTION,
   onFilter: EMPTY_FUNCTION,
   isCDO: false,
+  isAO: false,
 };
 
 export default AvailableBidderTable;
