@@ -1,6 +1,9 @@
 import { get } from 'lodash';
 // import { Link } from 'react-router-dom';
-import { NO_LANGUAGES, NO_POSITION_NUMBER, NO_POST, NO_SKILL } from 'Constants/SystemMessages';
+import {
+  NO_ASSIGNMENT_STATUS, NO_ASSIGNMENT_TOD_DESC, NO_LANGUAGES, NO_POSITION_NUMBER,
+  NO_POST, NO_SKILL,
+} from 'Constants/SystemMessages';
 import { POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDate, getPostName } from '../../../../../utilities';
 import StartEnd from '../../../PositionInformation/StartEnd';
@@ -15,8 +18,8 @@ const AssignmentsContent = ({ assignment }) => (
       <span className="usa-sr-only">Position number: </span>
       <span className="bid-list-card-title-post bid-list-card-title-lg">
         {
-          get(assignment, 'position.position_number') ?
-            `(${get(assignment, 'position.position_number')}) ` : NO_POSITION_NUMBER
+          get(assignment, 'asg_pos_seq_num') ?
+            `(${get(assignment, 'asg_pos_seq_num')}) ` : NO_POSITION_NUMBER
         }
       </span>
       {/* <Link to={`/archived/${get(assignment, 'position.position_id')}`}>View Position</Link> */}
@@ -34,10 +37,18 @@ const AssignmentsContent = ({ assignment }) => (
       {get(assignment, 'position.language', NO_LANGUAGES)}
     </div>
     <div>
+      <span className="bid-list-card-title-post">Status: </span>
+      {get(assignment, 'asgs_code', NO_ASSIGNMENT_STATUS)}
+    </div>
+    <div>
+      <span className="bid-list-card-title-post">TOD Description: </span>
+      {get(assignment, 'asgd_tod_desc_text', NO_ASSIGNMENT_TOD_DESC)}
+    </div>
+    <div>
       <span className="bid-list-card-title-post">Start date and End date: </span>
       <StartEnd
-        start={formatDate(assignment.start_date)}
-        end={formatDate(assignment.end_date)}
+        start={formatDate(assignment.asgd_eta_date)}
+        end={formatDate(assignment.asgd_etd_ted_date)}
       />
     </div>
   </div>

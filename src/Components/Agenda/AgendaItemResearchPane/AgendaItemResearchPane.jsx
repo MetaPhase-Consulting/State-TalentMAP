@@ -49,9 +49,28 @@ const AgendaItemResearchPane = props => {
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
 
   // assignments
-  const { data, error, loading /* , retry */ } = useDataLoader(api().get, `/fsbid/client/${perdet}/`);
-  const assignments = get(data, 'data.assignments') || [];
+  const { data, error, loading } = useDataLoader(api().get, `/fsbid/assignment_history/${perdet}/`);
+  // const assignments = get(data, 'data.results') || [];
   const languages = get(data, 'data.languages') || [];
+  const assignments = [
+    {
+      asg_perdet_seq_num: 8364589,
+      asg_pos_seq_num: 141475,
+      asgd_asg_seq_num: 9394,
+      asgd_eta_date: '2019-08-17T00:00:00.000Z',
+      asgd_etd_ted_date: '2022-10-21T00:00:00.000Z',
+      asgd_tod_desc_text: '1 YR(3R&R)/HL/1 YR(3R&R)',
+      asgs_code: 'EF',
+      position: {
+        language: 'Test Language',
+        position_number: 'Test Number',
+        post: 'Test Post',
+        skill: 'Test Skill',
+        title: 'Test Title',
+      },
+      className: 'bid-list-card-title-post',
+    },
+  ];
 
   const onFPClick = pos => {
     // TODO - do something with this
