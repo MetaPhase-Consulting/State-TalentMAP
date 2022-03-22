@@ -3,9 +3,20 @@ import SectionTitle from '../SectionTitle';
 import BorderedList from '../../BorderedList';
 import AssignmentsListResultsCard from './AssignmentsListResultsCard';
 
+// eslint-disable-next-line no-unused-vars
 const AssignmentList = ({ assignments }) => {
+  const defaultClassName = 'bid-list-card-title-post';
+  const assignments$ = {
+    data: {
+      asg_className: defaultClassName,
+      data_point: 'FACILITY MAINTENANCE (6217)',
+      position_number: 12345,
+      title: 'Skill',
+      default: 'None listed',
+    },
+  };
   const positionArray = [];
-  assignments.forEach(assignment => (
+  assignments$.data.forEach(assignment => (
     positionArray.push(
       <AssignmentsListResultsCard
         assignment={assignment}

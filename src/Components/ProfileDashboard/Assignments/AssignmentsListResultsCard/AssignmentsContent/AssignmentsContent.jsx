@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { get } from 'lodash';
 // import { Link } from 'react-router-dom';
 import {
@@ -18,8 +19,8 @@ const AssignmentsContent = ({ assignment }) => (
       <span className="usa-sr-only">Position number: </span>
       <span className="bid-list-card-title-post bid-list-card-title-lg">
         {
-          get(assignment, 'asg_pos_seq_num') ?
-            `(${get(assignment, 'asg_pos_seq_num')}) ` : NO_POSITION_NUMBER
+          get(assignment, 'position_number') ?
+            `(${get(assignment, 'position_number')}) ` : NO_POSITION_NUMBER
         }
       </span>
       {/* <Link to={`/archived/${get(assignment, 'position.position_id')}`}>View Position</Link> */}
@@ -28,10 +29,17 @@ const AssignmentsContent = ({ assignment }) => (
       <span className="bid-list-card-title-post">Location: </span>
       {getPostName(get(assignment, 'position.post', NO_POST))}
     </div>
-    <div>
-      <span className="bid-list-card-title-post">Skill: </span>
-      {get(assignment, 'position.skill', NO_SKILL)}
-    </div>
+    {[assignment].map(a => (
+      <div>
+        <span className={a.asg_className}>{a.title}: </span>
+        {a.data_point}
+        {/* {get(assignment, a.data_point, a.default)} */}
+      </div>
+    ))}
+    {/* <div>
+        <span className="bid-list-card-title-post">Skill: </span>
+        {get(assignment, 'position.skill', NO_SKILL)}
+      </div> */}
     <div>
       <span className="bid-list-card-title-post">Language: </span>
       {get(assignment, 'position.language', NO_LANGUAGES)}
