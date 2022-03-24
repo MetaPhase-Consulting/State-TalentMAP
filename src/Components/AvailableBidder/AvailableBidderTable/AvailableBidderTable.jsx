@@ -21,6 +21,7 @@ const useStepLetter = () => checkFlag('flags.step_letters');
 const AvailableBidderTable = props => {
   // CDO or Bureau version
   const { isCDO, isAO } = props;
+  const isCDOorAO = (isCDO || isAO);
 
   // Local state
   // Toggle view state within CDO version
@@ -47,20 +48,20 @@ const AvailableBidderTable = props => {
   const dispatch = useDispatch();
 
   useMount(() => {
-    dispatch(availableBiddersFetchData(isCDO, sort));
+    dispatch(availableBiddersFetchData(isCDOorAO, sort));
     dispatch(filtersFetchData(filterData, {}));
   });
 
   useEffect(() => {
     if (prevSort && sort && sort !== prevSort) {
-      dispatch(availableBiddersFetchData(isCDO, sort));
+      dispatch(availableBiddersFetchData(isCDOorAO, sort));
     }
   }, [sort]);
 
-  let tableHeaders = isCDO ? [
+  let tableHeaders = isCDOorAO ? [
     'Name',
     'Status',
-    isCDO && useStepLetter() ? 'Step Letters' : undefined,
+    isCDOorAO && useStepLetter() ? 'Step Letters' : undefined,
     'Skill',
     'Grade',
     'Languages',
@@ -95,14 +96,14 @@ const AvailableBidderTable = props => {
   );
 
   let title = '';
-  if (isCDO) {
+  if (isCDOorAO) {
     title = cdoView ? 'Internal CDA View' : 'External Bureau View';
   }
 
   const getTitleCount = () => {
     let bidderCountTitle = '';
     if (!isLoading) {
-      if (isCDO) {
+      if (isCDOorAO) {
         bidderCountTitle = cdoView ? `(${bidders.length})` : `(${bidders.filter(b => get(b, 'available_bidder_details.is_shared')).length})`;
       } else {
         bidderCountTitle = `Shared Available Bidders (${bidders.length})`;
@@ -114,7 +115,7 @@ const AvailableBidderTable = props => {
   const exportBidders = () => {
     if (!isLoading) {
       setExportIsLoading(true);
-      availableBidderExport(isCDO, sort)
+      availableBidderExport(isCDOorAO, sort)
         .then(() => {
           setExportIsLoading(false);
         })
@@ -130,7 +131,7 @@ const AvailableBidderTable = props => {
         <Alert
           title="Available Bidders List is Empty"
           messages={[{
-            body: isCDO ?
+            body: isCDOorAO ?
               'Please navigate to the CDO Client Profiles to begin searching and adding bidders.' :
               'Please wait for CDOs to share available bidders.',
           }]}
@@ -173,7 +174,7 @@ const AvailableBidderTable = props => {
                   ))
                 }
                 {
-                  isCDO &&
+                  isCDOorAO &&
                     <th>
                       <div className="bureau-view-toggle">
                         <ToggleButton
