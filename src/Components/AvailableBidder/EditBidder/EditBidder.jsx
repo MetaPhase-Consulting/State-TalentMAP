@@ -112,7 +112,7 @@ const EditBidder = (props) => {
 
   const getStepLetterOneErrorText = () => {
     if (stepLetterOneError) {
-      return 'Step Letter 1 is blank. You must delete Step Letter 2 before saving.';
+      return 'You must delete Step Letter 2 or add back a Step Letter 1 date before saving.';
     }
     return null;
   };
