@@ -27,10 +27,12 @@ const AvailableBidderContainer = ({ isCDO, isAO }) => (
 
 AvailableBidderContainer.propTypes = {
   isCDO: PropTypes.bool,
+  isAO: PropTypes.bool,
 };
 
 AvailableBidderContainer.defaultProps = {
   isCDO: false,
+  isAO: false,
 };
 
 export default AvailableBidderContainer;
