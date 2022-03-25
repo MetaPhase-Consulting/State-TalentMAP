@@ -69,7 +69,7 @@ const RemarksGlossary = ({ onRemarkClick, remarks }) => {
                         value={getTextInputValue(r.rmrkseqnum)}
                         changeText={v => setTextInput(r.rmrkseqnum, v)}
                         customContainerClass="remarks-input-container"
-                        inputProps={{ autocomplete: 'on' }}
+                        inputProps={{ autoComplete: 'off' }}
                       />
                     }
                   </li>

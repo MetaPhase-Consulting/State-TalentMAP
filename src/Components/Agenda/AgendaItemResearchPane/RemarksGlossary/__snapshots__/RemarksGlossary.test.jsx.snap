@@ -191,7 +191,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
@@ -325,7 +325,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
@@ -448,7 +448,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
@@ -481,7 +481,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
@@ -514,7 +514,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
@@ -547,7 +547,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
@@ -580,7 +580,7 @@ exports[`RemarksGlossary Component matches snapshot 1`] = `
           customContainerClass="remarks-input-container"
           inputProps={
             Object {
-              "autocomplete": "off",
+              "autoComplete": "off",
             }
           }
           label=""
