@@ -187,6 +187,7 @@ const AvailableBidderRow = (props) => {
     </Tooltip>) : comments;
 
   const getSections = (isModal = false) => {
+    // when updating ABL columns, make sure to update the $abl-actions-td and $abl-gray-config, as needed
     const comments$ = isModal ? get(bidder, 'available_bidder_details.comments') || NO_COMMENTS : commentsToolTip;
     const ted$ = isModal ? formattedTedTooltip : tedToolTip;
     return isCDOorAO ? omit({
