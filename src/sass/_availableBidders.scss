@@ -210,7 +210,6 @@ $abl-gray-config: (
 }
 
 .ab-inactive {
-  // td(11) is the action buttons column which should never be grayed out
   td:not(:nth-of-type(#{$abl-actions-td})) {
     color: #a9acaf;
     background-color: #cacbce;
