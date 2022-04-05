@@ -1695,6 +1695,11 @@
   resolved "https://registry.yarnpkg.com/@react-pdf-viewer/core/-/core-2.11.0.tgz#a27f4e19a9301abc0b209bf797a92324c2e8bae6"
   integrity sha512-Nivafnirbdc5d/8UUa4PyhsREzPRM2ieS78AfkG2lFuTSM7FM3LLAq9AjJNfZWZgyaCa6+TH+5fNXCZbAQCzNg==
 
+"@react-pdf-viewer/core@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf-viewer/core/-/core-3.2.0.tgz#e6854b16a8dd1eba16cccaef05052ca4294eeeaf"
+  integrity sha512-lgtHANjHaPuiRAHd528cTJb+O9mplhPXzCbqdXcGdl5Sh+k6qjOfx5JozaS3OKJ9CocQ9UvPzNgVsAljwOqlzA==
+
 "@react-pdf-viewer/default-layout@^2.11.0":
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@react-pdf-viewer/default-layout/-/default-layout-2.11.0.tgz#4c7523c83ac20c771b638bce55c1bab399e9e693"
@@ -12078,10 +12083,10 @@ react-redux@^7.2.0, react-redux@^7.2.6:
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-react-refresh@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.10.0.tgz#2f536c9660c0b9b1d500684d9e52a65e7404f7e3"
-  integrity sha512-PgidR3wST3dDYKr6b4pJoqQFpPGNKDSCDx4cZoshjXipw3LzO7mG1My2pwEzz2JVkF+inx3xRpDeQLFQGH/hsQ==
+react-refresh@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.12.0.tgz#28ac0a2c30ef2bb3433d5fd0621e69a6d774c3a4"
+  integrity sha512-suLIhrU2IHKL5JEKR/fAwJv7bbeq4kJ+pJopf77jHwuR+HmJS/HbrPIGsTBUVfw7tXPOmYv7UJ7PCaN49e8x4A==
 
 react-resize-detector@^2.3.0:
   version "2.3.0"
