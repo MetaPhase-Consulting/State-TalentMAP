@@ -78,41 +78,43 @@ const RemarksGlossary = ({ onRemarkClick, remarks }) => {
           autoComplete: 'off',
         }}
       />
-      {remarksCategories.map(category => {
-        const remarksInCategory = orderBy(remarks$$.filter(f => f.rmrkrccode === category.rmrkrccode), 'rmrkordernum');
-        return (
-          <div>
+      <div className="remarks-glossary-container">
+        {remarksCategories.map(category => {
+          const remarksInCategory = orderBy(remarks$$.filter(f => f.rmrkrccode === category.rmrkrccode), 'rmrkordernum');
+          return (
             <div key={category.rmrkrccode}>
-              <div className={`remark-category remark-category--${category.rmrkrccode}`}>{category.rcdesctext}</div>
-              <ul>
-                {remarksInCategory.map(r => {
-                  const hasTextInput = has(r, 'textInputValue');
-                  const faProps = {
-                    name: r.isActive ? 'minus-circle' : 'plus-circle',
-                  };
-                  return (
-                    <li key={r.rmrkseqnum}>
-                      <InteractiveElement onClick={() => onRemarkClick$(r)}>
-                        <FA {...faProps} />
-                      </InteractiveElement>
-                      <span className="remark-text">{r.rmrktext}</span>
-                      {
-                        hasTextInput &&
-                        <TextInput
-                          value={getTextInputValue(r.rmrkseqnum)}
-                          changeText={v => setTextInput(r.rmrkseqnum, v)}
-                          customContainerClass="remarks-input-container"
-                          inputProps={{ autoComplete: 'off' }}
-                        />
-                      }
-                    </li>
-                  );
-                })}
-              </ul>
+              <div>
+                <div className={`remark-category remark-category--${category.rmrkrccode}`}>{category.rcdesctext}</div>
+                <ul>
+                  {remarksInCategory.map(r => {
+                    const hasTextInput = has(r, 'textInputValue');
+                    const faProps = {
+                      name: r.isActive ? 'minus-circle' : 'plus-circle',
+                    };
+                    return (
+                      <li key={r.rmrkseqnum}>
+                        <InteractiveElement onClick={() => onRemarkClick$(r)}>
+                          <FA {...faProps} />
+                        </InteractiveElement>
+                        <span className="remark-text">{r.rmrktext}</span>
+                        {
+                          hasTextInput &&
+                          <TextInput
+                            value={getTextInputValue(r.rmrkseqnum)}
+                            changeText={v => setTextInput(r.rmrkseqnum, v)}
+                            customContainerClass="remarks-input-container"
+                            inputProps={{ autoComplete: 'off' }}
+                          />
+                        }
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
