@@ -117,9 +117,8 @@ jobs:
           name: Use nvm
           command: |
             echo 'conf_force_conffold=YES' | sudo tee -a /etc/ucf.conf
-            sudo apt-get update && sudo apt-get upgrade
-            # sudo DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade
-            yes | sudo apt-get install build-essential libssl-dev -y
+            (yes || true) | sudo apt-get update && sudo apt-get upgrade
+            (yes || true) | sudo apt-get install build-essential libssl-dev -y
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
