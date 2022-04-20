@@ -116,9 +116,7 @@ jobs:
       - run:
           name: Use nvm
           command: |
-            sudo su
-            echo "conf_force_conffold=YES" >> /etc/ucf.conf
-            exit
+            echo 'conf_force_conffold=YES' | sudo tee -a /etc/ucf.conf
             sudo apt-get update && sudo apt-get upgrade
             # sudo DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade
             yes | sudo apt-get install build-essential libssl-dev -y
