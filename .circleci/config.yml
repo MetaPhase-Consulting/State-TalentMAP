@@ -279,9 +279,7 @@ workflows:
       - upload-coverage:
           requires:
             - yarn
-      - site:
-          requires:
-            - yarn
+      - site
       - server:
           requires:
             - yarn
