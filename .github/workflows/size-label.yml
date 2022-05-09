@@ -3,11 +3,11 @@ on:
   pull_request:
     branches-ignore:
       - 'dependabot/*'
-    paths-ignore:
-      - '**.snap'
 jobs:
   size-label:
     runs-on: ubuntu-latest
+    paths-ignore:
+      - '**.snap'
     steps:
       - name: size-label
         uses: "pascalgn/size-label-action@v0.4.3"
