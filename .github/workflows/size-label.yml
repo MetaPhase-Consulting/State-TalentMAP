@@ -3,6 +3,8 @@ on:
   pull_request:
     branches-ignore:
       - 'dependabot/*'
+    paths-ignore:
+      - '**.snap'
 jobs:
   size-label:
     runs-on: ubuntu-latest

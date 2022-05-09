@@ -10,14 +10,14 @@ import { BIDDER_OBJECT, HISTORY_OBJECT } from 'Constants/PropTypes';
 import { unsetClient } from '../../actions/clientView';
 import { isCurrentPath } from '../ProfileMenu/navigation';
 import {
-  tertiaryCoolBlueLighter, tertiaryCoolBlueLightest,
+  tertiaryCoolBlueLight, tertiaryCoolBlueLightest,
   tertiaryGoldLighter, tertiaryGoldLightest,
 } from '../../sass/sass-vars/variables';
 
 export const ID = 'client-header';
 
 const skeletonColors = {
-  highlightColor: tertiaryCoolBlueLighter,
+  highlightColor: tertiaryCoolBlueLight,
   color: tertiaryCoolBlueLightest,
 };
 
@@ -96,7 +96,7 @@ export class ClientHeader extends Component {
           <div>
             <SkeletonTheme {...skeletonColors$}>
               {!isLoading ? <span><FA name="clipboard" />
-                <span id="search-as-name">Position Search for {name}{!!proxyName && ` (Proxying as ${proxyName})`}</span></span> : <Skeleton width="75%" duration={1.8} />}
+                <span id="search-as-name">AAAAAA {name}{!!proxyName && ` (Proxying as ${proxyName})`}</span></span> : <Skeleton width="75%" duration={1.8} />}
             </SkeletonTheme>
           </div>
           <div>

@@ -17,7 +17,7 @@ exports[`ClientHeader matches snapshot 1`] = `
       >
         <SkeletonTheme
           color="#DCE4EF"
-          highlightColor="#8BA6CA"
+          highlightColor="#4773AA"
         >
           <Link
             replace={false}
@@ -35,7 +35,7 @@ exports[`ClientHeader matches snapshot 1`] = `
       <div>
         <SkeletonTheme
           color="#DCE4EF"
-          highlightColor="#8BA6CA"
+          highlightColor="#4773AA"
         >
           <span>
             <FontAwesome
@@ -44,7 +44,7 @@ exports[`ClientHeader matches snapshot 1`] = `
             <span
               id="search-as-name"
             >
-              Position Search for 
+              AAAAAA 
               Mary
             </span>
           </span>
@@ -53,7 +53,7 @@ exports[`ClientHeader matches snapshot 1`] = `
       <div>
         <SkeletonTheme
           color="#DCE4EF"
-          highlightColor="#8BA6CA"
+          highlightColor="#4773AA"
         >
           <button
             className="unstyled-button"
@@ -117,7 +117,7 @@ exports[`ClientHeader matches snapshot when proxying as another CDO 1`] = `
             <span
               id="search-as-name"
             >
-              Position Search for 
+              AAAAAA 
               Mary
                (Proxying as Andrew Proxy)
             </span>
