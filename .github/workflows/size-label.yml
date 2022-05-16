@@ -16,6 +16,7 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
+#           IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
 #           IGNORED: "**.snap/**"
 #           IGNORED: "*.snap/**"
 #           IGNORED: "**.snap"
@@ -23,7 +24,7 @@ jobs:
 
 
 
-#          IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
+
 #          IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
         with:
           sizes: >
