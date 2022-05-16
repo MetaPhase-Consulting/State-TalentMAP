@@ -89,7 +89,13 @@ export class ClientHeader extends Component {
             <SkeletonTheme {...skeletonColors$}>
               {!isLoading ? <Link to={`/profile/public/${client.perdet_seq_number}`}>
                 <FA name="chevron-left" />
-                <span>Client Dashboard</span>
+                <span>Client Dashboard
+                oh this?
+                im just adding
+                a bunch
+                of stuff
+                to trigger
+                a label</span>
               </Link> : <Skeleton width="75%" duration={1.8} />}
             </SkeletonTheme>
           </div>
