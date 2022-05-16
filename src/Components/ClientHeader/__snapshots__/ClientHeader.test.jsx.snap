@@ -27,7 +27,7 @@ exports[`ClientHeader matches snapshot 1`] = `
               name="chevron-left"
             />
             <span>
-              Client Dashboard
+              Client Dashboard oh this? im just adding a bunch of stuff to trigger a label
             </span>
           </Link>
         </SkeletonTheme>
@@ -100,7 +100,7 @@ exports[`ClientHeader matches snapshot when proxying as another CDO 1`] = `
               name="chevron-left"
             />
             <span>
-              Client Dashboard
+              Client Dashboard oh this? im just adding a bunch of stuff to trigger a label
             </span>
           </Link>
         </SkeletonTheme>
