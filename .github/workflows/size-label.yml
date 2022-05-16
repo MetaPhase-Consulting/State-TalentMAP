@@ -12,7 +12,7 @@ jobs:
         if: ${{ github.actor != 'dependabot[bot]' }} # Skip the action if the PR was created by Dependabot.
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          IGNORED: "**.jsx"
+          IGNORED: "*.jsx/**"
 #           IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
 #           IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
 #           IGNORED: "*.snap\n**.snap\n.*.snap\n.jxs\njsx\n*.jsx\n**.jsx\ngenerated/**"
