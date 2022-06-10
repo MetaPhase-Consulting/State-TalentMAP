@@ -3,6 +3,7 @@ import InteractiveElement from 'Components/InteractiveElement';
 import { filter, get, includes } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDataLoader } from 'hooks';
+import { useDispatch } from 'react-redux';
 import BackButton from 'Components/BackButton';
 import FA from 'react-fontawesome';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
@@ -11,8 +12,10 @@ import RemarksPill from '../RemarksPill';
 import api from '../../../api';
 
 const AgendaItemMaintenancePane = (props) => {
-  const { onAddRemarksClick, perdet, setParentState, unitedLoading } = props;
+  // eslint-disable-next-line no-unused-vars
+  const dispatch = useDispatch();
 
+  const { onAddRemarksClick, perdet, setParentState, unitedLoading } = props;
   const leftExpanded = get(props, 'leftExpanded');
 
   const defaultText = 'Coming Soon';
@@ -34,14 +37,33 @@ const AgendaItemMaintenancePane = (props) => {
   const statuses = get(statusData, 'data.results') || [];
   const panelCategories = get(panelCatData, 'data.results') || [];
   const panelDates = get(panelDatesData, 'data.results') || [];
-
   const [asgSepBid, setAsgSepBid] = useState(filter(asgSepBids, ['status', 'EF']));
   const [selectedStatus, setStatus] = useState(get(statuses, '[0].code'));
   const [selectedPositionNumber, setPositionNumber] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [selectedPanelCat, setPanelCat] = useState(get(panelCategories, '[0].mic_code'));
   const [selectedPanelDate, setPanelDate] = useState();
 
   const remarks = [{ title: 'Critical Need Position', type: null }, { title: 'High Differential Post', type: null }, { title: 'Reassignment at post', type: null }, { title: 'SND Post', type: null }, { title: 'Continues SND eligibility', type: null }, { title: 'Creator(s):Townpost, Jenny', type: 'person' }, { title: 'Modifier(s):WoodwardWA', type: 'person' }, { title: 'CDO: Rehman, Tarek S', type: 'person' }];
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
+    const fakePatchData = {
+      firstLeg: asgSepBid,
+      Status: selectedStatus,
+      PositionNumber: selectedPositionNumber,
+      PanelCat: selectedPanelCat,
+      PanelDate: selectedPanelDate,
+    };
+    // eslint-disable-next-line no-console
+    console.log('current: fakePatchData', fakePatchData);
+  }, [
+    asgSepBid,
+    selectedStatus,
+    selectedPositionNumber,
+    selectedPanelCat,
+    selectedPanelDate,
+  ]);
 
   const saveAI = () => {
     // eslint-disable-next-line
@@ -70,7 +92,7 @@ const AgendaItemMaintenancePane = (props) => {
                 <select
                   id="ai-maintenance-dd-asgSepBids"
                   defaultValue={asgSepBids}
-                  onChange={(e) => setAsgSepBid(get(e, 'target.pos_num'))}
+                  onChange={(e) => setAsgSepBid(get(e, 'target.value'))}
                   value={asgSepBid}
                 >
                   <option selected hidden>
@@ -128,16 +150,16 @@ const AgendaItemMaintenancePane = (props) => {
             {
               !panelCatLoading && !panelCatError &&
                 <div>
-                  <label htmlFor="ai-maintenance-status">Report Category:</label>
+                  <label htmlFor="ai-maintenance-category">Report Category:</label>
                   <select
                     id="ai-maintenance-category"
                     defaultValue={selectedPanelCat}
-                    onChange={(e) => setPanelCat(get(e, 'target.mic_code'))}
+                    onChange={(e) => setPanelCat(get(e, 'target.value'))}
                     value={selectedPanelCat}
                   >
                     {
                       panelCategories.map(a => (
-                        <option value={get(a, 'mic_code')}>{get(a, 'mic_desc_text')}</option>
+                        <option key={get(a, 'mic_code')} value={get(a, 'mic_code')}>{get(a, 'mic_desc_text')}</option>
                       ))
                     }
                   </select>
@@ -150,7 +172,7 @@ const AgendaItemMaintenancePane = (props) => {
                   <select
                     id="ai-maintenance-status"
                     defaultValue={selectedPanelDate}
-                    onChange={(e) => setPanelDate(get(e, 'target.pm_seq_num'))}
+                    onChange={(e) => setPanelDate(get(e, 'target.value'))}
                     value={selectedPanelDate}
                   >
                     {
