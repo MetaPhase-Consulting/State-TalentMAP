@@ -3,22 +3,30 @@ import InteractiveElement from 'Components/InteractiveElement';
 import { filter, get, includes } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDataLoader } from 'hooks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BackButton from 'Components/BackButton';
 import FA from 'react-fontawesome';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { formatDate } from 'utilities';
+import shortId from 'shortid';
+import { saveAgendaItem } from 'actions/agendaMaintenance';
 import RemarksPill from '../RemarksPill';
 import api from '../../../api';
 
 const AgendaItemMaintenancePane = (props) => {
-  // eslint-disable-next-line no-unused-vars
   const dispatch = useDispatch();
 
   const { onAddRemarksClick, perdet, setParentState, unitedLoading } = props;
   const leftExpanded = get(props, 'leftExpanded');
 
   const defaultText = 'Coming Soon';
+
+  // eslint-disable-next-line no-unused-vars
+  const agendaItemSaveErrored = useSelector(state => state.agendaItemSaveErrored);
+  // eslint-disable-next-line no-unused-vars
+  const agendaItemSaveLoading = useSelector(state => state.agendaItemSaveLoading);
+  // eslint-disable-next-line no-unused-vars
+  const agendaItemSave = useSelector(state => state.agendaItemSave);
 
   const { data: asgSepBidData, error: asgSepBidError, loading: asgSepBidLoading } = useDataLoader(api().get, `/fsbid/employee/assignments_separations_bids/${perdet}/`);
   const { data: statusData, error: statusError, loading: statusLoading } = useDataLoader(api().get, '/fsbid/agenda/statuses/');
@@ -46,33 +54,18 @@ const AgendaItemMaintenancePane = (props) => {
 
   const remarks = [{ title: 'Critical Need Position', type: null }, { title: 'High Differential Post', type: null }, { title: 'Reassignment at post', type: null }, { title: 'SND Post', type: null }, { title: 'Continues SND eligibility', type: null }, { title: 'Creator(s):Townpost, Jenny', type: 'person' }, { title: 'Modifier(s):WoodwardWA', type: 'person' }, { title: 'CDO: Rehman, Tarek S', type: 'person' }];
 
-  useEffect(() => {
-    // eslint-disable-next-line no-unused-vars
+  const saveAI = () => {
     const fakePatchData = {
-      firstLeg: asgSepBid,
       Status: selectedStatus,
-      PositionNumber: selectedPositionNumber,
       PanelCat: selectedPanelCat,
       PanelDate: selectedPanelDate,
     };
-    // eslint-disable-next-line no-console
-    console.log('current: fakePatchData', fakePatchData);
-  }, [
-    asgSepBid,
-    selectedStatus,
-    selectedPositionNumber,
-    selectedPanelCat,
-    selectedPanelDate,
-  ]);
-
-  const saveAI = () => {
-    // eslint-disable-next-line
-    console.log('save AI');
+    dispatch(saveAgendaItem(fakePatchData));
   };
 
   // special handling for position number
   const addPositionNum = () => {
-    // send off request
+    // send off request to add a leg when asSepBid Changes or when a position number is added
     setPositionNumber('');
   };
 
@@ -100,10 +93,10 @@ const AgendaItemMaintenancePane = (props) => {
                   </option>
                   {
                     asgSepBids.map(a => (
-                      <option key={a.pos_num} value={a.pos_num}>
+                      <option key={shortId.generate()} value={a.pos_num}>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         {a.name || defaultText} '{a.status || defaultText}'
-                          in {a.org || defaultText} -
+                          in {a.org || defaultText}-
                         {a.pos_title || defaultText}({a.pos_num || defaultText})
                       </option>
                     ))
