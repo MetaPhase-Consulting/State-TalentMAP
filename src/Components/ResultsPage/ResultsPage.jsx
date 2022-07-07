@@ -72,6 +72,18 @@ class Results extends Component {
 
     let sortBy$ = isProjectedVacancy ? filterPVSorts(sortBy) : sortBy;
     sortBy$ = isTandemSearch ? filterTandemSorts(sortBy$) : sortBy$;
+    // handling for the two different sort options
+    // on the WS side for position number
+    sortBy$.options.map((sort, index) => {
+      if (isTandemSearch && sort.value === 'position__position_number') {
+        sortBy$.options[index] = { value: 'position', text: 'Position Number: Low to High' };
+      }
+      if (isTandemSearch && sort.value === '-position__position_number') {
+        sortBy$.options[index] = { value: '-position', text: 'Position Number: High to Low' };
+      }
+      sortBy$ = isTandemSearch ? filterTandemSorts(sortBy$) : sortBy$;
+      return sortBy$;
+    });
 
     const filterContainer = (
       <ResultsFilterContainer
