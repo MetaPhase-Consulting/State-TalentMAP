@@ -1,279 +1,284 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { shortenString } from 'utilities';
-import { filter, take, takeRight } from 'lodash';
-import { format, isDate } from 'date-fns-v2';
-import FA from 'react-fontawesome';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import InteractiveElement from 'Components/InteractiveElement';
+import { filter, get, includes } from 'lodash';
+import PropTypes from 'prop-types';
+import { useDataLoader } from 'hooks';
+import BackButton from 'Components/BackButton';
+import FA from 'react-fontawesome';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
-import Calendar from 'react-calendar';
-import Dropdown, { DropdownContent, DropdownTrigger } from 'react-simple-dropdown';
+import { formatDate } from 'utilities';
+import { aihAddLeg } from 'actions/agendaItemMaintenancePane';
 import RemarksPill from '../RemarksPill';
+import api from '../../../api';
 
-const AgendaItemLegs = props => {
+const AgendaItemMaintenancePane = (props) => {
+  const dispatch = useDispatch();
+
   const {
-    legs,
-    remarks,
-    isCard,
-    hideRemarks,
-    showCloseButton,
-    onClose,
-    isAIHView,
+    onAddRemarksClick,
+    perdet,
+    setParentState,
+    unitedLoading,
+    userSelections,
+    leftExpanded,
+    updateSelection,
   } = props;
 
-  const calendarID = 'aim-ted-calendar';
+  const defaultText = 'Coming Soon';
 
-  let legs$ = legs;
-  if (isCard && legs.length > 2) {
-    legs$ = [take(legs)[0], takeRight(legs)[0]];
-  }
-  const strLimit = isCard ? 15 : 50;
-  const formatStr = (d) => shortenString(d, strLimit);
-
-  // TO-DO - better date checking. isDate() with null or bad string not guaranteed to work.
-  const formatDate = (d) => d && isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : '';
-
-  const onClose$ = leg => {
-    console.log(leg); // eslint-disable-line
-    onClose(leg);
-  };
-
-  const [tedCalendar, setTEDCalendar] = useState(new Date());
-
-  const updateTEDCalendar = (date) => {
-    setTEDCalendar(date);
-  };
-
-  const [calendarHidden, setCalendarHidden] = useState({});
-  const calendarHiddenRef = useRef(calendarHidden);
-
-  const setCalendarHiddenRef = data => {
-    calendarHiddenRef.current = data;
-    setCalendarHidden(data);
-  };
-
-  const toggleCalendar = (id, val, shouldReset = true) => {
-    if (shouldReset) { setCalendarHiddenRef({}); }
-    const calendarHidden$ = { ...calendarHidden };
-    calendarHidden$[id] = val;
-    setCalendarHiddenRef(calendarHidden$);
-  };
-
-  const handleOutsideClick = useCallback((e) => {
-    const calendarHidden$ = { ...calendarHiddenRef };
-    legs$.forEach((leg, i) => {
-      if (e.target.id !== `${calendarID}-${i}` && document.getElementById(`${calendarID}-${i}`) &&
-        !document.getElementById(`${calendarID}-${i}`).contains(e.target)) {
-        calendarHidden$[i] = false;
-      } else {
-        calendarHidden$[i] = true;
-      }
-    });
-    setCalendarHiddenRef(calendarHidden$);
-  }, []);
+  const { data: asgSepBidData, error: asgSepBidError, loading: asgSepBidLoading } = useDataLoader(api().get, `/fsbid/employee/assignments_separations_bids/${perdet}/`);
+  const { data: statusData, error: statusError, loading: statusLoading } = useDataLoader(api().get, '/fsbid/agenda/statuses/');
+  const { data: panelCatData, error: panelCatError, loading: panelCatLoading } = useDataLoader(api().get, '/panel/categories/');
+  const { data: panelDatesData, error: panelDatesError, loading: panelDatesLoading } = useDataLoader(api().get, '/panel/dates/');
 
   useEffect(() => {
-    window.addEventListener('click', e => handleOutsideClick(e));
-    return () => {
-      window.removeEventListener('click', handleOutsideClick);
-    };
-  }, [handleOutsideClick]);
+    setParentState(includes([asgSepBidLoading,
+      statusLoading, panelCatLoading, panelDatesLoading], true));
+  }, [asgSepBidLoading,
+    statusLoading,
+    panelCatLoading,
+    panelDatesLoading]);
 
-  const getData = (key, helperFunc) => (
-    <>
-      {
-        legs$.map((leg, i) => {
-          const showClose = showCloseButton && key === 'pos_title' && i > 0;
-          const isFirstLeg = i === 0;
-          const editDropdown = (!isFirstLeg && !isAIHView && (key === 'tod' || key === 'action' || key === 'travel'));
-          const editCalendar = (!isFirstLeg && !isAIHView && (key === 'ted'));
-          const helperFuncToggle = !!helperFunc;
-          return (<td>
-            {/* first leg cannot be removed */}
-            {showClose &&
-            <InteractiveElement className="remove-leg-button" onClick={() => onClose$(leg)} title="Remove leg">
-              <FA name="times" />
-            </InteractiveElement>}
-            {
-              helperFunc && !editDropdown && !editCalendar &&
-                <dd className={showClose ? 'dd-close-padding' : ''}>{helperFunc(leg[key])}</dd>
-            }
-            {
-              !helperFuncToggle && !editDropdown &&
-              <dd>{leg[key]}</dd>
-            }
-            {
-              editCalendar &&
-                <div className="ted-calendar-container" id={`${calendarID}-${i}`}>
-                  {helperFunc(leg[key])}
-                  <FA name="calendar" onClick={() => toggleCalendar(i, true)} />
-                  {calendarHidden[i] &&
-                  <div className="fa-calendar-container" id={`${calendarID}-${i}-cal`}>
-                    <Calendar
-                      className="ted-react-calendar"
-                      onChange={updateTEDCalendar}
-                      onClickDay={() => toggleCalendar(i, false)}
-                      selected={tedCalendar}
-                    />
-                  </div>
-                  }
-                </div>
-            }
-            {
-              editDropdown &&
-              <Dropdown
-                className="account-dropdown"
-                removeElement
-              >
-                <DropdownTrigger href="/#" className="ai-legs-dropdown">
-                  {
-                    <span className="account-dropdown--name" id="account-username">{leg[key]}
-                      <span className="account-dropdown-spacing">__</span>
-                    </span>
-                  }
-                </DropdownTrigger>
-                <DropdownContent>
-                  <div className="account-dropdown--identity account-dropdown--segment">
-                    <div>{leg[key]}</div>
-                  </div>
-                </DropdownContent>
-              </Dropdown>
-            }
-          </td>);
-        })
-      }
-    </>
-  );
+  const asgSepBids = get(asgSepBidData, 'data') || [];
+  const statuses = get(statusData, 'data.results') || [];
+  const panelCategories = get(panelCatData, 'data.results') || [];
+  const panelDates = get(panelDatesData, 'data.results') || [];
 
-  const getArrows = () => (
-    <>
-      {
-        legs$.map(() => (<td className="arrow">
-          <dd>
-            <FA name="arrow-down" />
-          </dd>
-        </td>))
-      }
-    </>
-  );
+  const panelDatesML = filter(panelDates, (p) => p.pmt_code === 'ML');
+  const panelDatesID = filter(panelDates, (p) => p.pmt_code === 'ID');
 
-  const tableData = [
-    {
-      icon: '',
-      title: 'Position Title',
-      content: (getData('pos_title', formatStr)),
-      cardView: false,
-    },
-    {
-      icon: '',
-      title: 'Position Number',
-      content: (getData('pos_num')),
-      cardView: false,
-    },
-    {
-      icon: 'building-o',
-      title: 'Org',
-      content: (getData('org', formatStr)),
-      cardView: true,
-    },
-    {
-      icon: 'paper-plane-o',
-      title: 'ETA',
-      content: (getData('eta', formatDate)),
-      cardView: true,
-    },
-    {
-      icon: '',
-      title: '',
-      content: (getArrows()),
-      cardView: true,
-    },
-    {
-      icon: 'clock-o',
-      title: 'TED',
-      content: (getData('ted', formatDate)),
-      cardView: true,
-    },
-    {
-      icon: '',
-      title: 'TOD',
-      content: (getData('tod')),
-      cardView: false,
-    },
-    {
-      icon: '',
-      title: 'Grade',
-      content: (getData('grade')),
-      cardView: false,
-    },
-    {
-      icon: '',
-      title: 'Action',
-      content: (getData('action')),
-      cardView: false,
-    },
-    {
-      icon: '',
-      title: 'Travel',
-      content: (getData('travel')),
-      cardView: false,
-    },
-  ];
+  const [asgSepBid, setAsgSepBid] = useState(filter(asgSepBids, ['status', 'EF']));
+  const [selectedStatus, setStatus] = useState(get(statuses, '[0].code'));
+  const [selectedPositionNumber, setPositionNumber] = useState();
+  const [selectedPanelCat, setPanelCat] = useState(get(panelCategories, '[0].mic_code'));
+  const [selectedPanelMLDate, setPanelMLDate] = useState();
+  const [selectedPanelIDDate, setPanelIDDate] = useState();
 
-  const tableData$ = isCard ? filter(tableData, 'cardView') : tableData;
+  const saveAI = () => {
+    // eslint-disable-next-line
+    console.log('save AI');
+  };
+
+  // special handling for position number
+  const addPositionNum = () => {
+    // eslint-disable-next-line no-console
+    console.log('current: selectedPositionNumber', selectedPositionNumber);
+    const aiseqnum = 12345;
+    if (selectedPositionNumber) {
+      dispatch(aihAddLeg(selectedPositionNumber, aiseqnum));
+    }
+    // send off request
+    setPositionNumber('');
+  };
+
+  const setDate = (seq_num, isML) => {
+    if (isML) {
+      setPanelIDDate('');
+      setPanelMLDate(seq_num);
+    } else {
+      setPanelMLDate('');
+      setPanelIDDate(seq_num);
+    }
+  };
 
   return (
-    <div className="ai-history-card-legs">
-      <table>
-        <tbody>
-          {
-            tableData$.map(tr => (
-              <tr>
-                <td>
-                  <FA name={tr.icon} />
-                </td>
-                <th>
-                  <dt>{tr.title}</dt>
-                </th>
-                {tr.content}
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-      {
-        !isCard && !hideRemarks &&
-        <div className="remarks-container">
-          <div className="remarks-text">Remarks:</div>
-          {
-            remarks.map(remark => (
-              <RemarksPill key={remark.title} {...remark} />
-            ))
-          }
-        </div>
+    <div className="ai-maintenance-header">
+      { !unitedLoading &&
+            <>
+              <div className={`back-save-btns-container ${leftExpanded ? ' half-width' : ''}`}>
+                <BackButton />
+                <button className="save-ai-btn" onClick={saveAI}>
+                  Save Agenda Item
+                </button>
+              </div>
+              <div className={`ai-maintenance-header-dd ${leftExpanded ? ' half-width' : ''}`}>
+                {
+                  !asgSepBidLoading && !asgSepBidError &&
+                    <select
+                      id="ai-maintenance-dd-asgSepBids"
+                      defaultValue={asgSepBids}
+                      onChange={(e) => setAsgSepBid(get(e, 'target.pos_num'))}
+                      value={asgSepBid}
+                    >
+                      <option selected hidden>
+                        Employee Assignments, Separations, and Bids
+                      </option>
+                      {
+                        asgSepBids.map(a => (
+                          <option key={a.pos_num} value={a.pos_num}>
+                            {/* eslint-disable-next-line react/no-unescaped-entities */}
+                            {a.name || defaultText} '{a.status || defaultText}'
+                              in {a.org || defaultText} -
+                            {a.pos_title || defaultText}({a.pos_num || defaultText})
+                          </option>
+                        ))
+                      }
+                    </select>
+                }
+                {
+                  !statusLoading && !statusError &&
+                    <div>
+                      <label htmlFor="ai-maintenance-status">Status:</label>
+                      <select
+                        id="ai-maintenance-status"
+                        defaultValue={selectedStatus}
+                        onChange={(e) => setStatus(get(e, 'target.value'))}
+                        value={selectedStatus}
+                      >
+                        {
+                          statuses.map(a => (
+                            <option key={a.code} value={a.code}>{a.desc_text}</option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                }
+                <div>
+                  <label htmlFor="position number">Add Position Number:</label>
+                  <input
+                    id="add-pos-num-input"
+                    name="add"
+                    onChange={value => setPositionNumber(value.target.value)}
+                    type="add"
+                    value={selectedPositionNumber}
+                  />
+                  <InteractiveElement
+                    id="add-pos-num-icon"
+                    onClick={addPositionNum}
+                    role="button"
+                    title="Add position"
+                    type="span"
+                  >
+                    <FA name="plus" />
+                  </InteractiveElement>
+                </div>
+                {
+                  !panelCatLoading && !panelCatError &&
+                    <div>
+                      <label htmlFor="ai-maintenance-status">Report Category:</label>
+                      <select
+                        id="ai-maintenance-category"
+                        defaultValue={selectedPanelCat}
+                        onChange={(e) => setPanelCat(get(e, 'target.mic_code'))}
+                        value={selectedPanelCat}
+                      >
+                        {
+                          panelCategories.map(a => (
+                            <option value={get(a, 'mic_code')}>{get(a, 'mic_desc_text')}</option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                }
+                {
+                  !panelDatesLoading && !panelDatesError &&
+                    <div>
+                      <label htmlFor="ai-maintenance-date">Panel Date:</label>
+                      <select
+                        id="ai-maintenance-status"
+                        onChange={(e) => setDate(get(e, 'target.value'), true)}
+                        value={selectedPanelMLDate}
+                      >
+                        <option>Panel Dates - ML</option>
+                        {
+                          panelDatesML.map(a => (
+                            <option
+                              key={get(a, 'pm_seq_num')}
+                              value={get(a, 'pm_seq_num')}
+                            >
+                              {get(a, 'pmt_code')} - {formatDate(get(a, 'pmd_dttm'))}
+                            </option>
+                          ))
+                        }
+                      </select>
+                      <select
+                        id="ai-maintenance-status"
+                        onChange={(e) => setDate(get(e, 'target.value'), false)}
+                        value={selectedPanelIDDate}
+                      >
+                        <option>Panel Dates - ID</option>
+                        {
+                          panelDatesID.map(a => (
+                            <option
+                              key={get(a, 'pm_seq_num')}
+                              value={get(a, 'pm_seq_num')}
+                            >
+                              {get(a, 'pmt_code')} - {formatDate(get(a, 'pmd_dttm'))}
+                            </option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                }
+              </div>
+              <div className="usa-form remarks">
+                <label htmlFor="remarks">Remarks:</label>
+                <div className="remarks-container">
+                  <InteractiveElement
+                    onClick={onAddRemarksClick}
+                    type="span"
+                    role="button"
+                    className="save-ai-btn"
+                    title="Add remark"
+                    id="add-remark"
+                  >
+                    <FA name="plus" />
+                  </InteractiveElement>
+                  {
+                    userSelections.map(remark => (
+                      <RemarksPill
+                        isEditable
+                        remark={remark}
+                        key={remark.seq_num}
+                        updateSelection={updateSelection}
+                      />
+                    ))
+                  }
+                </div>
+              </div>
+              <div className="usa-form corrections">
+                <label htmlFor="corrections">Corrections:</label>
+                <div>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Ut tincidunt tincidunt imperdiet. Proin nisi diam, tincidunt rhoncus placerat
+                  et, fringilla non ligula. Suspendisse sed nibh nisl. Cras varius lacinia
+                </div>
+              </div>
+            </>
       }
     </div>
   );
 };
 
-AgendaItemLegs.propTypes = {
-  legs: PropTypes.arrayOf(PropTypes.shape({})),
-  remarks: PropTypes.arrayOf(PropTypes.shape({})),
-  isCard: PropTypes.bool,
-  hideRemarks: PropTypes.bool,
-  showCloseButton: PropTypes.bool,
-  onClose: PropTypes.func,
-  isAIHView: PropTypes.bool,
+AgendaItemMaintenancePane.propTypes = {
+  leftExpanded: PropTypes.bool,
+  onAddRemarksClick: PropTypes.func,
+  perdet: PropTypes.string.isRequired,
+  setParentState: PropTypes.func,
+  unitedLoading: PropTypes.bool,
+  userSelections: PropTypes.arrayOf(
+    PropTypes.shape({
+      seq_num: PropTypes.number,
+      rc_code: PropTypes.string,
+      order_num: PropTypes.number,
+      short_desc_text: PropTypes.string,
+      mutually_exclusive_ind: PropTypes.string,
+      text: PropTypes.string,
+      active_ind: PropTypes.string,
+    }),
+  ),
+  updateSelection: PropTypes.func,
 };
 
-AgendaItemLegs.defaultProps = {
-  legs: [],
-  remarks: [],
-  isCard: false,
-  hideRemarks: false,
-  showCloseButton: false,
-  onClose: EMPTY_FUNCTION,
-  isAIHView: false,
+AgendaItemMaintenancePane.defaultProps = {
+  leftExpanded: false,
+  onAddRemarksClick: EMPTY_FUNCTION,
+  setParentState: EMPTY_FUNCTION,
+  unitedLoading: true,
+  userSelections: [],
+  addToSelection: EMPTY_FUNCTION,
+  updateSelection: EMPTY_FUNCTION,
 };
 
-export default AgendaItemLegs;
+export default AgendaItemMaintenancePane;
