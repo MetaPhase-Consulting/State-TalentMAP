@@ -1,19 +1,29 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import InteractiveElement from 'Components/InteractiveElement';
 import { filter, get, includes } from 'lodash';
 import PropTypes from 'prop-types';
-import { useDataLoader } from 'hooks';
+import { useDataLoader, useDidMountEffect } from 'hooks';
 import BackButton from 'Components/BackButton';
 import FA from 'react-fontawesome';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { formatDate } from 'utilities';
+import { resultsFetchData } from 'actions/results';
 import RemarksPill from '../RemarksPill';
 import api from '../../../api';
 
 const AgendaItemMaintenancePane = (props) => {
-  const { onAddRemarksClick, perdet, setParentState, unitedLoading } = props;
+  const dispatch = useDispatch();
 
-  const leftExpanded = get(props, 'leftExpanded');
+  const {
+    onAddRemarksClick,
+    perdet,
+    setParentLoadingState,
+    unitedLoading,
+    userSelections,
+    leftExpanded,
+    updateSelection,
+  } = props;
 
   const defaultText = 'Coming Soon';
 
@@ -22,26 +32,47 @@ const AgendaItemMaintenancePane = (props) => {
   const { data: panelCatData, error: panelCatError, loading: panelCatLoading } = useDataLoader(api().get, '/panel/categories/');
   const { data: panelDatesData, error: panelDatesError, loading: panelDatesLoading } = useDataLoader(api().get, '/panel/dates/');
 
-  useEffect(() => {
-    setParentState(includes([asgSepBidLoading,
-      statusLoading, panelCatLoading, panelDatesLoading], true));
-  }, [asgSepBidLoading,
-    statusLoading,
-    panelCatLoading,
-    panelDatesLoading]);
+  const pos_results = useSelector(state => state.results);
+  const pos_results_loading = useSelector(state => state.resultsIsLoading);
+  const pos_results_errored = useSelector(state => state.resultsHasErrored);
 
   const asgSepBids = get(asgSepBidData, 'data') || [];
   const statuses = get(statusData, 'data.results') || [];
   const panelCategories = get(panelCatData, 'data.results') || [];
   const panelDates = get(panelDatesData, 'data.results') || [];
 
+  const panelDatesML = filter(panelDates, (p) => p.pmt_code === 'ML');
+  const panelDatesID = filter(panelDates, (p) => p.pmt_code === 'ID');
+
   const [asgSepBid, setAsgSepBid] = useState(filter(asgSepBids, ['status', 'EF']));
   const [selectedStatus, setStatus] = useState(get(statuses, '[0].code'));
-  const [selectedPositionNumber, setPositionNumber] = useState();
-  const [selectedPanelCat, setPanelCat] = useState(get(panelCategories, '[0].mic_code'));
-  const [selectedPanelDate, setPanelDate] = useState();
 
-  const remarks = [{ title: 'Critical Need Position', type: null }, { title: 'High Differential Post', type: null }, { title: 'Reassignment at post', type: null }, { title: 'SND Post', type: null }, { title: 'Continues SND eligibility', type: null }, { title: 'Creator(s):Townpost, Jenny', type: 'person' }, { title: 'Modifier(s):WoodwardWA', type: 'person' }, { title: 'CDO: Rehman, Tarek S', type: 'person' }];
+  const [selectedPositionNumber, setPositionNumber] = useState();
+  const [posNumError, setPosNumError] = useState(false);
+
+  const [selectedPanelCat, setPanelCat] = useState(get(panelCategories, '[0].mic_code'));
+  const [selectedPanelMLDate, setPanelMLDate] = useState();
+  const [selectedPanelIDDate, setPanelIDDate] = useState();
+
+  useEffect(() => {
+    setParentLoadingState(includes([asgSepBidLoading,
+      statusLoading, panelCatLoading, panelDatesLoading], true));
+  }, [asgSepBidLoading,
+    statusLoading,
+    panelCatLoading,
+    panelDatesLoading]);
+
+  useDidMountEffect(() => {
+    if (!pos_results_errored) {
+      if (!get(pos_results, 'results').length) {
+        setPosNumError(true);
+      } else {
+        setPositionNumber('');
+      }
+    } else {
+      setPosNumError(true);
+    }
+  }, [pos_results]);
 
   const saveAI = () => {
     // eslint-disable-next-line
@@ -50,8 +81,20 @@ const AgendaItemMaintenancePane = (props) => {
 
   // special handling for position number
   const addPositionNum = () => {
-    // send off request
-    setPositionNumber('');
+    setPosNumError(false);
+    if (selectedPositionNumber) {
+      dispatch(resultsFetchData(`limit=50&page=1&position__position_number__in=${selectedPositionNumber}`));
+    }
+  };
+
+  const setDate = (seq_num, isML) => {
+    if (isML) {
+      setPanelIDDate('');
+      setPanelMLDate(seq_num);
+    } else {
+      setPanelMLDate('');
+      setPanelIDDate(seq_num);
+    }
   };
 
   return (
@@ -111,7 +154,9 @@ const AgendaItemMaintenancePane = (props) => {
               <input
                 id="add-pos-num-input"
                 name="add"
+                className={`${posNumError ? 'input-error' : 'input-default'} ${pos_results_loading ? 'loading-animation' : ''}`}
                 onChange={value => setPositionNumber(value.target.value)}
+                onKeyPress={e => (e.key === 'Enter' ? addPositionNum() : null)}
                 type="add"
                 value={selectedPositionNumber}
               />
@@ -149,16 +194,35 @@ const AgendaItemMaintenancePane = (props) => {
                   <label htmlFor="ai-maintenance-date">Panel Date:</label>
                   <select
                     id="ai-maintenance-status"
-                    defaultValue={selectedPanelDate}
-                    onChange={(e) => setPanelDate(get(e, 'target.pm_seq_num'))}
-                    value={selectedPanelDate}
+                    onChange={(e) => setDate(get(e, 'target.value'), true)}
+                    value={selectedPanelMLDate}
                   >
+                    <option>Panel Dates - ML</option>
                     {
-                      panelDates.map(a => (
+                      panelDatesML.map(a => (
                         <option
                           key={get(a, 'pm_seq_num')}
                           value={get(a, 'pm_seq_num')}
-                        >{get(a, 'pmt_code')} - {formatDate(get(a, 'pmd_dttm'))}</option>
+                        >
+                          {get(a, 'pmt_code')} - {formatDate(get(a, 'pmd_dttm'))}
+                        </option>
+                      ))
+                    }
+                  </select>
+                  <select
+                    id="ai-maintenance-status"
+                    onChange={(e) => setDate(get(e, 'target.value'), false)}
+                    value={selectedPanelIDDate}
+                  >
+                    <option>Panel Dates - ID</option>
+                    {
+                      panelDatesID.map(a => (
+                        <option
+                          key={get(a, 'pm_seq_num')}
+                          value={get(a, 'pm_seq_num')}
+                        >
+                          {get(a, 'pmt_code')} - {formatDate(get(a, 'pmd_dttm'))}
+                        </option>
                       ))
                     }
                   </select>
@@ -179,8 +243,13 @@ const AgendaItemMaintenancePane = (props) => {
                 <FA name="plus" />
               </InteractiveElement>
               {
-                remarks.map(remark => (
-                  <RemarksPill isEditable key={remark.title} {...remark} />
+                userSelections.map(remark => (
+                  <RemarksPill
+                    isEditable
+                    remark={remark}
+                    key={remark.seq_num}
+                    updateSelection={updateSelection}
+                  />
                 ))
               }
             </div>
@@ -203,15 +272,30 @@ AgendaItemMaintenancePane.propTypes = {
   leftExpanded: PropTypes.bool,
   onAddRemarksClick: PropTypes.func,
   perdet: PropTypes.string.isRequired,
-  setParentState: PropTypes.func,
+  setParentLoadingState: PropTypes.func,
   unitedLoading: PropTypes.bool,
+  userSelections: PropTypes.arrayOf(
+    PropTypes.shape({
+      seq_num: PropTypes.number,
+      rc_code: PropTypes.string,
+      order_num: PropTypes.number,
+      short_desc_text: PropTypes.string,
+      mutually_exclusive_ind: PropTypes.string,
+      text: PropTypes.string,
+      active_ind: PropTypes.string,
+    }),
+  ),
+  updateSelection: PropTypes.func,
 };
 
 AgendaItemMaintenancePane.defaultProps = {
   leftExpanded: false,
   onAddRemarksClick: EMPTY_FUNCTION,
-  setParentState: EMPTY_FUNCTION,
+  setParentLoadingState: EMPTY_FUNCTION,
   unitedLoading: true,
+  userSelections: [],
+  addToSelection: EMPTY_FUNCTION,
+  updateSelection: EMPTY_FUNCTION,
 };
 
 export default AgendaItemMaintenancePane;

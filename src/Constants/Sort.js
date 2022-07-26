@@ -176,15 +176,13 @@ export const BUREAU_POSITION_SORT = {
 
 export const BUREAU_BIDDER_SORT = {
   options: [
-    { value: '', text: 'Sort option', disabled: true },
-    { value: 'bidder_grade', text: "Bidder's Grade" },
-    { value: 'bidder_skill', text: "Bidder's Skill" },
+    { value: 'bidder_bid_submitted_date', text: 'Bid Submitted Date' },
     { value: 'bidder_hs', text: 'Handshake' },
     { value: 'bidder_ted', text: 'TED' },
+    { value: 'bidder_grade', text: "Bidder's Grade" },
     { value: 'bidder_langauge', text: "Bidder's Langauge" },
     { value: 'bidder_name', text: "Bidder's Name" },
-    { value: 'bidder_bid_submitted_date', text: 'Bid Submitted Date' },
-    // What order do we want these in?
+    { value: 'bidder_skill', text: "Bidder's Skill" },
   ],
 };
 
@@ -222,3 +220,26 @@ export const AGENDA_EMPLOYEES_SORT = {
 };
 
 AGENDA_EMPLOYEES_SORT.defaultSort = AGENDA_EMPLOYEES_SORT.options[0].value;
+
+export const PANEL_MEETINGS_SORT = {
+  options: [
+    { value: 'meeting_date', text: 'Meeting Date Asc.' },
+    { value: '-meeting_date', text: 'Meeting Date Desc.' },
+    { value: 'meeting_status', text: 'Meeting Status A-Z' },
+    { value: '-meeting_status', text: 'Meeting Status Z-A' },
+  ],
+};
+
+PANEL_MEETINGS_SORT.defaultSort = PANEL_MEETINGS_SORT.options[0].value;
+
+export const PANEL_MEETINGS_PAGE_SIZES = {
+  options: [
+    { value: 5, text: '5' },
+    { value: 10, text: '10' },
+    { value: 25, text: '25' },
+    { value: 50, text: '50' },
+    { value: 100, text: '100' },
+  ],
+};
+
+PANEL_MEETINGS_PAGE_SIZES.defaultSize = PANEL_MEETINGS_PAGE_SIZES.options[2].value;

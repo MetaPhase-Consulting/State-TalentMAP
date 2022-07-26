@@ -1,7 +1,6 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { checkFlag } from 'flags';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate } from 'utilities';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from '../../../Constants/PropTypes';
@@ -11,8 +10,6 @@ import CheckboxList from '../CheckboxList';
 import SearchAsClientButton from '../SearchAsClientButton';
 import AddToInternalListButton from '../AddToInternalListButton';
 
-const useAvailableBidders = () => checkFlag('flags.available_bidders');
-
 const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
@@ -20,11 +17,11 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
   const id = get(userProfile, 'employee_id');
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
   const languages = get(userProfile, 'current_assignment.position.language');
+  const bidder = get(userProfile, 'shortened_name') || 'None listed';
   return (
     <div className="usa-grid-full bidder-portfolio-stat-row">
       <div className="stat-card-data-point stat-card-data-point--name">
-        {get(userProfile, 'name', 'N/A')}
-        <Link to={`/profile/public/${perdet}`}>View Profile</Link>
+        <Link to={`/profile/public/${perdet}`}>{bidder}</Link>
       </div>
       <div>
         <div>
@@ -61,7 +58,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
           !showEdit &&
           <div className="button-container">
             <SearchAsClientButton user={userProfile} />
-            { useAvailableBidders() && <AddToInternalListButton refKey={perdet} /> }
+            <AddToInternalListButton refKey={perdet} />
           </div>
         }
         {
