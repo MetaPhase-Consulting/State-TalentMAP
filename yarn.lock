@@ -11696,10 +11696,10 @@ react-beautiful-dnd@^13.1.0:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
-react-calendar@^3.3.1, react-calendar@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/react-calendar/-/react-calendar-3.7.0.tgz#951d56e91afb33b1c1e019cb790349fbffcc6894"
-  integrity sha512-zkK95zWLWLC6w3O7p3SHx/FJXEyyD2UMd4jr3CrKD+G73N+G5vEwrXxYQCNivIPoFNBjqoyYYGlkHA+TBDPLCw==
+react-calendar@^3.3.1, react-calendar@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-calendar/-/react-calendar-3.8.0.tgz#4d43b9e06b0e8ae3bbd596cdc556294e5c755b10"
+  integrity sha512-N0SMjrDJhQUL+HruZ2NFdjm5za0pFMuVv3IoRhFiCrRiChPOBeohkXR+NlujmvfFgAswt4K81bBFaH4TMioB+A==
   dependencies:
     "@wojtekmaj/date-utils" "^1.0.2"
     get-user-locale "^1.2.0"
