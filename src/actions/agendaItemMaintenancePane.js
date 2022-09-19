@@ -1,5 +1,11 @@
 import { get } from 'lodash';
 import { CancelToken } from 'axios';
+import { batch } from 'react-redux';
+import { UPDATE_AGENDA_ITEM_ERROR,
+  UPDATE_AGENDA_ITEM_ERROR_TITLE, UPDATE_AGENDA_ITEM_SUCCESS,
+  UPDATE_AGENDA_ITEM_SUCCESS_TITLE,
+} from 'Constants/SystemMessages';
+import { toastError, toastSuccess } from './toast';
 import api from '../api';
 
 let cancel;
@@ -23,30 +29,36 @@ export function aiCreateSuccess(data) {
   };
 }
 
-// eslint-disable-next-line no-unused-vars
-export function aiCreate(post_body) {
+export function aiCreate(panel, legs, personId, ef) {
   return (dispatch) => {
     if (cancel) { cancel('cancel'); }
-    dispatch(aiCreateErrored(false));
     dispatch(aiCreateLoading(true));
+    dispatch(aiCreateErrored(false));
     api()
-      // .post('/fsbid/agenda/agenda_items/&q=', { cancelToken: new CancelToken((c) => {
-      //   cancel = c;
-      // }) })
-      .get('/fsbid/reference/cycles/', { cancelToken: new CancelToken((c) => {
-        cancel = c;
-      }) })
-      .then(({ data }) => data || [])
-      .then((data$) => {
-        dispatch(aiCreateSuccess(data$));
-        dispatch(aiCreateErrored(false));
-        dispatch(aiCreateLoading(false));
+      .post('/fsbid/agenda/agenda_item/', {
+        ...ef,
+        personId,
+        ...panel,
+        agendaLegs: legs,
+      }, {
+        cancelToken: new CancelToken((c) => {
+          cancel = c;
+        }),
+      })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(aiCreateErrored(false));
+          dispatch(aiCreateSuccess(data || []));
+          dispatch(toastSuccess(UPDATE_AGENDA_ITEM_SUCCESS, UPDATE_AGENDA_ITEM_SUCCESS_TITLE));
+          dispatch(aiCreateLoading(false));
+        });
       })
       .catch((err) => {
         if (get(err, 'message') === 'cancel') {
           dispatch(aiCreateErrored(false));
-          dispatch(aiCreateLoading(true));
+          dispatch(aiCreateLoading(false));
         } else {
+          dispatch(toastError(UPDATE_AGENDA_ITEM_ERROR, UPDATE_AGENDA_ITEM_ERROR_TITLE));
           dispatch(aiCreateErrored(true));
           dispatch(aiCreateLoading(false));
         }

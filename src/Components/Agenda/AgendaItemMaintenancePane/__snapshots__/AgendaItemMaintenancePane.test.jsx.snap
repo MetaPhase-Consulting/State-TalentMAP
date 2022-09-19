@@ -26,13 +26,18 @@ exports[`AgendaItemMaintenancePane Component matches snapshot 1`] = `
 >
   <AgendaItemMaintenancePane
     addToSelection={[Function]}
+    asgSepBidData={Object {}}
     leftExpanded={false}
+    legCount={0}
     onAddRemarksClick={[Function]}
     perdet="2"
+    saveAI={[Function]}
+    sendAsgSepBid={[Function]}
+    sendMaintenancePaneInfo={[Function]}
     setParentLoadingState={[Function]}
     unitedLoading={false}
     updateSelection={[Function]}
-    userSelections={
+    userRemarks={
       Array [
         Object {
           "active_ind": "Y",

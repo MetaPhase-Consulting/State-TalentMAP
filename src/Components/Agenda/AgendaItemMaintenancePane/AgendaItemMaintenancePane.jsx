@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InteractiveElement from 'Components/InteractiveElement';
-import { filter, get, includes } from 'lodash';
+import { filter, find, get, includes } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDataLoader, useDidMountEffect } from 'hooks';
 import BackButton from 'Components/BackButton';
 import FA from 'react-fontawesome';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { formatDate } from 'utilities';
-import { resultsFetchData } from 'actions/results';
+import { positionsFetchData } from 'actions/positions';
 import RemarksPill from '../RemarksPill';
 import api from '../../../api';
 
@@ -20,23 +20,28 @@ const AgendaItemMaintenancePane = (props) => {
     perdet,
     setParentLoadingState,
     unitedLoading,
-    userSelections,
+    userRemarks,
     leftExpanded,
     updateSelection,
+    sendMaintenancePaneInfo,
+    legCount,
+    saveAI,
+    sendAsgSepBid,
+    asgSepBidData,
   } = props;
 
-  const defaultText = 'Coming Soon';
+  const defaultText = '';
 
-  const { data: asgSepBidData, error: asgSepBidError, loading: asgSepBidLoading } = useDataLoader(api().get, `/fsbid/employee/assignments_separations_bids/${perdet}/`);
   const { data: statusData, error: statusError, loading: statusLoading } = useDataLoader(api().get, '/fsbid/agenda/statuses/');
   const { data: panelCatData, error: panelCatError, loading: panelCatLoading } = useDataLoader(api().get, '/panel/categories/');
   const { data: panelDatesData, error: panelDatesError, loading: panelDatesLoading } = useDataLoader(api().get, '/panel/dates/');
+  const { asgSepBidResults$, asgSepBidError, asgSepBidLoading } = asgSepBidData;
+  const asgSepBids = asgSepBidResults$ || [];
 
-  const pos_results = useSelector(state => state.results);
-  const pos_results_loading = useSelector(state => state.resultsIsLoading);
-  const pos_results_errored = useSelector(state => state.resultsHasErrored);
+  const pos_results = useSelector(state => state.positions);
+  const pos_results_loading = useSelector(state => state.positionsIsLoading);
+  const pos_results_errored = useSelector(state => state.positionsHasErrored);
 
-  const asgSepBids = get(asgSepBidData, 'data') || [];
   const statuses = get(statusData, 'data.results') || [];
   const panelCategories = get(panelCatData, 'data.results') || [];
   const panelDates = get(panelDatesData, 'data.results') || [];
@@ -44,15 +49,19 @@ const AgendaItemMaintenancePane = (props) => {
   const panelDatesML = filter(panelDates, (p) => p.pmt_code === 'ML');
   const panelDatesID = filter(panelDates, (p) => p.pmt_code === 'ID');
 
-  const [asgSepBid, setAsgSepBid] = useState(filter(asgSepBids, ['status', 'EF']));
-  const [selectedStatus, setStatus] = useState(get(statuses, '[0].code'));
+  const [asgSepBid, setAsgSepBid] = useState(''); // local state just used for select animation
+  const [asgSepBidSelectClass, setAsgSepBidSelectClass] = useState('');
+  const [selectedStatus, setStatus] = useState(get(statuses, '[0].code') || '');
 
-  const [selectedPositionNumber, setPositionNumber] = useState();
+  const [selectedPositionNumber, setPositionNumber] = useState('');
   const [posNumError, setPosNumError] = useState(false);
+  const [inputClass, setInputClass] = useState('input-default');
 
-  const [selectedPanelCat, setPanelCat] = useState(get(panelCategories, '[0].mic_code'));
-  const [selectedPanelMLDate, setPanelMLDate] = useState();
-  const [selectedPanelIDDate, setPanelIDDate] = useState();
+  const [selectedPanelCat, setPanelCat] = useState(get(panelCategories, '[0].mic_code') || '');
+  const [selectedPanelMLDate, setPanelMLDate] = useState('');
+  const [selectedPanelIDDate, setPanelIDDate] = useState('');
+
+  const legLimit = legCount >= 10;
 
   useEffect(() => {
     setParentLoadingState(includes([asgSepBidLoading,
@@ -63,27 +72,58 @@ const AgendaItemMaintenancePane = (props) => {
     panelDatesLoading]);
 
   useDidMountEffect(() => {
-    if (!pos_results_errored) {
-      if (!get(pos_results, 'results').length) {
-        setPosNumError(true);
-      } else {
-        setPositionNumber('');
-      }
-    } else {
-      setPosNumError(true);
-    }
+    setPositionNumber('');
   }, [pos_results]);
 
-  const saveAI = () => {
-    // eslint-disable-next-line
-    console.log('save AI');
+  useDidMountEffect(() => {
+    if (pos_results_errored) {
+      setPosNumError(true);
+    }
+  }, [pos_results_errored]);
+
+  useEffect(() => {
+    if (legLimit) {
+      setInputClass('input-disabled');
+    } else if (pos_results_loading) {
+      setInputClass('loading-animation');
+    } else if (posNumError) {
+      setInputClass('input-error');
+    } else {
+      setInputClass('input-default');
+    }
+  }, [legCount, pos_results_loading, posNumError]);
+
+  useEffect(() => {
+    sendMaintenancePaneInfo({
+      personDetailId: perdet,
+      panelMeetingId: selectedPanelMLDate.concat(selectedPanelIDDate),
+      remarks: userRemarks || [],
+      agendaStatusCode: selectedStatus || '',
+      panelMeetingCategory: selectedPanelCat || '',
+    });
+  }, [selectedPanelMLDate,
+    selectedPanelIDDate,
+    userRemarks,
+    selectedStatus,
+    selectedPanelCat]);
+
+  const addAsgSepBid = (k) => {
+    setAsgSepBidSelectClass('asg-animation');
+    setAsgSepBid(k);
+    sendAsgSepBid(find(asgSepBids, { pos_num: k }));
+    setTimeout(() => {
+      setAsgSepBid('');
+      sendAsgSepBid({});
+      setAsgSepBidSelectClass('');
+    }, 2000);
   };
 
-  // special handling for position number
   const addPositionNum = () => {
-    setPosNumError(false);
-    if (selectedPositionNumber) {
-      dispatch(resultsFetchData(`limit=50&page=1&position__position_number__in=${selectedPositionNumber}`));
+    if (!legLimit) {
+      setPosNumError(false);
+      if (selectedPositionNumber) {
+        dispatch(positionsFetchData(`limit=50&page=1&position_num=${selectedPositionNumber}`));
+      }
     }
   };
 
@@ -112,19 +152,24 @@ const AgendaItemMaintenancePane = (props) => {
               !asgSepBidLoading && !asgSepBidError &&
                 <select
                   id="ai-maintenance-dd-asgSepBids"
+                  className={`${asgSepBidSelectClass}${legLimit ? ' asg-disabled' : ''}`}
                   defaultValue={asgSepBids}
-                  onChange={(e) => setAsgSepBid(get(e, 'target.pos_num'))}
-                  value={asgSepBid}
+                  onChange={(e) => addAsgSepBid(get(e, 'target.value'))}
+                  value={`${legLimit ? 'legLimit' : asgSepBid}`}
+                  disabled={legLimit}
                 >
-                  <option selected hidden>
+                  <option selected value={''}>
                     Employee Assignments, Separations, and Bids
+                  </option>
+                  <option hidden value={'legLimit'}>
+                    Leg Limit of 10 Reached
                   </option>
                   {
                     asgSepBids.map(a => (
                       <option key={a.pos_num} value={a.pos_num}>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
-                        {a.name || defaultText} '{a.status || defaultText}'
-                          in {a.org || defaultText} -
+                        '{a.status || defaultText}'
+                          in {a.org || defaultText} -&nbsp;
                         {a.pos_title || defaultText}({a.pos_num || defaultText})
                       </option>
                     ))
@@ -141,6 +186,9 @@ const AgendaItemMaintenancePane = (props) => {
                     onChange={(e) => setStatus(get(e, 'target.value'))}
                     value={selectedStatus}
                   >
+                    <option selected value={''}>
+                      Agenda Item Status
+                    </option>
                     {
                       statuses.map(a => (
                         <option key={a.code} value={a.code}>{a.desc_text}</option>
@@ -152,16 +200,16 @@ const AgendaItemMaintenancePane = (props) => {
             <div>
               <label htmlFor="position number">Add Position Number:</label>
               <input
-                id="add-pos-num-input"
                 name="add"
-                className={`${posNumError ? 'input-error' : 'input-default'} ${pos_results_loading ? 'loading-animation' : ''}`}
+                className={`add-pos-num-input ${inputClass}`}
                 onChange={value => setPositionNumber(value.target.value)}
                 onKeyPress={e => (e.key === 'Enter' ? addPositionNum() : null)}
                 type="add"
-                value={selectedPositionNumber}
+                value={`${legLimit ? 'Leg Limit of 10' : selectedPositionNumber}`}
+                disabled={legLimit}
               />
               <InteractiveElement
-                id="add-pos-num-icon"
+                className={`add-pos-num-icon ${legLimit ? 'icon-disabled' : ''}`}
                 onClick={addPositionNum}
                 role="button"
                 title="Add position"
@@ -177,9 +225,12 @@ const AgendaItemMaintenancePane = (props) => {
                   <select
                     id="ai-maintenance-category"
                     defaultValue={selectedPanelCat}
-                    onChange={(e) => setPanelCat(get(e, 'target.mic_code'))}
+                    onChange={(e) => setPanelCat(get(e, 'target.value'))}
                     value={selectedPanelCat}
                   >
+                    <option selected value={''}>
+                      Meeting Item Category
+                    </option>
                     {
                       panelCategories.map(a => (
                         <option value={get(a, 'mic_code')}>{get(a, 'mic_desc_text')}</option>
@@ -197,7 +248,7 @@ const AgendaItemMaintenancePane = (props) => {
                     onChange={(e) => setDate(get(e, 'target.value'), true)}
                     value={selectedPanelMLDate}
                   >
-                    <option>Panel Dates - ML</option>
+                    <option value={''}>Panel Dates - ML</option>
                     {
                       panelDatesML.map(a => (
                         <option
@@ -214,7 +265,7 @@ const AgendaItemMaintenancePane = (props) => {
                     onChange={(e) => setDate(get(e, 'target.value'), false)}
                     value={selectedPanelIDDate}
                   >
-                    <option>Panel Dates - ID</option>
+                    <option value={''}>Panel Dates - ID</option>
                     {
                       panelDatesID.map(a => (
                         <option
@@ -243,7 +294,7 @@ const AgendaItemMaintenancePane = (props) => {
                 <FA name="plus" />
               </InteractiveElement>
               {
-                userSelections.map(remark => (
+                userRemarks.map(remark => (
                   <RemarksPill
                     isEditable
                     remark={remark}
@@ -269,12 +320,17 @@ const AgendaItemMaintenancePane = (props) => {
 };
 
 AgendaItemMaintenancePane.propTypes = {
+  perdet: PropTypes.string.isRequired,
+  asgSepBidData: PropTypes.shape({
+    asgSepBidResults$: PropTypes.arrayOf({}),
+    asgSepBidError: PropTypes.bool,
+    asgSepBidLoading: PropTypes.bool,
+  }),
   leftExpanded: PropTypes.bool,
   onAddRemarksClick: PropTypes.func,
-  perdet: PropTypes.string.isRequired,
   setParentLoadingState: PropTypes.func,
   unitedLoading: PropTypes.bool,
-  userSelections: PropTypes.arrayOf(
+  userRemarks: PropTypes.arrayOf(
     PropTypes.shape({
       seq_num: PropTypes.number,
       rc_code: PropTypes.string,
@@ -286,16 +342,25 @@ AgendaItemMaintenancePane.propTypes = {
     }),
   ),
   updateSelection: PropTypes.func,
+  sendMaintenancePaneInfo: PropTypes.func,
+  sendAsgSepBid: PropTypes.func,
+  saveAI: PropTypes.func,
+  legCount: PropTypes.number,
 };
 
 AgendaItemMaintenancePane.defaultProps = {
+  asgSepBidData: {},
   leftExpanded: false,
   onAddRemarksClick: EMPTY_FUNCTION,
   setParentLoadingState: EMPTY_FUNCTION,
   unitedLoading: true,
-  userSelections: [],
+  userRemarks: [],
   addToSelection: EMPTY_FUNCTION,
   updateSelection: EMPTY_FUNCTION,
+  sendMaintenancePaneInfo: EMPTY_FUNCTION,
+  sendAsgSepBid: EMPTY_FUNCTION,
+  saveAI: EMPTY_FUNCTION,
+  legCount: 0,
 };
 
 export default AgendaItemMaintenancePane;

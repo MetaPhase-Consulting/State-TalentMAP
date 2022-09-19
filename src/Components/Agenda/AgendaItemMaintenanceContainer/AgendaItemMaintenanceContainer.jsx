@@ -1,38 +1,63 @@
 import { useEffect, useRef, useState } from 'react';
 import FontAwesome from 'react-fontawesome';
-import InteractiveElement from 'Components/InteractiveElement';
+import { useDispatch } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 import { withRouter } from 'react-router';
+import InteractiveElement from 'Components/InteractiveElement';
 import { filter, find, get, isNil } from 'lodash';
 import MediaQuery from 'Components/MediaQuery';
 import Spinner from 'Components/Spinner';
 import { Link } from 'react-router-dom';
+import { aiCreate } from 'actions/agendaItemMaintenancePane';
+import { useDataLoader } from 'hooks';
 import AgendaItemResearchPane from '../AgendaItemResearchPane';
 import AgendaItemMaintenancePane from '../AgendaItemMaintenancePane';
 import AgendaItemTimeline from '../AgendaItemTimeline';
 import { RG as RemarksGlossaryTabID } from '../AgendaItemResearchPane/AgendaItemResearchPane';
+import api from '../../../api';
 
 const AgendaItemMaintenanceContainer = (props) => {
+  const dispatch = useDispatch();
+
   const researchPaneRef = useRef();
 
   const [legsContainerExpanded, setLegsContainerExpanded] = useState(false);
   const [agendaItemMaintenancePaneLoading, setAgendaItemMaintenancePaneLoading] = useState(true);
   const [agendaItemTimelineLoading, setAgendaItemTimelineLoading] = useState(true);
+  const [legs, setLegs] = useState([]);
+  const [maintenanceInfo, setMaintenanceInfo] = useState([]);
+  const [asgSepBid, setAsgSepBid] = useState({}); // pass through from AIMPane to AITimeline
+  const [userRemarks, setUserRemarks] = useState([]);
   const [spinner, setSpinner] = useState(true);
 
-  const userRemarks = [];
-  const [userSelections, setUserSelections] = useState(userRemarks);
+  const id = get(props, 'match.params.id'); // client's perdet
+  const isCDO = get(props, 'isCDO');
+  const client_data = useDataLoader(api().get, `/fsbid/client/${id}/`);
 
+  const { data: asgSepBidResults, error: asgSepBidError, loading: asgSepBidLoading } = useDataLoader(api().get, `/fsbid/employee/assignments_separations_bids/${id}/`);
+  const asgSepBidResults$ = get(asgSepBidResults, 'data') || [];
+  const asgSepBidData = { asgSepBidResults$, asgSepBidError, asgSepBidLoading };
+  // TODO: can they ever have no EF or more than one EF?
+  const efPosition = find(asgSepBidResults$, ['status', 'EF']) || {};
 
   const updateSelection = (remark) => {
-    const userSelection$ = [...userSelections];
-    const found = find(userSelection$, { seq_num: remark.seq_num });
+    const userRemarks$ = [...userRemarks];
+    const found = find(userRemarks$, { seq_num: remark.seq_num });
     if (!found) {
-      userSelection$.push(remark);
-      setUserSelections(userSelection$);
+      userRemarks$.push(remark);
+      setUserRemarks(userRemarks$);
     } else {
-      setUserSelections(filter(userSelection$, (r) => r.seq_num !== remark.seq_num));
+      setUserRemarks(filter(userRemarks$, (r) => r.seq_num !== remark.seq_num));
     }
+  };
+
+  const submitAI = () => {
+    const personId = get(client_data, 'data.data.id', '') || get(client_data, 'data.data.employee_id', '');
+    const efInfo = {
+      assignmentId: get(efPosition, 'asg_seq_num'),
+      assignmentVersion: get(efPosition, 'revision_num'),
+    };
+    dispatch(aiCreate(maintenanceInfo, legs, personId, efInfo));
   };
 
   function toggleExpand() {
@@ -40,9 +65,6 @@ const AgendaItemMaintenanceContainer = (props) => {
   }
 
   const rotate = legsContainerExpanded ? 'rotate(0)' : 'rotate(-180deg)';
-
-  const id = get(props, 'match.params.id'); // client's perdet
-  const isCDO = get(props, 'isCDO');
 
   // need to update once further integration is done
   const employeeName = 'Employee Name Placeholder';
@@ -103,11 +125,19 @@ const AgendaItemMaintenanceContainer = (props) => {
                 unitedLoading={spinner}
                 setParentLoadingState={setAgendaItemMaintenancePaneLoading}
                 updateSelection={updateSelection}
-                userSelections={userSelections}
+                sendMaintenancePaneInfo={setMaintenanceInfo}
+                sendAsgSepBid={setAsgSepBid}
+                asgSepBidData={asgSepBidData}
+                userRemarks={userRemarks}
+                legCount={legs.length}
+                saveAI={submitAI}
               />
               <AgendaItemTimeline
                 unitedLoading={spinner}
                 setParentLoadingState={setAgendaItemTimelineLoading}
+                updateLegs={setLegs}
+                asgSepBid={asgSepBid}
+                efPos={efPosition}
               />
             </div>
             <div className={`expand-arrow${matches ? ' hidden' : ''}`}>
@@ -126,10 +156,11 @@ const AgendaItemMaintenanceContainer = (props) => {
             </div>
             <div className={`maintenance-container-right${(legsContainerExpanded && !matches) ? ' hidden' : ''}`}>
               <AgendaItemResearchPane
+                clientData={client_data}
                 perdet={id}
                 ref={researchPaneRef}
-                userSelections={userSelections}
                 updateSelection={updateSelection}
+                userSelections={userRemarks}
               />
             </div>
           </div>

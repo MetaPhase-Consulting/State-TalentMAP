@@ -36,6 +36,11 @@ class ProfilePublic extends Component {
     return viewType === 'post';
   }
 
+  isAOView = () => {
+    const viewType = get(this.props, 'match.params.viewType');
+    return viewType === 'ao';
+  }
+
   render() {
     const {
       isLoading,
@@ -54,6 +59,7 @@ class ProfilePublic extends Component {
     const combinedErrored = hasErrored || classificationsHasErrored;
     const isBureauView = this.isBureauView();
     const isPostView = this.isPostView();
+    const isAOView = this.isAOView();
     let props = {};
     if (isBureauView) {
       props = {
@@ -63,8 +69,7 @@ class ProfilePublic extends Component {
         showClassifications: false,
         showSearchAsClient: false,
       };
-    }
-    if (isPostView) {
+    } else if (isPostView) {
       props = {
         ...props,
         showBidTracker: false,
@@ -72,7 +77,20 @@ class ProfilePublic extends Component {
         showClassifications: false,
         showSearchAsClient: false,
       };
+    } else if (isAOView) {
+      props = {
+        ...props,
+        showBidTracker: false,
+        showAssignmentHistory: false,
+        showSearchAsClient: false,
+      };
+    } else { // CDO View
+      props = {
+        ...props,
+        canEditClassifications: true,
+      };
     }
+
     return (
       combinedErrored ?
         <Alert type="error" title="User not found" />

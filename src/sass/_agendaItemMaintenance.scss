@@ -30,15 +30,217 @@
   display: flex;
   padding-bottom: 15px;
 
-  .expand-arrow {
-    align-self: center;
+  // ---- start: styling for left pane ----
+
+  .remarks-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 15px;
+
+    #add-remark {
+      color: $primary-blue;
+      font-size: 20px;
+      margin: 0 10px 0 -15px;
+    }
+
+    #add-remark:hover {
+      color: $primary-blue-darkest;
+    }
+
+    .remarks-text {
+      float: left;
+      font-size: 1.1em;
+      margin-right: .7rem;
+      margin-top: 3px;
+    }
+
+    .remarks-pill {
+      border-radius: 12px;
+      color: $color-white;
+      display: inline;
+      font-size: .8em;
+      margin-bottom: 1rem;
+      margin-right: 1.5rem;
+      padding: .5em;
+
+      .fa-times {
+        margin-left: 10px;
+      }
+
+      .fa-times:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .ai-maintenance-header {
+    background-color: $tm-white-smoke-light;
+    padding-bottom: 20px;
+
+    .usa-form:not(.remarks, .corrections) {
+      max-width: 36rem;
+    }
+
+    .half-width {
+      width: 51% !important;
+    }
+
+    label {
+      font-weight: bold;
+      margin: 10px 10px;
+      text-align: end;
+    }
+
+    .back-save-btns-container {
+      padding-top: 2.5rem;
+      min-height: 70px;
+      width: 95%;
+
+      button {
+        margin: 0 !important;
+      }
+
+      .save-ai-btn {
+        border: 1px solid $primary-blue;
+        border-radius: 5px;
+        color: $primary-blue;
+        background-color: $color-white;
+        display: inline-block;
+        padding: 10px 20px;
+        float: right;
+        font-size: 1.4rem;
+      }
+
+      .save-ai-btn:hover {
+        border-color: $primary-blue-darkest;
+        color: $primary-blue-darkest;
+      }
+    }
+
+    .corrections, .remarks {
+      max-width: fit-content;
+      margin: 10px;
+
+      label {
+        display: inline;
+        margin: 0 10px 0 0;
+      }
+
+      div:not(.remarks-pill) {
+        display: inline;
+      }
+
+      .remarks-pill {
+        display: inline-block;
+      }
+    }
+
+    .ai-maintenance-header-dd {
+      margin-right: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: 94%;
+
+      #ai-maintenance-dd-asgSepBids {
+        max-width: fit-content;
+        margin-left: 10px;
+      }
+      .asg-disabled {
+        background-color: $color-gray-lighter;
+        border: 1px solid $color-gray-light;
+        color: $color-black;
+      }
+      .asg-animation {
+        animation: asgAnimation 2s;
+      }
+
+      @keyframes asgAnimation {
+        0%   {background-color: $primary-alt-light;}
+        100% {background-color: $primary-alt-lightest;}
+      }
+
+      .loading-animation {
+        //background: linear-gradient(135deg, white 0% 30%, $primary-alt-light 30% 35%, white 35% 100%) right;
+        background: linear-gradient(135deg, white 0% 30%, $primary-alt-light 30% 70%, white 70% 100%) right;
+        //background: linear-gradient(135deg, white 0%, $primary-alt-light 50%, white 100%) right;
+        background-size: 400%;
+        animation: loadingAnimation 3s infinite linear;
+      }
+
+      @keyframes loadingAnimation {
+        0% {
+          background-position: right;
+        }
+        100% {
+          background-position: left;
+        }
+      }
+
+      .add-pos-num-input {
+        border-radius: 3px;
+        height: 28px;
+        padding: 0 30px 0 5px;
+        max-width: 150px;
+        font-size: 13px;
+      }
+      .input-default {
+        background-color: $color-white;
+        border: 1px solid $bg-gray-dark-2;
+      }
+      .input-error {
+        background-color: $color-red-lightest;
+        border: 1px solid $color-red;
+      }
+      .input-disabled {
+        background-color: $color-gray-lighter;
+        border: 1px solid $color-gray-light;
+      }
+
+      .add-pos-num-icon {
+        color: $primary-blue;
+        margin-left: -25px;
+        position: relative;
+        top: 1px
+      }
+      .add-pos-num-icon:hover {
+        color: $primary-blue-darkest;
+      }
+      .icon-disabled {
+        color: $color-gray;
+        .fa {
+          cursor: not-allowed;
+        }
+      }
+      .icon-disabled:hover {
+        color: $color-gray;
+        cursor: not-allowed;
+      }
+
+      div {
+        display: flex;
+        flex: 70%;
+        align-items: baseline;
+        max-width: 36rem;
+      }
+
+      select {
+        border: 1px solid $bg-gray-dark-2;
+        border-radius: 3px;
+        font-size: 0.8em;
+        height: 28px;
+        padding: 0 28px 0 5px;
+        text-overflow: ellipsis;
+        max-width: fit-content;
+      }
+    }
   }
 
   .maintenance-container-left {
-    background-color: $color-white;
     float: left;
     height: 98vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding: 0 10px 20px 0;
     width: 50%;
 
     .tm-spinner-left-pane {
@@ -50,10 +252,10 @@
   }
 
   .maintenance-container-left-expanded {
-    background-color: $color-white;
     float: left;
     height: 98vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding: 0 10px 20px 0;
     width: 99%;
 
     .tm-spinner-left-pane {
@@ -63,21 +265,43 @@
     }
   }
 
+  // ---- end: styling for left pane ----
+
+  .expand-arrow {
+    align-self: center;
+    color: $primary-blue;
+  }
+
+  // ---- start: styling for right pane ----
+
   .maintenance-container-right {
     background-color: $color-white;
     float: left;
     height: 98vh;
-    overflow-y: scroll;
+    margin-left: 20px;
+    margin-right: 10px;
+    overflow-y: auto;
     width: 48%;
   }
 
-  .remarks-glossary-container {
-    margin: 2em 0;
+  .hidden {
+    display: none !important;
+  }
+
+  .ai-research-pane {
+    input {
+      border-radius: 5px;
+    }
+
+    .bid-content-container > div:last-child > div {
+      display: inline;
+    }
   }
 
   .ai-research-content {
-    padding-top: 1em;
+    padding: 20px;
     position: relative;
+    background-color: $color-white;
 
     .dashboard-section-title {
       margin-bottom: 1em;
@@ -95,31 +319,13 @@
     }
   }
 
-  .ai-research-pane {
-    background-color: $color-white;
-    padding: 20px;
-
-    input {
-      border-radius: 5px;
-    }
-
-    .bid-content-container > div:last-child > div {
-      display: inline;
-    }
-  }
-
-  .hidden {
-    display: none!important;
-  }
-
   .data-point-container {
     margin-bottom: 10px;
-  }
-
-  .data-point-title {
-    color: $color-black;
-    font-size: 1.6rem;
-    font-weight: bold;
+    .data-point-title {
+      color: $color-black;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
   }
 
   .language-details > span {
@@ -149,12 +355,15 @@
     tr > *:nth-child(1) {
       flex: 1
     }
+
     tr > *:nth-child(2) {
       flex: 6
     }
+
     tr > *:nth-child(3) {
       flex: 6
     }
+
     tr > *:nth-child(4) {
       flex: 12
     }
@@ -167,6 +376,7 @@
     tbody > tr {
       > td:first-of-type {
         position: relative;
+
         .fa {
           color: $color-blue-hover;
           font-size: 1.4em;
@@ -176,17 +386,19 @@
       }
     }
 
-    tbody > tr:nth-child(even){
+    tbody > tr:nth-child(even) {
       $bg: $bg-gray-medium-2;
       background-color: $bg;
+
       td {
         background-color: $bg;
       }
     }
 
-    tbody > tr:nth-child(odd){
+    tbody > tr:nth-child(odd) {
       $bg: $color-white;
       background-color: $bg;
+
       td {
         background-color: $bg;
       }
@@ -200,232 +412,19 @@
     }
   }
 
-  .ai-maintenance-header {
-    background-color: $bg-gray-medium-4;
-    padding-bottom: 20px;
-
-    .usa-form:not(.remarks, .corrections) {
-      max-width: 36rem;
-    }
-
-    .half-width {
-      width: 51% !important;
-    }
-
-    label {
-      font-weight: bold;
-      margin: 10px 10px;
-      text-align: end;
-    }
-
-    .back-save-btns-container {
-      padding-top: 2.5rem;
-      min-height: 70px;
-      width: 95%;
-
-      button {
-        margin: 0!important;
-      }
-
-      .save-ai-btn {
-        border: 1px solid $primary-blue;
-        border-radius: 5px;
-        color: $primary-blue;
-        background-color: $color-white;
-        display: inline-block;
-        padding: 10px 20px;
-        float: right;
-        font-size: 1.4rem;
-      }
-      .save-ai-btn:hover {
-        border-color: $primary-blue-darkest;
-        color: $primary-blue-darkest;
-      }
-    }
-
-    .corrections, .remarks {
-      max-width: fit-content;
-      margin: 10px;
-
-      label {
-        display: inline;
-        margin: 0 10px 0 0;
-      }
-      div:not(.remarks-pill) {
-        display: inline;
-      }
-      .remarks-pill {
-        display: inline-block;
-      }
-    }
-
-    .ai-maintenance-header-dd {
-      margin-right: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      width: 94%;
-
-      #ai-maintenance-dd-asgSepBids {
-        max-width: fit-content;
-        margin-left: 10px;
-      }
-
-      #add-pos-num-input {
-        border-radius: 3px;
-        height: 28px;
-        padding: 0 30px 0 5px;
-        max-width: 150px;
-        font-size: 13px;
-      }
-
-      .loading-animation {
-        //background: linear-gradient(135deg, white 0% 30%, $primary-alt-light 30% 35%, white 35% 100%) right;
-        background: linear-gradient(135deg, white 0% 30%, $primary-alt-light 30% 70%, white 70% 100%) right;
-        //background: linear-gradient(135deg, white 0%, $primary-alt-light 50%, white 100%) right;
-        background-size: 400%;
-        animation: loadingAnimation 3s infinite linear;
-      }
-
-      @keyframes loadingAnimation {
-        0% { background-position: right; }
-        100% { background-position: left; }
-      }
-
-      .input-default {
-        background-color: $color-white;
-        border: 1px solid $bg-gray-dark-2;
-      }
-      .input-error {
-        background-color: $color-red-lightest;
-        border: 1px solid $color-red;
-      }
-      #add-pos-num-icon {
-        color: $primary-blue;
-        margin-left: -25px;
-        position: relative;
-        top: 1px
-      }
-      #add-pos-num-icon:hover {
-        color: $primary-blue-darkest;
-      }
-
-      div {
-        display: flex;
-        flex: 70%;
-        align-items: baseline;
-        max-width: 36rem;
-      }
-
-      select {
-        border: 1px solid $bg-gray-dark-2;
-        border-radius: 3px;
-        font-size: 0.8em;
-        height: 28px;
-        padding: 0 28px 0 5px;
-        text-overflow: ellipsis;
-        max-width: fit-content;
-      }
-    }
-  }
-
-  .ai-timeline-pane {
-    margin: 10px;
-  }
-
-  .agenda-item-history-container {
-    td {
-      position: relative;
-    }
-
-    .ai-history-row {
-      border-left: none;
-      border-radius: 0;
-      box-shadow: none;
-      padding: .5em 0 0;
-    }
-
-    .remove-leg-button {
-      position: absolute;
-      right: 6px;
-      top: 0;
-    }
-
-    .ai-history-row {
-      overflow-x: auto;
-    }
-  }
-
-  a {
-    padding-left: 5px
-  }
-
-  .ted-calendar-container {
-    padding-left: .7em;
-
-    .fa {
-      cursor: pointer;
-      padding-left: 5px;
-    }
-
-    .fa-calendar-container {
-      display: inline;
-      padding-left: 10px;
-      position: absolute;
-      top: -5em;
-
-      .ted-react-calendar {
-        display: inline-block;
-        font-size: 1.5rem;
-        position: relative;
-        width: 280px;
-        z-index: 1;
-
-        .react-calendar__navigation {
-          background-color: $bg-gray-medium-3;
-          margin-bottom: 0;
-
-          button {
-            font-size: 2rem;
-            font-weight: bold;
-          }
-
-          .react-calendar__navigation__label {
-            font-size: 1.5rem;
-            font-weight: bold;
-            min-width: 40px;
-          }
-        }
-      }
-
-      .react-calendar__month-view__weekdays {
-        background-color: $bg-gray-medium-3;
-        font-size: .8em;
-      }
-    }
-  }
-
-  .leg-dropdown {
-    background-image: none;
-    border: 2px solid transparent;
-    border-bottom: 2px solid $color-black;
-    cursor: pointer;
-    font-size: 1.6rem;
-    padding: 2px 10px 2px 2px;
-  }
-  .leg-dropdown:hover {
-    border: 2px solid $blue-primary;
-  }
+  // ---- end: styling for right pane ----
 }
 
 .stacked {
   display: block;
-  width: 70%;
+
+  .maintenance-container-left-expanded {
+    border-bottom: 3px solid $color-black;
+  }
 
   .maintenance-container-right {
-    border-top: 2px solid $color-black;
     margin-top: 20px;
-    width: 99%;
+    width: 98%;
   }
 }
 
@@ -472,6 +471,8 @@
 }
 
 .remarks-glossary-container {
+  margin: 2em 0;
+
   ul {
     list-style: none;
     padding-left: 0;
@@ -530,44 +531,24 @@
     margin: auto 0 auto 7px;
   }
 
-  $remarks: (
-    "A": #1E600B,
-    "B": #4372C4,
-    "C": #3700AD,
-    "D": #012E16,
-    "E": #6F4F0B,
-    "G": #015E7A,
-    "I": #5D1EE6,
-    "L": #4F4A3F,
-    "M": #89471A,
-    "N": #003EBD,
-    "O": #0E6138,
-    "P": #3F0F10,
-    "R": #00102F,
-    "S": #8D5500,
-    "T": #446228,
-    "W": $color-cornflower-blue // need to update this one
-    );
-
   .remark-category {
-    background-color: $color-cornflower-blue;
     color: $color-white;
     border-radius: 5px;
     padding: .5em;
     font-size: 13px;
     display: flex;
   }
+}
 
-  @each $remark-id, $color in $remarks {
+@each $remark-id, $color in $remarks {
+  .remark-category--#{$remark-id} {
+    background-color: $color;
+    color: $color-white;
+    scroll-margin-top: 60px;
+  }
+  @media screen and (max-width: 1600px) {
     .remark-category--#{$remark-id} {
-      background-color: $color;
-      color: $color-white;
-      scroll-margin-top: 60px;
-    }
-    @media screen and (max-width: 1600px) {
-      .remark-category--#{$remark-id} {
-        scroll-margin-top: 32px;
-      }
+      scroll-margin-top: 32px;
     }
   }
 }
