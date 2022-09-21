@@ -14,6 +14,7 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import shortid from 'shortid';
 import { useMount, usePrevious } from 'hooks';
+import Sticky from 'react-sticky-el';
 
 const AvailableBidderTable = props => {
   const { isInternalCDA, isAO, isPost } = props;
@@ -167,69 +168,78 @@ const AvailableBidderTable = props => {
         <div className={`usa-width-one-whole bidder-manager-bidders ${isInternalCDA ? 'internal ' : ''}ab-lower-section`}>
           {
             <table>
+              {/* <Sticky topOffset={0} disabled > */}
               <thead>
-                <tr>
-                  {
-                    tableHeaders.map(item => (
-                      item !== 'Languages' && item !== 'Notes' && item !== 'Step Letters' ?
-                        <th
-                          key={item}
-                          scope="col"
-                        >
-                          <InteractiveElement onClick={() => handleSort(item)}>
-                            {item} <FA name={getSortIcon(item)} />
-                          </InteractiveElement>
+                <Sticky>
+                  <tr>
+                    {
+                      tableHeaders.map(item => (
+                        item !== 'Languages' && item !== 'Notes' && item !== 'Step Letters' ?
+                          // <Sticky>
+                          <th
+                            key={item}
+                            scope="col"
+                          >
+                            <InteractiveElement onClick={() => handleSort(item)}>
+                              {item} <FA name={getSortIcon(item)} />
+                            </InteractiveElement>
+                          </th>
+                        // </Sticky>
+                          :
+                        // <Sticky>
+                          <th
+                            key={item}
+                            scope="col"
+                          >
+                            {item}
+                          </th>
+                          // </Sticky>
+                      ))
+                    }
+                    {
+                      isInternalCDA &&
+                      // <Sticky>
+                        <th>
+                          <div className="external-view-toggle">
+                            <ToggleButton
+                              labelTextLeft={
+                                <Tooltip
+                                  title="Internal CDA View"
+                                  arrow
+                                  offset={-95}
+                                  position="top-end"
+                                  tabIndex="0"
+                                >
+                                  <FA name="street-view" className={`fa-lg ${internalViewToggle ? 'active' : ''}`} />
+                                </Tooltip>
+                              }
+                              labelTextRight={
+                                <Tooltip
+                                  title="External CDA View"
+                                  arrow
+                                  offset={-95}
+                                  position="top-end"
+                                  tabIndex="0"
+                                >
+                                  <FA name="building" className={`fa-lg ${!internalViewToggle ? 'active' : ''}`} />
+                                </Tooltip>
+                              }
+                              checked={!internalViewToggle}
+                              onChange={() => setInternalViewToggle(!internalViewToggle)}
+                              onColor="#888888"
+                              offColor="#888888"
+                              onHandleColor="#FFFFFF"
+                              offHandleColor="#FFFFFF"
+                              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                            />
+                          </div>
                         </th>
-                        :
-                        <th
-                          key={item}
-                          scope="col"
-                        >
-                          {item}
-                        </th>
-                    ))
-                  }
-                  {
-                    isInternalCDA &&
-                      <th>
-                        <div className="external-view-toggle">
-                          <ToggleButton
-                            labelTextLeft={
-                              <Tooltip
-                                title="Internal CDA View"
-                                arrow
-                                offset={-95}
-                                position="top-end"
-                                tabIndex="0"
-                              >
-                                <FA name="street-view" className={`fa-lg ${internalViewToggle ? 'active' : ''}`} />
-                              </Tooltip>
-                            }
-                            labelTextRight={
-                              <Tooltip
-                                title="External CDA View"
-                                arrow
-                                offset={-95}
-                                position="top-end"
-                                tabIndex="0"
-                              >
-                                <FA name="building" className={`fa-lg ${!internalViewToggle ? 'active' : ''}`} />
-                              </Tooltip>
-                            }
-                            checked={!internalViewToggle}
-                            onChange={() => setInternalViewToggle(!internalViewToggle)}
-                            onColor="#888888"
-                            offColor="#888888"
-                            onHandleColor="#FFFFFF"
-                            offHandleColor="#FFFFFF"
-                            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                          />
-                        </div>
-                      </th>
-                  }
-                </tr>
+                    }
+                  </tr>
+                </Sticky>
               </thead>
+              {/* </Sticky> */}
               <tbody>
                 {
                   bidders.map(bidder => (
