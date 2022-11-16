@@ -8,7 +8,7 @@
     "@cmsgov/design-system-core": "^1.18.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@react-pdf-viewer/core": "2.11.0",
     "@react-pdf-viewer/default-layout": "^2.11.0",
