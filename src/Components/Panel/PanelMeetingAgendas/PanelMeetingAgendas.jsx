@@ -34,12 +34,6 @@ const PanelMeetingAgendas = ({ isCDO }) => {
   const userSelections = useSelector(state => state.panelMeetingAgendasSelections);
   const genericFilters = useSelector(state => state.filters);
   const agenda = useSelector(state => state.panelMeetingAgendas);
-  const userPosition = useSelector(state => state.userProfile.current_assignment.position);
-
-  const userSkill = get(userPosition, 'skill');
-  const userLanguage = get(userPosition, 'language');
-  const userBureau = get(userPosition, 'bureau');
-  const userGrade = get(userPosition, 'grade');
 
   const [limit, setLimit] = useState(get(userSelections, 'limit') || PANEL_MEETING_AGENDAS_PAGE_SIZES.defaultSize);
   const [ordering, setOrdering] = useState(get(userSelections, 'ordering') || PANEL_MEETING_AGENDAS_SORT.defaultSort);
@@ -428,15 +422,10 @@ const PanelMeetingAgendas = ({ isCDO }) => {
                     isCDO={isCDO}
                     isAIHView
                     agenda={result}
+                    isPanelMeetingView
                   />
                 ))
               }
-              <div className="panel-meeting-agendas-user-info">
-                <div className="panel-meeting-agendas-user-info item">Bureau: {userBureau}</div>
-                <div className="panel-meeting-agendas-user-info item">Grade: {userGrade}</div>
-                <div className="panel-meeting-agendas-user-info item">Language: {userLanguage}</div>
-                <div className="panel-meeting-agendas-user-info item">Skill: {userSkill}</div>
-              </div>
             </div>
           }
         </div>

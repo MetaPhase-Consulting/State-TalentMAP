@@ -249,13 +249,19 @@
 
   .panel-meeting-agendas-user-info {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    font-size: 1.4rem;
-    width: 500px;
+    align-items: center;
+    width: 750px;
+    margin: 10px 0px 5px 20px;
+
+    .panel-meeting-agendas-profile-link {
+      font-weight: bold;
+      font-size: 1.8rem;
+    }
 
     .item {
-      width: 500px;
+      font-size: 1.4rem;
+      width: 100%;
     }
   }
 }
