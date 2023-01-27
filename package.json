@@ -11,7 +11,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@react-pdf-viewer/core": "2.11.0",
-    "@react-pdf-viewer/default-layout": "^2.11.0",
+    "@react-pdf-viewer/default-layout": "^3.11.0",
     "@sweetalert/with-react": "^0.1.1",
     "@wojtekmaj/react-daterange-picker": "^3.4.0",
     "axios": "^0.18.1",
