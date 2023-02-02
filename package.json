@@ -175,7 +175,7 @@
     "object-assign": "4.1.1",
     "object.entries": "^1.1.5",
     "postcss-flexbugs-fixes": "4.2.1",
-    "postcss-loader": "3.0.0",
+    "postcss-loader": "7.0.2",
     "progress-bar-webpack-plugin": "^2.1.0",
     "promise": "8.1.0",
     "react-app-polyfill": "^2.0.0",
