@@ -6,11 +6,7 @@
   display: grid;
   grid-template-columns: 90px repeat(10, auto);
   align-items: center;
-  max-width: 720px;
-  
-  @media screen and (max-width: 1600px) {
-    max-width: 1350px;
-  }
+
 
   .grid-col-1 {
     font-weight: bold;
