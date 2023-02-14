@@ -371,7 +371,7 @@ class SearchFiltersContainer extends Component {
     });
 
     const apContainerClass = 'ap-container';
-    const commonContainerClass = tandemIsSelected ? 'tandem-common-filters' : '';
+    const commonContainerClass = tandemIsSelected ? 'tandem-common-filters' : 'common-filters';
     const tandemUserClass = showTandem2 ? 'tandem-2-filters' : 'tandem-1-filters';
 
     return (

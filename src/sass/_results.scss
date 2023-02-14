@@ -843,27 +843,26 @@ $results-container-width: 100% - $filter-container-width;
 
   .filter-sticky-client-view {
     padding-top: 75px;
-    overflow: auto;
-    max-height: 72vh;
-
-    @media screen and (max-height: 800px) {
-      max-height: 63vh;
-    }
   }
 
-  .sticky {
-    max-height: 75vh;
-    overflow: auto;
-
-    @media screen and (max-height: 800px) {
-      max-height: 65vh;
-    }
-  }
 }
 
 .ap-container {
   .accordion-checkbox-post {
     min-height: inherit;
+  }
+
+  .common-filters {
+    overflow: auto;
+    max-height: 60vh;
+
+    @media screen and (min-height: 801px) and (max-height: 1000px) {
+      max-height: 55vh;
+    }
+
+    @media screen and (max-height: 800px) {
+      max-height: 50vh;
+    }
   }
 }
 
