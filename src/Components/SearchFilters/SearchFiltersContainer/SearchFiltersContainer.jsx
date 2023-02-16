@@ -371,7 +371,8 @@ class SearchFiltersContainer extends Component {
     });
 
     const apContainerClass = 'ap-container';
-    const commonContainerClass = tandemIsSelected ? 'tandem-common-filters' : 'common-filters';
+    // const commonContainerClass = tandemIsSelected ? 'tandem-common-filters' : '';
+    const commonFilterClass = 'common-filters';
     const tandemUserClass = showTandem2 ? 'tandem-2-filters' : 'tandem-1-filters';
 
     return (
@@ -382,7 +383,8 @@ class SearchFiltersContainer extends Component {
         }
         {
           projectedVacancyFilter &&
-          <div className={commonContainerClass}>
+          // <div className={commonContainerClass}>
+          <div>
             <ProjectedVacancyFilter
               items={projectedVacancyFilter}
               onChange={this.onProjectedVacancyFilterClick}
@@ -390,14 +392,14 @@ class SearchFiltersContainer extends Component {
           </div>
         }
         {
-          <div className={commonContainerClass}>
+          <div className={tandemIsSelected ? 'tandem-common-filters' : commonFilterClass}>
             <MultiSelectFilterContainer
               multiSelectFilterList={tandemIsSelected ? sortedFiltersTandemCommon : sortedFilters}
               queryParamToggle={this.props.queryParamToggle}
             />
           </div>
         }
-        <div>
+        <div className="tandem-filters">
           {
             tandemIsSelected &&
             <div className="tandem-filter-header">Individual Filters</div>

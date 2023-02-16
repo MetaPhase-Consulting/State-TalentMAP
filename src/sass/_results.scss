@@ -864,6 +864,16 @@ $results-container-width: 100% - $filter-container-width;
       max-height: 50vh;
     }
   }
+
+  .tandem-filters {
+    overflow: auto;
+    max-height: 50vh;
+  }
+
+  .tandem-common-filters {
+    overflow: auto;
+    max-height: 25vh
+  }
 }
 
 .language-view-all {
