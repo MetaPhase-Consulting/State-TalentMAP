@@ -58,16 +58,18 @@ const metadata = serviceProvider.create_metadata();
 const login = (handler) => {
   console.log('saml2-config');
   console.log('login idp', identityProvider);
-  console.log('create fn', serviceProvider.create_login_request_url(identityProvider, {}, handler));
-  serviceProvider.create_login_request_url(identityProvider, {}, handler);
+  const req = serviceProvider.create_login_request_url(identityProvider, {}, handler);
+  console.log('create fn', req);
+  return req;
 };
 
 const loginAlt = (handler) => {
   console.log('saml2-config');
   console.log('login idp', identityProvider);
   console.log('alt login idp', identityProvider);
-  console.log('alt create fn', serviceProvider.create_login_request_url(identityProviderAlt, {}, handler));
-  serviceProvider.create_login_request_url(identityProviderAlt, {}, handler);
+  const req = serviceProvider.create_login_request_url(identityProviderAlt, {}, handler);
+  console.log('alt create fn', req); 
+  return req;
 };
 
 const logout = (handler) => {
