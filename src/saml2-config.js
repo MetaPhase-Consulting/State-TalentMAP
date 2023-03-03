@@ -56,10 +56,14 @@ const identityProviderAlt = new saml2.IdentityProvider({
 const metadata = serviceProvider.create_metadata();
 
 const login = (handler) => {
+  console.log('login idp', identityProvider);
+  console.log('create fn', serviceProvider.create_login_request_url(identityProvider, {}, handler););
   serviceProvider.create_login_request_url(identityProvider, {}, handler);
 };
 
 const loginAlt = (handler) => {
+  console.log('login alt idp', identityProvider);
+  console.log('create fn alt', serviceProvider.create_login_request_url(identityProviderAlt, {}, handler););
   serviceProvider.create_login_request_url(identityProviderAlt, {}, handler);
 };
 
