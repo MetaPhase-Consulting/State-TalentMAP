@@ -14,6 +14,7 @@ import ExportButton from 'Components/ExportButton';
 import Spinner from 'Components/Spinner';
 import PanelMeetingSearchRow from 'Components/Panel/PanelMeetingSearchRow/PanelMeetingSearchRow';
 import Alert from 'Components/Alert';
+import { usePrevious } from 'hooks';
 import PaginationWrapper from 'Components/PaginationWrapper';
 import TotalResults from 'Components/TotalResults';
 import ScrollUpButton from '../../ScrollUpButton';
@@ -57,6 +58,8 @@ const PanelMeetingSearch = ({ isCDO }) => {
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
   const sorts = PANEL_MEETINGS_SORT;
 
+  const prevPage = usePrevious(page);
+
   const getQuery = () => ({
     limit,
     page,
@@ -80,7 +83,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
     dispatch(panelMeetingsFiltersFetchData());
   }, []);
 
-  const fetchAndSet = () => {
+  const fetchAndSet = (resetPage = false) => {
     const filters = [
       selectedMeetingType,
       selectedMeetingStatus,
@@ -90,19 +93,27 @@ const PanelMeetingSearch = ({ isCDO }) => {
     } else {
       setClearFilters(true);
     }
+    if (resetPage) { setPage(1); }
     dispatch(panelMeetingsFetchData(getQuery()));
     dispatch(savePanelMeetingsSelections(getCurrentInputs()));
   };
 
   useEffect(() => {
-    fetchAndSet();
+    if (prevPage) {
+      fetchAndSet(true);
+    }
   }, [
     limit,
-    page,
     ordering,
     selectedMeetingType,
     selectedMeetingStatus,
     textSearch,
+  ]);
+
+  useEffect(() => {
+    fetchAndSet(false);
+  }, [
+    page,
   ]);
 
   function submitSearch(text) {
