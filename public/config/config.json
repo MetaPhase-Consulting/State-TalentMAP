@@ -4,11 +4,12 @@
   },
   "hrAuthUrl": "http://localhost:3333/Authorize?sAppCircuitID=32",
   "flags": {
+    "agenda_item_history": true,
+    "agenda_item_maintenance": true,
     "agenda_search": true,
-    "create_agenda_item": true,
-    "edit_agenda_item": false,
     "handshake_bidding": true,
-    "panel_search": true,
+    "panel_meetings_search": true,
+    "panel_meeting_agendas": true,
     "persona_auth": true,
     "post_handshake": false,
     "position_details": true,
@@ -17,5 +18,64 @@
     "register_checklist": true,
     "static_content": true,
     "unassigned_filters": true
+  },
+  "flags_info": {
+    "agenda_item_history": {
+      "prdTrueOn": "April 2023 - 10.0",
+      "offIfOff": [
+        "agenda_search"
+      ],
+      "locations": [
+        "EAS View History Button - card",
+        "EAS View History Button - row",
+        "Go to Agenda Item History Link on Profile"
+      ]
+    },
+    "agenda_item_maintenance": {
+      "prdTrueOn": "?? replaced create_agenda_item and edit_agenda_item",
+      "offIfOff": [
+        "agenda_item_history",
+        "agenda_search"
+      ],
+      "locations": [
+        "AIH Plus Button - card",
+        "AIH Plus Button - row",
+        "PMA Agenda Status Link - pmi official item number",
+        "EAS Agenda Link - card",
+        "EAS Agenda Link - row",
+        "EAS Create Agenda Item Button - card",
+        "EAS Create Agenda Item Button - row"
+      ]
+    },
+    "agenda_search": {
+      "prdTrueOn": "????",
+      "offIfOff": [],
+      "locations": [
+        "Menu - Employee Agendas"
+      ]
+    },
+    "panel_meetings_search": {
+      "prdTrueOn": "April 2023 - 10.0",
+      "offIfOff": [],
+      "locations": [
+        "Menu - Panel Meetings"
+      ]
+    },
+    "panel_meeting_agendas": {
+      "prdTrueOn": "April 2023 - 10.0",
+      "offIfOff": [
+        "panel_meetings_search"
+      ],
+      "locations": [
+        "PMS View Button",
+        "EAS Panel Date Link - card",
+        "EAS Panel Date Link - row"
+      ]
+    },
+    "static_content": {
+      "prdTrueOn": "never - only for local dev",
+      "offIfOff": [],
+      "locations": []
+    }
   }
 }
