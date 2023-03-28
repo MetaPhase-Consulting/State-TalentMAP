@@ -51,7 +51,7 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   // eslint-disable-next-line no-unused-vars
   const { data: frequentPositionsResults, error: frequentPositionsError, loading: frequentPositionsLoading } = useDataLoader(api().get, '/fsbid/positions/frequent_positions/');
   const { data: remarkCategories, error: rmrkCatError, loading: rmrkCatLoading } = useDataLoader(api().get, '/fsbid/agenda/remark-categories/');
-  const clientErrored = clientData ? false : true;
+  const clientErrored = !!clientData;
 
   const assignments = get(asgHistory, 'data') || [];
   const languages = get(clientData, 'data.data.languages') || [];
