@@ -37,7 +37,7 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   const dispatch = useDispatch();
 
   const { perdet, clientData, userSelections, updateSelection, legCount,
-    isReadOnly } = props;
+    isReadOnly, clientLoading } = props;
 
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
   const classifications = useSelector(state => state.classifications);
@@ -49,6 +49,7 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   const { data: remarks, error: remarksDataError, loading: remarksDataLoading } = useDataLoader(api().get, '/fsbid/agenda/remarks/');
   const { data: frequentPositionsResults, error: frequentPositionsError, loading: frequentPositionsLoading } = useDataLoader(api().get, '/fsbid/positions/frequent_positions/');
   const { data: remarkCategories, error: rmrkCatError, loading: rmrkCatLoading } = useDataLoader(api().get, '/fsbid/agenda/remark-categories/');
+  const clientErrored = clientData ? false : true;
 
   const assignments = get(asgHistory, 'data') || [];
   const languages = get(clientData, 'data.data.languages') || [];
@@ -57,9 +58,9 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   const frequentPositions = get(frequentPositionsResults, 'data.results') || [];
 
   const groupLoading = includes([asgHistLoading, remarksDataLoading,
-    frequentPositionsLoading, rmrkCatLoading], true);
+    frequentPositionsLoading, rmrkCatLoading, clientLoading], true);
   const groupError = includes([asgHistError, remarksDataError,
-    frequentPositionsError, rmrkCatError], true);
+    frequentPositionsError, rmrkCatError, clientErrored], true);
 
   const legLimit = legCount >= 10;
 

@@ -30,7 +30,7 @@ const AgendaItemMaintenanceContainer = (props) => {
 
   const id = get(props, 'match.params.id'); // client's perdet
   const isCDO = get(props, 'isCDO');
-  const client_data = useDataLoader(api().get, `/fsbid/client/${id}/`);
+  const { data: client_data, loading: client_data_loading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
 
   const agendaItemLegs = drop(get(agendaItem, 'legs')) || [];
   const agendaItemLegs$ = agendaItemLegs.map(ail => ({
@@ -203,6 +203,7 @@ const AgendaItemMaintenanceContainer = (props) => {
             <div className={`maintenance-container-right${(legsContainerExpanded && !matches) ? ' hidden' : ''}`}>
               <AgendaItemResearchPane
                 clientData={client_data}
+                clientLoading={client_data_loading}
                 perdet={id}
                 ref={researchPaneRef}
                 updateSelection={isReadOnly ? () => {} : updateSelection}
