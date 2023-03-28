@@ -13,8 +13,9 @@ const POSITION_SEARCH_SORTS$ = {
     { value: 'position__grade', text: 'Grade: High to Low' }, // sort by grade "ranking"
     { value: 'location_city', text: 'Location: A-Z', nonTandemOnly: true },
     { value: '-location_city', text: 'Location: Z-A', nonTandemOnly: true },
-    { value: 'position__position_number', text: 'Position Number: Low to High' },
-    { value: '-position__position_number', text: 'Position Number: High to Low' }, // numbers first, then Z-A
+    // { value: 'position__position_number', text: 'Position Number: Low to High' },
+    // numbers first, then Z-A
+    // { value: '-position__position_number', text: 'Position Number: High to Low' },
     { value: 'position__title', text: 'Position Title: A-Z' },
     { value: '-position__title', text: 'Position Title: Z-A' },
     { value: 'ted', text: 'TED: Most Recent' },
