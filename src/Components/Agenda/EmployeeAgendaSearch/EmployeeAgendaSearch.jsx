@@ -315,13 +315,25 @@ const EmployeeAgendaSearch = ({ isCDO, viewType }) => {
                 <div className="search-header">
                   Search For An Employee
                 </div>
-                <div className="eas-inactive-toggle">
-                  <ToggleButton
-                    labelTextRight="Include Inactive Employees"
-                    onChange={() => setIsInactiveSelected(!isInactiveSelected)}
-                    checked={isInactiveSelected}
-                    onColor="#0071BC"
-                  />
+                <div className="inactive-toggle-clear-filters">
+                  <div className="eas-inactive-toggle">
+                    <ToggleButton
+                      labelTextRight="Include Inactive Employees"
+                      onChange={() => setIsInactiveSelected(!isInactiveSelected)}
+                      checked={isInactiveSelected}
+                      onColor="#0071BC"
+                    />
+                  </div>
+                  <div className="filterby-container">
+                    <div className="filterby-clear">
+                      {clearFilters &&
+                        <button className="unstyled-button" onClick={resetFilters}>
+                          <FA name="times" />
+                          Clear Filters
+                        </button>
+                      }
+                    </div>
+                  </div>
                 </div>
                 <div className="usa-width-one-whole empl-search-filters">
                   <div className="filter-div">
@@ -374,16 +386,6 @@ const EmployeeAgendaSearch = ({ isCDO, viewType }) => {
                         showIcon={false}
                       />
                     </div>
-                  </div>
-                </div>
-                <div className="filterby-container">
-                  <div className="filterby-clear">
-                    {clearFilters &&
-                      <button className="unstyled-button" onClick={resetFilters}>
-                        <FA name="times" />
-                        Clear Filters
-                      </button>
-                    }
                   </div>
                 </div>
                 <div className="usa-width-one-whole empl-search-filters results-dropdown">

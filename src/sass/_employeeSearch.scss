@@ -45,6 +45,11 @@
       display: inline-block;
       margin-top: 10px;
     }
+
+    .inactive-toggle-clear-filters {
+      display: flex;
+      align-items: baseline;
+    }
   }
 
   .empl-search-filters {
