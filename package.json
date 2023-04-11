@@ -35,7 +35,7 @@
     "flat": "^4.1.0",
     "font-awesome": "^4.7.0",
     "fuse.js": "^6.6.2",
-    "helmet": "^3.21.3",
+    "helmet": "^6.1.4",
     "history": "^4.7.2",
     "imagediff": "^1.0.8",
     "immutable": "^3.8.2",
