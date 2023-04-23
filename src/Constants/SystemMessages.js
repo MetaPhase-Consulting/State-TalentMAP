@@ -165,5 +165,10 @@ export const UPDATE_AGENDA_ITEM_SUCCESS = 'This Agenda Item has been saved succe
 export const UPDATE_AGENDA_ITEM_ERROR_TITLE = 'Agenda Item Error';
 export const UPDATE_AGENDA_ITEM_ERROR = 'There was an issue attempting to save this Agenda Item. Please try again.';
 
+export const CREATE_REMARK_SUCCESS_TITLE = 'Remark Created';
+export const CREATE_REMARK_SUCCESS = 'This Remark has been saved successfully.';
+export const CREATE_REMARK_ERROR_TITLE = 'Remark Creation Error';
+export const CREATE_REMARK_ERROR = 'There was an issue attempting to save this Remark. Please try again.';
+
 export const ADD_FREQUENT_POSITION_ERROR_TITLE = 'Frequent Position Error';
 export const ADD_FREQUENT_POSITION_ERROR = 'Error adding Frequent Position. Please try again.';

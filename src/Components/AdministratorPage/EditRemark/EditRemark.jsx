@@ -1,30 +1,56 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
-import { isNull } from 'lodash';
 import swal from '@sweetalert/with-react';
 import InteractiveElement from 'Components/InteractiveElement';
 import CheckBox from 'Components/CheckBox';
 
 const EditRemark = (props) => {
-  const { rmrkCategories } = props;
+  const {
+    rmrkCategories,
+    dispatch,
+    createRemark,
+    createRemarkError,
+    createRemarkSuccess,
+    createRemarkLoading,
+  } = props;
 
   const [rmrkInsertionList, setRmrkInsertionList] = useState([]);
-
   const [descriptionInput, setDescriptionInput] = useState('');
   const [insertionInput, setInsertionInput] = useState('');
-
   const [showInsertionInput, setShowInsertionInput] = useState(false);
+  const [activeIndicator, setActiveIndicator] = useState(false);
+  const [mutuallyExclusive, setMutuallyExclusive] = useState(false);
 
+  useEffect(() => {
+    // TODO: tie success to modal close
+    console.log(createRemarkLoading);
+    console.log(createRemarkError);
+    console.log(createRemarkSuccess);
+  }, [createRemarkError, createRemarkSuccess, createRemarkLoading])
 
   const closeRemarkModal = (e) => {
     e.preventDefault();
     swal.close();
   };
 
-  const onRemoveInsertionClick = (i) => {
-    const returnArray = [...rmrkInsertionList];
-    returnArray.splice(i, 1);
+  const submitRemark = () => {
+    dispatch(createRemark({
+      rmrkInsertionList,
+      descriptionInput,
+      activeIndicator,
+      mutuallyExclusive
+    }));
+    // TODO: tie success to modal close
+    // swal.close();
+  };
+
+  const onRemoveInsertionClick = (insertionToRemove) => {
+    const newDescriptionInput = descriptionInput.replace(`${insertionToRemove}`, '');
+    setDescriptionInput(newDescriptionInput);
+
+    const newInsertionList = rmrkInsertionList.filter((listItem) => listItem !== insertionToRemove);
+    const returnArray = [...newInsertionList];
     setRmrkInsertionList(returnArray);
   };
 
@@ -46,16 +72,24 @@ const EditRemark = (props) => {
 
   const updateInsertionInput = (e) => {
     const value = e.target.value;
-    if (!isNull(value)) {
+    if (value) {
       setInsertionInput(value);
     }
   };
 
   const updateDescriptionInput = (e) => {
     const value = e.target.value;
-    if (!isNull(value)) {
+    if (value) {
       setDescriptionInput(value);
     }
+  };
+
+  const checkActiveIndicator = (e) => {
+    setActiveIndicator(e);
+  };
+
+  const checkMutuallyExclusive = (e) => {
+    setMutuallyExclusive(e);
   };
 
   return (
@@ -68,7 +102,7 @@ const EditRemark = (props) => {
         <select id="edit-remark-categories">
           {
             rmrkCategories.map(x => (
-              <option value={x.code}>
+              <option value={x.code} key={x.desc_text}>
                 {x.desc_text}
               </option>
             ))
@@ -125,15 +159,15 @@ const EditRemark = (props) => {
       <div className="edit-remark-input">
         <label htmlFor="edit-remark-insertion">Remark Insertions:</label>
         <div id="edit-remark-insertion" className="remark-insertion-list">
-          {rmrkInsertionList?.map((insertion, i) => (
-            <div className="remark-insertion">
+          {rmrkInsertionList?.map((insertion, index) => (
+            <div className="remark-insertion" key={`${index}-${insertion}`}>
               {insertion}
               <InteractiveElement
                 className="insertion-icon"
                 type="span"
                 role="button"
                 title="Remove Insertion"
-                onClick={() => onRemoveInsertionClick(i)}
+                onClick={() => onRemoveInsertionClick(insertion)}
               >
                 <FA name="minus" />
               </InteractiveElement>
@@ -143,11 +177,21 @@ const EditRemark = (props) => {
       </div>
       <div className="edit-remark-checkboxes-controls">
         <div className="edit-remark-checkboxes">
-          <CheckBox label="Active Indicator" />
-          <CheckBox label="Mutually Exclusive Indicator" />
+          <CheckBox
+            label="Active Indicator"
+            id="active-indicator-checkbox"
+            onCheckBoxClick={checkActiveIndicator}
+            value={activeIndicator}
+          />
+          <CheckBox
+            label="Mutually Exclusive Indicator"
+            id="mutually-exclusive-checkbox"
+            onCheckBoxClick={checkMutuallyExclusive}
+            value={mutuallyExclusive}
+          />
         </div>
         <div className="modal-controls">
-          <button>Submit</button>
+          <button onClick={submitRemark}>Submit</button>
           <button className="usa-button-secondary" onClick={closeRemarkModal}>Cancel</button>
         </div>
       </div>
@@ -157,6 +201,8 @@ const EditRemark = (props) => {
 
 EditRemark.propTypes = {
   rmrkCategories: PropTypes.arrayOf(PropTypes.shape({})),
+  dispatch: PropTypes.func.isRequired,
+  createRemark: PropTypes.func.isRequired,
 };
 
 EditRemark.defaultProps = {
