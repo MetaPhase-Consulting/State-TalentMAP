@@ -8,6 +8,7 @@ const AgendaItemLegs = props => {
   const {
     legs,
     isCard,
+    todReferenceData,
   } = props;
 
   let legs$ = legs;
@@ -25,6 +26,10 @@ const AgendaItemLegs = props => {
   const formatLang = (langArr = []) => langArr.map(lang => (
     `${lang.code} ${lang.spoken_proficiency}/${lang.reading_proficiency}`
   )).join(', ');
+  const formatTod = (code) => {
+    const getTod = todReferenceData?.find(tod => tod.code === code);
+    return getTod?.short_description || code;
+  };
 
   const getData = (key, helperFunc = () => {}) => (
     <>
@@ -100,7 +105,7 @@ const AgendaItemLegs = props => {
     },
     {
       title: 'TOD',
-      content: (getData('tod')),
+      content: (getData('tod', formatTod)),
       cardView: false,
     },
     {
@@ -140,6 +145,7 @@ const AgendaItemLegs = props => {
 AgendaItemLegs.propTypes = {
   legs: PropTypes.arrayOf(PropTypes.shape({})),
   isCard: PropTypes.bool,
+  todReferenceData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 AgendaItemLegs.defaultProps = {

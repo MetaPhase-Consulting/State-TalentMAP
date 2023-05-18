@@ -5,6 +5,7 @@ import FA from 'react-fontawesome';
 import InteractiveElement from 'Components/InteractiveElement';
 import { formatDate } from 'utilities';
 import { POS_LANGUAGES } from 'Constants/PropTypes';
+import { DEFAULT_TOD_REFERENCE } from 'Constants/DefaultProps';
 import { checkFlag } from 'flags';
 import { dateTernary } from '../Constants';
 import AgendaItemLegs from '../AgendaItemLegs';
@@ -20,6 +21,7 @@ const AgendaItemRow = props => {
     isCDO,
     perdet,
     isPanelMeetingView,
+    todReferenceData,
   } = props;
 
   const showAgendaItemMaintenance = useAgendaItemMaintenance();
@@ -113,7 +115,7 @@ const AgendaItemRow = props => {
               </div>
             </div>
           }
-          <AgendaItemLegs legs={agenda.legs} />
+          <AgendaItemLegs legs={agenda.legs} todReferenceData={todReferenceData} />
           <div className="agenda-bottom-row">
             <div className="remarks-container">
               <div className="remarks-text">Remarks:</div>
@@ -206,6 +208,7 @@ AgendaItemRow.propTypes = {
   isCDO: PropTypes.bool,
   perdet: PropTypes.string,
   isPanelMeetingView: PropTypes.bool,
+  todReferenceData: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 
@@ -215,6 +218,7 @@ AgendaItemRow.defaultProps = {
   isCDO: false,
   perdet: null,
   isPanelMeetingView: false,
+  todReferenceData: DEFAULT_TOD_REFERENCE,
 };
 
 export default AgendaItemRow;

@@ -118,6 +118,8 @@ const PanelMeetingAgendas = (props) => {
   const actionsOptions = uniqBy(sortBy(get(actions, 'data.results'), [(c) => c.desc_text]), 'desc_text');
   const { data: categories, loading: categoryLoading } = useDataLoader(api().get, '/fsbid/panel/reference/categories/');
   const categoriesOptions = uniqBy(sortBy(get(categories, 'data.results'), [(c) => c.mic_desc_text]), 'mic_desc_text');
+  const { data: todReferenceData } = useDataLoader(api().get, '/fsbid/reference/toursofduty/');
+
   // Replace with real ref data endpoints
   const { data: orgs, loading: orgsLoading } = useDataLoader(api().get, '/fsbid/agenda_employees/reference/current-organizations/');
   const organizationOptions = sortBy(get(orgs, 'data'), [(o) => o.name]);
@@ -547,6 +549,7 @@ const PanelMeetingAgendas = (props) => {
                             agenda={result}
                             key={result.id}
                             isCDO={isCDO}
+                            todReferenceData={todReferenceData?.data}
                             isPanelMeetingView
                           />
                         ))

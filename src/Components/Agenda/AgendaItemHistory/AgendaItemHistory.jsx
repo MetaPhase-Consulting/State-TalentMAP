@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { agendaItemHistoryExport, aihFetchData } from 'actions/agendaItemHistory';
-import { useMount, usePrevious } from 'hooks';
+import { useDataLoader, useMount, usePrevious } from 'hooks';
 import ExportButton from 'Components/ExportButton';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import { checkFlag } from 'flags';
 import FontAwesome from 'react-fontawesome';
+import api from '../../../api';
 import AgendaItemCard from '../AgendaItemCard';
 import AgendaItemRow from '../AgendaItemRow';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
@@ -26,6 +27,8 @@ const AgendaItemHistory = (props) => {
   const isCDO = get(props, 'isCDO');
   const viewType = get(props, 'viewType');
   const showAgendaItemMaintenance = useAgendaItemMaintenance();
+
+  const { data: todReferenceData } = useDataLoader(api().get, '/fsbid/reference/toursofduty/');
 
   const [cardView, setCardView] = useState(false);
   const [sort, setSort] = useState(sorts.defaultSort);
@@ -193,6 +196,7 @@ const AgendaItemHistory = (props) => {
                         isCreate
                         isCDO={isCDO}
                         perdet={perdet}
+                        todReferenceData={todReferenceData?.data}
                       />
                   }
                   {
@@ -201,6 +205,7 @@ const AgendaItemHistory = (props) => {
                         agenda={result}
                         key={result.id}
                         isCDO={isCDO}
+                        todReferenceData={todReferenceData?.data}
                       />
                     ))
                   }
