@@ -91,10 +91,9 @@ const AgendaLeg = props => {
     if (dropdown === 'tod' && leg?.ail_seq_num) {
       setTod$(TODs); // if a non custom TOD is selected, blow away custom inputs from dropdown
       const getTod = tod$.find(tod => tod.code === value);
-      const { code } = getTod;
       const { ail_seq_num } = leg;
       updateLeg(ail_seq_num, 'tourOfDutyOtherText', null);
-      updateLeg(ail_seq_num, 'tod', code);
+      updateLeg(ail_seq_num, 'tod', getTod?.code || null);
       updateLeg(ail_seq_num, 'tourOfDutyMonths', null);
       return;
     }
