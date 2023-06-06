@@ -63,7 +63,7 @@ const AgendaLeg = props => {
       const { ail_seq_num } = leg;
       setTod$([...customTodDropDownOption, ...tod$]);
       updateLeg(ail_seq_num,
-        { tod: 'X', todOtherText: todCode, todMonths: customTodMonths });
+        { tod: 'X', tod_other_text: todCode, tod_months: customTodMonths });
     }
     swal.close();
   };
@@ -94,7 +94,7 @@ const AgendaLeg = props => {
       const getTod = tod$.find(tod => tod.code === value);
       const { ail_seq_num } = leg;
       updateLeg(ail_seq_num,
-        { todOtherText: null, tod: getTod?.code || null, todMonths: null });
+        { tod_other_text: null, tod: getTod?.code || null, tod_months: null });
       return;
     }
 
