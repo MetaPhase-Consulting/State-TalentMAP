@@ -100,7 +100,7 @@ const AgendaItemLegs = props => {
     },
     {
       title: 'TOD',
-      content: (getData('tod_short_desc')),
+      content: (getData('todShortDesc')),
       cardView: false,
     },
     {
