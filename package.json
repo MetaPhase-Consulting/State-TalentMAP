@@ -55,7 +55,7 @@
     "react": "^16.14.0",
     "react-autosuggest": "^9.4.3",
     "react-beautiful-dnd": "^13.1.0",
-    "react-calendar": "^3.7.0",
+    "react-calendar": "^4.3.0",
     "react-copy-to-clipboard": "^5.0.4",
     "react-countup": "3.0.3",
     "react-datepicker": "^4.7.0",
