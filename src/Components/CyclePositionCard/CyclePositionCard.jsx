@@ -185,9 +185,9 @@ const CyclePositionCard = ({ data, cycle }) => {
             Add a Functional Bureau to this Position
           </div>
           <div className="position-form--input">
-            <label htmlFor="cycle-position-statuses">Bureau</label>
+            <label htmlFor="cycle-position-func-bureaus">Bureau</label>
             <select
-              id="cycle-position-statuses"
+              id="cycle-position-func-bureaus"
               defaultValue={selectedFuncBureau}
               onChange={(e) => setSelectedFuncBureau(e?.target.value)}
             >
