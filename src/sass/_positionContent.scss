@@ -197,6 +197,11 @@
   margin: 10px 0px 20px;
 }
 
+.input-body-divider {
+  border-bottom: 1px solid $bg-gray-dark-2;
+  margin: 25px 0px 25px;
+}
+
 .position-form--actions {
   display: flex;
   justify-content: flex-end;
@@ -331,4 +336,15 @@
     border: 1px solid rgba(228, 229, 230, 1);
     padding: 5px 20px;
   }
+
+  .functional-bureau-section {
+    .header {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .subheader {
+      margin-bottom: 20px;
+    }
+  }
+
 }

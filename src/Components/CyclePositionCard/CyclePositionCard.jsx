@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getDifferentials, getPostName, getResult } from 'utilities';
 import { cyclePositionEdit, cyclePositionRemove } from 'actions/cycleManagement';
@@ -26,6 +26,11 @@ const CyclePositionCard = ({ data, cycle }) => {
   const description$ = pos?.description?.content || 'No description.';
   const updateUser = getResult(pos, 'description.last_editing_user');
   const updateDate = getResult(pos, 'description.date_updated');
+
+  const filters = useSelector(state => state.filters.filters);
+  const functionalBureaus = filters.find(f => f.item.description === 'functionalRegion');
+  const functionalBureaus$ = functionalBureaus.data.filter(b => !b.is_regional);
+  const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
 
   // =============== View Mode ===============
 
@@ -169,6 +174,29 @@ const CyclePositionCard = ({ data, cycle }) => {
           {cycle?.cycle_name}
           <div className="position-form--actions">
             <button onClick={removePosition}>Remove</button>
+          </div>
+        </div>
+        <div className="input-body-divider" />
+        <div className="functional-bureau-section">
+          <div className="header">
+            Add a Functional Bureau
+          </div>
+          <div className="subheader">
+            Add a Functional Bureau to this Position
+          </div>
+          <div className="position-form--input">
+            <label htmlFor="cycle-position-statuses">Bureau</label>
+            <select
+              id="cycle-position-statuses"
+              defaultValue={selectedFuncBureau}
+              onChange={(e) => setSelectedFuncBureau(e?.target.value)}
+            >
+              {functionalBureaus$.map(b => (
+                <option value={b.code}>
+                  {b.long_description}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>,
