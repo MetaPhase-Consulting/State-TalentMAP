@@ -1,5 +1,6 @@
 import { batch } from 'react-redux';
-import { UPDATE_PANEL_MEETING_ERROR,
+import {
+  UPDATE_PANEL_MEETING_ERROR,
   UPDATE_PANEL_MEETING_ERROR_TITLE,
   UPDATE_PANEL_MEETING_SUCCESS,
   UPDATE_PANEL_MEETING_SUCCESS_TITLE,
@@ -29,22 +30,68 @@ export function createPanelMeetingSuccess(data) {
 // eslint-disable-next-line no-unused-vars
 export function createPanelMeeting(props) {
   return (dispatch) => {
-    dispatch(createPanelMeetingSuccess([]));
-    dispatch(createPanelMeetingIsLoading(true));
-    dispatch(createPanelMeetingHasErrored(false));
-    api().post('/panelmeetingadminendpoint', {
-      props,
-    }).then(({ data }) => {
-      batch(() => {
-        dispatch(createPanelMeetingHasErrored(false));
-        dispatch(createPanelMeetingSuccess(data || []));
-        dispatch(toastSuccess(UPDATE_PANEL_MEETING_SUCCESS, UPDATE_PANEL_MEETING_SUCCESS_TITLE));
+    batch(() => {
+      dispatch(createPanelMeetingIsLoading(true));
+      dispatch(createPanelMeetingHasErrored(false));
+      dispatch(createPanelMeetingSuccess([]));
+    });
+
+    api().post('/fsbid/panel/meeting/', props)
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(createPanelMeetingHasErrored(false));
+          dispatch(createPanelMeetingSuccess(data || []));
+          dispatch(toastSuccess(UPDATE_PANEL_MEETING_SUCCESS, UPDATE_PANEL_MEETING_SUCCESS_TITLE));
+          dispatch(createPanelMeetingIsLoading(false));
+        });
+      }).catch(() => {
+        dispatch(toastError(UPDATE_PANEL_MEETING_ERROR, UPDATE_PANEL_MEETING_ERROR_TITLE));
+        dispatch(createPanelMeetingHasErrored(true));
         dispatch(createPanelMeetingIsLoading(false));
       });
-    }).catch(() => {
-      dispatch(toastError(UPDATE_PANEL_MEETING_ERROR, UPDATE_PANEL_MEETING_ERROR_TITLE));
-      dispatch(createPanelMeetingHasErrored(true));
-      dispatch(createPanelMeetingIsLoading(false));
+  };
+}
+
+export function editPanelMeetingHasErrored(bool) {
+  return {
+    type: 'EDIT_PANEL_MEETING_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function editPanelMeetingIsLoading(bool) {
+  return {
+    type: 'EDIT_PANEL_MEETING_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function editPanelMeetingSuccess(data) {
+  return {
+    type: 'EDIT_PANEL_MEETING_SUCCESS',
+    data,
+  };
+}
+
+// eslint-disable-next-line no-unused-vars
+export function editPanelMeeting(props) {
+  return (dispatch) => {
+    batch(() => {
+      dispatch(editPanelMeetingSuccess([]));
+      dispatch(editPanelMeetingIsLoading(true));
+      dispatch(editPanelMeetingHasErrored(false));
     });
+
+    api().put('/fsbid/panel/meeting/', props)
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(editPanelMeetingHasErrored(false));
+          dispatch(editPanelMeetingSuccess(data || []));
+          dispatch(toastSuccess(UPDATE_PANEL_MEETING_SUCCESS, UPDATE_PANEL_MEETING_SUCCESS_TITLE));
+          dispatch(editPanelMeetingIsLoading(false));
+        });
+      }).catch(() => {
+        dispatch(toastError(UPDATE_PANEL_MEETING_ERROR, UPDATE_PANEL_MEETING_ERROR_TITLE));
+        dispatch(editPanelMeetingHasErrored(true));
+        dispatch(editPanelMeetingIsLoading(false));
+      });
   };
 }
