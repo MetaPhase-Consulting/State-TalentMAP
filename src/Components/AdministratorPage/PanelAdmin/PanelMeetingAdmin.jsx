@@ -8,8 +8,9 @@ import FA from 'react-fontawesome';
 import Spinner from 'Components/Spinner';
 import { HISTORY_OBJECT } from 'Constants/PropTypes';
 import { panelMeetingsFiltersFetchData } from 'actions/panelMeetings';
-import { submitPanelMeeting } from '../../Panel/helpers';
+import { submitEditPanelMeeting } from '../../Panel/helpers';
 import { userHasPermissions } from '../../../utilities';
+import { createPanelMeeting } from '../../../actions/panelMeetingAdmin';
 
 const PanelMeetingAdmin = (props) => {
   const { history, panelMeetingsResults, panelMeetingsIsLoading, pmSeqNum } = props;
@@ -111,7 +112,7 @@ const PanelMeetingAdmin = (props) => {
 
   // Submit current timestamp for specified field without saving other pending changes
   const handleRun = (field) => {
-    dispatch(submitPanelMeeting(panelMeetingsResults$,
+    dispatch(submitEditPanelMeeting(panelMeetingsResults$,
       {
         prelimRuntime: field === 'prelimRuntime' ?
           new Date() :
@@ -124,17 +125,31 @@ const PanelMeetingAdmin = (props) => {
   };
 
   const submit = () => {
-    dispatch(submitPanelMeeting(panelMeetingsResults$,
-      {
-        panelMeetingType,
-        panelMeetingDate,
-        prelimCutoff,
-        addendumCutoff,
-        prelimRuntime,
-        addendumRuntime,
-        panelMeetingStatus,
-      },
-    ));
+    if (isCreate) {
+      dispatch(
+        createPanelMeeting({
+          panelMeetingType,
+          panelMeetingDate,
+          prelimCutoff,
+          addendumCutoff,
+          prelimRuntime,
+          addendumRuntime,
+          panelMeetingStatus,
+        }),
+      );
+    } else {
+      dispatch(submitEditPanelMeeting(panelMeetingsResults$,
+        {
+          panelMeetingType,
+          panelMeetingDate,
+          prelimCutoff,
+          addendumCutoff,
+          prelimRuntime,
+          addendumRuntime,
+          panelMeetingStatus,
+        },
+      ));
+    }
   };
 
   // ============= Form Conditions =============
