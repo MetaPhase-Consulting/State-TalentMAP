@@ -5,9 +5,9 @@ import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import Spinner from 'Components/Spinner';
-import { postPanelProcessingFetchData, postPanelStatusesFetchData } from 'actions/postPanelProcessing';
-import { createPostPanelProcessing } from '../../../actions/postPanelProcessing';
-import { submitPanelMeeting } from '../../Panel/helpers';
+import { postPanelProcessingFetchData } from 'actions/postPanelProcessing';
+import { editPostPanelProcessing } from '../../../actions/postPanelProcessing';
+import { submitEditPanelMeeting } from '../../Panel/helpers';
 import { userHasPermissions } from '../../../utilities';
 
 
@@ -27,14 +27,12 @@ const PostPanelProcessing = (props) => {
   const agendaCompletedTime$ = panelMeetingDates?.find(x => x.mdt_code === 'COMP');
 
   const postPanelResults = useSelector(state => state.postPanelProcessingFetchDataSuccess);
+  const postPanelStatusOptions = postPanelResults.QRY_LSTAIS_DD_REF;
+  const postPanelStatusRows = postPanelResults.QRY_MODPOSTPNL_REF;
   const postPanelIsLoading = useSelector(state => state.postPanelProcessingFetchDataLoading);
-  const postPanelStatusesResults =
-    useSelector(state => state.postPanelStatusesFetchDataSuccess);
-  const postPanelStatusesIsLoading = useSelector(state => state.postPanelStatusesFetchDataLoading);
 
   useEffect(() => {
     dispatch(postPanelProcessingFetchData({ id: pmSeqNum }));
-    dispatch(postPanelStatusesFetchData());
   }, []);
 
 
@@ -48,7 +46,7 @@ const PostPanelProcessing = (props) => {
   const [postPanelStarted, setPostPanelStarted] = useState();
   const [postPanelRuntime, setPostPanelRuntime] = useState();
   const [agendaCompletedTime, setAgendaCompletedTime] = useState();
-  const [formData, setFormData] = useState(postPanelResults);
+  const [formData, setFormData] = useState(postPanelStatusRows);
 
   useEffect(() => {
     if (!!Object.keys(panelMeetingsResults).length && !panelMeetingsIsLoading) {
@@ -71,11 +69,11 @@ const PostPanelProcessing = (props) => {
     // - Including conditions for all 3 dates because some Panels have post panel runtime
     // and agenda completed dates but no post panel started date
     if (!postPanelStarted$ && !postPanelRunTime$ && !agendaCompletedTime$) {
-      dispatch(submitPanelMeeting(panelMeetingsResults$,
+      dispatch(submitEditPanelMeeting(panelMeetingsResults$,
         { postPanelStarted: new Date() },
       ));
     }
-    setFormData(postPanelResults);
+    setFormData(postPanelStatusRows);
   }, [postPanelResults]);
 
   const handleStatusSelection = (objLabel, newStatus) => {
@@ -95,8 +93,8 @@ const PostPanelProcessing = (props) => {
   // ============= Submission Management =============
 
   const runPostPanelProcessing = () => {
-    dispatch(createPostPanelProcessing(formData));
-    dispatch(submitPanelMeeting(panelMeetingsResults$,
+    dispatch(editPostPanelProcessing(formData));
+    dispatch(submitEditPanelMeeting(panelMeetingsResults$,
       { postPanelRuntime: new Date() },
     ));
   };
@@ -105,7 +103,7 @@ const PostPanelProcessing = (props) => {
     // Depending on how the API works, this will need to handle removing these fields
     // instead of setting them to undefined
     if (!postPanelRunTime$ && !agendaCompletedTime$) {
-      dispatch(submitPanelMeeting(panelMeetingsResults$,
+      dispatch(submitEditPanelMeeting(panelMeetingsResults$,
         {
           postPanelStarted: undefined,
           postPanelRuntime: undefined,
@@ -116,24 +114,22 @@ const PostPanelProcessing = (props) => {
   };
 
   const submit = () => {
-    dispatch(createPostPanelProcessing(formData));
-    dispatch(submitPanelMeeting(panelMeetingsResults$,
+    dispatch(editPostPanelProcessing(formData));
+    dispatch(submitEditPanelMeeting(panelMeetingsResults$,
       {
         postPanelStarted,
         postPanelRuntime,
         agendaCompletedTime,
       },
     ));
+    dispatch(editPostPanelProcessing(formData));
   };
 
 
   // ============= Form Conditions =============
 
   // Remove second half of this when loading states are implemented with the api call in actions
-  const isLoading = (postPanelIsLoading || postPanelStatusesIsLoading) || (
-    (postPanelStatusesResults && !postPanelStatusesResults.length) ||
-    (formData && !formData.length)
-  );
+  const isLoading = (postPanelIsLoading) || (formData && !formData.length);
 
   const userProfile = useSelector(state => state.userProfile);
   const isSuperUser = !userHasPermissions(['superuser'], userProfile.permission_groups);
@@ -214,7 +210,7 @@ const PostPanelProcessing = (props) => {
                 <th>Item</th>
                 <th>Label</th>
                 <th>Name</th>
-                {postPanelStatusesResults.map((o) => (
+                {postPanelStatusOptions.map((o) => (
                   <th key={o.label}>{o.label}</th>
                 ))}
               </tr>
@@ -235,7 +231,7 @@ const PostPanelProcessing = (props) => {
                   </td>
                   <td>{d.label}</td>
                   <td>{d.name}</td>
-                  {postPanelStatusesResults.map((o) => (
+                  {postPanelStatusOptions.map((o) => (
                     <td key={o.label}>
                       <input
                         type="radio"
