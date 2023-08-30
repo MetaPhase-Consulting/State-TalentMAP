@@ -1,7 +1,7 @@
 import { findLastIndex, get } from 'lodash';
 import { formatDate } from 'utilities';
 import { isPast } from 'date-fns-v2';
-import { createPanelMeeting } from '../../actions/panelMeetingAdmin';
+import { editPanelMeeting } from '../../actions/panelMeetingAdmin';
 
 export const formatPanelMeetingTrackerData = (meetingDates = []) => {
   const pre = { label: 'Pre-Panel' };
@@ -58,7 +58,7 @@ export const formatPanelMeetingTrackerData = (meetingDates = []) => {
  * Utility for creating/editing a panel meeting with only the new fields specified
  * and retaining all of the other original fields.
  */
-export const submitPanelMeeting = (panelMeetingsResults, newFields) => {
+export const submitEditPanelMeeting = (panelMeetingsResults, newFields) => {
   const { pmt_code, pms_desc_text, panelMeetingDates } = panelMeetingsResults;
 
   const panelMeetingDate = panelMeetingDates?.find(x => x.mdt_code === 'MEET');
@@ -70,7 +70,7 @@ export const submitPanelMeeting = (panelMeetingsResults, newFields) => {
   const postPanelRuntime = panelMeetingDates?.find(x => x.mdt_code === 'POST');
   const agendaCompletedTime = panelMeetingDates?.find(x => x.mdt_code === 'COMP');
 
-  createPanelMeeting({
+  editPanelMeeting({
     panelMeetingType: newFields.panelMeetingType ?? pmt_code,
     panelMeetingDate: newFields.panelMeetingDate ??
       (panelMeetingDate ? new Date(panelMeetingDate.pmd_dttm) : undefined),
