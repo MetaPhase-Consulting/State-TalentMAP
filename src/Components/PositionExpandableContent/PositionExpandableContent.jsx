@@ -41,7 +41,7 @@ const PositionExpandableContent = ({ sections, form }) => {
     if (showMore) return { ...sections.bodyPrimary, ...sections.bodySecondary };
     const minScreenWidth = 1650;
     // Append additional fields to collapsed view to fill blank space on wider screens
-    if (minScreenWidth < windowWidth) {
+    if (minScreenWidth < windowWidth && sections.bodySecondary) {
       const appendSecondary = [];
       const numFields = Math.floor((windowWidth - minScreenWidth) / 190);
       Object.keys(sections.bodySecondary).slice(0, numFields).forEach(o => {
@@ -138,11 +138,13 @@ const PositionExpandableContent = ({ sections, form }) => {
           </div>
         </Row>
       }
-      <div className="usa-grid-full toggle-more-container">
-        <InteractiveElement className="toggle-more" onClick={() => setShowMore(!showMore)}>
-          <FA name={`chevron-${showMore ? 'up' : 'down'}`} />
-        </InteractiveElement>
-      </div>
+      {sections.bodySecondary &&
+        <div className="usa-grid-full toggle-more-container">
+          <InteractiveElement className="toggle-more" onClick={() => setShowMore(!showMore)}>
+            <FA name={`chevron-${showMore ? 'up' : 'down'}`} />
+          </InteractiveElement>
+        </div>
+      }
     </div>
   );
 };
