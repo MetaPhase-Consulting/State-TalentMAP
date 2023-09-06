@@ -244,7 +244,6 @@
       padding-bottom: 5px;
       margin-top: 0;
     }
-
   }
 
   .position-form--picky {
@@ -311,6 +310,23 @@
     border: 1px solid rgba(228, 229, 230, 1);
     padding: 5px 20px;
   }
+
+  .position-form--inputs-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 500px;
+    margin-top: 30px;
+
+    div {
+      padding-right: 10px;
+    }
+  }
 }
 
 .line-separated-fields {
@@ -364,6 +380,7 @@
     }
 
     tr {
+
       th,
       td {
         background-color: transparent;
@@ -393,7 +410,7 @@
     display: flex;
     justify-content: flex-end;
     padding: 0px 0px 10px;
-  
+
     button {
       font-size: 16px;
     }
