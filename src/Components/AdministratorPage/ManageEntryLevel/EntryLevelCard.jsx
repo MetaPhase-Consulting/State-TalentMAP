@@ -21,15 +21,14 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
 
   const pos = get(result, 'position') || result;
 
-  const [mcDate, setMcDate] = useState(new Date());
-
-  const datePickerRef = useRef(null);
-  const openDatePicker = () => {
-    datePickerRef.current.setOpen(true);
-  };
-
   const updateUser = getResult(pos, 'description.last_editing_user');
   const updateDate = getResult(pos, 'description.date_updated');
+
+  const [el, setEl] = useState(getResult(pos, 'el') === 'true');
+  const [lna, setLna] = useState(getResult(pos, 'lna') === 'true');
+  const [fica, setFica] = useState(getResult(pos, 'fica') === 'true');
+  const [mc, setMc] = useState(getResult(pos, 'mc') === 'true');
+  const [mcDate, setMcDate] = useState(getResult(pos, 'mc_date') || new Date());
 
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
@@ -45,55 +44,59 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
     setMcDate(null);
   };
 
+  const datePickerRef = useRef(null);
+  const openDatePicker = () => {
+    datePickerRef.current.setOpen(true);
+  };
+
   const sections = {
     /* eslint-disable no-dupe-keys */
     /* eslint-disable quote-props */
-    subheading: {
-      'Position Number': getResult(pos, 'position_number', NO_POSITION_NUMBER),
-      'Skill': getResult(pos, 'skill_code') || NO_SKILL,
-      'Position Title': getResult(pos, 'title') || NO_POSITION_TITLE,
-    },
-    bodyPrimary: {
-      'Bureau': getResult(pos, 'bureau_short_desc') || NO_BUREAU,
-      'Location': getPostName(get(pos, 'post') || NO_POST),
-      'Org/Code': getResult(pos, 'bureau_code') || NO_ORG,
-      'Grade': getResult(pos, 'grade') || NO_GRADE,
-      'Job Category': 'None Listed',
-      'a': <CheckBox id="el" label="EL" value disabled />,
-      'b': <CheckBox id="lna" label="LNA" value disabled />,
-      'c': <CheckBox id="fica" label="FICA" value disabled />,
-      'd': <CheckBox id="mc" label="MC" value disabled />,
-      'MC Date': '---',
-    },
-    bodySecondary: null,
-    metadata: {
-      'Last Updated': (updateDate && updateUser) ? `${updateUser} ${updateDate}` : (updateDate || NO_UPDATE_DATE),
-    },
+    subheading: [
+      { 'Position Number': getResult(pos, 'position_number', NO_POSITION_NUMBER) },
+      { 'Skill': getResult(pos, 'skill_code') || NO_SKILL },
+      { 'Position Title': getResult(pos, 'title') || NO_POSITION_TITLE },
+    ],
+    bodyPrimary: [
+      { 'Bureau': getResult(pos, 'bureau_short_desc') || NO_BUREAU },
+      { 'Location': getPostName(get(pos, 'post') || NO_POST) },
+      { 'Org/Code': getResult(pos, 'bureau_code') || NO_ORG },
+      { 'Grade': getResult(pos, 'grade') || NO_GRADE },
+      { 'Job Category': 'None Listed' },
+      { '': <CheckBox id="el" label="EL" value={el} disabled /> },
+      { '': <CheckBox id="lna" label="LNA" value={lna} disabled /> },
+      { '': <CheckBox id="fica" label="FICA" value={fica} disabled /> },
+      { '': <CheckBox id="mc" label="MC" value={mc} disabled /> },
+      { 'MC Date': getResult(pos, 'mc_date') || '---' },
+    ],
+    metadata: [
+      { 'Last Updated': (updateDate && updateUser) ? `${updateUser} ${updateDate}` : (updateDate || NO_UPDATE_DATE) },
+    ],
     /* eslint-enable quote-props */
     /* eslint-enable no-dupe-keys */
   };
   const form = {
     /* eslint-disable quote-props */
-    staticBody: {
-      'Bureau': getResult(pos, 'bureau_short_desc') || NO_BUREAU,
-      'Location': getPostName(get(pos, 'post') || NO_POST),
-      'Org/Code': getResult(pos, 'bureau_code') || NO_ORG,
-      'Grade': getResult(pos, 'grade') || NO_GRADE,
-      'Job Category': 'None Listed',
-      'Language': <LanguageList languages={getResult(pos, 'languages', [])} propToUse="representation" />,
-      'O/D': getResult(pos, 'grade') || NO_GRADE,
-      'Incumbent': getResult(pos, 'current_assignment.user') || NO_USER_LISTED,
-      'Incumbent TED': getResult(pos, 'current_assignment.user') || NO_USER_LISTED,
-      'Assignee': getResult(pos, 'assignee') || NO_USER_LISTED,
-      'Assignee TED': getResult(pos, 'assignee') || NO_USER_LISTED,
-    },
+    staticBody: [
+      { 'Bureau': getResult(pos, 'bureau_short_desc') || NO_BUREAU },
+      { 'Location': getPostName(get(pos, 'post') || NO_POST) },
+      { 'Org/Code': getResult(pos, 'bureau_code') || NO_ORG },
+      { 'Grade': getResult(pos, 'grade') || NO_GRADE },
+      { 'Job Category': 'None Listed' },
+      { 'Language': <LanguageList languages={getResult(pos, 'languages', [])} propToUse="representation" /> },
+      { 'O/D': getResult(pos, 'grade') || NO_GRADE },
+      { 'Incumbent': getResult(pos, 'current_assignment.user') || NO_USER_LISTED },
+      { 'Incumbent TED': getResult(pos, 'current_assignment.user') || NO_USER_LISTED },
+      { 'Assignee': getResult(pos, 'assignee') || NO_USER_LISTED },
+      { 'Assignee TED': getResult(pos, 'assignee') || NO_USER_LISTED },
+    ],
     inputBody: (
       <div className="position-form">
         <div className="checkbox-group">
-          <CheckBox id="el" label="EL" value />
-          <CheckBox id="lna" label="LNA" value />
-          <CheckBox id="fica" label="FICA" value />
-          <CheckBox id="mc" label="MC" value />
+          <CheckBox id="el" label="EL" value={el} onChange={setEl} />
+          <CheckBox id="lna" label="LNA" value={lna} onChange={setLna} />
+          <CheckBox id="fica" label="FICA" value={fica} onChange={setFica} />
+          <CheckBox id="mc" label="MC" value={mc} onChange={setMc} />
         </div>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
