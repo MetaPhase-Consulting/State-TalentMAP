@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
+import Picky from 'react-picky';
+import FA from 'react-fontawesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { get, has, includes, sortBy, uniqBy } from 'lodash';
+import PropTypes from 'prop-types';
+import { useDataLoader } from 'hooks';
+import { onEditModeSearch } from 'utilities';
+import { filtersFetchData } from 'actions/filters/filters';
 import { entryLevelFetchData, saveEntryLevelSelections } from 'actions/entryLevel';
+import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import Alert from 'Components/Alert';
-import { onEditModeSearch } from 'utilities';
-import { get, has, includes, sortBy, uniqBy } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDataLoader } from 'hooks';
-import PropTypes from 'prop-types';
-import FA from 'react-fontawesome';
-import Picky from 'react-picky';
-import { filtersFetchData } from 'actions/filters/filters';
+import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import api from '../../../api';
 import EntryLevelCard from './EntryLevelCard';
 import CheckBox from '../../CheckBox/CheckBox';
@@ -337,7 +337,8 @@ const ManageEntryLevel = () => {
               key={k}
               result={dummyPositionDetails}
               onEditModeSearch={(editMode, id) =>
-                onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)}
+                onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
+              }
             />
           ))}
         </div>
