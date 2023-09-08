@@ -3,10 +3,11 @@ import FA from 'react-fontawesome';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import swal from '@sweetalert/with-react';
+import shortid from 'shortid';
 import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
-import DefinitionList from 'Components/DefinitionList';
 import InteractiveElement from 'Components/InteractiveElement';
+import { Definition } from '../DefinitionList';
 
 const PositionExpandableContent = ({ sections, form }) => {
   const handleEdit = form?.handleEdit ?? {};
@@ -35,19 +36,20 @@ const PositionExpandableContent = ({ sections, form }) => {
     swal.close();
   };
 
-
   const getBody = () => {
     if (editMode && form) return form.staticBody;
-    if (showMore) return { ...sections.bodyPrimary, ...sections.bodySecondary };
+    if (showMore && sections.bodySecondary) {
+      return [...sections.bodyPrimary, ...sections.bodySecondary];
+    }
     const minScreenWidth = 1650;
     // Append additional fields to collapsed view to fill blank space on wider screens
     if (minScreenWidth < windowWidth && sections.bodySecondary) {
       const appendSecondary = [];
       const numFields = Math.floor((windowWidth - minScreenWidth) / 190);
-      Object.keys(sections.bodySecondary).slice(0, numFields).forEach(o => {
-        appendSecondary[o] = sections.bodySecondary[o];
+      sections.bodySecondary.slice(0, numFields).forEach(o => {
+        appendSecondary.push(o);
       });
-      return { ...sections.bodyPrimary, ...appendSecondary };
+      return [...sections.bodyPrimary, ...appendSecondary];
     }
     return sections.bodyPrimary;
   };
@@ -75,12 +77,15 @@ const PositionExpandableContent = ({ sections, form }) => {
     <div className="position-content">
       <Row fluid className="position-content--section position-content--subheader">
         <div className="line-separated-fields">
-          {Object.keys(sections.subheading).map(field => (
-            <div key={`subheading-${field}`}>
-              <span>{field}:</span>
-              <span>{sections.subheading[field]}</span>
-            </div>
-          ))}
+          {sections.subheading && sections.subheading.map(item => {
+            const key = Object.keys(item)[0];
+            return (
+              <div key={`subheading-${key}`}>
+                <span>{key}:</span>
+                <span>{item[key]}</span>
+              </div>
+            );
+          })}
         </div>
         {(form && !editMode) &&
           <button className="toggle-edit-mode" onClick={() => setEditMode(!editMode)}>
@@ -90,12 +95,21 @@ const PositionExpandableContent = ({ sections, form }) => {
         }
       </Row>
       <Row fluid className="position-content--section position-content--details">
-        <DefinitionList
-          itemProps={{ excludeColon: true }}
-          items={getBody()}
-        />
+        <dl className="definitions">
+          {getBody().map(item => {
+            const key = Object.keys(item)[0];
+            return (
+              <Definition
+                key={shortid.generate()}
+                term={key}
+                definition={item[key]}
+                excludeColon
+              />
+            );
+          })}
+        </dl>
       </Row>
-      {(showMore && !editMode) &&
+      {(showMore && !editMode && sections.textarea) &&
         <div>
           <Row fluid className="position-content--description">
             <span className="definition-title">Position Details</span>
@@ -132,9 +146,12 @@ const PositionExpandableContent = ({ sections, form }) => {
       {!editMode &&
         <Row fluid className="position-content--section position-content--footer">
           <div className="position-content--metadata">
-            {Object.entries(sections.metadata).map(([label, value]) => (
-              <span key={`metadata-${label}`}>{`${label}: ${value}`}</span>
-            ))}
+            {sections.metadata && sections.metadata.map(item => {
+              const key = Object.keys(item)[0];
+              return (
+                <span key={`metadata-${key}`}>{`${key}: ${item[key]}`}</span>
+              );
+            })}
           </div>
         </Row>
       }
@@ -151,14 +168,14 @@ const PositionExpandableContent = ({ sections, form }) => {
 
 PositionExpandableContent.propTypes = {
   sections: PropTypes.shape({
-    subheading: PropTypes.shape({}),
-    bodyPrimary: PropTypes.shape({}),
-    bodySecondary: PropTypes.shape({}),
+    subheading: PropTypes.arrayOf(PropTypes.shape({})),
+    bodyPrimary: PropTypes.arrayOf(PropTypes.shape({})),
+    bodySecondary: PropTypes.arrayOf(PropTypes.shape({})),
     textarea: PropTypes.string,
-    metadata: PropTypes.shape({}),
+    metadata: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   form: PropTypes.shape({
-    staticBody: PropTypes.shape({}),
+    staticBody: PropTypes.arrayOf(PropTypes.shape({})),
     inputBody: PropTypes.element,
     cancelText: PropTypes.string,
     handleSubmit: PropTypes.func,
