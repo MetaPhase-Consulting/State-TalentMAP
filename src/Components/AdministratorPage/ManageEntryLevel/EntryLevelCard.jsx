@@ -28,7 +28,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
   const [lna, setLna] = useState(getResult(pos, 'lna') === 'true');
   const [fica, setFica] = useState(getResult(pos, 'fica') === 'true');
   const [mc, setMc] = useState(getResult(pos, 'mc') === 'true');
-  const [mcDate, setMcDate] = useState(getResult(pos, 'mc_date') || new Date());
+  const [mcDate, setMcDate] = useState(getResult(pos, 'mc_date'));
 
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
@@ -109,8 +109,9 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
             <label htmlFor="status">MC End Date</label>
-            <div className="date-picker-wrapper larger-date-picker">
+            <div className="date-wrapper-react larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
+              <FA name="times" className={`${mcDate ? '' : 'hide'}`} onClick={() => setMcDate(null)} />
               <DatePicker
                 id={`mc-date-${id}`}
                 selected={mcDate}
