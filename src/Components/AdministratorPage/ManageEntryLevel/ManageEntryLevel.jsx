@@ -2,15 +2,14 @@ import { useEffect, useState } from 'react';
 import Picky from 'react-picky';
 import FA from 'react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { get, has, includes, sortBy, uniqBy } from 'lodash';
+import { get, includes, sortBy, uniqBy } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDataLoader } from 'hooks';
-import { onEditModeSearch } from 'utilities';
+import { onEditModeSearch, renderSelectionList } from 'utilities';
 import { filtersFetchData } from 'actions/filters/filters';
 import { entryLevelFetchData, saveEntryLevelSelections } from 'actions/entryLevel';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
-import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import api from '../../../api';
 import EntryLevelCard from './EntryLevelCard';
@@ -139,42 +138,6 @@ const ManageEntryLevel = () => {
     domestic,
   ]);
 
-  function renderSelectionList({ items, selected, ...rest }) {
-    let codeOrText = 'code';
-
-    if (has(items[0], 'text')) {
-      codeOrText = 'text';
-    }
-    // only Item Actions/Statuses need to use 'desc_text'
-    if (has(items[0], 'desc_text')) {
-      codeOrText = 'desc_text';
-    }
-    if (has(items[0], 'abbr_desc_text') && items[0].code === 'V') {
-      codeOrText = 'abbr_desc_text';
-    }
-    // only Categories need to use 'mic_desc_text'
-    if (has(items[0], 'mic_desc_text')) {
-      codeOrText = 'mic_desc_text';
-    }
-    let queryProp = 'description';
-    if (get(items, '[0].custom_description', false)) queryProp = 'custom_description';
-    else if (get(items, '[0].long_description', false)) queryProp = 'long_description';
-    else if (codeOrText === 'text') queryProp = 'text';
-    else if (codeOrText === 'desc_text') queryProp = 'desc_text';
-    else if (codeOrText === 'abbr_desc_text') queryProp = 'abbr_desc_text';
-    else if (codeOrText === 'mic_desc_text') queryProp = 'mic_desc_text';
-    else if (has(items[0], 'name')) queryProp = 'name';
-    return items.map((item, index) => {
-      const keyId = `${index}-${item}`;
-      return (<ListItem
-        item={item}
-        {...rest}
-        key={keyId}
-        queryProp={queryProp}
-      />);
-    });
-  }
-
   const pickyProps = {
     numberDisplayed: 2,
     multiple: true,
@@ -205,7 +168,7 @@ const ManageEntryLevel = () => {
               }
             </div>
           </div>
-          <div className="usa-width-one-whole position-search--filters--pv-man results-dropdown">
+          <div className="usa-width-one-whole position-search--filters--el results-dropdown">
             <div className="filter-div">
               <div className="label">TP:</div>
               <Picky
