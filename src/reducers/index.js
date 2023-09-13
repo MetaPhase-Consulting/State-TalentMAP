@@ -75,6 +75,7 @@ import PostPanelProcessing from './postPanelProcessing';
 import managePostAccess from './managePostAccess';
 import searchPostAccess from './searchPostAccess';
 import entryLevel from './entryLevel';
+import orgStats from './orgStats';
 
 export default (history) => combineReducers({
   ...results,
@@ -147,6 +148,7 @@ export default (history) => combineReducers({
   ...managePostAccess,
   ...searchPostAccess,
   ...entryLevel,
+  ...orgStats,
   router: connectRouter(history),
   client,
   login,

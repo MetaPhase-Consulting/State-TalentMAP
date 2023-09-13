@@ -150,6 +150,14 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         ],
       },
       {
+        text: 'Org Stats',
+        route: '/profile/administrator/orgstats/',
+        icon: 'building',
+        roles: [
+          'superuser',
+        ],
+      },
+      {
         text: 'Manage Entry Level',
         route: '/profile/administrator/manageentrylevel/',
         icon: ' fa-keyboard-o',
