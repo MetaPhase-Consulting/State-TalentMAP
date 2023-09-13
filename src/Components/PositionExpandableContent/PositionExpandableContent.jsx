@@ -78,22 +78,17 @@ const PositionExpandableContent = ({ sections, form }) => {
     <div className="position-content">
       <Row fluid className="position-content--section position-content--subheader">
         <div className="line-separated-fields">
-          {sections.subheading && sections.subheading.map(item => {
-            const key = Object.keys(item)[0];
-            return (
-              <div key={`subheading-${key}`}>
-                <span>{key}:</span>
-                <span>{item[key]}</span>
-              </div>
-            );
-          })}
           {sections?.subheading &&
-            Object.keys(sections.subheading).map(field => (
-              <div key={`subheading-${field}`}>
-                <span>{field}:</span>
-                <span>{sections.subheading[field]}</span>
-              </div>
-            ))}
+            sections.subheading.map(item => {
+              const key = Object.keys(item)[0];
+              return (
+                <div key={`subheading-${key}`}>
+                  <span>{key}:</span>
+                  <span>{item[key]}</span>
+                </div>
+              );
+            })
+          }
         </div>
         {(form && !editMode) &&
           <button className="toggle-edit-mode" onClick={() => setEditMode(!editMode)}>
@@ -118,28 +113,28 @@ const PositionExpandableContent = ({ sections, form }) => {
         </dl>
       </Row>
       {(showMore && !editMode && sections?.textarea) &&
-          <div>
-            <Row fluid className="position-content--description">
-              <span className="definition-title">Position Details</span>
-              <Linkify properties={{ target: '_blank' }}>
-                <TextareaAutosize
-                  maxRows={6}
-                  minRows={6}
-                  maxlength="4000"
-                  name="position-description"
-                  placeholder="No Description"
-                  defaultValue={sections.textarea}
-                  disabled={!editMode}
-                  className={!editMode ? 'disabled-input' : 'enabled-input'}
-                  draggable={false}
-                />
-              </Linkify>
-              <div className="word-count">
-                {/* eslint-disable-next-line react/prop-types */}
-                {sections.textarea.length} / 4,000
-              </div>
-            </Row>
-          </div>
+        <div>
+          <Row fluid className="position-content--description">
+            <span className="definition-title">Position Details</span>
+            <Linkify properties={{ target: '_blank' }}>
+              <TextareaAutosize
+                maxRows={6}
+                minRows={6}
+                maxlength="4000"
+                name="position-description"
+                placeholder="No Description"
+                defaultValue={sections.textarea}
+                disabled={!editMode}
+                className={!editMode ? 'disabled-input' : 'enabled-input'}
+                draggable={false}
+              />
+            </Linkify>
+            <div className="word-count">
+              {/* eslint-disable-next-line react/prop-types */}
+              {sections.textarea.length} / 4,000
+            </div>
+          </Row>
+        </div>
       }
       {(showMore && editMode) &&
         <div>
