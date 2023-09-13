@@ -100,7 +100,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
         </div>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
-            <label htmlFor="status">MC Date</label>
+            <label htmlFor="status">MC End Date</label>
             <div className="date-picker-wrapper larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
               <DatePicker
