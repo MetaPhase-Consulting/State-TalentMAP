@@ -69,6 +69,14 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
       { '': <CheckBox id="mc" label="MC" value={mc} disabled /> },
       { 'MC Date': getResult(pos, 'mc_date') || '---' },
     ],
+    bodySecondary: [
+      { 'Language': <LanguageList languages={getResult(pos, 'languages', [])} propToUse="representation" /> },
+      { 'O/D': getResult(pos, 'grade') || NO_GRADE },
+      { 'Incumbent': getResult(pos, 'current_assignment.user') || NO_USER_LISTED },
+      { 'Incumbent TED': getResult(pos, 'current_assignment.user') || NO_USER_LISTED },
+      { 'Assignee': getResult(pos, 'assignee') || NO_USER_LISTED },
+      { 'Assignee TED': getResult(pos, 'assignee') || NO_USER_LISTED },
+    ],
     metadata: [
       { 'Last Updated': (updateDate && updateUser) ? `${updateUser} ${updateDate}` : (updateDate || NO_UPDATE_DATE) },
     ],
