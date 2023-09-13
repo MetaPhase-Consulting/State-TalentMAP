@@ -21,6 +21,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
 
   const pos = get(result, 'position') || result;
 
+  const posNum = getResult(pos, 'position_number');
   const updateUser = getResult(pos, 'description.last_editing_user');
   const updateDate = getResult(pos, 'description.date_updated');
 
@@ -29,6 +30,8 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
   const [fica, setFica] = useState(getResult(pos, 'fica') === 'true');
   const [mc, setMc] = useState(getResult(pos, 'mc') === 'true');
   const [mcDate, setMcDate] = useState(getResult(pos, 'mc_date') || new Date());
+
+  console.log(pos);
 
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
@@ -53,7 +56,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
     /* eslint-disable no-dupe-keys */
     /* eslint-disable quote-props */
     subheading: [
-      { 'Position Number': getResult(pos, 'position_number', NO_POSITION_NUMBER) },
+      { 'Position Number': posNum || NO_POSITION_NUMBER },
       { 'Skill': getResult(pos, 'skill_code') || NO_SKILL },
       { 'Position Title': getResult(pos, 'title') || NO_POSITION_TITLE },
     ],
@@ -93,10 +96,10 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
     inputBody: (
       <div className="position-form">
         <div className="checkbox-group">
-          <CheckBox id="el" label="EL" value={el} onChange={setEl} />
-          <CheckBox id="lna" label="LNA" value={lna} onChange={setLna} />
-          <CheckBox id="fica" label="FICA" value={fica} onChange={setFica} />
-          <CheckBox id="mc" label="MC" value={mc} onChange={setMc} />
+          <CheckBox id={`el-${posNum}`} label="EL" value={el} onChange={setEl} />
+          <CheckBox id={`lna-${posNum}`} label="LNA" value={lna} onChange={setLna} />
+          <CheckBox id={`fica-${posNum}`} label="FICA" value={fica} onChange={setFica} />
+          <CheckBox id={`mc-${posNum}`} label="MC" value={mc} onChange={setMc} />
         </div>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
@@ -104,6 +107,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
             <div className="date-picker-wrapper larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
               <DatePicker
+                id={`mc-date-${posNum}`}
                 selected={mcDate}
                 onChange={setMcDate}
                 dateFormat="MM/dd/yyyy"
