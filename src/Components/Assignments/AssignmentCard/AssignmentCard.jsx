@@ -59,7 +59,6 @@ const AssignmentCard = (props) => {
       { 'Language': <LanguageList languages={getResult(pos, 'languages', [])} propToUse="representation" /> },
       { '': <CheckBox id="deto" label="DETO" value disabled /> },
     ],
-    metadata: {},
     /* eslint-enable quote-props */
   };
 
