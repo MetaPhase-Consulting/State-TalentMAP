@@ -31,8 +31,6 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
   const [mc, setMc] = useState(getResult(pos, 'mc') === 'true');
   const [mcDate, setMcDate] = useState(getResult(pos, 'mc_date') || new Date());
 
-  console.log(pos);
-
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
     // TODO: during integration, replace 7 with unique card identifier
