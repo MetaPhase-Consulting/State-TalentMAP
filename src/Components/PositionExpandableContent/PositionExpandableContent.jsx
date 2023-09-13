@@ -192,13 +192,7 @@ PositionExpandableContent.propTypes = {
 
 PositionExpandableContent.defaultProps = {
   form: undefined,
-  sections: {
-    subheading: {},
-    bodyPrimary: {},
-    bodySecondary: {},
-    textarea: '',
-    metadata: {},
-  },
+  sections: undefined,
 };
 
 export default PositionExpandableContent;
