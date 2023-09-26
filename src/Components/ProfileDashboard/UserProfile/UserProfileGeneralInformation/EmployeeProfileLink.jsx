@@ -39,7 +39,7 @@ const EmployeeProfileLink = ({ userProfile, showEmployeeProfileLinks }) => {
   };
 
   const openPdf = () => swal({
-    title: 'Employee Profile Report:',
+    title: 'Employee Profile Report',
     button: false,
     className: 'modal-1300',
     content: (
