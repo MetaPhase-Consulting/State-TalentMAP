@@ -201,54 +201,51 @@ const CycleSearchCard = (props) => {
   return (
     <Row fluid className="cycle-search-card box-shadow-standard">
       <Row fluid className="cyc-card--row">
-        <Column columns={3}>
+        <Column columns={2}>
           {cycle_name}
         </Column>
-        <Column columns={12} className="cyc-card--middle-cols">
-          <Column>
-            {`Cycle Start: ${cycle_begin_date ? formatDate(cycle_begin_date) : ''}`}
-          </Column>
-          <Column>
-            {`Bid Due: ${cycle_end_date ? formatDate(cycle_end_date) : ''}`}
-          </Column>
-          <Column>
-            {cycle_status}
-          </Column>
-          <Column>
-            {`Status: ${cycle_category}`}
-          </Column>
-          <Column>
-            {`Exluded: ${cycle_excl_position}`}
-          </Column>
-          <Column>
-            {`Post View: ${cycle_post_view}`}
-          </Column>
-        </Column>
-        <Column columns={3} className="cyc-card--link-col">
+        <Column columns={8} className="cyc-card--middle-cols">
           <span>
-            <Link to={cycleLink}>
-              View Cycle Positions
-            </Link>
-            {isSuperUser &&
-              <Link
-                onClick={(e) => {
-                  e.preventDefault();
-                  collapseCard();
-                  setEditMode(!editMode);
-                }
-                }
-                to="#"
-              >
-                {!edit ?
-                  <div>
-                    <FA className="fa-solid fa-pencil" />
-                    Edit Cycle Details
-                  </div>
-                  : <span>Close</span>
-                }
-              </Link>
-            }
+            {`Cycle Start: ${cycle_begin_date ? formatDate(cycle_begin_date) : ''}`}
           </span>
+          <span>
+            {`Bid Due: ${cycle_end_date ? formatDate(cycle_end_date) : ''}`}
+          </span>
+          <span>
+            {cycle_status}
+          </span>
+          <span>
+            {`Status: ${cycle_category}`}
+          </span>
+          <span>
+            {`Exluded: ${cycle_excl_position}`}
+          </span>
+          <span>
+            {`Post View: ${cycle_post_view}`}
+          </span>
+        </Column>
+        <Column columns={2} className="cyc-card--link-col">
+          <Link to={cycleLink}>
+            View Cycle Positions
+          </Link>
+          {isSuperUser &&
+            <Link
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                collapseCard();
+                setEditMode(!editMode);
+              }}
+            >
+              {!edit ?
+                <div>
+                  <FA className="fa-solid fa-pencil" />
+                  Edit Cycle Details
+                </div> :
+                <span>Close</span>
+              }
+            </Link>
+          }
         </Column>
       </Row>
       {edit &&
