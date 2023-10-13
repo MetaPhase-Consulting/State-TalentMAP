@@ -51,9 +51,6 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   const clientClassificationsLoading = useSelector(state => state.userClassificationsIsLoading);
   const clientClassificationsError = useSelector(state => state.userClassificationsHasErrored);
 
-  const classificationsProps = { classifications, clientClassifications };
-
-
   const { data: asgHistory, error: asgHistError, loading: asgHistLoading } = useDataLoader(api().get, `/fsbid/assignment_history/${perdet}/`);
   const { data: remarks, error: rmrkDataError, loading: rmrkDataLoading } = useDataLoader(api().get, '/fsbid/agenda/remarks/');
   const { data: frequentPositionsResults, error: frequentPositionsError, loading: frequentPositionsLoading } = useDataLoader(api().get, '/fsbid/positions/frequent_positions/');
@@ -129,7 +126,7 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
           return errorAlert;
         }
         return (<div id="aim-classifications"> {/* needed for css specificity */}
-          <Classifications {...classificationsProps} />
+          <Classifications userId={perdet} />
         </div>);
 
       case RG:

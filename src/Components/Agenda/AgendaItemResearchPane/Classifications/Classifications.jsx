@@ -1,11 +1,10 @@
 import Classifications from 'Components/ProfileDashboard/Classifications';
 import { CLASSIFICATIONS, CLIENT_CLASSIFICATIONS } from 'Constants/PropTypes';
 
-const RemarksGlossary = ({ classifications, clientClassifications }) => (
+const RemarksGlossary = () => (
   <div className="usa-grid-full classifications-container">
     <Classifications
-      classifications={classifications}
-      clientClassifications={clientClassifications}
+      userId,
       hideTitle
     />
   </div>

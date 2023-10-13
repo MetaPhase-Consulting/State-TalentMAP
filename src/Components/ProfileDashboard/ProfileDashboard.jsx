@@ -104,8 +104,6 @@ const ProfileDashboard = ({
                       isPublic && showClassifications &&
                       <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
                         <Classifications
-                          classifications={classifications}
-                          clientClassifications={clientClassifications}
                           userId={userProfile.perdet_seq_number}
                           isPublic={isPublic}
                           canEditClassifications={canEditClassifications}
@@ -134,8 +132,6 @@ const ProfileDashboard = ({
                       !isPublic && isBidder &&
                       <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
                         <Classifications
-                          classifications={classifications}
-                          clientClassifications={clientClassifications}
                           userId={userProfile.perdet_seq_number}
                           isPublic={isPublic}
                         />
