@@ -4,7 +4,7 @@ import FA from 'react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassifications, fetchUserClassifications, updateClassifications } from 'actions/classifications';
-import { CLASSIFICATIONS, CLIENT_CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { orderClassifications } from 'Components/BidderPortfolio/helpers';
 import SectionTitle from '../SectionTitle';
 import CheckboxList from '../../BidderPortfolio/CheckboxList';
@@ -21,8 +21,8 @@ const Classifications = props => {
 
   const dispatch = useDispatch();
 
-  const clientClassifications = useSelector(state.userClassificationsSuccess);
-  const classifications = useSelector(state.classificationsFetchDataSuccess);
+  const clientClassifications = useSelector(state => state.userClassificationsSuccess);
+  const classifications = useSelector(state => state.classificationsFetchDataSuccess);
 
   const [editView, setEditView] = useState(false);
   const [userInput, setUserInput] = useState(clientClassifications);
@@ -62,7 +62,7 @@ const Classifications = props => {
     if (isEmpty(updateDiff.insert) && isEmpty(updateDiff.delete)) {
       setEditView(false);
     } else {
-      updateUserClassifications(updateDiff, userId);
+      dispatch(updateUserClassifications(updateDiff, userId));
     }
   };
 
@@ -136,9 +136,4 @@ Classifications.defaultProps = {
   canEditClassifications: false,
 };
 
-export const mapDispatchToProps = dispatch => ({
-  updateUserClassifications: (classification, id) =>
-    dispatch(updateClassifications(classification, id)),
-});
-
-export default connect(null, mapDispatchToProps)(Classifications);
+export default Classificatons;
