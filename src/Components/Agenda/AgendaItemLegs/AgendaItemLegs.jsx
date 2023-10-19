@@ -29,11 +29,22 @@ const AgendaItemLegs = props => {
     <>
       {
         legs$.map((leg, index) => {
+          const legTemp = leg;
           const keyId = index;
+          let currentData;
+          if (key === 'languages') {
+            const keyValue = helperFunc(leg[key]);
+            currentData = (keyValue === null || keyValue === '-') ? 'None Listed' : keyValue;
+          } else if (key === 'tod_short_desc' && (leg.tod_short_desc) === 'IND') {
+            legTemp.ted = 'N/A';
+          } else {
+            currentData = helperFunc(leg[key]);
+          }
+
           return (
             <td key={`${leg.id}-${keyId}`}>
               {
-                <dd>{helperFunc(leg[key]) ?? leg[key] ?? 'None listed'}</dd>
+                <dd>{currentData ?? leg[key] ?? 'None listed'}</dd>
               }
             </td>
           );
