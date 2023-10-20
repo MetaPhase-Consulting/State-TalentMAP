@@ -4,7 +4,6 @@ import FA from 'react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassifications, fetchUserClassifications, updateClassifications } from 'actions/classifications';
-import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { orderClassifications } from 'Components/BidderPortfolio/helpers';
 import SectionTitle from '../SectionTitle';
 import CheckboxList from '../../BidderPortfolio/CheckboxList';
@@ -12,7 +11,6 @@ import CheckboxList from '../../BidderPortfolio/CheckboxList';
 
 const Classifications = props => {
   const {
-    updateUserClassifications,
     userId,
     isPublic,
     hideTitle,
@@ -62,7 +60,7 @@ const Classifications = props => {
     if (isEmpty(updateDiff.insert) && isEmpty(updateDiff.delete)) {
       setEditView(false);
     } else {
-      dispatch(updateUserClassifications(updateDiff, userId));
+      dispatch(updateClassifications(updateDiff, userId));
     }
   };
 
@@ -121,7 +119,6 @@ const Classifications = props => {
 };
 
 Classifications.propTypes = {
-  updateUserClassifications: PropTypes.func,
   userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isPublic: PropTypes.bool,
   hideTitle: PropTypes.bool,
@@ -129,11 +126,10 @@ Classifications.propTypes = {
 };
 
 Classifications.defaultProps = {
-  updateUserClassifications: EMPTY_FUNCTION,
   userId: '',
   isPublic: false,
   hideTitle: false,
   canEditClassifications: false,
 };
 
-export default Classificatons;
+export default Classifications;
