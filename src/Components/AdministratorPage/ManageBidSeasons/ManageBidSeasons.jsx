@@ -9,7 +9,7 @@ import Spinner from 'Components/Spinner';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle';
 import Alert from 'Components/Alert';
 import { bidSeasonsCreate, bidSeasonsFetchData } from 'actions/BidSeasons';
-import { renderSelectionList } from 'utilities';
+import { formatDate, renderSelectionList } from 'utilities';
 import swal from '@sweetalert/with-react';
 import ManageBidSeasonCard from './ManageBidSeasonsCard';
 import EditBidSeasons from './EditBidSeasons';
@@ -26,10 +26,10 @@ const ManageBidSeasons = () => {
   const [selectedBidSeasons, setSelectedBidSeasons] = useState([]);
   const [selectedDates, setSelectedDates] = useState(null);
   const [bidSeasonData$, setBidSeasonData$] = useState(ManageBidSeasonsData);
+  const [bidSeasonDateRanges, setBidSeasonDateRanges] = useState({});
   const [clearFilters, setClearFilters] = useState(false);
 
   const noFiltersSelected = selectedBidSeasons.flat().length === 0 && !selectedDates;
-
 
   const filterSeasonsByDateRange = (seasons, dateRange) => {
     const startDateRange = dateRange[0].getTime();
@@ -43,6 +43,19 @@ const ManageBidSeasons = () => {
     });
 
     return filteredSeasons;
+  };
+
+  const getBidSeasonDateRanges = () => {
+    const dateObj = {};
+
+    ManageBidSeasonsData.forEach((bdDate) => {
+      dateObj[formatDate(bdDate?.bidSeasonsBeginDate)] = {
+        beginDate: formatDate(bdDate?.bidSeasonsBeginDate),
+        endDate: formatDate(bdDate?.bidSeasonsEndDate),
+      };
+    });
+
+    setBidSeasonDateRanges(dateObj);
   };
 
   const bidSeasonDataFiltered = () => {
@@ -59,6 +72,7 @@ const ManageBidSeasons = () => {
 
   useEffect(() => {
     setBidSeasonData$(bidSeasonDataFiltered);
+    getBidSeasonDateRanges();
     if (noFiltersSelected) {
       setClearFilters(false);
     } else {
@@ -113,6 +127,7 @@ const ManageBidSeasons = () => {
       content: (
         <EditBidSeasons
           submitAction={submit}
+          bidSeasonDates={bidSeasonDateRanges}
         />
       ),
     });
@@ -180,7 +195,11 @@ const ManageBidSeasons = () => {
 
             <div className="bs-lower-section">
               {bidSeasonData$?.map(data =>
-                <ManageBidSeasonCard {...data} key={data.id} />)}
+                (<ManageBidSeasonCard
+                  {...data}
+                  key={data.id}
+                  bidSeasonDateRanges={bidSeasonDateRanges}
+                />))}
             </div>
           </>
 

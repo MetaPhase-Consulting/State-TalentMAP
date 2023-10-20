@@ -23,6 +23,7 @@ const ManageBidSeasonsCard = (props) => {
       content: (
         <EditBidSeasons
           submitAction={submit}
+          bidSeasonDates={props?.bidSeasonDateRanges}
           {...props}
         />
       ),
@@ -70,6 +71,7 @@ const ManageBidSeasonsCard = (props) => {
 
 ManageBidSeasonsCard.propTypes = {
   id: PropTypes.number.isRequired,
+  bidSeasonDateRanges: PropTypes.shape({}).isRequired,
   description: PropTypes.string.isRequired,
   bidSeasonsBeginDate: PropTypes.string.isRequired,
   bidSeasonsEndDate: PropTypes.string.isRequired,
