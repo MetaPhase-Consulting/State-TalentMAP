@@ -8,6 +8,7 @@ import { Column, Row } from 'Components/Layout';
 import { bidSeasonsEdit } from 'actions/BidSeasons';
 import EditBidSeasons from './EditBidSeasons';
 
+// eslint-disable-next-line no-unused-vars
 const ManageBidSeasonsCard = ({ id, bidSeasonDateRanges, description, bidSeasonsBeginDate,
   bidSeasonsEndDate, bidSeasonsPanelCutoff, bidSeasonsFutureVacancy }) => {
   const dispatch = useDispatch();
