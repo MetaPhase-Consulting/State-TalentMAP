@@ -11,9 +11,9 @@ import Alert from 'Components/Alert';
 import { bidSeasonsCreate, bidSeasonsFetchData } from 'actions/BidSeasons';
 import { formatDate, renderSelectionList } from 'utilities';
 import swal from '@sweetalert/with-react';
+import { addDays, isBefore } from 'date-fns';
 import ManageBidSeasonCard from './ManageBidSeasonsCard';
 import EditBidSeasons from './EditBidSeasons';
-
 
 const ManageBidSeasons = () => {
   const dispatch = useDispatch();
@@ -49,11 +49,33 @@ const ManageBidSeasons = () => {
     const dateObj = {};
 
     ManageBidSeasonsData.forEach((bdDate) => {
+      const dateArr = [];
+      let loopDate = formatDate(bdDate?.bidSeasonsBeginDate);
+      // eslint-disable-next-line no-loops/no-loops
+      while (isBefore(loopDate, formatDate(bdDate?.bidSeasonsEndDate))) {
+        dateArr.push(new Date(loopDate));
+        loopDate = addDays(loopDate, 1);
+      }
+
       dateObj[formatDate(bdDate?.bidSeasonsBeginDate)] = {
         beginDate: formatDate(bdDate?.bidSeasonsBeginDate),
         endDate: formatDate(bdDate?.bidSeasonsEndDate),
+        dates: dateArr,
       };
     });
+
+    const allDates = Object.values(dateObj).flatMap(({ dates }) => dates);
+
+    Object.values(dateObj).forEach((seasonDate) => {
+      const outterBeginDate = formatDate(seasonDate?.beginDate);
+
+      // pull the dates from all other beginDate
+      dateObj[formatDate(seasonDate?.beginDate)].disableDates =
+        Object.values(dateObj).flatMap((seasonDateInner) =>
+          seasonDateInner?.beginDate === outterBeginDate ? [] : seasonDateInner?.dates);
+    });
+
+    dateObj.allDates = allDates;
 
     setBidSeasonDateRanges(dateObj);
   };
@@ -127,7 +149,7 @@ const ManageBidSeasons = () => {
       content: (
         <EditBidSeasons
           submitAction={submit}
-          bidSeasonDates={bidSeasonDateRanges}
+          bidSeasonDisableDates={bidSeasonDateRanges?.allDates}
         />
       ),
     });

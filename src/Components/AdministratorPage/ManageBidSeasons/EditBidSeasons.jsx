@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { formatDate } from 'utilities';
 import swal from '@sweetalert/with-react';
-import { addDays, isBefore } from 'date-fns';
 import FA from 'react-fontawesome';
 import CheckBox from 'Components/CheckBox';
 import DatePicker from 'react-datepicker';
@@ -10,23 +9,21 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 const DATE_FORMAT = 'MMMM d, yyyy';
 
-const EditBidSeasons = (props) => {
-  const {
-    id,
-    bidSeasonDates,
-    description,
-    bidSeasonsBeginDate,
-    bidSeasonsEndDate,
-    bidSeasonsPanelCutoff,
-    bidSeasonsFutureVacancy,
-    bidSeasonsCreateId,
-    bidSeasonsCreateDate,
-    bidSeasonsUpdateId,
-    bidSeasonsUpdateDate,
-    bidSeasonsSntSeqNum,
-    submitAction,
-  } = props;
-
+const EditBidSeasons = ({
+  id,
+  bidSeasonDisableDates,
+  description,
+  bidSeasonsBeginDate,
+  bidSeasonsEndDate,
+  bidSeasonsPanelCutoff,
+  bidSeasonsFutureVacancy,
+  bidSeasonsCreateId,
+  bidSeasonsCreateDate,
+  bidSeasonsUpdateId,
+  bidSeasonsUpdateDate,
+  bidSeasonsSntSeqNum,
+  submitAction,
+}) => {
   const startDateGetDate = bidSeasonsBeginDate ? new Date(bidSeasonsBeginDate) : null;
   const endDateGetDate = bidSeasonsEndDate ? new Date(bidSeasonsEndDate) : null;
   const panelCutoffDateGetDate = bidSeasonsPanelCutoff
@@ -38,7 +35,6 @@ const EditBidSeasons = (props) => {
   const [panelCutoffDate, setPanelCutoffDate] = useState(panelCutoffDateGetDate);
   const [futureVacancy, setFutureVacancy] = useState(bidSeasonsFutureVacancy);
   const [season, setSeason] = useState(bidSeasonsSntSeqNum);
-  const [bidSeasonDatesRelevant, setBidSeasonDatesRelevant] = useState([]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -62,24 +58,6 @@ const EditBidSeasons = (props) => {
     e.preventDefault();
     swal.close();
   };
-
-  useEffect(() => {
-    const bidSeasonDates$ = JSON.parse(JSON.stringify(bidSeasonDates));
-    // remove current date range from bidSeasonDates$
-    delete bidSeasonDates$[formatDate(bidSeasonsBeginDate)];
-
-    const dateArr = [];
-    Object.values(bidSeasonDates$).forEach((seasonDates) => {
-      let loopDate = formatDate(seasonDates?.beginDate);
-      // eslint-disable-next-line no-loops/no-loops
-      while (isBefore(loopDate, formatDate(seasonDates?.endDate))) {
-        dateArr.push(new Date(loopDate));
-        loopDate = addDays(loopDate, 1);
-      }
-    });
-
-    setBidSeasonDatesRelevant(dateArr);
-  }, [bidSeasonDates]);
 
   const submitDisabled = !startDate || !endDate || !panelCutoffDate || !name;
 
@@ -123,7 +101,7 @@ const EditBidSeasons = (props) => {
                   dateFormat={DATE_FORMAT}
                   placeholderText={startDate === '' ? 'Select a start date' : formatDate(startDate)}
                   ref={startDatePicker}
-                  excludeDates={bidSeasonDatesRelevant}
+                  excludeDates={bidSeasonDisableDates}
                 />
               </span>
             </div>
@@ -139,7 +117,7 @@ const EditBidSeasons = (props) => {
                   placeholderText={endDate === '' ? 'Select a end date' : formatDate(endDate)}
                   minDate={startDate}
                   ref={endDatePicker}
-                  excludeDates={bidSeasonDatesRelevant}
+                  excludeDates={bidSeasonDisableDates}
                 />
               </span>
             </div>
@@ -179,7 +157,7 @@ const EditBidSeasons = (props) => {
 
 EditBidSeasons.propTypes = {
   submitAction: PropTypes.func.isRequired,
-  bidSeasonDates: PropTypes.shape({}),
+  bidSeasonDisableDates: PropTypes.arrayOf(PropTypes.string),
   id: PropTypes.number,
   description: PropTypes.string,
   bidSeasonsBeginDate: PropTypes.string,
@@ -195,7 +173,7 @@ EditBidSeasons.propTypes = {
 
 EditBidSeasons.defaultProps = {
   id: null,
-  bidSeasonDates: {},
+  bidSeasonDisableDates: [],
   description: null,
   bidSeasonsBeginDate: null,
   bidSeasonsEndDate: null,

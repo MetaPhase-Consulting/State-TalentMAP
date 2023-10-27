@@ -8,13 +8,13 @@ import { Column, Row } from 'Components/Layout';
 import { bidSeasonsEdit } from 'actions/BidSeasons';
 import EditBidSeasons from './EditBidSeasons';
 
-const ManageBidSeasonsCard = (props) => {
+const ManageBidSeasonsCard = ({ id, bidSeasonDateRanges, description, bidSeasonsBeginDate,
+  bidSeasonsEndDate, bidSeasonsPanelCutoff, bidSeasonsFutureVacancy }) => {
   const dispatch = useDispatch();
 
   const submit = (data) => {
     dispatch(bidSeasonsEdit(data));
   };
-
 
   const editSeason = () => {
     swal({
@@ -22,9 +22,15 @@ const ManageBidSeasonsCard = (props) => {
       button: false,
       content: (
         <EditBidSeasons
+          id
+          description
+          bidSeasonsBeginDate
+          bidSeasonsEndDate
+          bidSeasonsPanelCutoff
+          bidSeasonsFutureVacancy
           submitAction={submit}
-          bidSeasonDates={props?.bidSeasonDateRanges}
-          {...props}
+          bidSeasonDisableDates={
+            bidSeasonDateRanges[formatDate(bidSeasonsBeginDate)]?.disableDates}
         />
       ),
     });
@@ -35,20 +41,21 @@ const ManageBidSeasonsCard = (props) => {
       <Row fluid className="bid-seasons-search-card box-shadow-standard">
         <Row fluid className="bs-card--row">
           <Column columns={3}>
-            {props?.description}
+            {description}
           </Column>
           <Column columns={12} className="bs-card--middle-cols">
             <Column>
-              Start Date: {props?.bidSeasonsBeginDate ? formatDate(props?.bidSeasonsBeginDate) : ''}
+              Start Date: {bidSeasonsBeginDate ? formatDate(bidSeasonsBeginDate) : ''}
+              Start Date: {bidSeasonsBeginDate ? formatDate(bidSeasonsBeginDate) : ''}
             </Column>
             <Column>
-              End Date: {props?.bidSeasonsEndDate ? formatDate(props?.bidSeasonsEndDate) : ''}
+              End Date: {bidSeasonsEndDate ? formatDate(bidSeasonsEndDate) : ''}
             </Column>
             <Column>
-              Panel Cutoff: {props?.bidSeasonsPanelCutoff ? formatDate(props?.bidSeasonsPanelCutoff) : ''}
+              Panel Cutoff: {bidSeasonsPanelCutoff ? formatDate(bidSeasonsPanelCutoff) : ''}
             </Column>
             <Column>
-              Future Vacancy: {props?.bidSeasonsFutureVacancy}
+              Future Vacancy: {bidSeasonsFutureVacancy}
             </Column>
           </Column>
           <Column columns={3} className="bs-card--link-col">
