@@ -47,7 +47,6 @@ const ManageBidSeasonsCard = ({ id, bidSeasonDateRanges, description, bidSeasons
           <Column columns={12} className="bs-card--middle-cols">
             <Column>
               Start Date: {bidSeasonsBeginDate ? formatDate(bidSeasonsBeginDate) : ''}
-              Start Date: {bidSeasonsBeginDate ? formatDate(bidSeasonsBeginDate) : ''}
             </Column>
             <Column>
               End Date: {bidSeasonsEndDate ? formatDate(bidSeasonsEndDate) : ''}
