@@ -48,6 +48,7 @@ const ManageBidSeasons = () => {
   const getBidSeasonDateRanges = () => {
     const dateObj = {};
 
+    // generate all the dates for a date range
     ManageBidSeasonsData.forEach((bdDate) => {
       const dateArr = [];
       let loopDate = formatDate(bdDate?.bidSeasonsBeginDate);
@@ -64,18 +65,17 @@ const ManageBidSeasons = () => {
       };
     });
 
-    const allDates = Object.values(dateObj).flatMap(({ dates }) => dates);
+    // for new bid season - pull all date range dates
+    dateObj.allDates = Object.values(dateObj).flatMap(({ dates }) => dates);
 
+    // for edit bid season - pull all date range dates except current
     Object.values(dateObj).forEach((seasonDate) => {
-      const outterBeginDate = formatDate(seasonDate?.beginDate);
+      const currentBeginDate = formatDate(seasonDate?.beginDate);
 
-      // pull the dates from all other beginDate
       dateObj[formatDate(seasonDate?.beginDate)].disableDates =
         Object.values(dateObj).flatMap((seasonDateInner) =>
-          seasonDateInner?.beginDate === outterBeginDate ? [] : seasonDateInner?.dates);
+          seasonDateInner?.beginDate === currentBeginDate ? [] : seasonDateInner?.dates);
     });
-
-    dateObj.allDates = allDates;
 
     setBidSeasonDateRanges(dateObj);
   };
