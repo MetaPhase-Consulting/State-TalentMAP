@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import Alert from 'Components/Alert';
 import { formatDate } from 'utilities';
 import swal from '@sweetalert/with-react';
 import FA from 'react-fontawesome';
@@ -35,6 +36,12 @@ const EditBidSeasons = ({
   const [panelCutoffDate, setPanelCutoffDate] = useState(panelCutoffDateGetDate);
   const [futureVacancy, setFutureVacancy] = useState(bidSeasonsFutureVacancy);
   const [season, setSeason] = useState(bidSeasonsSntSeqNum);
+
+  /* eslint-disable no-console */
+  console.log('🐥🐥🐥🐥🐥🐥🐥🐥🐥🐥️');
+  console.log('🐥 current: description:', description);
+  console.log('🐥🐥🐥🐥🐥🐥🐥🐥🐥🐥️');
+
 
   const submit = (e) => {
     e.preventDefault();
@@ -90,6 +97,7 @@ const EditBidSeasons = ({
                 <option value="2">Winter</option>
               </select>
             </div>
+            <Alert type="info" title="Bid season dates cannot overlap an existing bid season." tinyAlert />
             <div>
               <dt>Start Date</dt>
               <span className="date-picker-validation-container larger-date-picker">

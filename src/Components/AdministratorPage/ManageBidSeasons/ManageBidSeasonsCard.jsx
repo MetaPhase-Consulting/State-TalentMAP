@@ -23,12 +23,12 @@ const ManageBidSeasonsCard = ({ id, bidSeasonDateRanges, description, bidSeasons
       button: false,
       content: (
         <EditBidSeasons
-          id
-          description
-          bidSeasonsBeginDate
-          bidSeasonsEndDate
-          bidSeasonsPanelCutoff
-          bidSeasonsFutureVacancy
+          id={id}
+          description={description}
+          bidSeasonsBeginDate={bidSeasonsBeginDate}
+          bidSeasonsEndDate={bidSeasonsEndDate}
+          bidSeasonsPanelCutoff={bidSeasonsPanelCutoff}
+          bidSeasonsFutureVacancy={bidSeasonsFutureVacancy}
           submitAction={submit}
           bidSeasonDisableDates={
             bidSeasonDateRanges[formatDate(bidSeasonsBeginDate)]?.disableDates}

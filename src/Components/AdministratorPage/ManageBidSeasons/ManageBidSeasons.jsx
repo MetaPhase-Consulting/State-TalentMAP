@@ -65,17 +65,17 @@ const ManageBidSeasons = () => {
       };
     });
 
-    // for new bid season - pull all date range dates
-    dateObj.allDates = Object.values(dateObj).flatMap(({ dates }) => dates);
-
     // for edit bid season - pull all date range dates except current
     Object.values(dateObj).forEach((seasonDate) => {
       const currentBeginDate = formatDate(seasonDate?.beginDate);
 
-      dateObj[formatDate(seasonDate?.beginDate)].disableDates =
+      dateObj[currentBeginDate].disableDates =
         Object.values(dateObj).flatMap((seasonDateInner) =>
           seasonDateInner?.beginDate === currentBeginDate ? [] : seasonDateInner?.dates);
     });
+
+    // for new bid season - pull all date range dates
+    dateObj.allDates = Object.values(dateObj).flatMap(({ dates }) => dates);
 
     setBidSeasonDateRanges(dateObj);
   };
