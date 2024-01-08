@@ -58,13 +58,16 @@ const AgendaLeg = props => {
   );
 
   const submitCustomTod = (todArray, customTodMonths) => {
+    const ted = add(new Date(leg?.eta), { months: customTodMonths });
     const todCode = todArray.map((tod, i, arr) => (i + 1 === arr.length ? tod : `${tod}/`)).join('').toString();
     updateLeg(leg?.ail_seq_num, {
       tod: 'X',
       tod_months: customTodMonths,
+      tod_ref_months: null,
       tod_long_desc: todCode,
       tod_short_desc: todCode,
       tod_is_dropdown: false,
+      ted,
     });
     swal.close();
   };
@@ -120,7 +123,11 @@ const AgendaLeg = props => {
       let ted = leg?.ted;
 
       if (leg?.tod_ref_months) {
-        ted = add(new Date(value), { months: leg.tod_ref_months });
+        if (value === 'X') {
+          ted = add(new Date(value), { months: leg.tod_months });
+        } else {
+          ted = add(new Date(value), { months: leg.tod_ref_months });
+        }
       }
       updateLeg(leg?.ail_seq_num, {
         eta: value,
