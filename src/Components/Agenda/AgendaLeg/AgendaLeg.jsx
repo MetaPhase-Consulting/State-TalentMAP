@@ -118,7 +118,7 @@ const AgendaLeg = props => {
     if (dropdown === 'eta') {
       // Update TED to reflect ETA + TOD
       let ted = leg?.ted;
-      
+
       if (leg?.tod_ref_months) {
         ted = add(new Date(value), { months: leg.tod_ref_months });
       }
