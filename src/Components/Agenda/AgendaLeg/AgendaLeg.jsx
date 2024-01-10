@@ -254,7 +254,7 @@ const AgendaLeg = props => {
             disabled={disabled}
           >
             <option key={null} value={''}>
-              {defaultText}
+              Keep Unselected
             </option>
             {
               TODs.map((tod, i) => {
