@@ -66,6 +66,7 @@ const AgendaItemMaintenancePane = (props) => {
 
   const TODs = todData?.data;
   const [combinedTod, setCombinedTod] = useState(agendaItem?.aiCombinedTodCode);
+  const [combinedTodDescText, setCombinedTodDescText] = useState(agendaItem?.aiCombinedTodDescText);
   const [combinedTodMonthsNum, setCombinedTodMonthsNum] =
     useState(agendaItem?.aiCombinedTodMonthsNum);
   const [combinedTodOtherText, setCombinedTodOtherText] =
@@ -146,6 +147,7 @@ const AgendaItemMaintenancePane = (props) => {
       agendaStatusCode: selectedStatus || '',
       panelMeetingCategory: selectedPanelCat || '',
       combinedTod,
+      combinedTodDescText,
       combinedTodMonthsNum,
       combinedTodOtherText,
     });
@@ -155,6 +157,7 @@ const AgendaItemMaintenancePane = (props) => {
     selectedStatus,
     selectedPanelCat,
     combinedTod,
+    combinedTodDescText,
     combinedTodMonthsNum,
     combinedTodOtherText,
   ]);
@@ -166,6 +169,7 @@ const AgendaItemMaintenancePane = (props) => {
       setPanelMLDate(calcPanelDates()?.ml);
       setPanelIDDate(calcPanelDates()?.id);
       setCombinedTod(agendaItem?.aiCombinedTodCode);
+      setCombinedTodDescText(agendaItem?.combinedTodDescText);
     }
   }, [agendaItem]);
 
@@ -249,6 +253,7 @@ const AgendaItemMaintenancePane = (props) => {
     setCombinedTod('X');
     setCombinedTodMonthsNum(customTodMonths);
     setCombinedTodOtherText(otherTodDisplaytext);
+    setCombinedTodDescText('OTHER');
     swal.close();
   };
 
@@ -271,16 +276,20 @@ const AgendaItemMaintenancePane = (props) => {
         ),
       });
     } else {
-      setCombinedTod(value);
-      setCombinedTodMonthsNum('');
-      setCombinedTodOtherText('');
+      const getTod = TODs.find(tod => tod.code === value);
+      const blankStringCheck = value === '' ? null : value;
+      setCombinedTod(blankStringCheck);
+      setCombinedTodMonthsNum(null);
+      setCombinedTodOtherText(null);
+      setCombinedTodDescText(getTod?.long_description || null);
     }
   };
 
   const clearOtherTod = () => {
-    setCombinedTod('');
-    setCombinedTodMonthsNum('');
-    setCombinedTodOtherText('');
+    setCombinedTod(null);
+    setCombinedTodMonthsNum(null);
+    setCombinedTodOtherText(null);
+    setCombinedTodDescText(null);
   };
 
   const combinedTodDropdown = () => (
