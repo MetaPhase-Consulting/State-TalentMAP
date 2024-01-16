@@ -322,6 +322,7 @@ export const getTimeDistanceInWords = (dateToCompare, date = new Date(), options
 // Format the date into our preferred format.
 // We can take any valid date and convert it into M.D.YYYY format, or any
 // format provided with the dateFormat param.
+// DO NOT USE FOR DATES WHERE TIME MATTERS
 export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
   if (date) {
     // date-fns assumes incoming date is UTC, must adjust for timezones
@@ -334,6 +335,15 @@ export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
     // then format the date with dateFormat
     const formattedDate = format(timezoneAdjustedDate, dateFormat);
     // and finally return the formatted date
+    return formattedDate;
+  }
+  return null;
+};
+
+// Format dates that also have a time value
+export const formatDateWithTime = (date, dateFormat = 'MM/DD/YYYY hh:mm') => {
+  if (date) {
+    const formattedDate = format(date, dateFormat);
     return formattedDate;
   }
   return null;

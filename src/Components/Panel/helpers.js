@@ -1,5 +1,5 @@
 import { findLastIndex, get } from 'lodash';
-import { formatDate } from 'utilities';
+import { formatDateWithTime } from 'utilities';
 import { isPast } from 'date-fns-v2';
 import { createPanelMeeting } from '../../actions/panelMeetingAdmin';
 
@@ -10,7 +10,7 @@ export const formatPanelMeetingTrackerData = (meetingDates = []) => {
   const post = { label: 'Post-Panel' };
 
   meetingDates.forEach(pmd => {
-    const meetingDate = formatDate(get(pmd, 'pmd_dttm'), 'MM/DD/YYYY HH:mm') || '';
+    const meetingDate = formatDateWithTime(get(pmd, 'pmd_dttm'), 'MM/DD/YYYY hh:mm') || '';
     const code = get(pmd, 'mdt_code');
     const isPast$ = isPast(new Date(pmd.pmd_dttm));
 
