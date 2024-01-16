@@ -341,7 +341,7 @@ export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
 };
 
 // Format dates that also have a time value
-export const formatDateWithTime = (date, dateFormat = 'MM/DD/YYYY hh:mm') => {
+export const formatDateWithTime = (date, dateFormat = 'MM/DD/YYYY HH:mm') => {
   if (date) {
     const formattedDate = format(date, dateFormat);
     return formattedDate;
