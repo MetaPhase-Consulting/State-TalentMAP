@@ -10,7 +10,7 @@ export const formatPanelMeetingTrackerData = (meetingDates = []) => {
   const post = { label: 'Post-Panel' };
 
   meetingDates.forEach(pmd => {
-    const meetingDate = formatDateWithTime(get(pmd, 'pmd_dttm'), 'MM/DD/YYYY hh:mm') || '';
+    const meetingDate = formatDateWithTime(get(pmd, 'pmd_dttm'), 'MM/DD/YYYY hh:mm A') || '';
     const code = get(pmd, 'mdt_code');
     const isPast$ = isPast(new Date(pmd.pmd_dttm));
 
