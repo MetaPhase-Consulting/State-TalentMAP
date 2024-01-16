@@ -342,8 +342,15 @@ export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
 
 // Format dates that also have a time value
 export const formatDateWithTime = (date, dateFormat = 'MM/DD/YYYY HH:mm') => {
+  // Check if the DB stored the value with a Zulu (UTC indicator)
+  const regex = /Z$/;
   if (date) {
-    const formattedDate = format(date, dateFormat);
+    let newDate = date;
+    if (!regex.test(date)) {
+      // If not, assume it was stripped, but still in UTC
+      newDate = `${date}.000Z`;
+    }
+    const formattedDate = format(newDate, dateFormat);
     return formattedDate;
   }
   return null;
