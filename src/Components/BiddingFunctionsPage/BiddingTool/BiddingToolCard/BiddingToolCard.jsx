@@ -43,8 +43,8 @@ const BiddingToolCard = (props) => {
   const deleteErrored = useSelector(state => state.biddingToolDeleteErrored);
   const createErrored = useSelector(state => state.biddingToolCreateErrored);
   // const createSuccess = useSelector(state => state.biddingToolCreateLoading);
-  // const editErrored = useSelector(state => state.biddingToolEditErrored);
-  // const editLoading = useSelector(state => state.biddingToolEditLoading);
+  const editErrored = useSelector(state => state.biddingToolEditErrored);
+  const editLoading = useSelector(state => state.biddingToolEditLoading);
 
   const locations = result?.locations || [];
   const statuses = result?.statuses || [];
@@ -281,6 +281,9 @@ const BiddingToolCard = (props) => {
         updater_id: result?.updater_id,
         updated_date: result?.updated_date,
       }));
+      if (!editLoading && !editErrored) {
+        setEditMode(false);
+      }
     }
   };
 
