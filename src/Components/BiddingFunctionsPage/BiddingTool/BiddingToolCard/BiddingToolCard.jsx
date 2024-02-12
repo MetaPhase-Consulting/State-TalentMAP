@@ -42,6 +42,9 @@ const BiddingToolCard = (props) => {
     useSelector(state => state.biddingToolFetchDataLoading)) || false;
   const deleteErrored = useSelector(state => state.biddingToolDeleteErrored);
   const createErrored = useSelector(state => state.biddingToolCreateErrored);
+  // const createSuccess = useSelector(state => state.biddingToolCreateLoading);
+  // const editErrored = useSelector(state => state.biddingToolEditErrored);
+  // const editLoading = useSelector(state => state.biddingToolEditLoading);
 
   const locations = result?.locations || [];
   const statuses = result?.statuses || [];
@@ -127,7 +130,37 @@ const BiddingToolCard = (props) => {
   const [values, setValues] = useState(initialValues);
   useEffect(() => {
     if (editMode) {
-      setValues(initialValues);
+      setValues({
+        location: result?.location,
+        status: result?.status,
+        tod: result?.tod,
+        unaccompanied_status: result?.unaccompanied_status,
+        housing: result?.housing,
+        quarters: result?.quarters,
+        efm_issues: result?.efm_issues,
+
+        snd: result?.snd ?? 'N',
+        hds: result?.hds ?? 'N',
+        apo_fpo_dpo: result?.apo_fpo_dpo ?? 'N',
+        consumable_allowance: result?.consumable_allowance ?? 'N',
+        fm_fp: result?.fm_fp ?? 'N',
+        inside_efm_employment: result?.inside_efm_employment ?? 'N',
+        outside_efm_employment: result?.outside_efm_employment ?? 'N',
+
+        cola: result?.cola,
+        differential_rate: result?.differential_rate,
+        danger_pay: result?.danger_pay,
+        climate_zone: result?.climate_zone,
+
+        rr_point: result?.rr_point ?? '',
+        medical: result?.medical ?? '',
+        remarks: result?.remarks ?? '',
+        quarters_remark: result?.quarters_remark ?? '',
+        special_ship_allowance: result?.special_ship_allowance ?? '',
+        school_year: result?.school_year ?? '',
+        grade_education: result?.grade_education ?? '',
+        efm_employment: result?.efm_employment ?? '',
+      });
     }
   }, [editMode]);
 
