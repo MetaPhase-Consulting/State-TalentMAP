@@ -42,7 +42,7 @@ const BiddingToolCard = (props) => {
     useSelector(state => state.biddingToolFetchDataLoading)) || false;
   const deleteErrored = useSelector(state => state.biddingToolDeleteErrored);
   const createErrored = useSelector(state => state.biddingToolCreateErrored);
-  // const createSuccess = useSelector(state => state.biddingToolCreateLoading);
+  const createSuccess = useSelector(state => state.biddingToolCreateSuccess);
   const editErrored = useSelector(state => state.biddingToolEditErrored);
   const editLoading = useSelector(state => state.biddingToolEditLoading);
 
@@ -272,8 +272,9 @@ const BiddingToolCard = (props) => {
   const onSubmit = () => {
     if (isCreate) {
       dispatch(biddingToolCreate(values));
-      if (!createErrored) {
-        history.push(`${rootLocation()}/${values.location}`);
+      const createdId = createSuccess?.data;
+      if (!createErrored && createdId) {
+        history.push(`${rootLocation()}/${createdId}`);
       }
     } else {
       dispatch(biddingToolEdit({
