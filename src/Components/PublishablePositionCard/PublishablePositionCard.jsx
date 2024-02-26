@@ -3,6 +3,7 @@ import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
 import PropTypes from 'prop-types';
+import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDateFromStr, renderSelectionList } from 'utilities';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
@@ -11,9 +12,11 @@ import CheckBox from 'Components/CheckBox';
 import TabbedCard from 'Components/TabbedCard';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { checkFlag } from '../../flags';
+import PositionClassification from './PositionClassification/PositionClassification';
 
 
-const PP_INTEGRATION_FLAG = checkFlag('flags.publishable_positions_integration');
+const PP_FLAG = checkFlag('flags.publishable_positions');
+const DETO_RWA_FLAG = () => checkFlag('flags.deto_rwa');
 
 const hardcodedFilters = {
   statusFilters: [{ code: 1, description: '' }, { code: 2, description: 'Publishable' }, { code: 3, description: 'Vet' }],
@@ -23,7 +26,9 @@ const hardcodedFilters = {
 };
 
 
-const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit }) => {
+const PublishablePositionCard = ({
+  data, onEditModeSearch, onSubmit, disableEdit,
+  additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
   const sections = {
@@ -41,7 +46,7 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
       { 'Language': data?.language || DEFAULT_TEXT },
       { 'Pay Plan': data?.payPlan || DEFAULT_TEXT },
     ],
-    bodySecondary: PP_INTEGRATION_FLAG ?
+    bodySecondary: PP_FLAG ?
       [
         { 'Bid Cycle': data?.status || DEFAULT_TEXT },
         { 'TED': data?.status || DEFAULT_TEXT },
@@ -58,6 +63,9 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
     /* eslint-enable quote-props */
   };
 
+  if (DETO_RWA_FLAG()) {
+    sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
+  }
 
   // =============== Overview: Edit Mode ===============
 
@@ -115,7 +123,7 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
     ],
     inputBody: (
       <div className="position-form">
-        { PP_INTEGRATION_FLAG &&
+        {PP_FLAG &&
           <div className="spaced-row">
             <div className="dropdown-container">
               <div className="position-form--input">
@@ -147,12 +155,25 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
                 </select>
               </div>
             </div>
-            <CheckBox
-              id="exclude-checkbox"
-              label="Exclude Position from Bid Audit"
-              value={exclude}
-              onCheckBoxClick={e => setExclude(e)}
-            />
+            <div>
+              <CheckBox
+                id="exclude-checkbox"
+                label="Exclude Position from Bid Audit"
+                value={exclude}
+                onCheckBoxClick={e => setExclude(e)}
+              />
+              { DETO_RWA_FLAG() &&
+                <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
+                  <CheckBox
+                    id="deto-checkbox"
+                    label="RWA/DETO Eligible"
+                    value={data?.deto_rwa}
+                    onCheckBoxClick={() => {}}
+                    disabled
+                  />
+                </Tooltip>
+              }
+            </div>
           </div>
         }
         <div>
@@ -162,7 +183,7 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
               <TextareaAutosize
                 maxRows={6}
                 minRows={6}
-                maxlength="2000"
+                maxLength="2000"
                 name="position-description"
                 placeholder="No Description"
                 defaultValue={textArea}
@@ -175,7 +196,7 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
             </div>
           </Row>
         </div>
-        { PP_INTEGRATION_FLAG &&
+        {PP_FLAG &&
           <>
             <div className="content-divider" />
             <div className="position-form--heading">
@@ -218,7 +239,7 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
             </div>
           </>
         }
-      </div>
+      </div >
     ),
     handleSubmit: onSubmitForm,
     handleCancel: onCancelForm,
@@ -230,123 +251,6 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
     /* eslint-enable quote-props */
   };
 
-  // =============== Classification ===============
-
-  const [formData, setFormData] = useState(
-    [{
-      id: '1',
-      label: '15-20%',
-      value: true,
-    }, {
-      id: '2',
-      label: 'CN',
-      value: true,
-    }, {
-      id: '3',
-      label: 'DCM',
-      value: true,
-    }, {
-      id: '4',
-      label: 'FICA',
-      value: true,
-    }, {
-      id: '5',
-      label: 'HDS Pos',
-      value: true,
-    }, {
-      id: '6',
-      label: 'Iraqtax',
-      value: true,
-    }, {
-      id: '7',
-      label: 'KEY',
-      value: true,
-    }, {
-      id: '8',
-      label: 'ML-C',
-      value: true,
-    }, {
-      id: '9',
-      label: 'PrgDir',
-      value: true,
-    }, {
-      id: '10',
-      label: 'SL-C',
-      value: true,
-    }, {
-      id: '11',
-      label: 'SND pos',
-      value: true,
-    }, {
-      id: '12',
-      label: 'x S/O',
-      value: true,
-    }, {
-      id: '13',
-      label: 'x-Recap',
-      value: true,
-    }],
-  );
-
-  useEffect(() => {
-    if (data.position) {
-      setFormData(data.position?.classifications);
-    }
-  }, [data]);
-
-  const handleSelection = (id) => {
-    const newFormData = formData.map(o => {
-      if (o.id === id) {
-        return {
-          ...o,
-          value: !o.value,
-        };
-      }
-      return o;
-    });
-    setFormData(newFormData);
-  };
-
-  const classificationTable = () => (
-    <div className="position-classifications">
-      <div className="line-separated-fields">
-        <div>
-          <span>Position:</span>
-          {/* <span>{bureau} {positionNumber}</span> */}
-          <span>{'AF'} {'12345'}</span>
-        </div>
-      </div>
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              {formData.map((o) => (
-                <th key={o.id}>{o.label}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {formData.map((o) => (
-                <td key={o.label}>
-                  <input
-                    type="checkbox"
-                    name={`${o.id}`}
-                    checked={o.value}
-                    onChange={() => handleSelection(o.id)}
-                  />
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="position-classifications--actions">
-        <button onClick={form.handleSubmit}>Save</button>
-      </div>
-    </div>
-  );
-
   return (
     <TabbedCard
       tabs={[{
@@ -355,11 +259,19 @@ const PublishablePositionCard = ({ data, onEditModeSearch, onSubmit, disableEdit
         content: <PositionExpandableContent
           sections={sections}
           form={form}
+          appendAdditionalFieldsToBodyPrimary={false}
+          showLoadingAnimation={additionalCallsLoading}
+          onShowMore={(e) => onShowMorePP(e)}
         />,
-      }, PP_INTEGRATION_FLAG ?
-        { text: 'Position Classification',
+      }, PP_FLAG ?
+        {
+          text: 'Position Classification',
           value: 'CLASSIFICATION',
-          content: classificationTable(),
+          content: <PositionClassification
+            positionNumber={data?.positionNumber}
+            bureau={data?.bureau || DEFAULT_TEXT}
+            posSeqNum={data?.posSeqNum}
+          />,
           disabled: editMode,
         } : {},
       ]}
@@ -373,15 +285,19 @@ PublishablePositionCard.propTypes = {
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
   disableEdit: PropTypes.bool,
+  additionalCallsLoading: PropTypes.bool,
   filters: PropTypes.shape({
     filters: {},
   }).isRequired,
+  onShowMorePP: PropTypes.func,
 };
 
 PublishablePositionCard.defaultProps = {
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
   disableEdit: false,
+  additionalCallsLoading: false,
+  onShowMorePP: EMPTY_FUNCTION,
 };
 
 export default PublishablePositionCard;

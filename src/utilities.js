@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import swal from '@sweetalert/with-react';
 import Scroll from 'react-scroll';
 import { distanceInWords, format } from 'date-fns';
-import { cloneDeep, get, has, identity, includes, intersection, isArray, isEmpty, isEqual,
+import {
+  cloneDeep, get, has, identity, includes, intersection, isArray, isEmpty, isEqual,
   isFunction, isNumber, isObject, isString, keys, lowerCase, merge as merge$, omit, orderBy,
-  padStart, pick, pickBy, split, startCase, take, toLower, toString, transform, uniqBy } from 'lodash';
+  padStart, pick, pickBy, split, startCase, take, toLower, toString, transform, uniqBy,
+} from 'lodash';
 import numeral from 'numeral';
 import queryString from 'query-string';
 import shortid from 'shortid';
@@ -322,8 +324,16 @@ export const getTimeDistanceInWords = (dateToCompare, date = new Date(), options
 // format provided with the dateFormat param.
 export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
   if (date) {
+    if (date === '-') return '-';
+    // date-fns assumes incoming date is UTC, must adjust for timezones
+    // before passing to format for correct FE rendering
+    const date$ = new Date(date);
+    const timezoneAdjustedDate = new Date(
+      // date$.valueOf() is in milliseconds while getTimezoneOffset() is in minutes
+      // Have to convert (multiply by 60,000) to milliseconds
+      date$.valueOf() + (date$.getTimezoneOffset() * 60 * 1000));
     // then format the date with dateFormat
-    const formattedDate = format(date, dateFormat);
+    const formattedDate = format(timezoneAdjustedDate, dateFormat);
     // and finally return the formatted date
     return formattedDate;
   }
@@ -552,7 +562,7 @@ export const mapSavedSearchToDescriptions = (savedSearchObject, mappedParams) =>
 export const getPostName = (post, defaultValue = null) => {
   let valueToReturn = defaultValue;
   if (propOrDefault(post, 'location.city') &&
-      includes(['United States', 'USA'], get(post, 'location.country'))) {
+    includes(['United States', 'USA'], get(post, 'location.country'))) {
     valueToReturn = `${post.location.city}, ${post.location.state}`;
   } else if (propOrDefault(post, 'location.city')) {
     valueToReturn = `${post.location.city}${post.location.country ? `, ${post.location.country}` : ''}`;
@@ -932,6 +942,7 @@ export const determineEnv = (url) => {
 
 export const formatLang = (langArr = []) => {
   if (langArr === '-') return '-';
+  if (langArr?.length === 0) return 'None Listed';
   const langArr$ = langArr || [];
   return langArr$.map(lang => (
     `${lang.code} ${lang.spoken_proficiency}/${lang.reading_proficiency}`
@@ -1060,5 +1071,11 @@ export const getGenericFilterOptions = (genericFilters, description, sortBy) => 
   return category?.data?.length
     ? nameSort([...new Set(category.data)], sortBy) : [];
 };
+
+export const filterObjectArrayByString = (array, property, matchString) => (
+  array.filter(x =>
+    x[property].toLowerCase().includes(matchString.toLowerCase()),
+  )
+);
 
 // Search Tags: common.js, helper file, helper functions, common helper file, common file
