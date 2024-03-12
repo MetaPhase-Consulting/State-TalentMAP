@@ -32,10 +32,12 @@ const AssignmentCard = (props) => {
   const assignmentsDetailsLoading = useSelector(state => state.altAssignmentDetailIsLoading);
 
   useEffect(() => {
-    const asgId = data?.ASG_SEQ_NUM;
-    const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
-  }, []);
+    if (editMode) {
+      const asgId = data?.ASG_SEQ_NUM;
+      const revision_num = data?.ASGD_REVISION_NUM;
+      dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
+    }
+  }, [editMode]);
 
   // Break out ref data
   const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
