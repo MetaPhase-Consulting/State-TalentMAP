@@ -183,9 +183,9 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
         />);
 
       case EMP:
-        if (empProfileError) {
-          return errorAlert;
-        }
+        // if (empProfileError) {
+        //   return errorAlert;
+        // }
         if (employee?.employeeDataLoading || empProfileLoading) {
           return <Spinner type="employee-profile-preview" size="small" />;
         }
