@@ -35,6 +35,7 @@ const ManageEntryLevel = () => {
   const [domestic, setDomestic] = useState(userSelections?.domestic || false);
   const [clearFilters, setClearFilters] = useState(false);
   const [hasSelectedFilter, setHasSelectedFilter] = useState(false);
+  const [testCap, setTestCap] = useState();
 
   const elFiltersList = useSelector(state => state.entryLevelFilters);
   const tpFilters = elFiltersList?.tpFilters;
@@ -59,6 +60,7 @@ const ManageEntryLevel = () => {
     'el-language': selectedLanguages.map(langObject => (langObject?.code)),
     'el-overseas': overseas,
     'el-domestic': domestic,
+    'el-testCap': testCap,
   });
 
   const resetFilters = () => {
@@ -102,6 +104,7 @@ const ManageEntryLevel = () => {
       selectedLanguages,
       overseas,
       domestic,
+      testCap,
     ];
     if (filters.flat().length === 2 && !filters.flat().includes(true)) {
       setClearFilters(false);
@@ -126,6 +129,7 @@ const ManageEntryLevel = () => {
     selectedLanguages,
     overseas,
     domestic,
+    testCap,
   ]);
 
   const pickyProps = {
@@ -155,6 +159,22 @@ const ManageEntryLevel = () => {
   return (
     <div className="position-search">
       <div className="usa-grid-full position-search--header">
+        <select
+          onChange={e => setTestCap(e.target.value)}
+        >
+          <option value={5}>5</option>
+          <option value={200}>200</option>
+          <option value={500}>500</option>
+          <option value={1000}>1000</option>
+          <option value={1500}>1500</option>
+          <option value={2000}>2000</option>
+          <option value={2500}>2500</option>
+          <option value={3500}>3500</option>
+          <option value={5000}>5000</option>
+          <option value={7500}>7500</option>
+          <option value={10000}>10000</option>
+          <option value={12000}>12000</option>
+        </select>
         <ProfileSectionTitle title="Manage Entry Level" icon="keyboard-o" className="xl-icon" />
         {elFiltersIsLoading ?
           <Spinner type="manage-el-filters" size="small" /> :
