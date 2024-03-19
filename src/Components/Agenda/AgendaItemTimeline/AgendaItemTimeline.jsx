@@ -5,8 +5,8 @@ import { get, isEmpty, isEqual } from 'lodash';
 import shortid from 'shortid';
 import { useDidMountEffect, usePrevious } from 'hooks';
 import { AI_VALIDATION, EMPTY_FUNCTION } from 'Constants/PropTypes';
-import AgendaItemLegsForm from '../AgendaItemLegsForm';
-import AgendaItemLegsFormReadOnly from '../AgendaItemLegsFormReadOnly';
+import AIMLegsFormEdit from '../AIMLegsFormEdit';
+import AIMLegsFormRead from '../AIMLegsFormRead';
 
 const AgendaItemTimeline = ({ unitedLoading, setParentLoadingState, updateLegs,
   asgSepBid, efPos, agendaItemLegs, fullAgendaItemLegs, readMode, AIvalidation, isNewSeparation,
@@ -52,17 +52,18 @@ const AgendaItemTimeline = ({ unitedLoading, setParentLoadingState, updateLegs,
           ail_cp_id: null,
           ail_asg_seq_num: null,
           ail_asgd_revision_num: null,
-          org: get(pos_results, 'organization'),
-          eta: get(pos_results, 'start_date'),
+          org: get(pos_results, 'organization', null),
+          eta: get(pos_results, 'start_date', null),
           ted: null,
           languages: get(pos_results, 'languages'),
-          tod: null,
+          // Use the tod override, otherwise use the bidding tool tod
+          tod: get(pos_results, 'todo_tod_code') || get(pos_results, 'bt_tod_code', null),
           tod_months: null,
           tod_long_desc: null,
           tod_short_desc: null,
           tod_is_dropdown: true,
           grade: get(pos_results, 'grade'),
-          action_code: null,
+          action_code: 'E', // Default action to 'Reassign'
           travel_code: null,
           pay_plan: get(pos_results, 'pay_plan'),
         });
@@ -87,13 +88,13 @@ const AgendaItemTimeline = ({ unitedLoading, setParentLoadingState, updateLegs,
         eta: null,
         ted: null,
         languages: get(asgSepBid, 'languages'),
-        tod: null,
+        tod: get(asgSepBid, 'tod_code'),
         tod_months: null,
         tod_long_desc: null,
         tod_short_desc: null,
         tod_is_dropdown: true,
         grade: get(asgSepBid, 'grade'),
-        action_code: null,
+        action_code: 'E', // Defaut action to 'Reassign'
         travel_code: null,
         pay_plan: null,
       });
@@ -118,13 +119,13 @@ const AgendaItemTimeline = ({ unitedLoading, setParentLoadingState, updateLegs,
         eta: null,
         ted: null,
         languages: [],
-        tod: null,
+        tod: null, // Separations should never include TODs
         tod_months: null,
         tod_long_desc: null,
         tod_short_desc: null,
         tod_is_dropdown: false,
         grade: null,
-        action_code: null,
+        action_code: 'M', // Default action to 'Separation'
         travel_code: 'Separation from the Service',
         is_separation: true,
       });
@@ -159,10 +160,10 @@ const AgendaItemTimeline = ({ unitedLoading, setParentLoadingState, updateLegs,
   return (
     !unitedLoading && (
       readMode ?
-        <AgendaItemLegsFormReadOnly
+        <AIMLegsFormRead
           legs={fullAgendaItemLegs}
         /> :
-        <AgendaItemLegsForm
+        <AIMLegsFormEdit
           AIvalidation={AIvalidation}
           efPos={efPos}
           legs={legs}
