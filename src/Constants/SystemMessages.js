@@ -190,10 +190,20 @@ export const UPDATE_PUBLISHABLE_POSITION_SUCCESS = 'This Publishable Position ha
 export const UPDATE_PUBLISHABLE_POSITION_ERROR_TITLE = 'Publishable Position Error';
 export const UPDATE_PUBLISHABLE_POSITION_ERROR = 'There was an issue attempting to save this Publishable Position. Please try again.';
 
-export const UPDATE_PROJECTED_VACANCY_SUCCESS_TITLE = 'Projected Vacancy Position Saved';
-export const UPDATE_PROJECTED_VACANCY_SUCCESS = 'This Projected Vacancy Position has been successfully saved.';
-export const UPDATE_PROJECTED_VACANCY_ERROR_TITLE = 'Projected Vacancy Position Error';
-export const UPDATE_PROJECTED_VACANCY_ERROR = 'There was an issue attempting to save this Projected Vacancy Position. Please try again.';
+export const UPDATE_PROJECTED_VACANCY_SUCCESS_TITLE = 'Projected Vacancy Body Saved';
+export const UPDATE_PROJECTED_VACANCY_SUCCESS = 'This Projected Vacancy Body has been successfully saved.';
+export const UPDATE_PROJECTED_VACANCY_ERROR_TITLE = 'Projected Vacancy Body Error';
+export const UPDATE_PROJECTED_VACANCY_ERROR = 'There was an issue attempting to save this Projected Vacancy Body. Please try again.';
+
+export const UPDATE_PROJECTED_VACANCY_LANGUAGE_OFFSETS_SUCCESS_TITLE = 'Projected Vacancy Language Offsets Saved';
+export const UPDATE_PROJECTED_VACANCY_LANGUAGE_OFFSETS_SUCCESS = 'This Projected Vacancy Language Offsets has been successfully saved.';
+export const UPDATE_PROJECTED_VACANCY_LANGUAGE_OFFSETS_ERROR_TITLE = 'Projected Vacancy Language Offsets Error';
+export const UPDATE_PROJECTED_VACANCY_LANGUAGE_OFFSETS_ERROR = 'There was an issue attempting to save this Projected Vacancy Language Offsets. Please try again.';
+
+export const UPDATE_PROJECTED_VACANCY_DESCRIPTION_SUCCESS_TITLE = 'Projected Vacancy Position Details Saved';
+export const UPDATE_PROJECTED_VACANCY_DESCRIPTION_SUCCESS = 'This Projected Vacancy Position Details has been successfully saved.';
+export const UPDATE_PROJECTED_VACANCY_DESCRIPTION_ERROR_TITLE = 'Projected Vacancy Position Details Error';
+export const UPDATE_PROJECTED_VACANCY_DESCRIPTION_ERROR = 'There was an issue attempting to save this Projected Vacancy Position Details. Please try again.';
 
 export const ADD_TO_PROPOSED_CYCLE_SUCCESS_TITLE = 'Successfully Added to Proposed Cycle';
 export const ADD_TO_PROPOSED_CYCLE_SUCCESS = 'Positions have been successfully added to the proposed cycle.';
@@ -318,10 +328,15 @@ export const ASSIGNMENT_CYCLE_DELETE_SUCCESS = 'The Assignment Cycle has been de
 export const ASSIGNMENT_CYCLE_DELETE_ERROR_TITLE = 'Assignment Cycle Delete Error';
 export const ASSIGNMENT_CYCLE_DELETE_ERROR = 'There was an issue attempting to delete this Assignment Cycle. Please try again.';
 
-export const ASSIGNMENT_CYCLE_POST_SUCCESS_TITLE = 'Assignment Cycle Created';
-export const ASSIGNMENT_CYCLE_POST_SUCCESS = 'The Assignment Cycle has been created';
-export const ASSIGNMENT_CYCLE_POST_ERROR_TITLE = 'Assignment Cycle Create Error';
-export const ASSIGNMENT_CYCLE_POST_ERROR = 'There was an issue attempting to create this Assignment Cycle. Please try again.';
+export const ASSIGNMENT_CYCLE_CREATE_SUCCESS_TITLE = 'Assignment Cycle Created';
+export const ASSIGNMENT_CYCLE_CREATE_SUCCESS = 'The Assignment Cycle has been created';
+export const ASSIGNMENT_CYCLE_CREATE_ERROR_TITLE = 'Assignment Cycle Create Error';
+export const ASSIGNMENT_CYCLE_CREATE_ERROR = 'There was an issue attempting to create this Assignment Cycle. Please try again.';
+
+export const ASSIGNMENT_CYCLE_POST_POSITIONS_TITLE = 'Open Positions Posted';
+export const ASSIGNMENT_CYCLE_POST_POSITIONS_SUCCESS = 'The Open Positions for this Assignment Cycle have been posted';
+export const ASSIGNMENT_CYCLE_POST_POSITIONS_ERROR_TITLE = 'Post Open Positions Error';
+export const ASSIGNMENT_CYCLE_POST_POSITIONS_ERROR = 'There was an issue attempting to post the Open Positions for this Assignment Cycle. Please try again.';
 
 export const UPDATE_POSITION_CLASSIFICATION_SUCCESS_TITLE = 'Position Clasifications Saved';
 export const UPDATE_POSITION_CLASSIFICATION_SUCCESS = 'This Position Clasifications has been successfully saved.';

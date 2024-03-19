@@ -1,5 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { getAssetPath } from 'utilities';
 import NavTabs from 'Components/NavTabs';
 import { get, includes } from 'lodash';
 import PropTypes from 'prop-types';
@@ -26,6 +28,7 @@ export const TP = 'TP';
 export const AO = 'AO';
 export const AA = 'AA';
 export const GSA = 'GSA';
+export const EMP = 'EMP';
 const tabs = [
   { text: 'Assignment History', value: ASGH },
   { text: 'Frequent Positions', value: FP },
@@ -33,6 +36,7 @@ const tabs = [
   { text: 'Remarks Glossary', value: RG },
   { text: 'Classifications', value: TP },
   { text: 'Locations', value: GSA },
+  { text: 'Employee Profile', value: EMP },
 ];
 
 const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {}, updateSelection: '', userSelection: [], legCount: 0, readMode: true }, ref) => {
@@ -40,7 +44,7 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   const dispatch = useDispatch();
 
   const { perdet, clientData, userSelections, updateSelection, legCount,
-    readMode, clientLoading, clientError, activeAIL, setLocation,
+    readMode, clientLoading, clientError, activeAIL, setLocation, employee,
   } = props;
 
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
@@ -89,6 +93,27 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
     dispatch(fetchClassifications());
     dispatch(fetchUserClassifications(perdet));
   }, []);
+
+
+  // Handles Employee Profile Preview
+  const [url, setUrl] = useState(undefined);
+  const { employeeData, employeeDataError, employeeDataLoading } = employee;
+  const hruId = employeeData?.user_info?.hru_id;
+  const { data: empProfileData, error: empProfileError, loading: empProfileLoading } =
+    useDataLoader(
+      api().get,
+      `/fsbid/employee/${hruId?.toString()}/employee_profile_report/?redacted_report=false`,
+      (!employeeDataLoading && employeeData && hruId),
+      { responseType: 'arraybuffer' },
+    );
+  useEffect(() => {
+    if (empProfileData?.data) {
+      const blob = new Blob([empProfileData.data], { type: 'application/pdf' });
+      const bloburl = window.URL.createObjectURL(blob);
+      setUrl(bloburl);
+    }
+  }, [empProfileData]);
+
 
   const loadingSpinner = (<Spinner type="homepage-position-results" size="small" />);
   const errorAlert = (<Alert type="error" title="Error loading data" messages={[{ body: 'This data may not be available.' }]} />);
@@ -150,6 +175,22 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
           setLocation={setLocation}
         />);
 
+      case EMP:
+        if (
+          (!employeeDataLoading && (employeeDataError || !hruId)) ||
+          (!empProfileLoading && (empProfileError || !hruId))
+        ) {
+          return errorAlert;
+        }
+        if (employeeDataLoading || empProfileLoading) {
+          return <Spinner type="employee-profile-preview" size="small" />;
+        }
+        return (
+          <Worker workerUrl={getAssetPath('/static/js/pdf.worker.js')}>
+            {url && <Viewer fileUrl={url} />}
+          </Worker>
+        );
+
       default:
         return errorAlert;
     }
@@ -169,13 +210,8 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
         )}
       </MediaQuery>
       <div className="ai-research-content">
-        {
-          groupLoading &&
-            loadingSpinner
-        }
-        {
-          !groupLoading &&
-          getNavData(selectedNav)}
+        {groupLoading && loadingSpinner}
+        {!groupLoading && getNavData(selectedNav)}
       </div>
     </div>
   );
@@ -201,6 +237,15 @@ AgendaItemResearchPane.propTypes = {
   clientLoading: PropTypes.bool,
   clientError: PropTypes.bool,
   activeAIL: PropTypes.string,
+  employee: PropTypes.shape({
+    employeeData: PropTypes.shape({
+      user_info: PropTypes.shape({
+        hru_id: PropTypes.number,
+      }),
+    }),
+    employeeDataError: PropTypes.bool,
+    employeeDataLoading: PropTypes.bool,
+  }),
 };
 
 AgendaItemResearchPane.defaultProps = {
@@ -213,6 +258,7 @@ AgendaItemResearchPane.defaultProps = {
   clientLoading: false,
   clientError: false,
   activeAIL: '',
+  employee: {},
 };
 
 export default AgendaItemResearchPane;

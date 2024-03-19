@@ -4,16 +4,17 @@ import { get, includes } from 'lodash';
 import FA from 'react-fontawesome';
 import InteractiveElement from 'Components/InteractiveElement';
 import Calendar from 'react-calendar';
-import { formatDate, formatLang } from 'utilities';
+import { formatDate, formatLang, formatMonthYearDate } from 'utilities';
 import swal from '@sweetalert/with-react';
 import { add } from 'date-fns-v2';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { GSA as LocationsTabID } from '../AgendaItemResearchPane/AgendaItemResearchPane';
 import TodModal from './TodModal';
+import MonthYearDropdown from './MonthYearDropdown';
 import { formatVice } from '../Constants';
 
-const AgendaLeg = props => {
+const AgendaLegFormEdit = props => {
   const {
     AIvalidation,
     isEf, // check if leg is first leg (effective leg)
@@ -33,8 +34,20 @@ const AgendaLeg = props => {
 
   const isSeparation = leg?.is_separation || false;
   const defaultSepText = isSeparation ? '-' : false;
-
+  const legValidation = AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num];
   const disabled = isEf;
+
+  const getLegActionTypes = legActionTypes.filter(lat => lat.is_separation === isSeparation);
+
+  const isLegacyValue = (val, data) => {
+    if (['', null, undefined].includes(val)) return false;
+    return !data.some(a => a.code === val);
+  };
+
+  const [showLegacyAction, setShowLegacyAction] = useState(
+    isLegacyValue(leg?.action_code, getLegActionTypes));
+  const [showLegacyTravel, setShowLegacyTravel] = useState(
+    isLegacyValue(leg?.travel_code, travelFunctions));
 
   const onHover$ = (row) => {
     // this should check the row number of getArrow()
@@ -52,10 +65,6 @@ const AgendaLeg = props => {
     e.preventDefault();
     swal.close();
   };
-
-  const getLegActionTypes = () => (
-    legActionTypes.filter(lat => lat.is_separation === isSeparation)
-  );
 
   const submitCustomTod = (todArray, customTodMonths) => {
     const ted = add(new Date(leg?.eta), { months: customTodMonths });
@@ -135,15 +144,23 @@ const AgendaLeg = props => {
         eta: value,
         ted,
       });
-      swal.close();
       return;
     }
 
-    if (dropdown === 'ted') {
+    if (dropdown === 'ted' && isSeparation) {
       swal.close();
     }
 
     updateLeg(get(leg, 'ail_seq_num'), { [dropdown]: value });
+  };
+
+  const setShowLegacyActionToFalse = (key) => {
+    setShowLegacyAction(false);
+    updateDropdown(key, '');
+  };
+  const setShowLegacyTravelToFalse = (key) => {
+    setShowLegacyTravel(false);
+    updateDropdown(key, '');
   };
 
   useEffect(() => {
@@ -153,38 +170,9 @@ const AgendaLeg = props => {
     }
   }, []);
 
-  const clearETAandTED = () => {
-    updateLeg(leg?.ail_seq_num, { eta: '', ted: '' });
-    swal.close();
-  };
-
   const clearTED = () => {
     updateLeg(leg?.ail_seq_num, { ted: '' });
     swal.close();
-  };
-
-  const calendarModalETA = () => {
-    // TO DO: Update class names
-    swal({
-      title: 'Estimated Time of Arrival (ETA)',
-      closeOnEsc: true,
-      button: false,
-      className: 'swal-aim-ted-calendar',
-      content: (
-        <div className="ted-modal-content-container">
-          <div>
-            <Calendar
-              className="ted-react-calendar"
-              onChange={(e) => updateDropdown('eta', e)}
-            />
-          </div>
-          <div className="ted-buttons">
-            <button onClick={cancel}>Cancel</button>
-            <button onClick={clearETAandTED}>Clear ETA</button>
-          </div>
-        </div>
-      ),
-    });
   };
 
   const calendarModalTED = () => {
@@ -211,37 +199,59 @@ const AgendaLeg = props => {
     });
   };
 
-  const getDropdown = (key, data, text) => {
-    if (isEf) {
-      const efDefaultText = 'None listed';
-      return <div className="read-only">{get(leg, key) || efDefaultText}</div>;
+  const getDropdown = (type) => {
+    // Attribute and constants to handle Travel dropdown
+    let showLegacy = showLegacyTravel;
+    let setShowLegacy = setShowLegacyTravelToFalse;
+    let refArray = travelFunctions;
+    let codeAttr = 'travel_code';
+    let descAttr = 'travel_desc';
+    let nullText = 'No Travel';
+    // Attribute and constants to handle Action dropdown
+    if (type === 'action') {
+      showLegacy = showLegacyAction;
+      setShowLegacy = setShowLegacyActionToFalse;
+      refArray = getLegActionTypes;
+      codeAttr = 'action_code';
+      descAttr = 'action';
+      nullText = 'Keep Unselected';
     }
-    return (
-      <div className="error-message-wrapper">
-        <div className="validation-error-message-label validation-error-message">
-          {AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.[key]?.errorMessage}
+
+    const noValidationRequired = ['travel_code'].includes(codeAttr);
+
+    if (isEf) {
+      return (<div className="read-only">{leg?.[descAttr] || 'None listed'}</div>);
+    }
+
+    return (showLegacy ?
+      <div>
+        {leg?.[descAttr]}
+        <FA name="times" className="" onClick={() => setShowLegacy(codeAttr)} />
+      </div> :
+      <div className={noValidationRequired ? '' : 'error-message-wrapper'}>
+        <div className={noValidationRequired ? '' : 'validation-error-message-label validation-error-message'}>
+          {legValidation?.[codeAttr]?.errorMessage}
         </div>
         <div>
           <select
-            className={`leg-dropdown ${AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.[key]?.valid ? '' : 'validation-error-border'}`}
-            value={get(leg, key) || ''}
-            onChange={(e) => updateDropdown(key, e.target.value)}
+            className={`leg-dropdown ${(legValidation?.[codeAttr]?.valid || noValidationRequired) ? '' : 'validation-error-border'}`}
+            value={leg?.[codeAttr] || ''}
+            onChange={(e) => updateDropdown(codeAttr, e.target.value)}
             disabled={disabled}
           >
             <option key={null} value={''}>
-              Keep Unselected
+              {nullText}
             </option>
-            {
-              data.map((a, i) => {
-                const keyId = `${a?.code}-${i}`;
-                return <option key={keyId} value={a?.code}>{a?.[text]}</option>;
-              })
-            }
+            {refArray.map((a, i) => {
+              const keyId = `${a?.code}-${i}`;
+              return <option key={keyId} value={a?.code}>{a?.desc_text}</option>;
+            })}
           </select>
         </div>
       </div>
     );
   };
+
 
   const closeOtherTod = () => {
     updateLeg(leg?.ail_seq_num, {
@@ -273,17 +283,17 @@ const AgendaLeg = props => {
     return (
       <div className="error-message-wrapper">
         <div className="validation-error-message-label validation-error-message">
-          {AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.tod?.errorMessage}
+          {legValidation?.tod?.errorMessage}
         </div>
         <div>
           <select
-            className={`leg-dropdown ${AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.tod?.valid ? '' : 'validation-error-border'}`}
+            className={`leg-dropdown ${legValidation?.tod?.valid ? '' : 'validation-error-border'}`}
             value={getTod?.code || ''}
             onChange={(e) => updateDropdown('tod', e.target.value)}
             disabled={disabled}
           >
-            <option key={null} value={''}>
-              Keep Unselected
+            <option key={null} disabled value={''}>
+              Select TOD
             </option>
             {
               TODs.map((tod, i) => {
@@ -306,20 +316,34 @@ const AgendaLeg = props => {
 
   const getCalendar = (value) => (
     disabled ?
-      <div className="read-only">{formatDate(leg?.[value]) || DEFAULT_TEXT}</div> :
+      // Read only
+      <div className="read-only">{formatMonthYearDate(leg?.[value]) || DEFAULT_TEXT}</div>
+      :
+      // Edit
       <div className="error-message-wrapper ail-form-ted">
         <div className="validation-error-message-label validation-error-message">
-          {AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.[value]?.errorMessage}
+          {legValidation?.[value]?.errorMessage}
         </div>
-        <div className={`${AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.[value]?.valid ? '' : 'validation-error-border'}`}>
-          {formatDate(leg?.[value]) || DEFAULT_TEXT}
-          <FA name="calendar" onClick={value === 'eta' ? calendarModalETA : calendarModalTED} />
+        <div className={`${legValidation?.[value]?.valid ? '' : 'validation-error-border'}`}>
+          {
+            value === 'ted' && isSeparation ?
+              <>
+                {formatDate(leg?.[value]) || DEFAULT_TEXT}
+                <FA name="calendar" onClick={calendarModalTED} />
+              </>
+              :
+              <MonthYearDropdown
+                date={leg?.[value]}
+                updateDropdown={updateDropdown}
+                dropdownType={value}
+              />
+          }
         </div>
       </div>
   );
 
   const getArrows = () => (
-    <div className="arrow">
+    <div className="aim-form-arrow-edit">
       {
         !isSeparation &&
         <FA name="arrow-down" />
@@ -337,7 +361,7 @@ const AgendaLeg = props => {
     if (isSeparation) {
       return getCalendar('ted');
     }
-    return (<div className="read-only">{ !leg?.ted ? DEFAULT_TEXT : formatDate(leg.ted)}</div>);
+    return (<div className="read-only">{ !leg?.ted ? DEFAULT_TEXT : formatMonthYearDate(leg.ted)}</div>);
   };
 
   const getLocation = () => {
@@ -360,7 +384,7 @@ const AgendaLeg = props => {
         </div>
         {
           !isEf ?
-            <div className={`${AIvalidation?.legs?.individualLegs?.[leg?.ail_seq_num]?.separation_location?.valid ? '' : 'validation-error-border'}`}>
+            <div className={`${legValidation?.separation_location?.valid ? '' : 'validation-error-border'}`}>
               {displayText || DEFAULT_TEXT}
               {
                 displayText ?
@@ -378,6 +402,10 @@ const AgendaLeg = props => {
 
   const columnData = [
     {
+      title: 'Action',
+      content: (getDropdown('action')),
+    },
+    {
       title: 'Position Title',
       content: (<div>{defaultSepText || get(leg, 'pos_title') || DEFAULT_TEXT}</div>),
     },
@@ -386,15 +414,11 @@ const AgendaLeg = props => {
       content: (<div>{defaultSepText || get(leg, 'pos_num') || DEFAULT_TEXT}</div>),
     },
     {
-      title: 'Org',
+      title: 'Location/Org',
       content: isSeparation ?
         getLocation()
         :
         (<div className="read-only">{leg?.org || DEFAULT_TEXT}</div>),
-    },
-    {
-      title: 'Grade',
-      content: (<div>{defaultSepText || leg?.grade || DEFAULT_TEXT}</div>),
     },
     {
       title: 'Languages',
@@ -421,20 +445,16 @@ const AgendaLeg = props => {
       content: (isSeparation ? <div className="read-only">{defaultSepText}</div> : getTodDropdown()),
     },
     {
-      title: 'Action',
-      content: (getDropdown(isEf ? 'action' : 'action_code', getLegActionTypes(), 'abbr_desc_text')),
-    },
-    {
       title: 'Travel',
-      content: (getDropdown(isEf ? 'travel' : 'travel_code', travelFunctions, 'desc_text')),
+      content: (getDropdown()),
     },
     {
       title: 'Vice',
       content: formatVice(leg?.vice),
     },
     {
-      title: 'Pay Plan',
-      content: (<div>{get(leg, 'pay_plan') || defaultSepText || DEFAULT_TEXT}</div>),
+      title: 'PP/Grade',
+      content: (<div>{defaultSepText || get(leg, 'combined_pp_grade') || DEFAULT_TEXT}</div>),
     },
   ];
 
@@ -466,7 +486,7 @@ const AgendaLeg = props => {
   );
 };
 
-AgendaLeg.propTypes = {
+AgendaLegFormEdit.propTypes = {
   AIvalidation: AI_VALIDATION,
   isEf: PropTypes.bool,
   leg: PropTypes.shape({
@@ -476,6 +496,10 @@ AgendaLeg.propTypes = {
     tod: PropTypes.string,
     tod_months: PropTypes.number,
     tod_is_dropdown: PropTypes.bool,
+    action: PropTypes.string,
+    action_code: PropTypes.string,
+    travel_code: PropTypes.string,
+    travel_desc: PropTypes.string,
     vice: PropTypes.shape({}),
     ted: PropTypes.string,
     eta: PropTypes.string,
@@ -500,7 +524,7 @@ AgendaLeg.propTypes = {
   rowNum: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-AgendaLeg.defaultProps = {
+AgendaLegFormEdit.defaultProps = {
   AIvalidation: {},
   isEf: false,
   leg: {},
@@ -510,4 +534,4 @@ AgendaLeg.defaultProps = {
   rowNum: null,
 };
 
-export default AgendaLeg;
+export default AgendaLegFormEdit;

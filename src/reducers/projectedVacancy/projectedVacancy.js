@@ -63,81 +63,54 @@ export function projectedVacancyFilters(state = {}, action) {
   }
 }
 
-// ================ GET LANGUAGE OFFSET DATA ================
+// ================ GET LANGUAGE OFFSET OPTIONS ================
 
-export function projectedVacancyLanguageOffsetsErrored(state = false, action) {
+export function projectedVacancyLangOffsetOptionsErrored(state = false, action) {
   switch (action.type) {
-    case 'PROJECTED_VACANCY_LANGUAGE_OFFSETS_ERRORED':
+    case 'PROJECTED_VACANCY_LANG_OFFSET_OPTIONS_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function projectedVacancyLanguageOffsetsLoading(state = false, action) {
+export function projectedVacancyLangOffsetOptionsLoading(state = false, action) {
   switch (action.type) {
-    case 'PROJECTED_VACANCY_LANGUAGE_OFFSETS_LOADING':
+    case 'PROJECTED_VACANCY_LANG_OFFSET_OPTIONS_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function projectedVacancyLanguageOffsets(state = {}, action) {
+export function projectedVacancyLangOffsetOptions(state = {}, action) {
   switch (action.type) {
-    case 'PROJECTED_VACANCY_LANGUAGE_OFFSETS_SUCCESS':
+    case 'PROJECTED_VACANCY_LANG_OFFSET_OPTIONS_SUCCESS':
       return action.results;
     default:
       return state;
   }
 }
 
-// ================ EDIT ================
+// ================ GET LANGUAGE OFFSETS ================
 
-export function projectedVacancyEditErrored(state = false, action) {
+export function projectedVacancyLangOffsetsErrored(state = false, action) {
   switch (action.type) {
-    case 'PROJECTED_VACANCY_EDIT_ERRORED':
+    case 'PROJECTED_VACANCY_LANG_OFFSETS_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function projectedVacancyEditLoading(state = false, action) {
+export function projectedVacancyLangOffsetsLoading(state = false, action) {
   switch (action.type) {
-    case 'PROJECTED_VACANCY_EDIT_LOADING':
+    case 'PROJECTED_VACANCY_LANG_OFFSETS_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function projectedVacancyEdit(state = {}, action) {
+export function projectedVacancyLangOffsets(state = {}, action) {
   switch (action.type) {
-    case 'PROJECTED_VACANCY_EDIT_SUCCESS':
-      return action.results;
-    default:
-      return state;
-  }
-}
-
-// ================ ADD TO PROPOSED CYCLE ================
-
-export function projectedVacancyAddToProposedCycleErrored(state = false, action) {
-  switch (action.type) {
-    case 'PROJECTED_VACANCY_ADD_TO_PROPOSED_CYCLE_ERRORED':
-      return action.hasErrored;
-    default:
-      return state;
-  }
-}
-export function projectedVacancyAddToProposedCycleLoading(state = false, action) {
-  switch (action.type) {
-    case 'PROJECTED_VACANCY_ADD_TO_PROPOSED_CYCLE_LOADING':
-      return action.isLoading;
-    default:
-      return state;
-  }
-}
-export function projectedVacancyAddToProposedCycle(state = {}, action) {
-  switch (action.type) {
-    case 'PROJECTED_VACANCY_ADD_TO_PROPOSED_CYCLE_SUCCESS':
+    case 'PROJECTED_VACANCY_LANG_OFFSETS_SUCCESS':
       return action.results;
     default:
       return state;
