@@ -12,7 +12,7 @@ import { Definition } from '../DefinitionList';
 
 const PositionExpandableContent = ({
   sections, form, appendAdditionalFieldsToBodyPrimary, tempHideEdit,
-  showLoadingAnimation, onShowMore, isCondensed, saveText }) => {
+  showLoadingAnimation, onShowMore, isCondensed }) => {
   const handleEdit = form?.handleEdit ?? {};
   const { editMode, setEditMode, disableEdit } = handleEdit;
 
@@ -101,7 +101,7 @@ const PositionExpandableContent = ({
                     const key = Object.keys(item)[0];
                     return (
                       <div key={`subheading-${key}`}>
-                        <span>{key && `${key} :`}</span>
+                        <span>{key}:</span>
                         <span>{item[key]}</span>
                       </div>
                     );
@@ -163,7 +163,7 @@ const PositionExpandableContent = ({
               {form.inputBody}
               <div className="position-form--actions">
                 <button onClick={showCancelModal}>Cancel</button>
-                <button onClick={form.handleSubmit}>{saveText}</button>
+                <button onClick={form.handleSubmit}>Save Position</button>
               </div>
             </div>
             }
