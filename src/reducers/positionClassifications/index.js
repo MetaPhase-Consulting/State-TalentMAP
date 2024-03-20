@@ -4,6 +4,7 @@ import {
   positionClassificationsEditHasErrored,
   positionClassificationsEditIsLoading,
   positionClassificationsIsLoading,
+  positionClassificationsNumber,
 } from './positionClassifications';
 
 export default {
@@ -12,4 +13,5 @@ export default {
   positionClassificationsEditHasErrored,
   positionClassificationsEditIsLoading,
   positionClassificationsIsLoading,
+  positionClassificationsNumber,
 };

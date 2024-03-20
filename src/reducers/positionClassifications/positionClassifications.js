@@ -18,6 +18,15 @@ export function positionClassifications(state = [], action) {
   }
 }
 
+export function positionClassificationsNumber(state = [], action) {
+  switch (action.type) {
+    case 'POSITION_CLASSIFICATIONS_NUMBER_CHECK':
+      return action.currentNumber;
+    default:
+      return state;
+  }
+}
+
 // ========== POSITION CLASSIFICATIONS EDIT ==========
 
 export function positionClassificationsEditHasErrored(state = false, action) {

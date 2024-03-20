@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { positionClassifications, positionClassificationsEdit } from '../../../actions/positionClassifications';
+import { positionClassificationNumberCheck, positionClassifications, positionClassificationsEdit } from '../../../actions/positionClassifications';
 
 const PositionClassification = (props) => {
   const { positionNumber, bureau, posSeqNum } = props;
@@ -9,12 +9,14 @@ const PositionClassification = (props) => {
   const dispatch = useDispatch();
 
   const results = useSelector(state => state.positionClassifications);
+  const currentCard = useSelector(state => state.positionClassificationsNumber);
   const isLoading = useSelector(state => state.positionClassificationsIsLoading);
   const pc = results?.positionClassifications ?? [];
   const cs = results?.classificationSelections ?? [];
 
   useEffect(() => {
     if (positionNumber) {
+      dispatch(positionClassificationNumberCheck(positionNumber));
       dispatch(positionClassifications(positionNumber));
     }
   }, [positionNumber]);
@@ -67,7 +69,7 @@ const PositionClassification = (props) => {
     }
   };
 
-  return (isLoading ?
+  return (isLoading && positionNumber === currentCard ?
     <div className="loading-animation--5">
       <div className="loading-message pbl-20">
         Loading additional data

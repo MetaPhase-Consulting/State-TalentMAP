@@ -22,6 +22,13 @@ export function positionClassificationsFetchDataSuccess(results) {
   };
 }
 
+export function positionClassificationNumberCheck(id) {
+  return {
+    type: 'POSITION_CLASSIFICATIONS_NUMBER_CHECK',
+    currentNumber: id,
+  };
+}
+
 export function positionClassifications(id) {
   return (dispatch) => {
     batch(() => {
