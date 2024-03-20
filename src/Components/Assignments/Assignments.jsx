@@ -27,88 +27,12 @@ const Assignments = (props) => {
 
   const id = props?.match.params.id;
 
-  // TO-DO: replace fake data
-  const fakeStatuses = [
-    { code: 1, name: 'AP' },
-    { code: 2, name: 'BR' },
-    { code: 3, name: 'CP' },
-    { code: 4, name: 'EF' },
-  ];
-  const fakeActions = [
-    { code: 1, name: 'Action A' },
-    { code: 2, name: 'Action B' },
-    { code: 3, name: 'Action C' },
-    { code: 4, name: 'Action D' },
-  ];
-  const fakeTods = [
-    { code: 1, name: 'TOD A' },
-    { code: 2, name: 'TOD B' },
-    { code: 3, name: 'TOD C' },
-    { code: 4, name: 'TOD D' },
-  ];
-  const fakeTravels = [
-    { code: 1, name: 'Travel A' },
-    { code: 2, name: 'Travel B' },
-    { code: 3, name: 'Travel C' },
-    { code: 4, name: 'Travel D' },
-  ];
-  const fakeFundings = [
-    { code: 1, name: 'Funding A' },
-    { code: 2, name: 'Funding B' },
-    { code: 3, name: 'Funding C' },
-    { code: 4, name: 'Funding D' },
-  ];
-  const fakeWaivers = [
-    { code: 1, name: 'Denied' },
-    { code: 2, name: 'Requested' },
-    { code: 3, name: 'Granted' },
-    { code: 4, name: 'Not Used' },
-  ];
-  // const {
-  // data: statuses,
-  // error: statusesError,
-  // loading: statusesLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/statuses/');
-  // const {
-  // data: actions,
-  // error: actionsError,
-  // loading: actionsLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/actions/');
-  // const {
-  // data: tods,
-  // error: todsError,
-  // loading: todsLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/tods/');
-  // const {
-  // data: travel,
-  // error: travelError,
-  // loading: travelLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/travel/');
-  // const {
-  // data: fundings,
-  // error: fundingsError,
-  // loading: fundingsLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/fundings/');
-  // const {
-  // data: waivers,
-  // error: waiversError,
-  // loading: waiversLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/waivers/');
-
   // eslint-disable-next-line no-unused-vars
   const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
 
   const employeeData$ = employeeData?.data;
   const employeeName = employeeDataLoading ? '' : employeeData$?.name;
 
-  const refFilters = {
-    statusOptions: fakeStatuses,
-    actionOptions: fakeActions,
-    todOptions: fakeTods,
-    travelOptions: fakeTravels,
-    fundingOptions: fakeFundings,
-    waiverOptions: fakeWaivers,
-  };
 
   // eslint-disable-next-line no-unused-vars
   const hideBreadcrumbs = checkFlag('flags.breadcrumbs');
@@ -146,7 +70,6 @@ const Assignments = (props) => {
             perdet={id}
             isNew
             setNewAsgSep={setCardMode}
-            refFilters={refFilters}
           />
         );
       case 'notification':
@@ -155,7 +78,7 @@ const Assignments = (props) => {
         return <NotificationCard />;
       default:
         return assignments?.map(data =>
-          <AssignmentCard perdet={id} data={data} refFilters={refFilters} />);
+          <AssignmentCard perdet={id} data={data} />);
     }
   };
 
