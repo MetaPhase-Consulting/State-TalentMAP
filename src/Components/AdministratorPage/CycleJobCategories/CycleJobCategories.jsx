@@ -19,6 +19,8 @@ const useJobCategories = () => checkFlag('flags.job_categories');
 const CycleJobCategories = () => {
   const dispatch = useDispatch();
 
+  // ========== Data Retrieval ==========
+
   const cycleCategories = useSelector(state => state.cycleCategories) || [];
   const cycleCategoriesIsLoading = useSelector(state => state.cycleCategoriesLoading);
   const cycleCategoriesErrored = useSelector(state => state.cycleCategoriesErrored);
@@ -30,6 +32,8 @@ const CycleJobCategories = () => {
     useSelector(state => state.cycleJobCategoriesStatusesLoading);
   const jobCategoriesStatusesErrored =
     useSelector(state => state.cycleJobCategoriesStatusesErrored);
+
+  // ========== State Management ==========
 
   const [selectedCycle, setSelectedCycle] = useState('');
   const [selectedJobCategories, setSelectedJobCategories] = useState([]);
@@ -67,6 +71,12 @@ const CycleJobCategories = () => {
     }
   }, [searchQuery]);
 
+  // ========== Checkbox Selection Handlers ==========
+
+  const searchResultCodes = searchResult.map(s => s.code);
+  const allSelected = searchResultCodes?.length ===
+    selectedJobCategories.filter(j => searchResultCodes.includes(j)).length;
+
   const handleSelectJob = (job) => {
     if (selectedJobCategories?.find(o => o === job.code)) {
       const newSelection = selectedJobCategories?.filter(o => o !== job.code);
@@ -78,15 +88,14 @@ const CycleJobCategories = () => {
       ]);
     }
   };
+
   const handleSelectAllJobs = () => {
     // Only handle the job categories displayed in the search result
-    const resultCategories = searchResult.map(j => j.code);
-    const allSelected = selectedJobCategories.filter(j => resultCategories.includes(j));
-    if (allSelected?.length === resultCategories?.length) {
-      const newSelected = selectedJobCategories.filter(j => !(resultCategories.includes(j)));
+    if (allSelected) {
+      const newSelected = selectedJobCategories.filter(j => !(searchResultCodes.includes(j)));
       setSelectedJobCategories(newSelected);
     } else {
-      const newSelected = selectedJobCategories?.concat(resultCategories);
+      const newSelected = selectedJobCategories?.concat(searchResultCodes);
       setSelectedJobCategories([...new Set(newSelected)]);
     }
   };
@@ -148,6 +157,8 @@ const CycleJobCategories = () => {
       },
     ));
   };
+
+  // ========== Other UI Interactions ==========
 
   const getMainOverlay = () => {
     let overlay;
@@ -225,9 +236,7 @@ const CycleJobCategories = () => {
                       <th>
                         <CheckBox
                           id="select-all"
-                          value={
-                            searchResult.length === selectedJobCategories?.length
-                          }
+                          value={allSelected}
                           onCheckBoxClick={() => handleSelectAllJobs()}
                         />
                       </th>
