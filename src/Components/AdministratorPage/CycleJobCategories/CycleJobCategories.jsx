@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import swal from '@sweetalert/with-react';
+import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import TabbedCard from 'Components/TabbedCard/TabbedCard';
 import CheckBox from 'Components/CheckBox/CheckBox';
@@ -21,11 +22,15 @@ const CycleJobCategories = () => {
   const [selectedCycle, setSelectedCycle] = useState('');
   const cycleCategories = useSelector(state => state.cycleCategories) || [];
   const cycleCategoriesIsLoading = useSelector(state => state.cycleCategoriesLoading);
+  const cycleCategoriesErrored = useSelector(state => state.cycleCategoriesErrored);
   const jobCategories = useSelector(state => state.cycleJobCategories) || [];
   const jobCategoriesIsLoading = useSelector(state => state.cycleJobCategoriesLoading);
+  const jobCategoriesErrored = useSelector(state => state.cycleJobCategoriesErrored);
   const jobCategoriesStatuses = useSelector(state => state.cycleJobCategoriesStatuses) || [];
   const jobCategoriesStatusesIsLoading =
     useSelector(state => state.cycleJobCategoriesStatusesLoading);
+  const jobCategoriesStatusesErrored =
+    useSelector(state => state.cycleJobCategoriesStatusesErrored);
 
   const [selectedJobCategories, setSelectedJobCategories] = useState([]);
   const [jobCategorySearch, setJobCategorySearch] = useState('');
@@ -140,8 +145,31 @@ const CycleJobCategories = () => {
     ));
   };
 
-  return ((cycleCategoriesIsLoading || jobCategoriesIsLoading || jobCategoriesStatusesIsLoading) ?
-    <Spinner type="homepage-position-results" class="homepage-position-results" size="big" /> :
+  const getMainOverlay = () => {
+    let overlay;
+    if (cycleCategoriesIsLoading) {
+      overlay = <Spinner type="standard-center" size="big" />;
+    } else if (cycleCategoriesErrored) {
+      overlay = <Alert type="error" title="Error loading page" messages={[{ body: 'Please try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
+  };
+
+  const getJobOverlay = () => {
+    let overlay;
+    if (jobCategoriesIsLoading || jobCategoriesStatusesIsLoading) {
+      overlay = <Spinner type="standard-center" size="small" />;
+    } else if (jobCategoriesErrored || jobCategoriesStatusesErrored) {
+      overlay = <Alert type="error" title="Error loading Job Categories" messages={[{ body: 'Please try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
+  };
+
+  return (getMainOverlay() ||
     <div className="cycle-job-category">
       <div className="cycle-job-category__header position-search--filters--cjc">
         <span className="header-title">
@@ -171,7 +199,7 @@ const CycleJobCategories = () => {
         tabs={[{
           text: 'Job Category Descriptions',
           value: 'descriptions',
-          content: (
+          content: (getJobOverlay() ||
             <div className="job-category-table">
               <div className="category-type">
                 <span>Category Type:</span>
