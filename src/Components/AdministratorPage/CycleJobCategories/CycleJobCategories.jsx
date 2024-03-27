@@ -58,10 +58,9 @@ const CycleJobCategories = () => {
       if (searchQuery === '') {
         setSearchResult(jobCategories);
       } else {
-        setSearchResult(
-          jobCategories?.filter(j =>
-            j.description.toLowerCase().includes(searchQuery.toLowerCase()))
-        );
+        setSearchResult(jobCategories?.filter(
+          j => j.description.toLowerCase().includes(searchQuery.toLowerCase()),
+        ));
       }
     } else {
       setSearchResult([]);
@@ -227,8 +226,7 @@ const CycleJobCategories = () => {
                         <CheckBox
                           id="select-all"
                           value={
-                            searchResult.
-                              jobCategories?.length === selectedJobCategories?.length
+                            searchResult.length === selectedJobCategories?.length
                           }
                           onCheckBoxClick={() => handleSelectAllJobs()}
                         />
