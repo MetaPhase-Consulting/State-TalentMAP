@@ -19,7 +19,6 @@ const useJobCategories = () => checkFlag('flags.job_categories');
 const CycleJobCategories = () => {
   const dispatch = useDispatch();
 
-  const [selectedCycle, setSelectedCycle] = useState('');
   const cycleCategories = useSelector(state => state.cycleCategories) || [];
   const cycleCategoriesIsLoading = useSelector(state => state.cycleCategoriesLoading);
   const cycleCategoriesErrored = useSelector(state => state.cycleCategoriesErrored);
@@ -32,8 +31,10 @@ const CycleJobCategories = () => {
   const jobCategoriesStatusesErrored =
     useSelector(state => state.cycleJobCategoriesStatusesErrored);
 
+  const [selectedCycle, setSelectedCycle] = useState('');
   const [selectedJobCategories, setSelectedJobCategories] = useState([]);
-  const [jobCategorySearch, setJobCategorySearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
     dispatch(cycleCategoriesList());
@@ -52,16 +53,20 @@ const CycleJobCategories = () => {
     }
   }, [jobCategories]);
 
-  const getDisplayedJobCategories = () => {
+  useEffect(() => {
     if (jobCategories?.length > 0) {
-      if (jobCategorySearch === '') {
-        return jobCategories;
+      if (searchQuery === '') {
+        setSearchResult(jobCategories);
+      } else {
+        setSearchResult(
+          jobCategories?.filter(j =>
+            j.description.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
       }
-      return jobCategories?.filter(j =>
-        j.description.toLowerCase().includes(jobCategorySearch.toLowerCase()));
+    } else {
+      setSearchResult([]);
     }
-    return [];
-  };
+  }, [searchQuery]);
 
   const handleSelectJob = (job) => {
     if (selectedJobCategories?.find(o => o === job.code)) {
@@ -76,7 +81,7 @@ const CycleJobCategories = () => {
   };
   const handleSelectAllJobs = () => {
     // Only handle the job categories displayed in the search result
-    const resultCategories = getDisplayedJobCategories().map(j => j.code);
+    const resultCategories = searchResult.map(j => j.code);
     const allSelected = selectedJobCategories.filter(j => resultCategories.includes(j));
     if (allSelected?.length === resultCategories?.length) {
       const newSelected = selectedJobCategories.filter(j => !(resultCategories.includes(j)));
@@ -208,8 +213,8 @@ const CycleJobCategories = () => {
               {selectedCycle && <>
                 <input
                   id="job-category-search"
-                  value={jobCategorySearch}
-                  onChange={(event) => setJobCategorySearch(event.target.value)}
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
                   type="search"
                   name="search"
                   placeholder="Filter by Job Category Description"
@@ -221,7 +226,10 @@ const CycleJobCategories = () => {
                       <th>
                         <CheckBox
                           id="select-all"
-                          value={jobCategories?.length === selectedJobCategories?.length}
+                          value={
+                            searchResult.
+                              jobCategories?.length === selectedJobCategories?.length
+                          }
                           onCheckBoxClick={() => handleSelectAllJobs()}
                         />
                       </th>
@@ -242,7 +250,7 @@ const CycleJobCategories = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {getDisplayedJobCategories().map(job => (
+                    {searchResult.map(job => (
                       <tr key={job.code}>
                         <td>
                           <CheckBox
