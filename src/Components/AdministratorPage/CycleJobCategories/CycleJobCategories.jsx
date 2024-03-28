@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import swal from '@sweetalert/with-react';
+import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import TabbedCard from 'Components/TabbedCard/TabbedCard';
 import CheckBox from 'Components/CheckBox/CheckBox';
@@ -18,17 +19,26 @@ const useJobCategories = () => checkFlag('flags.job_categories');
 const CycleJobCategories = () => {
   const dispatch = useDispatch();
 
-  const [selectedCycle, setSelectedCycle] = useState('');
+  // ========== Data Retrieval ==========
+
   const cycleCategories = useSelector(state => state.cycleCategories) || [];
   const cycleCategoriesIsLoading = useSelector(state => state.cycleCategoriesLoading);
+  const cycleCategoriesErrored = useSelector(state => state.cycleCategoriesErrored);
   const jobCategories = useSelector(state => state.cycleJobCategories) || [];
   const jobCategoriesIsLoading = useSelector(state => state.cycleJobCategoriesLoading);
+  const jobCategoriesErrored = useSelector(state => state.cycleJobCategoriesErrored);
   const jobCategoriesStatuses = useSelector(state => state.cycleJobCategoriesStatuses) || [];
   const jobCategoriesStatusesIsLoading =
     useSelector(state => state.cycleJobCategoriesStatusesLoading);
+  const jobCategoriesStatusesErrored =
+    useSelector(state => state.cycleJobCategoriesStatusesErrored);
 
+  // ========== State Management ==========
+
+  const [selectedCycle, setSelectedCycle] = useState('');
   const [selectedJobCategories, setSelectedJobCategories] = useState([]);
-  const [jobCategorySearch, setJobCategorySearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
     dispatch(cycleCategoriesList());
@@ -47,16 +57,25 @@ const CycleJobCategories = () => {
     }
   }, [jobCategories]);
 
-  const getDisplayedJobCategories = () => {
+  useEffect(() => {
     if (jobCategories?.length > 0) {
-      if (jobCategorySearch === '') {
-        return jobCategories;
+      if (searchQuery === '') {
+        setSearchResult(jobCategories);
+      } else {
+        setSearchResult(jobCategories?.filter(
+          j => j.description.toLowerCase().includes(searchQuery.toLowerCase()),
+        ));
       }
-      return jobCategories?.filter(j =>
-        j.description.toLowerCase().includes(jobCategorySearch.toLowerCase()));
+    } else {
+      setSearchResult([]);
     }
-    return [];
-  };
+  }, [searchQuery]);
+
+  // ========== Checkbox Selection Handlers ==========
+
+  const searchResultCodes = searchResult.map(s => s.code);
+  const allSelected = searchResultCodes?.length ===
+    selectedJobCategories.filter(j => searchResultCodes.includes(j)).length;
 
   const handleSelectJob = (job) => {
     if (selectedJobCategories?.find(o => o === job.code)) {
@@ -69,15 +88,14 @@ const CycleJobCategories = () => {
       ]);
     }
   };
+
   const handleSelectAllJobs = () => {
     // Only handle the job categories displayed in the search result
-    const resultCategories = getDisplayedJobCategories().map(j => j.code);
-    const allSelected = selectedJobCategories.filter(j => resultCategories.includes(j));
-    if (allSelected?.length === resultCategories?.length) {
-      const newSelected = selectedJobCategories.filter(j => !(resultCategories.includes(j)));
+    if (allSelected) {
+      const newSelected = selectedJobCategories.filter(j => !(searchResultCodes.includes(j)));
       setSelectedJobCategories(newSelected);
     } else {
-      const newSelected = selectedJobCategories?.concat(resultCategories);
+      const newSelected = selectedJobCategories?.concat(searchResultCodes);
       setSelectedJobCategories([...new Set(newSelected)]);
     }
   };
@@ -140,8 +158,33 @@ const CycleJobCategories = () => {
     ));
   };
 
-  return ((cycleCategoriesIsLoading || jobCategoriesIsLoading || jobCategoriesStatusesIsLoading) ?
-    <Spinner type="homepage-position-results" class="homepage-position-results" size="big" /> :
+  // ========== Other UI Interactions ==========
+
+  const getMainOverlay = () => {
+    let overlay;
+    if (cycleCategoriesIsLoading) {
+      overlay = <Spinner type="standard-center" size="big" />;
+    } else if (cycleCategoriesErrored) {
+      overlay = <Alert type="error" title="Error loading page" messages={[{ body: 'Please try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
+  };
+
+  const getJobOverlay = () => {
+    let overlay;
+    if (jobCategoriesIsLoading || jobCategoriesStatusesIsLoading) {
+      overlay = <Spinner type="standard-center" size="small" />;
+    } else if (jobCategoriesErrored || jobCategoriesStatusesErrored) {
+      overlay = <Alert type="error" title="Error loading Job Categories" messages={[{ body: 'Please try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
+  };
+
+  return (getMainOverlay() ||
     <div className="cycle-job-category">
       <div className="cycle-job-category__header position-search--filters--cjc">
         <span className="header-title">
@@ -171,7 +214,7 @@ const CycleJobCategories = () => {
         tabs={[{
           text: 'Job Category Descriptions',
           value: 'descriptions',
-          content: (
+          content: (getJobOverlay() ||
             <div className="job-category-table">
               <div className="category-type">
                 <span>Category Type:</span>
@@ -180,8 +223,8 @@ const CycleJobCategories = () => {
               {selectedCycle && <>
                 <input
                   id="job-category-search"
-                  value={jobCategorySearch}
-                  onChange={(event) => setJobCategorySearch(event.target.value)}
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
                   type="search"
                   name="search"
                   placeholder="Filter by Job Category Description"
@@ -193,7 +236,7 @@ const CycleJobCategories = () => {
                       <th>
                         <CheckBox
                           id="select-all"
-                          value={jobCategories?.length === selectedJobCategories?.length}
+                          value={allSelected}
                           onCheckBoxClick={() => handleSelectAllJobs()}
                         />
                       </th>
@@ -214,7 +257,7 @@ const CycleJobCategories = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {getDisplayedJobCategories().map(job => (
+                    {searchResult.map(job => (
                       <tr key={job.code}>
                         <td>
                           <CheckBox
