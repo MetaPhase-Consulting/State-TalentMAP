@@ -158,7 +158,6 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
         'Language Offset Winter': winterLanguageOffsets?.find(o =>
           o.code === languageOffsets?.language_offset_winter)?.description || DEFAULT_TEXT,
       },
-      { 'Skill': result?.position_skill_code || NO_SKILL },
       { 'Grade': result?.position_grade_code || NO_GRADE },
       { 'Pay Plan': result?.position_pay_plan_code || NO_GRADE },
       { 'Post Differential | Danger Pay': getDifferentials(differentials) },
@@ -178,7 +177,6 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
       { 'Bureau': result?.bureau_short_description || NO_BUREAU },
       { 'Location': result?.location_description || NO_POST },
       { 'Organization': result?.organization_short_description || NO_ORG },
-      { 'Skill': result?.position_skill_code || NO_SKILL },
       { 'Grade': result?.position_grade_code || NO_GRADE },
       { 'Pay Plan': result?.position_pay_plan_code || NO_GRADE },
       { 'Post Differential | Danger Pay': getDifferentials(differentials) },
