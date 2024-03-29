@@ -211,6 +211,7 @@ const ProjectedVacancy = ({ isAO }) => {
           future_vacancy_override_tour_end_date: p.future_vacancy_override_tour_end_date ?
             p.future_vacancy_override_tour_end_date.toISOString().substring(0, 10) : null,
           future_vacancy_exclude_import_indicator: include ? 'Y' : 'N',
+          future_vacancy_status_code: include ? p.future_vacancy_status_code : 'X',
         });
       }
     });
