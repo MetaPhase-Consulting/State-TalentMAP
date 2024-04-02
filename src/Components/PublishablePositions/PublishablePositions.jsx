@@ -6,12 +6,14 @@ import FA from 'react-fontawesome';
 import { sortBy, uniqBy } from 'lodash';
 import {
   publishablePositionsEdit,
+  publishablePositionsExport,
   publishablePositionsFetchData,
   publishablePositionsFiltersFetchData,
   savePublishablePositionsSelections,
 } from 'actions/publishablePositions';
 import Alert from 'Components/Alert/Alert';
 import Spinner from 'Components/Spinner';
+import ExportButton from 'Components/ExportButton';
 import ScrollUpButton from 'Components/ScrollUpButton';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
@@ -49,6 +51,7 @@ const PublishablePositions = ({ viewType }) => {
 
   const [clearFilters, setClearFilters] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [exportIsLoading, setExportIsLoading] = useState(false);
 
   const statuses = filters?.statusFilters;
   const bureaus = filters?.bureauFilters;
@@ -193,6 +196,19 @@ const PublishablePositions = ({ viewType }) => {
     selectedBidCycles,
   ]);
 
+  const exportPublishablePositions = () => {
+    if (!exportIsLoading) {
+      setExportIsLoading(true);
+      publishablePositionsExport(getQuery())
+        .then(() => {
+          setExportIsLoading(false);
+        })
+        .catch(() => {
+          setExportIsLoading(false);
+        });
+    }
+  };
+
 
   return (
     <div className="position-search">
@@ -324,6 +340,13 @@ const PublishablePositions = ({ viewType }) => {
         <>
           <div className="position-search-controls--results padding-top results-dropdown">
             <ScrollUpButton />
+            <div className="export-button-container">
+              <ExportButton
+                onClick={exportPublishablePositions}
+                // isLoading={exportIsLoading}
+                disabled={false}
+              />
+            </div>
           </div>
           {
             editMode &&
