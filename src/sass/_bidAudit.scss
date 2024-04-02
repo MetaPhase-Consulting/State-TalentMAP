@@ -29,8 +29,16 @@
     }
   }
 }
-.add-at {
-  text-align: right;
+.ba-update-new-wrapper {
+  display: flex;
+  justify-content: end;
+}
+.ba-update-new {
+  margin-left: 10px;
+}
+.ba-supplemental_buttons {
+  display: flex;
+  justify-content: end;
 }
 .position-content--container {
   .position-content--details {
