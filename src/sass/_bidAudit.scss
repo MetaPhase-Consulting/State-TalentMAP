@@ -29,8 +29,9 @@
     }
   }
 }
-.add-at {
-  text-align: right;
+.ba-flex-end {
+  display: flex;
+  justify-content: end;
 }
 .position-content--container {
   .position-content--details {

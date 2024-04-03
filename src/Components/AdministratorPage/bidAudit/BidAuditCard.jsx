@@ -63,6 +63,10 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
     });
   };
 
+  const onRunAudit = (e) => {
+    e.preventDefault();
+  };
+
   const onCancelForm = () => {
     setPbDate(getResult(pos, 'mc_date'));
   };
@@ -257,6 +261,9 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
         </div>
         <div>
           <button onClick={onDelete}>Delete</button>
+          <div className="ba-flex-end">
+            <button onClick={onRunAudit}>Run Bid Audit</button>
+          </div>
         </div>
       </div>
     ),
