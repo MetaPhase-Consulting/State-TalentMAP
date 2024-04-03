@@ -90,7 +90,7 @@ const BidAudit = () => {
               </Link>
             </Tooltip>
             <span className="ml-10">
-              <FA className="ml-10" name="plus" />
+              <FA name="plus" />
               {' '}
               <Link
                 to="#"
