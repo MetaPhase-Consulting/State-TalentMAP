@@ -37,6 +37,7 @@ const ProjectedVacancy = ({ isAO }) => {
 
   const [includedPositions, setIncludedPositions] = useState([]);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
+  const [includedInEditMode, setIncludedInEditMode] = useState(false);
   const [clearFilters, setClearFilters] = useState(false);
   const [selectedBureaus, setSelectedBureaus] =
     useState(userSelections?.selectedBureaus || []);
@@ -64,6 +65,12 @@ const ProjectedVacancy = ({ isAO }) => {
     filtersErrored || languageOffsetOptionsErrored || positionsErrored || languageOffsetsErrored;
   const disableSearch = cardsInEditMode?.length > 0;
   const disableInput = filtersLoading || resultsLoading || disableSearch;
+
+  const originalIncluded = positions?.filter(
+    p => p.future_vacancy_exclude_import_indicator === 'N',
+  )?.map(
+    k => k.future_vacancy_seq_num,
+  ) || [];
 
   const getQuery = () => ({
     bureaus: selectedBureaus?.map(o => o?.code),
@@ -136,13 +143,7 @@ const ProjectedVacancy = ({ isAO }) => {
 
   useEffect(() => {
     if (positions.length) {
-      setIncludedPositions(
-        positions?.filter(
-          p => p.future_vacancy_exclude_import_indicator === 'N',
-        )?.map(
-          k => k.future_vacancy_seq_num,
-        ),
-      );
+      setIncludedPositions(originalIncluded);
       const posNums = positions?.map(o => o.position_number);
       const uniqPosNums = [...new Set(posNums)];
       dispatch(projectedVacancyLangOffsets({
@@ -150,6 +151,15 @@ const ProjectedVacancy = ({ isAO }) => {
       }));
     }
   }, [positions]);
+
+  useEffect(() => {
+    const diffExists = originalIncluded?.sort().join(',') !== includedPositions?.sort().join(',');
+    if (diffExists) {
+      setIncludedInEditMode(true);
+    } else {
+      setIncludedInEditMode(false);
+    }
+  }, [includedPositions]);
 
   const fetchAndSet = () => {
     const f = [
@@ -205,13 +215,27 @@ const ProjectedVacancy = ({ isAO }) => {
       const include = includedPositions.find(o => o === p.future_vacancy_seq_num);
       const currentValue = p.future_vacancy_exclude_import_indicator;
       const needsUpdate = (currentValue === 'Y' && include) || (currentValue === 'N' && !include);
+
+      // Exclude is NULL when Status: Expired, Inactive, Proposed
+      let excludeIndicator = null;
+      let statusCode = p.future_vacancy_status_code;
+
+      if (include) {
+        // Exclude is N when Status: Active
+        excludeIndicator = 'N';
+        statusCode = 'A';
+      } else if (statusCode === 'X') {
+        // Exclude is Y when Status: Excluded
+        excludeIndicator = 'Y';
+      }
+
       if (needsUpdate) {
         updatedPvs.push({
           ...p,
           future_vacancy_override_tour_end_date: p.future_vacancy_override_tour_end_date ?
             p.future_vacancy_override_tour_end_date.toISOString().substring(0, 10) : null,
-          future_vacancy_exclude_import_indicator: include ? 'Y' : 'N',
-          future_vacancy_status_code: include ? p.future_vacancy_status_code : 'X',
+          future_vacancy_exclude_import_indicator: excludeIndicator,
+          future_vacancy_status_code: statusCode,
         });
       }
     });
@@ -326,11 +350,11 @@ const ProjectedVacancy = ({ isAO }) => {
       {disableSearch &&
         <Alert
           type="warning"
-          title={'Edit Mode (Search Disabled)'}
+          title={'Edit Mode (Search and Adding to Proposed Cycle Disabled)'}
           customClassName="mb-10"
           messages={[{
-            body: 'Discard or save your edits before searching. ' +
-              'Filters are disabled if any cards are in Edit Mode.',
+            body: 'Discard or save your edits before searching or adding to proposed cycle. ' +
+              'Filters and included checkbox inputs are disabled if any cards are in Edit Mode.',
           }]}
         />
       }
@@ -338,14 +362,25 @@ const ProjectedVacancy = ({ isAO }) => {
         <div className="usa-width-one-whole position-search--results mt-20">
           <div className="proposed-cycle-banner">
             {includedPositions?.length} {includedPositions?.length === 1 ? 'Position' : 'Positions'} Selected
-            {isAO &&
-              <button
-                className="usa-button-secondary"
-                onClick={addToProposedCycle}
-                disabled={!includedPositions?.length}
-              >
-                Add to Proposed Cycle
-              </button>
+            {(isAO && includedInEditMode) &&
+              <div>
+                <button
+                  onClick={() => {
+                    setIncludedInEditMode(false);
+                    setIncludedPositions(originalIncluded);
+                  }}
+                  disabled={!includedPositions?.length}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="usa-button-secondary"
+                  onClick={addToProposedCycle}
+                  disabled={!includedPositions?.length}
+                >
+                  Add to Proposed Cycle
+                </button>
+              </div>
             }
           </div>
           <div className="usa-grid-full position-list">
@@ -359,6 +394,8 @@ const ProjectedVacancy = ({ isAO }) => {
                 }
                 key={k.future_vacancy_seq_num}
                 updateIncluded={onIncludedUpdate}
+                disableIncluded={disableSearch}
+                disableEdit={includedInEditMode}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
                 }
