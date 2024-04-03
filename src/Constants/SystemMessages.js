@@ -290,6 +290,11 @@ export const DELETE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully de
 export const DELETE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const DELETE_BID_AUDIT_ERROR = 'There was an issue attempting to delete this Bid Audit. Please try again.';
 
+export const UPDATE_BID_COUNT_SUCCESS_TITLE = 'Bid Counts Updated';
+export const UPDATE_BID_COUNT_SUCCESS = 'The Dynamic Audit has run successfully.';
+export const UPDATE_BID_COUNT_ERROR_TITLE = 'Bid Counts Not Updated';
+export const UPDATE_BID_COUNT_ERROR = 'There was an issue attempting to run this Dynamic Bid Audit. Please try again.';
+
 export const JOB_CATEGORIES_EDIT_SUCCESS_TITLE = 'Job Category Edits Successfully Saved';
 export const JOB_CATEGORIES_EDIT_SUCCESS = 'Your edits to the selected Job Category have been saved';
 export const JOB_CATEGORIES_EDIT_ERROR_TITLE = 'Job Category Edit Error';
