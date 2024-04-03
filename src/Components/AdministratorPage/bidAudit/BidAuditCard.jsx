@@ -261,7 +261,7 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
         </div>
         <div>
           <button onClick={onDelete}>Delete</button>
-          <div className="ba-supplemental_buttons">
+          <div className="ba-flex-end">
             <button onClick={onRunAudit}>Run Bid Audit</button>
           </div>
         </div>

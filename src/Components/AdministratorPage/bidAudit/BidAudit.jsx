@@ -81,18 +81,16 @@ const BidAudit = () => {
       }
       <div className="usa-width-one-whole position-search--results">
         <div className="usa-grid-full position-list">
-          <span className="ba-update-new-wrapper">
-            <span className="ba-update-new">
-              <Tooltip title="Run Dynamic Audit">
-                <FA name="clock-o" />
-                {' '}
-                <Link to="#" onClick={onUpdateCountClick}>
-                  {'Update Bid Count'}
-                </Link>
-              </Tooltip>
-            </span>
-            <span className="ba-update-new">
-              <FA name="plus" />
+          <span className="ba-flex-end">
+            <Tooltip title="Run Dynamic Audit">
+              <FA name="clock-o" />
+              {' '}
+              <Link to="#" onClick={onUpdateCountClick}>
+                {'Update Bid Count'}
+              </Link>
+            </Tooltip>
+            <span className="ml-10">
+              <FA className="ml-10" name="plus" />
               {' '}
               <Link
                 to="#"
