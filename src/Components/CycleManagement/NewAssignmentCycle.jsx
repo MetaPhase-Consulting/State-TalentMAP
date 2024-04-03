@@ -36,16 +36,16 @@ const NewAssignmentCycle = (props) => {
   const [assignedBidder, setAssignedBidder] = useState('');
 
   const cycleCategories = [
-    { value: 'A', label: 'A(A100)' },
-    { value: 'O', label: 'O(Other)' },
-    { value: 'J', label: 'J(Untenured Junior Officer' },
+    { value: 'A', label: 'A (A100 Class)' },
+    { value: 'O', label: 'O (Other)' },
+    { value: 'J', label: 'J (Untenured Junior Officer)' },
   ];
 
   const cycleStatuses = [
-    { value: 'A', label: 'A(Active)' },
-    { value: 'C', label: 'C(Closed)' },
-    { value: 'M', label: 'M(Merged)' },
-    { value: 'P', label: 'P(Proposed)' },
+    { value: 'A', label: 'A (Active)' },
+    { value: 'C', label: 'C (Closed)' },
+    { value: 'M', label: 'M (Merged)' },
+    { value: 'P', label: 'P (Proposed)' },
   ];
 
   const disableSave = assignmentCycle?.length
@@ -106,7 +106,7 @@ const NewAssignmentCycle = (props) => {
   return (
     <div>
       <form className="assignment-cycle-form">
-        <div><div className="error-color pr-10">*</div>All Fileds Required</div>
+        <div><div className="error-color pr-10">*</div>All Fields Required</div>
         <div>
           <label htmlFor="status">Assignment Cycle</label>
           <span className="bs-validation-container">
