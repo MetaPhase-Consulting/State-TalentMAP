@@ -216,13 +216,13 @@ export function bidderPortfolioFetchData(query = {}) {
       query$ = omit(query$, ['hasHandshake']);
       const UAvalues = unassigned.map(a => a.value);
       if (includes(UAvalues, 'noHandshake')) {
-        query$.hasHandshake = false;
+        query$.hasHandshake = 'N';
       }
       if (includes(UAvalues, 'noPanel')) {
-        query$.noPanel = true;
+        query$.noPanel = 'Y';
       }
       if (includes(UAvalues, 'noBids')) {
-        query$.noBids = true;
+        query$.noBids = 'Y';
       }
     }
     if (!query$.ordering) {
