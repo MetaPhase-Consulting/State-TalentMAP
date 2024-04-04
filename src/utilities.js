@@ -1137,7 +1137,7 @@ export const ppGrade = (pp, grade) => {
   if (!pp && !grade) {
     return defaultText;
   }
-  return `${pp || defaultText}/${grade || defaultText}`;
+  return `${pp || defaultText} ${grade || defaultText}`;
 };
 
 // Search Tags: common.js, helper file, helper functions, common helper file, common file
