@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
-import { positionClassificationNumberCheck, positionClassifications, positionClassificationsEdit } from '../../../actions/positionClassifications';
+import {
+  positionClassificationNumberCheck, positionClassifications, positionClassificationsEdit
+} from '../../../actions/positionClassifications';
 
 const PositionClassification = (props) => {
   const { positionNumber, bureau, posSeqNum, editMode, setEditMode, disableEdit } = props;
@@ -32,7 +35,7 @@ const PositionClassification = (props) => {
   }, [results]);
 
   const handleSelection = (code, event) => {
-    const newSelections = selections.map(s => {
+    const newSelections = selections?.map(s => {
       if (s.code === code) {
         return {
           ...s,
@@ -56,7 +59,7 @@ const PositionClassification = (props) => {
     let updatedDates = '';
     let updaterIds = '';
 
-    selections.forEach(s => {
+    selections?.forEach(s => {
       const separator = position === '' ? '' : ',';
       position = position.concat(separator, posSeqNum);
       codes = codes.concat(separator, s.code);
@@ -114,10 +117,10 @@ const PositionClassification = (props) => {
               {classifications?.map((o) => (
                 <td key={o.code}>
                   <input
-                    id={`classification-${o.code}-${posSeqNum}`}
+                    id={`classification-${o.code}-${positionNumber}`}
                     type="checkbox"
                     name={o.code}
-                    checked={selections.find(s => o.code === s.code && s.value === '1') ?? false}
+                    checked={selections?.find(s => o.code === s.code && s.value === '1') ?? false}
                     onChange={(event) => handleSelection(o.code, event)}
                     disabled={!editMode}
                   />
@@ -140,7 +143,7 @@ const PositionClassification = (props) => {
 PositionClassification.propTypes = {
   positionNumber: PropTypes.string.isRequired,
   bureau: PropTypes.string.isRequired,
-  posSeqNum: PropTypes.string.isRequired,
+  posSeqNum: PropTypes.number.isRequired,
   editMode: PropTypes.bool.isRequired,
   setEditMode: PropTypes.func.isRequired,
   disableEdit: PropTypes.bool.isRequired,
@@ -151,7 +154,7 @@ PositionClassification.defaultProps = {
   bureau: undefined,
   posSeqNum: undefined,
   editMode: false,
-  setEditMode: () => { },
+  setEditMode: EMPTY_FUNCTION,
   disableEdit: false,
 };
 
