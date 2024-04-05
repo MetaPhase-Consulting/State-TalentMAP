@@ -1,37 +1,41 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, batch } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
+import { useDataLoader } from 'hooks';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
+import api from '../../../api';
+import { CancelToken } from 'axios';
 import {
-  positionClassificationNumberCheck, positionClassifications, positionClassificationsEdit
-} from '../../../actions/positionClassifications';
+  UPDATE_POSITION_CLASSIFICATION_ERROR,
+  UPDATE_POSITION_CLASSIFICATION_ERROR_TITLE,
+  UPDATE_POSITION_CLASSIFICATION_SUCCESS,
+  UPDATE_POSITION_CLASSIFICATION_SUCCESS_TITLE,
+} from 'Constants/SystemMessages';
+import { toastError, toastSuccess } from 'actions/toast';
 
 const PositionClassification = (props) => {
   const { positionNumber, bureau, posSeqNum, editMode, setEditMode, disableEdit } = props;
 
   const dispatch = useDispatch();
 
-  const results = useSelector(state => state.positionClassifications);
-  const currentCard = useSelector(state => state.positionClassificationsNumber);
-  const isLoading = useSelector(state => state.positionClassificationsIsLoading);
-  const pc = results?.positionClassifications ?? [];
-  const cs = results?.classificationSelections ?? [];
-
-  useEffect(() => {
-    if (positionNumber) {
-      dispatch(positionClassificationNumberCheck(positionNumber));
-      dispatch(positionClassifications(positionNumber));
-    }
-  }, [positionNumber]);
-
+  const [refetch, setRefetch] = useState(true);
   const [classifications, setClassifications] = useState([]);
   const [selections, setSelections] = useState([]);
 
+  const { data: results, error, loading: isLoading } = useDataLoader(
+    api().get,
+    `/fsbid/position_classifications/${positionNumber}/`,
+    true,
+    undefined,
+    refetch,
+  );
+
+
   useEffect(() => {
-    setClassifications(pc);
-    setSelections(cs);
+    setClassifications(results?.data?.positionClassifications ?? []);
+    setSelections(results?.data?.classificationSelections ?? []);
   }, [results]);
 
   const handleSelection = (code, event) => {
@@ -49,7 +53,7 @@ const PositionClassification = (props) => {
 
   const handleCancel = () => {
     setEditMode(false);
-    setSelections(cs);
+    setSelections(results?.data?.classificationSelections ?? []);
   };
 
   const handleSubmit = () => {
@@ -68,18 +72,36 @@ const PositionClassification = (props) => {
       updaterIds = updaterIds.concat(separator, s.user_id !== 0 ? s.user_id : '');
     });
 
+    const editData = {
+      id: position,
+      values,
+      codes,
+      updater_ids: updaterIds,
+      updated_dates: updatedDates,
+    };
+
     if (position !== '') {
-      dispatch(positionClassificationsEdit(positionNumber, {
-        id: position,
-        values,
-        codes,
-        updater_ids: updaterIds,
-        updated_dates: updatedDates,
-      }));
-    }
+      api().put('/fsbid/position_classifications/edit/', editData)
+        .then(() => {
+          const toastTitle = UPDATE_POSITION_CLASSIFICATION_SUCCESS_TITLE;
+          const toastMessage = UPDATE_POSITION_CLASSIFICATION_SUCCESS;
+          batch(() => {
+            dispatch(toastSuccess(toastMessage, toastTitle));
+            setRefetch(!refetch);
+            setEditMode(false);
+          });
+        })
+        .catch((err) => {
+          if (err?.message === 'cancel') {
+            const toastTitle = UPDATE_POSITION_CLASSIFICATION_ERROR_TITLE;
+            const toastMessage = UPDATE_POSITION_CLASSIFICATION_ERROR;
+            dispatch(toastError(toastMessage, toastTitle));
+          }
+        });
+    };
   };
 
-  return (isLoading && positionNumber === currentCard ?
+  return (isLoading ?
     <div className="loading-animation--5">
       <div className="loading-message pbl-20">
         Loading additional data
