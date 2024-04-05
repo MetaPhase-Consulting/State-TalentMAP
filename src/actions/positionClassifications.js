@@ -11,6 +11,8 @@ import { toastError, toastSuccess } from './toast';
 
 let cancelEdit;
 
+// ========== POSITION CLASSIFICATIONS FETCH ==========
+
 export function positionClassificationsIsLoading(bool) {
   return {
     type: 'POSITION_CLASSIFICATIONS_IS_LOADING',
@@ -52,6 +54,8 @@ export function positionClassifications(id) {
       });
   };
 }
+
+// ========== POSITION CLASSIFICATIONS EDIT ==========
 
 export function positionClassificationsEdit(query, data) {
   return (dispatch) => {
