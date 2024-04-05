@@ -1,4 +1,5 @@
 import { batch } from 'react-redux';
+import { CancelToken } from 'axios';
 import {
   UPDATE_POSITION_CLASSIFICATION_ERROR,
   UPDATE_POSITION_CLASSIFICATION_ERROR_TITLE,
@@ -7,6 +8,8 @@ import {
 } from '../Constants/SystemMessages';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
+
+let cancelEdit;
 
 export function positionClassificationsIsLoading(bool) {
   return {
@@ -50,56 +53,27 @@ export function positionClassifications(id) {
   };
 }
 
-export function positionClassificationsEditErrored(bool) {
-  return {
-    type: 'POSITION_CLASSIFICATIONS_EDIT_HAS_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function positionClassificationsEditLoading(bool) {
-  return {
-    type: 'POSITION_CLASSIFICATIONS_EDIT_IS_LOADING',
-    isLoading: bool,
-  };
-}
-export function positionClassificationsEditSuccess(results) {
-  return {
-    type: 'POSITION_CLASSIFICATIONS_EDIT_SUCCESS',
-    results,
-  };
-}
-export function positionClassificationsEdit(data) {
+export function positionClassificationsEdit(query, data) {
   return (dispatch) => {
-    batch(() => {
-      dispatch(positionClassificationsEditLoading(true));
-      dispatch(positionClassificationsEditErrored(false));
-    });
-
-    api().put('/fsbid/position_classifications/edit/', data)
+    if (cancelEdit) {
+      cancelEdit('cancel');
+    }
+    api().put('/fsbid/position_classifications/edit/', data, {
+      cancelToken: new CancelToken((c) => { cancelEdit = c; }),
+    })
       .then(() => {
         const toastTitle = UPDATE_POSITION_CLASSIFICATION_SUCCESS_TITLE;
         const toastMessage = UPDATE_POSITION_CLASSIFICATION_SUCCESS;
         batch(() => {
-          dispatch(positionClassificationsEditErrored(false));
           dispatch(toastSuccess(toastMessage, toastTitle));
-          dispatch(positionClassificationsEditSuccess(true));
-          dispatch(positionClassificationsEditLoading(false));
+          dispatch(positionClassifications(query));
         });
       })
       .catch((err) => {
         if (err?.message === 'cancel') {
-          batch(() => {
-            dispatch(positionClassificationsEditLoading(true));
-            dispatch(positionClassificationsEditErrored(false));
-          });
-        } else {
           const toastTitle = UPDATE_POSITION_CLASSIFICATION_ERROR_TITLE;
           const toastMessage = UPDATE_POSITION_CLASSIFICATION_ERROR;
-          batch(() => {
-            dispatch(positionClassificationsEditErrored(true));
-            dispatch(toastError(toastMessage, toastTitle));
-            dispatch(positionClassificationsEditLoading(false));
-          });
+          dispatch(toastError(toastMessage, toastTitle));
         }
       });
   };
