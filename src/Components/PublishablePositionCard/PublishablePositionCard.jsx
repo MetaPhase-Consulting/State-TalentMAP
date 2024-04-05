@@ -88,10 +88,11 @@ const PublishablePositionCard = ({
 
   const [textArea, setTextArea] = useState(data?.positionDetails || 'No description.');
   const [editMode, setEditMode] = useState(false);
+  const [classificationsEditMode, setClassificationsEditMode] = useState(false);
 
   useEffect(() => {
-    onEditModeSearch(editMode);
-  }, [editMode]);
+    onEditModeSearch(editMode || classificationsEditMode);
+  }, [editMode, classificationsEditMode]);
 
   const onSubmitForm = () => {
     const editData = {
@@ -163,13 +164,13 @@ const PublishablePositionCard = ({
                 value={exclude}
                 onCheckBoxClick={e => setExclude(e)}
               />
-              { DETO_RWA_FLAG() &&
+              {DETO_RWA_FLAG() &&
                 <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
                   <CheckBox
                     id="deto-checkbox"
                     label="RWA/DETO Eligible"
                     value={data?.deto_rwa}
-                    onCheckBoxClick={() => {}}
+                    onCheckBoxClick={() => { }}
                     disabled
                   />
                 </Tooltip>
@@ -264,17 +265,20 @@ const PublishablePositionCard = ({
           showLoadingAnimation={additionalCallsLoading}
           onShowMore={(e) => onShowMorePP(e)}
         />,
-      }, PP_CLASSIFICATIONS_FLAG() ?
-        {
-          text: 'Position Classification',
-          value: 'CLASSIFICATION',
-          content: <PositionClassification
-            positionNumber={data?.positionNumber}
-            bureau={data?.bureau || DEFAULT_TEXT}
-            posSeqNum={data?.posSeqNum}
-          />,
-          disabled: editMode,
-        } : {},
+        disabled: classificationsEditMode,
+      }, PP_CLASSIFICATIONS_FLAG() ? {
+        text: 'Position Classification',
+        value: 'CLASSIFICATION',
+        content: <PositionClassification
+          positionNumber={data?.positionNumber}
+          bureau={data?.bureau || DEFAULT_TEXT}
+          posSeqNum={data?.posSeqNum}
+          editMode={classificationsEditMode}
+          setEditMode={setClassificationsEditMode}
+          disableEdit={disableEdit}
+        />,
+        disabled: editMode,
+      } : {},
       ]}
     />
   );
