@@ -169,7 +169,7 @@ const PublishablePositionCard = ({
                   <CheckBox
                     id="deto-checkbox"
                     label="RWA/DETO Eligible"
-                    value={data?.deto_rwa}
+                    value={data?.deto_rwa || false}
                     onCheckBoxClick={() => { }}
                     disabled
                   />
@@ -232,7 +232,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setSelectedFuncBureau(e?.target.value)}
                 >
                   {hardcodedFilters.functionalBureauFilters.map(b => (
-                    <option value={b.code}>
+                    <option key={b.code} value={b.code}>
                       {b.description}
                     </option>
                   ))}
@@ -292,7 +292,7 @@ PublishablePositionCard.propTypes = {
   disableEdit: PropTypes.bool,
   additionalCallsLoading: PropTypes.bool,
   filters: PropTypes.shape({
-    filters: {},
+    filters: PropTypes.shape({}),
   }).isRequired,
   onShowMorePP: PropTypes.func,
 };
