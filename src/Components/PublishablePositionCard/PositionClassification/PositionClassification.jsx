@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
+import { Row } from 'Components/Layout';
 import { positionClassificationNumberCheck, positionClassifications, positionClassificationsEdit } from '../../../actions/positionClassifications';
 
 const PositionClassification = (props) => {
-  const { positionNumber, bureau, posSeqNum } = props;
+  const { positionNumber, bureau, posSeqNum, editMode, setEditMode, disableEdit } = props;
 
   const dispatch = useDispatch();
 
@@ -42,6 +44,11 @@ const PositionClassification = (props) => {
     setSelections(newSelections);
   };
 
+  const handleCancel = () => {
+    setEditMode(false);
+    setSelections(cs);
+  };
+
   const handleSubmit = () => {
     let position = '';
     let codes = '';
@@ -75,13 +82,24 @@ const PositionClassification = (props) => {
         Loading additional data
       </div>
     </div> :
-    <div className="position-classifications">
-      <div className="line-separated-fields">
-        <div>
-          <span>Position:</span>
-          <span>{bureau} {positionNumber}</span>
+    <div className="position-classifications position-content">
+      <Row fluid className="position-content--subheader">
+        <div className="line-separated-fields">
+          <div>
+            <span className="span-label">Position:</span>
+            <span className="span-text">{bureau} {positionNumber}</span>
+          </div>
         </div>
-      </div>
+        {!editMode &&
+          <button
+            className={`toggle-edit-mode ${disableEdit ? 'toggle-edit-mode-disabled' : ''}`}
+            onClick={disableEdit ? () => { } : () => setEditMode(!editMode)}
+          >
+            <FA name="pencil" />
+            <div>Edit</div>
+          </button>
+        }
+      </Row>
       <div className="table-container">
         <table>
           <thead>
@@ -96,10 +114,12 @@ const PositionClassification = (props) => {
               {classifications?.map((o) => (
                 <td key={o.code}>
                   <input
+                    id={`classification-${o.code}-${posSeqNum}`}
                     type="checkbox"
                     name={o.code}
                     checked={selections.find(s => o.code === s.code && s.value === '1') ?? false}
                     onChange={(event) => handleSelection(o.code, event)}
+                    disabled={!editMode}
                   />
                 </td>
               ))}
@@ -107,9 +127,12 @@ const PositionClassification = (props) => {
           </tbody>
         </table>
       </div>
-      <div className="position-classifications--actions">
-        <button onClick={handleSubmit}>Save</button>
-      </div>
+      {editMode &&
+        <div className="position-form--actions">
+          <button onClick={handleCancel}>Cancel</button>
+          <button onClick={handleSubmit}>Save</button>
+        </div>
+      }
     </div>
   );
 };
@@ -118,12 +141,18 @@ PositionClassification.propTypes = {
   positionNumber: PropTypes.string.isRequired,
   bureau: PropTypes.string.isRequired,
   posSeqNum: PropTypes.string.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  setEditMode: PropTypes.func.isRequired,
+  disableEdit: PropTypes.bool.isRequired,
 };
 
 PositionClassification.defaultProps = {
   positionNumber: undefined,
   bureau: undefined,
   posSeqNum: undefined,
+  editMode: false,
+  setEditMode: () => { },
+  disableEdit: false,
 };
 
 export default PositionClassification;
