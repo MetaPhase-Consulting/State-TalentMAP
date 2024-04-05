@@ -136,7 +136,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setStatus(e?.target.value)}
                 >
                   {hardcodedFilters.statusFilters.map(s => (
-                    <option value={s.code}>
+                    <option key={s.code} value={s.code}>
                       {s.description}
                     </option>
                   ))}
@@ -150,7 +150,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setOverrideTOD(e?.target.value)}
                 >
                   {hardcodedFilters.todFilters.map(t => (
-                    <option value={t.code}>
+                    <option key={t.code} value={t.code}>
                       {t.description}
                     </option>
                   ))}
