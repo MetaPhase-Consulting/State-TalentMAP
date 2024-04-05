@@ -429,7 +429,8 @@
       padding-right: 5px;
     }
 
-    .span-label, .span-text {
+    .span-label,
+    .span-text {
       font-size: 15px;
     }
 
@@ -446,6 +447,12 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+
+  // ============= SUBHEADER =============
+
+  .position-content--subheader {
+    margin: 0px;
+  }
 
   .table-container {
     display: flex;
@@ -488,16 +495,6 @@
       padding: 0 !important;
       margin: 0 !important;
       color: $color-green !important;
-    }
-  }
-
-  .position-classifications--actions {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0px 0px 10px;
-
-    button {
-      font-size: 16px;
     }
   }
 }
