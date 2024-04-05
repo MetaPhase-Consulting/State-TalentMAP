@@ -66,7 +66,7 @@ const PositionClassification = (props) => {
     });
 
     if (position !== '') {
-      dispatch(positionClassificationsEdit({
+      dispatch(positionClassificationsEdit(positionNumber, {
         id: position,
         values,
         codes,
