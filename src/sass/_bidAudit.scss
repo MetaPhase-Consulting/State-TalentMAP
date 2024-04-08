@@ -23,13 +23,15 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
       .filter-div {
+        font-size: 15px;
         width: 400px;
       }
     }
   }
 }
-.add-at {
-  text-align: right;
+.ba-flex-end {
+  display: flex;
+  justify-content: end;
 }
 .position-content--container {
   .position-content--details {

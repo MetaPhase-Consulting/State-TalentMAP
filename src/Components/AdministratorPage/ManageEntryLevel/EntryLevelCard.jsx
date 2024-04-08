@@ -12,9 +12,13 @@ import CheckBox from 'Components/CheckBox';
 import TabbedCard from 'Components/TabbedCard';
 import PropTypes from 'prop-types';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
+import { checkFlag } from 'flags';
 import { entryLevelEdit } from '../../../actions/entryLevel';
 
+const useManageEntryLevelEdit = () => checkFlag('flags.manage_entry_level_edit');
+
 const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
+  const showManageEntryLevelEdit = useManageEntryLevelEdit();
   const dispatch = useDispatch();
 
   const pos = result;
@@ -30,7 +34,6 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
 
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
-    // TODO: during integration, replace 7 with unique card identifier
     onEditModeSearch(editMode, id);
   }, [editMode]);
 
@@ -64,10 +67,10 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
       { 'Org/Code': getResult(pos, 'org') || NO_ORG },
       { 'Grade': getResult(pos, 'grade') || NO_GRADE },
       { 'Job Category': getResult(pos, 'jobCategory') || 'None Listed' },
-      { '': <CheckBox id="el" label="EL" value={el} disabled /> },
-      { '': <CheckBox id="lna" label="LNA" value={lna} disabled /> },
-      { '': <CheckBox id="fica" label="FICA" value={fica} disabled /> },
-      { '': <CheckBox id="mc" label="MC" value={mc} disabled /> },
+      { '': <CheckBox id="el" label="EL" value={el} disabled className="tm-checkbox-transparent" /> },
+      { '': <CheckBox id="lna" label="LNA" value={lna} disabled className="tm-checkbox-transparent" /> },
+      { '': <CheckBox id="fica" label="FICA" value={fica} disabled className="tm-checkbox-transparent" /> },
+      { '': <CheckBox id="mc" label="MC" value={mc} disabled className="tm-checkbox-transparent" /> },
       { 'MC Date': getResult(pos, 'MC_END_DATE') || '---' },
     ],
     bodySecondary: [
@@ -125,6 +128,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
       </div>
     ),
     cancelText: 'Are you sure you want to discard all changes made to this position?',
+    // TODO: during integration, replace 5 with unique card identifier
     handleSubmit: () => dispatch(entryLevelEdit(5, {})),
     handleCancel: () => onCancelForm(),
     handleEdit: {
@@ -146,6 +150,7 @@ const EntryLevelCard = ({ result, id, onEditModeSearch }) => {
               sections={sections}
               form={form}
               isCondensed
+              tempHideEdit={!showManageEntryLevelEdit}
             />
           </div>
         ),

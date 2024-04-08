@@ -7,10 +7,12 @@ import {
   cycleManagementDelete,
   cycleManagementFetchDataErrored,
   cycleManagementFetchDataLoading,
+  cycleManagementMerge,
   cycleManagementSelections,
   cyclePositionEditHasErrored,
   cyclePositionEditIsLoading,
   cyclePositionEditSuccess,
+  cyclePositionFiltersIsLoading,
   cyclePositionRemoveHasErrored,
   cyclePositionRemoveIsLoading,
   cyclePositionRemoveSuccess,
@@ -18,8 +20,7 @@ import {
   cyclePositionSearchFetchDataErrored,
   cyclePositionSearchFetchDataLoading,
   cyclePositionSearchSelections,
-
-
+  cyclePositionsFilters,
 } from './cycleManagement';
 
 export default {
@@ -31,10 +32,12 @@ export default {
   cycleManagementDelete,
   cycleManagementFetchDataErrored,
   cycleManagementFetchDataLoading,
+  cycleManagementMerge,
   cycleManagementSelections,
   cyclePositionEditHasErrored,
   cyclePositionEditIsLoading,
   cyclePositionEditSuccess,
+  cyclePositionFiltersIsLoading,
   cyclePositionRemoveIsLoading,
   cyclePositionRemoveHasErrored,
   cyclePositionRemoveSuccess,
@@ -42,4 +45,5 @@ export default {
   cyclePositionSearchFetchDataErrored,
   cyclePositionSearchFetchDataLoading,
   cyclePositionSearchSelections,
+  cyclePositionsFilters,
 };

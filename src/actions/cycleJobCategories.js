@@ -4,173 +4,192 @@ import {
   UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS,
   UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
+import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
+import { convertQueryToString } from '../utilities';
 
-// =================== CYCLE JOB CATEGORIES EDIT ===================
+let cancelCycleCategories;
+let cancelCycleJobCategories;
+let cancelCycleJobCategoriesStatuses;
+let cancelEditCycleJobCategories;
 
-export function cycleJobCategoriesEditErrored(bool) {
+// =================== CYCLE CATEGORIES ===================
+
+export function cycleCategoriesErrored(bool) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_EDIT_HAS_ERRORED',
+    type: 'CYCLE_CATEGORIES_ERRORED',
     hasErrored: bool,
   };
 }
-export function cycleJobCategoriesEditLoading(bool) {
+export function cycleCategoriesLoading(bool) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_EDIT_IS_LOADING',
+    type: 'CYCLE_CATEGORIES_LOADING',
     isLoading: bool,
   };
 }
-export function cycleJobCategoriesEditSuccess(results) {
+export function cycleCategoriesSuccess(results) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_DATA_SUCCESS',
+    type: 'CYCLE_CATEGORIES_SUCCESS',
     results,
   };
 }
-export function cycleJobCategoriesEdit(data) {
+export function cycleCategories() {
   return (dispatch) => {
+    if (cancelCycleCategories) { cancelCycleCategories('cancel'); }
     batch(() => {
-      dispatch(cycleJobCategoriesEditLoading(true));
-      dispatch(cycleJobCategoriesEditErrored(false));
+      dispatch(cycleCategoriesLoading(true));
+      dispatch(cycleCategoriesErrored(false));
     });
-
-    api().patch('/cycle-job-categories-ep/', data)
-      .then(() => {
-        const toastTitle = UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS_TITLE;
-        const toastMessage = UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS;
+    api().get('/fsbid/cycle_job_categories/', {
+      cancelToken: new CancelToken((c) => { cancelCycleCategories = c; }),
+    })
+      .then(({ data }) => {
         batch(() => {
-          dispatch(cycleJobCategoriesEditErrored(false));
-          dispatch(cycleJobCategoriesEditSuccess(true));
-          dispatch(toastSuccess(toastMessage, toastTitle));
-          dispatch(cycleJobCategoriesEditSuccess());
-          dispatch(cycleJobCategoriesEditLoading(false));
+          dispatch(cycleCategoriesSuccess(data));
+          dispatch(cycleCategoriesErrored(false));
+          dispatch(cycleCategoriesLoading(false));
         });
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
+        if (err?.message !== 'cancel') {
           batch(() => {
-            dispatch(cycleJobCategoriesEditLoading(true));
-            dispatch(cycleJobCategoriesEditErrored(false));
-          });
-        } else {
-          // Start: temp toast logic
-          // temp to randomly show toast error or success
-          // when set up, just keep the error toast here
-          const randInt = Math.floor(Math.random() * 2);
-          if (randInt) {
-            const toastTitle = UPDATE_CYCLE_JOB_CATEGORIES_ERROR_TITLE;
-            const toastMessage = UPDATE_CYCLE_JOB_CATEGORIES_ERROR;
-            dispatch(toastError(toastMessage, toastTitle));
-          } else {
-            const toastTitle = UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS_TITLE;
-            const toastMessage = UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS;
-            dispatch(toastSuccess(toastMessage, toastTitle));
-          }
-          // End: temp toast logic
-          batch(() => {
-            dispatch(cycleJobCategoriesEditErrored(true));
-            dispatch(cycleJobCategoriesEditLoading(false));
+            dispatch(cycleCategoriesSuccess([]));
+            dispatch(cycleCategoriesErrored(true));
+            dispatch(cycleCategoriesLoading(false));
           });
         }
       });
   };
 }
 
-// =================== CYCLE JOB CATEGORIES DATA ===================
+// =================== CYCLE JOB CATEGORIES ===================
 
-export function cycleJobCategoriesDataErrored(bool) {
+export function cycleJobCategoriesErrored(bool) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_DATA_HAS_ERRORED',
+    type: 'CYCLE_JOB_CATEGORIES_ERRORED',
     hasErrored: bool,
   };
 }
-export function cycleJobCategoriesDataLoading(bool) {
+export function cycleJobCategoriesLoading(bool) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_DATA_IS_LOADING',
+    type: 'CYCLE_JOB_CATEGORIES_LOADING',
     isLoading: bool,
   };
 }
-export function cycleJobCategoriesDataSuccess(results) {
+export function cycleJobCategoriesSuccess(results) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_DATA_SUCCESS',
+    type: 'CYCLE_JOB_CATEGORIES_SUCCESS',
     results,
   };
 }
-export function cycleJobCategoriesData() {
-  const dummyCategories = [{
-    id: 1,
-    description: 'Construction Engineers',
-    active: true,
-    selected: false,
-  }, {
-    id: 2,
-    description: 'Consular',
-    active: false,
-    selected: false,
-  }, {
-    id: 3,
-    description: 'DCM-PO',
-    active: false,
-    selected: true,
-  }, {
-    id: 4,
-    description: 'Diplomatic Courier',
-    active: true,
-    selected: false,
-  }, {
-    id: 5,
-    description: 'Economic',
-    active: true,
-    selected: false,
-  }];
-
+export function cycleJobCategories(query) {
   return (dispatch) => {
-    dispatch(cycleJobCategoriesDataSuccess([]));
-    dispatch(cycleJobCategoriesDataLoading(true));
+    if (cancelCycleJobCategories) { cancelCycleJobCategories('cancel'); }
     batch(() => {
-      dispatch(cycleJobCategoriesDataSuccess(dummyCategories));
-      dispatch(cycleJobCategoriesDataErrored(false));
-      dispatch(cycleJobCategoriesDataLoading(false));
+      dispatch(cycleJobCategoriesLoading(true));
+      dispatch(cycleJobCategoriesErrored(false));
     });
+    const q = convertQueryToString(query);
+    const endpoint = '/fsbid/cycle_job_categories/job_categories/';
+    const ep = `${endpoint}?${q}`;
+    api().get(ep, {
+      cancelToken: new CancelToken((c) => { cancelCycleJobCategories = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(cycleJobCategoriesSuccess(data));
+          dispatch(cycleJobCategoriesErrored(false));
+          dispatch(cycleJobCategoriesLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(cycleJobCategoriesSuccess([]));
+            dispatch(cycleJobCategoriesErrored(true));
+            dispatch(cycleJobCategoriesLoading(false));
+          });
+        }
+      });
   };
 }
 
-// =================== CYCLE JOB CATEGORIES FILTERS ===================
+// =================== CYCLE JOB CATEGORIES STATUSES ===================
 
-export function cycleJobCategoriesFiltersErrored(bool) {
+export function cycleJobCategoriesStatusesErrored(bool) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_FILTERS_HAS_ERRORED',
+    type: 'CYCLE_JOB_CATEGORIES_STATUSES_ERRORED',
     hasErrored: bool,
   };
 }
-export function cycleJobCategoriesFiltersLoading(bool) {
+export function cycleJobCategoriesStatusesLoading(bool) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_FILTERS_IS_LOADING',
+    type: 'CYCLE_JOB_CATEGORIES_STATUSES_LOADING',
     isLoading: bool,
   };
 }
-export function cycleJobCategoriesFiltersSuccess(results) {
+export function cycleJobCategoriesStatusesSuccess(results) {
   return {
-    type: 'CYCLE_JOB_CATEGORIES_FILTERS_SUCCESS',
+    type: 'CYCLE_JOB_CATEGORIES_STATUSES_SUCCESS',
     results,
   };
 }
-export function cycleJobCategoriesFilters() {
-  const dummyCategories = [{
-    id: 1,
-    description: '(A) A100 Class',
-  }, {
-    id: 2,
-    description: '(B) B100 Class',
-  }];
-
+export function cycleJobCategoriesStatuses() {
   return (dispatch) => {
-    dispatch(cycleJobCategoriesFiltersSuccess([]));
-    dispatch(cycleJobCategoriesFiltersLoading(true));
+    if (cancelCycleJobCategoriesStatuses) { cancelCycleJobCategoriesStatuses('cancel'); }
     batch(() => {
-      dispatch(cycleJobCategoriesFiltersSuccess(dummyCategories));
-      dispatch(cycleJobCategoriesFiltersLoading(false));
+      dispatch(cycleJobCategoriesStatusesLoading(true));
+      dispatch(cycleJobCategoriesStatusesErrored(false));
     });
+    api().get('/fsbid/cycle_job_categories/job_categories/statuses/', {
+      cancelToken: new CancelToken((c) => { cancelCycleJobCategoriesStatuses = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(cycleJobCategoriesStatusesSuccess(data));
+          dispatch(cycleJobCategoriesStatusesErrored(false));
+          dispatch(cycleJobCategoriesStatusesLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(cycleJobCategoriesStatusesSuccess([]));
+            dispatch(cycleJobCategoriesStatusesErrored(true));
+            dispatch(cycleJobCategoriesStatusesLoading(false));
+          });
+        }
+      });
+  };
+}
+
+// =================== CYCLE JOB CATEGORIES EDIT ===================
+
+export function cycleJobCategoriesEdit(query, data) {
+  return (dispatch) => {
+    if (cancelEditCycleJobCategories) {
+      cancelEditCycleJobCategories('cancel');
+    }
+    api().put('/fsbid/cycle_job_categories/job_categories/edit/', data, {
+      cancelToken: new CancelToken((c) => { cancelEditCycleJobCategories = c; }),
+    })
+      .then(() => {
+        const toastTitle = UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS_TITLE;
+        const toastMessage = UPDATE_CYCLE_JOB_CATEGORIES_SUCCESS;
+        batch(() => {
+          dispatch(toastSuccess(toastMessage, toastTitle));
+          dispatch(cycleJobCategories(query));
+          dispatch(cycleJobCategoriesStatuses());
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          const toastTitle = UPDATE_CYCLE_JOB_CATEGORIES_ERROR_TITLE;
+          const toastMessage = UPDATE_CYCLE_JOB_CATEGORIES_ERROR;
+          dispatch(toastError(toastMessage, toastTitle));
+        }
+      });
   };
 }

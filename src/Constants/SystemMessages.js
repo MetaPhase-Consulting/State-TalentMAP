@@ -290,6 +290,11 @@ export const DELETE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully de
 export const DELETE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const DELETE_BID_AUDIT_ERROR = 'There was an issue attempting to delete this Bid Audit. Please try again.';
 
+export const UPDATE_BID_COUNT_SUCCESS_TITLE = 'Bid Counts Updated';
+export const UPDATE_BID_COUNT_SUCCESS = 'The Dynamic Audit has run successfully.';
+export const UPDATE_BID_COUNT_ERROR_TITLE = 'Bid Counts Not Updated';
+export const UPDATE_BID_COUNT_ERROR = 'There was an issue attempting to run this Dynamic Bid Audit. Please try again.';
+
 export const JOB_CATEGORIES_EDIT_SUCCESS_TITLE = 'Job Category Edits Successfully Saved';
 export const JOB_CATEGORIES_EDIT_SUCCESS = 'Your edits to the selected Job Category have been saved';
 export const JOB_CATEGORIES_EDIT_ERROR_TITLE = 'Job Category Edit Error';
@@ -327,6 +332,11 @@ export const ASSIGNMENT_CYCLE_DELETE_SUCCESS_TITLE = 'Assignment Cycle Deleted';
 export const ASSIGNMENT_CYCLE_DELETE_SUCCESS = 'The Assignment Cycle has been deleted';
 export const ASSIGNMENT_CYCLE_DELETE_ERROR_TITLE = 'Assignment Cycle Delete Error';
 export const ASSIGNMENT_CYCLE_DELETE_ERROR = 'There was an issue attempting to delete this Assignment Cycle. Please try again.';
+
+export const ASSIGNMENT_CYCLE_MERGE_SUCCESS_TITLE = 'Assignment Cycles Merged';
+export const ASSIGNMENT_CYCLE_MERGE_SUCCESS = 'Assignment Cycles have been merged successfully. Please rename the newly merged Cycle.';
+export const ASSIGNMENT_CYCLE_MERGE_ERROR_TITLE = 'Assignment Cycle Merge Error';
+export const ASSIGNMENT_CYCLE_MERGE_ERROR = 'There was an issue attempting to merge these Assignment Cycles. Please try again.';
 
 export const ASSIGNMENT_CYCLE_CREATE_SUCCESS_TITLE = 'Assignment Cycle Created';
 export const ASSIGNMENT_CYCLE_CREATE_SUCCESS = 'The Assignment Cycle has been created';

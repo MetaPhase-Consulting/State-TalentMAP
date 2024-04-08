@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -65,6 +66,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
 
   const cycleCategories = assignmentCycleData?.cycle_category_reference || [];
   const cycleStatuses = assignmentCycleData?.cycle_status_reference || [];
+
+  const cycleClosed = assignmentCycleData?.cycle_status === 'C';
+  const cycleMerged = assignmentCycleData?.cycle_status === 'M';
+  const cycleActive = assignmentCycleData?.cycle_status === 'A';
+  const disableFields = cycleClosed || cycleMerged;
 
   useEffect(() => {
     dispatch(cycleManagementAssignmentCycleFetchData(match?.params?.id));
@@ -235,9 +241,6 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
         <div className="simple-action-modal">
           <div className="help-text">
             <span>{'Do you want to Post the Open Positions for this Assignment Cycle?'}</span>
-            <div>
-              <span>{'The Cycle must be Open in order to do so.'}</span>
-            </div>
           </div>
           <div className="modal-controls">
             <button onClick={postOpenPositions}>Yes</button>
@@ -274,7 +277,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
       <div className="ace-heading">
         <span>Assignment Cycle: {assignmentCycle}</span>
         <span>
-          {isSuperUser &&
+          {(isSuperUser && !cycleClosed) &&
             <Link
               to="#"
               onClick={(e) => {
@@ -411,6 +414,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               placeholder="Please provide a description of the assignment cycle."
               defaultValue={assignmentCycle}
               onChange={(e) => setCycleName(e.target.value)}
+              disabled={disableFields}
             />
           </span>
         </div>
@@ -421,6 +425,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               id="cycleCategory"
               onChange={(e) => setCycleCategory(e.target.value)}
               value={cycleCategory}
+              disabled={disableFields}
             >
               {cycleCategories.length === 0 ?
                 <option value="">None Listed</option> : cycleCategories.map((option) => (
@@ -456,6 +461,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               name="exclusivePosition"
               value={exclusivePosition === 'Y'}
               onCheckBoxClick={e => setExclusivePosition(e ? 'Y' : 'N')}
+              disabled={disableFields}
             />
             <label htmlFor="exclusoivePositions">Exclusive Position</label>
           </span>
@@ -465,6 +471,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               name="postViewable"
               value={postViewable === 'Y'}
               onCheckBoxClick={e => setPostViewable(e ? 'Y' : 'N')}
+              disabled={disableFields}
             />
             <label htmlFor="postViewable">Post Viewable</label>
           </span>
@@ -481,6 +488,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
                   value={cycleBoundries}
                   maxDetail="month"
                   calendarIcon={null}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -493,6 +501,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
                   value={sixMonthLanguage}
                   maxDetail="month"
                   calendarIcon={null}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -505,6 +514,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
                   value={twelveMonthLanguage}
                   maxDetail="month"
                   calendarIcon={null}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -517,6 +527,7 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
                   value={twentyFourMonthLanguage}
                   maxDetail="month"
                   calendarIcon={null}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -524,10 +535,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="brrd">Bureau Position Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bureauPositionReview ? '' : 'hide'} fa-close`} onClick={() => setBurPos('')} />
+                {disableFields || <FA name="times" className={`${bureauPositionReview ? '' : 'hide'} fa-close`} onClick={() => setBurPos('')} />}
                 <DatePicker
                   selected={bureauPositionReview && new Date(bureauPositionReview)}
                   onChange={(date) => setBurPos(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -535,10 +547,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="bdd">Bidding Start Date </label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${biddingStart ? '' : 'hide'} fa-close`} onClick={() => setBidStart('')} />
+                {disableFields || <FA name="times" className={`${biddingStart ? '' : 'hide'} fa-close`} onClick={() => setBidStart('')} />}
                 <DatePicker
                   selected={biddingStart && new Date(biddingStart)}
                   onChange={(date) => setBidStart(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -546,21 +559,23 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="bdd">Bid Due Date </label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bidDue ? '' : 'hide'} fa-close`} onClick={() => setBidDue('')} />
+                {disableFields || <FA name="times" className={`${bidDue ? '' : 'hide'} fa-close`} onClick={() => setBidDue('')} />}
                 <DatePicker
                   selected={bidDue && new Date(bidDue)}
                   onChange={(date) => setBidDue(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
             <div className="ac-sections">
               <label htmlFor="bpsbrd">Bureau Pre-Season Bid Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
-                <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bureauPreSeasonBidReview ? '' : 'hide'} fa-close`} onClick={() => setBurPrebd('')} />
+                <FA name="fa-regular fa-calendar" className="fa{disableFields ||  fa-calendar" />
+                {disableFields || <FA name="times" className={`${bureauPreSeasonBidReview ? '' : 'hide'} fa-close`} onClick={() => setBurPrebd('')} />}
                 <DatePicker
                   selected={bureauPreSeasonBidReview && new Date(bureauPreSeasonBidReview)}
                   onChange={(date) => setBurPrebd(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -568,10 +583,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="besbrd">Bureau Early Season Bid Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bureauEarlySeasonBidReview ? '' : 'hide'} fa-close`} onClick={() => setBurEarly('')} />
+                {disableFields || <FA name="times" className={`${bureauEarlySeasonBidReview ? '' : 'hide'} fa-close`} onClick={() => setBurEarly('')} />}
                 <DatePicker
                   selected={bureauEarlySeasonBidReview && new Date(bureauEarlySeasonBidReview)}
                   onChange={(date) => setBurEarly(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -579,10 +595,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="bbrd">Bureau Bid Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bureauBidReview ? '' : 'hide'} fa-close`} onClick={() => setBurBid('')} />
+                {disableFields || <FA name="times" className={`${bureauBidReview ? '' : 'hide'} fa-close`} onClick={() => setBurBid('')} />}
                 <DatePicker
                   selected={bureauBidReview && new Date(bureauBidReview)}
                   onChange={(date) => setBurBid(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -590,10 +607,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="bad">Bid Audit Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bidAudit ? '' : 'hide'} fa-close`} onClick={() => setBidAudit('')} />
+                {disableFields || <FA name="times" className={`${bidAudit ? '' : 'hide'} fa-close`} onClick={() => setBidAudit('')} />}
                 <DatePicker
                   selected={bidAudit && new Date(bidAudit)}
                   onChange={(date) => setBidAudit(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -601,10 +619,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="bbrd">Bid Book Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bidBookReview ? '' : 'hide'} fa-close`} onClick={() => setBidBook('')} />
+                {disableFields || <FA name="times" className={`${bidBookReview ? '' : 'hide'} fa-close`} onClick={() => setBidBook('')} />}
                 <DatePicker
                   selected={bidBookReview && new Date(bidBookReview)}
                   onChange={(date) => setBidBook(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -612,10 +631,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="bcrd">Bid Count Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${bidCountReview ? '' : 'hide'} fa-close`} onClick={() => setBidCount('')} />
+                {disableFields || <FA name="times" className={`${bidCountReview ? '' : 'hide'} fa-close`} onClick={() => setBidCount('')} />}
                 <DatePicker
                   selected={bidCountReview && new Date(bidCountReview)}
                   onChange={(date) => setBidCount(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -623,10 +643,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="htf">HTF Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${htfReview ? '' : 'hide'} fa-close`} onClick={() => setBidHtf('')} />
+                {disableFields || <FA name="times" className={`${htfReview ? '' : 'hide'} fa-close`} onClick={() => setBidHtf('')} />}
                 <DatePicker
                   selected={htfReview && new Date(htfReview)}
                   onChange={(date) => setBidHtf(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -634,10 +655,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="ocrd">Organization Count Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${organizationCountReview ? '' : 'hide'} fa-close`} onClick={() => setBidOrg('')} />
+                {disableFields || <FA name="times" className={`${organizationCountReview ? '' : 'hide'} fa-close`} onClick={() => setBidOrg('')} />}
                 <DatePicker
                   selected={organizationCountReview && new Date(organizationCountReview)}
                   onChange={(date) => setBidOrg(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -645,10 +667,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="mds">MDS Review Date</label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${mdsReview ? '' : 'hide'} fa-close`} onClick={() => setBidMds('')} />
+                {disableFields || <FA name="times" className={`${mdsReview ? '' : 'hide'} fa-close`} onClick={() => setBidMds('')} />}
                 <DatePicker
                   selected={mdsReview && new Date(mdsReview)}
                   onChange={(date) => setBidMds(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -656,10 +679,11 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
               <label htmlFor="abd">Assigned Bidder Date </label>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
-                <FA name="times" className={`${assignedBidder ? '' : 'hide'} fa-close`} onClick={() => setAssignedBidderDate('')} />
+                {disableFields || <FA name="times" className={`${assignedBidder ? '' : 'hide'} fa-close`} onClick={() => setAssignedBidderDate('')} />}
                 <DatePicker
                   selected={assignedBidder && new Date(assignedBidder)}
                   onChange={(date) => setAssignedBidderDate(date)}
+                  disabled={disableFields}
                 />
               </span>
             </div>
@@ -667,9 +691,9 @@ const AssignmentCycleEdit = ({ isAO, match }) => {
         }
       </form>
       <div>
-        <button onClick={saveAC} disabled={!disableSave}>Save and Return</button>
-        <button onClick={deleteAC}>Delete Assignment Cycle</button>
-        <button onClick={postAC} type="submit">Post Open Positions</button>
+        <button onClick={saveAC} disabled={!disableSave || !!disableFields}>Save and Return</button>
+        <button onClick={deleteAC} disabled={disableFields}>Delete Assignment Cycle</button>
+        <button onClick={postAC} type="submit" disabled={!cycleActive}>Post Open Positions</button>
         <button onClick={cancel}>Cancel</button>
       </div>
     </>
