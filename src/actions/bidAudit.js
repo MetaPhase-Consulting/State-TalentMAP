@@ -1,3 +1,4 @@
+import { CancelToken } from 'axios';
 import {
   DELETE_BID_AUDIT_ERROR,
   DELETE_BID_AUDIT_ERROR_TITLE,
@@ -7,6 +8,10 @@ import {
   UPDATE_BID_AUDIT_ERROR_TITLE,
   UPDATE_BID_AUDIT_SUCCESS,
   UPDATE_BID_AUDIT_SUCCESS_TITLE,
+  UPDATE_BID_COUNT_ERROR,
+  UPDATE_BID_COUNT_ERROR_TITLE,
+  UPDATE_BID_COUNT_SUCCESS,
+  UPDATE_BID_COUNT_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import { batch } from 'react-redux';
 import api from '../api';
@@ -275,5 +280,39 @@ export function bidAuditFiltersFetchData() {
       dispatch(bidAuditFiltersFetchDataSuccess({}));
       dispatch(bidAuditFiltersFetchDataLoading(false));
     });
+  };
+}
+
+// ================ Update Bid Counts  ================
+
+let cancelUpdateBidCounts;
+
+export function bidAuditUpdateBidCounts() {
+  return (dispatch) => {
+    if (cancelUpdateBidCounts) {
+      cancelUpdateBidCounts('cancel');
+    }
+    api()
+      .get('/fsbid/bid_audit/update_count/', {
+        cancelToken: new CancelToken((c) => { cancelUpdateBidCounts = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(UPDATE_BID_COUNT_SUCCESS,
+            UPDATE_BID_COUNT_SUCCESS_TITLE));
+        });
+      },
+      ).catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(
+              toastError(
+                UPDATE_BID_COUNT_ERROR,
+                UPDATE_BID_COUNT_ERROR_TITLE,
+              ),
+            );
+          });
+        }
+      });
   };
 }
