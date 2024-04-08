@@ -210,3 +210,22 @@ export function cyclePositionEditSuccess(state = [], action) {
       return state;
   }
 }
+
+// ================ Cycle Classifications  ================
+
+export function cycleClassificationsIsLoading(state = false, action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function cycleClassificationsData(state = [], action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
