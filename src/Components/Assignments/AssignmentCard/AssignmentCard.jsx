@@ -158,8 +158,7 @@ const AssignmentCard = (props) => {
         update_date: asgDetail?.ASGD_UPDATE_DATE,
       }, perdet));
     }
-
-    // TO-DO: refresh assignments and separations after?
+    if (isNew) toggleModal(false);
     setNewAsgSep('default');
   };
 
