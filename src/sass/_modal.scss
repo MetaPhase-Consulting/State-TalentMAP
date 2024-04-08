@@ -26,3 +26,31 @@
     top: -84px;
   }
 }
+
+// Custom TMAP Modal
+.modal-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 0;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.asg-modal-container {
+  width: 50vw;
+  padding: 0 1.5rem;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  margin: auto;
+  margin-top: 20vh;
+  pointer-events: auto;
+}
+
+.month-year-input-error {
+  border: 0.1rem solid red;
+}
