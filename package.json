@@ -30,7 +30,7 @@
     "draft-js-plugins-editor": "^2.1.1",
     "enum": "^2.5.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "express": "^4.17.3",
+    "express": "^4.19.2",
     "flag": "^3.0.0-1",
     "flat": "^4.1.0",
     "font-awesome": "^4.7.0",
