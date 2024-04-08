@@ -1,4 +1,4 @@
-import { altAssignmentDetailFetchData, updateAssignment } from 'actions/assignment';
+import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
 import { positionsFetchData } from 'actions/positions';
 import CheckBox from 'Components/CheckBox';
 import MonthYearInput from 'Components/MonthYearInput';
@@ -121,24 +121,43 @@ const AssignmentCard = (props) => {
   };
 
   const onSubmitForm = () => {
-    // createAssignment(data)
-    dispatch(updateAssignment({
-      asg_seq_num: asgDetail?.ASG_SEQ_NUM,
-      asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
-      eta: `${eta.getMonth() + 1}/${eta.getFullYear()}`,
-      etd: `${ted.getMonth() + 1}/${ted.getFullYear()}`,
-      tod,
-      salary_reimburse_ind: salaryReimbursement,
-      travel_reimburse_ind: travelReimbursement,
-      training_ind: training,
-      critical_need_ind: criticalNeed,
-      org_code: funding,
-      status_code: status,
-      lat_code: action,
-      travel_code: travel,
-      rr_repay_ind: waiver,
-      update_date: asgDetail?.ASGD_UPDATE_DATE,
-    }, perdet));
+    if (isNew) {
+      dispatch(createAssignment({
+        asg_seq_num: asgDetail?.ASG_SEQ_NUM,
+        asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+        eta,
+        etd: ted,
+        tod,
+        salary_reimburse_ind: salaryReimbursement,
+        travel_reimburse_ind: travelReimbursement,
+        training_ind: training,
+        critical_need_ind: criticalNeed,
+        org_code: funding,
+        status_code: status,
+        lat_code: action,
+        travel_code: travel,
+        rr_repay_ind: waiver,
+        update_date: asgDetail?.ASGD_UPDATE_DATE,
+      }, perdet));
+    } else {
+      dispatch(updateAssignment({
+        asg_seq_num: asgDetail?.ASG_SEQ_NUM,
+        asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+        eta,
+        etd: ted,
+        tod,
+        salary_reimburse_ind: salaryReimbursement,
+        travel_reimburse_ind: travelReimbursement,
+        training_ind: training,
+        critical_need_ind: criticalNeed,
+        org_code: funding,
+        status_code: status,
+        lat_code: action,
+        travel_code: travel,
+        rr_repay_ind: waiver,
+        update_date: asgDetail?.ASGD_UPDATE_DATE,
+      }, perdet));
+    }
 
     // TO-DO: refresh assignments and separations after?
     setNewAsgSep('default');
@@ -383,6 +402,7 @@ const AssignmentCard = (props) => {
               sections={sections}
               form={form}
               useCancelModal={false}
+              saveText={isNew ? 'Create Assignment' : 'Save Assigment'}
             />
           </div>
         ),
