@@ -5,7 +5,7 @@ import Picky from 'react-picky';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import { formatDateFromStr, ppGrade, renderSelectionList } from 'utilities';
+import { formatDateFromStr, renderSelectionList } from 'utilities';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
 import CheckBox from 'Components/CheckBox';
@@ -42,7 +42,7 @@ const PublishablePositionCard = ({
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': ppGrade(data?.payPlan, data?.grade) },
+      { 'PP/Grade': data?.combined_pp_grade },
       { 'Publishable Status': data?.status || DEFAULT_TEXT },
       { 'Language': data?.language || DEFAULT_TEXT },
     ],
@@ -118,7 +118,7 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': ppGrade(data?.payPlan, data?.grade) },
+      { 'PP/Grade': data?.combined_pp_grade },
       { 'Language': data?.language || DEFAULT_TEXT },
     ],
     inputBody: (
