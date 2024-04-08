@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, batch } from 'react-redux';
+import { batch, useDispatch } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { useDataLoader } from 'hooks';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
-import api from '../../../api';
-import { CancelToken } from 'axios';
 import {
   UPDATE_POSITION_CLASSIFICATION_ERROR,
   UPDATE_POSITION_CLASSIFICATION_ERROR_TITLE,
@@ -14,6 +12,7 @@ import {
   UPDATE_POSITION_CLASSIFICATION_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import { toastError, toastSuccess } from 'actions/toast';
+import api from '../../../api';
 
 const PositionClassification = (props) => {
   const { positionNumber, bureau, posSeqNum, editMode, setEditMode, disableEdit } = props;
@@ -24,7 +23,7 @@ const PositionClassification = (props) => {
   const [classifications, setClassifications] = useState([]);
   const [selections, setSelections] = useState([]);
 
-  const { data: results, error, loading: isLoading } = useDataLoader(
+  const { data: results, loading: isLoading } = useDataLoader(
     api().get,
     `/fsbid/position_classifications/${positionNumber}/`,
     true,
@@ -63,6 +62,7 @@ const PositionClassification = (props) => {
     let updatedDates = '';
     let updaterIds = '';
 
+    /* eslint-disable no-unused-expressions */
     selections?.forEach(s => {
       const separator = position === '' ? '' : ',';
       position = position.concat(separator, posSeqNum);
@@ -98,7 +98,7 @@ const PositionClassification = (props) => {
             dispatch(toastError(toastMessage, toastTitle));
           }
         });
-    };
+    }
   };
 
   return (isLoading ?
@@ -139,7 +139,6 @@ const PositionClassification = (props) => {
               {classifications?.map((o) => (
                 <td key={o.code}>
                   <input
-                    id={`classification-${o.code}-${positionNumber}`}
                     type="checkbox"
                     name={o.code}
                     checked={selections?.find(s => o.code === s.code && s.value === '1') ?? false}
