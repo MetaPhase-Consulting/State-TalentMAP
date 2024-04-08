@@ -13,7 +13,6 @@ import { Definition } from '../DefinitionList';
 const PositionExpandableContent = ({
   sections, form, appendAdditionalFieldsToBodyPrimary, tempHideEdit,
   showLoadingAnimation, onShowMore, isCondensed, saveText, useCancelModal }) => {
-
   const handleEdit = form?.handleEdit ?? {};
   const { editMode, setEditMode, disableEdit } = handleEdit;
 
