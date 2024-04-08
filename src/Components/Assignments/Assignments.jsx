@@ -10,9 +10,10 @@ import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import { altAssignmentFetchData } from 'actions/assignment';
 import AssignmentCard from './AssignmentCard';
+import AssignmentModal from './AssignmentModal';
 // import { formatDate } from 'utilities';
 import api from '../../api';
-import NotificationCard from './NotificationCard/NotificationCard';
+// import NotificationCard from './NotificationCard/NotificationCard';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
@@ -22,8 +23,10 @@ const Assignments = (props) => {
   const assignmentsErrored = useSelector(state => state.altAssignmentHasErrored);
   const assignmentsLoading = useSelector(state => state.altAssignmentIsLoading);
 
-  // default || newAsgSep || memo || notification
+  // default || memo || notification
+  // eslint-disable-next-line no-unused-vars
   const [cardMode, setCardMode] = useState('default');
+  const [openModal, setOpenModal] = useState(false);
 
   const id = props?.match.params.id;
 
@@ -62,26 +65,6 @@ const Assignments = (props) => {
     return overlay;
   };
 
-  const getCardMode = () => {
-    switch (cardMode) {
-      case 'newAsgSep':
-        return (
-          <AssignmentCard
-            perdet={id}
-            isNew
-            setNewAsgSep={setCardMode}
-          />
-        );
-      case 'notification':
-        return <NotificationCard />;
-      case 'memo':
-        return <NotificationCard />;
-      default:
-        return assignments?.map(data =>
-          <AssignmentCard perdet={id} data={data} />);
-    }
-  };
-
   return (
     getOverlay() ||
     <div className="assignments-maintenance-page position-search">
@@ -111,7 +94,7 @@ const Assignments = (props) => {
           Review the current assignments or add assignments for {employeeName}
           <div>
             <div className="create-new-button">
-              <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('newAsgSep')}>
+              <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
                 <FA name="briefcase" />
                 Add New Assignment/Separation
               </a>
@@ -135,7 +118,15 @@ const Assignments = (props) => {
           </div>
         </div>
         <div className="asg-lower-section">
-          {getCardMode()}
+          {assignments?.map(data => (
+            <AssignmentCard setNewAsgSep={setCardMode} perdet={id} data={data} />
+          ))}
+          <AssignmentModal
+            setCardMode={setCardMode}
+            perdet={id}
+            isOpen={openModal}
+            toggleModal={setOpenModal}
+          />
         </div>
       </div>
     </div>
