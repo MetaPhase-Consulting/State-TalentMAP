@@ -32,6 +32,16 @@ const PublishablePositionCard = ({
   additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
+  const additionalRO = [
+    { TED: data?.status || DEFAULT_TEXT },
+    { Incumbent: data?.status || DEFAULT_TEXT },
+    { 'Default TOD': data?.status || DEFAULT_TEXT },
+    { Assignee: data?.status || DEFAULT_TEXT },
+    { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
+    { 'Employee ID': data?.status || DEFAULT_TEXT },
+    { 'Employee Status': data?.status || DEFAULT_TEXT },
+  ];
+
   const sections = {
     /* eslint-disable quote-props */
     subheading: [
@@ -49,13 +59,7 @@ const PublishablePositionCard = ({
     bodySecondary: PP_FLAG() ?
       [
         { 'Bid Cycle': data?.status || DEFAULT_TEXT },
-        { 'TED': data?.status || DEFAULT_TEXT },
-        { 'Incumbent': data?.status || DEFAULT_TEXT },
-        { 'Default TOD': data?.status || DEFAULT_TEXT },
-        { 'Assignee': data?.status || DEFAULT_TEXT },
-        { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
-        { 'Employee ID': data?.status || DEFAULT_TEXT },
-        { 'Employee Status': data?.status || DEFAULT_TEXT },
+        ...additionalRO,
       ]
       : [],
     textarea: data?.positionDetails || 'No description.',
@@ -252,15 +256,7 @@ const PublishablePositionCard = ({
   };
 
   if (PP_FLAG()) {
-    form.staticBody.push(
-      { TED: data?.status || DEFAULT_TEXT },
-      { Incumbent: data?.status || DEFAULT_TEXT },
-      { 'Default TOD': data?.status || DEFAULT_TEXT },
-      { Assignee: data?.status || DEFAULT_TEXT },
-      { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
-      { 'Employee ID': data?.status || DEFAULT_TEXT },
-      { 'Employee Status': data?.status || DEFAULT_TEXT },
-    );
+    form.staticBody.push(...additionalRO);
   }
 
   return (
