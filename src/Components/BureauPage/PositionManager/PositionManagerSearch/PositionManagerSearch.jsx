@@ -50,6 +50,7 @@ const PositionManagerSearch = forwardRef((props, ref) => {
         noButton={props.noButton}
         showIcon={props.showIcon}
         inputDisabled={props.disableSearch}
+        noForm
       />
     </form>
   );
