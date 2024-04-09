@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getResult } from 'utilities';
 
+// eslint-disable-next-line complexity
 const AssignmentCard = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
   const [editMode, setEditMode] = useState(isNew);
@@ -82,22 +83,22 @@ const AssignmentCard = (props) => {
   // =============== Edit Mode ===============
 
   const getTOD = () => (
-    pos_results?.todo_tod_code || pos_results?.bt_tod_code
+    pos_results?.todo_tod_code || pos_results?.bt_tod_code || ''
   );
 
-  const [status, setStatus] = useState(asgDetail?.ASGS_CODE);
-  const [action, setAction] = useState(asgDetail?.LAT_CODE);
+  const [status, setStatus] = useState(asgDetail?.ASGS_CODE || '');
+  const [action, setAction] = useState(asgDetail?.LAT_CODE || '');
   const [ted, setTED] = useState(asgDetail?.ASGD_ETD_TED_DATE);
   const [eta, setETA] = useState(asgDetail?.ASGD_ETA_DATE);
-  const [tod, setTOD] = useState(isNew ? getTOD() : asgDetail?.TOD_CODE);
-  const [travel, setTravel] = useState(asgDetail?.TF_CD);
+  const [tod, setTOD] = useState(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
+  const [travel, setTravel] = useState(asgDetail?.TF_CD || '');
   const [funding, setFunding] = useState(asgDetail?.ASGD_ORG_CODE);
   const [adj, setAdj] = useState('');
   const [salaryReimbursement, setSalaryReimbursement] = useState(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
   const [travelReimbursement, setTravelReimbursement] = useState(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
   const [training, setTraining] = useState(asgDetail?.ASGD_TRIANING_IND === 'Y');
   const [criticalNeed, setCriticalNeed] = useState(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
-  const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY);
+  const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY || '');
   const [sent, setSent] = useState(asgDetail?.NOTE_LAST_SENT_DATE);
 
   const onCancelForm = () => {
@@ -205,7 +206,7 @@ const AssignmentCard = (props) => {
               value={status}
               onChange={(e) => setStatus(e?.target.value)}
             >
-              <option value="">
+              <option value="" disabled>
                 Select Status
               </option>
               {statusOptions?.map(s => (
@@ -222,7 +223,7 @@ const AssignmentCard = (props) => {
               value={action}
               onChange={(e) => setAction(e?.target.value)}
             >
-              <option value="">
+              <option value="" disabled>
                 Select Action
               </option>
               {actionOptions?.map(a => (
@@ -247,7 +248,7 @@ const AssignmentCard = (props) => {
               value={tod}
               onChange={(e) => setTOD(e?.target.value)}
             >
-              <option value="">
+              <option value="" disabled>
                 Select TOD
               </option>
               {todOptions?.map(t => (
@@ -264,7 +265,7 @@ const AssignmentCard = (props) => {
               value={travel}
               onChange={(e) => setTravel(e?.target.value)}
             >
-              <option value="">
+              <option value="" disabled>
                 Select Travel
               </option>
               {travelOptions?.map(t => (
@@ -281,7 +282,7 @@ const AssignmentCard = (props) => {
               value={funding}
               onChange={(e) => setFunding(e?.target.value)}
             >
-              <option value="">
+              <option value="" disabled>
                 Select Funding Org
               </option>
               {fundingOptions?.map(f => (
@@ -336,7 +337,7 @@ const AssignmentCard = (props) => {
               value={waiver}
               onChange={(e) => setWaiver(e?.target.value)}
             >
-              <option value="">
+              <option value="" disabled>
                 Select Waiver
               </option>
               {waiverOptions?.map(w => (
@@ -384,7 +385,6 @@ const AssignmentCard = (props) => {
   }, [pos_results_loading, pos_results_errored]);
 
   useEffect(() => {
-    setPositionNumber('');
     if (isNew) {
       /* eslint-disable quote-props */
       sections.subheading = [
