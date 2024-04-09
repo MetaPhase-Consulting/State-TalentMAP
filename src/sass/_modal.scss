@@ -1,9 +1,11 @@
 .swal-modal.modal-1300 {
   width: 1000px;
 }
+
 .swal-modal.modal-700 {
   width: 700px;
 }
+
 .swal-modal.modal-700-long {
   width: 700px;
   height: 100%;
@@ -39,16 +41,23 @@
   background-color: rgba(0, 0, 0, .4);
   z-index: 10000;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .asg-modal-container {
-  width: 50vw;
-  padding: 0 1.5rem;
+  width: 1200px;
+  max-width: calc(100vw - 100px);
+  max-height: calc(100vh - 100px);
   font-size: 1.2rem;
   border-radius: 1rem;
-  margin: auto;
-  margin-top: 20vh;
   pointer-events: auto;
+  overflow-y: auto;
+
+  .tabbed-card {
+    margin-block: 0px;
+  }
 }
 
 .month-year-input-error {
