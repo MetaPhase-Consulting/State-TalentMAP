@@ -177,8 +177,8 @@ const BiddingToolCard = (props) => {
       <Row fluid className="position-content--section position-content--subheader">
         <div className="line-separated-fields">
           <div>
-            <span>Post/Country/Code:</span>
-            <span>
+            <span className="span-label">Post/Country/Code:</span>
+            <span className="span-text">
               {location$?.state_country || 'None Listed'}, {location$?.code || 'None Listed'}
             </span>
           </div>

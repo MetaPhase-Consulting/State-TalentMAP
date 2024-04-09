@@ -61,7 +61,7 @@ export const dataReducer = (state, action) => {
   }
 };
 
-export const useDataLoader = (getData, url, execute = true, config) => {
+export const useDataLoader = (getData, url, execute = true, config, refetch) => {
   const [nonce, setNonce] = useState(Date.now());
   const [state, dispatch] = useReducer(dataReducer, {
     data: null,
@@ -88,7 +88,7 @@ export const useDataLoader = (getData, url, execute = true, config) => {
     return () => {
       cancel = true;
     };
-  }, [nonce, url]);
+  }, [nonce, url, refetch]);
 
   const retry = () => {
     setNonce(Date.now());

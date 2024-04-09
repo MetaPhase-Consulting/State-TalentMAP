@@ -35,8 +35,8 @@ const OrgStatsCard = (props) => {
           <div className="line-separated-fields">
             {Object.keys(sections.heading).map(field => (
               <div key={`subheading-${field}`}>
-                <span>{field}:</span>
-                <span>{sections.heading[field]}</span>
+                <span className="span-label">{field}:</span>
+                <span className="span-text">{sections.heading[field]}</span>
               </div>
             ))}
           </div>
