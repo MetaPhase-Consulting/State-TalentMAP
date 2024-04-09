@@ -52,7 +52,7 @@ const PositionClassification = (props) => {
 
   const handleCancel = () => {
     setEditMode(false);
-    setSelections(results?.data?.classificationSelections ?? []);
+    setSelections(results?.data?.classificationSelections || []);
   };
 
   const handleSubmit = () => {
@@ -68,7 +68,7 @@ const PositionClassification = (props) => {
       position = position.concat(separator, posSeqNum);
       codes = codes.concat(separator, s.code);
       values = values.concat(separator, s.value);
-      updatedDates = updatedDates.concat(separator, s.date ?? '');
+      updatedDates = updatedDates.concat(separator, s.date || '');
       updaterIds = updaterIds.concat(separator, s.user_id !== 0 ? s.user_id : '');
     });
 
@@ -141,7 +141,7 @@ const PositionClassification = (props) => {
                   <input
                     type="checkbox"
                     name={o.code}
-                    checked={selections?.find(s => o.code === s.code && s.value === '1') ?? false}
+                    checked={selections?.find(s => o.code === s.code && s.value === '1') || false}
                     onChange={(event) => handleSelection(o.code, event)}
                     disabled={!editMode}
                   />
