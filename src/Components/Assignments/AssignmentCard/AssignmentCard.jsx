@@ -293,7 +293,7 @@ const AssignmentCard = (props) => {
             </select>
           </div>
           <div className="position-form--label-input-container">
-            <label htmlFor="assignment-adj">Adj</label>
+            <label htmlFor="assignment-adj">ADJ</label>
             <input
               id="assignment-adj"
               value={adj}
