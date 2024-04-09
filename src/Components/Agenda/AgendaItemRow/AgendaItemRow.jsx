@@ -27,8 +27,6 @@ const AgendaItemRow = props => {
   const userLanguages = agenda?.languages?.length ? agenda.languages.map(
     (l) => `${l.custom_description} (${formatDate(l.test_date, 'MM/YYYY')})`).join(', ') : 'None Listed';
   const userCDOFirst = agenda?.cdo?.first_name ? `${agenda.cdo.first_name} ` : '';
-  const userPayPlan = agenda?.pay_plan_code ?? 'None Listed';
-  const userGrade = agenda?.grade ?? '';
 
   const agendaStatus = get(agenda, 'status_short') || 'None Listed';
   const remarks = get(agenda, 'remarks') || [];
@@ -89,9 +87,9 @@ const AgendaItemRow = props => {
                   <span className="label">Languages: </span>
                   <span>{userLanguages}</span>
                 </div>
-                <div className="item"><span className="label">PP/Grade: </span> {userPayPlan} {userGrade}</div>
-                <div className="item"><span className="label">Skill: </span> {userSkill}</div>
-                <div className="item"><span className="label">CDO: </span> {userCDOFirst} {agenda?.cdo?.last_name ?? ''}</div>
+                <div className="item"><span className="label">PP/Grade: </span>{agenda?.combined_pp_grade}</div>
+                <div className="item"><span className="label">Skill: </span>{userSkill}</div>
+                <div className="item"><span className="label">CDO: </span>{userCDOFirst} {agenda?.cdo?.last_name ?? ''}</div>
               </div>
               <div className="panel-meeting-maintenance-link-container">
                 <Link
@@ -211,7 +209,6 @@ AgendaItemRow.propTypes = {
         custom_description: PropTypes.string,
       }),
     ),
-    grade: PropTypes.string,
     cdo: PropTypes.arrayOf(
       PropTypes.shape({
         first_name: PropTypes.string,
@@ -219,6 +216,8 @@ AgendaItemRow.propTypes = {
       }),
     ),
     pay_plan_code: PropTypes.string,
+    grade: PropTypes.string,
+    combined_pp_grade: PropTypes.string,
     org: PropTypes.arrayOf(
       PropTypes.shape({
         org_descr: PropTypes.string,
