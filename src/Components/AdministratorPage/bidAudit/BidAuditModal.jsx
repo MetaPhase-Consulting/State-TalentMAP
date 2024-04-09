@@ -63,15 +63,17 @@ const BidAuditModal = ({ data, auditNumber }) => {
         <div className="bid-audit-modal-input">
           <div className="label">Audit Description:</div>
           <TextareaAutosize
-            maxRows={4}
-            minRows={4}
-            maxlength="255"
+            maxRows={2}
+            minRows={1}
+            maxlength="100"
             name="description"
             defaultValue={auditDescription}
             onChange={(e) => setAuditDescription(e.target.value)}
           />
         </div>
-
+        <div className="word-count">
+          {auditDescription?.length} / 100
+        </div>
         <div className="bid-audit-modal-buttons">
           <button onClick={submit} type="submit">Submit</button>
           <button onClick={cancel}>Cancel</button>
