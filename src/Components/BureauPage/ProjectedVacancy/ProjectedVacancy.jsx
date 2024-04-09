@@ -394,7 +394,7 @@ const ProjectedVacancy = ({ isAO }) => {
                 }
                 key={k.future_vacancy_seq_num}
                 updateIncluded={onIncludedUpdate}
-                disableIncluded={disableSearch}
+                disableIncluded={disableSearch || isAO}
                 disableEdit={includedInEditMode}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
