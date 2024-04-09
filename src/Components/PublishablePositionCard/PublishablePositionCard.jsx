@@ -5,7 +5,7 @@ import Picky from 'react-picky';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import { formatDateFromStr, ppGrade, renderSelectionList } from 'utilities';
+import { formatDateFromStr, renderSelectionList } from 'utilities';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
 import CheckBox from 'Components/CheckBox';
@@ -32,16 +32,6 @@ const PublishablePositionCard = ({
   additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
-  const additionalRO = [
-    { TED: data?.status || DEFAULT_TEXT },
-    { Incumbent: data?.status || DEFAULT_TEXT },
-    { 'Default TOD': data?.status || DEFAULT_TEXT },
-    { Assignee: data?.status || DEFAULT_TEXT },
-    { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
-    { 'Employee ID': data?.status || DEFAULT_TEXT },
-    { 'Employee Status': data?.status || DEFAULT_TEXT },
-  ];
-
   const sections = {
     /* eslint-disable quote-props */
     subheading: [
@@ -52,14 +42,19 @@ const PublishablePositionCard = ({
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': ppGrade(data?.payPlan, data?.grade) },
-      { 'Publishable Status': data?.status || DEFAULT_TEXT },
+      { 'Grade': data?.grade || DEFAULT_TEXT },
+      { 'Status': data?.status || DEFAULT_TEXT },
       { 'Language': data?.language || DEFAULT_TEXT },
+      { 'Pay Plan': data?.payPlan || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
         { 'Bid Cycle': data?.status || DEFAULT_TEXT },
-        ...additionalRO,
+        { 'TED': data?.status || DEFAULT_TEXT },
+        { 'Incumbent': data?.status || DEFAULT_TEXT },
+        { 'Tour of Duty': data?.status || DEFAULT_TEXT },
+        { 'Assignee': data?.status || DEFAULT_TEXT },
+        { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
       ]
       : [],
     textarea: data?.positionDetails || 'No description.',
@@ -122,8 +117,10 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': ppGrade(data?.payPlan, data?.grade) },
+      { 'Grade': data?.grade || DEFAULT_TEXT },
+      { 'Status': data?.status || DEFAULT_TEXT },
       { 'Language': data?.language || DEFAULT_TEXT },
+      { 'Pay Plan': data?.payPlan || DEFAULT_TEXT },
     ],
     inputBody: (
       <div className="position-form">
@@ -131,7 +128,7 @@ const PublishablePositionCard = ({
           <div className="spaced-row">
             <div className="dropdown-container">
               <div className="position-form--input">
-                <label htmlFor="publishable-position-statuses">Publishable Status</label>
+                <label htmlFor="publishable-position-statuses">Status</label>
                 <select
                   id="publishable-position-statuses"
                   defaultValue={status}
@@ -145,7 +142,7 @@ const PublishablePositionCard = ({
                 </select>
               </div>
               <div className="position-form--input">
-                <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
+                <label htmlFor="publishable-pos-tod-override">Override Tour of Duty</label>
                 <select
                   id="publishable-pos-tod-override"
                   defaultValue={overrideTOD}
@@ -204,7 +201,7 @@ const PublishablePositionCard = ({
           <>
             <div className="content-divider" />
             <div className="position-form--heading">
-              <span className="title">Proposed Cycle</span>
+              <span className="title">Future Cycle</span>
               <span className="subtitle">Please identify a cycle to add this position to.</span>
             </div>
             <div className="position-form--picky">
@@ -254,10 +251,6 @@ const PublishablePositionCard = ({
     },
     /* eslint-enable quote-props */
   };
-
-  if (PP_FLAG()) {
-    form.staticBody.push(...additionalRO);
-  }
 
   return (
     <TabbedCard

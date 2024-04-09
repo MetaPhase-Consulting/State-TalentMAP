@@ -1123,21 +1123,4 @@ export const joinIfThere = (array, defaultText = 'None Listed', orderMatters = f
   return defaultText;
 };
 
-/*
-  Search Tags: pay plan grade, pp/grade, format pay plan, format grade, format pp
-
-  Examples:
-  ('FP', '02')    ->  'FP/02'
-  (falsy, falsy)  ->  'None Listed'
-  (falsy, '02')   ->  'None Listed/02'
-  ('FP', falsy)   ->  'FP/None Listed'
-*/
-export const ppGrade = (pp, grade) => {
-  const defaultText = 'None Listed';
-  if (!pp && !grade) {
-    return defaultText;
-  }
-  return `${pp || defaultText} ${grade || defaultText}`;
-};
-
 // Search Tags: common.js, helper file, helper functions, common helper file, common file
