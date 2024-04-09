@@ -329,16 +329,6 @@ const AssignmentCard = (props) => {
               onChange={() => setTraining(!training)}
             />
           </div>
-          <div className="position-form--label-input-container height-100">
-            <CheckBox
-              id={`critical-need-${data.id ?? 'create'}`}
-              label="Critical Need"
-              value={criticalNeed}
-              className="mt-40"
-              excludeTmCheckboxClass
-              onChange={() => setCriticalNeed(!criticalNeed)}
-            />
-          </div>
           <div className="position-form--label-input-container">
             <label htmlFor="assignment-waiver">Waiver</label>
             <select
