@@ -33,8 +33,8 @@ const PositionClassification = (props) => {
 
 
   useEffect(() => {
-    setClassifications(results?.data?.positionClassifications ?? []);
-    setSelections(results?.data?.classificationSelections ?? []);
+    setClassifications(results?.data?.positionClassifications || []);
+    setSelections(results?.data?.classificationSelections || []);
   }, [results]);
 
   const handleSelection = (code, event) => {
