@@ -53,7 +53,7 @@ const AssignmentCard = (props) => {
   const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
 
   // Asg Detail Data (Not to be confused with the Asg List)
-  const asgDetail = assignmentDetails?.QRY_GETASGDTL_REF?.[0];
+  const asgDetail = isNew ? {} : assignmentDetails?.QRY_GETASGDTL_REF?.[0];
 
   // =============== View Mode ===============
 
@@ -205,6 +205,9 @@ const AssignmentCard = (props) => {
               value={status}
               onChange={(e) => setStatus(e?.target.value)}
             >
+              <option value="">
+                Select Status
+              </option>
               {statusOptions?.map(s => (
                 <option value={s.ASGS_CODE}>
                   {s.ASGS_DESC_TEXT}
@@ -219,6 +222,9 @@ const AssignmentCard = (props) => {
               value={action}
               onChange={(e) => setAction(e?.target.value)}
             >
+              <option value="">
+                Select Action
+              </option>
               {actionOptions?.map(a => (
                 <option value={a.LAT_CODE}>
                   {a.LAT_ABBR_DESC_TEXT}
@@ -241,6 +247,9 @@ const AssignmentCard = (props) => {
               value={tod}
               onChange={(e) => setTOD(e?.target.value)}
             >
+              <option value="">
+                Select TOD
+              </option>
               {todOptions?.map(t => (
                 <option value={t.TOD_CODE}>
                   {t.TOD_DESC_TEXT}
@@ -255,6 +264,9 @@ const AssignmentCard = (props) => {
               value={travel}
               onChange={(e) => setTravel(e?.target.value)}
             >
+              <option value="">
+                Select Travel
+              </option>
               {travelOptions?.map(t => (
                 <option value={t.TF_CODE}>
                   {t.TF_SHORT_DESC_TEXT}
@@ -269,6 +281,9 @@ const AssignmentCard = (props) => {
               value={funding}
               onChange={(e) => setFunding(e?.target.value)}
             >
+              <option value="">
+                Select Funding Org
+              </option>
               {fundingOptions?.map(f => (
                 <option value={f.ORG_CODE}>
                   {f.ORGS_SHORT_DESC}
@@ -331,6 +346,9 @@ const AssignmentCard = (props) => {
               value={waiver}
               onChange={(e) => setWaiver(e?.target.value)}
             >
+              <option value="">
+                Select Waiver
+              </option>
               {waiverOptions?.map(w => (
                 <option value={w.WRT_CODE}>
                   {w.WRT_DESC}
