@@ -87,7 +87,7 @@ const AIMLegsFormRead = props => {
     },
     {
       title: 'PP/Grade',
-      content: (a => <div>{a?.combined_pp_grade || DEFAULT_TEXT}</div>),
+      content: (a => <div>{a?.combined_pp_grade}</div>),
     },
   ];
 
