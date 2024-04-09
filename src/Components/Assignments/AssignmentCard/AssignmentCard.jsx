@@ -1,5 +1,5 @@
 import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
-import { positionsFetchData } from 'actions/positions';
+import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
 import CheckBox from 'Components/CheckBox';
 import MonthYearInput from 'Components/MonthYearInput';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
@@ -39,6 +39,9 @@ const AssignmentCard = (props) => {
     const asgId = data?.ASG_SEQ_NUM;
     const revision_num = data?.ASGD_REVISION_NUM;
     dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
+    return () => {
+      dispatch(resetPositionsFetchData());
+    };
   }, []);
 
   // Break out ref data
@@ -189,7 +192,7 @@ const AssignmentCard = (props) => {
                 id="pos-num"
                 onChange={value => setPositionNumber(value.target.value)}
                 onKeyPress={e => (e.key === 'Enter' ? addPositionNum() : null)}
-                onBlur={addPositionNum}
+                // onBlur={addPositionNum}
                 type="add"
                 value={selectedPositionNumber}
               />
