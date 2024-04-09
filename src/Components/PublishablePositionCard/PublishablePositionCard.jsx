@@ -93,10 +93,11 @@ const PublishablePositionCard = ({
 
   const [textArea, setTextArea] = useState(data?.positionDetails || 'No description.');
   const [editMode, setEditMode] = useState(false);
+  const [classificationsEditMode, setClassificationsEditMode] = useState(false);
 
   useEffect(() => {
-    onEditModeSearch(editMode);
-  }, [editMode]);
+    onEditModeSearch(editMode || classificationsEditMode);
+  }, [editMode, classificationsEditMode]);
 
   const onSubmitForm = () => {
     const editData = {
@@ -138,7 +139,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setStatus(e?.target.value)}
                 >
                   {hardcodedFilters.statusFilters.map(s => (
-                    <option value={s.code}>
+                    <option key={s.code} value={s.code}>
                       {s.description}
                     </option>
                   ))}
@@ -152,7 +153,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setOverrideTOD(e?.target.value)}
                 >
                   {hardcodedFilters.todFilters.map(t => (
-                    <option value={t.code}>
+                    <option key={t.code} value={t.code}>
                       {t.description}
                     </option>
                   ))}
@@ -166,13 +167,13 @@ const PublishablePositionCard = ({
                 value={exclude}
                 onCheckBoxClick={e => setExclude(e)}
               />
-              { DETO_RWA_FLAG() &&
+              {DETO_RWA_FLAG() &&
                 <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
                   <CheckBox
                     id="deto-checkbox"
                     label="RWA/DETO Eligible"
-                    value={data?.deto_rwa}
-                    onCheckBoxClick={() => {}}
+                    value={data?.deto_rwa || false}
+                    onCheckBoxClick={() => { }}
                     disabled
                   />
                 </Tooltip>
@@ -234,7 +235,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setSelectedFuncBureau(e?.target.value)}
                 >
                   {hardcodedFilters.functionalBureauFilters.map(b => (
-                    <option value={b.code}>
+                    <option key={b.code} value={b.code}>
                       {b.description}
                     </option>
                   ))}
@@ -271,17 +272,20 @@ const PublishablePositionCard = ({
           showLoadingAnimation={additionalCallsLoading}
           onShowMore={(e) => onShowMorePP(e)}
         />,
-      }, PP_CLASSIFICATIONS_FLAG() ?
-        {
-          text: 'Position Classification',
-          value: 'CLASSIFICATION',
-          content: <PositionClassification
-            positionNumber={data?.positionNumber}
-            bureau={data?.bureau || DEFAULT_TEXT}
-            posSeqNum={data?.posSeqNum}
-          />,
-          disabled: editMode,
-        } : {},
+        disabled: classificationsEditMode,
+      }, PP_CLASSIFICATIONS_FLAG() ? {
+        text: 'Position Classification',
+        value: 'CLASSIFICATION',
+        content: <PositionClassification
+          positionNumber={data?.positionNumber}
+          bureau={data?.bureau || DEFAULT_TEXT}
+          posSeqNum={data?.posSeqNum}
+          editMode={classificationsEditMode}
+          setEditMode={setClassificationsEditMode}
+          disableEdit={disableEdit}
+        />,
+        disabled: editMode,
+      } : {},
       ]}
     />
   );
@@ -295,7 +299,7 @@ PublishablePositionCard.propTypes = {
   disableEdit: PropTypes.bool,
   additionalCallsLoading: PropTypes.bool,
   filters: PropTypes.shape({
-    filters: {},
+    filters: PropTypes.shape({}),
   }).isRequired,
   onShowMorePP: PropTypes.func,
 };
