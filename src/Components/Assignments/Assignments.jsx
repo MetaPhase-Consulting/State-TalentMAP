@@ -28,6 +28,14 @@ const Assignments = (props) => {
   const [cardMode, setCardMode] = useState('default');
   const [openModal, setOpenModal] = useState(false);
 
+  useEffect(() => {
+    if (openModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [openModal]);
+
   const id = props?.match.params.id;
 
   // eslint-disable-next-line no-unused-vars

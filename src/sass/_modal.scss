@@ -54,3 +54,8 @@
 .month-year-input-error {
   border: 0.1rem solid red;
 }
+
+.modal-open {
+  height: 100vh;
+  overflow-y: hidden;
+}
