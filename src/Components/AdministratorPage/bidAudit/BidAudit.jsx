@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
+import { Tooltip } from 'react-tippy';
 import { useDispatch, useSelector } from 'react-redux';
 import { onEditModeSearch } from 'utilities';
 import { filtersFetchData } from 'actions/filters/filters';
 import Alert from 'Components/Alert';
-import { bidAuditFetchData } from 'actions/bidAudit';
+import { bidAuditFetchData, bidAuditUpdateBidCounts } from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import swal from '@sweetalert/with-react';
 import BidAuditCard from './BidAuditCard';
@@ -41,6 +42,26 @@ const BidAudit = () => {
     });
   };
 
+  const cancelBidCount = () => swal.close();
+  const submitBidCount = () => {
+    dispatch(bidAuditUpdateBidCounts());
+    swal.close();
+  };
+
+  const onUpdateCountClick = (e) => {
+    e.preventDefault();
+    swal({
+      title: 'Run Dynamic Audit to Update Bid Counts?',
+      button: false,
+      content: (
+        <div className="bid-audit-modal-buttons">
+          <button onClick={submitBidCount} type="submit">Yes</button>
+          <button onClick={cancelBidCount}>Cancel</button>
+        </div>
+      ),
+    });
+  };
+
   return (
     <div className="position-search bid-audit-page">
       <div className="usa-grid-full position-search--header">
@@ -60,16 +81,25 @@ const BidAudit = () => {
       }
       <div className="usa-width-one-whole position-search--results">
         <div className="usa-grid-full position-list">
-          <p className="add-at">
-            <FA name="plus" />
-            {' '}
-            <Link
-              to="#"
-              onClick={onAddClick}
-            >
-              {'Create New Audit Cycle'}
-            </Link>
-          </p>
+          <span className="ba-flex-end">
+            <Tooltip title="Run Dynamic Audit">
+              <FA name="clock-o" />
+              {' '}
+              <Link to="#" onClick={onUpdateCountClick}>
+                {'Update Bid Count'}
+              </Link>
+            </Tooltip>
+            <span className="ml-10">
+              <FA name="plus" />
+              {' '}
+              <Link
+                to="#"
+                onClick={onAddClick}
+              >
+                {'Create New Audit Cycle'}
+              </Link>
+            </span>
+          </span>
           {dummyPositionDetails[2]?.bidAudit.map(k => (
             <BidAuditCard
               atGrades={atGrades}
