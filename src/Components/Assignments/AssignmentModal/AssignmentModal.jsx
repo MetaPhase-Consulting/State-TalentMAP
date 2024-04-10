@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import ReactPortal from 'Components/ReactPortal';
-import { useOutsideClick } from 'hooks';
 import AssignmentCard from '../AssignmentCard';
 
 const AssignmentModal = (props) => {
@@ -15,10 +14,6 @@ const AssignmentModal = (props) => {
   } = props;
 
   const ref = useRef();
-
-  useOutsideClick(ref, () => (
-    toggleModal(false)
-  ));
 
   return (
     isOpen &&
