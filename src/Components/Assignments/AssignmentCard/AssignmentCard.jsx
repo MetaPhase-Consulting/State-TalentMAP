@@ -398,7 +398,9 @@ const AssignmentCard = (props) => {
   useEffect(() => {
     if (pos_results_loading) {
       setInputClass('loading-animation--3');
-    } else if (isEmpty(pos_results) || pos_results_errored) {
+    } else if (pos_results_errored) {
+      setInputClass('input-error');
+    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
       setInputClass('input-error');
     } else {
       setInputClass('input-default');
