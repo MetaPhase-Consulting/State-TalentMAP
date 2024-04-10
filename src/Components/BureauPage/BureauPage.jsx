@@ -3,6 +3,7 @@ import AvailableBidderContainer from 'Components/AvailableBidder/AvailableBidder
 import PublishablePositions from 'Components/PublishablePositions/PublishablePositions';
 import CycleManagement from 'Components/CycleManagement';
 import CyclePositionSearch from 'Components/CycleManagement/CyclePositionSearch';
+import CycleClassifications from 'Components/CycleManagement/CycleClassifications';
 import AssignmentCycleEdit from 'Components/CycleManagement/AssignmentCycleEdit';
 import PositionManager from './PositionManager';
 import PositionManagerDetails from './PositionManagerDetails';
@@ -23,6 +24,7 @@ const BureauPage = () => {
         <Route path="/profile/bureau/cyclemanagement" render={() => <CycleManagement isAO={false} />} />
         <Route path="/profile/bureau/assignmentcycle/:id" render={() => <AssignmentCycleEdit isAO={false} />} />
         <Route path="/profile/bureau/cyclepositionsearch/:id" render={() => <CyclePositionSearch />} />
+        <Route path="/profile/bureau/cycleclassifications/" render={() => <CycleClassifications />} />
         <Route path="/profile/bureau/managepostaccess" render={() => <ManagePostAccess />} />
         <Route path="/profile/bureau/positionmanager/:type/:id" render={() => <PositionManagerDetails />} />
         <Route path="/profile/bureau/positionmanager" render={() => <PositionManager {...posManagerProps} />} />

@@ -100,7 +100,7 @@ const PositionExpandableContent = ({
                     const key = Object.keys(item)[0];
                     return (
                       <div key={`subheading-${key}`}>
-                        <span className="span-label">{key && `${key} :`}</span>
+                        <span className="span-label">{key && `${key}:`}</span>
                         <span className="span-text">{item[key]}</span>
                       </div>
                     );
