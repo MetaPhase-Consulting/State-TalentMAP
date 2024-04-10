@@ -347,7 +347,6 @@ const PublishablePositions = ({ viewType }) => {
               <ExportButton
                 onClick={exportPublishablePositions}
                 isLoading={exportIsLoading}
-                disabled={false}
               />
             </div>
           </div>
