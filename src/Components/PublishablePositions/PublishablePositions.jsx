@@ -19,7 +19,7 @@ import { renderSelectionList } from 'utilities';
 import PublishablePositionCard from '../PublishablePositionCard/PublishablePositionCard';
 import { checkFlag } from '../../flags';
 
-const PP_FLAG = checkFlag('flags.publishable_positions');
+const PP_FLAG = () => checkFlag('flags.publishable_positions_additional');
 
 // may need to be used for permissioning
 // eslint-disable-next-line no-unused-vars
@@ -204,14 +204,14 @@ const PublishablePositions = ({ viewType }) => {
             <div className="filterby-clear">
               {
                 clearFilters &&
-                  <button
-                    className="unstyled-button"
-                    onClick={resetFilters}
-                    disabled={editMode}
-                  >
-                    <FA name="times" />
-                    Clear Filters
-                  </button>
+                <button
+                  className="unstyled-button"
+                  onClick={resetFilters}
+                  disabled={editMode}
+                >
+                  <FA name="times" />
+                  Clear Filters
+                </button>
               }
             </div>
           </div>
@@ -247,7 +247,7 @@ const PublishablePositions = ({ viewType }) => {
                 disabled={editMode}
               />
             </div>
-            { PP_FLAG ?
+            {PP_FLAG() ?
               <div className="filter-div">
                 <div className="label">Bid Cycle:</div>
                 <Picky
@@ -343,6 +343,7 @@ const PublishablePositions = ({ viewType }) => {
               {
                 data.map(pubPos => (
                   <PublishablePositionCard
+                    key={pubPos?.positionNumber}
                     data={pubPos}
                     additionalCallsLoading={additionalDataIsLoading}
                     onEditModeSearch={editState =>

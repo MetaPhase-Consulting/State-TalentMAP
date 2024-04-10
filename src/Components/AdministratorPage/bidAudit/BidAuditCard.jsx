@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { get } from 'lodash';
 import { Link } from 'react-router-dom';
+import { get } from 'lodash';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -61,6 +61,10 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
         </div>
       ),
     });
+  };
+
+  const onRunAudit = (e) => {
+    e.preventDefault();
   };
 
   const onCancelForm = () => {
@@ -229,14 +233,17 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
         <div className="position-form--label-input-container">
           <label htmlFor="description">Audit Description</label>
           <TextareaAutosize
-            maxRows={4}
-            minRows={4}
-            maxLength="4000"
+            maxRows={2}
+            minRows={1}
+            maxLength="100"
             name="description"
             placeholder="Please provide a description of the bid season."
             defaultValue={description || ''}
             onChange={(e) => setDescription(e.target.value)}
           />
+        </div>
+        <div className="word-count">
+          {description?.length} / 100
         </div>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
@@ -257,6 +264,9 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
         </div>
         <div>
           <button onClick={onDelete}>Delete</button>
+          <div className="ba-flex-end">
+            <button onClick={onRunAudit}>Run Bid Audit</button>
+          </div>
         </div>
       </div>
     ),
@@ -413,6 +423,7 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
             <PositionExpandableContent
               sections={bidAuditSections}
               form={bidAuditForm}
+              saveText="Save Audit Cycle"
             />
           </div>
         ),
@@ -425,7 +436,7 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
             <PositionExpandableContent
               sections={atGradesSections}
               form={atGradesForm}
-              tempHideEdit
+              saveText="Save At Grade"
             />
           </div>
         ),
@@ -438,7 +449,7 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
             <PositionExpandableContent
               sections={inCategoriesSections}
               form={inCategoriesForm}
-              tempHideEdit
+              saveText="Save In Category"
             />
           </div>
         ),

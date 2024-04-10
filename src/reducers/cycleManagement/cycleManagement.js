@@ -88,6 +88,50 @@ export function cycleManagementDelete(state = false, action) {
 }
 
 
+// ================  Cycle Management MERGE cycle  ================
+
+export function cycleManagementMerge(state = false, action) {
+  switch (action.type) {
+    case 'ASSIGNMENT_CYCLE_MERGE_SUCCESS':
+      return action.success;
+    default:
+      return state;
+  }
+}
+
+
+// ================ Cycle Positions  ================
+
+
+// ================ Cycle Positions Filters  ================
+
+export function cyclePositionFiltersIsLoading(state = false, action) {
+  switch (action.type) {
+    case 'CYCLE_POSITIONS_FILTERS_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function cyclePositionsFilters(state = {}, action) {
+  switch (action.type) {
+    case 'CYCLE_POSITIONS_FILTERS_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+
+export function cyclePositionSearchSelections(state = {}, action) {
+  switch (action.type) {
+    case 'CYCLE_POSITIONS_SEARCH_SELECTIONS_SAVE_SUCCESS':
+      return action.result;
+    default:
+      return state;
+  }
+}
+
+
 // ================ Cycle Positions  ================
 
 
@@ -116,14 +160,6 @@ export function cyclePositionSearch(state = [], action) {
   }
 }
 
-export function cyclePositionSearchSelections(state = {}, action) {
-  switch (action.type) {
-    case 'CYCLE_POSITION_SEARCH_SELECTIONS_SAVE_SUCCESS':
-      return action.result;
-    default:
-      return state;
-  }
-}
 
 export function cyclePositionRemoveHasErrored(state = false, action) {
   switch (action.type) {
@@ -170,6 +206,25 @@ export function cyclePositionEditSuccess(state = [], action) {
   switch (action.type) {
     case 'CYCLE_POSITION_EDIT_SUCCESS':
       return action.data;
+    default:
+      return state;
+  }
+}
+
+// ================ Cycle Classifications  ================
+
+export function cycleClassificationsIsLoading(state = false, action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function cycleClassificationsData(state = [], action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS':
+      return action.results;
     default:
       return state;
   }

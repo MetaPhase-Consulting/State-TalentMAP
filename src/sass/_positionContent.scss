@@ -3,8 +3,8 @@
 
   .toggle-include {
     position: absolute;
-    top: -45px;
-    right: -10px;
+    top: -80px;
+    right: 0px;
     z-index: 1;
   }
 }
@@ -424,12 +424,13 @@
     flex-direction: row;
     flex-wrap: wrap;
 
-    span:first-of-type {
+    .span-label {
       font-weight: 500;
       padding-right: 5px;
     }
 
-    span {
+    .span-label,
+    .span-text {
       font-size: 15px;
     }
 
@@ -442,10 +443,15 @@
 }
 
 .position-classifications {
-  max-width: 1500px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+
+  // ============= SUBHEADER =============
+
+  .position-content--subheader {
+    margin: 0px;
+  }
 
   .table-container {
     display: flex;
@@ -488,16 +494,6 @@
       padding: 0 !important;
       margin: 0 !important;
       color: $color-green !important;
-    }
-  }
-
-  .position-classifications--actions {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0px 0px 10px;
-
-    button {
-      font-size: 16px;
     }
   }
 }

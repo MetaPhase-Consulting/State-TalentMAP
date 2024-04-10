@@ -29,14 +29,14 @@ const OrgStatsCard = (props) => {
     <Row fluid className="tabbed-card box-shadow-standard">
       <div className="position-content">
         <Row fluid className="position-content--section position-content--subheader no-space">
-          <span className="title-link">
+          <span className="pr-10 font-bold">
             {getResult(props, 'title')}
           </span>
           <div className="line-separated-fields">
             {Object.keys(sections.heading).map(field => (
               <div key={`subheading-${field}`}>
-                <span>{field}:</span>
-                <span>{sections.heading[field]}</span>
+                <span className="span-label">{field}:</span>
+                <span className="span-text">{sections.heading[field]}</span>
               </div>
             ))}
           </div>
