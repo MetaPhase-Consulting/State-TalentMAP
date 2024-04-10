@@ -585,3 +585,49 @@ export function cyclePositionEdit(position, incumbent, status) {
       });
   };
 }
+
+// ================================================================== Cycle Classifications
+
+export function cycleClassificationsIsLoading(bool) {
+  return {
+    type: 'CYCLE_CLASSIFICATIONS_IS_LOADING',
+    isLoading: bool,
+  };
+}
+
+export function cycleClassificationsFetchDataSuccess(results) {
+  return {
+    type: 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS',
+    results,
+  };
+}
+
+let cancelCycleClassificationsFetch;
+export function cycleClassificationsFetchData() {
+  return (dispatch) => {
+    if (cancelCycleClassificationsFetch) {
+      cancelCycleClassificationsFetch('cancel');
+    }
+    batch(() => {
+      dispatch(cycleClassificationsIsLoading(true));
+    });
+    const endpoint = '/fsbid/assignment_cycles/classifications/';
+    api().get(endpoint, {
+      cancelToken: new CancelToken((c) => { cancelCycleClassificationsFetch = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(cycleClassificationsFetchDataSuccess(data));
+          dispatch(cycleClassificationsIsLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(cycleClassificationsFetchDataSuccess([]));
+            dispatch(cycleClassificationsIsLoading(false));
+          });
+        }
+      });
+  };
+}
