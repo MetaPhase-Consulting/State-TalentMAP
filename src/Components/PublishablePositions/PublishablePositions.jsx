@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Picky from 'react-picky';
 import FA from 'react-fontawesome';
 import { sortBy, uniqBy } from 'lodash';
+import { toastError, toastSuccess } from 'actions/toast';
 import {
   publishablePositionsEdit,
   publishablePositionsExport,
@@ -202,9 +203,11 @@ const PublishablePositions = ({ viewType }) => {
       publishablePositionsExport(getQuery())
         .then(() => {
           setExportIsLoading(false);
+          dispatch(toastSuccess('Publishable Positions export successfully downloaded.', 'Success'));
         })
         .catch(() => {
           setExportIsLoading(false);
+          dispatch(toastError('We were unable to process your Publishable Positions export. Please try again.', 'An error has occurred'));
         });
     }
   };
@@ -343,7 +346,7 @@ const PublishablePositions = ({ viewType }) => {
             <div className="export-button-container">
               <ExportButton
                 onClick={exportPublishablePositions}
-                // isLoading={exportIsLoading}
+                isLoading={exportIsLoading}
                 disabled={false}
               />
             </div>

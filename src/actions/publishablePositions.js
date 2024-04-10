@@ -33,7 +33,6 @@ export function publishablePositionsSuccess(results) {
   };
 }
 export function publishablePositionsFetchData(query = {}) {
-  console.log('fetch data query:', query);
   return (dispatch) => {
     if (cancelPPData) { cancelPPData('cancel'); }
     batch(() => {
@@ -156,7 +155,6 @@ export function publishablePositionsFiltersFetchData() {
   };
 }
 export function publishablePositionsExport(query = {}) {
-  console.log('export query: ', query);
   const endpoint = '/fsbid/publishable_positions/export/';
   const q = convertQueryToString(query);
   const ep = `${endpoint}?${q}`;
