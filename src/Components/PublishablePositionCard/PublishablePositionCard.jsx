@@ -32,6 +32,16 @@ const PublishablePositionCard = ({
   additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
+  const additionalRO = [
+    { TED: data?.status || DEFAULT_TEXT },
+    { Incumbent: data?.status || DEFAULT_TEXT },
+    { 'Default TOD': data?.status || DEFAULT_TEXT },
+    { Assignee: data?.status || DEFAULT_TEXT },
+    { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
+    { 'Employee ID': data?.status || DEFAULT_TEXT },
+    { 'Employee Status': data?.status || DEFAULT_TEXT },
+  ];
+
   const sections = {
     /* eslint-disable quote-props */
     subheading: [
@@ -42,19 +52,14 @@ const PublishablePositionCard = ({
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'Grade': data?.grade || DEFAULT_TEXT },
-      { 'Status': data?.status || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combined_pp_grade },
+      { 'Publishable Status': data?.status || DEFAULT_TEXT },
       { 'Language': data?.language || DEFAULT_TEXT },
-      { 'Pay Plan': data?.payPlan || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
         { 'Bid Cycle': data?.status || DEFAULT_TEXT },
-        { 'TED': data?.status || DEFAULT_TEXT },
-        { 'Incumbent': data?.status || DEFAULT_TEXT },
-        { 'Tour of Duty': data?.status || DEFAULT_TEXT },
-        { 'Assignee': data?.status || DEFAULT_TEXT },
-        { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
+        ...additionalRO,
       ]
       : [],
     textarea: data?.positionDetails || 'No description.',
@@ -88,10 +93,11 @@ const PublishablePositionCard = ({
 
   const [textArea, setTextArea] = useState(data?.positionDetails || 'No description.');
   const [editMode, setEditMode] = useState(false);
+  const [classificationsEditMode, setClassificationsEditMode] = useState(false);
 
   useEffect(() => {
-    onEditModeSearch(editMode);
-  }, [editMode]);
+    onEditModeSearch(editMode || classificationsEditMode);
+  }, [editMode, classificationsEditMode]);
 
   const onSubmitForm = () => {
     const editData = {
@@ -117,10 +123,8 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'Grade': data?.grade || DEFAULT_TEXT },
-      { 'Status': data?.status || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combined_pp_grade },
       { 'Language': data?.language || DEFAULT_TEXT },
-      { 'Pay Plan': data?.payPlan || DEFAULT_TEXT },
     ],
     inputBody: (
       <div className="position-form">
@@ -128,28 +132,28 @@ const PublishablePositionCard = ({
           <div className="spaced-row">
             <div className="dropdown-container">
               <div className="position-form--input">
-                <label htmlFor="publishable-position-statuses">Status</label>
+                <label htmlFor="publishable-position-statuses">Publishable Status</label>
                 <select
                   id="publishable-position-statuses"
                   defaultValue={status}
                   onChange={(e) => setStatus(e?.target.value)}
                 >
                   {hardcodedFilters.statusFilters.map(s => (
-                    <option value={s.code}>
+                    <option key={s.code} value={s.code}>
                       {s.description}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="position-form--input">
-                <label htmlFor="publishable-pos-tod-override">Override Tour of Duty</label>
+                <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
                   id="publishable-pos-tod-override"
                   defaultValue={overrideTOD}
                   onChange={(e) => setOverrideTOD(e?.target.value)}
                 >
                   {hardcodedFilters.todFilters.map(t => (
-                    <option value={t.code}>
+                    <option key={t.code} value={t.code}>
                       {t.description}
                     </option>
                   ))}
@@ -163,13 +167,13 @@ const PublishablePositionCard = ({
                 value={exclude}
                 onCheckBoxClick={e => setExclude(e)}
               />
-              { DETO_RWA_FLAG() &&
+              {DETO_RWA_FLAG() &&
                 <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
                   <CheckBox
                     id="deto-checkbox"
                     label="RWA/DETO Eligible"
-                    value={data?.deto_rwa}
-                    onCheckBoxClick={() => {}}
+                    value={data?.deto_rwa || false}
+                    onCheckBoxClick={() => { }}
                     disabled
                   />
                 </Tooltip>
@@ -201,7 +205,7 @@ const PublishablePositionCard = ({
           <>
             <div className="content-divider" />
             <div className="position-form--heading">
-              <span className="title">Future Cycle</span>
+              <span className="title">Proposed Cycle</span>
               <span className="subtitle">Please identify a cycle to add this position to.</span>
             </div>
             <div className="position-form--picky">
@@ -231,7 +235,7 @@ const PublishablePositionCard = ({
                   onChange={(e) => setSelectedFuncBureau(e?.target.value)}
                 >
                   {hardcodedFilters.functionalBureauFilters.map(b => (
-                    <option value={b.code}>
+                    <option key={b.code} value={b.code}>
                       {b.description}
                     </option>
                   ))}
@@ -252,6 +256,10 @@ const PublishablePositionCard = ({
     /* eslint-enable quote-props */
   };
 
+  if (PP_FLAG()) {
+    form.staticBody.push(...additionalRO);
+  }
+
   return (
     <TabbedCard
       tabs={[{
@@ -264,17 +272,20 @@ const PublishablePositionCard = ({
           showLoadingAnimation={additionalCallsLoading}
           onShowMore={(e) => onShowMorePP(e)}
         />,
-      }, PP_CLASSIFICATIONS_FLAG() ?
-        {
-          text: 'Position Classification',
-          value: 'CLASSIFICATION',
-          content: <PositionClassification
-            positionNumber={data?.positionNumber}
-            bureau={data?.bureau || DEFAULT_TEXT}
-            posSeqNum={data?.posSeqNum}
-          />,
-          disabled: editMode,
-        } : {},
+        disabled: classificationsEditMode,
+      }, PP_CLASSIFICATIONS_FLAG() ? {
+        text: 'Position Classification',
+        value: 'CLASSIFICATION',
+        content: <PositionClassification
+          positionNumber={data?.positionNumber}
+          bureau={data?.bureau || DEFAULT_TEXT}
+          posSeqNum={data?.posSeqNum}
+          editMode={classificationsEditMode}
+          setEditMode={setClassificationsEditMode}
+          disableEdit={disableEdit}
+        />,
+        disabled: editMode,
+      } : {},
       ]}
     />
   );
@@ -288,7 +299,7 @@ PublishablePositionCard.propTypes = {
   disableEdit: PropTypes.bool,
   additionalCallsLoading: PropTypes.bool,
   filters: PropTypes.shape({
-    filters: {},
+    filters: PropTypes.shape({}),
   }).isRequired,
   onShowMorePP: PropTypes.func,
 };

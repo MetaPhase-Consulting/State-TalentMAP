@@ -228,9 +228,7 @@ exports[`AgendaLeg Component matches snapshot 1`] = `
     onMouseOver={[Function]}
     type="div"
   >
-    <div>
-      None listed
-    </div>
+    <div />
   </InteractiveElement>
 </Fragment>
 `;

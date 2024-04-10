@@ -95,12 +95,10 @@ const PrintPanelMeetingAgendas = ({ panelMeetingData, closePrintView, agendas })
                 const cdoComma = (cdoLast && cdoFirst) ? ',' : '';
                 const cdoFull = `${cdoLast}${cdoComma} ${cdoFirst}`;
                 const cdo = cdoFull !== ' ' ? cdoFull : 'None Listed';
-                const userGrade = agenda?.grade || 'None Listed';
-                const userPayPlan = agenda?.pay_plan_code || 'None Listed';
                 const userLanguage = agenda?.languages || 'None Listed';
+                const combinedPPgrade = agenda?.combined_pp_grade;
                 const userSkill = agenda?.skills?.join(', ') || 'None Listed';
                 const agendaStatus = agenda?.status_short || 'None Listed';
-                const ppGrade = `${userPayPlan}, ${userGrade}`;
                 const name = agenda?.full_name ?? '';
 
                 const createdByLast = agenda?.creators?.last_name ? `${agenda.creators.last_name},` : '';
@@ -137,7 +135,7 @@ const PrintPanelMeetingAgendas = ({ panelMeetingData, closePrintView, agendas })
                           }
                         </span>
                       </div>
-                      <div className="item"><span className="label">PP/Grade: </span> {ppGrade}</div>
+                      <div className="item"><span className="label">PP/Grade: </span> {combinedPPgrade}</div>
                       <div className="item"><span className="label">Skill: </span> {userSkill}</div>
                       <div className="item"><span className="label">CDO: </span> {cdo}</div>
                     </div>
