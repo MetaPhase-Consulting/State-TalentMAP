@@ -1,6 +1,7 @@
 import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
 import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
 import CheckBox from 'Components/CheckBox';
+import InteractiveElement from 'Components/InteractiveElement';
 import MonthYearInput from 'Components/MonthYearInput';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import TabbedCard from 'Components/TabbedCard';
@@ -10,7 +11,8 @@ import {
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
 // import { useDidMountEffect } from 'hooks';
-import { get } from 'lodash';
+import FA from 'react-fontawesome';
+import { get, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 // import datefns from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -21,6 +23,7 @@ import { getResult } from 'utilities';
 const AssignmentCard = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
   const [editMode, setEditMode] = useState(isNew);
+  const [inputClass, setInputClass] = useState('input-default');
 
   // Pos Search
   const [selectedPositionNumber, setPositionNumber] = useState('');
@@ -187,16 +190,27 @@ const AssignmentCard = (props) => {
         <div className="position-form--inputs">
           {
             isNew &&
-            <div className="position-form--label-input-container">
+            <div className="position-form--label-input-container position-number-container">
               <label htmlFor="pos-num">Position Number</label>
               <input
                 id="pos-num"
+                name="add"
+                className={inputClass}
                 onChange={value => setPositionNumber(value.target.value)}
                 onKeyPress={e => (e.key === 'Enter' ? addPositionNum() : null)}
-                // onBlur={addPositionNum}
                 type="add"
                 value={selectedPositionNumber}
+                placeholder="Add by Position Number"
               />
+              <InteractiveElement
+                className="add-pos-num-icon"
+                onClick={addPositionNum}
+                role="button"
+                title="Add position"
+                type="span"
+              >
+                <FA name="plus" />
+              </InteractiveElement>
             </div>
           }
           <div className="position-form--label-input-container">
@@ -382,7 +396,14 @@ const AssignmentCard = (props) => {
 
   // ========Use Effects for fetching pos results and loading states=======
   useEffect(() => {
-  }, [pos_results_loading, pos_results_errored]);
+    if (pos_results_loading) {
+      setInputClass('loading-animation--3');
+    } else if (isEmpty(pos_results) || pos_results_errored) {
+      setInputClass('input-error');
+    } else {
+      setInputClass('input-default');
+    }
+  }, [pos_results, pos_results_loading, pos_results_errored]);
 
   useEffect(() => {
     if (isNew) {
