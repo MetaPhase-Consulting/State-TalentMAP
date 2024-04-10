@@ -160,6 +160,8 @@ const AgendaItemMaintenancePane = (props) => {
       setInputClass('loading-animation--3');
     } else if (posNumError) {
       setInputClass('input-error');
+    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
+      setInputClass('input-error');
     } else {
       setInputClass('input-default');
     }
