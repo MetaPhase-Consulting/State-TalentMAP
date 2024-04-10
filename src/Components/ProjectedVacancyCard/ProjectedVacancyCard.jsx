@@ -12,12 +12,22 @@ import {
   NO_POST, NO_SKILL, NO_STATUS, NO_TOUR_END_DATE, NO_TOUR_OF_DUTY, NO_UPDATE_DATE,
 } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
+import CheckBox from 'Components/CheckBox';
 import TabbedCard from 'Components/TabbedCard';
-import ToggleButton from 'Components/ToggleButton';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 
 // eslint-disable-next-line
-const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditModeSearch, onSubmit, selectOptions }) => {
+const ProjectedVacancyCard = (props) => {
+  const {
+    result,
+    languageOffsets,
+    updateIncluded,
+    disableIncluded,
+    disableEdit,
+    onEditModeSearch,
+    onSubmit,
+    selectOptions,
+  } = props;
 
   const id = result?.future_vacancy_seq_num || undefined;
 
@@ -77,12 +87,16 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
       setTextArea(result?.capsule_description || '');
     }
   }, [editMode]);
+  useEffect(() => {
+    if (!disableEdit) {
+      setIncluded(result?.future_vacancy_exclude_import_indicator === 'N');
+    }
+  }, [disableEdit]);
 
   const onSubmitForm = () => {
     const editData = {
       projected_vacancy: [{
         ...result,
-        future_vacancy_exclude_import_indicator: !included ? 'Y' : 'N',
         bid_season_code: season,
         future_vacancy_status_code: status,
         future_vacancy_override_tour_end_date: overrideTED ?
@@ -96,8 +110,8 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
       capsule_description: {
         position_seq_num: result?.position_seq_num,
         capsule_description: textArea,
-        updater_id: result?.updater_id,
-        updated_date: result?.updated_date,
+        updater_id: result?.position_updater_id,
+        updated_date: result?.position_updated_date,
       },
     };
     onSubmit(editData, setEditMode(false));
@@ -158,7 +172,6 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
         'Language Offset Winter': winterLanguageOffsets?.find(o =>
           o.code === languageOffsets?.language_offset_winter)?.description || DEFAULT_TEXT,
       },
-      { 'Skill': result?.position_skill_code || NO_SKILL },
       { 'Grade': result?.position_grade_code || NO_GRADE },
       { 'Pay Plan': result?.position_pay_plan_code || NO_GRADE },
       { 'Post Differential | Danger Pay': getDifferentials(differentials) },
@@ -178,7 +191,6 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
       { 'Bureau': result?.bureau_short_description || NO_BUREAU },
       { 'Location': result?.location_description || NO_POST },
       { 'Organization': result?.organization_short_description || NO_ORG },
-      { 'Skill': result?.position_skill_code || NO_SKILL },
       { 'Grade': result?.position_grade_code || NO_GRADE },
       { 'Pay Plan': result?.position_pay_plan_code || NO_GRADE },
       { 'Post Differential | Danger Pay': getDifferentials(differentials) },
@@ -275,6 +287,7 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
     handleEdit: {
       editMode,
       setEditMode,
+      disableEdit,
     },
   };
   /* eslint-enable quote-props */
@@ -291,11 +304,12 @@ const ProjectedVacancyCard = ({ result, languageOffsets, updateIncluded, onEditM
               form={form}
             />
             <div className="toggle-include">
-              <ToggleButton
-                labelTextRight={!included ? 'Excluded' : 'Included'}
-                checked={included}
-                onChange={() => setIncluded(!included)}
-                onColor="#0071BC"
+              <CheckBox
+                id={`included-checkbox-${id}`}
+                label="Included"
+                value={included}
+                onCheckBoxClick={() => setIncluded(!included)}
+                disabled={disableIncluded}
               />
             </div>
           </div>
@@ -312,6 +326,8 @@ ProjectedVacancyCard.propTypes = {
     language_offset_winter: PropTypes.string,
   }),
   updateIncluded: PropTypes.func,
+  disableIncluded: PropTypes.bool,
+  disableEdit: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
   selectOptions: PropTypes.shape({
@@ -330,6 +346,8 @@ ProjectedVacancyCard.defaultProps = {
     language_offset_winter: null,
   },
   updateIncluded: EMPTY_FUNCTION,
+  disableIncluded: false,
+  disableEdit: false,
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
   selectOptions: {

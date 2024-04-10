@@ -233,14 +233,17 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
         <div className="position-form--label-input-container">
           <label htmlFor="description">Audit Description</label>
           <TextareaAutosize
-            maxRows={4}
-            minRows={4}
-            maxLength="4000"
+            maxRows={2}
+            minRows={1}
+            maxLength="100"
             name="description"
             placeholder="Please provide a description of the bid season."
             defaultValue={description || ''}
             onChange={(e) => setDescription(e.target.value)}
           />
+        </div>
+        <div className="word-count">
+          {description?.length} / 100
         </div>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
