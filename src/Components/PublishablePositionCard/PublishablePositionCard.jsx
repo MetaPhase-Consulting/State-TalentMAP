@@ -50,7 +50,7 @@ const PublishablePositionCard = ({
       { 'Position Title': data?.positionTitle || DEFAULT_TEXT },
     ],
     bodyPrimary: [
-      { 'Bureau': data?.bureau || DEFAULT_TEXT },
+      { 'elsa': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
       { 'PP/Grade': data?.combined_pp_grade },
       { 'Publishable Status': data?.status || DEFAULT_TEXT },
