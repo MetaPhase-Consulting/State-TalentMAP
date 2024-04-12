@@ -22,6 +22,10 @@ import {
   ASSIGNMENT_CYCLE_POST_POSITIONS_ERROR_TITLE,
   ASSIGNMENT_CYCLE_POST_POSITIONS_SUCCESS,
   ASSIGNMENT_CYCLE_POST_POSITIONS_TITLE,
+  EDIT_CYCLE_CLASSIFICATIONS_ERROR,
+  EDIT_CYCLE_CLASSIFICATIONS_ERROR_TITLE,
+  EDIT_CYCLE_CLASSIFICATIONS_SUCCESS,
+  EDIT_CYCLE_CLASSIFICATIONS_SUCCESS_TITLE,
   EDIT_CYCLE_POSITION_ERROR,
   EDIT_CYCLE_POSITION_ERROR_TITLE,
   EDIT_CYCLE_POSITION_SUCCESS,
@@ -362,6 +366,94 @@ export function cycleManagementMergeCycle(data) {
 }
 
 
+// ================================================================== Cycle Classifications
+
+export function cycleClassificationsIsLoading(bool) {
+  return {
+    type: 'CYCLE_CLASSIFICATIONS_IS_LOADING',
+    isLoading: bool,
+  };
+}
+
+export function cycleClassificationsFetchDataSuccess(results) {
+  return {
+    type: 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS',
+    results,
+  };
+}
+
+let cancelCycleClassificationsFetch;
+export function cycleClassificationsFetchData() {
+  return (dispatch) => {
+    if (cancelCycleClassificationsFetch) {
+      cancelCycleClassificationsFetch('cancel');
+    }
+    batch(() => {
+      dispatch(cycleClassificationsIsLoading(true));
+    });
+    const endpoint = '/fsbid/assignment_cycles/classifications/';
+    api().get(endpoint, {
+      cancelToken: new CancelToken((c) => { cancelCycleClassificationsFetch = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(cycleClassificationsFetchDataSuccess(data));
+          dispatch(cycleClassificationsIsLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(cycleClassificationsFetchDataSuccess([]));
+            dispatch(cycleClassificationsIsLoading(false));
+          });
+        }
+      });
+  };
+}
+
+
+let cancelCycleClassificationsEdit;
+
+export function cycleClassificationsEditCycleSuccess(bool) {
+  return {
+    type: 'CYCLE_CLASSIFICATIONS_EDIT_SUCCESS',
+    success: bool,
+  };
+}
+
+export function cycleClassificationsEditCycle(data) {
+  return (dispatch) => {
+    if (cancelCycleClassificationsEdit) {
+      cancelCycleClassificationsEdit('cancel');
+    }
+    api()
+      .post('/fsbid/assignment_cycles/classifications/update/', {
+        data,
+      }, {
+        cancelToken: new CancelToken((c) => { cancelCycleClassificationsEdit = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            EDIT_CYCLE_CLASSIFICATIONS_SUCCESS, EDIT_CYCLE_CLASSIFICATIONS_SUCCESS_TITLE,
+          ));
+          dispatch(cycleClassificationsEditCycleSuccess(true));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(toastError(
+              EDIT_CYCLE_CLASSIFICATIONS_ERROR, EDIT_CYCLE_CLASSIFICATIONS_ERROR_TITLE,
+            ));
+          });
+        }
+      });
+  };
+}
+
+
 // ================================================================== Cycle Positions
 
 // ================================================================== Cycle Positions Filters
@@ -581,52 +673,6 @@ export function cyclePositionEdit(position, incumbent, status) {
           dispatch(toastError(EDIT_CYCLE_POSITION_ERROR, EDIT_CYCLE_POSITION_ERROR_TITLE));
           dispatch(cyclePositionEditHasErrored(true));
           dispatch(cyclePositionEditIsLoading(false));
-        }
-      });
-  };
-}
-
-// ================================================================== Cycle Classifications
-
-export function cycleClassificationsIsLoading(bool) {
-  return {
-    type: 'CYCLE_CLASSIFICATIONS_IS_LOADING',
-    isLoading: bool,
-  };
-}
-
-export function cycleClassificationsFetchDataSuccess(results) {
-  return {
-    type: 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS',
-    results,
-  };
-}
-
-let cancelCycleClassificationsFetch;
-export function cycleClassificationsFetchData() {
-  return (dispatch) => {
-    if (cancelCycleClassificationsFetch) {
-      cancelCycleClassificationsFetch('cancel');
-    }
-    batch(() => {
-      dispatch(cycleClassificationsIsLoading(true));
-    });
-    const endpoint = '/fsbid/assignment_cycles/classifications/';
-    api().get(endpoint, {
-      cancelToken: new CancelToken((c) => { cancelCycleClassificationsFetch = c; }),
-    })
-      .then(({ data }) => {
-        batch(() => {
-          dispatch(cycleClassificationsFetchDataSuccess(data));
-          dispatch(cycleClassificationsIsLoading(false));
-        });
-      })
-      .catch((err) => {
-        if (err?.message !== 'cancel') {
-          batch(() => {
-            dispatch(cycleClassificationsFetchDataSuccess([]));
-            dispatch(cycleClassificationsIsLoading(false));
-          });
         }
       });
   };

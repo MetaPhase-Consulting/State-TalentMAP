@@ -230,6 +230,53 @@
   }
 }
 
+.cm-cycle-classes {
+  border-bottom: 2px solid $primary-blue;
+  .cm-cycle-classes-check {
+    accent-color: darkorange;
+  }
+  .position-content--subheader {
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &::after {
+      content: none;
+    }
+
+    &.no-space {
+      justify-content: flex-start !important;
+    }
+  }
+  .toggle-edit-mode {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    color: $primary-blue;
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+
+    .fa {
+      margin-right: 6px;
+    }
+
+    &:hover {
+      div {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.cm-classifications-scroll-container {
+  overflow: auto;
+  height: 1000px;
+  margin: 0px 10px 0px 10px;
+}
+
+
 .cycle-search-card {
   margin-top: 15px;
   margin-bottom: 15px;

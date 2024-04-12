@@ -99,6 +99,34 @@ export function cycleManagementMerge(state = false, action) {
   }
 }
 
+// ================ Cycle Classifications  ================
+
+export function cycleClassificationsIsLoading(state = false, action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function cycleClassificationsData(state = [], action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+
+export function cycleClassificationsEditSuccess(state = false, action) {
+  switch (action.type) {
+    case 'CYCLE_CLASSIFICATIONS_EDIT_SUCCESS':
+      return action.success;
+    default:
+      return state;
+  }
+}
+
 
 // ================ Cycle Positions  ================
 
@@ -211,21 +239,3 @@ export function cyclePositionEditSuccess(state = [], action) {
   }
 }
 
-// ================ Cycle Classifications  ================
-
-export function cycleClassificationsIsLoading(state = false, action) {
-  switch (action.type) {
-    case 'CYCLE_CLASSIFICATIONS_IS_LOADING':
-      return action.isLoading;
-    default:
-      return state;
-  }
-}
-export function cycleClassificationsData(state = [], action) {
-  switch (action.type) {
-    case 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS':
-      return action.results;
-    default:
-      return state;
-  }
-}

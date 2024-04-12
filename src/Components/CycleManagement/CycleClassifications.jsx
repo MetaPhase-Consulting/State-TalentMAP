@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
+import FA from 'react-fontawesome';
+import { Row } from 'Components/Layout';
 import TabbedCard from 'Components/TabbedCard';
 import BackButton from 'Components/BackButton';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
-import { cycleClassificationsFetchData } from 'actions/cycleManagement';
+import { userHasPermissions } from 'utilities';
+import { cycleClassificationsEditCycle, cycleClassificationsEditCycleSuccess, cycleClassificationsFetchData } from 'actions/cycleManagement';
 
 const CycleClassifications = () => {
   const dispatch = useDispatch();
@@ -15,30 +18,47 @@ const CycleClassifications = () => {
 
   const results = useSelector(state => state.cycleClassificationsData);
   const isLoading = useSelector(state => state.cycleClassificationsIsLoading);
+  const editSuccessful = useSelector(state => state.cycleClassificationsEditSuccess);
+  const userProfile = useSelector(state => state.userProfile);
 
-  const [classifications, setClassifications] = useState(results?.cycle_classifications ?? []);
-  const [selections, setSelections] = useState(results?.classification_selections ?? []);
+  const isSuperUser = userHasPermissions(['superuser'], userProfile?.permission_groups);
 
-  const pc = results?.cycle_classifications ?? [];
-  const cs = results?.classification_selections ?? [];
+  const [cycleToEdit, setCycleToEdit] = useState(false);
+
+  const checkCycleToEdit = (id, code) => (
+    cycleToEdit && cycleToEdit?.id === id && cycleToEdit?.code === code
+  );
 
   useEffect(() => {
-    setClassifications(pc);
-    setSelections(cs);
-  }, [results]);
+    if (editSuccessful) {
+      dispatch(cycleClassificationsEditCycleSuccess(false));
+      setCycleToEdit(false);
+      dispatch(cycleClassificationsFetchData());
+    }
+  }, [editSuccessful]);
 
-  // const handleSelection = (code, event) => {
-  //   const newSelections = selections.map(s => {
-  //     if (s.code === code) {
-  //       return {
-  //         ...s,
-  //         value: event.target.checked ? '1' : '0',
-  //       };
-  //     }
-  //     return s;
-  //   });
-  //   setSelections(newSelections);
-  // };
+  const classifications = results?.cycle_classifications;
+  const cycles = results?.classification_selections;
+
+  const handleSelection = (code, event) => {
+    const newValues = cycleToEdit.values.map(v => {
+      if (v.code === code) {
+        return {
+          ...v,
+          value: event.target.checked ? '1' : '0',
+        };
+      }
+      return v;
+    });
+    setCycleToEdit(prevState => ({
+      ...prevState,
+      values: newValues,
+    }));
+  };
+
+  const handleSubmit = () => {
+    dispatch(cycleClassificationsEditCycle(cycleToEdit));
+  };
 
   const cycleClassCard = () => (isLoading ?
     <div className="loading-animation--5">
@@ -46,13 +66,30 @@ const CycleClassifications = () => {
         Loading additional data
       </div>
     </div> :
-    (selections.map(sel => (
-      <div className="position-classifications">
-        <div className="line-separated-fields">
-          <div>
-            <span>{sel.cycle_name} - {sel.cycle_desc}</span>
+    (cycles?.map(cycle => (
+      <div className="position-classifications cm-cycle-classes">
+        <Row fluid className="position-content--subheader">
+          <div className="line-separated-fields">
+            <div>
+              <span>{cycle?.cycle_name} - {cycle?.cycle_desc}</span>
+            </div>
           </div>
-        </div>
+
+          {(cycleToEdit === false && isSuperUser) &&
+            <button
+              className="toggle-edit-mode"
+              onClick={() => setCycleToEdit({
+                id: cycle.cycle_id,
+                code: cycle.cycle_code,
+                values: cycle.values,
+              })}
+            >
+              <FA name="pencil" />
+              <div>Edit</div>
+            </button>
+          }
+
+        </Row>
         <div className="table-container">
           <table>
             <thead>
@@ -65,19 +102,38 @@ const CycleClassifications = () => {
             <tbody>
               <tr>
                 {classifications?.map((c) => (
-                  <td key={c.code}>
-                    <input
-                      type="checkbox"
-                      name={c.code}
-                      checked={sel?.values.find(s => c.code === s.code && s.value === '1') ?? false}
-                      // onChange={(event) => handleSelection(c.code, event)}
-                    />
-                  </td>
+                  checkCycleToEdit(cycle.cycle_id, cycle.cycle_code)
+                    ?
+                    <td key={c.code}>
+                      <input
+                        type="checkbox"
+                        name={c.code}
+                        className="cm-cycle-classes-check"
+                        onChange={(event) => handleSelection(c.code, event)}
+                        checked={cycleToEdit?.values?.find(value => c.code === value.code && value.value === '1') ?? false}
+                      />
+                    </td>
+                    :
+                    <td key={c.code}>
+                      <input
+                        type="checkbox"
+                        name={c.code}
+                        className="cm-cycle-classes-check"
+                        checked={cycle?.values?.find(value => c.code === value.code && value.value === '1') ?? false}
+                      />
+                    </td>
                 ))}
               </tr>
             </tbody>
           </table>
         </div>
+        {checkCycleToEdit(cycle.cycle_id, cycle.cycle_code)
+          &&
+          <div className="position-form--actions">
+            <button onClick={() => setCycleToEdit(false)}>Cancel</button>
+            <button onClick={handleSubmit}>Save</button>
+          </div>
+        }
       </div>
     )))
   );
@@ -88,15 +144,17 @@ const CycleClassifications = () => {
         <BackButton />
         <ProfileSectionTitle title="Cycle Date Classifications" icon="cogs" className="xl-icon" />
       </div>
-      <TabbedCard
-        tabs={[
-          {
-            text: 'Position Classification',
-            value: 'CLASSIFICATION',
-            content: cycleClassCard(),
-          },
-        ]}
-      />
+      <div className="cm-classifications-scroll-container">
+        <TabbedCard
+          tabs={[
+            {
+              text: 'Assign Cycle Date Classifications',
+              value: 'CLASSIFICATION',
+              content: cycleClassCard(),
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 };
