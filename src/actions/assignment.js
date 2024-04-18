@@ -140,8 +140,25 @@ export function updateAssignment(query, perdet) {
       })
       .catch(() => {
         batch(() => {
-          dispatch(altAssignmentDetailHasErrored(true));
-          dispatch(altAssignmentDetailIsLoading(false));
+          dispatch(altAssignmentHasErrored(true));
+          dispatch(altAssignmentIsLoading(false));
+        });
+      });
+  };
+}
+export function createAssignment(query, perdet) {
+  return (dispatch) => {
+    api()
+      .post(`/fsbid/assignment_history/${perdet}/alt/`, query)
+      .then(() => {
+        batch(() => {
+          dispatch(altAssignmentFetchData(perdet));
+        });
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(altAssignmentHasErrored(true));
+          dispatch(altAssignmentIsLoading(false));
         });
       });
   };

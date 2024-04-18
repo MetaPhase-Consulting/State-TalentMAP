@@ -37,6 +37,13 @@ export function positionsFetchDataSuccess(data) {
   };
 }
 
+export function resetPositionsFetchData() {
+  return {
+    type: 'POSITIONS_SUCCESS',
+    data: {},
+  };
+}
+
 export function positionsFetchData(query) {
   return (dispatch) => {
     dispatch(positionsIsLoading(true));

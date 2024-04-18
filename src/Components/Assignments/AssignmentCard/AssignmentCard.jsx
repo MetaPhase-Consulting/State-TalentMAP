@@ -1,40 +1,51 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { get } from 'lodash';
-// import datefns from 'date-fns';
-import { getResult } from 'utilities';
+import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
+import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
+import CheckBox from 'Components/CheckBox';
+import InteractiveElement from 'Components/InteractiveElement';
+import MonthYearInput from 'Components/MonthYearInput';
+import PositionExpandableContent from 'Components/PositionExpandableContent';
+import TabbedCard from 'Components/TabbedCard';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
   NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
-import CheckBox from 'Components/CheckBox';
-import TabbedCard from 'Components/TabbedCard';
-import PositionExpandableContent from 'Components/PositionExpandableContent';
-import { altAssignmentDetailFetchData, updateAssignment } from 'actions/assignment';
+// import { useDidMountEffect } from 'hooks';
 import FA from 'react-fontawesome';
-import DatePicker from 'react-datepicker';
+import { get, isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
+// import datefns from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getResult } from 'utilities';
 
+// eslint-disable-next-line complexity
 const AssignmentCard = (props) => {
-  const { perdet, data, isNew, setNewAsgSep } = props;
+  const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
   const [editMode, setEditMode] = useState(isNew);
+  const [inputClass, setInputClass] = useState('input-default');
+
+  // Pos Search
+  const [selectedPositionNumber, setPositionNumber] = useState('');
 
   const dispatch = useDispatch();
-
-  const datePickerRef = useRef(null);
-  const openDatePicker = () => {
-    datePickerRef.current.setOpen(true);
-  };
 
   const assignmentDetails = useSelector(state => state.altAssignmentDetail);
   const assignmentsDetailsErrored = useSelector(state => state.altAssignmentDetailHasErrored);
   const assignmentsDetailsLoading = useSelector(state => state.altAssignmentDetailIsLoading);
 
+  // For search pos results when creating new card
+  const pos_results = useSelector(state => state.positions);
+  const pos_results_loading = useSelector(state => state.positionsIsLoading);
+  const pos_results_errored = useSelector(state => state.positionsHasErrored);
+
   useEffect(() => {
     const asgId = data?.ASG_SEQ_NUM;
     const revision_num = data?.ASGD_REVISION_NUM;
     dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
+    return () => {
+      dispatch(resetPositionsFetchData());
+    };
   }, []);
 
   // Break out ref data
@@ -46,7 +57,7 @@ const AssignmentCard = (props) => {
   const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
 
   // Asg Detail Data (Not to be confused with the Asg List)
-  const asgDetail = assignmentDetails?.QRY_GETASGDTL_REF?.[0];
+  const asgDetail = isNew ? {} : assignmentDetails?.QRY_GETASGDTL_REF?.[0];
 
   // =============== View Mode ===============
 
@@ -65,8 +76,6 @@ const AssignmentCard = (props) => {
       { 'Memo Sent': getResult(data, 'MEMO_LAST_SENT_DATE') || NO_VALUE },
       { 'Note Sent': getResult(data, 'NOTE_LAST_SENT_DATE') || NO_VALUE },
       { 'TED': get(data, 'ASGD_ETD_TED_DATE') || NO_TOUR_END_DATE },
-    ],
-    bodySecondary: [
       { 'Grade': getResult(data, 'GRD_CD') || NO_GRADE },
       { 'Pay Plan': getResult(data, 'PPL_CODE') || NO_VALUE },
     ],
@@ -76,27 +85,23 @@ const AssignmentCard = (props) => {
 
   // =============== Edit Mode ===============
 
-  const formatMonthYear = (date) => {
-    const splitDate = date?.split('/');
-    if (splitDate?.length) {
-      return new Date(splitDate[1], Number(splitDate[0]) - 1);
-    }
-    return new Date();
-  };
+  const getTOD = () => (
+    pos_results?.todo_tod_code || pos_results?.bt_tod_code || ''
+  );
 
-  const [status, setStatus] = useState(asgDetail?.ASGS_CODE);
-  const [action, setAction] = useState(asgDetail?.LAT_CODE);
-  const [ted, setTED] = useState(formatMonthYear(asgDetail?.ASGD_ETD_TED_DATE));
-  const [eta, setETA] = useState(formatMonthYear(asgDetail?.ASGD_ETA_DATE));
-  const [tod, setTOD] = useState(asgDetail?.TOD_CODE);
-  const [travel, setTravel] = useState(asgDetail?.TF_CD);
+  const [status, setStatus] = useState(asgDetail?.ASGS_CODE || '');
+  const [action, setAction] = useState(asgDetail?.LAT_CODE || '');
+  const [ted, setTED] = useState(asgDetail?.ASGD_ETD_TED_DATE);
+  const [eta, setETA] = useState(asgDetail?.ASGD_ETA_DATE);
+  const [tod, setTOD] = useState(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
+  const [travel, setTravel] = useState(asgDetail?.TF_CD || '');
   const [funding, setFunding] = useState(asgDetail?.ASGD_ORG_CODE);
   const [adj, setAdj] = useState('');
   const [salaryReimbursement, setSalaryReimbursement] = useState(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
   const [travelReimbursement, setTravelReimbursement] = useState(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
   const [training, setTraining] = useState(asgDetail?.ASGD_TRIANING_IND === 'Y');
   const [criticalNeed, setCriticalNeed] = useState(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
-  const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY);
+  const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY || '');
   const [sent, setSent] = useState(asgDetail?.NOTE_LAST_SENT_DATE);
 
   const onCancelForm = () => {
@@ -119,29 +124,55 @@ const AssignmentCard = (props) => {
     setWaiver(waiverOptions[0]);
     setSent('');
     setNewAsgSep('default');
+    if (isNew) toggleModal(false);
   };
-  const onSubmitForm = () => {
-    // createAssignment(data)
-    dispatch(updateAssignment({
-      asg_seq_num: asgDetail?.ASG_SEQ_NUM,
-      asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
-      eta: `${eta.getMonth() + 1}/${eta.getFullYear()}`,
-      etd: `${ted.getMonth() + 1}/${ted.getFullYear()}`,
-      tod,
-      salary_reimburse_ind: salaryReimbursement,
-      travel_reimburse_ind: travelReimbursement,
-      training_ind: training,
-      critical_need_ind: criticalNeed,
-      org_code: funding,
-      status_code: status,
-      lat_code: action,
-      travel_code: travel,
-      rr_repay_ind: waiver,
-      update_date: asgDetail?.ASGD_UPDATE_DATE,
-    }, perdet));
 
-    // TO-DO: refresh assignments and separations after?
-    // setNewAsgSep('default');
+  const onSubmitForm = () => {
+    if (isNew) {
+      dispatch(createAssignment({
+        asg_seq_num: asgDetail?.ASG_SEQ_NUM,
+        asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+        eta,
+        etd: ted,
+        tod,
+        salary_reimburse_ind: salaryReimbursement,
+        travel_reimburse_ind: travelReimbursement,
+        training_ind: training,
+        critical_need_ind: criticalNeed,
+        org_code: funding,
+        status_code: status,
+        lat_code: action,
+        travel_code: travel,
+        rr_repay_ind: waiver,
+        update_date: asgDetail?.ASGD_UPDATE_DATE,
+      }, perdet));
+    } else {
+      dispatch(updateAssignment({
+        asg_seq_num: asgDetail?.ASG_SEQ_NUM,
+        asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+        eta,
+        etd: ted,
+        tod,
+        salary_reimburse_ind: salaryReimbursement,
+        travel_reimburse_ind: travelReimbursement,
+        training_ind: training,
+        critical_need_ind: criticalNeed,
+        org_code: funding,
+        status_code: status,
+        lat_code: action,
+        travel_code: travel,
+        rr_repay_ind: waiver,
+        update_date: asgDetail?.ASGD_UPDATE_DATE,
+      }, perdet));
+    }
+    if (isNew) toggleModal(false);
+    setNewAsgSep('default');
+  };
+
+  const addPositionNum = () => {
+    if (selectedPositionNumber) {
+      dispatch(positionsFetchData(`limit=50&page=1&position_num=${selectedPositionNumber}`));
+    }
   };
 
   const form = {
@@ -157,6 +188,31 @@ const AssignmentCard = (props) => {
     inputBody:
       <div className="position-form">
         <div className="position-form--inputs">
+          {
+            isNew &&
+            <div className="position-form--label-input-container position-number-container">
+              <label htmlFor="pos-num">Position Number</label>
+              <input
+                id="pos-num"
+                name="add"
+                className={inputClass}
+                onChange={value => setPositionNumber(value.target.value)}
+                onKeyPress={e => (e.key === 'Enter' ? addPositionNum() : null)}
+                type="add"
+                value={selectedPositionNumber}
+                placeholder="Add by Position Number"
+              />
+              <InteractiveElement
+                className="add-pos-num-icon"
+                onClick={addPositionNum}
+                role="button"
+                title="Add position"
+                type="span"
+              >
+                <FA name="plus" />
+              </InteractiveElement>
+            </div>
+          }
           <div className="position-form--label-input-container">
             <label htmlFor="assignment-statuses">Status</label>
             <select
@@ -164,6 +220,9 @@ const AssignmentCard = (props) => {
               value={status}
               onChange={(e) => setStatus(e?.target.value)}
             >
+              <option value="" disabled>
+                Select Status
+              </option>
               {statusOptions?.map(s => (
                 <option value={s.ASGS_CODE}>
                   {s.ASGS_DESC_TEXT}
@@ -178,6 +237,9 @@ const AssignmentCard = (props) => {
               value={action}
               onChange={(e) => setAction(e?.target.value)}
             >
+              <option value="" disabled>
+                Select Action
+              </option>
               {actionOptions?.map(a => (
                 <option value={a.LAT_CODE}>
                   {a.LAT_ABBR_DESC_TEXT}
@@ -187,33 +249,11 @@ const AssignmentCard = (props) => {
           </div>
           <div className="position-form--label-input-container">
             <label htmlFor="ETA">ETA</label>
-            <div className="date-wrapper-react larger-date-picker">
-              <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${eta ? '' : 'hide'}`} onClick={() => setETA(null)} />
-              <DatePicker
-                selected={eta}
-                onChange={setETA}
-                placeholderText={'MM/YYYY'}
-                showMonthYearPicker
-                dateFormat="MM/yyyy"
-                ref={datePickerRef}
-              />
-            </div>
+            <MonthYearInput value={eta} onChange={setETA} />
           </div>
           <div className="position-form--label-input-container">
             <label htmlFor="TED">TED</label>
-            <div className="date-wrapper-react larger-date-picker">
-              <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${ted ? '' : 'hide'}`} onClick={() => setTED(null)} />
-              <DatePicker
-                selected={ted}
-                onChange={setTED}
-                showMonthYearPicker
-                dateFormat="MM/yyyy"
-                placeholderText={'MM/YYYY'}
-                ref={datePickerRef}
-              />
-            </div>
+            <MonthYearInput value={ted} onChange={setTED} />
           </div>
           <div className="position-form--label-input-container">
             <label htmlFor="assignment-tod">Tour of Duty</label>
@@ -222,6 +262,9 @@ const AssignmentCard = (props) => {
               value={tod}
               onChange={(e) => setTOD(e?.target.value)}
             >
+              <option value="" disabled>
+                Select TOD
+              </option>
               {todOptions?.map(t => (
                 <option value={t.TOD_CODE}>
                   {t.TOD_DESC_TEXT}
@@ -236,6 +279,9 @@ const AssignmentCard = (props) => {
               value={travel}
               onChange={(e) => setTravel(e?.target.value)}
             >
+              <option value="" disabled>
+                Select Travel
+              </option>
               {travelOptions?.map(t => (
                 <option value={t.TF_CODE}>
                   {t.TF_SHORT_DESC_TEXT}
@@ -250,6 +296,9 @@ const AssignmentCard = (props) => {
               value={funding}
               onChange={(e) => setFunding(e?.target.value)}
             >
+              <option value="" disabled>
+                Select Funding Org
+              </option>
               {fundingOptions?.map(f => (
                 <option value={f.ORG_CODE}>
                   {f.ORGS_SHORT_DESC}
@@ -257,9 +306,8 @@ const AssignmentCard = (props) => {
               ))}
             </select>
           </div>
-
           <div className="position-form--label-input-container">
-            <label htmlFor="assignment-adj">Adj</label>
+            <label htmlFor="assignment-adj">ADJ</label>
             <input
               id="assignment-adj"
               value={adj}
@@ -296,16 +344,6 @@ const AssignmentCard = (props) => {
               onChange={() => setTraining(!training)}
             />
           </div>
-          <div className="position-form--label-input-container height-100">
-            <CheckBox
-              id={`critical-need-${data.id ?? 'create'}`}
-              label="Critical Need"
-              value={criticalNeed}
-              className="mt-40"
-              excludeTmCheckboxClass
-              onChange={() => setCriticalNeed(!criticalNeed)}
-            />
-          </div>
           <div className="position-form--label-input-container">
             <label htmlFor="assignment-waiver">Waiver</label>
             <select
@@ -313,6 +351,9 @@ const AssignmentCard = (props) => {
               value={waiver}
               onChange={(e) => setWaiver(e?.target.value)}
             >
+              <option value="" disabled>
+                Select Waiver
+              </option>
               {waiverOptions?.map(w => (
                 <option value={w.WRT_CODE}>
                   {w.WRT_DESC}
@@ -342,9 +383,45 @@ const AssignmentCard = (props) => {
   };
 
   if (isNew) {
-    delete form.staticBody;
-    delete sections.subheading;
+    /* eslint-disable quote-props */
+    sections.subheading = [
+      { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
+      { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
+      { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
+      { 'Location': pos_results?.pos_location_code || NO_POST },
+      { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
+      { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
+    ];
   }
+
+  // ========Use Effects for fetching pos results and loading states=======
+  useEffect(() => {
+    if (pos_results_loading) {
+      setInputClass('loading-animation--3');
+    } else if (pos_results_errored) {
+      setInputClass('input-error');
+    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
+      setInputClass('input-error');
+    } else {
+      setInputClass('input-default');
+    }
+  }, [pos_results, pos_results_loading, pos_results_errored]);
+
+  useEffect(() => {
+    if (isNew) {
+      /* eslint-disable quote-props */
+      sections.subheading = [
+        { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
+        { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
+        { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
+        { 'Location': pos_results?.pos_location_code || NO_POST },
+        { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
+        { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
+      ];
+    }
+  }, [pos_results]);
+
+  // -----------------------------------------------------------------------
 
   return (
     !assignmentsDetailsErrored && !assignmentsDetailsLoading &&
@@ -357,6 +434,8 @@ const AssignmentCard = (props) => {
             <PositionExpandableContent
               sections={sections}
               form={form}
+              useCancelModal={false}
+              saveText={isNew ? 'Create Assignment' : 'Save Assigment'}
             />
           </div>
         ),
@@ -372,6 +451,7 @@ AssignmentCard.propTypes = {
     cycle_name: PropTypes.string,
   }).isRequired,
   setNewAsgSep: PropTypes.func,
+  toggleModal: PropTypes.func,
   perdet: PropTypes.string,
 };
 
@@ -379,6 +459,7 @@ AssignmentCard.defaultProps = {
   data: {},
   isNew: false,
   setNewAsgSep: EMPTY_FUNCTION,
+  toggleModal: EMPTY_FUNCTION,
   perdet: '',
 };
 
