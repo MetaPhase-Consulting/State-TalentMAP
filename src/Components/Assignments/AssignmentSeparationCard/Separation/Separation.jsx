@@ -18,7 +18,7 @@ import TMDatePicker from 'Components/TMDatePicker';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations';
-import { createSeparation, updateSeparation } from '../../../../actions/assignment';
+import { createSeparation, separationDetail, updateSeparation } from '../../../../actions/assignment';
 
 const Separation = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
@@ -43,6 +43,7 @@ const Separation = (props) => {
     const asgId = data?.ASG_SEQ_NUM;
     const revision_num = data?.ASGD_REVISION_NUM;
     dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
+    dispatch(separationDetail(perdet, asgId, revision_num));
     return () => {
       dispatch(resetPositionsFetchData());
     };
