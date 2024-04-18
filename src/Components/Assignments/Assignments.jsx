@@ -5,15 +5,12 @@ import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import { useDataLoader } from 'hooks';
 import PropTypes from 'prop-types';
-// import InteractiveElement from 'Components/InteractiveElement';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import { altAssignmentFetchData } from 'actions/assignment';
 import AssignmentSeparationCard from './AssignmentSeparationCard/AssignmentSeparationCard';
 import ReactModal from '../ReactModal';
-// import { formatDate } from 'utilities';
 import api from '../../api';
-// import NotificationCard from './NotificationCard/NotificationCard';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
