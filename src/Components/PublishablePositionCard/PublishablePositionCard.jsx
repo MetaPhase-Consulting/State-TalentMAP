@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDateFromStr, renderSelectionList } from 'utilities';
+import DatePicker from 'react-datepicker';
+import FA from 'react-fontawesome';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
 import CheckBox from 'Components/CheckBox';
@@ -86,9 +88,11 @@ const PublishablePositionCard = ({
   };
   const [status, setStatus] = useState('');
   const [exclude, setExclude] = useState(true);
+  const [consultStaffing, setConsultStaffing] = useState(true);
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
+  const [ppDate, setPpDate] = useState('');
 
 
   const [textArea, setTextArea] = useState(data?.positionDetails || 'No description.');
@@ -112,10 +116,16 @@ const PublishablePositionCard = ({
   const onCancelForm = () => {
     setStatus('');
     setExclude(true);
+    setConsultStaffing(true);
     setSelectedCycles([]);
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
     setOverrideTOD('');
+  };
+
+  const datePickerRef = useRef(null);
+  const openDatePicker = () => {
+    datePickerRef.current.setOpen(true);
   };
 
   const form = {
@@ -178,6 +188,12 @@ const PublishablePositionCard = ({
                   />
                 </Tooltip>
               }
+              <CheckBox
+                id="consultative-checkbox"
+                label="Mark for Consultative Staffing"
+                value={consultStaffing}
+                onCheckBoxClick={e => setConsultStaffing(e)}
+              />
             </div>
           </div>
         }
@@ -221,6 +237,21 @@ const PublishablePositionCard = ({
               valueKey="code"
               labelKey="description"
             />
+            <div className="position-form--label-input-container">
+              <label htmlFor="status">Posted By Date</label>
+              <div className="date-wrapper-react larger-date-picker">
+                <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
+                <FA name="times" className={`${ppDate ? '' : 'hide'}`} onClick={() => setPpDate(null)} />
+                <DatePicker
+                  id={'pp-date'}
+                  selected={ppDate}
+                  onChange={setPpDate}
+                  dateFormat="MM/dd/yyyy"
+                  placeholderText="MM/DD/YYYY"
+                  ref={datePickerRef}
+                />
+              </div>
+            </div>
             <div className="pt-20">
               <div className="content-divider" />
               <div className="position-form--heading">

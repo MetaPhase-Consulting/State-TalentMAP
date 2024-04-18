@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Picky from 'react-picky';
 import FA from 'react-fontawesome';
 import { sortBy, uniqBy } from 'lodash';
@@ -339,6 +340,24 @@ const PublishablePositions = ({ viewType }) => {
             />
           }
           <div className="usa-width-one-whole position-search--results">
+            <span className="ba-flex-end">
+              <span className="ml-10">
+                <FA name="filter" />
+                {' '}
+                <Link to="#">
+                  {'Group Positions for Collections/Rotational'}
+                </Link>
+              </span>
+              <span className="ml-10">
+                <FA name="plus" />
+                {' '}
+                <Link
+                  to="#"
+                >
+                  {'Add Positions'}
+                </Link>
+              </span>
+            </span>
             <div className="usa-grid-full position-list">
               {
                 data.map(pubPos => (
