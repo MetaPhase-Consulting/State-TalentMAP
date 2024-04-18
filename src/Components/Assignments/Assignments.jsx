@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import { altAssignmentFetchData } from 'actions/assignment';
-import AssignmentCard from './AssignmentCard';
-import AssignmentModal from './AssignmentModal';
+import AssignmentSeparationCard from './AssignmentSeparationCard/AssignmentSeparationCard';
+import ReactModal from '../ReactModal';
 // import { formatDate } from 'utilities';
 import api from '../../api';
 // import NotificationCard from './NotificationCard/NotificationCard';
@@ -127,14 +127,20 @@ const Assignments = (props) => {
         </div>
         <div className="asg-lower-section">
           {assignments?.map(data => (
-            <AssignmentCard setNewAsgSep={setCardMode} perdet={id} data={data} />
+            <AssignmentSeparationCard
+              perdet={id}
+              data={data}
+              setNewAsgSep={setCardMode}
+            />
           ))}
-          <AssignmentModal
-            setCardMode={setCardMode}
-            perdet={id}
-            isOpen={openModal}
-            toggleModal={setOpenModal}
-          />
+          <ReactModal isOpen={openModal}>
+            <AssignmentSeparationCard
+              perdet={id}
+              setNewAsgSep={() => setCardMode('default')}
+              toggleModal={setOpenModal}
+              isNew
+            />
+          </ReactModal>
         </div>
       </div>
     </div>
