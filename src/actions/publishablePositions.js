@@ -6,7 +6,7 @@ import {
   UPDATE_PUBLISHABLE_POSITION_SUCCESS,
   UPDATE_PUBLISHABLE_POSITION_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
-import { convertQueryToString } from 'utilities';
+import { convertQueryToString, downloadFromResponse, formatDate } from 'utilities';
 import { toastError, toastSuccess } from './toast';
 import api from '../api';
 
@@ -155,3 +155,14 @@ export function publishablePositionsFiltersFetchData() {
   };
 }
 
+export function publishablePositionsExport(query = {}) {
+  const endpoint = '/fsbid/publishable_positions/export/';
+  const q = convertQueryToString(query);
+  const ep = `${endpoint}?${q}`;
+  return api()
+    .get(ep)
+    .then((response) => {
+      // eslint-disable-next-line max-len
+      downloadFromResponse(response, `Publishable_Positions_${formatDate(new Date().getTime(), 'YYYY_M_D_Hms')}`);
+    });
+}
