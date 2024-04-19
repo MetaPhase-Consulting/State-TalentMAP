@@ -151,6 +151,7 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-position-statuses">Publishable Status</label>
                 <select
+                  className="publishable-position-inputs"
                   id="publishable-position-statuses"
                   defaultValue={status}
                   onChange={(e) => setStatus(e?.target.value)}
@@ -165,6 +166,7 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
+                  className="publishable-position-inputs"
                   id="publishable-pos-tod-override"
                   defaultValue={overrideTOD}
                   onChange={(e) => setOverrideTOD(e?.target.value)}
