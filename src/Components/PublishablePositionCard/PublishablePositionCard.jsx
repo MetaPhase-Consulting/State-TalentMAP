@@ -140,7 +140,7 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Location/Org': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
+      { 'PP/Grade': data?.combined_pp_grade || DEFAULT_TEXT },
       { 'Language/Training': data?.language || DEFAULT_TEXT },
     ],
     inputBody: (
