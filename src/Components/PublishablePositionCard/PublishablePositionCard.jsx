@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
@@ -28,6 +29,9 @@ const hardcodedFilters = {
   functionalBureauFilters: [{ code: 1, description: '' }, { code: 2, description: 'bureau' }, { code: 3, description: 'bureau' }],
 };
 
+const onRestore = (e) => {
+  e.preventDefault();
+};
 
 const PublishablePositionCard = ({
   data, onEditModeSearch, onSubmit, disableEdit,
@@ -39,6 +43,7 @@ const PublishablePositionCard = ({
     { Incumbent: data?.status || DEFAULT_TEXT },
     { 'Default TOD': data?.status || DEFAULT_TEXT },
     { Assignee: data?.status || DEFAULT_TEXT },
+    { 'Bid Cycle': data?.status || DEFAULT_TEXT },
     { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
     { 'Employee ID': data?.status || DEFAULT_TEXT },
     { 'Employee Status': data?.status || DEFAULT_TEXT },
@@ -50,13 +55,15 @@ const PublishablePositionCard = ({
       { 'Position Number': data?.positionNumber || DEFAULT_TEXT },
       { 'Skill': data?.skill || DEFAULT_TEXT },
       { 'Position Title': data?.positionTitle || DEFAULT_TEXT },
+      { '': <Link to="#" onClick={onRestore} >Restore</Link> },
     ],
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
-      { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
-      { 'Publishable Status': data?.status || DEFAULT_TEXT },
-      { 'Language': data?.language || DEFAULT_TEXT },
+      { 'Location/Org': data?.org || DEFAULT_TEXT },
+      { 'Org Code': data?.orgCode || DEFAULT_TEXT },
+      { 'PP/Grade': data?.org || DEFAULT_TEXT },
+      { 'Position Status': data?.status || DEFAULT_TEXT },
+      { 'Language/Training': data?.language || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
@@ -88,7 +95,7 @@ const PublishablePositionCard = ({
   };
   const [status, setStatus] = useState('');
   const [exclude, setExclude] = useState(true);
-  const [consultStaffing, setConsultStaffing] = useState(true);
+  const [consultStaffing, setConsultStaffing] = useState(false);
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
@@ -132,9 +139,9 @@ const PublishablePositionCard = ({
     /* eslint-disable quote-props */
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
-      { 'Organization': data?.org || DEFAULT_TEXT },
+      { 'Location/Org': data?.org || DEFAULT_TEXT },
       { 'PP/Grade': data?.combined_pp_grade },
-      { 'Language': data?.language || DEFAULT_TEXT },
+      { 'Language/Training': data?.language || DEFAULT_TEXT },
     ],
     inputBody: (
       <div className="position-form">
