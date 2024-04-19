@@ -245,7 +245,7 @@ const PublishablePositionCard = ({
               labelKey="description"
             />
             <div className="position-form--label-input-container">
-              <label htmlFor="status">Posted By Date</label>
+              <label htmlFor="status">Position TED</label>
               <div className="date-wrapper-react larger-date-picker">
                 <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
                 <FA name="times" className={`${ppDate ? '' : 'hide'}`} onClick={() => setPpDate(null)} />
