@@ -340,24 +340,6 @@ const PublishablePositions = ({ viewType }) => {
             />
           }
           <div className="usa-width-one-whole position-search--results">
-            <span className="ba-flex-end">
-              <span className="ml-10">
-                <FA name="filter" />
-                {' '}
-                <Link to="#">
-                  {'Group Positions for Collections/Rotational'}
-                </Link>
-              </span>
-              <span className="ml-10">
-                <FA name="plus" />
-                {' '}
-                <Link
-                  to="#"
-                >
-                  {'Add Positions'}
-                </Link>
-              </span>
-            </span>
             <div className="usa-grid-full position-list">
               {
                 data.map(pubPos => (
