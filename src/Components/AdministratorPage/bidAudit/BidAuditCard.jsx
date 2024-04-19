@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
@@ -14,11 +13,11 @@ import {
 import TabbedCard from 'Components/TabbedCard';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
-import { deleteBidAudit, savebidAuditSelections } from 'actions/bidAudit';
+import { savebidAuditSelections } from 'actions/bidAudit';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
-import BidAuditSections from './BidAuditSections/BidAuditSections';
+import { history } from '../../../store';
 
-const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) => {
+const BidAuditCard = ({ result, id, onEditModeSearch }) => {
   const dispatch = useDispatch();
   const pos = get(result, 'position') || result;
   const [description, setDescription] = useState(result.description || '');
@@ -38,68 +37,16 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
     dispatch(savebidAuditSelections(data));
   };
 
-  const onDelete = () => {
-    swal({
-      title: 'Confirm Removal',
-      button: false,
-      closeOnEsc: true,
-      content: (
-        <div className="simple-action-modal">
-          <div className="help-text">
-            <span>
-              Are you sure you want to remove this audit cycle?
-            </span>
-          </div>
-          <div className="modal-controls">
-            <button onClick={() => {
-              dispatch(deleteBidAudit(id));
-              swal.close();
-            }}
-            >Yes</button>
-            <button className="usa-button-secondary" onClick={() => swal.close()}>Cancel</button>
-          </div>
-        </div>
-      ),
-    });
+  const onInCategory = () => {
+    history.push(`/profile/administrator/bidaudit/category/${id}`);
   };
-
-  const onRunAudit = (e) => {
-    e.preventDefault();
+  const onAtGrade = () => {
+    history.push(`/profile/administrator/bidaudit/grade/${id}`);
   };
 
   const onCancelForm = () => {
     setPbDate(getResult(pos, 'mc_date'));
-  };
-
-  const gradeOptions = [
-    { code: 1, name: '01' },
-    { code: 2, name: '02' },
-    { code: 3, name: '03' },
-    { code: 4, name: '04' },
-    { code: 5, name: '05' },
-    { code: 6, name: '06' },
-  ];
-
-  const skillCode = [
-    { code: 1, name: '2044' },
-    { code: 2, name: '2045' },
-    { code: 3, name: '2046' },
-    { code: 4, name: '2047' },
-    { code: 5, name: '2048' },
-    { code: 6, name: '2049' },
-  ];
-
-  const tenureCode = [
-    { code: 1, name: 'INFORMATION MANAGEMENT' },
-    { code: 2, name: 'SYSTEM MANAGEMENT' },
-    { code: 3, name: 'DATABASE MANAGEMENT' },
-    { code: 4, name: 'PIT' },
-    { code: 5, name: 'INFORMATION ADMIN' },
-    { code: 6, name: 'BUREAU MANAGEMENT' },
-  ];
-
-  const onEditChange = () => {
-    setEditMode(e => !e);
+    swal.close();
   };
 
   const datePickerRef = useRef(null);
@@ -107,103 +54,6 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
     datePickerRef.current.setOpen(true);
   };
 
-  const onGradeSave = () => {
-    swal.close();
-  };
-
-  const onInCategoriesSave = () => {
-    swal.close();
-  };
-
-  const onNewAtGrades = (e) => {
-    e.preventDefault();
-    swal({
-      title: 'Add New At Grade',
-      button: false,
-      closeOnEsc: true,
-      content: (
-        <div className="position-form bid-audit-form-modal">
-          <div className="filter-div-modal">
-            <div className="label">Position Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade?.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Employee Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Tenure Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <button onClick={onGradeSave}>Save</button>
-            <button onClick={() => swal.close()}>Cancel</button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
-  const onNewInCateogries = (e) => {
-    e.preventDefault();
-    swal({
-      title: 'Add New In Category',
-      button: false,
-      closeOnEsc: true,
-      content: (
-        <div className="position-form bid-audit-form-modal">
-          <div className="filter-div-modal">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <button onClick={onInCategoriesSave}>Save</button>
-            <button onClick={() => swal.close()}>Cancel</button>
-          </div>
-        </div>
-      ),
-    });
-  };
 
   const bidAuditSections = {
     /* eslint-disable no-dupe-keys */
@@ -263,143 +113,10 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
           </div>
         </div>
         <div>
-          <button onClick={onDelete}>Delete</button>
           <div className="ba-flex-end">
-            <button onClick={onRunAudit}>Run Bid Audit</button>
+            <button onClick={onInCategory}>View In Categories</button>
+            <button onClick={onAtGrade}>View At Grades</button>
           </div>
-        </div>
-      </div>
-    ),
-    cancelText: 'Are you sure you want to discard all changes made to this position?',
-    handleSubmit: () => onSubmitBidData(),
-    handleCancel: () => onCancelForm(),
-    handleEdit: {
-      editMode,
-      setEditMode,
-    },
-    /* eslint-enable quote-props */
-  };
-
-  const atGradesSections = {
-    /* eslint-disable no-dupe-keys */
-    /* eslint-disable quote-props */
-    subheading: [
-      { 'Cycle Name': result.cycle_name || NO_POSITION_NUMBER },
-      { 'Audit Number': result.id || NO_BUREAU },
-      { 'Description': result.description || NO_SKILL },
-      { 'Posted': result.bid_audit_date || NO_POSITION_TITLE },
-      { '': <Link to="#" onClick={onNewAtGrades}>Add New At Grade</Link> },
-    ],
-    bodyPrimary: [
-      { '': <BidAuditSections rows={atGrades} onEditChange={onEditChange} /> },
-    ],
-    /* eslint-enable quote-props */
-    /* eslint-enable no-dupe-keys */
-  };
-
-  const atGradesForm = {
-    /* eslint-disable quote-props */
-    staticBody: [],
-    inputBody: (
-      <div className="position-form bid-audit-form">
-        <div className="bid-audit-options">
-          <div className="filter-div">
-            <div className="label">Position Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade?.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div">
-            <div className="label">Employee Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div">
-            <div className="label">Tenure Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div>
-          <button onClick={onDelete}>Delete</button>
-        </div>
-      </div>
-    ),
-    cancelText: 'Are you sure you want to discard all changes made to this position?',
-    handleSubmit: () => onSubmitBidData(),
-    handleCancel: () => onCancelForm(),
-    handleEdit: {
-      editMode,
-      setEditMode,
-    },
-    /* eslint-enable quote-props */
-  };
-
-  const inCategoriesSections = {
-    /* eslint-disable no-dupe-keys */
-    /* eslint-disable quote-props */
-    subheading: [
-      { 'Cycle Name': result.cycle_name || NO_POSITION_NUMBER },
-      { 'Audit Number': result.id || NO_BUREAU },
-      { 'Description': result.description || NO_SKILL },
-      { 'Posted': result.bid_audit_date || NO_POSITION_TITLE },
-      { '': <Link to="#" onClick={onNewInCateogries}>Add New In Category</Link> },
-    ],
-    bodyPrimary: [
-      { '': <BidAuditSections rows={inCategories} onEditChange={onEditChange} /> },
-    ],
-    /* eslint-enable quote-props */
-    /* eslint-enable no-dupe-keys */
-  };
-  const inCategoriesForm = {
-    /* eslint-disable quote-props */
-    staticBody: [],
-    inputBody: (
-      <div className="position-form bid-audit-form">
-        <div className="bid-audit-options">
-          <div className="filter-div">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div>
-          <button onClick={onDelete}>Delete</button>
         </div>
       </div>
     ),
@@ -428,32 +145,7 @@ const BidAuditCard = ({ result, id, onEditModeSearch, atGrades, inCategories }) 
           </div>
         ),
       },
-      {
-        text: 'At Grades',
-        value: 'At Grades',
-        content: (
-          <div className="position-content--container">
-            <PositionExpandableContent
-              sections={atGradesSections}
-              form={atGradesForm}
-              saveText="Save At Grade"
-            />
-          </div>
-        ),
-      },
-      {
-        text: 'In Categories',
-        value: 'In Categories',
-        content: (
-          <div className="position-content--container">
-            <PositionExpandableContent
-              sections={inCategoriesSections}
-              form={inCategoriesForm}
-              saveText="Save In Category"
-            />
-          </div>
-        ),
-      }]}
+      ]}
     />
   );
 };
@@ -462,24 +154,6 @@ BidAuditCard.propTypes = {
   result: POSITION_DETAILS.isRequired,
   id: PropTypes.number,
   onEditModeSearch: PropTypes.func,
-  atGrades: PropTypes.arrayOf(PropTypes.shape({
-    header: PropTypes.string,
-    subHeader1: PropTypes.string,
-    subHeader2: PropTypes.string,
-    subHeader3: PropTypes.string,
-    row1data: PropTypes.string,
-    row2data: PropTypes.string,
-    row3data: PropTypes.string,
-  })),
-  inCategories: PropTypes.arrayOf(PropTypes.shape({
-    header: PropTypes.string,
-    subHeader1: PropTypes.string,
-    subHeader2: PropTypes.string,
-    subHeader3: PropTypes.string,
-    row1data: PropTypes.string,
-    row2data: PropTypes.string,
-    row3data: PropTypes.string,
-  })),
 };
 
 BidAuditCard.defaultProps = {

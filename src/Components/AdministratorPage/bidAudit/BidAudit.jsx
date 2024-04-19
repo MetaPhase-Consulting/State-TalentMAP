@@ -16,8 +16,6 @@ const BidAudit = () => {
   const dispatch = useDispatch();
 
   const dummyPositionDetails = useSelector(state => state.bidAudit);
-  const atGrades = dummyPositionDetails[0]?.atGrades || [];
-  const inCategories = dummyPositionDetails[1]?.inCategories || [];
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
 
   const disableSearch = cardsInEditMode.length > 0;
@@ -102,14 +100,12 @@ const BidAudit = () => {
           </span>
           {dummyPositionDetails[2]?.bidAudit.map(k => (
             <BidAuditCard
-              atGrades={atGrades}
-              inCategories={inCategories}
               id={k.id}
               key={k.id}
               result={k}
               onEditModeSearch={(editMode, id) =>
                 onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
-              }
+              } // garbage code causing needless re-renders - will fix in next PR
             />
           ))}
         </div>
