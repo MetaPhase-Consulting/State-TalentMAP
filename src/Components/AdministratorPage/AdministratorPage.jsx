@@ -68,8 +68,8 @@ const AdministratorPage = (props) => {
         <Route path="/profile/administrator/featureflags" render={() => <FeatureFlags {...featureFlagsProps} />} />
         <Route path="/profile/administrator/cycles" render={() => <BidCycles />} />
         <Route path="/profile/administrator/managebidseasons" render={() => <ManageBidSeasons />} />
-        <Route path="/profile/administrator/bidaudit/category/:id" render={() => <BidAuditCategory />} />
-        <Route path="/profile/administrator/bidaudit/grade/:id" render={() => <BidAuditGrade />} />
+        <Route path="/profile/administrator/bidaudit/category/:cycleId/:auditId" render={() => <BidAuditCategory />} />
+        <Route path="/profile/administrator/bidaudit/grade/:cycleId/:auditId" render={() => <BidAuditGrade />} />
         <Route path="/profile/administrator/bidaudit/" render={() => <BidAudit />} />
         <Route path="/profile/administrator/panel/:pmSeqNum" render={() => <PanelAdmin />} />
         <Route path="/profile/administrator/panel/" render={() => <PanelAdmin />} />

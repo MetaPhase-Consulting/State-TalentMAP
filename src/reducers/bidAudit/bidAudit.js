@@ -1,3 +1,57 @@
+// ================ Bid Audit GET ================
+
+export function bidAuditFetchDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_FETCH_HAS_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function bidAuditFetchDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_FETCH_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function bidAuditFetchData(state = [], action) {
+  switch (action.type) {
+    case 'BID_AUDIT_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+// ================ Bid Audit GET In Category/At Grade ================
+
+export function bidAuditSecondFetchDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_SECOND_FETCH_HAS_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function bidAuditSecondFetchDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_SECOND_FETCH_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function bidAuditSecondFetchData(state = [], action) {
+  switch (action.type) {
+    case 'BID_AUDIT_SECOND_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+
+// ================================================================ // Below not integrated/used yet
 export function bidAuditErrored(state = false, action) {
   switch (action.type) {
     case 'BID_AUDIT_HAS_ERRORED':
@@ -33,31 +87,6 @@ export function bidAuditEdit(state = {}, action) {
   }
 }
 
-export function bidAuditFetchDataErrored(state = false, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_FETCH_HAS_ERRORED':
-      return action.hasErrored;
-    default:
-      return state;
-  }
-}
-export function bidAuditFetchDataLoading(state = false, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_FETCH_IS_LOADING':
-      return action.isLoading;
-    default:
-      return state;
-  }
-}
-
-export function bidAudit(state = {}, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_FETCH_SUCCESS':
-      return action.results;
-    default:
-      return state;
-  }
-}
 
 export function bidAuditDeleteDataSuccess(state = false, action) {
   switch (action.type) {

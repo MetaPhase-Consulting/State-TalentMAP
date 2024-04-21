@@ -1,18 +1,138 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { withRouter } from 'react-router';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import BackButton from 'Components/BackButton';
 import TabbedCard from 'Components/TabbedCard';
 import swal from '@sweetalert/with-react';
 import { Link } from 'react-router-dom';
-import {
-  NO_BUREAU, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_SKILL,
-} from 'Constants/SystemMessages';
 import BidAuditSections from './BidAuditSections/BidAuditSections';
 
+const dummyData = [
+  {
+    atGrades: [
+      {
+        header: 'Position',
+        subHeader1: 'Grade',
+        subHeader2: 'Skill Code',
+        subHeader3: 'Description',
+        row1data: '04',
+        row2data: '2333',
+        row3data: 'INFORMATION MANAGEMENT',
+      },
+      {
+        header: 'Employee',
+        subHeader1: 'Grade',
+        subHeader2: 'Skill Code',
+        subHeader3: 'Description',
+        row1data: '04',
+        row2data: '2333',
+        row3data: 'INFORMATION MANAGEMENT',
+      },
+      {
+        header: 'Tenure',
+        subHeader1: 'Code',
+        subHeader2: 'Description',
+        row1data: '04',
+        row2data: 'WW FS CAR-FA',
+      },
+    ],
+  },
+  {
+    inCategories: [
+      {
+        header: 'Position',
+        subHeader1: 'Grade',
+        subHeader2: 'Skill Code',
+        subHeader3: 'Description',
+        row1data: '04',
+        row2data: '2333',
+        row3data: 'INFORMATION MANAGEMENT',
+      },
+      {
+        header: 'Employee',
+        subHeader1: 'Grade',
+        subHeader2: 'Skill Code',
+        subHeader3: 'Description',
+        row1data: '04',
+        row2data: '2333',
+        row3data: 'INFORMATION MANAGEMENT',
+      },
+    ],
+  },
+  {
+    bidAudit: [
+      {
+        cycle_name: 'Fall Cycle 2023',
+        descriptionTitle: 'INFORMATION MANAGEMENT',
+        code: 2003,
+        id: 96,
+        cycle_status: 'Proposed',
+        cycle_category: 'Active',
+        bid_audit_date_posted: '2023-09-01T21:12:12.854000Z',
+        bid_audit_date: '2025-03-01T21:12:12.854000Z',
+        cycle_excl_position: 'Y',
+        cycle_post_view: 'Y',
+        description: 'Test Fall Cycle 2023',
+      },
+      {
+        cycle_name: 'Summer Cycle 2023',
+        descriptionTitle: 'INFORMATION MANAGEMENT',
+        id: 97,
+        cycle_status: 'Complete',
+        cycle_category: 'Active',
+        bid_audit_date_posted: '2025-06-01T21:12:12.854000Z',
+        bid_audit_date: '2025-03-01T21:12:12.854000Z',
+        cycle_excl_position: 'Y',
+        cycle_post_view: 'Y',
+        description: 'Test Summer Cycle 2023',
+      },
+      {
+        cycle_name: 'Spring Cycle 2023',
+        descriptionTitle: 'INFORMATION MANAGEMENT',
+        id: 98,
+        cycle_status: 'Closed',
+        cycle_category: 'Closed',
+        bid_audit_date_posted: '2025-03-01T21:12:12.854000Z',
+        bid_audit_date: '2025-03-01T21:12:12.854000Z',
+        cycle_excl_position: 'Y',
+        cycle_post_view: 'Y',
+        description: 'Test Spring Cycle 2023',
+      },
+      {
+        cycle_name: 'Winter Cycle 2023',
+        id: 99,
+        cycle_status: 'Merged',
+        cycle_category: 'Active',
+        bid_audit_date_posted: '2022-12-01T21:12:12.854000Z',
+        bid_audit_date: '2025-03-01T21:12:12.854000Z',
+        cycle_excl_position: 'Y',
+        cycle_post_view: 'Y',
+        description: 'Test Winter Cycle 2023',
+      },
+    ],
+  },
+];
+
 const BidAuditGrade = () => {
-  const dummyPositionDetails = useSelector(state => state.bidAudit);
+  // For Integration
+  // const dispatch = useDispatch();
+  // const routeCycleID = props?.match.params.cycleId;
+  // const routeAuditID = props?.match.params.auditId;
+  // console.log(routeAuditID);
+  // console.log(routeCycleID);
+  // const bidAuditCategoryData = useSelector(state => state.bidAuditSecondFetchData);
+  // eslint-disable-next-line max-len
+  // const bidAuditCategoryFetchLoading = useSelector(state => state.bidAuditSecondFetchDataLoading);
+  // const bidAuditCategoryFetchError = useSelector(state => state.bidAuditSecondFetchDataErrored);
+  // console.log(bidAuditCategoryData);
+  // console.log(bidAuditCategoryFetchLoading);
+  // console.log(bidAuditCategoryFetchError);
+  // useEffect(() => {
+  //   dispatch(bidAuditSecondFetchData(routeCycleID, routeAuditID, 'grade'));
+  // }, []);
+
+  const dummyPositionDetails = dummyData;
   const [editMode, setEditMode] = useState(false);
   const atGrades = dummyPositionDetails[0]?.atGrades || [];
   const result = dummyPositionDetails[2].bidAudit[0];
@@ -181,10 +301,10 @@ const BidAuditGrade = () => {
     /* eslint-disable no-dupe-keys */
     /* eslint-disable quote-props */
     subheading: [
-      { 'Cycle Name': result.cycle_name || NO_POSITION_NUMBER },
-      { 'Audit Number': result.id || NO_BUREAU },
-      { 'Description': result.description || NO_SKILL },
-      { 'Posted': result.bid_audit_date || NO_POSITION_TITLE },
+      { 'Cycle Name': result.cycle_name || '--' },
+      { 'Audit Number': result.id || '--' },
+      { 'Description': result.description || '--' },
+      { 'Posted': result.bid_audit_date || '--' },
       { '': <Link to="#" onClick={onNewAtGrades}>Add New At Grade</Link> },
     ],
     bodyPrimary: [
@@ -229,4 +349,4 @@ const BidAuditGrade = () => {
   );
 };
 
-export default BidAuditGrade;
+export default withRouter(BidAuditGrade);

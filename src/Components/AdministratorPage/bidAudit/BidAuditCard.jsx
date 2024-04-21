@@ -1,51 +1,51 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { get } from 'lodash';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
-import { getResult } from 'utilities';
-import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import {
-  NO_BUREAU, NO_GRADE, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
-  NO_SKILL,
-} from 'Constants/SystemMessages';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import TabbedCard from 'Components/TabbedCard';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
-import { savebidAuditSelections } from 'actions/bidAudit';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { history } from '../../../store';
 
-const BidAuditCard = ({ result, id, onEditModeSearch }) => {
-  const dispatch = useDispatch();
-  const pos = get(result, 'position') || result;
-  const [description, setDescription] = useState(result.description || '');
-  const [pbDate, setPbDate] = useState(getResult(pos, 'mc_date'));
+const BidAuditCard = ({ data, onEditModeSearch }) => {
+  const {
+    audit_id,
+    audit_desc,
+    cycle_id,
+    cycle_category,
+    cycle_name,
+    cycle_status,
+    posted_by_date,
+    audit_date,
+  } = data;
+
+  const [description, setDescription] = useState(audit_desc || '');
+  const [pbDate, setPbDate] = useState(posted_by_date ? new Date(posted_by_date) : '');
+
   const [editMode, setEditMode] = useState(false);
+  useEffect(() => {
+    onEditModeSearch(editMode, audit_id);
+  }, [editMode]);
 
   useEffect(() => {
-    onEditModeSearch(editMode, id);
+    onEditModeSearch(editMode, audit_id);
   }, [editMode]);
 
   const onSubmitBidData = () => {
-    const data = {
-      id,
-      description,
-      pbDate,
-    };
-    dispatch(savebidAuditSelections(data));
+    console.log('submit');
   };
 
   const onInCategory = () => {
-    history.push(`/profile/administrator/bidaudit/category/${id}`);
+    history.push(`/profile/administrator/bidaudit/category/${cycle_id}/${audit_id}/`);
   };
   const onAtGrade = () => {
-    history.push(`/profile/administrator/bidaudit/grade/${id}`);
+    history.push(`/profile/administrator/bidaudit/grade/${cycle_id}/${audit_id}/`);
   };
 
   const onCancelForm = () => {
-    setPbDate(getResult(pos, 'mc_date'));
+    setPbDate(posted_by_date ? new Date(posted_by_date) : '');
     swal.close();
   };
 
@@ -59,15 +59,15 @@ const BidAuditCard = ({ result, id, onEditModeSearch }) => {
     /* eslint-disable no-dupe-keys */
     /* eslint-disable quote-props */
     subheading: [
-      { 'Cycle Name': result.cycle_name || NO_POSITION_NUMBER },
-      { 'Status': result.cycle_status || NO_SKILL },
-      { 'Category': result.cycle_category || NO_POSITION_TITLE },
+      { 'Cycle Name': cycle_name || 'None listed' },
+      { 'Status': cycle_status || 'None listed' },
+      { 'Category': cycle_category || 'None listed' },
     ],
     bodyPrimary: [
-      { 'Audit Number': result.id || NO_BUREAU },
-      { 'Description': result.description || NO_POST },
-      { 'Posted': result.bid_audit_date_posted || NO_ORG },
-      { 'Audit Date': result.bid_audit_date || NO_GRADE },
+      { 'Audit Number': audit_id || 'None listed' },
+      { 'Description': audit_desc || 'None listed' },
+      { 'Posted': posted_by_date || 'None listed' },
+      { 'Audit Date': audit_date || 'None listed' },
     ],
     /* eslint-enable quote-props */
     /* eslint-enable no-dupe-keys */
@@ -75,8 +75,8 @@ const BidAuditCard = ({ result, id, onEditModeSearch }) => {
   const bidAuditForm = {
     /* eslint-disable quote-props */
     staticBody: [
-      { 'Audit Number': result.id || NO_BUREAU },
-      { 'Audit Date': result.bid_audit_date || NO_GRADE },
+      { 'Audit Number': audit_id || 'None listed' },
+      { 'Audit Date': audit_date || 'None listed' },
     ],
     inputBody: (
       <div className="position-form">
@@ -102,7 +102,7 @@ const BidAuditCard = ({ result, id, onEditModeSearch }) => {
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
               <FA name="times" className={`${pbDate ? '' : 'hide'}`} onClick={() => setPbDate(null)} />
               <DatePicker
-                id={`mc-date-${id}`}
+                id={`mc-date-${audit_id}`}
                 selected={pbDate}
                 onChange={setPbDate}
                 dateFormat="MM/dd/yyyy"
@@ -151,17 +151,23 @@ const BidAuditCard = ({ result, id, onEditModeSearch }) => {
 };
 
 BidAuditCard.propTypes = {
-  result: POSITION_DETAILS.isRequired,
-  id: PropTypes.number,
+  data: PropTypes.shape({
+    audit_id: PropTypes.number,
+    audit_desc: PropTypes.string,
+    cycle_id: PropTypes.number,
+    cycle_category: PropTypes.string,
+    cycle_category_code: PropTypes.string,
+    cycle_name: PropTypes.string,
+    cycle_status: PropTypes.string,
+    cycle_status_code: PropTypes.string,
+    posted_by_date: PropTypes.string,
+    audit_date: PropTypes.string,
+  }).isRequired,
   onEditModeSearch: PropTypes.func,
 };
 
 BidAuditCard.defaultProps = {
-  result: {},
-  id: null,
   onEditModeSearch: EMPTY_FUNCTION,
-  atGrades: [],
-  inCategories: [],
 };
 
 export default BidAuditCard;
