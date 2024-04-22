@@ -34,7 +34,7 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
   }, [editMode]);
 
   const onSubmitBidData = () => {
-    console.log('submit');
+    swal.close();
   };
 
   const onInCategory = () => {
