@@ -33,6 +33,7 @@ TabbedCard.propTypes = {
       disabled: PropTypes.bool,
     }),
   ).isRequired,
+  className: PropTypes.string(),
 };
 
 export default TabbedCard;
