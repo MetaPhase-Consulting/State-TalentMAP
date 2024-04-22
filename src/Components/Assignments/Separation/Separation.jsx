@@ -15,7 +15,7 @@ import TMDatePicker from 'Components/TMDatePicker';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations';
-import { createSeparation, separationDetail, updateSeparation } from '../../../../actions/assignment';
+import { createSeparation, separationDetail, updateSeparation } from '../../../actions/assignment';
 
 const Separation = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
