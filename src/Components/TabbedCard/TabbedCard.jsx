@@ -36,4 +36,8 @@ TabbedCard.propTypes = {
   className: PropTypes.string,
 };
 
+TabbedCard.defaultProps = {
+  className: '',
+};
+
 export default TabbedCard;
