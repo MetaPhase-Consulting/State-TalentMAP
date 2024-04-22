@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 import Picky from 'react-picky';
 import FA from 'react-fontawesome';
 import { sortBy, uniqBy } from 'lodash';
+import { toastError, toastSuccess } from 'actions/toast';
 import {
   publishablePositionsEdit,
+  publishablePositionsExport,
   publishablePositionsFetchData,
   publishablePositionsFiltersFetchData,
   savePublishablePositionsSelections,
 } from 'actions/publishablePositions';
 import Alert from 'Components/Alert/Alert';
+import ExportButton from 'Components/ExportButton';
 import Spinner from 'Components/Spinner';
 import ScrollUpButton from 'Components/ScrollUpButton';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
@@ -49,6 +52,7 @@ const PublishablePositions = ({ viewType }) => {
 
   const [clearFilters, setClearFilters] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [exportIsLoading, setExportIsLoading] = useState(false);
 
   const statuses = filters?.statusFilters;
   const bureaus = filters?.bureauFilters;
@@ -193,6 +197,20 @@ const PublishablePositions = ({ viewType }) => {
     selectedBidCycles,
   ]);
 
+  const exportPublishablePositions = () => {
+    if (!exportIsLoading) {
+      setExportIsLoading(true);
+      publishablePositionsExport(getQuery())
+        .then(() => {
+          setExportIsLoading(false);
+          dispatch(toastSuccess('Publishable Positions export successfully downloaded.', 'Success'));
+        })
+        .catch(() => {
+          setExportIsLoading(false);
+          dispatch(toastError('We were unable to process your Publishable Positions export. Please try again.', 'An error has occurred'));
+        });
+    }
+  };
 
   return (
     <div className="position-search">
@@ -324,6 +342,12 @@ const PublishablePositions = ({ viewType }) => {
         <>
           <div className="position-search-controls--results padding-top results-dropdown">
             <ScrollUpButton />
+            <div className="export-button-container">
+              <ExportButton
+                onClick={exportPublishablePositions}
+                isLoading={exportIsLoading}
+              />
+            </div>
           </div>
           {
             editMode &&
