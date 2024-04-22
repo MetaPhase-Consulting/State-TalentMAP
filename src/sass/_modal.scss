@@ -47,15 +47,14 @@
 }
 
 .modal-container {
-  width: 1200px;
-  max-width: calc(100vw - 100px);
-  max-height: calc(100vh - 100px);
-  font-size: 1.2rem;
-  border-radius: 1rem;
-  pointer-events: auto;
-  overflow-y: auto;
-
-  .tabbed-card {
+  .modal-child {
+    width: 1200px;
+    max-width: calc(100vw - 100px);
+    max-height: calc(100vh - 100px);
+    font-size: 1.2rem;
+    border-radius: 1rem;
+    pointer-events: auto;
+    overflow-y: auto;
     margin-block: 0px;
   }
 }
