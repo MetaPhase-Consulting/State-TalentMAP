@@ -5,10 +5,7 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import {
-  NO_BUREAU, NO_GRADE, NO_POSITION_TITLE, NO_POST,
-  NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
-} from 'Constants/SystemMessages';
+import { NO_STATUS, NO_VALUE } from 'Constants/SystemMessages';
 import { altAssignmentDetailFetchData } from 'actions/assignment';
 import { resetPositionsFetchData } from 'actions/positions';
 import Alert from 'Components/Alert';
@@ -54,16 +51,14 @@ const Separation = (props) => {
   const sections = {
     /* eslint-disable quote-props */
     bodyPrimary: [
-      { 'Status': getResult(data, 'ASGS_CODE') || NO_STATUS },
-      { 'Bureau': getResult(data, 'ORGS_SHORT_DESC') || NO_BUREAU },
-      { 'Location': getResult(data, 'POS_LOCATION_CODE') || NO_POST },
-      { 'ETA': get(data, 'ASGD_ETA_DATE') || NO_VALUE },
-      { 'DIP': getResult(data, 'DIPLOMATIC_TITLE') || NO_POSITION_TITLE },
-      { 'Memo Sent': getResult(data, 'MEMO_LAST_SENT_DATE') || NO_VALUE },
-      { 'Note Sent': getResult(data, 'NOTE_LAST_SENT_DATE') || NO_VALUE },
-      { 'TED': get(data, 'ASGD_ETD_TED_DATE') || NO_TOUR_END_DATE },
-      { 'Grade': getResult(data, 'GRD_CD') || NO_GRADE },
-      { 'Pay Plan': getResult(data, 'PPL_CODE') || NO_VALUE },
+      { 'Status': getResult(data, 'status') || NO_STATUS },
+      { 'Action': getResult(data, 'action') || NO_VALUE },
+      { 'Waiver': getResult(data, 'waiver') || NO_VALUE },
+      { 'Travel': get(data, 'travel') || NO_VALUE },
+      { 'Separation Date': getResult(data, 'separation_date') || NO_VALUE },
+      { 'US Indicator': getResult(data, 'us_indicator') || NO_VALUE },
+      { 'Panel Meeting Date': getResult(data, 'panel_meeting_date') || NO_VALUE },
+      { 'Location': get(data, 'location') || NO_VALUE },
     ],
     /* eslint-enable quote-props */
   };
@@ -92,13 +87,13 @@ const Separation = (props) => {
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    setStatus(asgDetail?.ASGS_CODE || '');
-    setAction(asgDetail?.LAT_CODE || '');
-    setWaiver(asgDetail?.WRT_CODE_RR_REPAY || '');
-    setTravel(asgDetail?.TF_CD || '');
-    // setSeparationDate(asgDetail?.ASGD_ETD_TED_DATE || null);
-    setUsIndicator(asgDetail?.ASGD_TRIANING_IND === 'Y');
-    // setPanelMeetingDate(asgDetail?.ASGD_ETA_DATE || null);
+    setStatus(asgDetail?.status || '');
+    setAction(asgDetail?.action || '');
+    setWaiver(asgDetail?.waiver || '');
+    setTravel(asgDetail?.travel || '');
+    setSeparationDate(asgDetail?.separation_date || null);
+    setUsIndicator(asgDetail?.us_indicator === 'Y');
+    setPanelMeetingDate(asgDetail?.panel_meeting_date || null);
     setLocation(null);
   }, []);
 
