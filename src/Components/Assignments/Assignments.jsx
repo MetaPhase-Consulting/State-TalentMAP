@@ -5,11 +5,14 @@ import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import { useDataLoader } from 'hooks';
 import PropTypes from 'prop-types';
+import { altAssignmentFetchData } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import { altAssignmentFetchData } from 'actions/assignment';
-import AssignmentSeparationCard from './AssignmentSeparationCard/AssignmentSeparationCard';
+import TabbedCard from 'Components/TabbedCard';
+import Assignment from './AssignmentSeparationCard/Assignment';
+import Separation from './AssignmentSeparationCard/Separation';
 import ReactModal from '../ReactModal';
+import InteractiveElement from '../InteractiveElement';
 import api from '../../api';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
@@ -19,6 +22,8 @@ const Assignments = (props) => {
   const assignments = useSelector(state => state.altAssignment);
   const assignmentsErrored = useSelector(state => state.altAssignmentHasErrored);
   const assignmentsLoading = useSelector(state => state.altAssignmentIsLoading);
+
+  const [assignmentToggle, setAssignmentToggle] = useState(true);
 
   // default || memo || notification
   // eslint-disable-next-line no-unused-vars
@@ -123,19 +128,68 @@ const Assignments = (props) => {
           </div>
         </div>
         <div className="asg-lower-section">
-          {assignments?.map(data => (
-            <AssignmentSeparationCard
-              perdet={id}
-              data={data}
-              setNewAsgSep={setCardMode}
+          <div className="results-mode">
+            <InteractiveElement
+              className={assignmentToggle ? 'active' : ''}
+              onClick={() => setAssignmentToggle(true)}
+            >
+              Assignments
+            </InteractiveElement>
+            <InteractiveElement
+              className={!assignmentToggle ? 'active' : ''}
+              onClick={() => setAssignmentToggle(false)}
+            >
+              Separations
+            </InteractiveElement>
+          </div>
+          {assignmentToggle && assignments?.map(data => (
+            <TabbedCard
+              tabs={[{
+                text: 'Assignment Overview',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                />,
+              }]}
+            />
+          ))}
+          {!assignmentToggle && assignments?.map(data => (
+            <TabbedCard
+              tabs={[{
+                text: 'Separation Overview',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                />,
+              }]}
             />
           ))}
           <ReactModal isOpen={openModal}>
-            <AssignmentSeparationCard
-              perdet={id}
-              setNewAsgSep={() => setCardMode('default')}
-              toggleModal={setOpenModal}
-              isNew
+            <TabbedCard
+              className="modal-child"
+              tabs={[{
+                text: 'New Assignment',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={() => setCardMode('default')}
+                  toggleModal={setOpenModal}
+                  isNew
+                />,
+              }, {
+                text: 'New Separation',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={() => setCardMode('default')}
+                  toggleModal={setOpenModal}
+                  isNew
+                />,
+              }]}
             />
           </ReactModal>
         </div>
