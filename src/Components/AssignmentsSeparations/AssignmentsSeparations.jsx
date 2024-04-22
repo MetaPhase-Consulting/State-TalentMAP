@@ -18,7 +18,7 @@ import api from '../../api';
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
 
-const Assignments = (props) => {
+const AssignmentsSeparations = (props) => {
   const assignments = useSelector(state => state.altAssignment);
   const assignmentsErrored = useSelector(state => state.altAssignmentHasErrored);
   const assignmentsLoading = useSelector(state => state.altAssignmentIsLoading);
@@ -90,7 +90,7 @@ const Assignments = (props) => {
         }
         <div className="asg-header">
           <FA name="clipboard" className="fa-lg" />
-          Assignments
+          Assignments and Separations
           <span className="asg-title-dash">
             {'- '}
             <Link to={`/profile/public/${id}/ao`}>
@@ -101,7 +101,8 @@ const Assignments = (props) => {
           </span>
         </div>
         <div className="pt-20 asg-subheader">
-          Review the current assignments or add assignments for {employeeName}
+          Review the current assignments/separations or
+          add assignments/separations for {employeeName}
           <div>
             <div className="create-new-button">
               <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
@@ -198,7 +199,7 @@ const Assignments = (props) => {
   );
 };
 
-Assignments.propTypes = {
+AssignmentsSeparations.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -206,8 +207,8 @@ Assignments.propTypes = {
   }),
 };
 
-Assignments.defaultProps = {
+AssignmentsSeparations.defaultProps = {
   match: {},
 };
 
-export default Assignments;
+export default AssignmentsSeparations;
