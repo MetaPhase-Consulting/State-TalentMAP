@@ -42,7 +42,7 @@ const AgendaItemTimeline = ({ unitedLoading, setParentLoadingState, updateLegs,
   // Adds a leg when a position is loaded in redux
   useDidMountEffect(() => {
     if (!pos_results_loading && !pos_results_errored) {
-      if (pos_results) {
+      if (!isEmpty(pos_results)) {
         const legs$ = [...legs];
         legs$.push({
           ail_seq_num: shortid.generate(),
