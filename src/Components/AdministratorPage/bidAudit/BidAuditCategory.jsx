@@ -146,10 +146,9 @@ const BidAuditCategory = () => {
     setEditMode(e => !e);
   };
   const onSubmit = () => {
-    console.log('submit');
+    swal.close();
   };
   const onCancelForm = () => {
-    console.log('cancel');
     swal.close();
   };
   const onInCategoriesSave = () => {
