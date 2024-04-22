@@ -111,7 +111,7 @@ const ProjectedVacancyCard = (props) => {
         position_seq_num: result?.position_seq_num,
         capsule_description: textArea,
         updater_id: result?.position_updater_id,
-        updated_date: result?.position_updated_date,
+        updated_date: result?.position_updated_date.replace(/\D/g, ''),
       },
     };
     onSubmit(editData, setEditMode(false));
