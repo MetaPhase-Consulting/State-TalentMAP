@@ -1,54 +1,34 @@
-import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
-import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
-import CheckBox from 'Components/CheckBox';
-import InteractiveElement from 'Components/InteractiveElement';
-import MonthYearInput from 'Components/MonthYearInput';
-import PositionExpandableContent from 'Components/PositionExpandableContent';
-import TabbedCard from 'Components/TabbedCard';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import FA from 'react-fontawesome';
+import PropTypes from 'prop-types';
+import { get, isEmpty } from 'lodash';
+import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
   NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
-// import { useDidMountEffect } from 'hooks';
-import FA from 'react-fontawesome';
-import { get, isEmpty } from 'lodash';
-import PropTypes from 'prop-types';
-// import datefns from 'date-fns';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getResult } from 'utilities';
+import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
+import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
+import Alert from 'Components/Alert';
+import Spinner from 'Components/Spinner';
+import CheckBox from 'Components/CheckBox';
+import MonthYearInput from 'Components/MonthYearInput';
+import InteractiveElement from 'Components/InteractiveElement';
+import PositionExpandableContent from 'Components/PositionExpandableContent';
 
-// eslint-disable-next-line complexity
-const AssignmentCard = (props) => {
+const Assignment = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
-  const [editMode, setEditMode] = useState(isNew);
-  const [inputClass, setInputClass] = useState('input-default');
-
-  // Pos Search
-  const [selectedPositionNumber, setPositionNumber] = useState('');
 
   const dispatch = useDispatch();
+
+  // ====================== Data Retrieval ======================
 
   const assignmentDetails = useSelector(state => state.altAssignmentDetail);
   const assignmentsDetailsErrored = useSelector(state => state.altAssignmentDetailHasErrored);
   const assignmentsDetailsLoading = useSelector(state => state.altAssignmentDetailIsLoading);
 
-  // For search pos results when creating new card
-  const pos_results = useSelector(state => state.positions);
-  const pos_results_loading = useSelector(state => state.positionsIsLoading);
-  const pos_results_errored = useSelector(state => state.positionsHasErrored);
-
-  useEffect(() => {
-    const asgId = data?.ASG_SEQ_NUM;
-    const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
-    return () => {
-      dispatch(resetPositionsFetchData());
-    };
-  }, []);
-
-  // Break out ref data
   const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
   const actionOptions = assignmentDetails?.QRY_LSTLAT_REF;
   const todOptions = assignmentDetails?.QRY_LSTTOD_REF;
@@ -59,7 +39,16 @@ const AssignmentCard = (props) => {
   // Asg Detail Data (Not to be confused with the Asg List)
   const asgDetail = isNew ? {} : assignmentDetails?.QRY_GETASGDTL_REF?.[0];
 
-  // =============== View Mode ===============
+  useEffect(() => {
+    const asgId = data?.ASG_SEQ_NUM;
+    const revision_num = data?.ASGD_REVISION_NUM;
+    dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
+    return () => {
+      dispatch(resetPositionsFetchData());
+    };
+  }, []);
+
+  // ====================== View Mode ======================
 
   const sections = {
     /* eslint-disable quote-props */
@@ -82,12 +71,50 @@ const AssignmentCard = (props) => {
     /* eslint-enable quote-props */
   };
 
+  // ====================== Edit Mode ======================
 
-  // =============== Edit Mode ===============
+  const [editMode, setEditMode] = useState(isNew);
+  const [inputClass, setInputClass] = useState('input-default');
+
+  // ----- Position Number State Management -----
+
+  // Position Number Search
+  // For search pos results when creating new card
+  const [selectedPositionNumber, setPositionNumber] = useState('');
+  const pos_results = useSelector(state => state.positions);
+  const pos_results_loading = useSelector(state => state.positionsIsLoading);
+  const pos_results_errored = useSelector(state => state.positionsHasErrored);
 
   const getTOD = () => (
     pos_results?.todo_tod_code || pos_results?.bt_tod_code || ''
   );
+
+  useEffect(() => {
+    if (pos_results_loading) {
+      setInputClass('loading-animation--3');
+    } else if (pos_results_errored) {
+      setInputClass('input-error');
+    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
+      setInputClass('input-error');
+    } else {
+      setInputClass('input-default');
+    }
+  }, [pos_results, pos_results_loading, pos_results_errored]);
+
+  useEffect(() => {
+    if (isNew) {
+      /* eslint-disable quote-props */
+      sections.subheading = [
+        { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
+        { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
+        { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
+        { 'Location': pos_results?.pos_location_code || NO_POST },
+        { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
+        { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
+      ];
+      /* eslint-enable quote-props */
+    }
+  }, [pos_results]);
 
   const [status, setStatus] = useState(asgDetail?.ASGS_CODE || '');
   const [action, setAction] = useState(asgDetail?.LAT_CODE || '');
@@ -104,65 +131,48 @@ const AssignmentCard = (props) => {
   const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY || '');
   const [sent, setSent] = useState(asgDetail?.NOTE_LAST_SENT_DATE);
 
-  const onCancelForm = () => {
-    // this is likely not going to be needed, as we should be
-    // re-reading from "pos" when we open Edit Form back up
-    // clear will need to set states back to the pull
-    // from "pos" once we've determined the ref data structure
-    setStatus(null);
-    setAction(null);
-    setTED(null);
-    setETA(null);
-    setTOD(null);
-    setTravel(null);
-    setFunding(null);
+  useEffect(() => {
+    setStatus(asgDetail?.ASGS_CODE || '');
+    setAction(asgDetail?.LAT_CODE || '');
+    setTED(asgDetail?.ASGD_ETD_TED_DATE);
+    setETA(asgDetail?.ASGD_ETA_DATE);
+    setTOD(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
+    setTravel(asgDetail?.TF_CD || '');
+    setFunding(asgDetail?.ASGD_ORG_CODE);
     setAdj('');
-    setSalaryReimbursement(false);
-    setTravelReimbursement(false);
-    setTraining(false);
-    setCriticalNeed(false);
-    setWaiver(waiverOptions[0]);
-    setSent('');
-    setNewAsgSep('default');
-    if (isNew) toggleModal(false);
-  };
+    setSalaryReimbursement(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+    setTravelReimbursement(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+    setTraining(asgDetail?.ASGD_TRIANING_IND === 'Y');
+    setCriticalNeed(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
+    setWaiver(asgDetail?.WRT_CODE_RR_REPAY || '');
+    setSent(asgDetail?.NOTE_LAST_SENT_DATE);
+  }, []);
 
   const onSubmitForm = () => {
+    const formValues = {
+      asg_seq_num: asgDetail?.ASG_SEQ_NUM,
+      asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+      eta,
+      etd: ted,
+      tod,
+      salary_reimburse_ind: salaryReimbursement,
+      travel_reimburse_ind: travelReimbursement,
+      training_ind: training,
+      critical_need_ind: criticalNeed,
+      org_code: funding,
+      status_code: status,
+      lat_code: action,
+      travel_code: travel,
+      rr_repay_ind: waiver,
+      update_date: asgDetail?.ASGD_UPDATE_DATE,
+    };
     if (isNew) {
       dispatch(createAssignment({
-        asg_seq_num: asgDetail?.ASG_SEQ_NUM,
-        asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
-        eta,
-        etd: ted,
-        tod,
-        salary_reimburse_ind: salaryReimbursement,
-        travel_reimburse_ind: travelReimbursement,
-        training_ind: training,
-        critical_need_ind: criticalNeed,
-        org_code: funding,
-        status_code: status,
-        lat_code: action,
-        travel_code: travel,
-        rr_repay_ind: waiver,
-        update_date: asgDetail?.ASGD_UPDATE_DATE,
+        ...formValues,
       }, perdet));
     } else {
       dispatch(updateAssignment({
-        asg_seq_num: asgDetail?.ASG_SEQ_NUM,
-        asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
-        eta,
-        etd: ted,
-        tod,
-        salary_reimburse_ind: salaryReimbursement,
-        travel_reimburse_ind: travelReimbursement,
-        training_ind: training,
-        critical_need_ind: criticalNeed,
-        org_code: funding,
-        status_code: status,
-        lat_code: action,
-        travel_code: travel,
-        rr_repay_ind: waiver,
-        update_date: asgDetail?.ASGD_UPDATE_DATE,
+        ...formValues,
       }, perdet));
     }
     if (isNew) toggleModal(false);
@@ -188,8 +198,7 @@ const AssignmentCard = (props) => {
     inputBody:
       <div className="position-form">
         <div className="position-form--inputs">
-          {
-            isNew &&
+          {isNew &&
             <div className="position-form--label-input-container position-number-container">
               <label htmlFor="pos-num">Position Number</label>
               <input
@@ -314,7 +323,7 @@ const AssignmentCard = (props) => {
               onChange={(e) => setAdj(e?.target.value)}
             />
           </div>
-          <div className="position-form--label-input-container height-100">
+          <div className="position-form--label-input-container height-80">
             <CheckBox
               id={`salary-reimbursement-${data.id ?? 'create'}`}
               label="Salary Reimbursement"
@@ -324,7 +333,7 @@ const AssignmentCard = (props) => {
               onChange={() => setSalaryReimbursement(!salaryReimbursement)}
             />
           </div>
-          <div className="position-form--label-input-container height-100">
+          <div className="position-form--label-input-container height-80">
             <CheckBox
               id={`travel-reimbursement-${data.id ?? 'create'}`}
               label="Travel Reimbursement"
@@ -334,7 +343,7 @@ const AssignmentCard = (props) => {
               onChange={() => setTravelReimbursement(!travelReimbursement)}
             />
           </div>
-          <div className="position-form--label-input-container height-100">
+          <div className="position-form--label-input-container height-80">
             <CheckBox
               id={`training-${data.id ?? 'create'}`}
               label="Training"
@@ -373,7 +382,7 @@ const AssignmentCard = (props) => {
       </div>,
     cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
     handleSubmit: () => onSubmitForm(),
-    handleCancel: () => onCancelForm(),
+    handleCancel: () => { if (isNew) toggleModal(false); },
     handleEdit: {
       editMode,
       setEditMode: isNew ? null : setEditMode,
@@ -382,69 +391,33 @@ const AssignmentCard = (props) => {
     /* eslint-enable quote-props */
   };
 
-  if (isNew) {
-    /* eslint-disable quote-props */
-    sections.subheading = [
-      { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
-      { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
-      { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
-      { 'Location': pos_results?.pos_location_code || NO_POST },
-      { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
-      { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
-    ];
-  }
-
-  // ========Use Effects for fetching pos results and loading states=======
-  useEffect(() => {
-    if (pos_results_loading) {
-      setInputClass('loading-animation--3');
-    } else if (pos_results_errored) {
-      setInputClass('input-error');
-    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
-      setInputClass('input-error');
+  const getOverlay = () => {
+    let overlay;
+    if (isNew && assignmentsDetailsLoading) {
+      overlay = <Spinner type="standard-center" size="small" />;
+    } else if (isNew && assignmentsDetailsErrored) {
+      overlay = <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
     } else {
-      setInputClass('input-default');
+      return false;
     }
-  }, [pos_results, pos_results_loading, pos_results_errored]);
-
-  useEffect(() => {
-    if (isNew) {
-      /* eslint-disable quote-props */
-      sections.subheading = [
-        { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
-        { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
-        { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
-        { 'Location': pos_results?.pos_location_code || NO_POST },
-        { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
-        { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
-      ];
-    }
-  }, [pos_results]);
-
-  // -----------------------------------------------------------------------
+    return overlay;
+  };
 
   return (
-    !assignmentsDetailsErrored && !assignmentsDetailsLoading &&
-    <TabbedCard
-      tabs={[{
-        text: isNew ? 'New Assignment' : 'Assignment Overview',
-        value: 'INFORMATION',
-        content: (
-          <div className="position-content--container">
-            <PositionExpandableContent
-              sections={sections}
-              form={form}
-              useCancelModal={false}
-              saveText={isNew ? 'Create Assignment' : 'Save Assigment'}
-            />
-          </div>
-        ),
-      }]}
-    />
+    <div className="position-content--container min-height-100">
+      {getOverlay() ||
+        <PositionExpandableContent
+          sections={sections}
+          form={form}
+          useCancelModal={false}
+          saveText={isNew ? 'Create Assignment' : 'Save Assigment'}
+        />
+      }
+    </div>
   );
 };
 
-AssignmentCard.propTypes = {
+Assignment.propTypes = {
   data: POSITION_DETAILS.isRequired,
   isNew: PropTypes.bool,
   cycle: PropTypes.shape({
@@ -455,7 +428,7 @@ AssignmentCard.propTypes = {
   perdet: PropTypes.string,
 };
 
-AssignmentCard.defaultProps = {
+Assignment.defaultProps = {
   data: {},
   isNew: false,
   setNewAsgSep: EMPTY_FUNCTION,
@@ -463,4 +436,4 @@ AssignmentCard.defaultProps = {
   perdet: '',
 };
 
-export default AssignmentCard;
+export default Assignment;

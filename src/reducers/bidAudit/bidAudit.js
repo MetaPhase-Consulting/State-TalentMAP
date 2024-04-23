@@ -1,4 +1,4 @@
-// ================ Bid Audit GET ================
+// ================ Bid Audit: Get List ================
 
 export function bidAuditFetchDataErrored(state = false, action) {
   switch (action.type) {
@@ -24,7 +24,9 @@ export function bidAuditFetchData(state = [], action) {
       return state;
   }
 }
-// ================ Bid Audit GET In Category/At Grade ================
+
+
+// ================ Bid Audit: Get In Category/At Grade ================
 
 export function bidAuditSecondFetchDataErrored(state = false, action) {
   switch (action.type) {
@@ -51,7 +53,13 @@ export function bidAuditSecondFetchData(state = [], action) {
   }
 }
 
-// ================================================================ // Below not integrated/used yet
+
+// ----------------------------------------------------------------------
+// ================ FUNCTIONS BELOW ARE CURRENTLY UNUSED ================
+// ----------------------------------------------------------------------
+
+// ================ Bid Audit: Get Audit ================
+
 export function bidAuditErrored(state = false, action) {
   switch (action.type) {
     case 'BID_AUDIT_HAS_ERRORED':
@@ -69,14 +77,8 @@ export function bidAuditLoading(state = false, action) {
   }
 }
 
-export function bidAuditDeleteLoading(state = false, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_DELETE_IS_LOADING':
-      return action.isLoading;
-    default:
-      return state;
-  }
-}
+
+// ================ Bid Audit: Edit ================
 
 export function bidAuditEdit(state = {}, action) {
   switch (action.type) {
@@ -88,6 +90,16 @@ export function bidAuditEdit(state = {}, action) {
 }
 
 
+// ================ Bid Audit: Delete ================
+
+export function bidAuditDeleteLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_DELETE_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
 export function bidAuditDeleteDataSuccess(state = false, action) {
   switch (action.type) {
     case 'BID_AUDIT_DELETE_SUCCESS':
@@ -98,6 +110,8 @@ export function bidAuditDeleteDataSuccess(state = false, action) {
 }
 
 
+// ================ Bid Audit: Get Card ================
+
 export function bidAuditCard(state = {}, action) {
   switch (action.type) {
     case 'BID_AUDIT_CARD_FETCH_SUCCESS':
@@ -106,6 +120,9 @@ export function bidAuditCard(state = {}, action) {
       return state;
   }
 }
+
+
+// ================ Bid Audit: Get Category Card ================
 
 export function bidAuditCategoryCard(state = {}, action) {
   switch (action.type) {
@@ -116,6 +133,9 @@ export function bidAuditCategoryCard(state = {}, action) {
   }
 }
 
+
+// ================ Bid Audit: User Filter Selections ================
+
 export function bidAuditSelections(state = {}, action) {
   switch (action.type) {
     case 'BID_AUDIT_SELECTIONS_SAVE_SUCCESS':
@@ -124,6 +144,9 @@ export function bidAuditSelections(state = {}, action) {
       return state;
   }
 }
+
+
+// ================ Bid Audit: Filters ================
 
 export function bidAuditFiltersFetchDataErrored(state = false, action) {
   switch (action.type) {
