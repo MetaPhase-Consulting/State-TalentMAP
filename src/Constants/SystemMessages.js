@@ -223,7 +223,7 @@ export const EDIT_CYCLE_POSITION_ERROR = 'There was an issue attempting to updat
 export const EDIT_CYCLE_CLASSIFICATIONS_SUCCESS_TITLE = 'Cycle Date Classifications Updated';
 export const EDIT_CYCLE_CLASSIFICATIONS_SUCCESS = 'The Cycle Date Classifications have been updated';
 export const EDIT_CYCLE_CLASSIFICATIONS_ERROR_TITLE = 'Cycle Date Classifications Edit Error';
-export const EDIT_CYCLE_CLASSIFICATIONS_ERROR = 'There was an issue attempting to update the Cycle Dates. Please try again.';
+export const EDIT_CYCLE_CLASSIFICATIONS_ERROR = 'There was an issue attempting to update the Cycle Date Classifications. Please try again.';
 
 export const EDIT_ASSIGNMENT_SUCCESS_TITLE = 'Assignment Updated';
 export const EDIT_ASSIGNMENT_SUCCESS = 'The Assignment has been updated';
