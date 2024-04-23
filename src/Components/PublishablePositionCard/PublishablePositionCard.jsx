@@ -42,7 +42,6 @@ const PublishablePositionCard = ({
     { TED: data?.status || DEFAULT_TEXT },
     { Incumbent: data?.status || DEFAULT_TEXT },
     { 'Default TOD': data?.status || DEFAULT_TEXT },
-    { 'Bid Cycle': data?.status || DEFAULT_TEXT },
     { Assignee: data?.status || DEFAULT_TEXT },
     { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
     { 'Employee ID': data?.status || DEFAULT_TEXT },
@@ -66,6 +65,7 @@ const PublishablePositionCard = ({
     bodySecondary: PP_FLAG() ?
       [
         ...additionalRO,
+        { 'Bid Cycle': data?.status || DEFAULT_TEXT },
       ]
       : [],
     textarea: data?.positionDetails || 'No description.',
