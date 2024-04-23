@@ -247,4 +247,3 @@ export function cyclePositionEditSuccess(state = [], action) {
       return state;
   }
 }
-
