@@ -55,7 +55,7 @@ const PublishablePositionCard = ({
       { 'Position Number': data?.positionNumber || DEFAULT_TEXT },
       { 'Skill': data?.skill || DEFAULT_TEXT },
       { 'Position Title': data?.positionTitle || DEFAULT_TEXT },
-      { '': PP_FLAG && <Link to="#" onClick={onRestore} >Restore</Link> },
+      { '': PP_FLAG() && <Link to="#" onClick={onRestore} >Restore</Link> },
     ],
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
