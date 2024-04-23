@@ -214,7 +214,6 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
-              showIcon
               type="form"
             />
           </div>
@@ -236,7 +235,6 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
-              showIcon
               type="form"
             />
           </div>
