@@ -55,12 +55,10 @@ const PublishablePositionCard = ({
       { 'Position Number': data?.positionNumber || DEFAULT_TEXT },
       { 'Skill': data?.skill || DEFAULT_TEXT },
       { 'Position Title': data?.positionTitle || DEFAULT_TEXT },
-      { '': PP_FLAG() && <Link to="#" onClick={onRestore} >Restore</Link> },
     ],
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'Org Code': data?.org || DEFAULT_TEXT },
       { 'PP/Grade': data?.combined_pp_grade },
       { 'Publishable Status': data?.status || DEFAULT_TEXT },
       { 'Language': data?.language || DEFAULT_TEXT },
@@ -77,6 +75,10 @@ const PublishablePositionCard = ({
     ],
     /* eslint-enable quote-props */
   };
+
+  if (PP_FLAG()) {
+    sections.subheading.push({ '': <Link to="#" onClick={onRestore} >Restore</Link> });
+  }
 
   if (DETO_RWA_FLAG()) {
     sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
@@ -126,6 +128,7 @@ const PublishablePositionCard = ({
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
     setOverrideTOD('');
+    setPpDate(null);
   };
 
   const datePickerRef = useRef(null);
