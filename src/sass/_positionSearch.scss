@@ -232,8 +232,11 @@
 
 .cm-cycle-classes {
   border-bottom: 2px solid $primary-blue;
-  .cm-cycle-classes-check {
-    accent-color: darkorange;
+  .cm-cycle-classes-check{
+    &.read-only {
+      pointer-events: none;
+      accent-color: darkorange !important;
+    }
   }
   .position-content--subheader {
     margin: 20px 0px;
