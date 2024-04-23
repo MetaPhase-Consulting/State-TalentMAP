@@ -18,7 +18,7 @@ import api from '../api';
 import { toastError, toastSuccess } from './toast';
 
 
-// ================ Bid Audit GET audits ================
+// ================ Bid Audit: Get List ================
 
 let cancelBidAuditFetch;
 
@@ -28,7 +28,6 @@ export function bidAuditFetchDataErrored(bool) {
     hasErrored: bool,
   };
 }
-
 export function bidAuditFetchDataLoading(bool) {
   return {
     type: 'BID_AUDIT_FETCH_IS_LOADING',
@@ -41,7 +40,6 @@ export function bidAuditFetchDataSuccess(results) {
     results,
   };
 }
-
 export function bidAuditFetchData() {
   return (dispatch) => {
     if (cancelBidAuditFetch) {
@@ -72,7 +70,9 @@ export function bidAuditFetchData() {
       });
   };
 }
-// ================ Bid Audit GET In Category/At Grade ================
+
+
+// ================ Bid Audit: Get In Category/At Grade ================
 
 let cancelBidAuditSecondFetch;
 
@@ -82,7 +82,6 @@ export function bidAuditSecondFetchDataErrored(bool) {
     hasErrored: bool,
   };
 }
-
 export function bidAuditSecondFetchDataLoading(bool) {
   return {
     type: 'BID_AUDIT_SECOND_FETCH_IS_LOADING',
@@ -95,7 +94,6 @@ export function bidAuditSecondFetchDataSuccess(results) {
     results,
   };
 }
-
 export function bidAuditSecondFetchData(cycleId, auditId, type) {
   return (dispatch) => {
     if (cancelBidAuditSecondFetch) {
@@ -130,7 +128,13 @@ export function bidAuditSecondFetchData(cycleId, auditId, type) {
   };
 }
 
-// ================================================================ // Below not integrated/used yet
+
+// ----------------------------------------------------------------------
+// ================ FUNCTIONS BELOW ARE CURRENTLY UNUSED ================
+// ----------------------------------------------------------------------
+
+
+// ================ Bid Audit: Get Audit ================
 
 export function bidAuditErrored(bool) {
   return {
@@ -144,6 +148,15 @@ export function bidAuditLoading(bool) {
     isLoading: bool,
   };
 }
+export function bidAuditSuccess(results) {
+  return {
+    type: 'BID_AUDIT_SUCCESS',
+    results,
+  };
+}
+
+
+// ================ Bid Audit: Delete ================
 
 export function bidAuditDeleteLoading(bool) {
   return {
@@ -152,12 +165,8 @@ export function bidAuditDeleteLoading(bool) {
   };
 }
 
-export function bidAuditSuccess(results) {
-  return {
-    type: 'BID_AUDIT_SUCCESS',
-    results,
-  };
-}
+
+// ================ TBD? ================
 
 export function savebidAuditSelections(data) {
   return (dispatch) => {
@@ -183,20 +192,20 @@ export function savebidAuditSelections(data) {
   };
 }
 
+// ================ Bid Audit: Delete ================
+
 export function bidAuditDeleteDataErrored(bool) {
   return {
     type: 'BID_AUDIT_FETCH_HAS_ERRORED',
     hasErrored: bool,
   };
 }
-
 export function bidAuditDeleteDataSuccess(results) {
   return {
     type: 'BID_AUDIT_DELETE_SUCCESS',
     results,
   };
 }
-
 export function deleteBidAudit(id) {
   return (dispatch) => {
     dispatch(bidAuditDeleteLoading(true));
@@ -222,6 +231,8 @@ export function deleteBidAudit(id) {
 }
 
 
+// ================ Bid Audit: User Filter Selections ================
+
 export function bidAuditSelectionsSaveSuccess(result) {
   return {
     type: 'BID_AUDIT_SELECTIONS_SAVE_SUCCESS',
@@ -232,6 +243,8 @@ export function saveBidAuditSelections(queryObject) {
   return (dispatch) => dispatch(bidAuditSelectionsSaveSuccess(queryObject));
 }
 
+
+// ================ Bid Audit: Filters ================
 
 export function bidAuditFiltersFetchDataErrored(bool) {
   return {
@@ -260,7 +273,8 @@ export function bidAuditFiltersFetchData() {
   };
 }
 
-// ================ Update Bid Counts  ================
+
+// ================ Bid Audit: Update Bid Counts ================
 
 let cancelUpdateBidCounts;
 
