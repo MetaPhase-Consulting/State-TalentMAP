@@ -60,82 +60,84 @@ const CycleClassifications = () => {
     dispatch(cycleClassificationsEditCycle(cycleToEdit));
   };
 
+  const isChecked = (cycle, classification) => {
+    const foundCheck = cycle?.values?.find(value => classification.code === value.code && value.value === '1'); return foundCheck ?? false;
+  };
+
   const cycleClassCard = () => (isLoading ?
     <div className="loading-animation--5">
       <div className="loading-message pbl-20">
         Loading additional data
       </div>
     </div> :
-    (cycles?.map(cycle => (
-      <div className="position-classifications cm-cycle-classes">
-        <Row fluid className="position-content--subheader">
-          <div className="line-separated-fields">
-            <div>
-              <span>{cycle?.cycle_name} - {cycle?.cycle_desc}</span>
+    (cycles?.map(cycle => {
+      const editing = checkCycleToEdit(cycle.cycle_id, cycle.cycle_code);
+      return (
+        <div className="position-classifications cm-cycle-classes">
+          <Row fluid className="position-content--subheader">
+            <div className="line-separated-fields">
+              <div>
+                <span>{cycle?.cycle_name} - {cycle?.cycle_desc}</span>
+              </div>
             </div>
+            {(cycleToEdit === false && isSuperUser) &&
+              <button
+                className="toggle-edit-mode"
+                onClick={() => setCycleToEdit({
+                  id: cycle.cycle_id,
+                  code: cycle.cycle_code,
+                  values: cycle.values,
+                })}
+              >
+                <FA name="pencil" />
+                <div>Edit</div>
+              </button>
+            }
+          </Row>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  {classifications?.map((o) => (
+                    <th key={o.code}>{o.short_description}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {classifications?.map((classification) => (
+                    <td key={classification.code}>
+                      <input
+                        type="checkbox"
+                        name={classification.code}
+                        className={`cm-cycle-classes-check ${editing ? '' : 'read-only'}`}
+                        onChange={(event) => {
+                          if (editing) handleSelection(classification.code, event);
+                        }}
+                        readOnly={!editing}
+                        checked={
+                          editing
+                            ?
+                            isChecked(cycleToEdit, classification)
+                            :
+                            isChecked(cycle, classification)
+                        }
+                      />
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
-
-          {(cycleToEdit === false && isSuperUser) &&
-            <button
-              className="toggle-edit-mode"
-              onClick={() => setCycleToEdit({
-                id: cycle.cycle_id,
-                code: cycle.cycle_code,
-                values: cycle.values,
-              })}
-            >
-              <FA name="pencil" />
-              <div>Edit</div>
-            </button>
+          {editing &&
+            <div className="position-form--actions">
+              <button onClick={() => setCycleToEdit(false)}>Cancel</button>
+              <button onClick={handleSubmit}>Save</button>
+            </div>
           }
-
-        </Row>
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                {classifications?.map((o) => (
-                  <th key={o.code}>{o.short_description}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {classifications?.map((c) => (
-                  checkCycleToEdit(cycle.cycle_id, cycle.cycle_code)
-                    ?
-                    <td key={c.code}>
-                      <input
-                        type="checkbox"
-                        name={c.code}
-                        className="cm-cycle-classes-check"
-                        onChange={(event) => handleSelection(c.code, event)}
-                        checked={cycleToEdit?.values?.find(value => c.code === value.code && value.value === '1') ?? false}
-                      />
-                    </td>
-                    :
-                    <td key={c.code}>
-                      <input
-                        type="checkbox"
-                        name={c.code}
-                        className="cm-cycle-classes-check"
-                        checked={cycle?.values?.find(value => c.code === value.code && value.value === '1') ?? false}
-                      />
-                    </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
         </div>
-        {checkCycleToEdit(cycle.cycle_id, cycle.cycle_code)
-          &&
-          <div className="position-form--actions">
-            <button onClick={() => setCycleToEdit(false)}>Cancel</button>
-            <button onClick={handleSubmit}>Save</button>
-          </div>
-        }
-      </div>
-    )))
+      );
+    }))
   );
 
   return (
