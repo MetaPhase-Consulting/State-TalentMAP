@@ -55,15 +55,15 @@ const PublishablePositionCard = ({
       { 'Position Number': data?.positionNumber || DEFAULT_TEXT },
       { 'Skill': data?.skill || DEFAULT_TEXT },
       { 'Position Title': data?.positionTitle || DEFAULT_TEXT },
-      { '': <Link to="#" onClick={onRestore} >Restore</Link> },
+      { '': PP_FLAG && <Link to="#" onClick={onRestore} >Restore</Link> },
     ],
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
-      { 'Location/Org': data?.org || DEFAULT_TEXT },
+      { 'Organization': data?.org || DEFAULT_TEXT },
       { 'Org Code': data?.orgCode || DEFAULT_TEXT },
-      { 'PP/Grade': data?.org || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combined_pp_grade || DEFAULT_TEXT },
       { 'Position Status': data?.status || DEFAULT_TEXT },
-      { 'Language/Training': data?.language || DEFAULT_TEXT },
+      { 'Language': data?.language || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
@@ -139,9 +139,9 @@ const PublishablePositionCard = ({
     /* eslint-disable quote-props */
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
-      { 'Location/Org': data?.org || DEFAULT_TEXT },
+      { 'Organization': data?.org || DEFAULT_TEXT },
       { 'PP/Grade': data?.combined_pp_grade || DEFAULT_TEXT },
-      { 'Language/Training': data?.language || DEFAULT_TEXT },
+      { 'Language': data?.language || DEFAULT_TEXT },
     ],
     inputBody: (
       <div className="position-form">
