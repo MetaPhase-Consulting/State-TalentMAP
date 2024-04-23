@@ -123,7 +123,7 @@ const PublishablePositionCard = ({
   const onCancelForm = () => {
     setStatus('');
     setExclude(true);
-    setConsultStaffing(true);
+    setConsultStaffing(false);
     setSelectedCycles([]);
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
