@@ -7,6 +7,7 @@ import TabbedCard from 'Components/TabbedCard';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
+import { NO_VALUE } from 'Constants/SystemMessages';
 import { history } from '../../../store';
 
 const BidAuditCard = ({ data, onEditModeSearch }) => {
@@ -37,11 +38,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
     swal.close();
   };
 
-  const onInCategory = () => {
-    history.push(`/profile/administrator/bidaudit/category/${cycle_id}/${audit_id}/`);
-  };
-  const onAtGrade = () => {
-    history.push(`/profile/administrator/bidaudit/grade/${cycle_id}/${audit_id}/`);
+  const onOptionClick = (type) => {
+    history.push(`/profile/administrator/bidaudit/${type}/${cycle_id}/${audit_id}/`);
   };
 
   const onCancelForm = () => {
@@ -59,15 +57,15 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
     /* eslint-disable no-dupe-keys */
     /* eslint-disable quote-props */
     subheading: [
-      { 'Cycle Name': cycle_name || 'None listed' },
-      { 'Status': cycle_status || 'None listed' },
-      { 'Category': cycle_category || 'None listed' },
+      { 'Cycle Name': cycle_name || NO_VALUE },
+      { 'Status': cycle_status || NO_VALUE },
+      { 'Category': cycle_category || NO_VALUE },
     ],
     bodyPrimary: [
-      { 'Audit Number': audit_id || 'None listed' },
-      { 'Description': audit_desc || 'None listed' },
-      { 'Posted': posted_by_date || 'None listed' },
-      { 'Audit Date': audit_date || 'None listed' },
+      { 'Audit Number': audit_id || NO_VALUE },
+      { 'Description': audit_desc || NO_VALUE },
+      { 'Posted': posted_by_date || NO_VALUE },
+      { 'Audit Date': audit_date || NO_VALUE },
     ],
     /* eslint-enable quote-props */
     /* eslint-enable no-dupe-keys */
@@ -75,8 +73,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
   const bidAuditForm = {
     /* eslint-disable quote-props */
     staticBody: [
-      { 'Audit Number': audit_id || 'None listed' },
-      { 'Audit Date': audit_date || 'None listed' },
+      { 'Audit Number': audit_id || NO_VALUE },
+      { 'Audit Date': audit_date || NO_VALUE },
     ],
     inputBody: (
       <div className="position-form">
@@ -114,8 +112,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
         </div>
         <div>
           <div className="ba-flex-end">
-            <button onClick={onInCategory}>View In Categories</button>
-            <button onClick={onAtGrade}>View At Grades</button>
+            <button onClick={() => onOptionClick('category')}>View In Categories</button>
+            <button onClick={() => onOptionClick('grade')}>View At Grades</button>
           </div>
         </div>
       </div>
