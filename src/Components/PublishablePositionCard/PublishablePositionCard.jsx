@@ -64,8 +64,8 @@ const PublishablePositionCard = ({
     ],
     bodySecondary: PP_FLAG() ?
       [
-        ...additionalRO,
         { 'Bid Cycle': data?.status || DEFAULT_TEXT },
+        ...additionalRO,
       ]
       : [],
     textarea: data?.positionDetails || 'No description.',
