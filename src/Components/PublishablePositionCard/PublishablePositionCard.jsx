@@ -95,7 +95,6 @@ const PublishablePositionCard = ({
   };
   const [status, setStatus] = useState('');
   const [exclude, setExclude] = useState(true);
-  const [consultStaffing, setConsultStaffing] = useState(false);
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
@@ -123,7 +122,6 @@ const PublishablePositionCard = ({
   const onCancelForm = () => {
     setStatus('');
     setExclude(true);
-    setConsultStaffing(false);
     setSelectedCycles([]);
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
@@ -197,12 +195,6 @@ const PublishablePositionCard = ({
                   />
                 </Tooltip>
               }
-              <CheckBox
-                id="consultative-checkbox"
-                label="Mark for Consultative Staffing"
-                value={consultStaffing}
-                onCheckBoxClick={e => setConsultStaffing(e)}
-              />
             </div>
           </div>
         }
