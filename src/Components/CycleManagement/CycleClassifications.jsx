@@ -61,7 +61,8 @@ const CycleClassifications = () => {
   };
 
   const isChecked = (cycle, classification) => {
-    const foundCheck = cycle?.values?.find(value => classification.code === value.code && value.value === '1'); return foundCheck ?? false;
+    const foundCheck = cycle?.values?.find(value => classification.code === value.code && value.value === '1');
+    return foundCheck ?? false;
   };
 
   const cycleClassCard = () => (isLoading ?
