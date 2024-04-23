@@ -63,8 +63,11 @@ const PublishablePositionCard = ({
       { 'Publishable Status': data?.status || DEFAULT_TEXT },
       { 'Language': data?.language || DEFAULT_TEXT },
     ],
-    bodySecondary: PP_FLAG() &&
-      [...additionalRO],
+    bodySecondary: PP_FLAG() ?
+      [
+        ...additionalRO,
+      ]
+      : [],
     textarea: data?.positionDetails || 'No description.',
     metadata: [
       { 'Last Updated': formatDateFromStr(data?.lastUpdated) },
