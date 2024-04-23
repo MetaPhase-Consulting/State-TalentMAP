@@ -1,5 +1,6 @@
 import {
   cycleClassificationsData,
+  cycleClassificationsEditSuccess,
   cycleClassificationsIsLoading,
   cycleManagement,
   cycleManagementAssignmentCycle,
@@ -27,6 +28,7 @@ import {
 
 export default {
   cycleClassificationsData,
+  cycleClassificationsEditSuccess,
   cycleClassificationsIsLoading,
   cycleManagement,
   cycleManagementAssignmentCycle,
