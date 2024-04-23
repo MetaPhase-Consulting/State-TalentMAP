@@ -123,6 +123,7 @@ const PublishablePositionCard = ({
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
     setOverrideTOD('');
+    setPpDate(null);
   };
 
   const datePickerRef = useRef(null);
