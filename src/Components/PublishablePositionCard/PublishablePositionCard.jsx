@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { formatDateFromStr, renderSelectionList } from 'utilities';
+import DatePicker from 'react-datepicker';
+import FA from 'react-fontawesome';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
 import CheckBox from 'Components/CheckBox';
@@ -26,6 +29,9 @@ const hardcodedFilters = {
   functionalBureauFilters: [{ code: 1, description: '' }, { code: 2, description: 'bureau' }, { code: 3, description: 'bureau' }],
 };
 
+const onRestore = (e) => {
+  e.preventDefault();
+};
 
 const PublishablePositionCard = ({
   data, onEditModeSearch, onSubmit, disableEdit,
@@ -68,7 +74,9 @@ const PublishablePositionCard = ({
     ],
     /* eslint-enable quote-props */
   };
-
+  if (PP_FLAG()) {
+    sections.subheading.push({ '': <Link to="#" onClick={onRestore} >Restore</Link> });
+  }
   if (DETO_RWA_FLAG()) {
     sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
   }
@@ -89,6 +97,7 @@ const PublishablePositionCard = ({
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
+  const [ppDate, setPpDate] = useState('');
 
 
   const [textArea, setTextArea] = useState(data?.positionDetails || 'No description.');
@@ -116,6 +125,12 @@ const PublishablePositionCard = ({
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
     setOverrideTOD('');
+    setPpDate('');
+  };
+
+  const datePickerRef = useRef(null);
+  const openDatePicker = () => {
+    datePickerRef.current.setOpen(true);
   };
 
   const form = {
@@ -134,6 +149,7 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-position-statuses">Publishable Status</label>
                 <select
+                  className="publishable-position-inputs"
                   id="publishable-position-statuses"
                   defaultValue={status}
                   onChange={(e) => setStatus(e?.target.value)}
@@ -148,6 +164,7 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
+                  className="publishable-position-inputs"
                   id="publishable-pos-tod-override"
                   defaultValue={overrideTOD}
                   onChange={(e) => setOverrideTOD(e?.target.value)}
@@ -221,6 +238,21 @@ const PublishablePositionCard = ({
               valueKey="code"
               labelKey="description"
             />
+            <div className="position-form--label-input-container">
+              <label htmlFor="status">Position TED</label>
+              <div className="date-wrapper-react larger-date-picker">
+                <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
+                <FA name="times" className={`${ppDate ? '' : 'hide'}`} onClick={() => setPpDate(null)} />
+                <DatePicker
+                  id={'pp-date'}
+                  selected={ppDate}
+                  onChange={setPpDate}
+                  dateFormat="MM/dd/yyyy"
+                  placeholderText="MM/DD/YYYY"
+                  ref={datePickerRef}
+                />
+              </div>
+            </div>
             <div className="pt-20">
               <div className="content-divider" />
               <div className="position-form--heading">
