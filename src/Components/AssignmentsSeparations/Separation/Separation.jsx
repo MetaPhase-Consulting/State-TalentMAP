@@ -67,7 +67,6 @@ const Separation = (props) => {
     /* eslint-disable quote-props */
     sections.subheading = [
       { 'Name': asgDetail?.name || NO_VALUE },
-      { 'SSN': asgDetail?.ssn || NO_VALUE },
     ];
     /* eslint-enable quote-props */
   }
