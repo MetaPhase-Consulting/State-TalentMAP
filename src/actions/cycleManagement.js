@@ -39,7 +39,7 @@ import api from '../api';
 import { toastError, toastSuccess } from './toast';
 
 
-// ================ Cycle Management GET cycles ================
+// ================ Cycle Management: Get Cycles ================
 
 let cancelCycleManagementFetch;
 
@@ -49,7 +49,6 @@ export function cycleManagementFetchDataErrored(bool) {
     hasErrored: bool,
   };
 }
-
 export function cycleManagementFetchDataLoading(bool) {
   return {
     type: 'CYCLE_MANAGEMENT_FETCH_IS_LOADING',
@@ -62,7 +61,6 @@ export function cycleManagementFetchDataSuccess(results) {
     results,
   };
 }
-
 export function cycleManagementFetchData() {
   return (dispatch) => {
     if (cancelCycleManagementFetch) {
@@ -95,7 +93,7 @@ export function cycleManagementFetchData() {
   };
 }
 
-// ================ Cycle Management Filters ================
+// ================ Cycle Management: User Filter Selections ================
 
 export function cycleManagementSelectionsSaveSuccess(result) {
   return {
@@ -103,13 +101,12 @@ export function cycleManagementSelectionsSaveSuccess(result) {
     result,
   };
 }
-
 export function saveCycleManagementSelections(queryObject) {
   return (dispatch) => dispatch(cycleManagementSelectionsSaveSuccess(queryObject));
 }
 
 
-// ================ Cycle Management CREATE cycle ================
+// ================ Cycle Management: Create Cycle ================
 
 let cancelCycleManagementCreate;
 
@@ -141,7 +138,7 @@ export function cycleManagementCreateCycle(data) {
 }
 
 
-// ================  Cycle Management GET single cycle  ================
+// ================ Cycle Management: Get Cycle ================
 
 let cancelCycleManagementGetCycle;
 
@@ -151,22 +148,18 @@ export function cycleManagementAssignmentCycleFetchDataErrored(bool) {
     hasErrored: bool,
   };
 }
-
 export function cycleManagementAssignmentCycleFetchDataLoading(bool) {
   return {
     type: 'CYCLE_MANAGEMENT_ASSIGNMENT_CYCLE_FETCH_IS_LOADING',
     isLoading: bool,
   };
 }
-
 export function cycleManagementAssignmentCycleFetchDataSuccess(results) {
   return {
     type: 'CYCLE_MANAGEMENT_ASSIGNMENT_CYCLE_FETCH_SUCCESS',
     results,
   };
 }
-
-
 export function cycleManagementAssignmentCycleFetchData(id) {
   return (dispatch) => {
     if (cancelCycleManagementGetCycle) {
@@ -199,7 +192,7 @@ export function cycleManagementAssignmentCycleFetchData(id) {
 }
 
 
-// ================  Cycle Management UPDATE cycle  ================
+// ================ Cycle Management: Update Cycle ================
 
 let cancelCycleManagementUpdate;
 
@@ -209,7 +202,6 @@ export function cycleManagementUpdateCycleSuccess(bool) {
     success: bool,
   };
 }
-
 export function cycleManagementUpdateCycle(data) {
   return (dispatch) => {
     if (cancelCycleManagementUpdate) {
@@ -238,7 +230,7 @@ export function cycleManagementUpdateCycle(data) {
 }
 
 
-// ================ Cycle Management Post Open Positions ================
+// ================ Cycle Management: Post Open Positions ================
 
 let cancelCycleManagementPostPositions;
 
@@ -274,7 +266,7 @@ export function cycleManagementPostOpenPositions(id) {
 }
 
 
-// ================ Cycle Management DELETE cycle ================
+// ================ Cycle Management: Delete Cycle ================
 
 let cancelCycleManagementDelete;
 
@@ -284,7 +276,6 @@ export function cycleManagementDeleteCycleSuccess(bool) {
     success: bool,
   };
 }
-
 export function cycleManagementDeleteCycle(data) {
   return (dispatch) => {
     if (cancelCycleManagementDelete) {
@@ -320,7 +311,7 @@ export function cycleManagementDeleteCycle(data) {
 }
 
 
-// ================ Cycle Management MERGE cycle ================
+// ================ Cycle Management: Merge Cycle ================
 
 let cancelCycleManagementMerge;
 
@@ -330,7 +321,6 @@ export function cycleManagementMergeCycleSuccess(bool) {
     success: bool,
   };
 }
-
 export function cycleManagementMergeCycle(data) {
   return (dispatch) => {
     if (cancelCycleManagementMerge) {
@@ -366,7 +356,9 @@ export function cycleManagementMergeCycle(data) {
 }
 
 
-// ================================================================== Cycle Classifications
+// ================ Cycle Classifications: Get Classifications ================
+
+let cancelCycleClassificationsFetch;
 
 export function cycleClassificationsIsLoading(bool) {
   return {
@@ -374,15 +366,12 @@ export function cycleClassificationsIsLoading(bool) {
     isLoading: bool,
   };
 }
-
 export function cycleClassificationsFetchDataSuccess(results) {
   return {
     type: 'CYCLE_CLASSIFICATIONS_FETCH_DATA_SUCCESS',
     results,
   };
 }
-
-let cancelCycleClassificationsFetch;
 export function cycleClassificationsFetchData() {
   return (dispatch) => {
     if (cancelCycleClassificationsFetch) {
@@ -413,6 +402,8 @@ export function cycleClassificationsFetchData() {
 }
 
 
+// ================ Cycle Classifications: Edit Classifications ================
+
 let cancelCycleClassificationsEdit;
 
 export function cycleClassificationsEditCycleSuccess(bool) {
@@ -421,7 +412,6 @@ export function cycleClassificationsEditCycleSuccess(bool) {
     success: bool,
   };
 }
-
 export function cycleClassificationsEditCycle(data) {
   return (dispatch) => {
     if (cancelCycleClassificationsEdit) {
@@ -454,9 +444,7 @@ export function cycleClassificationsEditCycle(data) {
 }
 
 
-// ================================================================== Cycle Positions
-
-// ================================================================== Cycle Positions Filters
+// ================ Cycle Positions: Filters ================
 
 let cancelCPfiltersData;
 
@@ -498,19 +486,21 @@ export function cyclePositionFiltersFetchData() {
   };
 }
 
+
+// ================ Cycle Positions: User Filter Selections ================
+
 export function cyclePositionSearchSelectionsSaveSuccess(result) {
   return {
     type: 'CYCLE_POSITIONS_SEARCH_SELECTIONS_SAVE_SUCCESS',
     result,
   };
 }
-
 export function saveCyclePositionSearchSelections(queryObject) {
   return (dispatch) => dispatch(cyclePositionSearchSelectionsSaveSuccess(queryObject));
 }
 
 
-// ================================================================== Cycle Positions GET Positions
+// ================ Cycle Positions: Get Positions ================
 
 let cancelCPfetch;
 
@@ -532,7 +522,6 @@ export function cyclePositionSearchFetchDataSuccess(results) {
     results,
   };
 }
-
 export function cyclePositionSearchFetchData(query = {}) {
   return (dispatch) => {
     if (cancelCPfetch) {
@@ -566,6 +555,10 @@ export function cyclePositionSearchFetchData(query = {}) {
 }
 
 
+// ================ Cycle Positions: Remove Position ================
+
+let cancelCPremove;
+
 export function cyclePositionRemoveHasErrored(bool) {
   return {
     type: 'CYCLE_POSITION_REMOVE_HAS_ERRORED',
@@ -584,12 +577,9 @@ export function cyclePositionRemoveSuccess(data) {
     data,
   };
 }
-
-let cancel;
-
 export function cyclePositionRemove(position) {
   return (dispatch) => {
-    if (cancel) { cancel('cancel'); }
+    if (cancelCPremove) { cancelCPremove('cancel'); }
     dispatch(cyclePositionRemoveIsLoading(true));
     dispatch(cyclePositionRemoveHasErrored(false));
     api()
@@ -597,7 +587,7 @@ export function cyclePositionRemove(position) {
         position,
       }, {
         cancelToken: new CancelToken((c) => {
-          cancel = c;
+          cancelCPremove = c;
         }),
       })
       .then(({ data }) => {
@@ -622,6 +612,11 @@ export function cyclePositionRemove(position) {
   };
 }
 
+
+// ================ Cycle Positions: Edit Position ================
+
+let cancelCPedit;
+
 export function cyclePositionEditHasErrored(bool) {
   return {
     type: 'CYCLE_POSITION_EDIT_HAS_ERRORED',
@@ -640,10 +635,9 @@ export function cyclePositionEditSuccess(data) {
     data,
   };
 }
-
 export function cyclePositionEdit(position, incumbent, status) {
   return (dispatch) => {
-    if (cancel) { cancel('cancel'); }
+    if (cancelCPedit) { cancelCPedit('cancel'); }
     dispatch(cyclePositionEditIsLoading(true));
     dispatch(cyclePositionEditHasErrored(false));
     api()
@@ -653,7 +647,7 @@ export function cyclePositionEdit(position, incumbent, status) {
         status,
       }, {
         cancelToken: new CancelToken((c) => {
-          cancel = c;
+          cancelCPedit = c;
         }),
       })
       .then(({ data }) => {
