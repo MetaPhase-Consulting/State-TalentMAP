@@ -1,5 +1,4 @@
-
-// ================ Cycle Management GET ================
+// ================ Cycle Management: Get Cycles ================
 
 export function cycleManagementFetchDataErrored(state = false, action) {
   switch (action.type) {
@@ -26,6 +25,9 @@ export function cycleManagement(state = [], action) {
   }
 }
 
+
+// ================ Cycle Management: User Filter Selections ================
+
 export function cycleManagementSelections(state = {}, action) {
   switch (action.type) {
     case 'CYCLE_MANAGEMENT_SELECTIONS_SAVE_SUCCESS':
@@ -36,7 +38,7 @@ export function cycleManagementSelections(state = {}, action) {
 }
 
 
-// ================  Cycle Management GET single cycle  ================
+// ================ Cycle Management: Get Cycle ================
 
 export function cycleManagementAssignmentCycleFetchDataErrored(state = false, action) {
   switch (action.type) {
@@ -64,7 +66,7 @@ export function cycleManagementAssignmentCycle(state = {}, action) {
 }
 
 
-// ================  Cycle Management UPDATE cycle  ================
+// ================ Cycle Management: Update Cycle ================
 
 export function cycleManagementAssignmentCycleUpdateSuccess(state = false, action) {
   switch (action.type) {
@@ -76,7 +78,7 @@ export function cycleManagementAssignmentCycleUpdateSuccess(state = false, actio
 }
 
 
-// ================  Cycle Management DELETE cycle  ================
+// ================ Cycle Management: Delete Cycle ================
 
 export function cycleManagementDelete(state = false, action) {
   switch (action.type) {
@@ -88,7 +90,7 @@ export function cycleManagementDelete(state = false, action) {
 }
 
 
-// ================  Cycle Management MERGE cycle  ================
+// ================ Cycle Management: Merge Cycle ================
 
 export function cycleManagementMerge(state = false, action) {
   switch (action.type) {
@@ -99,7 +101,7 @@ export function cycleManagementMerge(state = false, action) {
   }
 }
 
-// ================ Cycle Classifications  ================
+// ================ Cycle Classifications: Get Classifications ================
 
 export function cycleClassificationsIsLoading(state = false, action) {
   switch (action.type) {
@@ -118,6 +120,9 @@ export function cycleClassificationsData(state = [], action) {
   }
 }
 
+
+// ================ Cycle Classifications: Edit Classifications ================
+
 export function cycleClassificationsEditSuccess(state = false, action) {
   switch (action.type) {
     case 'CYCLE_CLASSIFICATIONS_EDIT_SUCCESS':
@@ -128,10 +133,7 @@ export function cycleClassificationsEditSuccess(state = false, action) {
 }
 
 
-// ================ Cycle Positions  ================
-
-
-// ================ Cycle Positions Filters  ================
+// ================ Cycle Positions: Filters ================
 
 export function cyclePositionFiltersIsLoading(state = false, action) {
   switch (action.type) {
@@ -150,6 +152,9 @@ export function cyclePositionsFilters(state = {}, action) {
   }
 }
 
+
+// ================ Cycle Positions: User Filter Selections ================
+
 export function cyclePositionSearchSelections(state = {}, action) {
   switch (action.type) {
     case 'CYCLE_POSITIONS_SEARCH_SELECTIONS_SAVE_SUCCESS':
@@ -160,8 +165,7 @@ export function cyclePositionSearchSelections(state = {}, action) {
 }
 
 
-// ================ Cycle Positions  ================
-
+// ================ Cycle Positions: Get Positions ================
 
 export function cyclePositionSearchFetchDataErrored(state = false, action) {
   switch (action.type) {
@@ -189,6 +193,8 @@ export function cyclePositionSearch(state = [], action) {
 }
 
 
+// ================ Cycle Positions: Remove Position ================
+
 export function cyclePositionRemoveHasErrored(state = false, action) {
   switch (action.type) {
     case 'CYCLE_POSITION_REMOVE_HAS_ERRORED':
@@ -213,6 +219,9 @@ export function cyclePositionRemoveSuccess(state = [], action) {
       return state;
   }
 }
+
+
+// ================ Cycle Positions: Edit Position ================
 
 export function cyclePositionEditHasErrored(state = false, action) {
   switch (action.type) {
