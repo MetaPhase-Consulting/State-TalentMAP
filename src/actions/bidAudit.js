@@ -17,112 +17,124 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 
-// All of these Actions and Reducers will likely change during Integration
-const dummyData = [
-  {
-    atGrades: [
-      {
-        header: 'Position',
-        subHeader1: 'Grade',
-        subHeader2: 'Skill Code',
-        subHeader3: 'Description',
-        row1data: '04',
-        row2data: '2333',
-        row3data: 'INFORMATION MANAGEMENT',
-      },
-      {
-        header: 'Employee',
-        subHeader1: 'Grade',
-        subHeader2: 'Skill Code',
-        subHeader3: 'Description',
-        row1data: '04',
-        row2data: '2333',
-        row3data: 'INFORMATION MANAGEMENT',
-      },
-      {
-        header: 'Tenure',
-        subHeader1: 'Code',
-        subHeader2: 'Description',
-        row1data: '04',
-        row2data: 'WW FS CAR-FA',
-      },
-    ],
-  },
-  {
-    inCategories: [
-      {
-        header: 'Position',
-        subHeader1: 'Grade',
-        subHeader2: 'Skill Code',
-        subHeader3: 'Description',
-        row1data: '04',
-        row2data: '2333',
-        row3data: 'INFORMATION MANAGEMENT',
-      },
-      {
-        header: 'Employee',
-        subHeader1: 'Grade',
-        subHeader2: 'Skill Code',
-        subHeader3: 'Description',
-        row1data: '04',
-        row2data: '2333',
-        row3data: 'INFORMATION MANAGEMENT',
-      },
-    ],
-  },
-  {
-    bidAudit: [
-      {
-        cycle_name: 'Fall Cycle 2023',
-        descriptionTitle: 'INFORMATION MANAGEMENT',
-        code: 2003,
-        id: 96,
-        cycle_status: 'Proposed',
-        cycle_category: 'Active',
-        bid_audit_date_posted: '2023-09-01T21:12:12.854000Z',
-        bid_audit_date: '2025-03-01T21:12:12.854000Z',
-        cycle_excl_position: 'Y',
-        cycle_post_view: 'Y',
-        description: 'Test Fall Cycle 2023',
-      },
-      {
-        cycle_name: 'Summer Cycle 2023',
-        descriptionTitle: 'INFORMATION MANAGEMENT',
-        id: 97,
-        cycle_status: 'Complete',
-        cycle_category: 'Active',
-        bid_audit_date_posted: '2025-06-01T21:12:12.854000Z',
-        bid_audit_date: '2025-03-01T21:12:12.854000Z',
-        cycle_excl_position: 'Y',
-        cycle_post_view: 'Y',
-        description: 'Test Summer Cycle 2023',
-      },
-      {
-        cycle_name: 'Spring Cycle 2023',
-        descriptionTitle: 'INFORMATION MANAGEMENT',
-        id: 98,
-        cycle_status: 'Closed',
-        cycle_category: 'Closed',
-        bid_audit_date_posted: '2025-03-01T21:12:12.854000Z',
-        bid_audit_date: '2025-03-01T21:12:12.854000Z',
-        cycle_excl_position: 'Y',
-        cycle_post_view: 'Y',
-        description: 'Test Spring Cycle 2023',
-      },
-      {
-        cycle_name: 'Winter Cycle 2023',
-        id: 99,
-        cycle_status: 'Merged',
-        cycle_category: 'Active',
-        bid_audit_date_posted: '2022-12-01T21:12:12.854000Z',
-        bid_audit_date: '2025-03-01T21:12:12.854000Z',
-        cycle_excl_position: 'Y',
-        cycle_post_view: 'Y',
-        description: 'Test Winter Cycle 2023',
-      },
-    ],
-  },
-];
+
+// ================ Bid Audit: Get List ================
+
+let cancelBidAuditFetch;
+
+export function bidAuditFetchDataErrored(bool) {
+  return {
+    type: 'BID_AUDIT_FETCH_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function bidAuditFetchDataLoading(bool) {
+  return {
+    type: 'BID_AUDIT_FETCH_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function bidAuditFetchDataSuccess(results) {
+  return {
+    type: 'BID_AUDIT_FETCH_SUCCESS',
+    results,
+  };
+}
+export function bidAuditFetchData() {
+  return (dispatch) => {
+    if (cancelBidAuditFetch) {
+      cancelBidAuditFetch('cancel');
+    }
+    batch(() => {
+      dispatch(bidAuditFetchDataLoading(true));
+      dispatch(bidAuditFetchDataErrored(false));
+    });
+    api().get('/fsbid/bid_audit/', {
+      cancelToken: new CancelToken((c) => { cancelBidAuditFetch = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidAuditFetchDataSuccess(data));
+          dispatch(bidAuditFetchDataErrored(false));
+          dispatch(bidAuditFetchDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(bidAuditFetchDataSuccess([]));
+            dispatch(bidAuditFetchDataErrored(true));
+            dispatch(bidAuditFetchDataLoading(false));
+          });
+        }
+      });
+  };
+}
+
+
+// ================ Bid Audit: Get In Category/At Grade ================
+
+let cancelBidAuditSecondFetch;
+
+export function bidAuditSecondFetchDataErrored(bool) {
+  return {
+    type: 'BID_AUDIT_SECOND_FETCH_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function bidAuditSecondFetchDataLoading(bool) {
+  return {
+    type: 'BID_AUDIT_SECOND_FETCH_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function bidAuditSecondFetchDataSuccess(results) {
+  return {
+    type: 'BID_AUDIT_SECOND_FETCH_SUCCESS',
+    results,
+  };
+}
+export function bidAuditSecondFetchData(cycleId, auditId, type) {
+  return (dispatch) => {
+    if (cancelBidAuditSecondFetch) {
+      cancelBidAuditSecondFetch('cancel');
+    }
+    batch(() => {
+      dispatch(bidAuditSecondFetchDataLoading(true));
+      dispatch(bidAuditSecondFetchDataErrored(false));
+    });
+    api()
+      .post(`/fsbid/bid_audit/${type}/`, {
+        cycleId, auditId,
+      }, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditSecondFetch = c; }),
+      })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidAuditSecondFetchDataSuccess(data));
+          dispatch(bidAuditSecondFetchDataErrored(false));
+          dispatch(bidAuditSecondFetchDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(bidAuditSecondFetchDataSuccess([]));
+            dispatch(bidAuditSecondFetchDataErrored(true));
+            dispatch(bidAuditSecondFetchDataLoading(false));
+          });
+        }
+      });
+  };
+}
+
+
+// ----------------------------------------------------------------------
+// ================ FUNCTIONS BELOW ARE CURRENTLY UNUSED ================
+// ----------------------------------------------------------------------
+
+
+// ================ Bid Audit: Get Audit ================
 
 export function bidAuditErrored(bool) {
   return {
@@ -136,6 +148,15 @@ export function bidAuditLoading(bool) {
     isLoading: bool,
   };
 }
+export function bidAuditSuccess(results) {
+  return {
+    type: 'BID_AUDIT_SUCCESS',
+    results,
+  };
+}
+
+
+// ================ Bid Audit: Delete ================
 
 export function bidAuditDeleteLoading(bool) {
   return {
@@ -144,12 +165,8 @@ export function bidAuditDeleteLoading(bool) {
   };
 }
 
-export function bidAuditSuccess(results) {
-  return {
-    type: 'BID_AUDIT_SUCCESS',
-    results,
-  };
-}
+
+// ================ TBD? ================
 
 export function savebidAuditSelections(data) {
   return (dispatch) => {
@@ -175,20 +192,20 @@ export function savebidAuditSelections(data) {
   };
 }
 
+// ================ Bid Audit: Delete ================
+
 export function bidAuditDeleteDataErrored(bool) {
   return {
     type: 'BID_AUDIT_FETCH_HAS_ERRORED',
     hasErrored: bool,
   };
 }
-
 export function bidAuditDeleteDataSuccess(results) {
   return {
     type: 'BID_AUDIT_DELETE_SUCCESS',
     results,
   };
 }
-
 export function deleteBidAudit(id) {
   return (dispatch) => {
     dispatch(bidAuditDeleteLoading(true));
@@ -213,37 +230,8 @@ export function deleteBidAudit(id) {
   };
 }
 
-export function bidAuditFetchDataErrored(bool) {
-  return {
-    type: 'BID_AUDIT_FETCH_HAS_ERRORED',
-    hasErrored: bool,
-  };
-}
 
-export function bidAuditFetchDataLoading(bool) {
-  return {
-    type: 'BID_AUDIT_FETCH_IS_LOADING',
-    isLoading: bool,
-  };
-}
-
-export function bidAuditFetchDataSuccess(results) {
-  return {
-    type: 'BID_AUDIT_FETCH_SUCCESS',
-    results,
-  };
-}
-
-export function bidAuditFetchData() {
-  return (dispatch) => {
-    batch(() => {
-      dispatch(bidAuditFetchDataSuccess(dummyData));
-      dispatch(bidAuditFetchDataErrored(false));
-      dispatch(bidAuditFetchDataLoading(false));
-    });
-  };
-}
-
+// ================ Bid Audit: User Filter Selections ================
 
 export function bidAuditSelectionsSaveSuccess(result) {
   return {
@@ -255,6 +243,8 @@ export function saveBidAuditSelections(queryObject) {
   return (dispatch) => dispatch(bidAuditSelectionsSaveSuccess(queryObject));
 }
 
+
+// ================ Bid Audit: Filters ================
 
 export function bidAuditFiltersFetchDataErrored(bool) {
   return {
@@ -283,7 +273,8 @@ export function bidAuditFiltersFetchData() {
   };
 }
 
-// ================ Update Bid Counts  ================
+
+// ================ Bid Audit: Update Bid Counts ================
 
 let cancelUpdateBidCounts;
 
