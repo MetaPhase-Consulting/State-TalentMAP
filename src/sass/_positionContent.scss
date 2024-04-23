@@ -346,6 +346,14 @@
       input {
         width: $select-width;
       }
+
+      .react-datepicker {
+
+        select,
+        input {
+          width: auto;
+        }
+      }
     }
   }
 

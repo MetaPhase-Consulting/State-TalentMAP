@@ -8,6 +8,9 @@ import {
   assignment,
   assignmentHasErrored,
   assignmentIsLoading,
+  separationDetail,
+  separationDetailErrored,
+  separationDetailLoading,
 } from './assignment';
 
 export default {
@@ -20,4 +23,7 @@ export default {
   assignmentHasErrored,
   assignmentIsLoading,
   assignment,
+  separationDetail,
+  separationDetailErrored,
+  separationDetailLoading,
 };
