@@ -1,0 +1,119 @@
+// ============= Assignment Maintenance =============
+
+.assignments-maintenance-page {
+  .asg-title {
+    font-size: 17px;
+  }
+
+  .asg-title-dash {
+    padding-left: 5px;
+  }
+
+  .create-new-button {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 17px;
+
+    .fa {
+      margin-right: 5px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+
+  .asg-lower-section {
+    padding: 0 35px 20px 0;
+  }
+
+  .asg-content {
+    margin-left: 35px;
+
+    .asg-header {
+      font-size: 22px;
+      margin-top: 25px;
+      margin-right: 35px;
+
+      .fa-lg {
+        font-size: 22px;
+        padding-right: 5px;
+      }
+    }
+
+    .asg-subheader {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.gsa-location-input {
+  position: relative;
+
+  .remove-location,
+  .search-location {
+    position: absolute;
+    top: 62px;
+  }
+
+  .remove-location {
+    left: 250px;
+    color: $alert-red;
+  }
+
+  .search-location {
+    left: 272px;
+    color: $primary-blue;
+  }
+
+  .fa {
+    font-size: 20px;
+  }
+}
+
+.position-number-container {
+  position: relative;
+
+  .input-default {
+    background-color: $color-white;
+    border: 1px solid $bg-gray-dark-2;
+  }
+
+  .input-error {
+    background-color: $color-red-lightest;
+    border: 1px solid $color-red;
+  }
+
+  .add-pos-num-icon {
+    color: $primary-blue;
+    margin-left: -25px;
+    position: absolute;
+    top: 66px;
+    left: 300px;
+  }
+
+  .add-pos-num-icon:hover {
+    color: $primary-blue-darkest;
+  }
+
+  .fa {
+    padding-left: 0px;
+  }
+}
+
+.results-mode {
+  display: flex;
+  flex-direction: row;
+
+  .interactive-element {
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 10px;
+
+    &.active {
+      border-bottom: 3px solid $blue-primary;
+    }
+  }
+}

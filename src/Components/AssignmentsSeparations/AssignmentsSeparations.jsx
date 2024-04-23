@@ -5,23 +5,25 @@ import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import { useDataLoader } from 'hooks';
 import PropTypes from 'prop-types';
-// import InteractiveElement from 'Components/InteractiveElement';
+import { altAssignmentFetchData } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import { altAssignmentFetchData } from 'actions/assignment';
-import AssignmentCard from './AssignmentCard';
-import AssignmentModal from './AssignmentModal';
-// import { formatDate } from 'utilities';
+import TabbedCard from 'Components/TabbedCard';
+import Assignment from './Assignment';
+import Separation from './Separation';
+import ReactModal from '../ReactModal';
+import InteractiveElement from '../InteractiveElement';
 import api from '../../api';
-// import NotificationCard from './NotificationCard/NotificationCard';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
 
-const Assignments = (props) => {
+const AssignmentsSeparations = (props) => {
   const assignments = useSelector(state => state.altAssignment);
   const assignmentsErrored = useSelector(state => state.altAssignmentHasErrored);
   const assignmentsLoading = useSelector(state => state.altAssignmentIsLoading);
+
+  const [assignmentToggle, setAssignmentToggle] = useState(true);
 
   // default || memo || notification
   // eslint-disable-next-line no-unused-vars
@@ -88,7 +90,7 @@ const Assignments = (props) => {
         }
         <div className="asg-header">
           <FA name="clipboard" className="fa-lg" />
-          Assignments
+          Assignments and Separations
           <span className="asg-title-dash">
             {'- '}
             <Link to={`/profile/public/${id}/ao`}>
@@ -99,7 +101,8 @@ const Assignments = (props) => {
           </span>
         </div>
         <div className="pt-20 asg-subheader">
-          Review the current assignments or add assignments for {employeeName}
+          Review the current assignments/separations or
+          add assignments/separations for {employeeName}
           <div>
             <div className="create-new-button">
               <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
@@ -126,22 +129,77 @@ const Assignments = (props) => {
           </div>
         </div>
         <div className="asg-lower-section">
-          {assignments?.map(data => (
-            <AssignmentCard setNewAsgSep={setCardMode} perdet={id} data={data} />
+          <div className="results-mode">
+            <InteractiveElement
+              className={assignmentToggle ? 'active' : ''}
+              onClick={() => setAssignmentToggle(true)}
+            >
+              Assignments
+            </InteractiveElement>
+            <InteractiveElement
+              className={!assignmentToggle ? 'active' : ''}
+              onClick={() => setAssignmentToggle(false)}
+            >
+              Separations
+            </InteractiveElement>
+          </div>
+          {assignmentToggle && assignments?.map(data => (
+            <TabbedCard
+              tabs={[{
+                text: 'Assignment Overview',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                />,
+              }]}
+            />
           ))}
-          <AssignmentModal
-            setCardMode={setCardMode}
-            perdet={id}
-            isOpen={openModal}
-            toggleModal={setOpenModal}
-          />
+          {!assignmentToggle && assignments?.map(data => (
+            <TabbedCard
+              tabs={[{
+                text: 'Separation Overview',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                />,
+              }]}
+            />
+          ))}
+          <ReactModal isOpen={openModal}>
+            <TabbedCard
+              className="modal-child"
+              tabs={[{
+                text: 'New Assignment',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={() => setCardMode('default')}
+                  toggleModal={setOpenModal}
+                  isNew
+                />,
+              }, {
+                text: 'New Separation',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={() => setCardMode('default')}
+                  toggleModal={setOpenModal}
+                  isNew
+                />,
+              }]}
+            />
+          </ReactModal>
         </div>
       </div>
     </div>
   );
 };
 
-Assignments.propTypes = {
+AssignmentsSeparations.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -149,8 +207,8 @@ Assignments.propTypes = {
   }),
 };
 
-Assignments.defaultProps = {
+AssignmentsSeparations.defaultProps = {
   match: {},
 };
 
-export default Assignments;
+export default AssignmentsSeparations;
