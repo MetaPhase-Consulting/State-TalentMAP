@@ -132,7 +132,7 @@ $date-picker-width: 300px;
   }
 }
 
-.tm-datepicker-wrapper {
+.tm-datepicker-wrapper-1 {
   width: 100%;
 
   .tm-datepicker::placeholder {
@@ -169,5 +169,123 @@ $date-picker-width: 300px;
 .form-date-picker {
   .react-datepicker-wrapper {
     width: 300px;
+  }
+}
+
+.tm-datepicker {
+  width: 100%;
+  padding-left: 10px;
+
+  .fa-calendar-o,
+  .fa-calendar {
+    color: $blue-primary;
+    font-size: 20px;
+    left: 6px;
+    position: relative;
+    top: 0;
+    z-index: 9;
+  }
+
+  .fa-calendar-o:before,
+  .fa-calendar:before {
+    content: "\f133" !important;
+  }
+
+  .react-datepicker-popper {
+    z-index: 2;
+  }
+
+  .tm-date-picker-range {
+    font-size: 13px;
+    height: 28px;
+    border: 1px solid $bg-gray-dark-2;
+  }
+
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container {
+    margin-inline-start: -14px;
+    width: $date-picker-width !important;
+
+    >* {
+      cursor: pointer !important;
+    }
+
+    input {
+      padding-inline-start: 50px;
+    }
+  }
+
+  // Date Input
+  .react-datepicker-wrapper {
+    input::placeholder {
+      color: $bg-gray-dark-2;
+    }
+
+    // Date Input: Clear Button
+    .react-datepicker__close-icon {
+      padding: 0px;
+      margin: 0px 5px 0px 0px;
+
+      &::after {
+        font-size: 20px;
+        color: $alert-red;
+        line-height: unset;
+        background-color: transparent;
+      }
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  // Date Popper
+  .react-datepicker-popper {
+    z-index: 10;
+
+    .react-datepicker {
+      font-size: 14px;
+    }
+
+    // Date Popper: Left and Right Arrows
+    .react-datepicker__navigation {
+      border: none;
+      top: .5em;
+      border: 0.45em solid transparent;
+
+      .react-datepicker__navigation--previous {
+        left: 10px;
+      }
+
+      .react-datepicker__navigation--next {
+        right: 10px;
+      }
+
+      .react-datepicker__navigation-icon::before {
+        border-color: $primary-blue;
+      }
+    }
+
+    // Date Popper: Month and Year Dropdowns
+    .react-datepicker__header {
+      padding-top: 1.8em;
+
+      .react-datepicker__current-month {
+        font-size: 14px;
+      }
+    }
+
+    // Date Popper: Calendar Select
+    .react-datepicker__month {
+      margin: 0.4em 1em;
+
+      .react-datepicker__day-name,
+      .react-datepicker__day {
+        width: 1.9em;
+        line-height: 1.9em;
+        margin: 0.166em;
+      }
+    }
+
   }
 }

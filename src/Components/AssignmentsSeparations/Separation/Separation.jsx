@@ -214,6 +214,18 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
+              showIcon
+              type="form"
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="separation-date">Separation Date</label>
+            <TMDatePicker
+              selected={separationDate}
+              onChange={setSeparationDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
               type="form"
             />
           </div>
@@ -235,7 +247,8 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
-              type="form"
+              // showIcon
+              type="filter"
             />
           </div>
           <div className="position-form--label-input-container gsa-location-input">
