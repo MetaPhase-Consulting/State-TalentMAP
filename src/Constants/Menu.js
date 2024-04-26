@@ -374,6 +374,26 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         } : null,
     ],
   },
+  checkFlag('flags.panel_admin') ?
+    {
+      text: 'Panel Administrator',
+      icon: 'sitemap',
+      toggleMenuSection: true,
+      expandedSection: true,
+      roles: [
+        'panel_admin',
+      ],
+      children: [
+        {
+          text: 'Panel',
+          route: '/profile/panel_admin/',
+          icon: 'calendar',
+          roles: [
+            'panel_admin',
+          ],
+        },
+      ],
+    } : null,
   {
     text: 'AO',
     icon: 'building-o',
