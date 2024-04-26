@@ -6,7 +6,6 @@ import FA from 'react-fontawesome';
 const TMDatePicker = ({
   selected,
   onChange,
-  type,
   value,
   selectsRange,
   showTimeSelect,
@@ -16,25 +15,29 @@ const TMDatePicker = ({
   showIcon,
   isClearable,
   excludeDates,
+  useStandardInputWidth,
+  condensed,
 }) => {
-  const typeClasses = {
-    filter: {
-      wrapper: '',
-      datePicker: 'tm-date-picker-range',
-    },
-    form: {
-      wrapper: `form-date-picker ${showIcon ? '' : ''}`,
-      datePicker: '',
-    },
-  };
-
   const datePickerRef = useRef(null);
   const openDatePicker = () => {
     datePickerRef.current.setOpen(true);
   };
 
+  let wrapperClasses = 'tm-datepicker';
+
+  if (showIcon) {
+    wrapperClasses = wrapperClasses.concat(' show-icon');
+  }
+  if (useStandardInputWidth) {
+    wrapperClasses = wrapperClasses.concat(' standard-input-width');
+  }
+  if (condensed) {
+    wrapperClasses = wrapperClasses.concat(' condensed');
+  }
+
+
   return (
-    <div className={`tm-datepicker ${typeClasses[type]?.wrapper}`}>
+    <div className={wrapperClasses}>
       {showIcon &&
         <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
       }
@@ -49,7 +52,6 @@ const TMDatePicker = ({
         endDate={selectsRange ? value[1] : null}
         isClearable={isClearable}
         dropdownMode="select"
-        className={typeClasses[type]?.datePicker}
         placeholderText={placeholderText}
         excludeDates={excludeDates}
         ref={datePickerRef}
@@ -63,13 +65,14 @@ export default TMDatePicker;
 TMDatePicker.propTypes = {
   value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   onChange: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
   selected: PropTypes.instanceOf(Date),
   showMonthDropdown: PropTypes.bool,
   showYearDropdown: PropTypes.bool,
   placeholderText: PropTypes.string,
   selectsRange: PropTypes.bool,
   showIcon: PropTypes.bool,
+  useStandardInputWidth: PropTypes.bool,
+  condensed: PropTypes.bool,
   isClearable: PropTypes.bool,
   showTimeSelect: PropTypes.bool,
   excludeDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -83,6 +86,8 @@ TMDatePicker.defaultProps = {
   placeholderText: 'Select Date',
   selectsRange: false,
   showIcon: false,
+  useStandardInputWidth: false,
+  condensed: false,
   isClearable: false,
   showTimeSelect: false,
   excludeDates: [],
