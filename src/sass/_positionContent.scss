@@ -333,18 +333,16 @@
     }
   }
 
-  $select-width: 300px;
-
   .position-form--inputs {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax($select-width + 50, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax($standard-input-width + 50, 1fr));
 
     .position-form--label-input-container {
       align-self: end;
 
       select,
       input {
-        width: $select-width;
+        width: $standard-input-width;
       }
 
       .react-datepicker {
@@ -362,7 +360,7 @@
 
     select,
     input {
-      width: $select-width;
+      width: $standard-input-width;
     }
   }
 
