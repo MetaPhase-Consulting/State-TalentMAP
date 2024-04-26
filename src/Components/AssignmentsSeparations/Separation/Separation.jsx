@@ -218,17 +218,6 @@ const Separation = (props) => {
               type="form"
             />
           </div>
-          <div className="position-form--label-input-container">
-            <label htmlFor="separation-date">Separation Date</label>
-            <TMDatePicker
-              selected={separationDate}
-              onChange={setSeparationDate}
-              showMonthDropdown
-              showYearDropdown
-              isClearable
-              type="form"
-            />
-          </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
               id={`training-${data.id ?? 'create'}`}
@@ -247,8 +236,8 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
-              // showIcon
-              type="filter"
+              showIcon
+              type="form"
             />
           </div>
           <div className="position-form--label-input-container gsa-location-input">
@@ -274,6 +263,52 @@ const Separation = (props) => {
             >
               <FA name="globe" />
             </InteractiveElement>
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="separation-date">Form Datepicker</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              showIcon
+              useStandardInputWidth
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="separation-date">Form Datepicker No Icon</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              useStandardInputWidth
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="panel-meeting-date">Filter Datepicker</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              showIcon
+              condensed
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="panel-meeting-date">Filter Datepicker No Icon</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              condensed
+            />
           </div>
         </div>
         {showLocationSearch &&
