@@ -241,11 +241,11 @@ const PanelMeetingSearch = ({ isCDO }) => {
               <TMDatePicker
                 value={selectedPanelMeetDate}
                 onChange={setSelectedPanelMeetDate}
-                type="filter"
                 showMonthDropdown
                 showYearDropdown
                 selectsRange
                 isClearable
+                condensed
               />
             </div>
           </div>

@@ -146,10 +146,10 @@ const ManageBidSeasons = () => {
             <TMDatePicker
               onChange={setSelectedDate}
               selected={selectedDate}
-              type="filter"
               showMonthDropdown
               showYearDropdown
               isClearable
+              condensed
             />
           </div>
         </div>
