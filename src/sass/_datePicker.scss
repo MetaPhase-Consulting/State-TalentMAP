@@ -43,8 +43,6 @@
 
 }
 
-$date-picker-width: 300px;
-
 .date-wrapper-react {
   padding-left: 10px;
 
@@ -67,7 +65,7 @@ $date-picker-width: 300px;
   .fa-times-circle {
     color: $color-red;
     font-size: 20px;
-    left: $date-picker-width - 50;
+    left: $standard-input-width - 50;
     position: relative;
     top: 0;
     z-index: 9;
@@ -81,7 +79,7 @@ $date-picker-width: 300px;
   .react-datepicker-wrapper,
   .react-datepicker__input-container {
     margin-inline-start: -22px;
-    width: $date-picker-width !important;
+    width: $standard-input-width !important;
 
     >* {
       cursor: pointer !important;
@@ -166,75 +164,50 @@ $date-picker-width: 300px;
   }
 }
 
-.form-date-picker {
-  .react-datepicker-wrapper {
-    width: 300px;
-  }
-}
-
 .tm-datepicker {
   width: 100%;
-  padding-left: 10px;
 
-  .fa-calendar-o,
+  // Date Icons: Calendar
   .fa-calendar {
     color: $blue-primary;
     font-size: 20px;
-    left: 6px;
+    left: 13px;
     position: relative;
-    top: 0;
+    top: 0px;
     z-index: 9;
+    cursor: pointer !important;
+
+    &:before {
+      content: "\f133" !important;
+    }
   }
 
-  .fa-calendar-o:before,
-  .fa-calendar:before {
-    content: "\f133" !important;
-  }
+  // Date Icons: Clear Button
+  .react-datepicker__close-icon {
+    padding: 0px;
+    margin: 0px 10px 0px 0px;
 
-  .react-datepicker-popper {
-    z-index: 2;
-  }
-
-  .tm-date-picker-range {
-    font-size: 13px;
-    height: 28px;
-    border: 1px solid $bg-gray-dark-2;
-  }
-
-  .react-datepicker-wrapper,
-  .react-datepicker__input-container {
-    margin-inline-start: -14px;
-    width: $date-picker-width !important;
-
-    >* {
-      cursor: pointer !important;
+    &::after {
+      font-size: 20px;
+      color: $alert-red;
+      line-height: unset;
+      background-color: transparent;
     }
 
-    input {
-      padding-inline-start: 50px;
+    &:hover {
+      background-color: transparent;
     }
   }
 
   // Date Input
   .react-datepicker-wrapper {
-    input::placeholder {
-      color: $bg-gray-dark-2;
-    }
+    width: $standard-input-width !important;
 
-    // Date Input: Clear Button
-    .react-datepicker__close-icon {
-      padding: 0px;
-      margin: 0px 5px 0px 0px;
+    input {
+      cursor: pointer !important;
 
-      &::after {
-        font-size: 20px;
-        color: $alert-red;
-        line-height: unset;
-        background-color: transparent;
-      }
-
-      &:hover {
-        background-color: transparent;
+      &::placeholder {
+        color: $bg-gray-dark-2;
       }
     }
   }
@@ -287,5 +260,45 @@ $date-picker-width: 300px;
       }
     }
 
+  }
+
+  // Use Calendar Icon
+  &.show-icon {
+    input {
+      padding-inline-start: 42px;
+    }
+
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container {
+      margin-inline-start: -9px;
+    }
+  }
+
+  // Use Condensed Styling (Typical for Filters)
+  &.condensed {
+    &.show-icon {
+      .fa-calendar {
+        font-size: 15px;
+        left: 12px;
+      }
+
+      .react-datepicker__input-container {
+        margin-inline-start: -5px;
+
+        input {
+          padding-inline-start: 36px;
+        }
+      }
+    }
+
+    .react-datepicker__input-container {
+      margin-top: 3px;
+
+      input {
+        font-size: 13px;
+        height: 28px;
+        border: 1px solid $bg-gray-dark-2;
+      }
+    }
   }
 }
