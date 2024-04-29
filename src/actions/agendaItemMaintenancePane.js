@@ -13,6 +13,7 @@ import api from '../api';
 
 let cancelFetchAI;
 let cancelModifyAI;
+let cancelRemoveAI;
 let cancelValidateAI;
 
 export function aiModifyHasErrored(bool) {
@@ -172,6 +173,7 @@ export function aiRemoveSuccess(data) {
 
 export function removeAgenda(id) {
   return (dispatch) => {
+    if (cancelRemoveAI) { cancelRemoveAI('cancel'); }
     batch(() => {
       dispatch(aiRemoveIsLoading(true));
       dispatch(aiRemoveHasErrored(false));
