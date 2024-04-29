@@ -247,13 +247,6 @@ const AgendaItemMaintenancePane = (props) => {
     readMode,
   ]);
 
-  const deleteButton = {
-    classNames: 'delete-btn min-width-155',
-    clickFunction: deleteAI,
-    text: 'Delete Agenda Item',
-    children: '',
-  };
-
   const addAsgSepBid = (k) => {
     setAsgSepBidSelectClass('asg-animation');
     setAsgSepBid(k);
@@ -378,12 +371,10 @@ const AgendaItemMaintenancePane = (props) => {
           <div className="back-save-btns-container">
             <BackButton />
             <button
-              className={deleteButton?.classNames}
-              onClick={deleteButton.clickFunction}
-              disabled={deleteButton?.disabled}
+              className="delete-btn min-width-155"
+              onClick={deleteAI}
             >
-              {deleteButton?.children}
-              {deleteButton?.text}
+              Delete Agenda Item
             </button>
             <button
               className={validationButton?.classNames}
