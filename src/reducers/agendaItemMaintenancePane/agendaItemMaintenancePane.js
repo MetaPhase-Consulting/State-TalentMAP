@@ -72,3 +72,23 @@ export function aiValidation(state = {}, action) {
   }
 }
 
+export function aiRemoveHasErrored(bool) {
+  return {
+    type: 'AI_REMOVE_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+
+export function aiRemoveIsLoading(bool) {
+  return {
+    type: 'AI_REMOVE_IS_LOADING',
+    isLoading: bool,
+  };
+}
+
+export function aiRemoveSuccess(data) {
+  return {
+    type: 'AI_REMOVE_SUCCESS',
+    data,
+  };
+}

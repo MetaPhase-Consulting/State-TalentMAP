@@ -152,7 +152,13 @@ const AgendaItemMaintenanceContainer = (props) => {
   };
 
   const deleteAI = () => {
-    // Delete AI
+    const personId = employeeData$?.id || routeEmployeeID;
+    const efInfo = {
+      assignmentId: get(efPosition, 'asg_seq_num'),
+      assignmentVersion: get(efPosition, 'revision_num'),
+    };
+    console.log('Person ID:', personId);
+    console.log('EF Info:', efInfo);
   };
 
   const updateFormMode = () => {

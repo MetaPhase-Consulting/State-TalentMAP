@@ -1,7 +1,10 @@
 import { get } from 'lodash';
 import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
-import { UPDATE_AGENDA_ITEM_ERROR,
+import { DELETE_AGENDA_ITEM_ERROR,
+  DELETE_AGENDA_ITEM_ERROR_TITLE, DELETE_AGENDA_ITEM_SUCCESS,
+  DELETE_AGENDA_ITEM_SUCCESS_TITLE,
+  UPDATE_AGENDA_ITEM_ERROR,
   UPDATE_AGENDA_ITEM_ERROR_TITLE, UPDATE_AGENDA_ITEM_SUCCESS,
   UPDATE_AGENDA_ITEM_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
@@ -140,6 +143,60 @@ export function modifyAgenda(panel, legs, personId, ef, refData) {
             dispatch(toastError(UPDATE_AGENDA_ITEM_ERROR, UPDATE_AGENDA_ITEM_ERROR_TITLE));
             dispatch(aiModifyHasErrored(true));
             dispatch(aiModifyIsLoading(false));
+          });
+        }
+      });
+  };
+}
+
+export function aiRemoveHasErrored(bool) {
+  return {
+    type: 'AI_REMOVE_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+
+export function aiRemoveIsLoading(bool) {
+  return {
+    type: 'AI_REMOVE_IS_LOADING',
+    isLoading: bool,
+  };
+}
+
+export function aiRemoveSuccess(data) {
+  return {
+    type: 'AI_REMOVE_SUCCESS',
+    data,
+  };
+}
+
+export function removeAgenda(id) {
+  return (dispatch) => {
+    batch(() => {
+      dispatch(aiRemoveIsLoading(true));
+      dispatch(aiRemoveHasErrored(false));
+    });
+    api()
+      .delete(`/fsbid/agenda/agenda_item/${id}/`)
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(aiRemoveHasErrored(false));
+          dispatch(aiRemoveSuccess(data));
+          dispatch(toastSuccess(DELETE_AGENDA_ITEM_SUCCESS, DELETE_AGENDA_ITEM_SUCCESS_TITLE));
+          dispatch(aiRemoveIsLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message === 'cancel') {
+          batch(() => {
+            dispatch(aiRemoveIsLoading(true));
+            dispatch(aiRemoveHasErrored(false));
+          });
+        } else {
+          batch(() => {
+            dispatch(aiRemoveHasErrored(true));
+            dispatch(toastError(DELETE_AGENDA_ITEM_ERROR, DELETE_AGENDA_ITEM_ERROR_TITLE));
+            dispatch(aiRemoveIsLoading(false));
           });
         }
       });
