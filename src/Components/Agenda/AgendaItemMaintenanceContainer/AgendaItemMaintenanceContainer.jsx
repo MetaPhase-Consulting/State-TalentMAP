@@ -151,6 +151,10 @@ const AgendaItemMaintenanceContainer = (props) => {
     dispatch(modifyAgenda(maintenanceInfo, legs, personId, efInfo, agendaItemData$));
   };
 
+  const deleteAI = () => {
+    // Delete AI
+  };
+
   const updateFormMode = () => {
     setReadMode(false);
   };
@@ -275,6 +279,7 @@ const AgendaItemMaintenanceContainer = (props) => {
                           userRemarks={userRemarks}
                           legCount={legs.length}
                           saveAI={submitAI}
+                          deleteAI={deleteAI}
                           updateFormMode={updateFormMode}
                           agendaItem={agendaItemData$}
                           readMode={readMode}

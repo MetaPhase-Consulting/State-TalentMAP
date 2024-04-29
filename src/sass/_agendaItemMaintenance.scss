@@ -139,6 +139,21 @@
         border-color: $primary-blue-darkest;
         color: $primary-blue-darkest;
       }
+
+      .delete-btn {
+        border: 1px solid $color-red;
+        border-radius: 5px;
+        color: $color-red;
+        background-color: $color-white;
+        padding: 10px 20px;
+        float: right;
+        font-size: 14px;
+      }
+
+      .delete-btn:hover {
+        border-color: $color-red-darkest;
+        color: $color-red-darkest;
+      }
     }
 
     .remarks {
