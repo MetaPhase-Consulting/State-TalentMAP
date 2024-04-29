@@ -34,7 +34,7 @@ const AgendaItemMaintenancePane = (props) => {
     sendMaintenancePaneInfo,
     legCount,
     saveAI,
-    deleteAI,
+    removeAI,
     updateFormMode,
     sendAsgSepBid,
     asgSepBidData,
@@ -372,7 +372,7 @@ const AgendaItemMaintenancePane = (props) => {
             <BackButton />
             <button
               className="delete-btn min-width-155"
-              onClick={deleteAI}
+              onClick={removeAI}
             >
               Delete Agenda Item
             </button>
@@ -647,7 +647,7 @@ AgendaItemMaintenancePane.propTypes = {
   sendAsgSepBid: PropTypes.func,
   setIsNewSeparation: PropTypes.func,
   saveAI: PropTypes.func,
-  deleteAI: PropTypes.func,
+  removeAI: PropTypes.func,
   legCount: PropTypes.number,
   agendaItem: AGENDA_ITEM.isRequired,
   readMode: PropTypes.bool,
@@ -680,7 +680,7 @@ AgendaItemMaintenancePane.defaultProps = {
   sendMaintenancePaneInfo: EMPTY_FUNCTION,
   sendAsgSepBid: EMPTY_FUNCTION,
   saveAI: EMPTY_FUNCTION,
-  deleteAI: EMPTY_FUNCTION,
+  removeAI: EMPTY_FUNCTION,
   updateFormMode: EMPTY_FUNCTION,
   legCount: 0,
   readMode: true,

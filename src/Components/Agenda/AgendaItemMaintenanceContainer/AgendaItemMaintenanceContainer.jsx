@@ -151,7 +151,7 @@ const AgendaItemMaintenanceContainer = (props) => {
     dispatch(modifyAgenda(maintenanceInfo, legs, personId, efInfo, agendaItemData$));
   };
 
-  const deleteAI = () => {
+  const removeAI = () => {
     const personId = employeeData$?.id || routeEmployeeID;
     const efInfo = {
       assignmentId: get(efPosition, 'asg_seq_num'),
@@ -284,7 +284,7 @@ const AgendaItemMaintenanceContainer = (props) => {
                           userRemarks={userRemarks}
                           legCount={legs.length}
                           saveAI={submitAI}
-                          deleteAI={deleteAI}
+                          removeAI={removeAI}
                           updateFormMode={updateFormMode}
                           agendaItem={agendaItemData$}
                           readMode={readMode}
