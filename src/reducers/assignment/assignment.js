@@ -25,84 +25,82 @@ export function assignment(state = [], action) {
   }
 }
 
-// ================ ALT ASSIGNMENT LIST ================
-// Alt Assignment uses FSBID 1:1 proc
+// ================ ALTERNATIVE ASSIGNMENT LIST ================
 
-export function altAssignmentHasErrored(state = false, action) {
+export function altAssignmentsErrored(state = false, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_HAS_ERRORED':
+    case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function altAssignmentIsLoading(state = true, action) {
+export function altAssignmentsLoading(state = true, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_IS_LOADING':
+    case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function altAssignment(state = [], action) {
+export function altAssignmentsFetch(state = [], action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_FETCH_DATA_SUCCESS':
-      return action.altAssignment;
+    case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_SUCCESS':
+      return action.data;
     default:
       return state;
   }
 }
 
-// ================ ALT ASSIGNMENT DETAIL ================
-// Alt Assignment Detail uses FSBID 1:1 proc for ref data and options
+// ================ ALTERNATIVE ASSIGNMENT DETAIL ================
 
-export function altAssignmentDetailHasErrored(state = false, action) {
+export function altAssignmentErrored(state = false, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_DETAIL_HAS_ERRORED':
+    case 'ALT_ASSIGNMENT_FETCH_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function altAssignmentDetailIsLoading(state = true, action) {
+export function altAssignmentLoading(state = true, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_DETAIL_IS_LOADING':
+    case 'ALT_ASSIGNMENT_FETCH_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function altAssignmentDetail(state = [], action) {
+export function altAssignmentFetch(state = [], action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_DETAIL_FETCH_DATA_SUCCESS':
-      return action.altAssignmentDetail;
+    case 'ALT_ASSIGNMENT_FETCH_SUCCESS':
+      return action.data;
     default:
       return state;
   }
 }
 
-// ================ SEPARATION DETAIL ================
+// ================ ALTERNATIVE SEPARATION DETAIL ================
 
-export function separationDetailErrored(state = false, action) {
+export function altSeparationErrored(state = false, action) {
   switch (action.type) {
-    case 'SEPARATION_DETAIL_ERRORED':
+    case 'ALT_SEPARATION_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function separationDetailLoading(state = true, action) {
+export function altSeparationLoading(state = true, action) {
   switch (action.type) {
-    case 'SEPARATION_DETAIL_LOADING':
+    case 'ALT_SEPARATION_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function separationDetail(state = [], action) {
+export function altSeparation(state = [], action) {
   switch (action.type) {
-    case 'SEPARATION_DETAIL_SUCCESS':
-      return action.altAssignmentDetail;
+    case 'ALT_SEPARATION_SUCCESS':
+      return action.data;
     default:
       return state;
   }
