@@ -124,7 +124,7 @@ const BidAudit = () => {
       button: false,
       content: (
         <div className="bid-audit-modal-buttons">
-          <div>Will manually update the bid counts for all Positions within all Active Cycles,</div>
+          <div>Will update the bid counts for all Positions within all Active Cycles,</div>
           <div>that have at least one Bid Audit.</div>
           <button onClick={submitBidCount} type="submit">Yes</button>
           <button onClick={cancelBidCount}>Cancel</button>
