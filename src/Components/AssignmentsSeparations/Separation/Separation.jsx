@@ -34,7 +34,7 @@ const Separation = (props) => {
   // ====================== Data Retrieval ======================
 
   const sepId = data?.SEP_SEQ_NUM;
-  const revision_num = data?.SEPD_REVISION_NUM;
+  const revisionNum = data?.SEPD_REVISION_NUM;
 
   useEffect(() => {
     dispatch(resetPositionsFetchData());
@@ -43,7 +43,7 @@ const Separation = (props) => {
   const [refetch, setRefetch] = useState(true);
   const { data: results, loading: isLoading, error: errored } = useDataLoader(
     api().get,
-    `/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revision_num}`,
+    `/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revisionNum}`,
     true,
     undefined,
     refetch,
@@ -125,16 +125,15 @@ const Separation = (props) => {
   const onSubmitForm = () => {
     const state = location?.state;
     const country = location?.country;
-    const formValues = {
+    const commonFields = {
       location_code: null,
       separation_date: separationDate,
       city_text: location?.city,
       country_state_text: (state && country) ? `${state}, ${country}` : state || country || null,
-      us_ind: usIndicator ? 'Y' : 'N',
+      us_ind: usIndicator,
       status_code: status,
       travel_code: travel,
       rr_repay_ind: waiver,
-      note: null,
     };
     if (isNew) {
       const onCreateSuccess = () => {
@@ -142,8 +141,8 @@ const Separation = (props) => {
       };
       dispatch(assignmentSeparationAction(
         {
-          ...formValues,
-          employee: null,
+          ...commonFields,
+          employee: perdet,
         },
         perdet,
         null, // Use Create Endpoint (No Seq Num)
@@ -157,11 +156,10 @@ const Separation = (props) => {
       };
       dispatch(assignmentSeparationAction(
         {
-          ...formValues,
-          sep_seq_num: null,
-          updater_id: null,
-          updated_date: null,
-          sep_revision_number: null,
+          ...commonFields,
+          sep_id: sepId,
+          revision_num: revisionNum,
+          updated_date: separationDetails?.SEPD_UPDATE_DATE,
         },
         perdet,
         sepId, // Use Update Endpoint (Has Seq Num)

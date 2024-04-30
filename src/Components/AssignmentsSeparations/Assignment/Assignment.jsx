@@ -36,7 +36,7 @@ const Assignment = (props) => {
   // ====================== Data Retrieval ======================
 
   const asgId = data?.ASG_SEQ_NUM;
-  const revision_num = data?.ASGD_REVISION_NUM;
+  const revisionNum = data?.ASGD_REVISION_NUM;
 
   useEffect(() => {
     dispatch(resetPositionsFetchData());
@@ -45,7 +45,7 @@ const Assignment = (props) => {
   const [refetch, setRefetch] = useState(true);
   const { data: results, loading: isLoading, error: errored } = useDataLoader(
     api().get,
-    `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revision_num}`,
+    `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revisionNum}`,
     true,
     undefined,
     refetch,
@@ -168,21 +168,17 @@ const Assignment = (props) => {
 
   const onSubmitForm = () => {
     const commonFields = {
-      asg_seq_num: assignmentDetails?.ASG_SEQ_NUM,
-      asgd_revision_num: assignmentDetails?.ASGD_REVISION_NUM,
       eta,
       etd: ted,
       tod,
       salary_reimburse_ind: salaryReimbursement,
       travel_reimburse_ind: travelReimbursement,
       training_ind: training,
-      critical_need_ind: criticalNeed,
       org_code: funding,
       status_code: status,
       lat_code: action,
       travel_code: travel,
       rr_repay_ind: waiver,
-      update_date: assignmentDetails?.ASGD_UPDATE_DATE,
     };
     if (isNew) {
       const onCreateSuccess = () => {
@@ -191,6 +187,8 @@ const Assignment = (props) => {
       dispatch(assignmentSeparationAction(
         {
           ...commonFields,
+          employee: perdet,
+          position: pos_results.pos_seq_num,
         },
         perdet,
         null, // Use Create Endpoint (No Seq Num)
@@ -205,6 +203,10 @@ const Assignment = (props) => {
       dispatch(assignmentSeparationAction(
         {
           ...commonFields,
+          asg_id: asgId,
+          revision_num: revisionNum,
+          critical_need_ind: criticalNeed,
+          updated_date: assignmentDetails?.ASGD_UPDATE_DATE,
         },
         perdet,
         asgId, // Use Update Endpoint (Has Seq Num)
