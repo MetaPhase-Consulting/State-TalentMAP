@@ -36,9 +36,10 @@ const Assignment = (props) => {
   const fundingOptions = assignmentDetails?.QRY_LSTBUREAUS_REF;
   const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
 
+  const asgId = data?.ASG_SEQ_NUM;
+  const revision_num = data?.ASGD_REVISION_NUM;
+
   useEffect(() => {
-    const asgId = data?.ASG_SEQ_NUM;
-    const revision_num = data?.ASGD_REVISION_NUM;
     dispatch(altAssignment(perdet, asgId, revision_num));
     return () => {
       dispatch(resetPositionsFetchData());
