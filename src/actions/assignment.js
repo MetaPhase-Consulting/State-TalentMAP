@@ -1,6 +1,8 @@
 import { batch } from 'react-redux';
 import api from '../api';
 
+// ================ ASSIGNMENT LIST ================
+
 export function assignmentHasErrored(bool) {
   return {
     type: 'ASSIGNMENT_HAS_ERRORED',
@@ -44,7 +46,9 @@ export function assignmentFetchData(id) {
   };
 }
 
+// ================ ALT ASSIGNMENT LIST ================
 // Alt Assignment is using FSBID procs 1:1 to fetch all assignments for perdet
+
 export function altAssignmentHasErrored(bool) {
   return {
     type: 'ALT_ASSIGNMENT_HAS_ERRORED',
@@ -87,7 +91,9 @@ export function altAssignmentFetchData(id) {
   };
 }
 
+// ================ ALT ASSIGNMENT DETAIL ================
 // Alt Assignment details is using FSBID procs 1:1 to fetch single assignments and ref data
+
 export function altAssignmentDetailHasErrored(bool) {
   return {
     type: 'ALT_ASSIGNMENT_DETAIL_HAS_ERRORED',
@@ -129,6 +135,9 @@ export function altAssignmentDetailFetchData(perdet, asgId, revision_num) {
       });
   };
 }
+
+// ================ UPDATE ASSIGNMENT ================
+
 export function updateAssignment(query, perdet) {
   return (dispatch) => {
     api()
@@ -140,8 +149,112 @@ export function updateAssignment(query, perdet) {
       })
       .catch(() => {
         batch(() => {
-          dispatch(altAssignmentDetailHasErrored(true));
-          dispatch(altAssignmentDetailIsLoading(false));
+          dispatch(altAssignmentHasErrored(true));
+          dispatch(altAssignmentIsLoading(false));
+        });
+      });
+  };
+}
+
+// ================ CREATE ASSIGNMENT ================
+
+export function createAssignment(query, perdet) {
+  return (dispatch) => {
+    api()
+      .post(`/fsbid/assignment_history/${perdet}/alt/`, query)
+      .then(() => {
+        batch(() => {
+          dispatch(altAssignmentFetchData(perdet));
+        });
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(altAssignmentHasErrored(true));
+          dispatch(altAssignmentIsLoading(false));
+        });
+      });
+  };
+}
+
+// ================ SEPARATION DETAIL ================
+
+export function separationDetailErrored(bool) {
+  return {
+    type: 'SEPARATION_DETAIL_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function separationDetailLoading(bool) {
+  return {
+    type: 'SEPARATION_DETAIL_LOADING',
+    isLoading: bool,
+  };
+}
+export function separationDetailSuccess(data) {
+  return {
+    type: 'SEPARATION_DETAIL_SUCCESS',
+    data,
+  };
+}
+export function separationDetail(perdet, asgId, revision_num) {
+  return (dispatch) => {
+    batch(() => {
+      dispatch(separationDetailLoading(true));
+      dispatch(separationDetailErrored(false));
+    });
+    api()
+      .get(`/fsbid/assignment_history/${perdet}/assignment/${asgId}/?revision_num=${revision_num}`)
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(separationDetailSuccess(data));
+          dispatch(separationDetailLoading(false));
+          dispatch(separationDetailErrored(false));
+        });
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(separationDetailErrored(true));
+          dispatch(separationDetailLoading(false));
+        });
+      });
+  };
+}
+
+// ================ UPDATE SEPARATION ================
+
+export function updateSeparation(query, perdet) {
+  return (dispatch) => {
+    api()
+      .patch(`/fsbid/assignment_history/${perdet}/alt/`, query)
+      .then(() => {
+        batch(() => {
+          dispatch(altAssignmentFetchData(perdet));
+        });
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(altAssignmentHasErrored(true));
+          dispatch(altAssignmentIsLoading(false));
+        });
+      });
+  };
+}
+
+// ================ CREATE SEPARATION ================
+
+export function createSeparation(query, perdet) {
+  return (dispatch) => {
+    api()
+      .post(`/fsbid/assignment_history/${perdet}/alt/`, query)
+      .then(() => {
+        batch(() => {
+          dispatch(altAssignmentFetchData(perdet));
+        });
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(altAssignmentHasErrored(true));
+          dispatch(altAssignmentIsLoading(false));
         });
       });
   };

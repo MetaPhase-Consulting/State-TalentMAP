@@ -230,6 +230,56 @@
   }
 }
 
+.cm-cycle-classes {
+  border-bottom: 2px solid $primary-blue;
+  .cm-cycle-classes-check{
+    &.read-only {
+      pointer-events: none;
+      accent-color: darkorange;
+    }
+  }
+  .position-content--subheader {
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &::after {
+      content: none;
+    }
+
+    &.no-space {
+      justify-content: flex-start !important;
+    }
+  }
+  .toggle-edit-mode {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    color: $primary-blue;
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+
+    .fa {
+      margin-right: 6px;
+    }
+
+    &:hover {
+      div {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.cm-classifications-scroll-container {
+  overflow: auto;
+  height: 1000px;
+  margin: 0px 10px 0px 10px;
+}
+
+
 .cycle-search-card {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -521,92 +571,6 @@
 
   .usa-input-error-message {
     text-align: left;
-  }
-}
-
-.assignment-cycle-search-card {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  background-color: $color-white;
-  border: 1px solid $bg-gray-dark-2;
-  border-left: 8px solid $blue-primary;
-  padding: 1em;
-
-  .ac-card--row {
-    display: flex;
-    align-items: center;
-
-    .ac-card--middle-cols {
-      display: flex;
-      align-items: center;
-
-      >div {
-        color: $color-gray;
-        display: flex;
-        justify-content: center;
-        font-size: 14px;
-        min-width: max-content;
-      }
-    }
-
-    .ac-card--link-col {
-      display: flex;
-      justify-content: flex-end;
-
-      >span {
-        text-align: right;
-      }
-    }
-  }
-}
-
-// ============= Assignment Maintenance =============
-.assignments-maintenance-page {
-  .asg-title {
-    font-size: 17px;
-  }
-
-  .asg-title-dash {
-    padding-left: 5px;
-  }
-
-  .create-new-button {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 17px;
-
-    .fa {
-      margin-right: 5px;
-    }
-
-    a {
-      text-decoration: none;
-    }
-  }
-
-
-  .asg-lower-section {
-    padding: 0 35px 20px 0;
-  }
-
-  .asg-content {
-    margin-left: 35px;
-
-    .asg-header {
-      font-size: 22px;
-      margin-top: 25px;
-      margin-right: 35px;
-
-      .fa-lg {
-        font-size: 22px;
-        padding-right: 5px;
-      }
-    }
-
-    .asg-subheader {
-      display: flex;
-      justify-content: space-between;
-    }
   }
 }
 
@@ -1293,9 +1257,10 @@
   font-size: 20px;
 
   button {
-    font-size: 20px;
-    font-weight: bold;
-    margin-block: 0;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 20px;
+    margin: 0 0 0 5px;
   }
 }
 

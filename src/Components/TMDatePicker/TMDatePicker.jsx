@@ -22,10 +22,13 @@ const TMDatePicker = ({
       wrapper: 'larger-date-picker',
       datePicker: 'tm-date-picker-range',
     },
-
+    form: {
+      wrapper: 'larger-date-picker form-date-picker',
+      datePicker: '',
+    },
   };
   return (
-    <div className={`tm-datepicker-wrapper ${typeClasses[type].wrapper}`}>
+    <div className={`tm-datepicker-wrapper ${typeClasses[type]?.wrapper}`}>
       {showIcon && icon}
       <DatePicker
         selected={selected}
@@ -38,7 +41,7 @@ const TMDatePicker = ({
         endDate={selectsRange ? value[1] : null}
         isClearable={isClearable}
         dropdownMode="select"
-        className={`tm-datepicker ${typeClasses[type].datePicker}`}
+        className={`tm-datepicker ${typeClasses[type]?.datePicker}`}
         placeholderText={placeholderText}
         excludeDates={excludeDates}
       />

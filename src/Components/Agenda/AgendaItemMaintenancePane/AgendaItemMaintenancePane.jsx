@@ -112,7 +112,6 @@ const AgendaItemMaintenancePane = (props) => {
   // Data is parsed differently depending on whether the data comes from agendaItem or employeeData
   // agendaItem is available during edit and employeeData is fallback used
   // on create for client users
-
   const { employeeData, employeeDataError, employeeDataLoading } = employee;
 
   const isCreate = agendaItem ? Object.keys(agendaItem).length === 0 : true;
@@ -120,8 +119,6 @@ const AgendaItemMaintenancePane = (props) => {
 
   const userLanguages = userData?.languages?.length ? userData.languages.map(
     (l) => `${l.custom_description} (${formatDate(l.test_date, 'MM/YYYY')})`).join(', ') : 'None Listed';
-  const userPayPlan = (isCreate ? userData?.pay_plan : userData?.pay_plan_code) || 'None Listed';
-  const userGrade = userData?.grade ?? '';
   const userSkill = isCreate ? <SkillCodeList skillCodes={userData?.skills} displayCodeFirst /> :
     (userData?.skills?.join(', ') || 'None Listed');
   const userCDOFirst = (isCreate ? userData?.cdos?.[0]?.cdo_first_name : userData?.cdo?.first_name) || '';
@@ -162,6 +159,8 @@ const AgendaItemMaintenancePane = (props) => {
     } else if (pos_results_loading) {
       setInputClass('loading-animation--3');
     } else if (posNumError) {
+      setInputClass('input-error');
+    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
       setInputClass('input-error');
     } else {
       setInputClass('input-default');
@@ -504,7 +503,7 @@ const AgendaItemMaintenancePane = (props) => {
               </div>
               <div className="item">
                 <span className="label">PP/Grade: </span>
-                {userPayPlan} {userGrade}
+                {userData?.combined_pp_grade}
               </div>
               <div className="item">
                 <span className="label">Skill: </span>

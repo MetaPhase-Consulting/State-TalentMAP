@@ -1,4 +1,7 @@
 import {
+  cycleClassificationsData,
+  cycleClassificationsEditSuccess,
+  cycleClassificationsIsLoading,
   cycleManagement,
   cycleManagementAssignmentCycle,
   cycleManagementAssignmentCycleFetchDataErrored,
@@ -24,6 +27,9 @@ import {
 } from './cycleManagement';
 
 export default {
+  cycleClassificationsData,
+  cycleClassificationsEditSuccess,
+  cycleClassificationsIsLoading,
   cycleManagement,
   cycleManagementAssignmentCycle,
   cycleManagementAssignmentCycleFetchDataErrored,

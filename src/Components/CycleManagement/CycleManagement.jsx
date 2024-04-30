@@ -46,6 +46,8 @@ const CycleManagement = (props) => {
   const noFiltersSelected = [selectedCycles, selectedStatus].flat().length === 0
     && !selectedDate;
 
+  const cycleClassLink = `/profile/${isAO ? 'ao' : 'bureau'}/cycleclassifications`;
+
   const getCurrentInputs = () => ({
     selectedCycles,
     selectedStatus,
@@ -252,13 +254,7 @@ const CycleManagement = (props) => {
 
                 {isSuperUser &&
                   <div className="cm-heading">
-                    <Link
-                      onClick={(e) => {
-                        e.preventDefault();
-                        createNewAssignmentCycle();
-                      }}
-                      to="#"
-                    >
+                    <Link to={cycleClassLink}>
                       Cycle Date Classifications
                     </Link>
                     <div className="cm-new-merge">

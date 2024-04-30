@@ -1,9 +1,11 @@
 .swal-modal.modal-1300 {
   width: 1000px;
 }
+
 .swal-modal.modal-700 {
   width: 700px;
 }
+
 .swal-modal.modal-700-long {
   width: 700px;
   height: 100%;
@@ -25,4 +27,43 @@
     right: 20px;
     top: -84px;
   }
+}
+
+// Custom TMAP Modal
+.modal-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 0;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  .modal-child {
+    width: 1200px;
+    max-width: calc(100vw - 100px);
+    max-height: calc(100vh - 100px);
+    font-size: 1.2rem;
+    border-radius: 1rem;
+    pointer-events: auto;
+    overflow-y: auto;
+    margin-block: 0px;
+  }
+}
+
+.month-year-input-error {
+  border: 0.1rem solid red;
+}
+
+.modal-open {
+  height: 100vh;
+  overflow-y: hidden;
 }

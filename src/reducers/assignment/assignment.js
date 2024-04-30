@@ -1,3 +1,5 @@
+// ================ ASSIGNMENT LIST ================
+
 export function assignmentHasErrored(state = false, action) {
   switch (action.type) {
     case 'ASSIGNMENT_HAS_ERRORED':
@@ -23,7 +25,9 @@ export function assignment(state = [], action) {
   }
 }
 
+// ================ ALT ASSIGNMENT LIST ================
 // Alt Assignment uses FSBID 1:1 proc
+
 export function altAssignmentHasErrored(state = false, action) {
   switch (action.type) {
     case 'ALT_ASSIGNMENT_HAS_ERRORED':
@@ -49,8 +53,9 @@ export function altAssignment(state = [], action) {
   }
 }
 
-
+// ================ ALT ASSIGNMENT DETAIL ================
 // Alt Assignment Detail uses FSBID 1:1 proc for ref data and options
+
 export function altAssignmentDetailHasErrored(state = false, action) {
   switch (action.type) {
     case 'ALT_ASSIGNMENT_DETAIL_HAS_ERRORED':
@@ -75,4 +80,30 @@ export function altAssignmentDetail(state = [], action) {
       return state;
   }
 }
-//
+
+// ================ SEPARATION DETAIL ================
+
+export function separationDetailErrored(state = false, action) {
+  switch (action.type) {
+    case 'SEPARATION_DETAIL_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function separationDetailLoading(state = true, action) {
+  switch (action.type) {
+    case 'SEPARATION_DETAIL_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function separationDetail(state = [], action) {
+  switch (action.type) {
+    case 'SEPARATION_DETAIL_SUCCESS':
+      return action.altAssignmentDetail;
+    default:
+      return state;
+  }
+}

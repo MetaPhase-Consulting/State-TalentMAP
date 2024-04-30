@@ -7,9 +7,10 @@ import PanelMeetingSearch from 'Components/Panel/PanelMeetingSearch/PanelMeeting
 import PanelMeetingAgendas from 'Components/Panel/PanelMeetingAgendas/PanelMeetingAgendas';
 import CycleManagement from 'Components/CycleManagement';
 import CyclePositionSearch from 'Components/CycleManagement/CyclePositionSearch';
+import CycleClassifications from 'Components/CycleManagement/CycleClassifications';
 import AssignmentCycleEdit from 'Components/CycleManagement/AssignmentCycleEdit';
 import PublishablePositions from 'Components/PublishablePositions/PublishablePositions';
-import Assignments from 'Components/Assignments';
+import AssignmentsSeparations from 'Components/AssignmentsSeparations';
 import BidderPortfolio from 'Containers/BidderPortfolio';
 import BiddingTool from '../BiddingFunctionsPage/BiddingTool/BiddingTool';
 
@@ -26,8 +27,9 @@ const AoPage = () => (
       <Route path="/profile/ao/cyclemanagement" render={() => <CycleManagement isAO />} />
       <Route path="/profile/ao/assignmentcycle/:id" render={() => <AssignmentCycleEdit isAO />} />
       <Route path="/profile/ao/cyclepositionsearch/:id" render={() => <CyclePositionSearch isAO />} />
+      <Route path="/profile/ao/cycleclassifications/" render={() => <CycleClassifications isAO />} />
       <Route path="/profile/ao/publishablepositions" render={() => <PublishablePositions viewType="ao" />} />
-      <Route path="/profile/ao/:id/assignments" render={(props) => <Assignments {...props} />} />
+      <Route path="/profile/ao/:id/assignmentsseparations" render={(props) => <AssignmentsSeparations {...props} />} />
       <Route path="/profile/ao/bidderportfolio" render={() => <BidderPortfolio viewType="ao" />} />
       <Route path="/profile/ao/biddingtool/:id" render={() => <BiddingTool />} />
       <Route path="/profile/ao/biddingtool/" render={() => <BiddingTool />} />

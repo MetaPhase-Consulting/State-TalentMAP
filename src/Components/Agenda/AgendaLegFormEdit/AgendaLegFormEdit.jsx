@@ -454,7 +454,7 @@ const AgendaLegFormEdit = props => {
     },
     {
       title: 'PP/Grade',
-      content: (<div>{defaultSepText || get(leg, 'combined_pp_grade') || DEFAULT_TEXT}</div>),
+      content: (<div>{leg?.combined_pp_grade}</div>),
     },
   ];
 
@@ -508,6 +508,7 @@ AgendaLegFormEdit.propTypes = {
     org: PropTypes.string,
     pay_plan: PropTypes.string,
     grade: PropTypes.string,
+    combined_pp_grade: PropTypes.string,
     languages: PropTypes.shape([]),
     custom_skills_description: PropTypes.string,
   }),

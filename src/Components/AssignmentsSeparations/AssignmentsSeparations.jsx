@@ -5,95 +5,40 @@ import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
 import { useDataLoader } from 'hooks';
 import PropTypes from 'prop-types';
-// import InteractiveElement from 'Components/InteractiveElement';
+import { altAssignmentFetchData } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import { altAssignmentFetchData } from 'actions/assignment';
-import AssignmentCard from './AssignmentCard';
-// import { formatDate } from 'utilities';
+import TabbedCard from 'Components/TabbedCard';
+import Assignment from './Assignment';
+import Separation from './Separation';
+import ReactModal from '../ReactModal';
+import InteractiveElement from '../InteractiveElement';
 import api from '../../api';
-import NotificationCard from './NotificationCard/NotificationCard';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
 
-const Assignments = (props) => {
+const AssignmentsSeparations = (props) => {
   const assignments = useSelector(state => state.altAssignment);
   const assignmentsErrored = useSelector(state => state.altAssignmentHasErrored);
   const assignmentsLoading = useSelector(state => state.altAssignmentIsLoading);
 
-  // default || newAsgSep || memo || notification
+  const [assignmentToggle, setAssignmentToggle] = useState(true);
+
+  // default || memo || notification
+  // eslint-disable-next-line no-unused-vars
   const [cardMode, setCardMode] = useState('default');
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (openModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [openModal]);
 
   const id = props?.match.params.id;
-
-  // TO-DO: replace fake data
-  const fakeStatuses = [
-    { code: 1, name: 'AP' },
-    { code: 2, name: 'BR' },
-    { code: 3, name: 'CP' },
-    { code: 4, name: 'EF' },
-  ];
-  const fakeActions = [
-    { code: 1, name: 'Action A' },
-    { code: 2, name: 'Action B' },
-    { code: 3, name: 'Action C' },
-    { code: 4, name: 'Action D' },
-  ];
-  const fakeTods = [
-    { code: 1, name: 'TOD A' },
-    { code: 2, name: 'TOD B' },
-    { code: 3, name: 'TOD C' },
-    { code: 4, name: 'TOD D' },
-  ];
-  const fakeTravels = [
-    { code: 1, name: 'Travel A' },
-    { code: 2, name: 'Travel B' },
-    { code: 3, name: 'Travel C' },
-    { code: 4, name: 'Travel D' },
-  ];
-  const fakeFundings = [
-    { code: 1, name: 'Funding A' },
-    { code: 2, name: 'Funding B' },
-    { code: 3, name: 'Funding C' },
-    { code: 4, name: 'Funding D' },
-  ];
-  const fakeWaivers = [
-    { code: 1, name: 'Denied' },
-    { code: 2, name: 'Requested' },
-    { code: 3, name: 'Granted' },
-    { code: 4, name: 'Not Used' },
-  ];
-  // const {
-  // data: statuses,
-  // error: statusesError,
-  // loading: statusesLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/statuses/');
-  // const {
-  // data: actions,
-  // error: actionsError,
-  // loading: actionsLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/actions/');
-  // const {
-  // data: tods,
-  // error: todsError,
-  // loading: todsLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/tods/');
-  // const {
-  // data: travel,
-  // error: travelError,
-  // loading: travelLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/travel/');
-  // const {
-  // data: fundings,
-  // error: fundingsError,
-  // loading: fundingsLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/fundings/');
-  // const {
-  // data: waivers,
-  // error: waiversError,
-  // loading: waiversLoading
-  // } = useDataLoader(api().get, '/fsbid/assignments/waivers/');
 
   // eslint-disable-next-line no-unused-vars
   const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
@@ -101,14 +46,6 @@ const Assignments = (props) => {
   const employeeData$ = employeeData?.data;
   const employeeName = employeeDataLoading ? '' : employeeData$?.name;
 
-  const refFilters = {
-    statusOptions: fakeStatuses,
-    actionOptions: fakeActions,
-    todOptions: fakeTods,
-    travelOptions: fakeTravels,
-    fundingOptions: fakeFundings,
-    waiverOptions: fakeWaivers,
-  };
 
   // eslint-disable-next-line no-unused-vars
   const hideBreadcrumbs = checkFlag('flags.breadcrumbs');
@@ -138,27 +75,6 @@ const Assignments = (props) => {
     return overlay;
   };
 
-  const getCardMode = () => {
-    switch (cardMode) {
-      case 'newAsgSep':
-        return (
-          <AssignmentCard
-            perdet={id}
-            isNew
-            setNewAsgSep={setCardMode}
-            refFilters={refFilters}
-          />
-        );
-      case 'notification':
-        return <NotificationCard />;
-      case 'memo':
-        return <NotificationCard />;
-      default:
-        return assignments?.map(data =>
-          <AssignmentCard perdet={id} data={data} refFilters={refFilters} />);
-    }
-  };
-
   return (
     getOverlay() ||
     <div className="assignments-maintenance-page position-search">
@@ -174,7 +90,7 @@ const Assignments = (props) => {
         }
         <div className="asg-header">
           <FA name="clipboard" className="fa-lg" />
-          Assignments
+          Assignments and Separations
           <span className="asg-title-dash">
             {'- '}
             <Link to={`/profile/public/${id}/ao`}>
@@ -185,10 +101,11 @@ const Assignments = (props) => {
           </span>
         </div>
         <div className="pt-20 asg-subheader">
-          Review the current assignments or add assignments for {employeeName}
+          Review the current assignments/separations or
+          add assignments/separations for {employeeName}
           <div>
             <div className="create-new-button">
-              <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('newAsgSep')}>
+              <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
                 <FA name="briefcase" />
                 Add New Assignment/Separation
               </a>
@@ -212,14 +129,77 @@ const Assignments = (props) => {
           </div>
         </div>
         <div className="asg-lower-section">
-          {getCardMode()}
+          <div className="results-mode">
+            <InteractiveElement
+              className={assignmentToggle ? 'active' : ''}
+              onClick={() => setAssignmentToggle(true)}
+            >
+              Assignments
+            </InteractiveElement>
+            <InteractiveElement
+              className={!assignmentToggle ? 'active' : ''}
+              onClick={() => setAssignmentToggle(false)}
+            >
+              Separations
+            </InteractiveElement>
+          </div>
+          {assignmentToggle && assignments?.map(data => (
+            <TabbedCard
+              tabs={[{
+                text: 'Assignment Overview',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                />,
+              }]}
+            />
+          ))}
+          {!assignmentToggle && assignments?.map(data => (
+            <TabbedCard
+              tabs={[{
+                text: 'Separation Overview',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                />,
+              }]}
+            />
+          ))}
+          <ReactModal isOpen={openModal}>
+            <TabbedCard
+              className="modal-child"
+              tabs={[{
+                text: 'New Assignment',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={() => setCardMode('default')}
+                  toggleModal={setOpenModal}
+                  isNew
+                />,
+              }, {
+                text: 'New Separation',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={() => setCardMode('default')}
+                  toggleModal={setOpenModal}
+                  isNew
+                />,
+              }]}
+            />
+          </ReactModal>
         </div>
       </div>
     </div>
   );
 };
 
-Assignments.propTypes = {
+AssignmentsSeparations.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -227,8 +207,8 @@ Assignments.propTypes = {
   }),
 };
 
-Assignments.defaultProps = {
+AssignmentsSeparations.defaultProps = {
   match: {},
 };
 
-export default Assignments;
+export default AssignmentsSeparations;
