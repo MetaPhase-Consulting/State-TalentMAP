@@ -19,7 +19,15 @@ import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations'
 import api from '../../../api';
 
 const Separation = (props) => {
-  const { perdet, data, isNew, setNewAsgSep, toggleModal, onEditMode, disableEdit } = props;
+  const {
+    perdet,
+    data,
+    isNew,
+    setNewAsgSep,
+    toggleModal,
+    setDisableOtherEdits,
+    disableOtherEdits,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -27,6 +35,10 @@ const Separation = (props) => {
 
   const sepId = data?.SEP_SEQ_NUM;
   const revision_num = data?.SEPD_REVISION_NUM;
+
+  useEffect(() => {
+    dispatch(resetPositionsFetchData());
+  }, []);
 
   const [refetch, setRefetch] = useState(true);
   const { data: results, loading: isLoading, error: errored } = useDataLoader(
@@ -46,23 +58,19 @@ const Separation = (props) => {
   const travelOptions = separationDetails?.QRY_LSTTF_REF;
   const waiverOptions = separationDetails?.QRY_LSTWRT_REF;
 
-  useEffect(() => {
-    dispatch(resetPositionsFetchData());
-  }, []);
-
   // ====================== View Mode ======================
 
   const sections = {
     /* eslint-disable quote-props */
     bodyPrimary: [
-      { 'Status': getResult(data, 'ASGS_CODE') || NO_STATUS },
-      { 'Action': getResult(data, 'LAT_CODE') || NO_VALUE },
-      { 'Waiver': getResult(data, 'WRT_CODE_RR_REPAY') || NO_VALUE },
-      { 'Travel': get(data, 'TF_CD') || NO_VALUE },
-      { 'Separation Date': getResult(data, 'SEPD_SEPARATION_DATE') || NO_VALUE },
-      { 'US Indicator': getResult(data, 'SEPD_US_IND') || NO_VALUE },
-      { 'Panel Meeting Date': getResult(data, 'PMD_DTTM') || NO_VALUE },
-      { 'Location': get(data, 'location') || NO_VALUE }, // TODO: format location string
+      { 'Status': getResult(separationDetails, 'ASGS_CODE') || NO_STATUS },
+      { 'Action': getResult(separationDetails, 'LAT_CODE') || NO_VALUE },
+      { 'Waiver': getResult(separationDetails, 'WRT_CODE_RR_REPAY') || NO_VALUE },
+      { 'Travel': get(separationDetails, 'TF_CD') || NO_VALUE },
+      { 'Separation Date': getResult(separationDetails, 'SEPD_SEPARATION_DATE') || NO_VALUE },
+      { 'US Indicator': getResult(separationDetails, 'SEPD_US_IND') || NO_VALUE },
+      { 'Panel Meeting Date': getResult(separationDetails, 'PMD_DTTM') || NO_VALUE },
+      { 'Location': get(separationDetails, 'location') || NO_VALUE }, // TODO: format location string
     ],
     /* eslint-enable quote-props */
   };
@@ -90,16 +98,17 @@ const Separation = (props) => {
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    onEditMode(editMode, sepId);
     if (editMode) {
-      setStatus(data?.ASGS_CODE || '');
-      setAction(data?.LAT_CODE || '');
-      setWaiver(data?.WRT_CODE_RR_REPAY || '');
-      setTravel(data?.TF_CD || '');
-      setSeparationDate(data?.SEPD_SEPARATION_DATE ?
-        new Date(data?.SEPD_SEPARATION_DATE) : null);
-      setUsIndicator(data?.SEPD_US_IND === 'Y');
-      setPanelMeetingDate(data?.PMD_DTTM ? new Date(data?.PMD_DTTM) : null);
+      setDisableOtherEdits(editMode);
+      setStatus(separationDetails?.ASGS_CODE || '');
+      setAction(separationDetails?.LAT_CODE || '');
+      setWaiver(separationDetails?.WRT_CODE_RR_REPAY || '');
+      setTravel(separationDetails?.TF_CD || '');
+      setSeparationDate(separationDetails?.SEPD_SEPARATION_DATE ?
+        new Date(separationDetails?.SEPD_SEPARATION_DATE) : null);
+      setUsIndicator(separationDetails?.SEPD_US_IND === 'Y');
+      setPanelMeetingDate(separationDetails?.PMD_DTTM ?
+        new Date(separationDetails?.PMD_DTTM) : null);
       setLocation(null);
     }
   }, [editMode]);
@@ -114,11 +123,12 @@ const Separation = (props) => {
   };
 
   const onSubmitForm = () => {
-    const { state, country } = location;
+    const state = location?.state;
+    const country = location?.country;
     const formValues = {
       location_code: null,
       separation_date: separationDate,
-      city_text: location?.city || null,
+      city_text: location?.city,
       country_state_text: (state && country) ? `${state}, ${country}` : state || country || null,
       us_ind: usIndicator ? 'Y' : 'N',
       status_code: status,
@@ -127,6 +137,9 @@ const Separation = (props) => {
       note: null,
     };
     if (isNew) {
+      const onCreateSuccess = () => {
+        toggleModal(false);
+      };
       dispatch(assignmentSeparationAction(
         {
           ...formValues,
@@ -135,8 +148,13 @@ const Separation = (props) => {
         perdet,
         null, // Use Create Endpoint (No Seq Num)
         true, // Use Separation Endpoint
+        onCreateSuccess,
       ));
     } else {
+      const onUpdateSuccess = () => {
+        setDisableOtherEdits(false);
+        setRefetch(!refetch); // Refetch Details on Success
+      };
       dispatch(assignmentSeparationAction(
         {
           ...formValues,
@@ -148,10 +166,9 @@ const Separation = (props) => {
         perdet,
         sepId, // Use Update Endpoint (Has Seq Num)
         true, // Use Separation Endpoint
-        () => setRefetch(!refetch), // Refetch Details on Success
+        onUpdateSuccess, // Refetch Details on Success
       ));
     }
-    if (isNew) toggleModal(false);
     setNewAsgSep('default');
   };
 
@@ -295,11 +312,11 @@ const Separation = (props) => {
       </div>,
     cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
     handleSubmit: () => onSubmitForm(),
-    handleCancel: () => { if (isNew) toggleModal(false); },
+    handleCancel: () => { toggleModal(false); setDisableOtherEdits(false); },
     handleEdit: {
       editMode,
       setEditMode: isNew ? null : setEditMode,
-      disableEdit,
+      disableEdit: disableOtherEdits,
     },
     // TO-DO: DIP, MEMO, NOTE
     /* eslint-enable quote-props */
@@ -337,8 +354,8 @@ Separation.propTypes = {
   setNewAsgSep: PropTypes.func,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
-  onEditMode: PropTypes.func,
-  disableEdit: PropTypes.bool,
+  setDisableOtherEdits: PropTypes.func,
+  disableOtherEdits: PropTypes.bool,
 };
 
 Separation.defaultProps = {
@@ -347,8 +364,8 @@ Separation.defaultProps = {
   setNewAsgSep: EMPTY_FUNCTION,
   toggleModal: EMPTY_FUNCTION,
   perdet: '',
-  onEditMode: EMPTY_FUNCTION,
-  disableEdit: false,
+  setDisableOtherEdits: EMPTY_FUNCTION,
+  disableOtherEdits: false,
 };
 
 export default Separation;

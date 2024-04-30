@@ -21,7 +21,15 @@ import PositionExpandableContent from 'Components/PositionExpandableContent';
 import api from '../../../api';
 
 const Assignment = (props) => {
-  const { perdet, data, isNew, setNewAsgSep, toggleModal, onEditMode, disableEdit } = props;
+  const {
+    perdet,
+    data,
+    isNew,
+    setNewAsgSep,
+    toggleModal,
+    setDisableOtherEdits,
+    disableOtherEdits,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -29,6 +37,10 @@ const Assignment = (props) => {
 
   const asgId = data?.ASG_SEQ_NUM;
   const revision_num = data?.ASGD_REVISION_NUM;
+
+  useEffect(() => {
+    dispatch(resetPositionsFetchData());
+  }, []);
 
   const [refetch, setRefetch] = useState(true);
   const { data: results, loading: isLoading, error: errored } = useDataLoader(
@@ -50,9 +62,6 @@ const Assignment = (props) => {
   const fundingOptions = assignmentDetails?.QRY_LSTBUREAUS_REF;
   const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
 
-  useEffect(() => {
-    dispatch(resetPositionsFetchData());
-  }, []);
 
   // ====================== View Mode ======================
 
@@ -67,7 +76,7 @@ const Assignment = (props) => {
       { 'Bureau': getResult(data, 'ORGS_SHORT_DESC') || NO_BUREAU },
       { 'Location': getResult(data, 'POS_LOCATION_CODE') || NO_POST },
       { 'ETA': get(data, 'ASGD_ETA_DATE') || NO_VALUE },
-      { 'DIP': getResult(data, 'DIPLOMATIC_TITLE') || NO_POSITION_TITLE },
+      { 'DIP': getResult(data, 'DIP_CODE') || NO_VALUE },
       { 'Memo Sent': getResult(data, 'MEMO_LAST_SENT_DATE') || NO_VALUE },
       { 'Note Sent': getResult(data, 'NOTE_LAST_SENT_DATE') || NO_VALUE },
       { 'TED': get(data, 'ASGD_ETD_TED_DATE') || NO_TOUR_END_DATE },
@@ -122,45 +131,45 @@ const Assignment = (props) => {
     }
   }, [pos_results]);
 
-  const [status, setStatus] = useState(data?.ASGS_CODE || '');
-  const [action, setAction] = useState(data?.LAT_CODE || '');
-  const [ted, setTED] = useState(data?.ASGD_ETD_TED_DATE);
-  const [eta, setETA] = useState(data?.ASGD_ETA_DATE);
-  const [tod, setTOD] = useState(isNew ? getTOD() : (data?.TOD_CODE || ''));
-  const [travel, setTravel] = useState(data?.TF_CD || '');
-  const [funding, setFunding] = useState(data?.ASGD_ORG_CODE);
+  const [status, setStatus] = useState('');
+  const [action, setAction] = useState('');
+  const [ted, setTED] = useState('');
+  const [eta, setETA] = useState('');
+  const [tod, setTOD] = useState('');
+  const [travel, setTravel] = useState('');
+  const [funding, setFunding] = useState('');
   const [adj, setAdj] = useState('');
-  const [salaryReimbursement, setSalaryReimbursement] = useState(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-  const [travelReimbursement, setTravelReimbursement] = useState(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-  const [training, setTraining] = useState(data?.ASGD_TRAINING_IND === 'Y');
-  const [criticalNeed, setCriticalNeed] = useState(data?.ASGD_CRITICAL_NEED_IND === 'Y');
-  const [waiver, setWaiver] = useState(data?.WRT_CODE_RR_REPAY || '');
-  const [sent, setSent] = useState(data?.NOTE_LAST_SENT_DATE);
+  const [salaryReimbursement, setSalaryReimbursement] = useState(false);
+  const [travelReimbursement, setTravelReimbursement] = useState(false);
+  const [training, setTraining] = useState(false);
+  const [criticalNeed, setCriticalNeed] = useState(false);
+  const [waiver, setWaiver] = useState('');
+  const [sent, setSent] = useState('');
 
   useEffect(() => {
-    onEditMode(editMode, asgId);
     if (editMode) {
-      setStatus(data?.ASGS_CODE || '');
-      setAction(data?.LAT_CODE || '');
-      setTED(data?.ASGD_ETD_TED_DATE);
-      setETA(data?.ASGD_ETA_DATE);
-      setTOD(isNew ? getTOD() : (data?.TOD_CODE || ''));
-      setTravel(data?.TF_CD || '');
-      setFunding(data?.ASGD_ORG_CODE);
-      setAdj('');
-      setSalaryReimbursement(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-      setTravelReimbursement(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-      setTraining(data?.ASGD_TRAINING_IND === 'Y');
-      setCriticalNeed(data?.ASGD_CRITICAL_NEED_IND === 'Y');
-      setWaiver(data?.WRT_CODE_RR_REPAY || '');
-      setSent(data?.NOTE_LAST_SENT_DATE);
+      setDisableOtherEdits(editMode);
+      setStatus(assignmentDetails?.ASGS_CODE || '');
+      setAction(assignmentDetails?.LAT_CODE || '');
+      setTED(assignmentDetails?.ASGD_ETD_TED_DATE || '');
+      setETA(assignmentDetails?.ASGD_ETA_DATE || '');
+      setTOD(isNew ? getTOD() : (assignmentDetails?.TOD_CODE || ''));
+      setTravel(assignmentDetails?.TF_CD || '');
+      setFunding(assignmentDetails?.ASGD_ORG_CODE || '');
+      setAdj(assignmentDetails?.ASGD_ADJUST_MONTHS_NUM || '');
+      setSalaryReimbursement(assignmentDetails?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+      setTravelReimbursement(assignmentDetails?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+      setTraining(assignmentDetails?.ASGD_TRAINING_IND === 'Y');
+      setCriticalNeed(assignmentDetails?.ASGD_CRITICAL_NEED_IND === 'Y');
+      setWaiver(assignmentDetails?.WRT_CODE_RR_REPAY || '');
+      setSent(assignmentDetails?.NOTE_LAST_SENT_DATE || '');
     }
   }, [editMode]);
 
   const onSubmitForm = () => {
-    const formValues = {
-      asg_seq_num: data?.ASG_SEQ_NUM,
-      asgd_revision_num: data?.ASGD_REVISION_NUM,
+    const commonFields = {
+      asg_seq_num: assignmentDetails?.ASG_SEQ_NUM,
+      asgd_revision_num: assignmentDetails?.ASGD_REVISION_NUM,
       eta,
       etd: ted,
       tod,
@@ -173,29 +182,36 @@ const Assignment = (props) => {
       lat_code: action,
       travel_code: travel,
       rr_repay_ind: waiver,
-      update_date: data?.ASGD_UPDATE_DATE,
+      update_date: assignmentDetails?.ASGD_UPDATE_DATE,
     };
     if (isNew) {
+      const onCreateSuccess = () => {
+        toggleModal(false);
+      };
       dispatch(assignmentSeparationAction(
         {
-          ...formValues,
+          ...commonFields,
         },
         perdet,
         null, // Use Create Endpoint (No Seq Num)
         false, // Use Assignment Endpoint
+        onCreateSuccess,
       ));
     } else {
+      const onUpdateSuccess = () => {
+        setDisableOtherEdits(false);
+        setRefetch(!refetch); // Refetch Details on Success
+      };
       dispatch(assignmentSeparationAction(
         {
-          ...formValues,
+          ...commonFields,
         },
         perdet,
         asgId, // Use Update Endpoint (Has Seq Num)
         false, // Use Assignment Endpoint
-        () => setRefetch(!refetch), // Refetch Details on Success
+        onUpdateSuccess,
       ));
     }
-    if (isNew) toggleModal(false);
     setNewAsgSep('default');
   };
 
@@ -402,11 +418,11 @@ const Assignment = (props) => {
       </div>,
     cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
     handleSubmit: () => onSubmitForm(),
-    handleCancel: () => { if (isNew) toggleModal(false); },
+    handleCancel: () => { toggleModal(false); setDisableOtherEdits(false); },
     handleEdit: {
       editMode,
       setEditMode: isNew ? null : setEditMode,
-      disableEdit,
+      disableEdit: disableOtherEdits,
     },
     // TO-DO: DIP, MEMO, NOTE
     /* eslint-enable quote-props */
@@ -447,8 +463,8 @@ Assignment.propTypes = {
   setNewAsgSep: PropTypes.func,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
-  onEditMode: PropTypes.func,
-  disableEdit: PropTypes.bool,
+  setDisableOtherEdits: PropTypes.func,
+  disableOtherEdits: PropTypes.bool,
 };
 
 Assignment.defaultProps = {
@@ -457,8 +473,8 @@ Assignment.defaultProps = {
   setNewAsgSep: EMPTY_FUNCTION,
   toggleModal: EMPTY_FUNCTION,
   perdet: '',
-  onEditMode: EMPTY_FUNCTION,
-  disableEdit: false,
+  setDisableOtherEdits: EMPTY_FUNCTION,
+  disableOtherEdits: false,
 };
 
 export default Assignment;

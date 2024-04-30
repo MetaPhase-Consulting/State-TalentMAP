@@ -5,7 +5,6 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { useDataLoader } from 'hooks';
-import { onEditModeSearch } from 'utilities';
 import { altAssignmentsSeparations } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
@@ -34,8 +33,7 @@ const AssignmentsSeparations = (props) => {
   const [cardMode, setCardMode] = useState('default');
   const [assignmentToggle, setAssignmentToggle] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const [cardsInEditMode, setCardsInEditMode] = useState([]);
-  const disableEdit = cardsInEditMode?.length > 0;
+  const [disableOtherEdits, setDisableOtherEdits] = useState(false);
 
   useEffect(() => {
     if (openModal) {
@@ -128,92 +126,86 @@ const AssignmentsSeparations = (props) => {
             }
           </div>
         </div>
-        {disableEdit &&
+        <div className="results-mode">
+          <InteractiveElement
+            className={assignmentToggle ? 'active' : ''}
+            onClick={() => setAssignmentToggle(true)}
+          >
+            Assignments
+          </InteractiveElement>
+          <InteractiveElement
+            className={!assignmentToggle ? 'active' : ''}
+            onClick={() => setAssignmentToggle(false)}
+          >
+            Separations
+          </InteractiveElement>
+        </div>
+        {disableOtherEdits &&
           <Alert
             type="warning"
-            title={'Edit Mode'}
+            title="Edit Mode"
             customClassName="mb-10"
             messages={[{
               body: 'Discard or save your edits before editing another card.',
             }]}
           />
         }
-        <div className="asg-lower-section">
-          <div className="results-mode">
-            <InteractiveElement
-              className={assignmentToggle ? 'active' : ''}
-              onClick={() => setAssignmentToggle(true)}
-            >
-              Assignments
-            </InteractiveElement>
-            <InteractiveElement
-              className={!assignmentToggle ? 'active' : ''}
-              onClick={() => setAssignmentToggle(false)}
-            >
-              Separations
-            </InteractiveElement>
-          </div>
-          {assignmentToggle && assignments?.QRY_LSTASGS_REF?.map(data => (
-            <TabbedCard
-              key={data?.ASG_SEQ_NUM}
-              tabs={[{
-                text: 'Assignment Overview',
-                value: 'ASSIGNMENT',
-                content: <Assignment
-                  perdet={id}
-                  setNewAsgSep={setCardMode}
-                  data={data}
-                  onEditMode={(editMode, dataId) =>
-                    onEditModeSearch(editMode, dataId, setCardsInEditMode, cardsInEditMode)
-                  }
-                  disableEdit={disableEdit}
-                />,
-              }]}
-            />
-          ))}
-          {!assignmentToggle && assignments?.QRY_LSTSEPS_REF?.map(data => (
-            <TabbedCard
-              key={data?.SEP_SEQ_NUM}
-              tabs={[{
-                text: 'Separation Overview',
-                value: 'SEPARATION',
-                content: <Separation
-                  perdet={id}
-                  setNewAsgSep={setCardMode}
-                  data={data}
-                  onEditMode={(editMode, dataId) =>
-                    onEditModeSearch(editMode, dataId, setCardsInEditMode, cardsInEditMode)
-                  }
-                  disableEdit={disableEdit}
-                />,
-              }]}
-            />
-          ))}
-          <ReactModal isOpen={openModal}>
-            <TabbedCard
-              className="modal-child"
-              tabs={[{
-                text: 'New Assignment',
-                value: 'ASSIGNMENT',
-                content: <Assignment
-                  perdet={id}
-                  setNewAsgSep={() => setCardMode('default')}
-                  toggleModal={setOpenModal}
-                  isNew
-                />,
-              }, {
-                text: 'New Separation',
-                value: 'SEPARATION',
-                content: <Separation
-                  perdet={id}
-                  setNewAsgSep={() => setCardMode('default')}
-                  toggleModal={setOpenModal}
-                  isNew
-                />,
-              }]}
-            />
-          </ReactModal>
-        </div>
+        {assignmentToggle && assignments?.QRY_LSTASGS_REF?.map(data => (
+          <TabbedCard
+            key={data?.ASG_SEQ_NUM}
+            tabs={[{
+              text: 'Assignment Overview',
+              value: 'ASSIGNMENT',
+              content: <Assignment
+                perdet={id}
+                setNewAsgSep={setCardMode}
+                data={data}
+                setDisableOtherEdits={setDisableOtherEdits}
+                disableOtherEdits={disableOtherEdits}
+              />,
+            }]}
+          />
+        ))}
+        {!assignmentToggle && assignments?.QRY_LSTSEPS_REF?.map(data => (
+          <TabbedCard
+            key={data?.SEP_SEQ_NUM}
+            tabs={[{
+              text: 'Separation Overview',
+              value: 'SEPARATION',
+              content: <Separation
+                perdet={id}
+                setNewAsgSep={setCardMode}
+                data={data}
+                setDisableOtherEdits={setDisableOtherEdits}
+                disableOtherEdits={disableOtherEdits}
+              />,
+            }]}
+          />
+        ))}
+        <ReactModal isOpen={openModal}>
+          <TabbedCard
+            className="modal-child"
+            tabs={[{
+              text: 'New Assignment',
+              value: 'ASSIGNMENT',
+              content: <Assignment
+                perdet={id}
+                setNewAsgSep={() => setCardMode('default')}
+                toggleModal={setOpenModal}
+                isNew
+              />,
+            }, {
+              text: 'New Separation',
+              value: 'SEPARATION',
+              content: <Separation
+                perdet={id}
+                setNewAsgSep={() => setCardMode('default')}
+                toggleModal={setOpenModal}
+                isNew
+              />,
+            }]}
+          />
+        </ReactModal>
       </div>
     </div>
   );
