@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
+import { useDataLoader } from 'hooks';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
   NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
-import { altAssignment, assignmentSeparationAction } from 'actions/assignment';
+import { assignmentSeparationAction } from 'actions/assignment';
 import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
@@ -17,6 +18,7 @@ import CheckBox from 'Components/CheckBox';
 import MonthYearInput from 'Components/MonthYearInput';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
+import api from '../../../api';
 
 const Assignment = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
@@ -25,9 +27,21 @@ const Assignment = (props) => {
 
   // ====================== Data Retrieval ======================
 
-  const assignmentDetails = useSelector(state => state.altAssignment);
-  const assignmentsDetailsErrored = useSelector(state => state.altAssignmentErrored);
-  const assignmentsDetailsLoading = useSelector(state => state.altAssignmentLoading);
+  const asgId = data?.ASG_SEQ_NUM;
+  const revision_num = data?.ASGD_REVISION_NUM;
+
+  const [refetch, setRefetch] = useState(true);
+  const { data: results, loading: isLoading, error: errored } = useDataLoader(
+    api().get,
+    `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revision_num}`,
+    true,
+    undefined,
+    refetch,
+  );
+
+  const assignmentDetails = results?.data;
+  const assignmentsDetailsErrored = errored;
+  const assignmentsDetailsLoading = isLoading;
 
   const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
   const actionOptions = assignmentDetails?.QRY_LSTLAT_REF;
@@ -36,14 +50,8 @@ const Assignment = (props) => {
   const fundingOptions = assignmentDetails?.QRY_LSTBUREAUS_REF;
   const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
 
-  const asgId = data?.ASG_SEQ_NUM;
-  const revision_num = data?.ASGD_REVISION_NUM;
-
   useEffect(() => {
-    dispatch(altAssignment(perdet, asgId, revision_num));
-    return () => {
-      dispatch(resetPositionsFetchData());
-    };
+    dispatch(resetPositionsFetchData());
   }, []);
 
   // ====================== View Mode ======================
@@ -181,6 +189,7 @@ const Assignment = (props) => {
         perdet,
         asgId, // Use Update Endpoint (Has Seq Num)
         false, // Use Assignment Endpoint
+        () => setRefetch(!refetch), // Refetch Details on Success
       ));
     }
     if (isNew) toggleModal(false);

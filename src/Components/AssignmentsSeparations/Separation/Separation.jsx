@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import { useDataLoader } from 'hooks';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { NO_STATUS, NO_VALUE } from 'Constants/SystemMessages';
 import { resetPositionsFetchData } from 'actions/positions';
-import { altSeparation, assignmentSeparationAction } from 'actions/assignment';
+import { assignmentSeparationAction } from 'actions/assignment';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import CheckBox from 'Components/CheckBox';
@@ -15,6 +16,7 @@ import TMDatePicker from 'Components/TMDatePicker';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations';
+import api from '../../../api';
 
 const Separation = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
@@ -23,23 +25,29 @@ const Separation = (props) => {
 
   // ====================== Data Retrieval ======================
 
-  const separationDetails = useSelector(state => state.altSeparation);
-  const separationDetailsErrored = useSelector(state => state.altSeparationErrored);
-  const separationDetailsLoading = useSelector(state => state.altSeparationLoading);
+  const sepId = data?.SEP_SEQ_NUM;
+  const revision_num = data?.SEPD_REVISION_NUM;
+
+  const [refetch, setRefetch] = useState(true);
+  const { data: results, loading: isLoading, error: errored } = useDataLoader(
+    api().get,
+    `/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revision_num}`,
+    true,
+    undefined,
+    refetch,
+  );
+
+  const separationDetails = results?.data;
+  const separationDetailsErrored = errored;
+  const separationDetailsLoading = isLoading;
 
   const statusOptions = separationDetails?.QRY_LSTASGS_REF;
   const actionOptions = separationDetails?.QRY_LSTLAT_REF;
   const travelOptions = separationDetails?.QRY_LSTTF_REF;
   const waiverOptions = separationDetails?.QRY_LSTWRT_REF;
 
-  const sepId = data?.SEP_SEQ_NUM;
-  const revision_num = data?.SEPD_REVISION_NUM;
-
   useEffect(() => {
-    dispatch(altSeparation(perdet, sepId, revision_num));
-    return () => {
-      dispatch(resetPositionsFetchData());
-    };
+    dispatch(resetPositionsFetchData());
   }, []);
 
   // ====================== View Mode ======================
@@ -137,6 +145,7 @@ const Separation = (props) => {
         perdet,
         sepId, // Use Update Endpoint (Has Seq Num)
         true, // Use Separation Endpoint
+        () => setRefetch(!refetch), // Refetch Details on Success
       ));
     }
     if (isNew) toggleModal(false);
