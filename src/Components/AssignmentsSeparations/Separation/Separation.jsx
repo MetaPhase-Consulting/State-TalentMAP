@@ -49,14 +49,14 @@ const Separation = (props) => {
     refetch,
   );
 
-  const separationDetails = results?.data;
+  const separationDetails = results?.data?.QRY_GETASGDTL_REF?.[0];
   const separationDetailsErrored = errored;
   const separationDetailsLoading = isLoading;
 
-  const statusOptions = separationDetails?.QRY_LSTASGS_REF;
-  const actionOptions = separationDetails?.QRY_LSTLAT_REF;
-  const travelOptions = separationDetails?.QRY_LSTTF_REF;
-  const waiverOptions = separationDetails?.QRY_LSTWRT_REF;
+  const statusOptions = results?.data?.QRY_LSTASGS_REF;
+  const actionOptions = results?.data?.QRY_LSTLAT_REF;
+  const travelOptions = results?.data?.QRY_LSTTF_REF;
+  const waiverOptions = results?.data?.QRY_LSTWRT_REF;
 
   // ====================== View Mode ======================
 

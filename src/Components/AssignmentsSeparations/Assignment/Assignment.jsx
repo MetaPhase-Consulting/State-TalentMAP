@@ -51,16 +51,16 @@ const Assignment = (props) => {
     refetch,
   );
 
-  const assignmentDetails = results?.data;
+  const assignmentDetails = results?.data?.QRY_GETASGDTL_REF?.[0];
   const assignmentsDetailsErrored = errored;
   const assignmentsDetailsLoading = isLoading;
 
-  const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
-  const actionOptions = assignmentDetails?.QRY_LSTLAT_REF;
-  const todOptions = assignmentDetails?.QRY_LSTTOD_REF;
-  const travelOptions = assignmentDetails?.QRY_LSTTF_REF;
-  const fundingOptions = assignmentDetails?.QRY_LSTBUREAUS_REF;
-  const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
+  const statusOptions = results?.data?.QRY_LSTASGS_REF;
+  const actionOptions = results?.data?.QRY_LSTLAT_REF;
+  const todOptions = results?.data?.QRY_LSTTOD_REF;
+  const travelOptions = results?.data?.QRY_LSTTF_REF;
+  const fundingOptions = results?.data?.QRY_LSTBUREAUS_REF;
+  const waiverOptions = results?.data?.QRY_LSTWRT_REF;
 
 
   // ====================== View Mode ======================
