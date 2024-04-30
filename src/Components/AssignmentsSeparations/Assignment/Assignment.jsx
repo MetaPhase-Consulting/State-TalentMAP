@@ -9,7 +9,7 @@ import {
   NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
-import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
+import { altAssignmentFetch, createAssignment, updateAssignment } from 'actions/assignment';
 import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
@@ -26,8 +26,8 @@ const Assignment = (props) => {
   // ====================== Data Retrieval ======================
 
   const assignmentDetails = useSelector(state => state.altAssignmentDetail);
-  const assignmentsDetailsErrored = useSelector(state => state.altAssignmentDetailHasErrored);
-  const assignmentsDetailsLoading = useSelector(state => state.altAssignmentDetailIsLoading);
+  const assignmentsDetailsErrored = useSelector(state => state.altAssignmentErrored);
+  const assignmentsDetailsLoading = useSelector(state => state.altAssignmentLoading);
 
   const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
   const actionOptions = assignmentDetails?.QRY_LSTLAT_REF;
@@ -36,13 +36,10 @@ const Assignment = (props) => {
   const fundingOptions = assignmentDetails?.QRY_LSTBUREAUS_REF;
   const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
 
-  // Asg Detail Data (Not to be confused with the Asg List)
-  const asgDetail = isNew ? {} : assignmentDetails?.QRY_GETASGDTL_REF?.[0];
-
   useEffect(() => {
     const asgId = data?.ASG_SEQ_NUM;
     const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
+    dispatch(altAssignmentFetch(perdet, asgId, revision_num));
     return () => {
       dispatch(resetPositionsFetchData());
     };
@@ -116,42 +113,42 @@ const Assignment = (props) => {
     }
   }, [pos_results]);
 
-  const [status, setStatus] = useState(asgDetail?.ASGS_CODE || '');
-  const [action, setAction] = useState(asgDetail?.LAT_CODE || '');
-  const [ted, setTED] = useState(asgDetail?.ASGD_ETD_TED_DATE);
-  const [eta, setETA] = useState(asgDetail?.ASGD_ETA_DATE);
-  const [tod, setTOD] = useState(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
-  const [travel, setTravel] = useState(asgDetail?.TF_CD || '');
-  const [funding, setFunding] = useState(asgDetail?.ASGD_ORG_CODE);
+  const [status, setStatus] = useState(data?.ASGS_CODE || '');
+  const [action, setAction] = useState(data?.LAT_CODE || '');
+  const [ted, setTED] = useState(data?.ASGD_ETD_TED_DATE);
+  const [eta, setETA] = useState(data?.ASGD_ETA_DATE);
+  const [tod, setTOD] = useState(isNew ? getTOD() : (data?.TOD_CODE || ''));
+  const [travel, setTravel] = useState(data?.TF_CD || '');
+  const [funding, setFunding] = useState(data?.ASGD_ORG_CODE);
   const [adj, setAdj] = useState('');
-  const [salaryReimbursement, setSalaryReimbursement] = useState(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-  const [travelReimbursement, setTravelReimbursement] = useState(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-  const [training, setTraining] = useState(asgDetail?.ASGD_TRIANING_IND === 'Y');
-  const [criticalNeed, setCriticalNeed] = useState(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
-  const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY || '');
-  const [sent, setSent] = useState(asgDetail?.NOTE_LAST_SENT_DATE);
+  const [salaryReimbursement, setSalaryReimbursement] = useState(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+  const [travelReimbursement, setTravelReimbursement] = useState(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+  const [training, setTraining] = useState(data?.ASGD_TRIANING_IND === 'Y');
+  const [criticalNeed, setCriticalNeed] = useState(data?.ASGD_CRITICAL_NEED_IND === 'Y');
+  const [waiver, setWaiver] = useState(data?.WRT_CODE_RR_REPAY || '');
+  const [sent, setSent] = useState(data?.NOTE_LAST_SENT_DATE);
 
   useEffect(() => {
-    setStatus(asgDetail?.ASGS_CODE || '');
-    setAction(asgDetail?.LAT_CODE || '');
-    setTED(asgDetail?.ASGD_ETD_TED_DATE);
-    setETA(asgDetail?.ASGD_ETA_DATE);
-    setTOD(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
-    setTravel(asgDetail?.TF_CD || '');
-    setFunding(asgDetail?.ASGD_ORG_CODE);
+    setStatus(data?.ASGS_CODE || '');
+    setAction(data?.LAT_CODE || '');
+    setTED(data?.ASGD_ETD_TED_DATE);
+    setETA(data?.ASGD_ETA_DATE);
+    setTOD(isNew ? getTOD() : (data?.TOD_CODE || ''));
+    setTravel(data?.TF_CD || '');
+    setFunding(data?.ASGD_ORG_CODE);
     setAdj('');
-    setSalaryReimbursement(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-    setTravelReimbursement(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-    setTraining(asgDetail?.ASGD_TRIANING_IND === 'Y');
-    setCriticalNeed(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
-    setWaiver(asgDetail?.WRT_CODE_RR_REPAY || '');
-    setSent(asgDetail?.NOTE_LAST_SENT_DATE);
+    setSalaryReimbursement(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+    setTravelReimbursement(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+    setTraining(data?.ASGD_TRIANING_IND === 'Y');
+    setCriticalNeed(data?.ASGD_CRITICAL_NEED_IND === 'Y');
+    setWaiver(data?.WRT_CODE_RR_REPAY || '');
+    setSent(data?.NOTE_LAST_SENT_DATE);
   }, []);
 
   const onSubmitForm = () => {
     const formValues = {
-      asg_seq_num: asgDetail?.ASG_SEQ_NUM,
-      asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+      asg_seq_num: data?.ASG_SEQ_NUM,
+      asgd_revision_num: data?.ASGD_REVISION_NUM,
       eta,
       etd: ted,
       tod,
@@ -164,7 +161,7 @@ const Assignment = (props) => {
       lat_code: action,
       travel_code: travel,
       rr_repay_ind: waiver,
-      update_date: asgDetail?.ASGD_UPDATE_DATE,
+      update_date: data?.ASGD_UPDATE_DATE,
     };
     if (isNew) {
       dispatch(createAssignment({
