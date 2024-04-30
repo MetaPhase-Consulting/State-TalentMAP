@@ -38,11 +38,16 @@ const PublishablePositionCard = ({
   additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
+  // !!!!
+  // once we integrate with these, we'll want to update
+  // the Export to show and grab the new values
+  // !!!!
   const additionalRO = [
     { TED: data?.status || DEFAULT_TEXT },
     { Incumbent: data?.status || DEFAULT_TEXT },
     { 'Default TOD': data?.status || DEFAULT_TEXT },
     { Assignee: data?.status || DEFAULT_TEXT },
+    // read comment above
     { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
     { 'Employee ID': data?.status || DEFAULT_TEXT },
     { 'Employee Status': data?.status || DEFAULT_TEXT },
