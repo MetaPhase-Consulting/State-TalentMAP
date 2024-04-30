@@ -184,7 +184,7 @@ export function altSeparation(perdet, sepId, revision_num) {
 
 // ================ CREAT/UPDATE ASSIGNMENT/SEPARATION ================
 
-export function assignmentSeparationAction(query, perdet, id, isSeparation) {
+export function assignmentSeparationAction(query, perdet, id, isSeparation, onSuccess) {
   const type = isSeparation ? 'separations' : 'assignments';
   const updateParam = id ? `${id}/` : '';
   return (dispatch) => {
@@ -193,6 +193,9 @@ export function assignmentSeparationAction(query, perdet, id, isSeparation) {
       .then(() => {
         batch(() => {
           dispatch(altAssignmentsSeparations(perdet));
+          if (onSuccess) {
+            onSuccess();
+          }
         });
       })
       .catch(() => {
