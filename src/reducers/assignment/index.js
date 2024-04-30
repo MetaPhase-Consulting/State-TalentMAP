@@ -1,9 +1,9 @@
 import {
-  altAssignmentErrored,
   altAssignment,
+  altAssignmentErrored,
   altAssignmentLoading,
-  altAssignmentsSeparationsErrored,
   altAssignmentsSeparations,
+  altAssignmentsSeparationsErrored,
   altAssignmentsSeparationsLoading,
   altSeparation,
   altSeparationErrored,
@@ -14,11 +14,11 @@ import {
 } from './assignment';
 
 export default {
-  altAssignmentErrored,
   altAssignment,
+  altAssignmentErrored,
   altAssignmentLoading,
-  altAssignmentsSeparationsErrored,
   altAssignmentsSeparations,
+  altAssignmentsSeparationsErrored,
   altAssignmentsSeparationsLoading,
   altSeparation,
   altSeparationErrored,
