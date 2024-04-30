@@ -19,7 +19,7 @@ import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations'
 import api from '../../../api';
 
 const Separation = (props) => {
-  const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
+  const { perdet, data, isNew, setNewAsgSep, toggleModal, onEditMode, disableEdit } = props;
 
   const dispatch = useDispatch();
 
@@ -90,16 +90,19 @@ const Separation = (props) => {
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    setStatus(data?.ASGS_CODE || '');
-    setAction(data?.LAT_CODE || '');
-    setWaiver(data?.WRT_CODE_RR_REPAY || '');
-    setTravel(data?.TF_CD || '');
-    setSeparationDate(data?.SEPD_SEPARATION_DATE ?
-      new Date(data?.SEPD_SEPARATION_DATE) : null);
-    setUsIndicator(data?.SEPD_US_IND === 'Y');
-    setPanelMeetingDate(data?.PMD_DTTM ? new Date(data?.PMD_DTTM) : null);
-    setLocation(null);
-  }, []);
+    if (editMode) {
+      onEditMode(editMode, sepId);
+      setStatus(data?.ASGS_CODE || '');
+      setAction(data?.LAT_CODE || '');
+      setWaiver(data?.WRT_CODE_RR_REPAY || '');
+      setTravel(data?.TF_CD || '');
+      setSeparationDate(data?.SEPD_SEPARATION_DATE ?
+        new Date(data?.SEPD_SEPARATION_DATE) : null);
+      setUsIndicator(data?.SEPD_US_IND === 'Y');
+      setPanelMeetingDate(data?.PMD_DTTM ? new Date(data?.PMD_DTTM) : null);
+      setLocation(null);
+    }
+  }, [editMode]);
 
   const locationString = () => {
     let displayText;
@@ -168,7 +171,7 @@ const Separation = (props) => {
                 Select Status
               </option>
               {statusOptions?.map(s => (
-                <option value={s.ASGS_CODE}>
+                <option key={s.ASGS_CODE} value={s.ASGS_CODE}>
                   {s.ASGS_DESC_TEXT}
                 </option>
               ))}
@@ -185,7 +188,7 @@ const Separation = (props) => {
                 Select Action
               </option>
               {actionOptions?.map(a => (
-                <option value={a.LAT_CODE}>
+                <option key={a.LAT_CODE} value={a.LAT_CODE}>
                   {a.LAT_ABBR_DESC_TEXT}
                 </option>
               ))}
@@ -202,7 +205,7 @@ const Separation = (props) => {
                 Select Waiver
               </option>
               {waiverOptions?.map(w => (
-                <option value={w.WRT_CODE}>
+                <option key={w.WRT_CODE} value={w.WRT_CODE}>
                   {w.WRT_DESC}
                 </option>
               ))}
@@ -219,7 +222,7 @@ const Separation = (props) => {
                 Select Travel
               </option>
               {travelOptions?.map(t => (
-                <option value={t.TF_CODE}>
+                <option key={t.TF_CODE} value={t.TF_CODE}>
                   {t.TF_SHORT_DESC_TEXT}
                 </option>
               ))}
@@ -296,6 +299,7 @@ const Separation = (props) => {
     handleEdit: {
       editMode,
       setEditMode: isNew ? null : setEditMode,
+      disableEdit,
     },
     // TO-DO: DIP, MEMO, NOTE
     /* eslint-enable quote-props */
@@ -333,6 +337,8 @@ Separation.propTypes = {
   setNewAsgSep: PropTypes.func,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
+  onEditMode: PropTypes.func,
+  disableEdit: PropTypes.bool,
 };
 
 Separation.defaultProps = {
@@ -341,6 +347,8 @@ Separation.defaultProps = {
   setNewAsgSep: EMPTY_FUNCTION,
   toggleModal: EMPTY_FUNCTION,
   perdet: '',
+  onEditMode: EMPTY_FUNCTION,
+  disableEdit: false,
 };
 
 export default Separation;

@@ -21,7 +21,7 @@ import PositionExpandableContent from 'Components/PositionExpandableContent';
 import api from '../../../api';
 
 const Assignment = (props) => {
-  const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
+  const { perdet, data, isNew, setNewAsgSep, toggleModal, onEditMode, disableEdit } = props;
 
   const dispatch = useDispatch();
 
@@ -132,27 +132,30 @@ const Assignment = (props) => {
   const [adj, setAdj] = useState('');
   const [salaryReimbursement, setSalaryReimbursement] = useState(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
   const [travelReimbursement, setTravelReimbursement] = useState(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-  const [training, setTraining] = useState(data?.ASGD_TRIANING_IND === 'Y');
+  const [training, setTraining] = useState(data?.ASGD_TRAINING_IND === 'Y');
   const [criticalNeed, setCriticalNeed] = useState(data?.ASGD_CRITICAL_NEED_IND === 'Y');
   const [waiver, setWaiver] = useState(data?.WRT_CODE_RR_REPAY || '');
   const [sent, setSent] = useState(data?.NOTE_LAST_SENT_DATE);
 
   useEffect(() => {
-    setStatus(data?.ASGS_CODE || '');
-    setAction(data?.LAT_CODE || '');
-    setTED(data?.ASGD_ETD_TED_DATE);
-    setETA(data?.ASGD_ETA_DATE);
-    setTOD(isNew ? getTOD() : (data?.TOD_CODE || ''));
-    setTravel(data?.TF_CD || '');
-    setFunding(data?.ASGD_ORG_CODE);
-    setAdj('');
-    setSalaryReimbursement(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-    setTravelReimbursement(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-    setTraining(data?.ASGD_TRIANING_IND === 'Y');
-    setCriticalNeed(data?.ASGD_CRITICAL_NEED_IND === 'Y');
-    setWaiver(data?.WRT_CODE_RR_REPAY || '');
-    setSent(data?.NOTE_LAST_SENT_DATE);
-  }, []);
+    if (editMode) {
+      onEditMode(editMode, asgId);
+      setStatus(data?.ASGS_CODE || '');
+      setAction(data?.LAT_CODE || '');
+      setTED(data?.ASGD_ETD_TED_DATE);
+      setETA(data?.ASGD_ETA_DATE);
+      setTOD(isNew ? getTOD() : (data?.TOD_CODE || ''));
+      setTravel(data?.TF_CD || '');
+      setFunding(data?.ASGD_ORG_CODE);
+      setAdj('');
+      setSalaryReimbursement(data?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+      setTravelReimbursement(data?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+      setTraining(data?.ASGD_TRAINING_IND === 'Y');
+      setCriticalNeed(data?.ASGD_CRITICAL_NEED_IND === 'Y');
+      setWaiver(data?.WRT_CODE_RR_REPAY || '');
+      setSent(data?.NOTE_LAST_SENT_DATE);
+    }
+  }, [editMode]);
 
   const onSubmitForm = () => {
     const formValues = {
@@ -250,7 +253,7 @@ const Assignment = (props) => {
                 Select Status
               </option>
               {statusOptions?.map(s => (
-                <option value={s.ASGS_CODE}>
+                <option key={s.ASGS_CODE} value={s.ASGS_CODE}>
                   {s.ASGS_DESC_TEXT}
                 </option>
               ))}
@@ -267,7 +270,7 @@ const Assignment = (props) => {
                 Select Action
               </option>
               {actionOptions?.map(a => (
-                <option value={a.LAT_CODE}>
+                <option key={a.LAT_CODE} value={a.LAT_CODE}>
                   {a.LAT_ABBR_DESC_TEXT}
                 </option>
               ))}
@@ -292,7 +295,7 @@ const Assignment = (props) => {
                 Select TOD
               </option>
               {todOptions?.map(t => (
-                <option value={t.TOD_CODE}>
+                <option key={t.TOD_CODE} value={t.TOD_CODE}>
                   {t.TOD_DESC_TEXT}
                 </option>
               ))}
@@ -309,7 +312,7 @@ const Assignment = (props) => {
                 Select Travel
               </option>
               {travelOptions?.map(t => (
-                <option value={t.TF_CODE}>
+                <option key={t.TF_CODE} value={t.TF_CODE}>
                   {t.TF_SHORT_DESC_TEXT}
                 </option>
               ))}
@@ -326,7 +329,7 @@ const Assignment = (props) => {
                 Select Funding Org
               </option>
               {fundingOptions?.map(f => (
-                <option value={f.ORG_CODE}>
+                <option key={f.ORG_CODE} value={f.ORG_CODE}>
                   {f.ORGS_SHORT_DESC}
                 </option>
               ))}
@@ -381,7 +384,7 @@ const Assignment = (props) => {
                 Select Waiver
               </option>
               {waiverOptions?.map(w => (
-                <option value={w.WRT_CODE}>
+                <option key={w.WRT_CODE} value={w.WRT_CODE}>
                   {w.WRT_DESC}
                 </option>
               ))}
@@ -403,6 +406,7 @@ const Assignment = (props) => {
     handleEdit: {
       editMode,
       setEditMode: isNew ? null : setEditMode,
+      disableEdit,
     },
     // TO-DO: DIP, MEMO, NOTE
     /* eslint-enable quote-props */
@@ -443,6 +447,8 @@ Assignment.propTypes = {
   setNewAsgSep: PropTypes.func,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
+  onEditMode: PropTypes.func,
+  disableEdit: PropTypes.bool,
 };
 
 Assignment.defaultProps = {
@@ -451,6 +457,8 @@ Assignment.defaultProps = {
   setNewAsgSep: EMPTY_FUNCTION,
   toggleModal: EMPTY_FUNCTION,
   perdet: '',
+  onEditMode: EMPTY_FUNCTION,
+  disableEdit: false,
 };
 
 export default Assignment;
