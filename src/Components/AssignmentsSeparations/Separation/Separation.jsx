@@ -126,7 +126,7 @@ const Separation = (props) => {
     const state = location?.state;
     const country = location?.country;
     const commonFields = {
-      location_code: null,
+      location_code: location?.code,
       separation_date: separationDate,
       city_text: location?.city,
       country_state_text: (state && country) ? `${state}, ${country}` : state || country || null,
