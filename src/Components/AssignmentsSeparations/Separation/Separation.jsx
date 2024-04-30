@@ -49,7 +49,7 @@ const Separation = (props) => {
     refetch,
   );
 
-  const separationDetails = results?.data?.QRY_GETASGDTL_REF?.[0];
+  const separationDetails = results?.data?.QRY_GETSEPDTL_REF?.[0];
   const separationDetailsErrored = errored;
   const separationDetailsLoading = isLoading;
 
