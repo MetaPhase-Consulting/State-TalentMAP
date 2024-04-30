@@ -373,6 +373,7 @@ const AgendaItemMaintenancePane = (props) => {
             <button
               className="delete-btn min-width-155"
               onClick={removeAI}
+              disabled={agendaItem?.pmi_official_item_num}
             >
               Delete Agenda Item
             </button>
