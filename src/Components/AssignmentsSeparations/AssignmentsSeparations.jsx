@@ -162,6 +162,7 @@ const AssignmentsSeparations = (props) => {
           </div>
           {assignmentToggle && assignments?.QRY_LSTASGS_REF?.map(data => (
             <TabbedCard
+              key={data?.ASG_SEQ_NUM}
               tabs={[{
                 text: 'Assignment Overview',
                 value: 'ASSIGNMENT',
@@ -179,6 +180,7 @@ const AssignmentsSeparations = (props) => {
           ))}
           {!assignmentToggle && assignments?.QRY_LSTSEPS_REF?.map(data => (
             <TabbedCard
+              key={data?.SEP_SEQ_NUM}
               tabs={[{
                 text: 'Separation Overview',
                 value: 'SEPARATION',
