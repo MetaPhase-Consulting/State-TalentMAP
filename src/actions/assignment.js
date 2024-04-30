@@ -117,8 +117,9 @@ export function altAssignment(perdet, asgId, revision_num) {
       dispatch(altAssignmentLoading(true));
       dispatch(altAssignmentErrored(false));
     });
+    const base = `/fsbid/assignment_history/${perdet}/assignments`;
     api()
-      .get(`/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revision_num}`)
+      .get(`${base}/${asgId || ''}/?revision_num=${revision_num || ''}`)
       .then(({ data }) => {
         batch(() => {
           dispatch(altAssignmentSuccess(data));
@@ -163,8 +164,9 @@ export function altSeparation(perdet, sepId, revision_num) {
       dispatch(altSeparationLoading(true));
       dispatch(altSeparationErrored(false));
     });
+    const base = `/fsbid/assignment_history/${perdet}/separations`;
     api()
-      .get(`/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revision_num}`)
+      .get(`${base}/${sepId || ''}/?revision_num=${revision_num || ''}`)
       .then(({ data }) => {
         batch(() => {
           dispatch(altSeparationSuccess(data));
@@ -189,7 +191,7 @@ export function assignmentSeparationAction(query, perdet, id, isSeparation, onSu
   const updateParam = id ? `${id}/` : '';
   return (dispatch) => {
     api()
-      .patch(`/fsbid/assignment_history/${perdet}/${type}/${updateParam}`, query)
+      .post(`/fsbid/assignment_history/${perdet}/${type}/${updateParam}`, query)
       .then(() => {
         batch(() => {
           dispatch(altAssignmentsSeparations(perdet));
