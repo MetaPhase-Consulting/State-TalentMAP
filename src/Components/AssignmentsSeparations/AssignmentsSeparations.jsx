@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { checkFlag } from 'flags';
 import FA from 'react-fontawesome';
-import { useDataLoader } from 'hooks';
 import PropTypes from 'prop-types';
-import { altAssignmentFetchData } from 'actions/assignment';
+import { checkFlag } from 'flags';
+import { useDataLoader } from 'hooks';
+import { altAssignmentsFetch } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import TabbedCard from 'Components/TabbedCard';
@@ -19,9 +19,19 @@ const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
 
 const AssignmentsSeparations = (props) => {
-  const assignments = useSelector(state => state.altAssignment);
-  const assignmentsErrored = useSelector(state => state.altAssignmentHasErrored);
-  const assignmentsLoading = useSelector(state => state.altAssignmentIsLoading);
+  const id = props?.match.params.id;
+
+  const dispatch = useDispatch();
+
+  const assignments = useSelector(state => state.altAssignmentsFetch);
+  const assignmentsErrored = useSelector(state => state.altAssignmentsErrored);
+  const assignmentsLoading = useSelector(state => state.altAssignmentsLoading);
+
+  // Track if individual card data fetch has errored or is loading to display overlay on parent
+  // const assignmentsDetailsErrored = useSelector(state => state.altAssignmentErrored);
+  // const assignmentsDetailsLoading = useSelector(state => state.altAssignmentLoading);
+  // const separationDetailsErrored = useSelector(state => state.altSeparationErrored);
+  // const separationDetailsLoading = useSelector(state => state.altSeparationLoading);
 
   const [assignmentToggle, setAssignmentToggle] = useState(true);
 
@@ -38,25 +48,18 @@ const AssignmentsSeparations = (props) => {
     }
   }, [openModal]);
 
-  const id = props?.match.params.id;
-
   // eslint-disable-next-line no-unused-vars
   const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
-
   const employeeData$ = employeeData?.data;
   const employeeName = employeeDataLoading ? '' : employeeData$?.name;
-
 
   // eslint-disable-next-line no-unused-vars
   const hideBreadcrumbs = checkFlag('flags.breadcrumbs');
   // cleanup role check links for breadcrumbs
   const breadcrumbLinkRole = 'ao';
 
-  const dispatch = useDispatch();
-
-
   useEffect(() => {
-    dispatch(altAssignmentFetchData(id));
+    dispatch(altAssignmentsFetch(id));
   }, [id]);
 
   const noResults = assignments?.length === 0;
@@ -75,8 +78,7 @@ const AssignmentsSeparations = (props) => {
     return overlay;
   };
 
-  return (
-    getOverlay() ||
+  return (getOverlay() ||
     <div className="assignments-maintenance-page position-search">
       <div className="asg-content">
         {false &&
@@ -101,9 +103,10 @@ const AssignmentsSeparations = (props) => {
           </span>
         </div>
         <div className="pt-20 asg-subheader">
-          Review the current assignments/separations or
-          add assignments/separations for {employeeName}
-          <div>
+          <span>
+            Add or review the current assignments or separations for {employeeName}
+          </span>
+          <div className="add-buttons">
             <div className="create-new-button">
               <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
                 <FA name="briefcase" />
@@ -143,7 +146,7 @@ const AssignmentsSeparations = (props) => {
               Separations
             </InteractiveElement>
           </div>
-          {assignmentToggle && assignments?.map(data => (
+          {assignmentToggle && assignments?.QRY_LSTASGS_REF?.map(data => (
             <TabbedCard
               tabs={[{
                 text: 'Assignment Overview',
@@ -156,7 +159,7 @@ const AssignmentsSeparations = (props) => {
               }]}
             />
           ))}
-          {!assignmentToggle && assignments?.map(data => (
+          {!assignmentToggle && assignments?.QRY_LSTSEPS_REF?.map(data => (
             <TabbedCard
               tabs={[{
                 text: 'Separation Overview',
