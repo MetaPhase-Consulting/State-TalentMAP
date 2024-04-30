@@ -9,7 +9,7 @@ import {
   NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
-import { altAssignmentFetch, createAssignment, updateAssignment } from 'actions/assignment';
+import { altAssignment, assignmentSeparationAction } from 'actions/assignment';
 import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
@@ -25,7 +25,7 @@ const Assignment = (props) => {
 
   // ====================== Data Retrieval ======================
 
-  const assignmentDetails = useSelector(state => state.altAssignmentDetail);
+  const assignmentDetails = useSelector(state => state.altAssignment);
   const assignmentsDetailsErrored = useSelector(state => state.altAssignmentErrored);
   const assignmentsDetailsLoading = useSelector(state => state.altAssignmentLoading);
 
@@ -39,7 +39,7 @@ const Assignment = (props) => {
   useEffect(() => {
     const asgId = data?.ASG_SEQ_NUM;
     const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altAssignmentFetch(perdet, asgId, revision_num));
+    dispatch(altAssignment(perdet, asgId, revision_num));
     return () => {
       dispatch(resetPositionsFetchData());
     };
@@ -164,13 +164,23 @@ const Assignment = (props) => {
       update_date: data?.ASGD_UPDATE_DATE,
     };
     if (isNew) {
-      dispatch(createAssignment({
-        ...formValues,
-      }, perdet));
+      dispatch(assignmentSeparationAction(
+        {
+          ...formValues,
+        },
+        perdet,
+        null, // Use Create Endpoint (No Seq Num)
+        false, // Use Assignment Endpoint
+      ));
     } else {
-      dispatch(updateAssignment({
-        ...formValues,
-      }, perdet));
+      dispatch(assignmentSeparationAction(
+        {
+          ...formValues,
+        },
+        perdet,
+        asgId, // Use Update Endpoint (Has Seq Num)
+        false, // Use Assignment Endpoint
+      ));
     }
     if (isNew) toggleModal(false);
     setNewAsgSep('default');

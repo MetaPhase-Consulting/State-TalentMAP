@@ -7,7 +7,7 @@ import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { NO_STATUS, NO_VALUE } from 'Constants/SystemMessages';
 import { resetPositionsFetchData } from 'actions/positions';
-import { altSeparation, createSeparation, updateSeparation } from 'actions/assignment';
+import { altSeparation, assignmentSeparationAction } from 'actions/assignment';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import CheckBox from 'Components/CheckBox';
@@ -32,10 +32,11 @@ const Separation = (props) => {
   const travelOptions = separationDetails?.QRY_LSTTF_REF;
   const waiverOptions = separationDetails?.QRY_LSTWRT_REF;
 
+  const sepId = data?.SEP_SEQ_NUM;
+  const revision_num = data?.SEPD_REVISION_NUM;
+
   useEffect(() => {
-    const asgId = data?.ASG_SEQ_NUM;
-    const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altSeparation(perdet, asgId, revision_num));
+    dispatch(altSeparation(perdet, sepId, revision_num));
     return () => {
       dispatch(resetPositionsFetchData());
     };
@@ -115,18 +116,28 @@ const Separation = (props) => {
       note: null,
     };
     if (isNew) {
-      dispatch(createSeparation({
-        ...formValues,
-        employee: null,
-      }, perdet));
+      dispatch(assignmentSeparationAction(
+        {
+          ...formValues,
+          employee: null,
+        },
+        perdet,
+        null, // Use Create Endpoint (No Seq Num)
+        true, // Use Separation Endpoint
+      ));
     } else {
-      dispatch(updateSeparation({
-        ...formValues,
-        sep_seq_num: null,
-        updater_id: null,
-        updated_date: null,
-        sep_revision_number: null,
-      }, perdet));
+      dispatch(assignmentSeparationAction(
+        {
+          ...formValues,
+          sep_seq_num: null,
+          updater_id: null,
+          updated_date: null,
+          sep_revision_number: null,
+        },
+        perdet,
+        sepId, // Use Update Endpoint (Has Seq Num)
+        true, // Use Separation Endpoint
+      ));
     }
     if (isNew) toggleModal(false);
     setNewAsgSep('default');
