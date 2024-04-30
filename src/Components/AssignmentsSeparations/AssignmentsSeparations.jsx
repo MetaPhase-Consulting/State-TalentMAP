@@ -5,6 +5,7 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { useDataLoader } from 'hooks';
+import { onEditModeSearch } from 'utilities';
 import { altAssignmentsSeparations } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
@@ -39,6 +40,9 @@ const AssignmentsSeparations = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [cardMode, setCardMode] = useState('default');
   const [openModal, setOpenModal] = useState(false);
+  const [cardsInEditMode, setCardsInEditMode] = useState([]);
+  const disableEdit = cardsInEditMode?.length > 0;
+  console.log(cardsInEditMode);
 
   useEffect(() => {
     if (openModal) {
@@ -131,6 +135,16 @@ const AssignmentsSeparations = (props) => {
             }
           </div>
         </div>
+        {disableEdit &&
+          <Alert
+            type="warning"
+            title={'Edit Mode'}
+            customClassName="mb-10"
+            messages={[{
+              body: 'Discard or save your edits before editing another card.',
+            }]}
+          />
+        }
         <div className="asg-lower-section">
           <div className="results-mode">
             <InteractiveElement
@@ -155,6 +169,10 @@ const AssignmentsSeparations = (props) => {
                   perdet={id}
                   setNewAsgSep={setCardMode}
                   data={data}
+                  onEditMode={(editMode, dataId) =>
+                    onEditModeSearch(editMode, dataId, setCardsInEditMode, cardsInEditMode)
+                  }
+                  disableEdit={disableEdit}
                 />,
               }]}
             />
@@ -168,6 +186,10 @@ const AssignmentsSeparations = (props) => {
                   perdet={id}
                   setNewAsgSep={setCardMode}
                   data={data}
+                  onEditMode={(editMode, dataId) =>
+                    onEditModeSearch(editMode, dataId, setCardsInEditMode, cardsInEditMode)
+                  }
+                  disableEdit={disableEdit}
                 />,
               }]}
             />
