@@ -25,9 +25,9 @@ export function assignment(state = [], action) {
   }
 }
 
-// ================ ALTERNATIVE ASSIGNMENT LIST ================
+// ================ ALTERNATIVE ASSIGNMENTS AND SEPARATIONS LIST ================
 
-export function altAssignmentsErrored(state = false, action) {
+export function altAssignmentsSeparationsErrored(state = false, action) {
   switch (action.type) {
     case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_ERRORED':
       return action.hasErrored;
@@ -35,7 +35,7 @@ export function altAssignmentsErrored(state = false, action) {
       return state;
   }
 }
-export function altAssignmentsLoading(state = true, action) {
+export function altAssignmentsSeparationsLoading(state = true, action) {
   switch (action.type) {
     case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_LOADING':
       return action.isLoading;
@@ -43,7 +43,7 @@ export function altAssignmentsLoading(state = true, action) {
       return state;
   }
 }
-export function altAssignmentsFetch(state = [], action) {
+export function altAssignmentsSeparations(state = [], action) {
   switch (action.type) {
     case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_SUCCESS':
       return action.data;
@@ -70,7 +70,7 @@ export function altAssignmentLoading(state = true, action) {
       return state;
   }
 }
-export function altAssignmentFetch(state = [], action) {
+export function altAssignment(state = [], action) {
   switch (action.type) {
     case 'ALT_ASSIGNMENT_FETCH_SUCCESS':
       return action.data;
