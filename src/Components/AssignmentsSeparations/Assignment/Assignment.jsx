@@ -138,8 +138,8 @@ const Assignment = (props) => {
   const [sent, setSent] = useState(data?.NOTE_LAST_SENT_DATE);
 
   useEffect(() => {
+    onEditMode(editMode, asgId);
     if (editMode) {
-      onEditMode(editMode, asgId);
       setStatus(data?.ASGS_CODE || '');
       setAction(data?.LAT_CODE || '');
       setTED(data?.ASGD_ETD_TED_DATE);

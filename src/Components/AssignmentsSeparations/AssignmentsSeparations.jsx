@@ -42,7 +42,6 @@ const AssignmentsSeparations = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableEdit = cardsInEditMode?.length > 0;
-  console.log(cardsInEditMode);
 
   useEffect(() => {
     if (openModal) {

@@ -90,8 +90,8 @@ const Separation = (props) => {
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
+    onEditMode(editMode, sepId);
     if (editMode) {
-      onEditMode(editMode, sepId);
       setStatus(data?.ASGS_CODE || '');
       setAction(data?.LAT_CODE || '');
       setWaiver(data?.WRT_CODE_RR_REPAY || '');
