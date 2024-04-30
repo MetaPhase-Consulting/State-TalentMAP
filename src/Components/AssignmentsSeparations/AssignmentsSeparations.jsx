@@ -28,17 +28,11 @@ const AssignmentsSeparations = (props) => {
   const assignmentsErrored = useSelector(state => state.altAssignmentsSeparationsErrored);
   const assignmentsLoading = useSelector(state => state.altAssignmentsSeparationsLoading);
 
-  // Track if individual card data fetch has errored or is loading to display overlay on parent
-  // const assignmentsDetailsErrored = useSelector(state => state.altAssignmentErrored);
-  // const assignmentsDetailsLoading = useSelector(state => state.altAssignmentLoading);
-  // const separationDetailsErrored = useSelector(state => state.altSeparationErrored);
-  // const separationDetailsLoading = useSelector(state => state.altSeparationLoading);
-
-  const [assignmentToggle, setAssignmentToggle] = useState(true);
 
   // default || memo || notification
   // eslint-disable-next-line no-unused-vars
   const [cardMode, setCardMode] = useState('default');
+  const [assignmentToggle, setAssignmentToggle] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableEdit = cardsInEditMode?.length > 0;
