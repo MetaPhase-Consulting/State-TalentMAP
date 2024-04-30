@@ -6,8 +6,8 @@ import { get } from 'lodash';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { NO_STATUS, NO_VALUE } from 'Constants/SystemMessages';
-import { altAssignmentDetailFetchData } from 'actions/assignment';
 import { resetPositionsFetchData } from 'actions/positions';
+import { altSeparation, createSeparation, updateSeparation } from 'actions/assignment';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import CheckBox from 'Components/CheckBox';
@@ -15,7 +15,6 @@ import TMDatePicker from 'Components/TMDatePicker';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations';
-import { createSeparation, separationDetail, updateSeparation } from '../../../actions/assignment';
 
 const Separation = (props) => {
   const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
@@ -24,23 +23,19 @@ const Separation = (props) => {
 
   // ====================== Data Retrieval ======================
 
-  const assignmentDetails = useSelector(state => state.altAssignmentDetail);
-  const assignmentsDetailsErrored = useSelector(state => state.altAssignmentDetailHasErrored);
-  const assignmentsDetailsLoading = useSelector(state => state.altAssignmentDetailIsLoading);
+  const separationDetails = useSelector(state => state.altSeparation);
+  const separationDetailsErrored = useSelector(state => state.altSeparationErrored);
+  const separationDetailsLoading = useSelector(state => state.altSeparationLoading);
 
-  const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
-  const actionOptions = assignmentDetails?.QRY_LSTLAT_REF;
-  const travelOptions = assignmentDetails?.QRY_LSTTF_REF;
-  const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
-
-  // Asg Detail Data (Not to be confused with the Asg List)
-  const asgDetail = isNew ? {} : assignmentDetails?.QRY_GETASGDTL_REF?.[0];
+  const statusOptions = separationDetails?.QRY_LSTASGS_REF;
+  const actionOptions = separationDetails?.QRY_LSTLAT_REF;
+  const travelOptions = separationDetails?.QRY_LSTTF_REF;
+  const waiverOptions = separationDetails?.QRY_LSTWRT_REF;
 
   useEffect(() => {
     const asgId = data?.ASG_SEQ_NUM;
     const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
-    dispatch(separationDetail(perdet, asgId, revision_num));
+    dispatch(altSeparation(perdet, asgId, revision_num));
     return () => {
       dispatch(resetPositionsFetchData());
     };
@@ -51,14 +46,14 @@ const Separation = (props) => {
   const sections = {
     /* eslint-disable quote-props */
     bodyPrimary: [
-      { 'Status': getResult(data, 'status') || NO_STATUS },
-      { 'Action': getResult(data, 'action') || NO_VALUE },
-      { 'Waiver': getResult(data, 'waiver') || NO_VALUE },
-      { 'Travel': get(data, 'travel') || NO_VALUE },
-      { 'Separation Date': getResult(data, 'separation_date') || NO_VALUE },
-      { 'US Indicator': getResult(data, 'us_indicator') || NO_VALUE },
-      { 'Panel Meeting Date': getResult(data, 'panel_meeting_date') || NO_VALUE },
-      { 'Location': get(data, 'location') || NO_VALUE },
+      { 'Status': getResult(data, 'ASGS_CODE') || NO_STATUS },
+      { 'Action': getResult(data, 'LAT_CODE') || NO_VALUE },
+      { 'Waiver': getResult(data, 'WRT_CODE_RR_REPAY') || NO_VALUE },
+      { 'Travel': get(data, 'TF_CD') || NO_VALUE },
+      { 'Separation Date': getResult(data, 'SEPD_SEPARATION_DATE') || NO_VALUE },
+      { 'US Indicator': getResult(data, 'SEPD_US_IND') || NO_VALUE },
+      { 'Panel Meeting Date': getResult(data, 'PMD_DTTM') || NO_VALUE },
+      { 'Location': get(data, 'location') || NO_VALUE }, // TODO: format location string
     ],
     /* eslint-enable quote-props */
   };
@@ -66,7 +61,7 @@ const Separation = (props) => {
   if (!isNew) {
     /* eslint-disable quote-props */
     sections.subheading = [
-      { 'Name': asgDetail?.name || NO_VALUE },
+      { 'Name': data?.EMP_FULL_NAME || NO_VALUE },
     ];
     /* eslint-enable quote-props */
   }
@@ -86,13 +81,14 @@ const Separation = (props) => {
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    setStatus(asgDetail?.status || '');
-    setAction(asgDetail?.action || '');
-    setWaiver(asgDetail?.waiver || '');
-    setTravel(asgDetail?.travel || '');
-    setSeparationDate(asgDetail?.separation_date || null);
-    setUsIndicator(asgDetail?.us_indicator === 'Y');
-    setPanelMeetingDate(asgDetail?.panel_meeting_date || null);
+    setStatus(data?.ASGS_CODE || '');
+    setAction(data?.LAT_CODE || '');
+    setWaiver(data?.WRT_CODE_RR_REPAY || '');
+    setTravel(data?.TF_CD || '');
+    setSeparationDate(data?.SEPD_SEPARATION_DATE ?
+      new Date(data?.SEPD_SEPARATION_DATE) : null);
+    setUsIndicator(data?.SEPD_US_IND === 'Y');
+    setPanelMeetingDate(data?.PMD_DTTM ? new Date(data?.PMD_DTTM) : null);
     setLocation(null);
   }, []);
 
@@ -108,14 +104,12 @@ const Separation = (props) => {
   const onSubmitForm = () => {
     const { state, country } = location;
     const formValues = {
-      emp_seq_nbr: null,
-      dsc_cd: null,
+      location_code: null,
       separation_date: separationDate,
       city_text: location?.city || null,
       country_state_text: (state && country) ? `${state}, ${country}` : state || country || null,
       us_ind: usIndicator ? 'Y' : 'N',
       status_code: status,
-      lat_code: action,
       travel_code: travel,
       rr_repay_ind: waiver,
       note: null,
@@ -123,10 +117,15 @@ const Separation = (props) => {
     if (isNew) {
       dispatch(createSeparation({
         ...formValues,
+        employee: null,
       }, perdet));
     } else {
       dispatch(updateSeparation({
         ...formValues,
+        sep_seq_num: null,
+        updater_id: null,
+        updated_date: null,
+        sep_revision_number: null,
       }, perdet));
     }
     if (isNew) toggleModal(false);
@@ -236,6 +235,7 @@ const Separation = (props) => {
               showYearDropdown
               isClearable
               type="form"
+              disabled
             />
           </div>
           <div className="position-form--label-input-container gsa-location-input">
@@ -283,9 +283,9 @@ const Separation = (props) => {
 
   const getOverlay = () => {
     let overlay;
-    if (assignmentsDetailsLoading) {
+    if (separationDetailsLoading) {
       overlay = <Spinner type="standard-center" size="small" />;
-    } else if (assignmentsDetailsErrored) {
+    } else if (separationDetailsErrored) {
       overlay = <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
     } else {
       return false;
