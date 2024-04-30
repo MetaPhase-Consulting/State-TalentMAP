@@ -5,7 +5,7 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { useDataLoader } from 'hooks';
-import { altAssignmentsFetch } from 'actions/assignment';
+import { altAssignmentsSeparations } from 'actions/assignment';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import TabbedCard from 'Components/TabbedCard';
@@ -23,9 +23,9 @@ const AssignmentsSeparations = (props) => {
 
   const dispatch = useDispatch();
 
-  const assignments = useSelector(state => state.altAssignmentsFetch);
-  const assignmentsErrored = useSelector(state => state.altAssignmentsErrored);
-  const assignmentsLoading = useSelector(state => state.altAssignmentsLoading);
+  const assignments = useSelector(state => state.altAssignmentsSeparations);
+  const assignmentsErrored = useSelector(state => state.altAssignmentsSeparationsErrored);
+  const assignmentsLoading = useSelector(state => state.altAssignmentsSeparationsLoading);
 
   // Track if individual card data fetch has errored or is loading to display overlay on parent
   // const assignmentsDetailsErrored = useSelector(state => state.altAssignmentErrored);
@@ -59,7 +59,7 @@ const AssignmentsSeparations = (props) => {
   const breadcrumbLinkRole = 'ao';
 
   useEffect(() => {
-    dispatch(altAssignmentsFetch(id));
+    dispatch(altAssignmentsSeparations(id));
   }, [id]);
 
   const noResults = assignments?.length === 0;
