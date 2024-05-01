@@ -39,7 +39,7 @@
   font-size: 0;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, .4);
-  z-index: 10000;
+  z-index: 1600;
   pointer-events: none;
   display: flex;
   justify-content: center;
@@ -47,6 +47,18 @@
 }
 
 .modal-container {
+  position: relative;
+
+  .modal-close {
+    position: relative;
+    top: 100px;
+    right: 100px;
+    color: $alert-red;
+    z-index: 1601;
+    display: inline;
+    height: 40px;
+  }
+
   .modal-child {
     width: 1200px;
     max-width: calc(100vw - 100px);
@@ -56,6 +68,11 @@
     pointer-events: auto;
     overflow-y: auto;
     margin-block: 0px;
+    z-index: 1600;
+  }
+
+  .tm-spinner-standard-center {
+    left: 50% !important;
   }
 }
 
