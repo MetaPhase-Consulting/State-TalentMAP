@@ -55,6 +55,10 @@
 .gsa-location-input {
   position: relative;
 
+  input {
+    padding-right: 55px;
+  }
+
   .remove-location,
   .search-location {
     position: absolute;
@@ -118,6 +122,11 @@
 
     &.active {
       border-bottom: 3px solid $blue-primary;
+    }
+
+    &.disabled {
+      color: $bg-gray-dark-2;
+      pointer-events: none;
     }
   }
 }
