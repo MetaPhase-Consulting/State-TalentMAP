@@ -55,6 +55,10 @@ const AssignmentsSeparations = (props) => {
   const [disableOtherEdits, setDisableOtherEdits] = useState(false);
 
   useEffect(() => {
+    setDisableOtherEdits(false);
+  }, []);
+
+  useEffect(() => {
     if (openModal) {
       document.body.classList.add('modal-open');
     } else {
@@ -131,13 +135,13 @@ const AssignmentsSeparations = (props) => {
         </div>
         <div className="results-mode">
           <InteractiveElement
-            className={`${assignmentToggle ? 'active' : ''} ${disableOtherEdits ? 'disabled' : ''}`}
+            className={`${assignmentToggle ? 'active' : ''} ${(!assignmentToggle && disableOtherEdits) ? 'disabled' : ''}`}
             onClick={() => { if (!disableOtherEdits) setAssignmentToggle(true); }}
           >
             Assignments
           </InteractiveElement>
           <InteractiveElement
-            className={`${!assignmentToggle ? 'active' : ''} ${disableOtherEdits ? 'disabled' : ''}`}
+            className={`${!assignmentToggle ? 'active' : ''} ${(assignmentToggle && disableOtherEdits) ? 'disabled' : ''}`}
             onClick={() => { if (!disableOtherEdits) setAssignmentToggle(false); }}
           >
             Separations
