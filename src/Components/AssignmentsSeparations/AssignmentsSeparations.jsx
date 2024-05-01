@@ -17,16 +17,35 @@ import api from '../../api';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
+// eslint-disable-next-line no-unused-vars
+const useBreadcrumbs = checkFlag('flags.breadcrumbs');
 
 const AssignmentsSeparations = (props) => {
   const id = props?.match.params.id;
 
   const dispatch = useDispatch();
 
-  const assignments = useSelector(state => state.altAssignmentsSeparations);
-  const assignmentsErrored = useSelector(state => state.altAssignmentsSeparationsErrored);
-  const assignmentsLoading = useSelector(state => state.altAssignmentsSeparationsLoading);
+  // ====================== Data Retrieval ======================
 
+  const results = useSelector(state => state.altAssignmentsSeparations);
+  const resultsErrored = useSelector(state => state.altAssignmentsSeparationsErrored);
+  const resultsLoading = useSelector(state => state.altAssignmentsSeparationsLoading);
+  const noResults = results?.length === 0;
+
+  useEffect(() => {
+    dispatch(altAssignmentsSeparations(id));
+  }, [id]);
+
+  // eslint-disable-next-line no-unused-vars
+  const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
+  const employeeData$ = employeeData?.data;
+  const employeeName = employeeDataLoading ? '' : employeeData$?.name;
+
+
+  // ====================== UI State Management ======================
+
+  // cleanup role check links for breadcrumbs
+  const breadcrumbLinkRole = 'ao';
 
   // default || memo || notification
   // eslint-disable-next-line no-unused-vars
@@ -43,27 +62,11 @@ const AssignmentsSeparations = (props) => {
     }
   }, [openModal]);
 
-  // eslint-disable-next-line no-unused-vars
-  const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
-  const employeeData$ = employeeData?.data;
-  const employeeName = employeeDataLoading ? '' : employeeData$?.name;
-
-  // eslint-disable-next-line no-unused-vars
-  const hideBreadcrumbs = checkFlag('flags.breadcrumbs');
-  // cleanup role check links for breadcrumbs
-  const breadcrumbLinkRole = 'ao';
-
-  useEffect(() => {
-    dispatch(altAssignmentsSeparations(id));
-  }, [id]);
-
-  const noResults = assignments?.length === 0;
-
   const getOverlay = () => {
     let overlay;
-    if (assignmentsLoading || employeeDataLoading) {
+    if (resultsLoading || employeeDataLoading) {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
-    } else if (assignmentsErrored) {
+    } else if (resultsErrored) {
       overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
     } else if (noResults) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No assignments for this user.' }]} />;
@@ -150,7 +153,7 @@ const AssignmentsSeparations = (props) => {
             }]}
           />
         }
-        {assignmentToggle && assignments?.QRY_LSTASGS_REF?.map(data => (
+        {assignmentToggle && results?.QRY_LSTASGS_REF?.map(data => (
           <TabbedCard
             key={data?.ASG_SEQ_NUM}
             tabs={[{
@@ -166,7 +169,7 @@ const AssignmentsSeparations = (props) => {
             }]}
           />
         ))}
-        {!assignmentToggle && assignments?.QRY_LSTSEPS_REF?.map(data => (
+        {!assignmentToggle && results?.QRY_LSTSEPS_REF?.map(data => (
           <TabbedCard
             key={data?.SEP_SEQ_NUM}
             tabs={[{
