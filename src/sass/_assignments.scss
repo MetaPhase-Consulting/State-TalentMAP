@@ -130,3 +130,19 @@
     }
   }
 }
+
+.maintain-asg-sep-employee-info {
+  .horizontal-line-divider {
+    &::after {background-color: $bg-gray-dark-1;
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: $color-gray-light;
+    }
+  }
+
+  .line-separated-fields {
+    padding: 15px 0px;
+  }
+}

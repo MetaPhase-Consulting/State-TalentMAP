@@ -27,6 +27,7 @@ const Separation = (props) => {
     toggleModal,
     setDisableOtherEdits,
     disableOtherEdits,
+    employee,
   } = props;
 
   const dispatch = useDispatch();
@@ -100,7 +101,7 @@ const Separation = (props) => {
       setDisableOtherEdits(editMode);
       setStatus(details?.ASGS_CODE || '');
       setAction(details?.LAT_CODE || '');
-      setWaiver(details?.WRT_CODE_RR_REPAY || '');
+      setWaiver(details?.WRT_CODE_RR_REPAY || 'N'); // Default to "Not Used"
       setTravel(details?.TF_CD || '');
       setSeparationDate(details?.SEPD_SEPARATION_DATE ?
         new Date(details?.SEPD_SEPARATION_DATE) : null);
@@ -343,6 +344,7 @@ const Separation = (props) => {
 
   return (
     <div className={`position-content--container min-height-${isNew ? '150' : '50'}`}>
+      {employee}
       {getOverlay() ||
         <PositionExpandableContent
           sections={sections}
@@ -363,6 +365,7 @@ Separation.propTypes = {
   perdet: PropTypes.string,
   setDisableOtherEdits: PropTypes.func,
   disableOtherEdits: PropTypes.bool,
+  employee: PropTypes.shape(),
 };
 
 Separation.defaultProps = {
@@ -373,6 +376,7 @@ Separation.defaultProps = {
   perdet: '',
   setDisableOtherEdits: EMPTY_FUNCTION,
   disableOtherEdits: false,
+  employee: undefined,
 };
 
 export default Separation;

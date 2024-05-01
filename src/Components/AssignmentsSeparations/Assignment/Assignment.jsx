@@ -29,6 +29,7 @@ const Assignment = (props) => {
     toggleModal,
     setDisableOtherEdits,
     disableOtherEdits,
+    employee,
   } = props;
 
   const dispatch = useDispatch();
@@ -449,6 +450,7 @@ const Assignment = (props) => {
 
   return (
     <div className={`position-content--container min-height-${isNew ? '150' : '50'}`}>
+      {employee}
       {getOverlay() ||
         <PositionExpandableContent
           sections={sections}
@@ -472,6 +474,7 @@ Assignment.propTypes = {
   perdet: PropTypes.string,
   setDisableOtherEdits: PropTypes.func,
   disableOtherEdits: PropTypes.bool,
+  employee: PropTypes.shape(),
 };
 
 Assignment.defaultProps = {
@@ -482,6 +485,7 @@ Assignment.defaultProps = {
   perdet: '',
   setDisableOtherEdits: EMPTY_FUNCTION,
   disableOtherEdits: false,
+  employee: undefined,
 };
 
 export default Assignment;

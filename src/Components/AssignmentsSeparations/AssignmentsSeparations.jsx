@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { useDataLoader } from 'hooks';
 import { altAssignmentsSeparations } from 'actions/assignment';
+import { NO_VALUE } from 'Constants/SystemMessages';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import TabbedCard from 'Components/TabbedCard';
@@ -40,6 +41,7 @@ const AssignmentsSeparations = (props) => {
   const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
   const employeeData$ = employeeData?.data;
   const employeeName = employeeDataLoading ? '' : employeeData$?.name;
+  const employeeId = employeeDataLoading ? '' : employeeData$?.id;
 
 
   // ====================== UI State Management ======================
@@ -65,6 +67,22 @@ const AssignmentsSeparations = (props) => {
       document.body.classList.remove('modal-open');
     }
   }, [openModal]);
+
+  const modalEmployeeInfo = (
+    <div className="maintain-asg-sep-employee-info">
+      <div className="line-separated-fields">
+        <div>
+          <span className="span-label">Name: </span>
+          <span className="span-text">{employeeName || NO_VALUE}</span>
+        </div>
+        <div>
+          <span className="span-label">ID: </span>
+          <span className="span-text">{employeeId || NO_VALUE}</span>
+        </div>
+      </div>
+      <div className="horizontal-line-divider" />
+    </div>
+  );
 
   const getOverlay = () => {
     let overlay;
@@ -200,6 +218,7 @@ const AssignmentsSeparations = (props) => {
                 setNewAsgSep={() => setCardMode('default')}
                 toggleModal={setOpenModal}
                 isNew
+                employee={modalEmployeeInfo}
               />,
             }, {
               text: 'Maintain Separation',
@@ -209,6 +228,7 @@ const AssignmentsSeparations = (props) => {
                 setNewAsgSep={() => setCardMode('default')}
                 toggleModal={setOpenModal}
                 isNew
+                employee={modalEmployeeInfo}
               />,
             }]}
           />
