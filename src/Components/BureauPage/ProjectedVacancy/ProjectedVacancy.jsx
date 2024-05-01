@@ -355,8 +355,8 @@ const ProjectedVacancy = ({ isAO }) => {
           title={'Edit Mode (Search and Adding to Proposed Cycle Disabled)'}
           customClassName="mb-10"
           messages={[{
-            body: 'Discard or save your edits before searching or adding to proposed cycle. ' +
-              'Filters and included checkbox inputs are disabled if any cards are in Edit Mode.',
+            body: 'Discard or save your edits before searching, adding to proposed cycle, or editing other projected vacancies. ' +
+              'Filters, "Included" checkboxes, and other edit buttons are disabled if one card is in Edit Mode.',
           }]}
         />
       }
