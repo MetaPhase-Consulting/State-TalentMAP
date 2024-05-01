@@ -193,7 +193,7 @@ const AssignmentsSeparations = (props) => {
           <TabbedCard
             className="modal-child"
             tabs={[{
-              text: 'New Assignment',
+              text: 'Maintain Assignment',
               value: 'ASSIGNMENT',
               content: <Assignment
                 perdet={id}
@@ -202,7 +202,7 @@ const AssignmentsSeparations = (props) => {
                 isNew
               />,
             }, {
-              text: 'New Separation',
+              text: 'Maintain Separation',
               value: 'SEPARATION',
               content: <Separation
                 perdet={id}
