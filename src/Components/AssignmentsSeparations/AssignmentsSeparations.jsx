@@ -131,14 +131,14 @@ const AssignmentsSeparations = (props) => {
         </div>
         <div className="results-mode">
           <InteractiveElement
-            className={assignmentToggle ? 'active' : ''}
-            onClick={() => setAssignmentToggle(true)}
+            className={`${assignmentToggle ? 'active' : ''} ${disableOtherEdits ? 'disabled' : ''}`}
+            onClick={() => { if (!disableOtherEdits) setAssignmentToggle(true); }}
           >
             Assignments
           </InteractiveElement>
           <InteractiveElement
             className={!assignmentToggle ? 'active' : ''}
-            onClick={() => setAssignmentToggle(false)}
+            onClick={() => { if (!disableOtherEdits) setAssignmentToggle(false); }}
           >
             Separations
           </InteractiveElement>
