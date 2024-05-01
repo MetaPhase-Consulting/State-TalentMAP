@@ -9,6 +9,7 @@ const ReactModal = (props) => {
     open,
     setOpen,
     children,
+    // TODO: Add show close button prop
   } = props;
 
   const ref = useRef();
