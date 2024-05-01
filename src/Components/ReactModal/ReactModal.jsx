@@ -36,7 +36,7 @@ const ReactModal = (props) => {
 
 ReactModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 
