@@ -41,9 +41,10 @@ const Separation = (props) => {
   }, []);
 
   const [refetch, setRefetch] = useState(true);
+  const ep = `/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revisionNum}`;
   const { data: results, loading: isLoading, error: errored } = useDataLoader(
     api().get,
-    `/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revisionNum}`,
+    `${ep}${(sepId && revisionNum) ? '' : '?ignore_params=true'}`,
     true,
     undefined,
     refetch,

@@ -43,9 +43,10 @@ const Assignment = (props) => {
   }, []);
 
   const [refetch, setRefetch] = useState(true);
+  const ep = `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revisionNum}`;
   const { data: results, loading: isLoading, error: errored } = useDataLoader(
     api().get,
-    `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revisionNum}`,
+    `${ep}${(asgId && revisionNum) ? '' : '?ignore_params=true'}`,
     true,
     undefined,
     refetch,
@@ -219,7 +220,7 @@ const Assignment = (props) => {
 
   const addPositionNum = () => {
     if (selectedPositionNumber) {
-      dispatch(positionsFetchData(`limit=50&page=1&position_num=${selectedPositionNumber}`));
+      dispatch(positionsFetchData(`limit = 50 & page=1 & position_num=${selectedPositionNumber} `));
     }
   };
 
@@ -363,7 +364,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`salary-reimbursement-${data.id ?? 'create'}`}
+              id={`salary - reimbursement - ${data.id ?? 'create'} `}
               label="Salary Reimbursement"
               value={salaryReimbursement}
               className="mt-40"
@@ -373,7 +374,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`travel-reimbursement-${data.id ?? 'create'}`}
+              id={`travel - reimbursement - ${data.id ?? 'create'} `}
               label="Travel Reimbursement"
               value={travelReimbursement}
               className="mt-40"
@@ -383,7 +384,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`training-${data.id ?? 'create'}`}
+              id={`training - ${data.id ?? 'create'} `}
               label="Training"
               value={training}
               className="mt-40"
