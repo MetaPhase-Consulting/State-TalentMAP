@@ -4,7 +4,7 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { useDataLoader } from 'hooks';
-import { getResult } from 'utilities';
+import { formatDate, getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import { NO_STATUS, NO_VALUE } from 'Constants/SystemMessages';
 import { resetPositionsFetchData } from 'actions/positions';
@@ -76,7 +76,7 @@ const Separation = (props) => {
   if (!isNew) {
     /* eslint-disable quote-props */
     sections.subheading = [
-      { 'Name': data?.EMP_FULL_NAME || NO_VALUE },
+      { 'Name': details?.EMP_FULL_NAME || NO_VALUE },
     ];
     /* eslint-enable quote-props */
   }
@@ -129,11 +129,12 @@ const Separation = (props) => {
     const country = location?.country;
     const commonFields = {
       location_code: location?.code,
-      separation_date: separationDate,
+      separation_date: formatDate(separationDate),
       city_text: location?.city,
       country_state_text: (state && country) ? `${state}, ${country}` : state || country || null,
-      us_ind: usIndicator,
+      us_ind: usIndicator ? 'Y' : 'N',
       status_code: status,
+      lat_code: action,
       travel_code: travel,
       rr_repay_ind: waiver,
     };
