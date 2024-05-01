@@ -9,7 +9,8 @@ const ReactModal = (props) => {
     open,
     setOpen,
     children,
-    // TODO: Add show close button prop
+    // TODO: Add optional show close button prop
+    // TODO: Add optional onClose handler
   } = props;
 
   const ref = useRef();
