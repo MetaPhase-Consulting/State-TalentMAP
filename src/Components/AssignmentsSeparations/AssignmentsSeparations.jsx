@@ -185,7 +185,7 @@ const AssignmentsSeparations = (props) => {
             }]}
           />
         ))}
-        <ReactModal isOpen={openModal}>
+        <ReactModal open={openModal} setOpen={setOpenModal}>
           <TabbedCard
             className="modal-child"
             tabs={[{
