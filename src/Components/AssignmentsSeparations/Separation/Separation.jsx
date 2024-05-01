@@ -42,7 +42,7 @@ const Separation = (props) => {
 
   const [refetch, setRefetch] = useState(true);
   const ep = `/fsbid/assignment_history/${perdet}/separations/${sepId}/?revision_num=${revisionNum}`;
-  const { data: results, loading: isLoading, error: errored } = useDataLoader(
+  const { data: detailsData, loading: detailsLoading, error: detailsErrored } = useDataLoader(
     api().get,
     `${ep}${(sepId && revisionNum) ? '' : '?ignore_params=true'}`,
     true,
@@ -50,28 +50,25 @@ const Separation = (props) => {
     refetch,
   );
 
-  const separationDetails = results?.data?.QRY_GETSEPDTL_REF?.[0];
-  const separationDetailsErrored = errored;
-  const separationDetailsLoading = isLoading;
-
-  const statusOptions = results?.data?.QRY_LSTASGS_REF;
-  const actionOptions = results?.data?.QRY_LSTLAT_REF;
-  const travelOptions = results?.data?.QRY_LSTTF_REF;
-  const waiverOptions = results?.data?.QRY_LSTWRT_REF;
+  const details = detailsData?.data?.QRY_GETSEPDTL_REF?.[0];
+  const statusOptions = detailsData?.data?.QRY_LSTASGS_REF;
+  const actionOptions = detailsData?.data?.QRY_LSTLAT_REF;
+  const travelOptions = detailsData?.data?.QRY_LSTTF_REF;
+  const waiverOptions = detailsData?.data?.QRY_LSTWRT_REF;
 
   // ====================== View Mode ======================
 
   const sections = {
     /* eslint-disable quote-props */
     bodyPrimary: [
-      { 'Status': getResult(separationDetails, 'ASGS_CODE') || NO_STATUS },
-      { 'Action': getResult(separationDetails, 'LAT_CODE') || NO_VALUE },
-      { 'Waiver': getResult(separationDetails, 'WRT_CODE_RR_REPAY') || NO_VALUE },
-      { 'Travel': get(separationDetails, 'TF_CD') || NO_VALUE },
-      { 'Separation Date': getResult(separationDetails, 'SEPD_SEPARATION_DATE') || NO_VALUE },
-      { 'US Indicator': getResult(separationDetails, 'SEPD_US_IND') || NO_VALUE },
-      { 'Panel Meeting Date': getResult(separationDetails, 'PMD_DTTM') || NO_VALUE },
-      { 'Location': get(separationDetails, 'location') || NO_VALUE }, // TODO: format location string
+      { 'Status': getResult(details, 'ASGS_CODE') || NO_STATUS },
+      { 'Action': getResult(details, 'LAT_CODE') || NO_VALUE },
+      { 'Waiver': getResult(details, 'WRT_CODE_RR_REPAY') || NO_VALUE },
+      { 'Travel': get(details, 'TF_CD') || NO_VALUE },
+      { 'Separation Date': getResult(details, 'SEPD_SEPARATION_DATE') || NO_VALUE },
+      { 'US Indicator': getResult(details, 'SEPD_US_IND') || NO_VALUE },
+      { 'Panel Meeting Date': getResult(details, 'PMD_DTTM') || NO_VALUE },
+      { 'Location': get(details, 'location') || NO_VALUE }, // TODO: format location string
     ],
     /* eslint-enable quote-props */
   };
@@ -101,15 +98,15 @@ const Separation = (props) => {
   useEffect(() => {
     if (editMode) {
       setDisableOtherEdits(editMode);
-      setStatus(separationDetails?.ASGS_CODE || '');
-      setAction(separationDetails?.LAT_CODE || '');
-      setWaiver(separationDetails?.WRT_CODE_RR_REPAY || '');
-      setTravel(separationDetails?.TF_CD || '');
-      setSeparationDate(separationDetails?.SEPD_SEPARATION_DATE ?
-        new Date(separationDetails?.SEPD_SEPARATION_DATE) : null);
-      setUsIndicator(separationDetails?.SEPD_US_IND === 'Y');
-      setPanelMeetingDate(separationDetails?.PMD_DTTM ?
-        new Date(separationDetails?.PMD_DTTM) : null);
+      setStatus(details?.ASGS_CODE || '');
+      setAction(details?.LAT_CODE || '');
+      setWaiver(details?.WRT_CODE_RR_REPAY || '');
+      setTravel(details?.TF_CD || '');
+      setSeparationDate(details?.SEPD_SEPARATION_DATE ?
+        new Date(details?.SEPD_SEPARATION_DATE) : null);
+      setUsIndicator(details?.SEPD_US_IND === 'Y');
+      setPanelMeetingDate(details?.PMD_DTTM ?
+        new Date(details?.PMD_DTTM) : null);
       setLocation(null);
     }
   }, [editMode]);
@@ -160,7 +157,7 @@ const Separation = (props) => {
           ...commonFields,
           sep_id: sepId,
           revision_num: revisionNum,
-          updated_date: separationDetails?.SEPD_UPDATE_DATE,
+          updated_date: details?.SEPD_UPDATE_DATE,
         },
         perdet,
         sepId, // Use Update Endpoint (Has Seq Num)
@@ -322,15 +319,21 @@ const Separation = (props) => {
   };
 
   const getOverlay = () => {
-    let overlay;
-    if (separationDetailsLoading) {
-      overlay = <Spinner type="standard-center" size="small" />;
-    } else if (separationDetailsErrored) {
-      overlay = <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
-    } else {
-      return false;
+    if (detailsLoading) {
+      if (isNew) {
+        return <Spinner type="standard-center" size="small" />;
+      }
+      return (
+        <div className="loading-animation--5">
+          <div className="loading-message pbl-20">
+            Loading additional data
+          </div>
+        </div>
+      );
+    } else if (detailsErrored) {
+      return <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
     }
-    return overlay;
+    return false;
   };
 
   return (

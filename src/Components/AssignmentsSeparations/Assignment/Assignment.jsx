@@ -44,7 +44,7 @@ const Assignment = (props) => {
 
   const [refetch, setRefetch] = useState(true);
   const ep = `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revisionNum}`;
-  const { data: results, loading: isLoading, error: errored } = useDataLoader(
+  const { data: detailsData, loading: detailsLoading, error: detailsErrored } = useDataLoader(
     api().get,
     `${ep}${(asgId && revisionNum) ? '' : '?ignore_params=true'}`,
     true,
@@ -52,16 +52,13 @@ const Assignment = (props) => {
     refetch,
   );
 
-  const assignmentDetails = results?.data?.QRY_GETASGDTL_REF?.[0];
-  const assignmentsDetailsErrored = errored;
-  const assignmentsDetailsLoading = isLoading;
-
-  const statusOptions = results?.data?.QRY_LSTASGS_REF;
-  const actionOptions = results?.data?.QRY_LSTLAT_REF;
-  const todOptions = results?.data?.QRY_LSTTOD_REF;
-  const travelOptions = results?.data?.QRY_LSTTF_REF;
-  const fundingOptions = results?.data?.QRY_LSTBUREAUS_REF;
-  const waiverOptions = results?.data?.QRY_LSTWRT_REF;
+  const details = detailsData?.data?.QRY_GETASGDTL_REF?.[0];
+  const statusOptions = detailsData?.data?.QRY_LSTASGS_REF;
+  const actionOptions = detailsData?.data?.QRY_LSTLAT_REF;
+  const todOptions = detailsData?.data?.QRY_LSTTOD_REF;
+  const travelOptions = detailsData?.data?.QRY_LSTTF_REF;
+  const fundingOptions = detailsData?.data?.QRY_LSTBUREAUS_REF;
+  const waiverOptions = detailsData?.data?.QRY_LSTWRT_REF;
 
 
   // ====================== View Mode ======================
@@ -150,20 +147,20 @@ const Assignment = (props) => {
   useEffect(() => {
     if (editMode) {
       setDisableOtherEdits(editMode);
-      setStatus(assignmentDetails?.ASGS_CODE || '');
-      setAction(assignmentDetails?.LAT_CODE || '');
-      setTED(assignmentDetails?.ASGD_ETD_TED_DATE || '');
-      setETA(assignmentDetails?.ASGD_ETA_DATE || '');
-      setTOD(isNew ? getTOD() : (assignmentDetails?.TOD_CODE || ''));
-      setTravel(assignmentDetails?.TF_CD || '');
-      setFunding(assignmentDetails?.ASGD_ORG_CODE || '');
-      setAdj(assignmentDetails?.ASGD_ADJUST_MONTHS_NUM || '');
-      setSalaryReimbursement(assignmentDetails?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-      setTravelReimbursement(assignmentDetails?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-      setTraining(assignmentDetails?.ASGD_TRAINING_IND === 'Y');
-      setCriticalNeed(assignmentDetails?.ASGD_CRITICAL_NEED_IND === 'Y');
-      setWaiver(assignmentDetails?.WRT_CODE_RR_REPAY || '');
-      setSent(assignmentDetails?.NOTE_LAST_SENT_DATE || '');
+      setStatus(details?.ASGS_CODE || '');
+      setAction(details?.LAT_CODE || '');
+      setTED(details?.ASGD_ETD_TED_DATE || '');
+      setETA(details?.ASGD_ETA_DATE || '');
+      setTOD(isNew ? getTOD() : (details?.TOD_CODE || ''));
+      setTravel(details?.TF_CD || '');
+      setFunding(details?.ASGD_ORG_CODE || '');
+      setAdj(details?.ASGD_ADJUST_MONTHS_NUM || '');
+      setSalaryReimbursement(details?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+      setTravelReimbursement(details?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+      setTraining(details?.ASGD_TRAINING_IND === 'Y');
+      setCriticalNeed(details?.ASGD_CRITICAL_NEED_IND === 'Y');
+      setWaiver(details?.WRT_CODE_RR_REPAY || '');
+      setSent(details?.NOTE_LAST_SENT_DATE || '');
     }
   }, [editMode]);
 
@@ -207,7 +204,7 @@ const Assignment = (props) => {
           asg_id: asgId,
           revision_num: revisionNum,
           critical_need_ind: criticalNeed,
-          updated_date: assignmentDetails?.ASGD_UPDATE_DATE,
+          updated_date: details?.ASGD_UPDATE_DATE,
         },
         perdet,
         asgId, // Use Update Endpoint (Has Seq Num)
@@ -432,15 +429,22 @@ const Assignment = (props) => {
   };
 
   const getOverlay = () => {
-    let overlay;
-    if (isNew && assignmentsDetailsLoading) {
-      overlay = <Spinner type="standard-center" size="small" />;
-    } else if (isNew && assignmentsDetailsErrored) {
-      overlay = <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
-    } else {
-      return false;
+    if (detailsLoading) {
+      if (isNew) {
+        return <Spinner type="standard-center" size="small" />;
+      }
+    } else if (detailsLoading) {
+      return (
+        <div className="loading-animation--5">
+          <div className="loading-message pbl-20">
+            Loading additional data
+          </div>
+        </div>
+      );
+    } else if (detailsErrored) {
+      return <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
     }
-    return overlay;
+    return false;
   };
 
   return (
