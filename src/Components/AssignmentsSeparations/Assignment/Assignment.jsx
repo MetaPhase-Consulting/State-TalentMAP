@@ -448,7 +448,7 @@ const Assignment = (props) => {
   };
 
   return (
-    <div className="position-content--container min-height-100">
+    <div className={`position-content--container min-height-${isNew ? '150' : '50'}`}>
       {getOverlay() ||
         <PositionExpandableContent
           sections={sections}
