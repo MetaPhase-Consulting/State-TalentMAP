@@ -188,23 +188,29 @@ export function altSeparation(perdet, sepId, revision_num) {
 
 export function assignmentSeparationAction(query, perdet, id, isSeparation, onSuccess) {
   const type = isSeparation ? 'separations' : 'assignments';
-  const updateParam = id ? `${id}/` : '';
+
   return (dispatch) => {
-    api()
-      .post(`/fsbid/assignment_history/${perdet}/${type}/${updateParam}`, query)
-      .then(() => {
-        batch(() => {
-          dispatch(altAssignmentsSeparations(perdet));
-          if (onSuccess) {
-            onSuccess();
-          }
+    const promise = (instance) => {
+      instance
+        .then(() => {
+          batch(() => {
+            dispatch(altAssignmentsSeparations(perdet));
+            if (onSuccess) {
+              onSuccess();
+            }
+          });
+        })
+        .catch(() => {
+          batch(() => {
+            dispatch(altAssignmentsSeparationsErrored(true));
+            dispatch(altAssignmentsSeparationsLoading(false));
+          });
         });
-      })
-      .catch(() => {
-        batch(() => {
-          dispatch(altAssignmentsSeparationsErrored(true));
-          dispatch(altAssignmentsSeparationsLoading(false));
-        });
-      });
+    };
+    if (id) {
+      promise(api().put(`/fsbid/assignment_history/${perdet}/${type}/${id}/`, query));
+    } else {
+      promise(api().post(`/fsbid/assignment_history/${perdet}/${type}/`, query));
+    }
   };
 }
