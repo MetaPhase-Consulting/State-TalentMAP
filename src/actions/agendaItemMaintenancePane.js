@@ -164,10 +164,10 @@ export function aiRemoveIsLoading(bool) {
   };
 }
 
-export function aiRemoveSuccess(data) {
+export function aiRemoveSuccess(results) {
   return {
     type: 'AI_REMOVE_SUCCESS',
-    data,
+    results,
   };
 }
 
@@ -188,10 +188,10 @@ export function removeAgenda(aiData) {
           cancelRemoveAI = c;
         }),
       })
-      .then(({ data }) => {
+      .then(() => {
         batch(() => {
           dispatch(aiRemoveHasErrored(false));
-          dispatch(aiRemoveSuccess(data));
+          dispatch(aiRemoveSuccess('Successfully deleted the selected agenda.'));
           dispatch(toastSuccess(DELETE_AGENDA_ITEM_SUCCESS, DELETE_AGENDA_ITEM_SUCCESS_TITLE));
           dispatch(aiRemoveIsLoading(false));
         });
@@ -207,6 +207,7 @@ export function removeAgenda(aiData) {
             dispatch(aiRemoveHasErrored(true));
             dispatch(toastError(DELETE_AGENDA_ITEM_ERROR, DELETE_AGENDA_ITEM_ERROR_TITLE));
             dispatch(aiRemoveIsLoading(false));
+            dispatch(aiRemoveSuccess(false));
           });
         }
       });
