@@ -98,7 +98,6 @@ const AgendaItemMaintenanceContainer = (props) => {
   }));
 
   const agendaItemRemarks = get(agendaItemData$, 'remarks') || [];
-
   const [legsContainerExpanded, setLegsContainerExpanded] = useState(false);
   const [agendaItemMaintenancePaneLoading, setAgendaItemMaintenancePaneLoading] = useState(true);
   const [agendaItemTimelineLoading, setAgendaItemTimelineLoading] = useState(true);
@@ -152,12 +151,11 @@ const AgendaItemMaintenanceContainer = (props) => {
   };
 
   const removeAI = () => {
-    const personId = employeeData$?.id || routeEmployeeID;
-    const efInfo = {
-      assignmentId: get(efPosition, 'asg_seq_num'),
-      assignmentVersion: get(efPosition, 'revision_num'),
+    const data = {
+      aiseqnum: get(agendaItemData$, 'pmi_seq_num'),
+      aiupdatedate: get(agendaItemData$, 'pmi_update_date'),
     };
-    dispatch(removeAgenda(maintenanceInfo, legs, personId, efInfo, agendaItemData$));
+    dispatch(removeAgenda(data));
   };
 
   const updateFormMode = () => {

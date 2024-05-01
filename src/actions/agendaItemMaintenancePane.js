@@ -171,7 +171,8 @@ export function aiRemoveSuccess(data) {
   };
 }
 
-export function removeAgenda(id) {
+export function removeAgenda(aiData) {
+  const { aiseqnum, aiupdatedate } = aiData;
   return (dispatch) => {
     if (cancelRemoveAI) { cancelRemoveAI('cancel'); }
     batch(() => {
@@ -179,7 +180,14 @@ export function removeAgenda(id) {
       dispatch(aiRemoveHasErrored(false));
     });
     api()
-      .delete(`/fsbid/agenda/agenda_item/${id}/`)
+      .post('/fsbid/agenda/agenda_items/delete/', {
+        aiseqnum,
+        aiupdatedate,
+      }, {
+        cancelToken: new CancelToken((c) => {
+          cancelRemoveAI = c;
+        }),
+      })
       .then(({ data }) => {
         batch(() => {
           dispatch(aiRemoveHasErrored(false));
