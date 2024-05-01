@@ -46,7 +46,7 @@ const Assignment = (props) => {
   const ep = `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revisionNum}`;
   const { data: detailsData, loading: detailsLoading, error: detailsErrored } = useDataLoader(
     api().get,
-    `${ep}${(asgId && revisionNum) ? '' : '?ignore_params=true'}`,
+    `${ep}${(asgId && revisionNum) ? '' : '&ignore_params=true'}`,
     true,
     undefined,
     refetch,
