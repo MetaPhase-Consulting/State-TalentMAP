@@ -95,8 +95,30 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         } : null,
     ],
   },
+  checkFlag('flags.fsbid_admin') ?
+    {
+      text: 'FSBid Administrator',
+      icon: 'sitemap',
+      toggleMenuSection: true,
+      expandedSection: true,
+      roles: [
+        'superuser',
+        'fsbid_admin',
+      ],
+      children: [
+        {
+          text: 'Panel',
+          route: '/profile/fsbid_admin/',
+          icon: 'calendar',
+          roles: [
+            'superuser',
+            'fsbid_admin',
+          ],
+        },
+      ],
+    } : null,
   {
-    text: 'Administrator',
+    text: 'TalentMAP Administrator',
     icon: 'sitemap',
     toggleMenuSection: true,
     expandedSection: true,
@@ -374,13 +396,14 @@ export const GET_PROFILE_MENU = () => MenuConfig([
         } : null,
     ],
   },
-  checkFlag('flags.panel_admin') ?
+  checkFlag('flags.panel_admin_menu') ?
     {
       text: 'Panel Administrator',
       icon: 'sitemap',
       toggleMenuSection: true,
       expandedSection: true,
       roles: [
+        'superuser',
         'panel_admin',
       ],
       children: [
