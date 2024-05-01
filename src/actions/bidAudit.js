@@ -72,6 +72,43 @@ export function bidAuditFetchData() {
 }
 
 
+// ================ Bid Audit: Run Dynamic Audit ================
+
+let cancelRunBidAudit;
+
+export function runBidAudit() {
+  return (dispatch) => {
+    if (cancelRunBidAudit) {
+      cancelRunBidAudit('cancel');
+    }
+    api()
+      .get('/fsbid/bid_audit/run/', {
+        cancelToken: new CancelToken((c) => { cancelRunBidAudit = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            UPDATE_BID_COUNT_SUCCESS,
+            UPDATE_BID_COUNT_SUCCESS_TITLE,
+          ));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(
+              toastError(
+                UPDATE_BID_COUNT_ERROR,
+                UPDATE_BID_COUNT_ERROR_TITLE,
+              ),
+            );
+          });
+        }
+      });
+  };
+}
+
+
 // ================ Bid Audit: Get In Category/At Grade ================
 
 let cancelBidAuditSecondFetch;
@@ -273,37 +310,3 @@ export function bidAuditFiltersFetchData() {
   };
 }
 
-
-// ================ Bid Audit: Update Bid Counts ================
-
-let cancelUpdateBidCounts;
-
-export function bidAuditUpdateBidCounts() {
-  return (dispatch) => {
-    if (cancelUpdateBidCounts) {
-      cancelUpdateBidCounts('cancel');
-    }
-    api()
-      .get('/fsbid/bid_audit/update_count/', {
-        cancelToken: new CancelToken((c) => { cancelUpdateBidCounts = c; }),
-      })
-      .then(() => {
-        batch(() => {
-          dispatch(toastSuccess(UPDATE_BID_COUNT_SUCCESS,
-            UPDATE_BID_COUNT_SUCCESS_TITLE));
-        });
-      },
-      ).catch((err) => {
-        if (err?.message !== 'cancel') {
-          batch(() => {
-            dispatch(
-              toastError(
-                UPDATE_BID_COUNT_ERROR,
-                UPDATE_BID_COUNT_ERROR_TITLE,
-              ),
-            );
-          });
-        }
-      });
-  };
-}
