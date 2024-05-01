@@ -107,7 +107,11 @@ const Separation = (props) => {
       setUsIndicator(details?.SEPD_US_IND === 'Y');
       setPanelMeetingDate(details?.PMD_DTTM ?
         new Date(details?.PMD_DTTM) : null);
-      setLocation(null);
+      setLocation(details?.DSC_CD ? {
+        code: details?.DSC_CD,
+        city: details?.SEPD_CITY_TEXT,
+        country: details?.SEPD_COUNTRY_STATE_TEXT,
+      } : null);
     }
   }, [editMode]);
 
