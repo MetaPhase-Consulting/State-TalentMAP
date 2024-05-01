@@ -352,7 +352,7 @@ const ProjectedVacancy = ({ isAO }) => {
       {disableSearch &&
         <Alert
           type="warning"
-          title={'Edit Mode (Search and Adding to Proposed Cycle Disabled)'}
+          title={'Edit Mode'}
           customClassName="mb-10"
           messages={[{
             body: 'Discard or save your edits before searching, adding to proposed cycle, or editing other projected vacancies. ' +
