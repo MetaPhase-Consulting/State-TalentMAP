@@ -194,6 +194,8 @@ export function removeAgenda(aiData) {
           dispatch(aiRemoveSuccess('Successfully deleted the selected agenda.'));
           dispatch(toastSuccess(DELETE_AGENDA_ITEM_SUCCESS, DELETE_AGENDA_ITEM_SUCCESS_TITLE));
           dispatch(aiRemoveIsLoading(false));
+          // used the built in back button
+          window.history.back();
         });
       })
       .catch((err) => {
