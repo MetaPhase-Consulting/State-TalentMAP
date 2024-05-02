@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onEditModeSearch, renderSelectionList } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import { bidAuditFetchData, bidAuditUpdateBidCounts } from 'actions/bidAudit';
+import { bidAuditFetchData, runBidAudit } from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import swal from '@sweetalert/with-react';
 import BidAuditCard from './BidAuditCard';
@@ -113,7 +113,7 @@ const BidAudit = () => {
 
   const cancelBidCount = () => swal.close();
   const submitBidCount = () => {
-    dispatch(bidAuditUpdateBidCounts());
+    dispatch(runBidAudit());
     swal.close();
   };
 
@@ -124,6 +124,8 @@ const BidAudit = () => {
       button: false,
       content: (
         <div className="bid-audit-modal-buttons">
+          <div>Will update the bid counts for all Positions within all Active Cycles,</div>
+          <div>that have at least one Bid Audit.</div>
           <button onClick={submitBidCount} type="submit">Yes</button>
           <button onClick={cancelBidCount}>Cancel</button>
         </div>
