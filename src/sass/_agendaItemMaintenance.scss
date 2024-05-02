@@ -124,7 +124,27 @@
       button {
         margin: 0 !important;
       }
+      .delete-btn {
+        border: 1px solid $color-red;
+        border-radius: 5px;
+        color: $color-red;
+        background-color: $color-white;
+        padding: 10px 20px;
+        float: right;
+        font-size: 14px;
+      }
 
+      .delete-btn:disabled {
+        background-color: $color-gray-lighter;
+        border: 1px solid $color-gray-light;
+        color: $color-gray;
+      }
+
+      .delete-btn:hover {
+        border-color: $color-red-darkest;
+        color: $color-red-darkest;
+      }
+      
       .save-ai-btn {
         border: 1px solid $primary-blue;
         border-radius: 5px;
@@ -138,21 +158,6 @@
       .save-ai-btn:hover {
         border-color: $primary-blue-darkest;
         color: $primary-blue-darkest;
-      }
-
-      .delete-btn {
-        border: 1px solid $color-red;
-        border-radius: 5px;
-        color: $color-red;
-        background-color: $color-white;
-        padding: 10px 20px;
-        float: right;
-        font-size: 14px;
-      }
-
-      .delete-btn:hover {
-        border-color: $color-red-darkest;
-        color: $color-red-darkest;
       }
     }
 
