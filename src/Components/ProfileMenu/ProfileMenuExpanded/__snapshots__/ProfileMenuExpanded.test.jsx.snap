@@ -102,149 +102,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         }
       }
       hidden={true}
-      iconName="sitemap"
-      key="Administrator"
-      search=""
-      title="Administrator"
-      toggleMenuSection={[Function]}
-    >
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="tachometer"
-        key="Dashboard"
-        link="/profile/administrator/dashboard/"
-        search=""
-        title="Dashboard"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="users"
-        key="Bid Audit"
-        link="/profile/administrator/bidaudit/"
-        search=""
-        title="Bid Audit"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="hourglass-start"
-        key="Bid Cycles"
-        link="/profile/administrator/cycles/"
-        search=""
-        title="Bid Cycles"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="calendar"
-        key="Bid Season Management"
-        link="/profile/administrator/managebidseasons/"
-        search=""
-        title="Bid Season Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="cog"
-        key="Bidding Tool"
-        link="/profile/administrator/biddingtool/"
-        search=""
-        title="Bidding Tool"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="users"
-        key="Bureau Exceptions"
-        link="/profile/administrator/bureauexceptions/"
-        search=""
-        title="Bureau Exceptions"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="cogs"
-        key="Cycle Job Categories"
-        link="/profile/administrator/cyclejobcategories/"
-        search=""
-        title="Cycle Job Categories"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="flag"
-        key="Feature Flags"
-        link="/profile/administrator/featureflags/"
-        search=""
-        title="Feature Flags"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="book"
-        key="Glossary Editor"
-        link="/profile/glossaryeditor/"
-        search=""
-        title="Glossary Editor"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="cogs"
-        key="Job Categories"
-        link="/profile/administrator/jobcategories/"
-        search=""
-        title="Job Categories"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="sitemap"
-        key="Logs"
-        link="/profile/administrator/logs/"
-        search=""
-        title="Logs"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-keyboard-o"
-        key="Manage Entry Level"
-        link="/profile/administrator/manageentrylevel/"
-        search=""
-        title="Manage Entry Level"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="building"
-        key="Org Stats"
-        link="/profile/administrator/orgstats/"
-        search=""
-        title="Org Stats"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="calendar"
-        key="Panel"
-        link="/profile/administrator/panel/"
-        search=""
-        title="Panel"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="bar-chart"
-        key="Statistics"
-        link="/profile/administrator/stats/"
-        search=""
-        title="Statistics"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="users"
-        key="User Roles"
-        link="/profile/administrator/userroles/"
-        search=""
-        title="User Roles"
-      />
-    </withRouter(NavLink)>
-    <withRouter(NavLink)
-      expandedSection={
-        Object {
-          "display": false,
-          "title": "",
-        }
-      }
-      hidden={true}
       iconName="building-o"
       key="AO"
       search=""
@@ -450,6 +307,52 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         }
       }
       hidden={true}
+      iconName="sitemap"
+      key="FSBid Administrator"
+      search=""
+      title="FSBid Administrator"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Panel"
+        link="/profile/fsbid_admin/"
+        search=""
+        title="Panel"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
+      iconName="sitemap"
+      key="Panel Administrator"
+      search=""
+      title="Panel Administrator"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Panel"
+        link="/profile/panel_admin/"
+        search=""
+        title="Panel"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
       iconName="building"
       key="Post"
       search=""
@@ -479,6 +382,149 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/post/positionmanager"
         search=""
         title="Position Management"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
+      iconName="sitemap"
+      key="TalentMAP Administrator"
+      search=""
+      title="TalentMAP Administrator"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="tachometer"
+        key="Dashboard"
+        link="/profile/administrator/dashboard/"
+        search=""
+        title="Dashboard"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="users"
+        key="Bid Audit"
+        link="/profile/administrator/bidaudit/"
+        search=""
+        title="Bid Audit"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="hourglass-start"
+        key="Bid Cycles"
+        link="/profile/administrator/cycles/"
+        search=""
+        title="Bid Cycles"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Bid Season Management"
+        link="/profile/administrator/managebidseasons/"
+        search=""
+        title="Bid Season Management"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="cog"
+        key="Bidding Tool"
+        link="/profile/administrator/biddingtool/"
+        search=""
+        title="Bidding Tool"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="users"
+        key="Bureau Exceptions"
+        link="/profile/administrator/bureauexceptions/"
+        search=""
+        title="Bureau Exceptions"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="cogs"
+        key="Cycle Job Categories"
+        link="/profile/administrator/cyclejobcategories/"
+        search=""
+        title="Cycle Job Categories"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="flag"
+        key="Feature Flags"
+        link="/profile/administrator/featureflags/"
+        search=""
+        title="Feature Flags"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="book"
+        key="Glossary Editor"
+        link="/profile/glossaryeditor/"
+        search=""
+        title="Glossary Editor"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="cogs"
+        key="Job Categories"
+        link="/profile/administrator/jobcategories/"
+        search=""
+        title="Job Categories"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="sitemap"
+        key="Logs"
+        link="/profile/administrator/logs/"
+        search=""
+        title="Logs"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Manage Entry Level"
+        link="/profile/administrator/manageentrylevel/"
+        search=""
+        title="Manage Entry Level"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="building"
+        key="Org Stats"
+        link="/profile/administrator/orgstats/"
+        search=""
+        title="Org Stats"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Panel"
+        link="/profile/administrator/panel/"
+        search=""
+        title="Panel"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="bar-chart"
+        key="Statistics"
+        link="/profile/administrator/stats/"
+        search=""
+        title="Statistics"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="users"
+        key="User Roles"
+        link="/profile/administrator/userroles/"
+        search=""
+        title="User Roles"
       />
     </withRouter(NavLink)>
   </NavLinksContainer>
@@ -587,149 +633,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         }
       }
       hidden={true}
-      iconName="sitemap"
-      key="Administrator"
-      search=""
-      title="Administrator"
-      toggleMenuSection={[Function]}
-    >
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="tachometer"
-        key="Dashboard"
-        link="/profile/administrator/dashboard/"
-        search=""
-        title="Dashboard"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="users"
-        key="Bid Audit"
-        link="/profile/administrator/bidaudit/"
-        search=""
-        title="Bid Audit"
-      />
-      <withRouter(NavLink)
-        hidden={false}
-        iconName="hourglass-start"
-        key="Bid Cycles"
-        link="/profile/administrator/cycles/"
-        search=""
-        title="Bid Cycles"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="calendar"
-        key="Bid Season Management"
-        link="/profile/administrator/managebidseasons/"
-        search=""
-        title="Bid Season Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="cog"
-        key="Bidding Tool"
-        link="/profile/administrator/biddingtool/"
-        search=""
-        title="Bidding Tool"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="users"
-        key="Bureau Exceptions"
-        link="/profile/administrator/bureauexceptions/"
-        search=""
-        title="Bureau Exceptions"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="cogs"
-        key="Cycle Job Categories"
-        link="/profile/administrator/cyclejobcategories/"
-        search=""
-        title="Cycle Job Categories"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="flag"
-        key="Feature Flags"
-        link="/profile/administrator/featureflags/"
-        search=""
-        title="Feature Flags"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="book"
-        key="Glossary Editor"
-        link="/profile/glossaryeditor/"
-        search=""
-        title="Glossary Editor"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="cogs"
-        key="Job Categories"
-        link="/profile/administrator/jobcategories/"
-        search=""
-        title="Job Categories"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="sitemap"
-        key="Logs"
-        link="/profile/administrator/logs/"
-        search=""
-        title="Logs"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-keyboard-o"
-        key="Manage Entry Level"
-        link="/profile/administrator/manageentrylevel/"
-        search=""
-        title="Manage Entry Level"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="building"
-        key="Org Stats"
-        link="/profile/administrator/orgstats/"
-        search=""
-        title="Org Stats"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="calendar"
-        key="Panel"
-        link="/profile/administrator/panel/"
-        search=""
-        title="Panel"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="bar-chart"
-        key="Statistics"
-        link="/profile/administrator/stats/"
-        search=""
-        title="Statistics"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="users"
-        key="User Roles"
-        link="/profile/administrator/userroles/"
-        search=""
-        title="User Roles"
-      />
-    </withRouter(NavLink)>
-    <withRouter(NavLink)
-      expandedSection={
-        Object {
-          "display": false,
-          "title": "",
-        }
-      }
-      hidden={true}
       iconName="building-o"
       key="AO"
       search=""
@@ -935,6 +838,52 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         }
       }
       hidden={true}
+      iconName="sitemap"
+      key="FSBid Administrator"
+      search=""
+      title="FSBid Administrator"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Panel"
+        link="/profile/fsbid_admin/"
+        search=""
+        title="Panel"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
+      iconName="sitemap"
+      key="Panel Administrator"
+      search=""
+      title="Panel Administrator"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Panel"
+        link="/profile/panel_admin/"
+        search=""
+        title="Panel"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
       iconName="building"
       key="Post"
       search=""
@@ -964,6 +913,149 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/post/positionmanager"
         search=""
         title="Position Management"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
+      iconName="sitemap"
+      key="TalentMAP Administrator"
+      search=""
+      title="TalentMAP Administrator"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="tachometer"
+        key="Dashboard"
+        link="/profile/administrator/dashboard/"
+        search=""
+        title="Dashboard"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="users"
+        key="Bid Audit"
+        link="/profile/administrator/bidaudit/"
+        search=""
+        title="Bid Audit"
+      />
+      <withRouter(NavLink)
+        hidden={false}
+        iconName="hourglass-start"
+        key="Bid Cycles"
+        link="/profile/administrator/cycles/"
+        search=""
+        title="Bid Cycles"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Bid Season Management"
+        link="/profile/administrator/managebidseasons/"
+        search=""
+        title="Bid Season Management"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="cog"
+        key="Bidding Tool"
+        link="/profile/administrator/biddingtool/"
+        search=""
+        title="Bidding Tool"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="users"
+        key="Bureau Exceptions"
+        link="/profile/administrator/bureauexceptions/"
+        search=""
+        title="Bureau Exceptions"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="cogs"
+        key="Cycle Job Categories"
+        link="/profile/administrator/cyclejobcategories/"
+        search=""
+        title="Cycle Job Categories"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="flag"
+        key="Feature Flags"
+        link="/profile/administrator/featureflags/"
+        search=""
+        title="Feature Flags"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="book"
+        key="Glossary Editor"
+        link="/profile/glossaryeditor/"
+        search=""
+        title="Glossary Editor"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="cogs"
+        key="Job Categories"
+        link="/profile/administrator/jobcategories/"
+        search=""
+        title="Job Categories"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="sitemap"
+        key="Logs"
+        link="/profile/administrator/logs/"
+        search=""
+        title="Logs"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Manage Entry Level"
+        link="/profile/administrator/manageentrylevel/"
+        search=""
+        title="Manage Entry Level"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="building"
+        key="Org Stats"
+        link="/profile/administrator/orgstats/"
+        search=""
+        title="Org Stats"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="calendar"
+        key="Panel"
+        link="/profile/administrator/panel/"
+        search=""
+        title="Panel"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="bar-chart"
+        key="Statistics"
+        link="/profile/administrator/stats/"
+        search=""
+        title="Statistics"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="users"
+        key="User Roles"
+        link="/profile/administrator/userroles/"
+        search=""
+        title="User Roles"
       />
     </withRouter(NavLink)>
   </NavLinksContainer>
