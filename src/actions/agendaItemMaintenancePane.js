@@ -173,6 +173,8 @@ export function aiRemoveSuccess(results) {
 
 export function removeAgenda(aiData) {
   const { aiseqnum, aiupdatedate } = aiData;
+  // modifies the date to match the format in the db
+  const aiupdate = aiupdatedate.replace('T', ' ').replace('Z', '').slice(0, -4);
   return (dispatch) => {
     if (cancelRemoveAI) { cancelRemoveAI('cancel'); }
     batch(() => {
@@ -182,7 +184,7 @@ export function removeAgenda(aiData) {
     api()
       .post('/fsbid/agenda/agenda_items/delete/', {
         aiseqnum,
-        aiupdatedate,
+        aiupdatedate: aiupdate,
       }, {
         cancelToken: new CancelToken((c) => {
           cancelRemoveAI = c;
