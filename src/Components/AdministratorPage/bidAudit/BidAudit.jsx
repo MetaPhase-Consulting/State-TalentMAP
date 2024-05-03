@@ -4,7 +4,7 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import Picky from 'react-picky';
 import { useDispatch, useSelector } from 'react-redux';
-import { onEditModeSearch, renderSelectionList } from 'utilities';
+import { formatDate, onEditModeSearch, renderSelectionList } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import {
@@ -12,6 +12,8 @@ import {
   bidAuditCreateAuditSuccess,
   bidAuditFetchCycles,
   bidAuditFetchData,
+  bidAuditUpdateAudit,
+  bidAuditUpdateAuditSuccess,
   updateBidCount,
 } from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
@@ -28,6 +30,7 @@ const BidAudit = () => {
   const bidAuditFetchCyclesLoading = useSelector(state => state.bidAuditFetchCyclesLoading);
   const bidAuditCycles = useSelector(state => state.bidAuditCycles);
   const bidAuditCreated = useSelector(state => state.bidAuditCreateAuditSuccess);
+  const bidAuditUpdated = useSelector(state => state.bidAuditUpdateAuditSuccess);
 
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const [newAuditClicked, setNewAuditClicked] = useState(false);
@@ -43,6 +46,23 @@ const BidAudit = () => {
       swal.close();
     }
   }, [bidAuditCreated]);
+
+  useEffect(() => {
+    if (bidAuditUpdated) {
+      setCardsInEditMode([]);
+      dispatch(bidAuditUpdateAuditSuccess(false));
+      dispatch(bidAuditFetchData());
+    }
+  }, [bidAuditUpdated]);
+
+  const onSubmitBidAuditUpdate = (cycleId, auditId, date, desc) => {
+    dispatch(bidAuditUpdateAudit({
+      id: cycleId,
+      auditNumber: auditId,
+      postByDate: formatDate(date),
+      auditDescription: desc,
+    }));
+  };
 
   const onSubmit = (data) => {
     dispatch(bidAuditCreateAudit(data));
@@ -289,6 +309,7 @@ const BidAudit = () => {
                 {bidAuditData$.map(data => (
                   <BidAuditCard
                     data={data}
+                    onSubmit={onSubmitBidAuditUpdate}
                     key={`${data.cycle_id}${data.audit_id}`}
                     onEditModeSearch={(editMode, id) =>
                       onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)

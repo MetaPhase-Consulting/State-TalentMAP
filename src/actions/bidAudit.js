@@ -160,6 +160,43 @@ export function bidAuditCreateAudit(data) {
 }
 
 
+// ================ Bid Audit: Update Audit ================
+
+let cancelModifyAuditUpdate;
+
+export function bidAuditUpdateAuditSuccess(bool) {
+  return {
+    type: 'BID_AUDIT_UPDATE_SUCCESS',
+    success: bool,
+  };
+}
+export function bidAuditUpdateAudit(data) {
+  return (dispatch) => {
+    if (cancelModifyAuditUpdate) {
+      cancelModifyAuditUpdate('cancel');
+    }
+    api()
+      .post('/fsbid/bid_audit/update/', {
+        data,
+      }, {
+        cancelToken: new CancelToken((c) => { cancelModifyAuditUpdate = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            UPDATE_BID_AUDIT_SUCCESS, UPDATE_BID_AUDIT_SUCCESS_TITLE,
+          ));
+          dispatch(bidAuditUpdateAuditSuccess(true));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(UPDATE_BID_AUDIT_ERROR, UPDATE_BID_AUDIT_ERROR_TITLE));
+        }
+      });
+  };
+}
+
 // ================ Bid Audit: Update Bid Counts ================
 
 let cancelBidAuditUpdateCount;

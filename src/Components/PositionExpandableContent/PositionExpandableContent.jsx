@@ -163,7 +163,7 @@ const PositionExpandableContent = ({
                 {form.inputBody}
                 <div className="position-form--actions">
                   <button onClick={useCancelModal ? showCancelModal : onCancel}>Cancel</button>
-                  <button onClick={form.handleSubmit}>{saveText}</button>
+                  <button disabled={form.disableSubmit} onClick={form.handleSubmit}>{saveText}</button>
                 </div>
               </div>
             }
@@ -204,6 +204,7 @@ PositionExpandableContent.propTypes = {
     staticBody: PropTypes.arrayOf(PropTypes.shape({})),
     inputBody: PropTypes.element,
     cancelText: PropTypes.string,
+    disableSubmit: PropTypes.bool,
     handleSubmit: PropTypes.func,
     handleCancel: PropTypes.func,
     handleEdit: PropTypes.shape({
@@ -223,6 +224,7 @@ PositionExpandableContent.propTypes = {
 PositionExpandableContent.defaultProps = {
   form: undefined,
   sections: undefined,
+  disableSubmit: false,
   saveText: 'Save Position',
   appendAdditionalFieldsToBodyPrimary: true,
   showLoadingAnimation: false,
