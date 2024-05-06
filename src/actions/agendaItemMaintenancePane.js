@@ -1,7 +1,10 @@
 import { get } from 'lodash';
 import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
-import { UPDATE_AGENDA_ITEM_ERROR,
+import { DELETE_AGENDA_ITEM_ERROR,
+  DELETE_AGENDA_ITEM_ERROR_TITLE, DELETE_AGENDA_ITEM_SUCCESS,
+  DELETE_AGENDA_ITEM_SUCCESS_TITLE,
+  UPDATE_AGENDA_ITEM_ERROR,
   UPDATE_AGENDA_ITEM_ERROR_TITLE, UPDATE_AGENDA_ITEM_SUCCESS,
   UPDATE_AGENDA_ITEM_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
@@ -10,6 +13,7 @@ import api from '../api';
 
 let cancelFetchAI;
 let cancelModifyAI;
+let cancelRemoveAI;
 let cancelValidateAI;
 
 export function aiModifyHasErrored(bool) {
@@ -141,6 +145,37 @@ export function modifyAgenda(panel, legs, personId, ef, refData) {
             dispatch(aiModifyHasErrored(true));
             dispatch(aiModifyIsLoading(false));
           });
+        }
+      });
+  };
+}
+
+
+export function removeAgenda(aiData) {
+  const { aiseqnum, aiupdatedate } = aiData;
+  // modifies the date to match the format in the db
+  const aiupdate = aiupdatedate?.replace('T', ' ').replace('Z', '').slice(0, -4);
+  return (dispatch) => {
+    if (cancelRemoveAI) { cancelRemoveAI('cancel'); }
+    api()
+      .post('/fsbid/agenda/agenda_item/delete/', {
+        aiseqnum,
+        aiupdatedate: aiupdate,
+      }, {
+        cancelToken: new CancelToken((c) => {
+          cancelRemoveAI = c;
+        }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(DELETE_AGENDA_ITEM_SUCCESS, DELETE_AGENDA_ITEM_SUCCESS_TITLE));
+          // used the built in back button
+          window.history.back();
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(DELETE_AGENDA_ITEM_ERROR, DELETE_AGENDA_ITEM_ERROR_TITLE));
         }
       });
   };
