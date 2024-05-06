@@ -101,6 +101,8 @@ const ProjectedVacancyCard = (props) => {
         future_vacancy_status_code: status,
         future_vacancy_override_tour_end_date: overrideTED ?
           overrideTED.toISOString().substring(0, 10) : null,
+        future_vacancy_exclude_import_indicator: status === 'A' ? 'N' :
+          result?.future_vacancy_exclude_import_indicator,
       }],
       language_offsets: {
         position_seq_num: result?.position_seq_num,

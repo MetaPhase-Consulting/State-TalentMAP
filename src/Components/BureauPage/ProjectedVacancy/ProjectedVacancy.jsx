@@ -119,6 +119,8 @@ const ProjectedVacancy = ({ isAO }) => {
     let overlay;
     if (resultsLoading) {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
+    } else if (positionsData?.length >= 500) {
+      overlay = <Alert type="error" title="Result Load Reached Limit" messages={[{ body: 'The number of searched projected vacancies is too high to be displayed. Please refine the filter criteria.' }]} />;
     } else if (resultsErrored) {
       overlay = <Alert type="error" title="Error displaying Projected Vacancies" messages={[{ body: 'Please try again.' }]} />;
     } else if (!filterSelectionValid()) {
@@ -350,11 +352,11 @@ const ProjectedVacancy = ({ isAO }) => {
       {disableSearch &&
         <Alert
           type="warning"
-          title={'Edit Mode (Search and Adding to Proposed Cycle Disabled)'}
+          title={'Edit Mode'}
           customClassName="mb-10"
           messages={[{
-            body: 'Discard or save your edits before searching or adding to proposed cycle. ' +
-              'Filters and included checkbox inputs are disabled if any cards are in Edit Mode.',
+            body: 'Discard or save your edits before searching, adding to proposed cycle, or editing other projected vacancies. ' +
+              'Filters, "Included" checkboxes, and other edit buttons are disabled if one card is in Edit Mode.',
           }]}
         />
       }
@@ -395,7 +397,7 @@ const ProjectedVacancy = ({ isAO }) => {
                 key={k.future_vacancy_seq_num}
                 updateIncluded={onIncludedUpdate}
                 disableIncluded={disableSearch || isAO}
-                disableEdit={includedInEditMode}
+                disableEdit={includedInEditMode || disableSearch}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
                 }
