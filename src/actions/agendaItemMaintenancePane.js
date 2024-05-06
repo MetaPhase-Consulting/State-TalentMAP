@@ -182,7 +182,7 @@ export function removeAgenda(aiData) {
       dispatch(aiRemoveHasErrored(false));
     });
     api()
-      .post('/fsbid/agenda/agenda_items/delete/', {
+      .post('/fsbid/agenda/agenda_item/delete/', {
         aiseqnum,
         aiupdatedate: aiupdate,
       }, {
