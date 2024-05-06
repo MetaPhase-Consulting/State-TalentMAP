@@ -150,26 +150,6 @@ export function modifyAgenda(panel, legs, personId, ef, refData) {
   };
 }
 
-export function aiRemoveHasErrored(bool) {
-  return {
-    type: 'AI_REMOVE_HAS_ERRORED',
-    hasErrored: bool,
-  };
-}
-
-export function aiRemoveIsLoading(bool) {
-  return {
-    type: 'AI_REMOVE_IS_LOADING',
-    isLoading: bool,
-  };
-}
-
-export function aiRemoveSuccess(results) {
-  return {
-    type: 'AI_REMOVE_SUCCESS',
-    results,
-  };
-}
 
 export function removeAgenda(aiData) {
   const { aiseqnum, aiupdatedate } = aiData;
@@ -177,10 +157,6 @@ export function removeAgenda(aiData) {
   const aiupdate = aiupdatedate.replace('T', ' ').replace('Z', '').slice(0, -4);
   return (dispatch) => {
     if (cancelRemoveAI) { cancelRemoveAI('cancel'); }
-    batch(() => {
-      dispatch(aiRemoveIsLoading(true));
-      dispatch(aiRemoveHasErrored(false));
-    });
     api()
       .post('/fsbid/agenda/agenda_item/delete/', {
         aiseqnum,
@@ -192,27 +168,14 @@ export function removeAgenda(aiData) {
       })
       .then(() => {
         batch(() => {
-          dispatch(aiRemoveHasErrored(false));
-          dispatch(aiRemoveSuccess('Successfully deleted the selected agenda.'));
           dispatch(toastSuccess(DELETE_AGENDA_ITEM_SUCCESS, DELETE_AGENDA_ITEM_SUCCESS_TITLE));
-          dispatch(aiRemoveIsLoading(false));
           // used the built in back button
           window.history.back();
         });
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
-          batch(() => {
-            dispatch(aiRemoveIsLoading(true));
-            dispatch(aiRemoveHasErrored(false));
-          });
-        } else {
-          batch(() => {
-            dispatch(aiRemoveHasErrored(true));
-            dispatch(toastError(DELETE_AGENDA_ITEM_ERROR, DELETE_AGENDA_ITEM_ERROR_TITLE));
-            dispatch(aiRemoveIsLoading(false));
-            dispatch(aiRemoveSuccess(false));
-          });
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(DELETE_AGENDA_ITEM_ERROR, DELETE_AGENDA_ITEM_ERROR_TITLE));
         }
       });
   };

@@ -369,13 +369,15 @@ const AgendaItemMaintenancePane = (props) => {
         <>
           <div className="back-save-btns-container">
             <BackButton />
+            { agendaItem?.id &&
             <button
               className="delete-btn min-width-155"
               onClick={removeAI}
-              disabled={agendaItem?.pmi_official_item_num || agendaItem?.pmi_official_item_num === undefined}
+              disabled={agendaItem?.pmi_official_item_num}
             >
               Delete Agenda Item
             </button>
+            }
             <button
               className={validationButton?.classNames}
               onClick={validationButton.clickFunction}

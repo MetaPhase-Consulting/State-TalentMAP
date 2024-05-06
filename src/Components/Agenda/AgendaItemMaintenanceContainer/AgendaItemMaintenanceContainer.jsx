@@ -152,8 +152,8 @@ const AgendaItemMaintenanceContainer = (props) => {
 
   const removeAI = () => {
     const data = {
-      aiseqnum: get(agendaItemData$, 'pmi_seq_num'),
-      aiupdatedate: get(agendaItemData$, 'pmi_update_date'),
+      aiseqnum: agendaItemData$?.pmi_seq_num,
+      aiupdatedate: agendaItemData$?.pmi_update_date,
     };
     dispatch(removeAgenda(data));
   };
