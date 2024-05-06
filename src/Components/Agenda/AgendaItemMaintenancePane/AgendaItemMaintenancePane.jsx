@@ -363,7 +363,6 @@ const AgendaItemMaintenancePane = (props) => {
     setIsNewSeparation();
     setPanelCat('S');
   };
-
   return (
     <div className="ai-maintenance-header">
       {!unitedLoading &&
@@ -373,7 +372,7 @@ const AgendaItemMaintenancePane = (props) => {
             <button
               className="delete-btn min-width-155"
               onClick={removeAI}
-              disabled={agendaItem?.pmi_official_item_num}
+              disabled={agendaItem?.pmi_official_item_num || agendaItem?.pmi_official_item_num === undefined}
             >
               Delete Agenda Item
             </button>
