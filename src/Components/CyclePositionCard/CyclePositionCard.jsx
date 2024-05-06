@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import DatePicker from 'react-datepicker';
-import { getResult } from 'utilities';
+import { formatDate, getResult } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
@@ -217,7 +217,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
                 <FA name="times" className={`${tedOverrideDate ? '' : 'hide'}`} onClick={() => setTedOverrideDate(null)} />
                 <DatePicker
                   selected={tedOverrideDate && new Date(tedOverrideDate)}
-                  onChange={setTedOverrideDate}
+                  onChange={(e) => setTedOverrideDate(formatDate(e))}
                   dateFormat="MM/yyyy"
                   placeholderText="MM/YYYY"
                   ref={datePickerRef}
