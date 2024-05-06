@@ -192,57 +192,39 @@ export function cyclePositionSearch(state = [], action) {
   }
 }
 
+// ================ Cycle Positions: Get Single Position ================
 
-// ================ Cycle Positions: Remove Position ================
-
-export function cyclePositionRemoveHasErrored(state = false, action) {
+export function cyclePositionFetchDataErrored(state = false, action) {
   switch (action.type) {
-    case 'CYCLE_POSITION_REMOVE_HAS_ERRORED':
+    case 'CYCLE_POSITION_FETCH_HAS_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function cyclePositionRemoveIsLoading(state = false, action) {
+export function cyclePositionFetchDataLoading(state = false, action) {
   switch (action.type) {
-    case 'CYCLE_POSITION_REMOVE_IS_LOADING':
+    case 'CYCLE_POSITION_FETCH_IS_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function cyclePositionRemoveSuccess(state = [], action) {
+export function cyclePositionFetch(state = [], action) {
   switch (action.type) {
-    case 'CYCLE_POSITION_REMOVE_SUCCESS':
+    case 'CYCLE_POSITION_FETCH_SUCCESS':
       return action.data;
     default:
       return state;
   }
 }
-
 
 // ================ Cycle Positions: Edit Position ================
 
-export function cyclePositionEditHasErrored(state = false, action) {
-  switch (action.type) {
-    case 'CYCLE_POSITION_EDIT_HAS_ERRORED':
-      return action.hasErrored;
-    default:
-      return state;
-  }
-}
-export function cyclePositionEditIsLoading(state = false, action) {
-  switch (action.type) {
-    case 'CYCLE_POSITION_EDIT_IS_LOADING':
-      return action.isLoading;
-    default:
-      return state;
-  }
-}
-export function cyclePositionEditSuccess(state = [], action) {
+export function cyclePositionEditSuccess(state = false, action) {
   switch (action.type) {
     case 'CYCLE_POSITION_EDIT_SUCCESS':
-      return action.data;
+      return action.success;
     default:
       return state;
   }

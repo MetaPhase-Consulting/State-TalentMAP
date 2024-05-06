@@ -30,10 +30,10 @@ import {
   EDIT_CYCLE_POSITION_ERROR_TITLE,
   EDIT_CYCLE_POSITION_SUCCESS,
   EDIT_CYCLE_POSITION_SUCCESS_TITLE,
-  REMOVE_CYCLE_POSITION_ERROR,
-  REMOVE_CYCLE_POSITION_ERROR_TITLE,
-  REMOVE_CYCLE_POSITION_SUCCESS,
-  REMOVE_CYCLE_POSITION_SUCCESS_TITLE,
+  // REMOVE_CYCLE_POSITION_ERROR,
+  // REMOVE_CYCLE_POSITION_ERROR_TITLE,
+  // REMOVE_CYCLE_POSITION_SUCCESS,
+  // REMOVE_CYCLE_POSITION_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
@@ -555,58 +555,51 @@ export function cyclePositionSearchFetchData(query = {}) {
 }
 
 
-// ================ Cycle Positions: Remove Position ================
+// ================ Cycle Positions: Get Single Position ================
 
 let cancelCPremove;
 
-export function cyclePositionRemoveHasErrored(bool) {
+export function cyclePositionGetPositionHasErrored(bool) {
   return {
-    type: 'CYCLE_POSITION_REMOVE_HAS_ERRORED',
+    type: 'CYCLE_POSITION_FETCH_HAS_ERRORED',
     hasErrored: bool,
   };
 }
-export function cyclePositionRemoveIsLoading(bool) {
+export function cyclePositionGetPositionIsLoading(bool) {
   return {
-    type: 'CYCLE_POSITION_REMOVE_IS_LOADING',
+    type: 'CYCLE_POSITION_FETCH_IS_LOADING',
     isLoading: bool,
   };
 }
-export function cyclePositionRemoveSuccess(data) {
+export function cyclePositionGetPositionSuccess(data) {
   return {
-    type: 'CYCLE_POSITION_REMOVE_SUCCESS',
+    type: 'CYCLE_POSITION_FETCH_SUCCESS',
     data,
   };
 }
-export function cyclePositionRemove(position) {
+export function cyclePositionGetPosition(id) {
   return (dispatch) => {
     if (cancelCPremove) { cancelCPremove('cancel'); }
-    dispatch(cyclePositionRemoveIsLoading(true));
-    dispatch(cyclePositionRemoveHasErrored(false));
+    dispatch(cyclePositionGetPositionIsLoading(true));
+    dispatch(cyclePositionGetPositionHasErrored(false));
     api()
-      .post('/placeholder/POST/endpoint', {
-        position,
-      }, {
+      .get(`/fsbid/assignment_cycles/position/${id}/`, {
         cancelToken: new CancelToken((c) => {
           cancelCPremove = c;
         }),
       })
       .then(({ data }) => {
         batch(() => {
-          dispatch(cyclePositionRemoveHasErrored(false));
-          dispatch(cyclePositionRemoveSuccess(data || []));
-          dispatch(
-            toastSuccess(REMOVE_CYCLE_POSITION_SUCCESS, REMOVE_CYCLE_POSITION_SUCCESS_TITLE));
-          dispatch(cyclePositionRemoveIsLoading(false));
+          dispatch(cyclePositionGetPositionSuccess(data));
+          dispatch(cyclePositionGetPositionHasErrored(false));
+          dispatch(cyclePositionGetPositionIsLoading(false));
         });
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
-          dispatch(cyclePositionRemoveHasErrored(false));
-          dispatch(cyclePositionRemoveIsLoading(false));
-        } else {
-          dispatch(toastError(REMOVE_CYCLE_POSITION_ERROR, REMOVE_CYCLE_POSITION_ERROR_TITLE));
-          dispatch(cyclePositionRemoveHasErrored(true));
-          dispatch(cyclePositionRemoveIsLoading(false));
+        if (err?.message !== 'cancel') {
+          dispatch(cyclePositionGetPositionSuccess([]));
+          dispatch(cyclePositionGetPositionHasErrored(true));
+          dispatch(cyclePositionGetPositionIsLoading(false));
         }
       });
   };
@@ -617,56 +610,33 @@ export function cyclePositionRemove(position) {
 
 let cancelCPedit;
 
-export function cyclePositionEditHasErrored(bool) {
-  return {
-    type: 'CYCLE_POSITION_EDIT_HAS_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function cyclePositionEditIsLoading(bool) {
-  return {
-    type: 'CYCLE_POSITION_EDIT_IS_LOADING',
-    isLoading: bool,
-  };
-}
-export function cyclePositionEditSuccess(data) {
+export function cyclePositionEditSuccess(bool) {
   return {
     type: 'CYCLE_POSITION_EDIT_SUCCESS',
-    data,
+    success: bool,
   };
 }
-export function cyclePositionEdit(position, incumbent, status) {
+export function cyclePositionEdit(data) {
   return (dispatch) => {
     if (cancelCPedit) { cancelCPedit('cancel'); }
-    dispatch(cyclePositionEditIsLoading(true));
-    dispatch(cyclePositionEditHasErrored(false));
     api()
-      .post('/placeholder/POST/endpoint', {
-        position,
-        incumbent,
-        status,
+      .post('/fsbid/assignment_cycles/position/update/', {
+        data,
       }, {
         cancelToken: new CancelToken((c) => {
           cancelCPedit = c;
         }),
       })
-      .then(({ data }) => {
+      .then(() => {
         batch(() => {
-          dispatch(cyclePositionEditHasErrored(false));
-          dispatch(cyclePositionEditSuccess(data || []));
           dispatch(
             toastSuccess(EDIT_CYCLE_POSITION_SUCCESS, EDIT_CYCLE_POSITION_SUCCESS_TITLE));
-          dispatch(cyclePositionEditIsLoading(false));
+          dispatch(cyclePositionEditSuccess(true));
         });
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
-          dispatch(cyclePositionEditHasErrored(false));
-          dispatch(cyclePositionEditIsLoading(false));
-        } else {
+        if (err?.message !== 'cancel') {
           dispatch(toastError(EDIT_CYCLE_POSITION_ERROR, EDIT_CYCLE_POSITION_ERROR_TITLE));
-          dispatch(cyclePositionEditHasErrored(true));
-          dispatch(cyclePositionEditIsLoading(false));
         }
       });
   };

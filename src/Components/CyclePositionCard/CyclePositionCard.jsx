@@ -1,22 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import FA from 'react-fontawesome';
+import DatePicker from 'react-datepicker';
 import { getResult } from 'utilities';
-import { cyclePositionEdit, cyclePositionRemove } from 'actions/cycleManagement';
+import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
-  NO_GRADE, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE,
-  NO_SKILL, NO_STATUS,
+  NO_GRADE, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_SKILL, NO_STATUS,
 } from 'Constants/SystemMessages';
 import TabbedCard from 'Components/TabbedCard';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import swal from '@sweetalert/with-react';
+import { cyclePositionEdit } from 'actions/cycleManagement';
 import { NO_TOUR_END_DATE } from '../../Constants/SystemMessages';
 
 
-const CyclePositionCard = ({ data, cycle, onEditModeSearch }) => {
+const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, editableInfoLoading, editableInfoError }) => {
   const dispatch = useDispatch();
-  const description$ = data?.description?.content || 'No description.';
+  const datePickerRef = useRef(null);
+
   const postedDate = data?.posted_date_formatted || '--/--/----';
   const skillWithDesc = (data?.skill_code && data?.skill_desc) ? `${data?.skill_desc} (${data?.skill_code})` : false;
   const orgWithCode = (data?.org_code && data?.org_desc) ? `${data?.org_desc} (${data?.org_code})` : false;
@@ -36,15 +40,12 @@ const CyclePositionCard = ({ data, cycle, onEditModeSearch }) => {
       { 'Grade': data?.grade || NO_GRADE },
       { 'Status': data?.status || NO_STATUS },
       { 'Language': data?.languages || 'None Listed' },
-    ],
-    bodySecondary: [
       { 'Bid Cycle': data?.bid_cycle || 'None Listed' },
       { 'Job Category': data?.job_category || 'None Listed' },
       { 'Pay Plan': data?.pay_plan || 'None Listed' },
       { 'Incumbent': data?.incumbent_name || 'None Listed' },
       { 'TED': getResult(data, 'ted', NO_TOUR_END_DATE) },
     ],
-    textarea: description$,
     metadata: [
       { 'Date Posted': postedDate },
     ],
@@ -54,54 +55,85 @@ const CyclePositionCard = ({ data, cycle, onEditModeSearch }) => {
 
   // =============== Edit Mode ===============
 
-  const removePosition = () => {
-    if (!getResult(data, 'ted')) { // adjust with real data
-      swal({
-        title: 'Confirm Removal',
-        button: false,
-        closeOnEsc: true,
-        content: (
-          <div className="simple-action-modal">
-            <div className="help-text">
-              <span>
-                Are you sure you want to remove this position from this cycle?
-                This action cannot be undone.
-              </span>
-            </div>
-            <div className="modal-controls">
-              <button onClick={() => {
-                dispatch(cyclePositionRemove(data));
-                swal.close();
-              }}
-              >Yes</button>
-              <button className="usa-button-secondary" onClick={() => swal.close()}>Cancel</button>
-            </div>
-          </div>
-        ),
-      });
-    } else dispatch(cyclePositionRemove(data));
-  };
+  const {
+    cycle_position_status,
+    position_remark_text,
+    now_ted_flag,
+    incumbent_code,
+    ted_override_date,
+    critical_need_indicator,
+    cycle_status_reference,
+    incumbent_code_reference,
+    cycle_position_id,
+    last_updated,
+    last_updated_id,
+  } = editableInfo;
 
-  const statusOptions = [
-    { code: 1, name: 'Vet' },
-    { code: 2, name: 'Publishable' },
-    { code: 3, name: 'Non-Publishable' },
-  ];
-  const [status, setStatus] = useState(statusOptions[0]);
+  const statusOptions = cycle_status_reference || [{ code: '', name: '' }];
+  const incumbentOptions = incumbent_code_reference || [{ code: '', name: '' }];
 
-  // Hardcoded - find where to get this data
-  const fakeIncumbents = [
-    { code: 'CURR', name: 'Holden, James' },
-    { code: 'TBD', name: 'TBD' },
-    { code: 'VAC', name: 'Vacant' },
-    { code: 'NEW', name: 'New' },
-  ];
-  const [incumbent, setIncumbent] = useState(fakeIncumbents[0]);
+  const [cycleStatus, setCycleStatus] = useState(cycle_position_status);
+  const [remarkText, setRemarkText] = useState(position_remark_text);
+  const [nowTedFlag, setNowTedFlag] = useState(now_ted_flag);
+  const [incumbentVacancyCode, setIncumbentVacancyCode] = useState(incumbent_code);
+  const [tedOverrideDate, setTedOverrideDate] = useState(ted_override_date);
+  const [critNeedFlag, setCritNeedFlag] = useState(critical_need_indicator);
+
 
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
     onEditModeSearch(editMode, data?.id);
   }, [editMode]);
+
+  useEffect(() => {
+    setEditMode(isOpen);
+  }, [isOpen]);
+
+  useEffect(() => {
+    setCycleStatus(cycle_position_status);
+    setRemarkText(position_remark_text);
+    setNowTedFlag(now_ted_flag);
+    setIncumbentVacancyCode(incumbent_code);
+    setTedOverrideDate(ted_override_date); // this one
+    setCritNeedFlag(critical_need_indicator);
+  }, [editableInfoLoading]);
+
+  const submitPositionUpdate = () => {
+    dispatch(cyclePositionEdit({
+      cycleStatus,
+      remarkText,
+      nowTedFlag,
+      incumbentVacancyCode,
+      tedOverrideDate,
+      critNeedFlag,
+      cycle_position_id,
+      last_updated,
+      last_updated_id,
+    }));
+  };
+
+
+  const getOverlay = () => {
+    let overlay;
+    if (editableInfoLoading) {
+      overlay = <Spinner type="small" size="small" />;
+    } else if (editableInfoError) {
+      overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
+  };
+
+  const checkIncumbent = () => {
+    const incumbentNameIsOption = incumbentOptions.find(x => {
+      if (x.name === data?.incumbent_name) return x.code;
+      return null;
+    });
+    if (!incumbentNameIsOption) return '';
+    return incumbentNameIsOption.code;
+  };
+
 
   const form = {
     /* eslint-disable quote-props */
@@ -111,49 +143,106 @@ const CyclePositionCard = ({ data, cycle, onEditModeSearch }) => {
       { 'Status': data?.status || NO_STATUS },
       { 'Language': data?.languages || 'None Listed' },
       { 'Bid Cycle': data?.bid_cycle || 'None Listed' },
+      { 'Job Category': data?.job_category || 'None Listed' },
       { 'Pay Plan': data?.pay_plan || 'None Listed' },
+      { 'Incumbent': data?.incumbent_name || 'None Listed' },
+      { 'TED': getResult(data, 'ted', NO_TOUR_END_DATE) },
     ],
     inputBody:
+    getOverlay() ||
       <div className="position-form">
-        <div className="left-row">
+        <div className="pos-form-edit-row">
+
+          <div className="position-form--input">
+            <label htmlFor="cycle-position-statuses">Position Status</label>
+            <select
+              id="cycle-position-statuses"
+              defaultValue={cycleStatus}
+              onChange={(e) => setCycleStatus(e?.target.value)}
+            >
+              {statusOptions.map(s => (
+                <option value={s.code} key={s.code}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="position-form--input">
+            <label htmlFor="cycle-position-statuses">Remarks</label>
+            <input
+              type="text"
+              maxLength="100"
+              value={remarkText}
+              name="remarks"
+              autoComplete="off"
+              className="bid-audit-modal-input"
+              onChange={(e) => setRemarkText(e.target.value)}
+            />
+          </div>
+
+          <div className="position-form--input">
+            <label htmlFor="ted-now">Now</label>
+            <select
+              id="ted-now"
+              defaultValue={nowTedFlag}
+              onChange={(e) => setNowTedFlag(e?.target.value)}
+            >
+              <option value={'Y'}>Y</option>
+              <option value={'N'}>N</option>
+            </select>
+          </div>
+
           <div className="position-form--input">
             <label htmlFor="cycle-position-incumbent">Incumbent</label>
             <select
               id="cycle-position-incumbent"
-              defaultValue={incumbent}
-              onChange={(e) => setIncumbent(e?.target.value)}
+              defaultValue={checkIncumbent()}
+              onChange={(e) => setIncumbentVacancyCode(e?.target.value)}
             >
-              {fakeIncumbents.map(s => (
-                <option value={s.code}>
+              <option value="">No Change</option>
+              {incumbentOptions.map(s => (
+                <option value={s.code} key={s.code}>
                   {s.name}
                 </option>
               ))}
             </select>
           </div>
+
+          <div className="position-form--inputs">
+            <div className="position-form--label-input-container">
+              <label htmlFor="status">TED</label>
+              <div className="date-wrapper-react larger-date-picker">
+                <FA name="fa fa-calendar" onClick={() => datePickerRef.current.setOpen(true)} />
+                <FA name="times" className={`${tedOverrideDate ? '' : 'hide'}`} onClick={() => setTedOverrideDate(null)} />
+                <DatePicker
+                  selected={tedOverrideDate && new Date(tedOverrideDate)}
+                  onChange={setTedOverrideDate}
+                  dateFormat="MM/yyyy"
+                  placeholderText="MM/YYYY"
+                  ref={datePickerRef}
+                  showMonthYearPicker
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="position-form--input">
-            <label htmlFor="cycle-position-statuses">Status</label>
+            <label htmlFor="critical-need">Critical Need</label>
             <select
-              id="cycle-position-statuses"
-              defaultValue={status}
-              onChange={(e) => setStatus(e?.target.value)}
+              id="critical-need"
+              defaultValue={critNeedFlag}
+              onChange={(e) => setCritNeedFlag(e?.target.value)}
             >
-              {statusOptions.map(s => (
-                <option value={s.code}>
-                  {s.name}
-                </option>
-              ))}
+              <option value={'Y'}>Y</option>
+              <option value={'N'}>N</option>
             </select>
           </div>
-        </div>
-        <div className="cycle-card-remove">
-          {cycle?.cycle_name}
-          <div className="position-form--actions">
-            <button onClick={removePosition}>Remove</button>
-          </div>
+
         </div>
       </div>,
-    handleSubmit: () => dispatch(cyclePositionEdit(data, incumbent, status)),
-    handleCancel: () => { },
+    handleSubmit: () => submitPositionUpdate(),
+    handleCancel: () => swal.close(),
     handleEdit: {
       editMode,
       setEditMode,
@@ -177,14 +266,37 @@ const CyclePositionCard = ({ data, cycle, onEditModeSearch }) => {
 
 CyclePositionCard.propTypes = {
   data: POSITION_DETAILS.isRequired,
-  cycle: PropTypes.shape({
-    cycle_name: PropTypes.string,
-  }).isRequired,
+  isOpen: PropTypes.bool.isRequired,
   onEditModeSearch: PropTypes.func,
+  editableInfoLoading: PropTypes.bool,
+  editableInfoError: PropTypes.bool,
+  editableInfo: PropTypes.shape({
+    cycle_position_status: PropTypes.string.isRequired,
+    position_remark_text: PropTypes.string,
+    now_ted_flag: PropTypes.string.isRequired,
+    incumbent_code: PropTypes.string,
+    ted_override_date: PropTypes.string,
+    critical_need_indicator: PropTypes.string,
+    cycle_status_reference: PropTypes.arrayOf(PropTypes.shape({})),
+    incumbent_code_reference: PropTypes.arrayOf(PropTypes.shape({})),
+    cycle_position_id: PropTypes.number.isRequired,
+    last_updated: PropTypes.string,
+    last_updated_id: PropTypes.number,
+  }),
 };
 
 CyclePositionCard.defaultProps = {
   onEditModeSearch: EMPTY_FUNCTION,
+  editableInfoLoading: false,
+  editableInfoError: false,
+  editableInfo: {
+    cycle_status_reference: [{ code: '', name: '' }],
+    incumbent_code_reference: [{ code: '', name: '' }],
+    cycle_position_id: null,
+    cycle_position_status: '',
+    ted_override_date: null,
+    now_ted_flag: 'N',
+  },
 };
 
 export default CyclePositionCard;
