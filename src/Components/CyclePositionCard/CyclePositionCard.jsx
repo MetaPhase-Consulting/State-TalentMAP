@@ -94,7 +94,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
     setRemarkText(position_remark_text);
     setNowTedFlag(now_ted_flag);
     setIncumbentVacancyCode(incumbent_code);
-    setTedOverrideDate(ted_override_date); // this one
+    setTedOverrideDate(ted_override_date);
     setCritNeedFlag(critical_need_indicator);
   }, [editableInfoLoading]);
 

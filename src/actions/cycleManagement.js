@@ -30,10 +30,6 @@ import {
   EDIT_CYCLE_POSITION_ERROR_TITLE,
   EDIT_CYCLE_POSITION_SUCCESS,
   EDIT_CYCLE_POSITION_SUCCESS_TITLE,
-  // REMOVE_CYCLE_POSITION_ERROR,
-  // REMOVE_CYCLE_POSITION_ERROR_TITLE,
-  // REMOVE_CYCLE_POSITION_SUCCESS,
-  // REMOVE_CYCLE_POSITION_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
