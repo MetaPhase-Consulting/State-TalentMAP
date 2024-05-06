@@ -71,4 +71,3 @@ export function aiValidation(state = {}, action) {
       return state;
   }
 }
-

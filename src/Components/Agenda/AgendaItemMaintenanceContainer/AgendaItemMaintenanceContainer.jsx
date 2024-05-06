@@ -10,7 +10,7 @@ import MediaQuery from 'Components/MediaQuery';
 import Spinner from 'Components/Spinner';
 import { HISTORY_OBJECT } from 'Constants/PropTypes';
 import { Link } from 'react-router-dom';
-import { fetchAI, modifyAgenda, resetAIValidation, resetCreateAI, validateAI } from 'actions/agendaItemMaintenancePane';
+import { fetchAI, modifyAgenda, removeAgenda, resetAIValidation, resetCreateAI, validateAI } from 'actions/agendaItemMaintenancePane';
 import { useDataLoader, usePrevious } from 'hooks';
 import { isAfter } from 'date-fns-v2';
 import shortid from 'shortid';
@@ -105,7 +105,6 @@ const AgendaItemMaintenanceContainer = (props) => {
   }));
 
   const agendaItemRemarks = get(agendaItemData$, 'remarks') || [];
-
   const [legsContainerExpanded, setLegsContainerExpanded] = useState(false);
   const [agendaItemMaintenancePaneLoading, setAgendaItemMaintenancePaneLoading] = useState(true);
   const [agendaItemTimelineLoading, setAgendaItemTimelineLoading] = useState(true);
@@ -156,6 +155,14 @@ const AgendaItemMaintenanceContainer = (props) => {
       assignmentVersion: get(efPosition, 'revision_num'),
     };
     dispatch(modifyAgenda(maintenanceInfo, legs, personId, efInfo, agendaItemData$));
+  };
+
+  const removeAI = () => {
+    const data = {
+      aiseqnum: agendaItemData$?.pmi_seq_num,
+      aiupdatedate: agendaItemData$?.pmi_update_date,
+    };
+    dispatch(removeAgenda(data));
   };
 
   const updateFormMode = () => {
@@ -282,6 +289,7 @@ const AgendaItemMaintenanceContainer = (props) => {
                           userRemarks={userRemarks}
                           legCount={legs.length}
                           saveAI={submitAI}
+                          removeAI={removeAI}
                           updateFormMode={updateFormMode}
                           agendaItem={agendaItemData$}
                           readMode={readMode}
