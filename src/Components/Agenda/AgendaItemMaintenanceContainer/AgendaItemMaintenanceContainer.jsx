@@ -73,6 +73,13 @@ const AgendaItemMaintenanceContainer = (props) => {
   const legsData = { todData, TODLoading, legATData, legATLoading, travelFData, travelFLoading };
   const legsFormLoading = TODLoading || legATLoading || travelFLoading;
 
+  // if there is no Client data, then we have to make an additional call for the hru_id
+  const empData = !employeeData?.data && !employeeDataLoading;
+  const { data: userInfoData, error: userInfoError, loading: userInfoLoading } = useDataLoader(api().get, `/fsbid/employee/${routeEmployeeID}/user_info/`, empData);
+  if (userInfoData?.data && !userInfoError && !userInfoLoading) {
+    employeeData$.user_info.hru_id = userInfoData?.data?.hru_id;
+  }
+
   // Utility to find employee's most recent effective detail on which agenda is based
   const findEffectiveAsgOrSep = (asgAndSep) => {
     let max;
