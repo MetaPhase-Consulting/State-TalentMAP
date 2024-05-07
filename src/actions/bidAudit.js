@@ -141,7 +141,7 @@ export function bidAuditCreateAudit(data, onSuccess) {
           dispatch(toastSuccess(
             CREATE_BID_AUDIT_SUCCESS, CREATE_BID_AUDIT_SUCCESS_TITLE,
           ));
-          bidAuditFetchData();
+          dispatch(bidAuditFetchData());
           if (onSuccess) onSuccess();
         });
       })
@@ -174,7 +174,7 @@ export function bidAuditUpdateAudit(data, onSuccess) {
           dispatch(toastSuccess(
             UPDATE_BID_AUDIT_SUCCESS, UPDATE_BID_AUDIT_SUCCESS_TITLE,
           ));
-          bidAuditFetchData();
+          dispatch(bidAuditFetchData());
           if (onSuccess) onSuccess();
         });
       })
