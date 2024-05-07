@@ -54,6 +54,18 @@ export function bidAuditCreateAuditSuccess(state = false, action) {
       return state;
   }
 }
+
+// ================ Bid Audit: Update Audit ================
+
+export function bidAuditUpdateAuditSuccess(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_UPDATE_SUCCESS':
+      return action.success;
+    default:
+      return state;
+  }
+}
+
 // ================ Bid Audit: Get In Category/At Grade ================
 
 export function bidAuditSecondFetchDataErrored(state = false, action) {
