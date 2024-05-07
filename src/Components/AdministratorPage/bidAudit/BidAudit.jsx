@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onEditModeSearch, renderSelectionList } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import {
-  bidAuditFetchData,
-  updateBidCount,
-} from 'actions/bidAudit';
+import { bidAuditFetchData, updateBidCount } from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import swal from '@sweetalert/with-react';
 import BidAuditCard from './BidAuditCard';
