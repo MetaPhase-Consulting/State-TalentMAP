@@ -77,7 +77,7 @@ const AgendaItemMaintenanceContainer = (props) => {
   const empData = !employeeData?.data && !employeeDataLoading;
   const { data: userInfoData, error: userInfoError, loading: userInfoLoading } = useDataLoader(api().get, `/fsbid/employee/${routeEmployeeID}/user_info/`, empData);
   if (userInfoData?.data && !userInfoError && !userInfoLoading) {
-    employeeData$['user_info'] = {...userInfoData?.data};
+    employeeData$.user_info = { ...userInfoData?.data };
   }
 
   // Utility to find employee's most recent effective detail on which agenda is based
