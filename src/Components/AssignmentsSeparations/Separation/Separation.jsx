@@ -177,7 +177,7 @@ const Separation = (props) => {
   const form = {
     /* eslint-disable quote-props */
     inputBody:
-      <div className="position-form">
+      <div className={`position-form separation-form ${isNew ? 'create-form' : ''}`}>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
             <label htmlFor="assignment-statuses">Status</label>
