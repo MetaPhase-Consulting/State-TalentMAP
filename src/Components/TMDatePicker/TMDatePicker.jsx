@@ -17,6 +17,7 @@ const TMDatePicker = ({
   excludeDates,
   useStandardInputWidth,
   condensed,
+  disabled,
 }) => {
   const datePickerRef = useRef(null);
   const openDatePicker = () => {
@@ -55,6 +56,7 @@ const TMDatePicker = ({
         placeholderText={placeholderText}
         excludeDates={excludeDates}
         ref={datePickerRef}
+        disabled={disabled}
       />
     </div>
   );
@@ -76,6 +78,7 @@ TMDatePicker.propTypes = {
   isClearable: PropTypes.bool,
   showTimeSelect: PropTypes.bool,
   excludeDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  disabled: PropTypes.bool,
 };
 
 TMDatePicker.defaultProps = {
@@ -91,4 +94,5 @@ TMDatePicker.defaultProps = {
   isClearable: false,
   showTimeSelect: false,
   excludeDates: [],
+  disabled: false,
 };

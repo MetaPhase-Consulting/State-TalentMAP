@@ -10,7 +10,7 @@ import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { NO_VALUE } from 'Constants/SystemMessages';
 import { history } from '../../../store';
 
-const BidAuditCard = ({ data, onEditModeSearch }) => {
+const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
   const {
     audit_id,
     audit_desc,
@@ -26,17 +26,12 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
   const [pbDate, setPbDate] = useState(posted_by_date ? new Date(posted_by_date) : '');
 
   const [editMode, setEditMode] = useState(false);
-  useEffect(() => {
-    onEditModeSearch(editMode, audit_id);
-  }, [editMode]);
 
   useEffect(() => {
+    setPbDate(posted_by_date ? new Date(posted_by_date) : '');
+    setDescription(audit_desc || '');
     onEditModeSearch(editMode, audit_id);
   }, [editMode]);
-
-  const onSubmitBidData = () => {
-    swal.close();
-  };
 
   const onOptionClick = (type) => {
     history.push(`/profile/administrator/bidaudit/${type}/${cycle_id}/${audit_id}/`);
@@ -44,6 +39,7 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
 
   const onCancelForm = () => {
     setPbDate(posted_by_date ? new Date(posted_by_date) : '');
+    setDescription(audit_desc || '');
     swal.close();
   };
 
@@ -119,7 +115,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
       </div>
     ),
     cancelText: 'Are you sure you want to discard all changes made to this position?',
-    handleSubmit: () => onSubmitBidData(),
+    disableSubmit: (!pbDate || !description),
+    handleSubmit: () => onSubmit(cycle_id, audit_id, pbDate, description),
     handleCancel: () => onCancelForm(),
     handleEdit: {
       editMode,
@@ -162,6 +159,7 @@ BidAuditCard.propTypes = {
     audit_date: PropTypes.string,
   }).isRequired,
   onEditModeSearch: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 BidAuditCard.defaultProps = {

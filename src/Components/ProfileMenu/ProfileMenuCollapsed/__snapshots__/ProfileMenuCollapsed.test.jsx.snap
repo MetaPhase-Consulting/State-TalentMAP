@@ -26,12 +26,6 @@ exports[`ProfileMenuCollapsedComponent matches snapshot 1`] = `
     />
     <withRouter(NavLink)
       hidden={true}
-      iconName="sitemap"
-      key="Administrator"
-      search=""
-    />
-    <withRouter(NavLink)
-      hidden={true}
       iconName="building-o"
       key="AO"
       search=""
@@ -52,6 +46,12 @@ exports[`ProfileMenuCollapsedComponent matches snapshot 1`] = `
       hidden={true}
       iconName="building"
       key="Post"
+      search=""
+    />
+    <withRouter(NavLink)
+      hidden={true}
+      iconName="sitemap"
+      key="TalentMAP Admin"
       search=""
     />
   </NavLinksContainer>
@@ -84,12 +84,6 @@ exports[`ProfileMenuCollapsedComponent matches snapshot when isGlossaryEditor is
     />
     <withRouter(NavLink)
       hidden={true}
-      iconName="sitemap"
-      key="Administrator"
-      search=""
-    />
-    <withRouter(NavLink)
-      hidden={true}
       iconName="building-o"
       key="AO"
       search=""
@@ -110,6 +104,12 @@ exports[`ProfileMenuCollapsedComponent matches snapshot when isGlossaryEditor is
       hidden={true}
       iconName="building"
       key="Post"
+      search=""
+    />
+    <withRouter(NavLink)
+      hidden={true}
+      iconName="sitemap"
+      key="TalentMAP Admin"
       search=""
     />
   </NavLinksContainer>

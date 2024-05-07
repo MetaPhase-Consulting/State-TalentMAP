@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
+import { useDataLoader } from 'hooks';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
   NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
-import { altAssignmentDetailFetchData, createAssignment, updateAssignment } from 'actions/assignment';
+import { assignmentSeparationAction } from 'actions/assignment';
 import { positionsFetchData, resetPositionsFetchData } from 'actions/positions';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
@@ -17,36 +18,49 @@ import CheckBox from 'Components/CheckBox';
 import MonthYearInput from 'Components/MonthYearInput';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
+import api from '../../../api';
 
 const Assignment = (props) => {
-  const { perdet, data, isNew, setNewAsgSep, toggleModal } = props;
+  const {
+    perdet,
+    data,
+    isNew,
+    setNewAsgSep,
+    toggleModal,
+    setDisableOtherEdits,
+    disableOtherEdits,
+    employee,
+  } = props;
 
   const dispatch = useDispatch();
 
   // ====================== Data Retrieval ======================
 
-  const assignmentDetails = useSelector(state => state.altAssignmentDetail);
-  const assignmentsDetailsErrored = useSelector(state => state.altAssignmentDetailHasErrored);
-  const assignmentsDetailsLoading = useSelector(state => state.altAssignmentDetailIsLoading);
-
-  const statusOptions = assignmentDetails?.QRY_LSTASGS_REF;
-  const actionOptions = assignmentDetails?.QRY_LSTLAT_REF;
-  const todOptions = assignmentDetails?.QRY_LSTTOD_REF;
-  const travelOptions = assignmentDetails?.QRY_LSTTF_REF;
-  const fundingOptions = assignmentDetails?.QRY_LSTBUREAUS_REF;
-  const waiverOptions = assignmentDetails?.QRY_LSTWRT_REF;
-
-  // Asg Detail Data (Not to be confused with the Asg List)
-  const asgDetail = isNew ? {} : assignmentDetails?.QRY_GETASGDTL_REF?.[0];
+  const asgId = data?.ASG_SEQ_NUM;
+  const revisionNum = data?.ASGD_REVISION_NUM;
 
   useEffect(() => {
-    const asgId = data?.ASG_SEQ_NUM;
-    const revision_num = data?.ASGD_REVISION_NUM;
-    dispatch(altAssignmentDetailFetchData(perdet, asgId, revision_num));
-    return () => {
-      dispatch(resetPositionsFetchData());
-    };
+    dispatch(resetPositionsFetchData());
   }, []);
+
+  const [refetch, setRefetch] = useState(true);
+  const ep = `/fsbid/assignment_history/${perdet}/assignments/${asgId}/?revision_num=${revisionNum}`;
+  const { data: detailsData, loading: detailsLoading, error: detailsErrored } = useDataLoader(
+    api().get,
+    `${ep}${(asgId && revisionNum) ? '' : '&ignore_params=true'}`,
+    true,
+    undefined,
+    refetch,
+  );
+
+  const details = detailsData?.data?.QRY_GETASGDTL_REF?.[0];
+  const statusOptions = detailsData?.data?.QRY_LSTASGS_REF;
+  const actionOptions = detailsData?.data?.QRY_LSTLAT_REF;
+  const todOptions = detailsData?.data?.QRY_LSTTOD_REF;
+  const travelOptions = detailsData?.data?.QRY_LSTTF_REF;
+  const fundingOptions = detailsData?.data?.QRY_LSTBUREAUS_REF;
+  const waiverOptions = detailsData?.data?.QRY_LSTWRT_REF;
+
 
   // ====================== View Mode ======================
 
@@ -61,7 +75,7 @@ const Assignment = (props) => {
       { 'Bureau': getResult(data, 'ORGS_SHORT_DESC') || NO_BUREAU },
       { 'Location': getResult(data, 'POS_LOCATION_CODE') || NO_POST },
       { 'ETA': get(data, 'ASGD_ETA_DATE') || NO_VALUE },
-      { 'DIP': getResult(data, 'DIPLOMATIC_TITLE') || NO_POSITION_TITLE },
+      { 'DIP': getResult(data, 'DIP_CODE') || NO_VALUE },
       { 'Memo Sent': getResult(data, 'MEMO_LAST_SENT_DATE') || NO_VALUE },
       { 'Note Sent': getResult(data, 'NOTE_LAST_SENT_DATE') || NO_VALUE },
       { 'TED': get(data, 'ASGD_ETD_TED_DATE') || NO_TOUR_END_DATE },
@@ -116,72 +130,95 @@ const Assignment = (props) => {
     }
   }, [pos_results]);
 
-  const [status, setStatus] = useState(asgDetail?.ASGS_CODE || '');
-  const [action, setAction] = useState(asgDetail?.LAT_CODE || '');
-  const [ted, setTED] = useState(asgDetail?.ASGD_ETD_TED_DATE);
-  const [eta, setETA] = useState(asgDetail?.ASGD_ETA_DATE);
-  const [tod, setTOD] = useState(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
-  const [travel, setTravel] = useState(asgDetail?.TF_CD || '');
-  const [funding, setFunding] = useState(asgDetail?.ASGD_ORG_CODE);
+  const [status, setStatus] = useState('');
+  const [action, setAction] = useState('');
+  const [ted, setTED] = useState('');
+  const [eta, setETA] = useState('');
+  const [tod, setTOD] = useState('');
+  const [travel, setTravel] = useState('');
+  const [funding, setFunding] = useState('');
   const [adj, setAdj] = useState('');
-  const [salaryReimbursement, setSalaryReimbursement] = useState(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-  const [travelReimbursement, setTravelReimbursement] = useState(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-  const [training, setTraining] = useState(asgDetail?.ASGD_TRIANING_IND === 'Y');
-  const [criticalNeed, setCriticalNeed] = useState(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
-  const [waiver, setWaiver] = useState(asgDetail?.WRT_CODE_RR_REPAY || '');
-  const [sent, setSent] = useState(asgDetail?.NOTE_LAST_SENT_DATE);
+  const [salaryReimbursement, setSalaryReimbursement] = useState(false);
+  const [travelReimbursement, setTravelReimbursement] = useState(false);
+  const [training, setTraining] = useState(false);
+  const [criticalNeed, setCriticalNeed] = useState(false);
+  const [waiver, setWaiver] = useState('');
+  const [sent, setSent] = useState('');
 
   useEffect(() => {
-    setStatus(asgDetail?.ASGS_CODE || '');
-    setAction(asgDetail?.LAT_CODE || '');
-    setTED(asgDetail?.ASGD_ETD_TED_DATE);
-    setETA(asgDetail?.ASGD_ETA_DATE);
-    setTOD(isNew ? getTOD() : (asgDetail?.TOD_CODE || ''));
-    setTravel(asgDetail?.TF_CD || '');
-    setFunding(asgDetail?.ASGD_ORG_CODE);
-    setAdj('');
-    setSalaryReimbursement(asgDetail?.ASGD_SALARY_REIMBURSE_IND === 'Y');
-    setTravelReimbursement(asgDetail?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
-    setTraining(asgDetail?.ASGD_TRIANING_IND === 'Y');
-    setCriticalNeed(asgDetail?.ASGD_CRITICAL_NEED_IND === 'Y');
-    setWaiver(asgDetail?.WRT_CODE_RR_REPAY || '');
-    setSent(asgDetail?.NOTE_LAST_SENT_DATE);
-  }, []);
+    if (editMode) {
+      setDisableOtherEdits(editMode);
+      setStatus(details?.ASGS_CODE || '');
+      setAction(details?.LAT_CODE || '');
+      setTED(details?.ASGD_ETD_TED_DATE || '');
+      setETA(details?.ASGD_ETA_DATE || '');
+      setTOD(isNew ? getTOD() : (details?.TOD_CODE || ''));
+      setTravel(details?.TF_CD || '');
+      setFunding(details?.ASGD_ORG_CODE || '');
+      setAdj(details?.ASGD_ADJUST_MONTHS_NUM || '');
+      setSalaryReimbursement(details?.ASGD_SALARY_REIMBURSE_IND === 'Y');
+      setTravelReimbursement(details?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
+      setTraining(details?.ASGD_TRAINING_IND === 'Y');
+      setCriticalNeed(details?.ASGD_CRITICAL_NEED_IND === 'Y');
+      setWaiver(details?.WRT_CODE_RR_REPAY || '');
+      setSent(details?.NOTE_LAST_SENT_DATE || '');
+    }
+  }, [editMode]);
 
   const onSubmitForm = () => {
-    const formValues = {
-      asg_seq_num: asgDetail?.ASG_SEQ_NUM,
-      asgd_revision_num: asgDetail?.ASGD_REVISION_NUM,
+    const commonFields = {
       eta,
       etd: ted,
       tod,
       salary_reimburse_ind: salaryReimbursement,
       travel_reimburse_ind: travelReimbursement,
       training_ind: training,
-      critical_need_ind: criticalNeed,
       org_code: funding,
       status_code: status,
       lat_code: action,
       travel_code: travel,
       rr_repay_ind: waiver,
-      update_date: asgDetail?.ASGD_UPDATE_DATE,
     };
     if (isNew) {
-      dispatch(createAssignment({
-        ...formValues,
-      }, perdet));
+      const onCreateSuccess = () => {
+        toggleModal(false);
+      };
+      dispatch(assignmentSeparationAction(
+        {
+          ...commonFields,
+          employee: perdet,
+          position: pos_results.pos_seq_num,
+        },
+        perdet,
+        null, // Use Create Endpoint (No Seq Num)
+        false, // Use Assignment Endpoint
+        onCreateSuccess,
+      ));
     } else {
-      dispatch(updateAssignment({
-        ...formValues,
-      }, perdet));
+      const onUpdateSuccess = () => {
+        setDisableOtherEdits(false);
+        setRefetch(!refetch); // Refetch Details on Success
+      };
+      dispatch(assignmentSeparationAction(
+        {
+          ...commonFields,
+          asg_id: asgId,
+          revision_num: revisionNum,
+          critical_need_ind: criticalNeed,
+          updated_date: details?.ASGD_UPDATE_DATE,
+        },
+        perdet,
+        asgId, // Use Update Endpoint (Has Seq Num)
+        false, // Use Assignment Endpoint
+        onUpdateSuccess,
+      ));
     }
-    if (isNew) toggleModal(false);
     setNewAsgSep('default');
   };
 
   const addPositionNum = () => {
     if (selectedPositionNumber) {
-      dispatch(positionsFetchData(`limit=50&page=1&position_num=${selectedPositionNumber}`));
+      dispatch(positionsFetchData(`limit = 50 & page=1 & position_num=${selectedPositionNumber} `));
     }
   };
 
@@ -233,7 +270,7 @@ const Assignment = (props) => {
                 Select Status
               </option>
               {statusOptions?.map(s => (
-                <option value={s.ASGS_CODE}>
+                <option key={s.ASGS_CODE} value={s.ASGS_CODE}>
                   {s.ASGS_DESC_TEXT}
                 </option>
               ))}
@@ -250,7 +287,7 @@ const Assignment = (props) => {
                 Select Action
               </option>
               {actionOptions?.map(a => (
-                <option value={a.LAT_CODE}>
+                <option key={a.LAT_CODE} value={a.LAT_CODE}>
                   {a.LAT_ABBR_DESC_TEXT}
                 </option>
               ))}
@@ -275,7 +312,7 @@ const Assignment = (props) => {
                 Select TOD
               </option>
               {todOptions?.map(t => (
-                <option value={t.TOD_CODE}>
+                <option key={t.TOD_CODE} value={t.TOD_CODE}>
                   {t.TOD_DESC_TEXT}
                 </option>
               ))}
@@ -292,7 +329,7 @@ const Assignment = (props) => {
                 Select Travel
               </option>
               {travelOptions?.map(t => (
-                <option value={t.TF_CODE}>
+                <option key={t.TF_CODE} value={t.TF_CODE}>
                   {t.TF_SHORT_DESC_TEXT}
                 </option>
               ))}
@@ -309,7 +346,7 @@ const Assignment = (props) => {
                 Select Funding Org
               </option>
               {fundingOptions?.map(f => (
-                <option value={f.ORG_CODE}>
+                <option key={f.ORG_CODE} value={f.ORG_CODE}>
                   {f.ORGS_SHORT_DESC}
                 </option>
               ))}
@@ -325,7 +362,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`salary-reimbursement-${data.id ?? 'create'}`}
+              id={`salary - reimbursement - ${data.id ?? 'create'} `}
               label="Salary Reimbursement"
               value={salaryReimbursement}
               className="mt-40"
@@ -335,7 +372,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`travel-reimbursement-${data.id ?? 'create'}`}
+              id={`travel - reimbursement - ${data.id ?? 'create'} `}
               label="Travel Reimbursement"
               value={travelReimbursement}
               className="mt-40"
@@ -345,7 +382,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`training-${data.id ?? 'create'}`}
+              id={`training - ${data.id ?? 'create'} `}
               label="Training"
               value={training}
               className="mt-40"
@@ -364,7 +401,7 @@ const Assignment = (props) => {
                 Select Waiver
               </option>
               {waiverOptions?.map(w => (
-                <option value={w.WRT_CODE}>
+                <option key={w.WRT_CODE} value={w.WRT_CODE}>
                   {w.WRT_DESC}
                 </option>
               ))}
@@ -382,29 +419,38 @@ const Assignment = (props) => {
       </div>,
     cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
     handleSubmit: () => onSubmitForm(),
-    handleCancel: () => { if (isNew) toggleModal(false); },
+    handleCancel: () => { toggleModal(false); setDisableOtherEdits(false); },
     handleEdit: {
       editMode,
       setEditMode: isNew ? null : setEditMode,
+      disableEdit: disableOtherEdits,
     },
     // TO-DO: DIP, MEMO, NOTE
     /* eslint-enable quote-props */
   };
 
   const getOverlay = () => {
-    let overlay;
-    if (isNew && assignmentsDetailsLoading) {
-      overlay = <Spinner type="standard-center" size="small" />;
-    } else if (isNew && assignmentsDetailsErrored) {
-      overlay = <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
-    } else {
-      return false;
+    if (detailsLoading) {
+      if (isNew) {
+        return <Spinner type="standard-center" size="small" />;
+      }
+    } else if (detailsLoading) {
+      return (
+        <div className="loading-animation--5">
+          <div className="loading-message pbl-20">
+            Loading additional data
+          </div>
+        </div>
+      );
+    } else if (detailsErrored) {
+      return <Alert type="error" title="Error loading data" messages={[{ body: 'Please try again.' }]} />;
     }
-    return overlay;
+    return false;
   };
 
   return (
-    <div className="position-content--container min-height-100">
+    <div className={`position-content--container min-height-${isNew ? '150' : '50'}`}>
+      {employee}
       {getOverlay() ||
         <PositionExpandableContent
           sections={sections}
@@ -426,6 +472,9 @@ Assignment.propTypes = {
   setNewAsgSep: PropTypes.func,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
+  setDisableOtherEdits: PropTypes.func,
+  disableOtherEdits: PropTypes.bool,
+  employee: PropTypes.shape(),
 };
 
 Assignment.defaultProps = {
@@ -434,6 +483,9 @@ Assignment.defaultProps = {
   setNewAsgSep: EMPTY_FUNCTION,
   toggleModal: EMPTY_FUNCTION,
   perdet: '',
+  setDisableOtherEdits: EMPTY_FUNCTION,
+  disableOtherEdits: false,
+  employee: undefined,
 };
 
 export default Assignment;

@@ -1,81 +1,92 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import Picky from 'react-picky';
 import FA from 'react-fontawesome';
-import { getGenericFilterOptions, renderSelectionList } from 'utilities';
-import TextareaAutosize from 'react-textarea-autosize';
+import { formatDate } from 'utilities';
 import swal from '@sweetalert/with-react';
 
-const BidAuditModal = ({ data, auditNumber }) => {
-  const genericData$ = data?.filters || [];
-  const assignmentCycleOptions = getGenericFilterOptions(genericData$, 'bidCycle', 'name');
-
-  const [assignmentCycles, setAssignmentCycles] = useState('');
+const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
+  const [assignmentCycle, setAssignmentCycle] = useState('');
   const [auditDescription, setAuditDescription] = useState('');
   const [postByDate, setPostByDate] = useState('');
 
-  const datePickerRef = useRef(null);
-
   const cancel = () => swal.close();
-  const submit = () => swal.close();
 
-  const pickyProps = {
-    numberDisplayed: 1,
-    multiple: false,
-    includeFilter: true,
-    dropdownHeight: 255,
-    renderList: renderSelectionList,
-    includeSelectAll: false,
+  const submit = () => {
+    onSubmit({
+      id: assignmentCycle.id,
+      auditNumber: assignmentCycle.audit_number,
+      postByDate: formatDate(postByDate),
+      auditDescription,
+    });
   };
 
+  const handleCycleSelection = (id) => {
+    const cycle = assignmentCycleOptions.find(x => x.id === Number(id));
+    setAssignmentCycle(cycle);
+  };
+
+
   return (
-    <div className="pt-20 bid-audit-modal-wrapper">
-      <div className="usa-width-one-whole position-search--filters--ba results-dropdown">
-        <div className="bid-audit-modal-input">
-          <span className="label">Audit Number: {auditNumber}</span>
+    <div className="bid-audit-modal-wrapper">
+      <div className="usa-width-one-whole">
+
+        <div className="ba-modal-div">
+          <div>Audit Number:</div>
+          <span className="bid-audit-modal-number">{assignmentCycle?.audit_number || '--'}</span>
         </div>
-        <div className="bid-audit-modal-input">
-          <div className="label">Assignment Cycle:</div>
-          <Picky
-            {...pickyProps}
-            placeholder="Select Assignment Cycle(s)"
-            value={assignmentCycles}
-            options={assignmentCycleOptions}
-            onChange={setAssignmentCycles}
-            valueKey="id"
-            labelKey="name"
-          />
+
+        <div className="ba-modal-div">
+          <div>Assignment Cycle:</div>
+          <select
+            defaultValue=""
+            value={assignmentCycle?.id}
+            className="bid-audit-modal-input"
+            onChange={(e) => handleCycleSelection(e.target.value)}
+          >
+            <option value="" disabled />
+            {assignmentCycleOptions?.map(cycle => (
+              <option key={cycle.id} value={cycle.id}>
+                {cycle.name}
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="bid-audit-modal-input">
-          <div className="label">Posted By Date:</div>
+
+        <div className="ba-modal-div">
+          <div>Posted By Date:</div>
           <span className="date-picker-validation-container larger-date-picker">
-            <FA name="fa-regular fa-calendar" className="fa fa-calendar" onClick={() => datePickerRef.current.setOpen(true)} />
-            <FA name="times" className={`${postByDate ? '' : 'hide'} fa-close`} onClick={() => setPostByDate(null)} />
+            <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
             <DatePicker
               selected={postByDate}
               onChange={(date) => setPostByDate(date)}
               dateFormat="MM/dd/yyyy"
-              ref={datePickerRef}
             />
+            <FA name="times" className={`${postByDate ? '' : 'hide'} fa-close`} onClick={() => setPostByDate('')} />
           </span>
         </div>
-        <div className="bid-audit-modal-input">
-          <div className="label">Audit Description:</div>
-          <TextareaAutosize
-            maxRows={2}
-            minRows={1}
-            maxlength="100"
-            name="description"
-            defaultValue={auditDescription}
-            onChange={(e) => setAuditDescription(e.target.value)}
-          />
+
+        <div className="ba-modal-div">
+          <div>Audit Description:</div>
+          <div>
+            <input
+              type="text"
+              maxLength="100"
+              autoComplete="off"
+              name="description"
+              className="bid-audit-modal-input"
+              onChange={(e) => setAuditDescription(e.target.value)}
+            />
+            <div className="bid-audit-modal-word-count">
+              {auditDescription?.length} / 100
+            </div>
+          </div>
         </div>
-        <div className="word-count">
-          {auditDescription?.length} / 100
-        </div>
+
         <div className="bid-audit-modal-buttons">
-          <button onClick={submit} type="submit">Submit</button>
+          <button onClick={submit} disabled={!assignmentCycle || !auditDescription || !postByDate} type="submit">
+            Submit
+          </button>
           <button onClick={cancel}>Cancel</button>
         </div>
       </div>
@@ -84,10 +95,14 @@ const BidAuditModal = ({ data, auditNumber }) => {
 };
 
 BidAuditModal.propTypes = {
-  data: PropTypes.shape({
-    filters: PropTypes.shape({}),
-  }).isRequired,
-  auditNumber: PropTypes.number.isRequired,
+  assignmentCycleOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      audit_number: PropTypes.number,
+    }),
+  ).isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default BidAuditModal;
