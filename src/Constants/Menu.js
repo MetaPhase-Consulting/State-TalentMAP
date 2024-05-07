@@ -97,7 +97,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
   },
   checkFlag('flags.fsbid_admin') ?
     {
-      text: 'FSBid Administrator',
+      text: 'FSBid Admin',
       icon: 'sitemap',
       toggleMenuSection: true,
       expandedSection: true,
@@ -118,7 +118,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       ],
     } : null,
   {
-    text: 'TalentMAP Administrator',
+    text: 'TalentMAP Admin',
     icon: 'sitemap',
     toggleMenuSection: true,
     expandedSection: true,
@@ -413,6 +413,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           icon: 'calendar',
           roles: [
             'panel_admin',
+            'superuser',
           ],
         },
       ],
