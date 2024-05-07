@@ -27,14 +27,6 @@ export function bidAuditFetchData(state = [], action) {
 
 // ================ Bid Audit: Get Cycles ================
 
-export function bidAuditFetchCyclesErrored(state = false, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_CYCLE_FETCH_HAS_ERRORED':
-      return action.hasErrored;
-    default:
-      return state;
-  }
-}
 export function bidAuditFetchCyclesLoading(state = false, action) {
   switch (action.type) {
     case 'BID_AUDIT_CYCLE_FETCH_IS_LOADING':
@@ -52,6 +44,16 @@ export function bidAuditCycles(state = [], action) {
   }
 }
 
+// ================ Bid Audit: Create Audit ================
+
+export function bidAuditCreateAuditSuccess(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_CREATE_AUDIT_SUCCESS':
+      return action.success;
+    default:
+      return state;
+  }
+}
 // ================ Bid Audit: Get In Category/At Grade ================
 
 export function bidAuditSecondFetchDataErrored(state = false, action) {

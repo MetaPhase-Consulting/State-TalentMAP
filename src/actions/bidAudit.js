@@ -80,12 +80,6 @@ export function bidAuditFetchData() {
 
 let cancelBidAuditGetCycles;
 
-export function bidAuditFetchCyclesErrored(bool) {
-  return {
-    type: 'BID_AUDIT_CYCLE_FETCH_HAS_ERRORED',
-    hasErrored: bool,
-  };
-}
 export function bidAuditFetchCyclesLoading(bool) {
   return {
     type: 'BID_AUDIT_CYCLE_FETCH_IS_LOADING',
@@ -105,7 +99,6 @@ export function bidAuditFetchCycles() {
     }
     batch(() => {
       dispatch(bidAuditFetchCyclesLoading(true));
-      dispatch(bidAuditFetchCyclesErrored(false));
     });
     api().get('/fsbid/bid_audit/cycles/', {
       cancelToken: new CancelToken((c) => { cancelBidAuditGetCycles = c; }),
@@ -113,7 +106,6 @@ export function bidAuditFetchCycles() {
       .then(({ data }) => {
         batch(() => {
           dispatch(bidAuditFetchCyclesSuccess(data));
-          dispatch(bidAuditFetchCyclesErrored(false));
           dispatch(bidAuditFetchCyclesLoading(false));
         });
       })
@@ -121,7 +113,6 @@ export function bidAuditFetchCycles() {
         if (err?.message !== 'cancel') {
           batch(() => {
             dispatch(bidAuditFetchCyclesSuccess({}));
-            dispatch(bidAuditFetchCyclesErrored(true));
             dispatch(bidAuditFetchCyclesLoading(false));
           });
         }
@@ -134,13 +125,22 @@ export function bidAuditFetchCycles() {
 
 let cancelBidAuditCreate;
 
-export function bidAuditCreateAudit(data, onSuccess) {
+export function bidAuditCreateAuditSuccess(bool) {
+  return {
+    type: 'BID_AUDIT_CREATE_AUDIT_SUCCESS',
+    success: bool,
+  };
+}
+
+export function bidAuditCreateAudit(data) {
   return (dispatch) => {
     if (cancelBidAuditCreate) {
       cancelBidAuditCreate('cancel');
     }
     api()
-      .post('/fsbid/bid_audit/create/', { data }, {
+      .post('/fsbid/bid_audit/create/', {
+        data,
+      }, {
         cancelToken: new CancelToken((c) => { cancelBidAuditCreate = c; }),
       })
       .then(() => {
@@ -148,8 +148,7 @@ export function bidAuditCreateAudit(data, onSuccess) {
           dispatch(toastSuccess(
             CREATE_BID_AUDIT_SUCCESS, CREATE_BID_AUDIT_SUCCESS_TITLE,
           ));
-          dispatch(bidAuditFetchData());
-          onSuccess();
+          dispatch(bidAuditCreateAuditSuccess(true));
         });
       })
       .catch((err) => {

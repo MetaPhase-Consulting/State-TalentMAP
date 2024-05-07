@@ -9,6 +9,7 @@ import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import {
   bidAuditCreateAudit,
+  bidAuditCreateAuditSuccess,
   bidAuditFetchCycles,
   bidAuditFetchData,
   updateBidCount,
@@ -25,33 +26,40 @@ const BidAudit = () => {
   const bidAuditFetchLoading = useSelector(state => state.bidAuditFetchDataLoading);
   const bidAuditFetchError = useSelector(state => state.bidAuditFetchDataErrored);
   const bidAuditFetchCyclesLoading = useSelector(state => state.bidAuditFetchCyclesLoading);
-  const bidAuditFetchCyclesErrored = useSelector(state => state.bidAuditFetchCyclesErrored);
   const bidAuditCycles = useSelector(state => state.bidAuditCycles);
+  const bidAuditCreated = useSelector(state => state.bidAuditCreateAuditSuccess);
 
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
+  const [newAuditClicked, setNewAuditClicked] = useState(false);
 
   useEffect(() => {
     dispatch(bidAuditFetchData());
   }, []);
 
+  useEffect(() => {
+    if (bidAuditCreated) {
+      dispatch(bidAuditCreateAuditSuccess(false));
+      dispatch(bidAuditFetchData());
+      swal.close();
+    }
+  }, [bidAuditCreated]);
+
   const onSubmit = (data) => {
-    dispatch(bidAuditCreateAudit(data, () => swal.close()));
+    dispatch(bidAuditCreateAudit(data));
   };
 
-  const showCreateModal = () => {
-    swal({
-      title: 'Create New Audit Cycle',
-      button: false,
-      content: (
-        <BidAuditModal
-          cycleOptions={bidAuditCycles}
-          cycleOptionsLoading={bidAuditFetchCyclesLoading}
-          cycleOptionsErrored={bidAuditFetchCyclesErrored}
-          onSubmit={onSubmit}
-        />
-      ),
-    });
-  };
+  useEffect(() => {
+    if (!bidAuditFetchCyclesLoading && bidAuditCycles?.length > 0 && newAuditClicked) {
+      setNewAuditClicked(false);
+      swal({
+        title: 'Create New Audit Cycle',
+        button: false,
+        content: (
+          <BidAuditModal assignmentCycleOptions={bidAuditCycles} onSubmit={onSubmit} />
+        ),
+      });
+    }
+  }, [bidAuditCycles]);
 
   const disableSearch = cardsInEditMode.length > 0;
 
@@ -59,7 +67,7 @@ const BidAudit = () => {
   const onCreateNewAuditClick = (e) => {
     e.preventDefault();
     dispatch(bidAuditFetchCycles());
-    showCreateModal();
+    setNewAuditClicked(true);
   };
 
   const cancelUpdateBidCount = () => swal.close();

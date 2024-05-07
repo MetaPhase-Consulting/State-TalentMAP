@@ -105,54 +105,61 @@
   }
 }
 
-$bid-audit-input-width: 460px;
 
 .bid-audit-form-modal {
   .filter-div-modal {
     padding: 10px;
-
     .label {
       text-align: left;
     }
   }
 }
+.bid-audit-modal-input {
+  text-align: center;
+}
+.bid-audit-modal-word-count {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  font-size: 14px;
+}
+.bid-audit-modal-description-text {
+  text-align: center;
+  height: 44px;
+}
+.bid-audit-modal-buttons {
+  margin-top: 35px;
+}
+
 
 .bid-audit-modal-wrapper {
   width: 100%;
   height: 300px;
-
   .ba-modal-div {
-    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding-top: 5px;
-
-    >div:first-child {
-      width: 160px;
-      text-align: end;
-      padding-right: 15px;
-    }
 
     .react-datepicker__input-container {
       display: flex;
       justify-content: end;
-
       input {
-        text-align: left;
-        width: $bid-audit-input-width;
+        text-align: center;
+        width: 460px;
         height: 44px;
-        padding-left: 40px;
+        padding: 0;
       }
     }
   }
 
   .date-picker-validation-container {
     position: relative;
+    width: 100%;
 
     .fa-calendar {
       position: absolute;
-      left: 15px;
+      left: 120px;
       top: 18px;
       color: gray;
       z-index: 1;
@@ -160,31 +167,10 @@ $bid-audit-input-width: 460px;
 
     .fa-close {
       position: absolute;
-      right: 10px;
+      left: 95%;
       top: 18px;
       color: gray;
       z-index: 1;
     }
-  }
-
-  .bid-audit-modal-word-count,
-  .bid-audit-modal-number {
-    display: flex;
-    width: $bid-audit-input-width;
-  }
-
-  .bid-audit-modal-word-count {
-    justify-content: flex-end;
-    font-size: 14px;
-    margin-bottom: -16px;
-  }
-
-  .bid-audit-modal-description-text {
-    text-align: center;
-    height: 44px;
-  }
-
-  .bid-audit-modal-buttons {
-    margin-top: 35px;
   }
 }
