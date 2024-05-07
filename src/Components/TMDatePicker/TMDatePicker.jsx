@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
@@ -5,7 +6,6 @@ import FA from 'react-fontawesome';
 const TMDatePicker = ({
   selected,
   onChange,
-  type,
   value,
   selectsRange,
   showTimeSelect,
@@ -13,24 +13,35 @@ const TMDatePicker = ({
   showYearDropdown,
   placeholderText,
   showIcon,
-  icon,
   isClearable,
   excludeDates,
+  useStandardInputWidth,
+  condensed,
   disabled,
 }) => {
-  const typeClasses = {
-    filter: {
-      wrapper: 'larger-date-picker',
-      datePicker: 'tm-date-picker-range',
-    },
-    form: {
-      wrapper: 'larger-date-picker form-date-picker',
-      datePicker: '',
-    },
+  const datePickerRef = useRef(null);
+  const openDatePicker = () => {
+    datePickerRef.current.setOpen(true);
   };
+
+  let wrapperClasses = 'tm-datepicker';
+
+  if (showIcon) {
+    wrapperClasses = wrapperClasses.concat(' show-icon');
+  }
+  if (useStandardInputWidth) {
+    wrapperClasses = wrapperClasses.concat(' standard-input-width');
+  }
+  if (condensed) {
+    wrapperClasses = wrapperClasses.concat(' condensed');
+  }
+
+
   return (
-    <div className={`tm-datepicker-wrapper ${typeClasses[type]?.wrapper}`}>
-      {showIcon && icon}
+    <div className={wrapperClasses}>
+      {showIcon &&
+        <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
+      }
       <DatePicker
         selected={selected}
         onChange={onChange}
@@ -42,29 +53,28 @@ const TMDatePicker = ({
         endDate={selectsRange ? value[1] : null}
         isClearable={isClearable}
         dropdownMode="select"
-        className={`tm-datepicker ${typeClasses[type]?.datePicker}`}
         placeholderText={placeholderText}
         excludeDates={excludeDates}
+        ref={datePickerRef}
         disabled={disabled}
       />
     </div>
   );
-}
-;
+};
 
 export default TMDatePicker;
 
 TMDatePicker.propTypes = {
   value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   onChange: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
   selected: PropTypes.instanceOf(Date),
   showMonthDropdown: PropTypes.bool,
   showYearDropdown: PropTypes.bool,
   placeholderText: PropTypes.string,
   selectsRange: PropTypes.bool,
   showIcon: PropTypes.bool,
-  icon: PropTypes.element,
+  useStandardInputWidth: PropTypes.bool,
+  condensed: PropTypes.bool,
   isClearable: PropTypes.bool,
   showTimeSelect: PropTypes.bool,
   excludeDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -79,7 +89,8 @@ TMDatePicker.defaultProps = {
   placeholderText: 'Select Date',
   selectsRange: false,
   showIcon: false,
-  icon: <FA name="fa fa-calendar" />,
+  useStandardInputWidth: false,
+  condensed: false,
   isClearable: false,
   showTimeSelect: false,
   excludeDates: [],

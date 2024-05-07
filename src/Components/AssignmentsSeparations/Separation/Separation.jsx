@@ -255,6 +255,7 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
+              showIcon
               type="form"
             />
           </div>
@@ -276,6 +277,7 @@ const Separation = (props) => {
               showMonthDropdown
               showYearDropdown
               isClearable
+              showIcon
               type="form"
               disabled
             />
@@ -303,6 +305,52 @@ const Separation = (props) => {
             >
               <FA name="globe" />
             </InteractiveElement>
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="separation-date">Form Datepicker</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              showIcon
+              useStandardInputWidth
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="separation-date">Form Datepicker No Icon</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              useStandardInputWidth
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="panel-meeting-date">Filter Datepicker</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              showIcon
+              condensed
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="panel-meeting-date">Filter Datepicker No Icon</label>
+            <TMDatePicker
+              selected={panelMeetingDate}
+              onChange={setPanelMeetingDate}
+              showMonthDropdown
+              showYearDropdown
+              isClearable
+              condensed
+            />
           </div>
         </div>
         {showLocationSearch &&

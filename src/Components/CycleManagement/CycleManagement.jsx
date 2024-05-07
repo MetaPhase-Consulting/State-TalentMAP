@@ -238,10 +238,11 @@ const CycleManagement = (props) => {
                 <TMDatePicker
                   onChange={setSelectedDate}
                   selected={selectedDate}
-                  type="filter"
                   showMonthDropdown
                   showYearDropdown
                   isClearable
+                  showIcon
+                  condensed
                 />
               </div>
             </div>

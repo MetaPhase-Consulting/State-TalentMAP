@@ -87,9 +87,13 @@ $values in $filters-sizing-config {
       }
 
       .picky,
-      .tm-datepicker-wrapper {
+      .react-datepicker-wrapper {
         color: $color-black;
-        width: $picky-width;
+        width: $picky-width !important;
+      }
+
+      .tm-datepicker {
+        width: auto;
       }
     }
   }
