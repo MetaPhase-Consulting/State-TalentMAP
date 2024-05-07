@@ -4,13 +4,14 @@ import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import Picky from 'react-picky';
 import { useDispatch, useSelector } from 'react-redux';
-import { onEditModeSearch, renderSelectionList } from 'utilities';
+import { formatDate, onEditModeSearch, renderSelectionList } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import {
   bidAuditCreateAudit,
   bidAuditFetchCycles,
   bidAuditFetchData,
+  bidAuditUpdateAudit,
   updateBidCount,
 } from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
@@ -36,6 +37,15 @@ const BidAudit = () => {
 
   const onSubmit = (data) => {
     dispatch(bidAuditCreateAudit(data, () => swal.close()));
+  };
+
+  const onSubmitBidAuditUpdate = (cycleId, auditId, date, desc) => {
+    dispatch(bidAuditUpdateAudit({
+      id: cycleId,
+      auditNumber: auditId,
+      postByDate: formatDate(date),
+      auditDescription: desc,
+    }, setCardsInEditMode([])));
   };
 
   const showCreateModal = () => {
@@ -281,6 +291,7 @@ const BidAudit = () => {
                 {bidAuditData$.map(data => (
                   <BidAuditCard
                     data={data}
+                    onSubmit={onSubmitBidAuditUpdate}
                     key={`${data.cycle_id}${data.audit_id}`}
                     onEditModeSearch={(editMode, id) =>
                       onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
