@@ -51,7 +51,7 @@ exports[`ProfileMenuCollapsedComponent matches snapshot 1`] = `
     <withRouter(NavLink)
       hidden={true}
       iconName="sitemap"
-      key="TalentMAP Administrator"
+      key="TalentMAP Admin"
       search=""
     />
   </NavLinksContainer>
@@ -109,7 +109,7 @@ exports[`ProfileMenuCollapsedComponent matches snapshot when isGlossaryEditor is
     <withRouter(NavLink)
       hidden={true}
       iconName="sitemap"
-      key="TalentMAP Administrator"
+      key="TalentMAP Admin"
       search=""
     />
   </NavLinksContainer>
