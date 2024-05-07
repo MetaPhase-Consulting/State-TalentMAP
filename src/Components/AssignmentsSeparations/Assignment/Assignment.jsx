@@ -103,6 +103,12 @@ const Assignment = (props) => {
     pos_results?.todo_tod_code || pos_results?.bt_tod_code || ''
   );
 
+  const addPositionNum = () => {
+    if (selectedPositionNumber) {
+      dispatch(positionsFetchData(`limit=50&page=1&position_num=${selectedPositionNumber}`));
+    }
+  };
+
   useEffect(() => {
     if (pos_results_loading) {
       setInputClass('loading-animation--3');
@@ -117,6 +123,7 @@ const Assignment = (props) => {
 
   useEffect(() => {
     if (isNew) {
+      console.log('hit');
       /* eslint-disable quote-props */
       sections.subheading = [
         { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
@@ -214,12 +221,6 @@ const Assignment = (props) => {
       ));
     }
     setNewAsgSep('default');
-  };
-
-  const addPositionNum = () => {
-    if (selectedPositionNumber) {
-      dispatch(positionsFetchData(`limit = 50 & page=1 & position_num=${selectedPositionNumber} `));
-    }
   };
 
   const form = {
@@ -362,7 +363,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`salary - reimbursement - ${data.id ?? 'create'} `}
+              id={`salary-reimbursement-${data.id ?? 'create'}`}
               label="Salary Reimbursement"
               value={salaryReimbursement}
               className="mt-40"
@@ -372,7 +373,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`travel - reimbursement - ${data.id ?? 'create'} `}
+              id={`travel-reimbursement-${data.id ?? 'create'}`}
               label="Travel Reimbursement"
               value={travelReimbursement}
               className="mt-40"
@@ -382,12 +383,22 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`training - ${data.id ?? 'create'} `}
+              id={`training-${data.id ?? 'create'}`}
               label="Training"
               value={training}
               className="mt-40"
               excludeTmCheckboxClass
               onChange={() => setTraining(!training)}
+            />
+          </div>
+          <div className="position-form--label-input-container height-80">
+            <CheckBox
+              id={`critical-need-${data.id ?? 'create'}`}
+              label="Critical Need"
+              value={details?.ASGD_CRITICAL_NEED_IND === 'Y' || false}
+              className="mt-40"
+              excludeTmCheckboxClass
+              disabled
             />
           </div>
           <div className="position-form--label-input-container">
@@ -418,7 +429,7 @@ const Assignment = (props) => {
         </div>
       </div>,
     cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
-    handleSubmit: () => onSubmitForm(),
+    handleSubmit: onSubmitForm,
     handleCancel: () => { toggleModal(false); setDisableOtherEdits(false); },
     handleEdit: {
       editMode,
