@@ -151,124 +151,120 @@ const BidAudit = () => {
     return overlay;
   };
 
-  return (
-    bidAuditFetchLoading ? <Spinner type="bureau-filters" size="small" /> :
-      <div className="position-search bid-audit-page">
-        <div className="usa-grid-full position-search--header">
-          <ProfileSectionTitle title="Bid Audit" icon="keyboard-o" className="xl-icon" />
-
-          <div className="filterby-container" >
-            <div className="filterby-label">Filter by:</div>
-            <span className="filterby-clear">
-              {clearFilters &&
-                <button className="unstyled-button" onClick={resetFilters} disabled={disableSearch}>
-                  <FA name="times" />
-                  Clear Filters
-                </button>
-              }
-            </span>
+  return (bidAuditFetchLoading ?
+    <Spinner type="bureau-filters" size="small" /> :
+    <div className="position-search bid-audit-page">
+      <div className="usa-grid-full position-search--header">
+        <ProfileSectionTitle title="Bid Audit" icon="keyboard-o" className="xl-icon" />
+        <div className="filterby-container" >
+          <div className="filterby-label">Filter by:</div>
+          <span className="filterby-clear">
+            {clearFilters &&
+              <button className="unstyled-button" onClick={resetFilters} disabled={disableSearch}>
+                <FA name="times" />
+                Clear Filters
+              </button>
+            }
+          </span>
+        </div>
+        <div className="usa-width-one-whole position-search--filters--cm">
+          <div className="filter-div">
+            <div className="label">Cycle:</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Bid Cycle(s)"
+              options={uniqueCycles()}
+              valueKey="text"
+              labelKey="text"
+              onChange={setSelectedCycles}
+              value={selectedCycles}
+              disabled={disableSearch}
+            />
           </div>
-          <div className="usa-width-one-whole position-search--filters--cm">
-            <div className="filter-div">
-              <div className="label">Cycle:</div>
-              <Picky
-                {...pickyProps}
-                placeholder="Select Bid Cycle(s)"
-                options={uniqueCycles()}
-                valueKey="text"
-                labelKey="text"
-                onChange={setSelectedCycles}
-                value={selectedCycles}
-                disabled={disableSearch}
-              />
-            </div>
-            <div className="filter-div">
-              <div className="label">Status:</div>
-              <Picky
-                {...pickyProps}
-                placeholder="Select Status"
-                options={uniqueStatuses()}
-                valueKey="text"
-                labelKey="text"
-                onChange={setSelectedStatus}
-                value={selectedStatus}
-                disabled={disableSearch}
-              />
-            </div>
-            <div className="filter-div">
-              <div className="label">Description:</div>
-              <Picky
-                {...pickyProps}
-                placeholder="Select Status"
-                options={uniqueDescriptions()}
-                valueKey="text"
-                labelKey="text"
-                onChange={setSelectedDesc}
-                value={selectedDesc}
-                disabled={disableSearch}
-              />
-            </div>
+          <div className="filter-div">
+            <div className="label">Status:</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Status"
+              options={uniqueStatuses()}
+              valueKey="text"
+              labelKey="text"
+              onChange={setSelectedStatus}
+              value={selectedStatus}
+              disabled={disableSearch}
+            />
+          </div>
+          <div className="filter-div">
+            <div className="label">Description:</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Status"
+              options={uniqueDescriptions()}
+              valueKey="text"
+              labelKey="text"
+              onChange={setSelectedDesc}
+              value={selectedDesc}
+              disabled={disableSearch}
+            />
           </div>
         </div>
-
-        {disableSearch &&
-          <Alert
-            type="warning"
-            title={'Edit Mode (Search Disabled)'}
-            customClassName="mb-10"
-            messages={[{
-              body: 'Discard or save your edits before searching. ' +
-                'Filters are disabled if any cards are in Edit Mode.',
-            }]}
-          />
-        }
-
-        {
-          getOverlay() ||
-          <>
-            <div className="usa-width-one-whole position-search--results">
-              <div className="usa-grid-full position-list">
-                <span className="ba-flex-end">
-                  <div className="icon-text-link">
-                    <Tooltip title="Run Dynamic Audit">
-                      <a
-                        role="button"
-                        tabIndex={0}
-                        onClick={onUpdateCountClick}
-                      >
-                        <FA name="clock-o" />
-                        Update Bid Count
-                      </a>
-                    </Tooltip>
-                  </div>
-                  <div className="icon-text-link ml-10">
-                    <a
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setOpenModal(true)}
-                    >
-                      <FA name="plus" />
-                      Create New Audit Cycle
-                    </a>
-                  </div>
-                </span>
-                {bidAuditData$.map(data => (
-                  <BidAuditCard
-                    data={data}
-                    key={`${data.cycle_id}${data.audit_id}`}
-                    onEditModeSearch={(editMode, id) =>
-                      onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
-                    }
-                  />
-                ))}
-              </div>
-            </div>
-          </>
-        }
-        <ReactModal open={openModal} setOpen={setOpenModal}>
-          <BidAuditModal setOpen={setOpenModal} />
-        </ReactModal>
       </div>
+
+      {disableSearch &&
+        <Alert
+          type="warning"
+          title={'Edit Mode (Search Disabled)'}
+          customClassName="mb-10"
+          messages={[{
+            body: 'Discard or save your edits before searching. ' +
+              'Filters are disabled if any cards are in Edit Mode.',
+          }]}
+        />
+      }
+
+      {getOverlay() ||
+        <div className="usa-width-one-whole position-search--results">
+          <div className="usa-grid-full position-list">
+            <span className="ba-flex-end">
+              <div className="icon-text-link">
+                <Tooltip title="Run Dynamic Audit">
+                  <a
+                    role="button"
+                    tabIndex={0}
+                    onClick={onUpdateCountClick}
+                  >
+                    <FA name="clock-o" />
+                    Update Bid Count
+                  </a>
+                </Tooltip>
+              </div>
+              <div className="icon-text-link ml-10">
+                <a
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setOpenModal(true)}
+                >
+                  <FA name="plus" />
+                  Create New Audit Cycle
+                </a>
+              </div>
+            </span>
+            {bidAuditData$.map(data => (
+              <BidAuditCard
+                data={data}
+                key={`${data.cycle_id}${data.audit_id}`}
+                onEditModeSearch={(editMode, id) =>
+                  onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
+                }
+              />
+            ))}
+          </div>
+        </div>
+      }
+      <ReactModal open={openModal} setOpen={setOpenModal}>
+        <BidAuditModal setOpen={setOpenModal} />
+      </ReactModal>
+    </div>
   );
 };
 
