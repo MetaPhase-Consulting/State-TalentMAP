@@ -25,7 +25,35 @@ export function bidAuditFetchData(state = [], action) {
   }
 }
 
+// ================ Bid Audit: Get Cycles ================
 
+export function bidAuditFetchCyclesLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_CYCLE_FETCH_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function bidAuditCycles(state = [], action) {
+  switch (action.type) {
+    case 'BID_AUDIT_CYCLE_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+
+// ================ Bid Audit: Create Audit ================
+
+export function bidAuditCreateAuditSuccess(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_CREATE_AUDIT_SUCCESS':
+      return action.success;
+    default:
+      return state;
+  }
+}
 // ================ Bid Audit: Get In Category/At Grade ================
 
 export function bidAuditSecondFetchDataErrored(state = false, action) {

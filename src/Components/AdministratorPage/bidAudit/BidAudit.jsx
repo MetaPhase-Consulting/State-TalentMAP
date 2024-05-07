@@ -7,7 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onEditModeSearch, renderSelectionList } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import { bidAuditFetchData, runBidAudit } from 'actions/bidAudit';
+import {
+  bidAuditCreateAudit,
+  bidAuditCreateAuditSuccess,
+  bidAuditFetchCycles,
+  bidAuditFetchData,
+  updateBidCount,
+} from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import swal from '@sweetalert/with-react';
 import BidAuditCard from './BidAuditCard';
@@ -19,17 +25,76 @@ const BidAudit = () => {
   const bidAuditData = useSelector(state => state.bidAuditFetchData);
   const bidAuditFetchLoading = useSelector(state => state.bidAuditFetchDataLoading);
   const bidAuditFetchError = useSelector(state => state.bidAuditFetchDataErrored);
+  const bidAuditFetchCyclesLoading = useSelector(state => state.bidAuditFetchCyclesLoading);
+  const bidAuditCycles = useSelector(state => state.bidAuditCycles);
+  const bidAuditCreated = useSelector(state => state.bidAuditCreateAuditSuccess);
 
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
+  const [newAuditClicked, setNewAuditClicked] = useState(false);
 
   useEffect(() => {
     dispatch(bidAuditFetchData());
   }, []);
 
-  const disableSearch = cardsInEditMode.length > 0;
-  const genericFilters = useSelector(state => state.filters);
+  useEffect(() => {
+    if (bidAuditCreated) {
+      dispatch(bidAuditCreateAuditSuccess(false));
+      dispatch(bidAuditFetchData());
+      swal.close();
+    }
+  }, [bidAuditCreated]);
 
-  // Filters ==========
+  const onSubmit = (data) => {
+    dispatch(bidAuditCreateAudit(data));
+  };
+
+  useEffect(() => {
+    if (!bidAuditFetchCyclesLoading && bidAuditCycles?.length > 0 && newAuditClicked) {
+      setNewAuditClicked(false);
+      swal({
+        title: 'Create New Audit Cycle',
+        button: false,
+        content: (
+          <BidAuditModal assignmentCycleOptions={bidAuditCycles} onSubmit={onSubmit} />
+        ),
+      });
+    }
+  }, [bidAuditCycles]);
+
+  const disableSearch = cardsInEditMode.length > 0;
+
+
+  const onCreateNewAuditClick = (e) => {
+    e.preventDefault();
+    dispatch(bidAuditFetchCycles());
+    setNewAuditClicked(true);
+  };
+
+  const cancelUpdateBidCount = () => swal.close();
+
+  const submitUpdateBidCount = () => {
+    dispatch(updateBidCount());
+    swal.close();
+  };
+
+  const onUpdateCountClick = (e) => {
+    e.preventDefault();
+    swal({
+      title: 'Run Dynamic Audit to Update Bid Counts?',
+      button: false,
+      content: (
+        <div>
+          <div>Will update the bid counts for all Positions within all Active Cycles,</div>
+          <div>that have at least one Bid Audit.</div>
+          <button onClick={submitUpdateBidCount} type="submit">Yes</button>
+          <button onClick={cancelUpdateBidCount}>Cancel</button>
+        </div>
+      ),
+    });
+  };
+
+
+  // ======================================================================================= Filters
   const [bidAuditData$, setBidAuditData$] = useState(bidAuditData);
   const [clearFilters, setClearFilters] = useState(false);
   const [selectedCycles, setSelectedCycles] = useState([]);
@@ -97,41 +162,8 @@ const BidAudit = () => {
     const uniqObj = uniq.map(x => ({ text: x }));
     return uniqObj;
   };
-  // ========== Filters
+  // ======================================================================================= Filters
 
-  const onAddClick = (e) => {
-    e.preventDefault();
-    swal({
-      title: 'Create New Audit Cycle',
-      button: false,
-      content: (
-        // passing in a auditNumber prop to the BidAuditModal component until backend is ready
-        <BidAuditModal data={genericFilters} auditNumber={88} />
-      ),
-    });
-  };
-
-  const cancelBidCount = () => swal.close();
-  const submitBidCount = () => {
-    dispatch(runBidAudit());
-    swal.close();
-  };
-
-  const onUpdateCountClick = (e) => {
-    e.preventDefault();
-    swal({
-      title: 'Run Dynamic Audit to Update Bid Counts?',
-      button: false,
-      content: (
-        <div className="bid-audit-modal-buttons">
-          <div>Will update the bid counts for all Positions within all Active Cycles,</div>
-          <div>that have at least one Bid Audit.</div>
-          <button onClick={submitBidCount} type="submit">Yes</button>
-          <button onClick={cancelBidCount}>Cancel</button>
-        </div>
-      ),
-    });
-  };
 
   const pickyProps = {
     numberDisplayed: 2,
@@ -248,7 +280,7 @@ const BidAudit = () => {
                     {' '}
                     <Link
                       to="#"
-                      onClick={onAddClick}
+                      onClick={onCreateNewAuditClick}
                     >
                       {'Create New Audit Cycle'}
                     </Link>
