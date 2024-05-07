@@ -148,7 +148,7 @@ const Assignment = (props) => {
   useEffect(() => {
     if (editMode) {
       setDisableOtherEdits(editMode);
-      setStatus(details?.ASGS_CODE || '');
+      setStatus(details?.ASGS_CODE || 'EF'); // Default to "Effective"
       setAction(details?.LAT_CODE || '');
       setTED(details?.ASGD_ETD_TED_DATE || '');
       setETA(details?.ASGD_ETA_DATE || '');
@@ -160,7 +160,7 @@ const Assignment = (props) => {
       setTravelReimbursement(details?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
       setTraining(details?.ASGD_TRAINING_IND === 'Y');
       setCriticalNeed(details?.ASGD_CRITICAL_NEED_IND === 'Y');
-      setWaiver(details?.WRT_CODE_RR_REPAY || '');
+      setWaiver(details?.WRT_CODE_RR_REPAY || 'N'); // Default to "Not Used"
       setSent(details?.NOTE_LAST_SENT_DATE || '');
     }
   }, [editMode]);
