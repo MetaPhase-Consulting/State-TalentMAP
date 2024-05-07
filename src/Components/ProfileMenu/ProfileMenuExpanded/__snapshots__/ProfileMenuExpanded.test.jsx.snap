@@ -308,9 +308,9 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       }
       hidden={true}
       iconName="sitemap"
-      key="FSBid Administrator"
+      key="FSBid Admin"
       search=""
-      title="FSBid Administrator"
+      title="FSBid Admin"
       toggleMenuSection={[Function]}
     >
       <withRouter(NavLink)
@@ -393,9 +393,9 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       }
       hidden={true}
       iconName="sitemap"
-      key="TalentMAP Administrator"
+      key="TalentMAP Admin"
       search=""
-      title="TalentMAP Administrator"
+      title="TalentMAP Admin"
       toggleMenuSection={[Function]}
     >
       <withRouter(NavLink)
@@ -839,9 +839,9 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       }
       hidden={true}
       iconName="sitemap"
-      key="FSBid Administrator"
+      key="FSBid Admin"
       search=""
-      title="FSBid Administrator"
+      title="FSBid Admin"
       toggleMenuSection={[Function]}
     >
       <withRouter(NavLink)
@@ -924,9 +924,9 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       }
       hidden={true}
       iconName="sitemap"
-      key="TalentMAP Administrator"
+      key="TalentMAP Admin"
       search=""
-      title="TalentMAP Administrator"
+      title="TalentMAP Admin"
       toggleMenuSection={[Function]}
     >
       <withRouter(NavLink)
