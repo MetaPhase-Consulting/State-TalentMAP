@@ -7,7 +7,7 @@ import { useDataLoader } from 'hooks';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
-  NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
+  NO_BUREAU, NO_GRADE, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
 import { assignmentSeparationAction } from 'actions/assignment';
@@ -121,21 +121,19 @@ const Assignment = (props) => {
     }
   }, [pos_results, pos_results_loading, pos_results_errored]);
 
-  useEffect(() => {
-    if (isNew) {
-      console.log('hit');
-      /* eslint-disable quote-props */
-      sections.subheading = [
-        { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
-        { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
-        { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
-        { 'Location': pos_results?.pos_location_code || NO_POST },
-        { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
-        { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
-      ];
-      /* eslint-enable quote-props */
-    }
-  }, [pos_results]);
+  if (isNew) {
+    /* eslint-disable quote-props */
+    sections.subheading = [
+      { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
+      { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
+      { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
+      { 'Location': pos_results?.pos_location_code || NO_POST },
+      { 'Org': pos_results?.pos_org_short_desc || NO_ORG },
+      { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
+      { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
+    ];
+    /* eslint-enable quote-props */
+  }
 
   const [status, setStatus] = useState('');
   const [action, setAction] = useState('');
@@ -424,6 +422,14 @@ const Assignment = (props) => {
               id="assignment-sent"
               value={sent}
               onChange={(e) => setSent(e?.target.value)}
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="diplomatic-title">Diplomatic Title</label>
+            <input
+              id="diplomatic-title"
+              value={data?.DIPLOMATIC_TITLE || NO_VALUE}
+              disabled
             />
           </div>
         </div>
