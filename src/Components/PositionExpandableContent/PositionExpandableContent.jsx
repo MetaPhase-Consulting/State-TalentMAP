@@ -34,9 +34,9 @@ const PositionExpandableContent = ({
   }, [editMode]);
 
   const onCancel = () => {
-    form.handleCancel();
+    if (form.handleCancel) form.handleCancel();
     if (setEditMode) setEditMode(false);
-    swal.close();
+    if (useCancelModal) swal.close();
   };
 
   const getBody = () => {
