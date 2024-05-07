@@ -11,10 +11,12 @@ import Spinner from 'Components/Spinner';
 import CyclePositionCard from 'Components/CyclePositionCard';
 import Alert from 'Components/Alert';
 import BackButton from 'Components/BackButton';
-import { formatDate, onEditModeSearch, renderSelectionList } from 'utilities';
+import { formatDate, renderSelectionList } from 'utilities';
 import {
   cycleManagementAssignmentCycleFetchData,
+  cyclePositionEditSuccess,
   cyclePositionFiltersFetchData,
+  cyclePositionGetPosition,
   cyclePositionSearchFetchData,
   saveCyclePositionSearchSelections,
 } from 'actions/cycleManagement';
@@ -37,6 +39,11 @@ const CyclePositionSearch = ({ isAO, match }) => {
   const cyclePositionsLoading = useSelector(state => state.cyclePositionSearchFetchDataLoading);
   const cyclePositions = useSelector(state => state.cyclePositionSearch);
   const userSelections = useSelector(state => state.cyclePositionSearchSelections);
+
+  const extraPositionDataLoading = useSelector(state => state.cyclePositionFetchDataLoading);
+  const extraPositionDataError = useSelector(state => state.cyclePositionFetchDataErrored);
+  const extraPositionData = useSelector(state => state.cyclePositionFetch);
+  const cyclePositionEditWasSuccessful = useSelector(state => state.cyclePositionEditSuccess);
 
   const cycleStatus = (loadedCycle?.cycle_status && loadedCycle?.cycle_status_reference)
     ? loadedCycle?.cycle_status_reference?.find(x => x?.value === loadedCycle?.cycle_status)?.label : 'Not Listed';
@@ -64,6 +71,23 @@ const CyclePositionSearch = ({ isAO, match }) => {
     dispatch(cyclePositionFiltersFetchData());
   }, []);
 
+  useEffect(() => {
+    if (cyclePositionEditWasSuccessful) {
+      setCardsInEditMode([]);
+      dispatch(cyclePositionEditSuccess(false));
+      dispatch(cycleManagementAssignmentCycleFetchData(cycleId));
+    }
+  }, [cyclePositionEditWasSuccessful]);
+
+
+  const onCyclePositionEditModeSearch = (editMode, id) => {
+    if (editMode) {
+      setCardsInEditMode([id]);
+      dispatch(cyclePositionGetPosition(id));
+    } else {
+      setCardsInEditMode(cardsInEditMode.filter(x => x !== id));
+    }
+  };
 
   const resetFilters = () => {
     setSelectedStatuses([]);
@@ -106,7 +130,7 @@ const CyclePositionSearch = ({ isAO, match }) => {
 
 
   // Overlay for error, info, and loading state
-  const noResults = cyclePositions?.results?.length === 0;
+  const noResults = cyclePositions?.length === 0;
   const getOverlay = () => {
     let overlay;
     if (cyclePositionsLoading) {
@@ -220,7 +244,7 @@ const CyclePositionSearch = ({ isAO, match }) => {
               title={'Edit Mode (Search Disabled)'}
               messages={[{
                 body: 'Discard or save your edits before searching. ' +
-                  'Filters and Pagination are disabled if any cards are in Edit Mode.',
+                  'Filters are disabled if any cards are in Edit Mode.',
               },
               ]}
             />
@@ -251,9 +275,13 @@ const CyclePositionSearch = ({ isAO, match }) => {
                   (
                     <CyclePositionCard
                       data={data}
+                      key={data.id}
                       onEditModeSearch={(editMode, id) =>
-                        onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)}
-                      cycle={loadedCycle}
+                        onCyclePositionEditModeSearch(editMode, id)}
+                      isOpen={cardsInEditMode?.includes(data?.id)}
+                      editableInfo={extraPositionData}
+                      editableInfoLoading={extraPositionDataLoading}
+                      editableInfoError={extraPositionDataError}
                       isAO
                     />
                   ))}
