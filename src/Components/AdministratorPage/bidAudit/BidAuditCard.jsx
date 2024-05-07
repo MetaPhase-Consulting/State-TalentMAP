@@ -28,6 +28,8 @@ const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
+    setPbDate(posted_by_date ? new Date(posted_by_date) : '');
+    setDescription(audit_desc || '');
     onEditModeSearch(editMode, audit_id);
   }, [editMode]);
 
