@@ -88,7 +88,7 @@ export const useDataLoader = (getData, url, execute = true, config, refetch) => 
     return () => {
       cancel = true;
     };
-  }, [nonce, url, refetch]);
+  }, [nonce, url, execute, refetch]);
 
   const retry = () => {
     setNonce(Date.now());
