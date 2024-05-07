@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useRef, useState } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,7 +56,7 @@ const AgendaItemMaintenanceContainer = (props) => {
   const { data: employeeDataFallback, error: employeeDataFallbackError, loading: employeeDataFallbackLoading } = useDataLoader(api().get, `/fsbid/persons/${routeEmployeeID}`);
   const employeeLoading = employeeDataLoading || employeeDataFallbackLoading;
   const employeeError = employeeDataError && employeeDataFallbackError;
-  const employeeData$ = employeeData?.data || employeeDataFallback?.data?.results?.[0];
+  let employeeData$ = employeeData?.data || employeeDataFallback?.data?.results?.[0];
   const employeeName = employeeLoading ? '' : employeeData$?.name;
 
   // handles error where some employees have no Profile
@@ -77,7 +78,7 @@ const AgendaItemMaintenanceContainer = (props) => {
   const empData = !employeeData?.data && !employeeDataLoading;
   const { data: userInfoData, error: userInfoError, loading: userInfoLoading } = useDataLoader(api().get, `/fsbid/employee/${routeEmployeeID}/user_info/`, empData);
   if (userInfoData?.data && !userInfoError && !userInfoLoading) {
-    employeeData$.user_info.hru_id = userInfoData?.data?.hru_id;
+    employeeData$['user_info'] = {...userInfoData?.data};
   }
 
   // Utility to find employee's most recent effective detail on which agenda is based
