@@ -53,7 +53,7 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
       postByDate: formatDate(pbDate),
       auditDescription: description,
     };
-    dispatch(bidAuditUpdateAudit(formData));
+    dispatch(bidAuditUpdateAudit(formData, setEditMode(false)));
   };
 
   const datePickerRef = useRef(null);
