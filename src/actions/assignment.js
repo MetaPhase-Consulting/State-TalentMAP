@@ -1,5 +1,15 @@
+import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
+import { toastError, toastSuccess } from './toast';
 import api from '../api';
+import {
+  CREATE_ALT_ASSIGNMENT_ERROR, CREATE_ALT_ASSIGNMENT_ERROR_TITLE,
+  CREATE_ALT_ASSIGNMENT_SUCCESS, CREATE_ALT_ASSIGNMENT_SUCCESS_TITLE,
+  CREATE_ALT_SEPARATION_ERROR, CREATE_ALT_SEPARATION_ERROR_TITLE,
+  CREATE_ALT_SEPARATION_SUCCESS, CREATE_ALT_SEPARATION_SUCCESS_TITLE,
+  UPDATE_ALT_ASSIGNMENT_ERROR, UPDATE_ALT_ASSIGNMENT_ERROR_TITLE,
+  UPDATE_ALT_ASSIGNMENT_SUCCESS, UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE,
+} from '../Constants/SystemMessages';
 
 // ================ ASSIGNMENT HISTORY LIST ================
 
@@ -186,31 +196,66 @@ export function altSeparation(perdet, sepId, revision_num) {
 
 // ================ CREATE/UPDATE ASSIGNMENT/SEPARATION ================
 
+let cancelAction;
+
 export function assignmentSeparationAction(query, perdet, id, isSeparation, onSuccess) {
   const type = isSeparation ? 'separations' : 'assignments';
 
+  let toastSuccessMessage = UPDATE_ALT_ASSIGNMENT_SUCCESS;
+  let toastSuccessTitle = UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE;
+  let toastErrorMessage = UPDATE_ALT_ASSIGNMENT_ERROR;
+  let toastErrorTitle = UPDATE_ALT_ASSIGNMENT_ERROR_TITLE;
+
+  if (!isSeparation && id) {
+    toastSuccessMessage = CREATE_ALT_ASSIGNMENT_SUCCESS;
+    toastSuccessTitle = CREATE_ALT_ASSIGNMENT_SUCCESS_TITLE;
+    toastErrorMessage = CREATE_ALT_ASSIGNMENT_ERROR;
+    toastErrorTitle = CREATE_ALT_ASSIGNMENT_ERROR_TITLE;
+  }
+
+  if (isSeparation) {
+    if (id) {
+      toastSuccessMessage = CREATE_ALT_SEPARATION_SUCCESS;
+      toastSuccessTitle = CREATE_ALT_SEPARATION_SUCCESS_TITLE;
+      toastErrorMessage = CREATE_ALT_SEPARATION_ERROR;
+      toastErrorTitle = CREATE_ALT_SEPARATION_ERROR_TITLE;
+    } else {
+      toastSuccessMessage = CREATE_ALT_SEPARATION_SUCCESS;
+      toastSuccessTitle = CREATE_ALT_SEPARATION_SUCCESS_TITLE;
+      toastErrorMessage = CREATE_ALT_SEPARATION_ERROR;
+      toastErrorTitle = CREATE_ALT_SEPARATION_ERROR_TITLE;
+    }
+  }
+
   return (dispatch) => {
+    if (cancelAction) {
+      cancelAction('cancel');
+    }
     const promise = (instance) => {
       instance
         .then(() => {
           batch(() => {
+            dispatch(toastSuccess(toastSuccessMessage, toastSuccessTitle));
             dispatch(altAssignmentsSeparations(perdet));
             if (onSuccess) {
               onSuccess();
             }
           });
         })
-        .catch(() => {
-          batch(() => {
-            dispatch(altAssignmentsSeparationsErrored(true));
-            dispatch(altAssignmentsSeparationsLoading(false));
-          });
+        .catch((err) => {
+          if (err?.message !== 'cancel') {
+            dispatch(toastError(toastErrorMessage, toastErrorTitle));
+          }
         });
     };
     if (id) {
-      promise(api().put(`/fsbid/assignment_history/${perdet}/${type}/${id}/`, query));
+      promise(api().put(`/fsbid/assignment_history/${perdet}/${type}/${id}/`, query, {
+        cancelToken: new CancelToken((c) => { cancelAction = c; }),
+      }));
     } else {
-      promise(api().post(`/fsbid/assignment_history/${perdet}/${type}/`, query));
+      promise(api().post(`/fsbid/assignment_history/${perdet}/${type}/`, query, {
+        cancelToken: new CancelToken((c) => { cancelAction = c; }),
+      }));
     }
   };
 }
