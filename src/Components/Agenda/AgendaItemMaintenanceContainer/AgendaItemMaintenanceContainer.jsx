@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useEffect, useRef, useState } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -56,7 +55,7 @@ const AgendaItemMaintenanceContainer = (props) => {
   const { data: employeeDataFallback, error: employeeDataFallbackError, loading: employeeDataFallbackLoading } = useDataLoader(api().get, `/fsbid/persons/${routeEmployeeID}`);
   const employeeLoading = employeeDataLoading || employeeDataFallbackLoading;
   const employeeError = employeeDataError && employeeDataFallbackError;
-  let employeeData$ = employeeData?.data || employeeDataFallback?.data?.results?.[0];
+  const employeeData$ = employeeData?.data || employeeDataFallback?.data?.results?.[0];
   const employeeName = employeeLoading ? '' : employeeData$?.name;
 
   // handles error where some employees have no Profile
