@@ -32,8 +32,8 @@ const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
       <div className="usa-width-one-whole">
 
         <div className="ba-modal-div">
-          <span>Audit Number:</span>
-          <span>{assignmentCycle?.audit_number + 1 || '--'}</span>
+          <div>Audit Number:</div>
+          <span className="bid-audit-modal-number">{assignmentCycle?.audit_number + 1 || '--'}</span>
         </div>
 
         <div className="ba-modal-div">
@@ -68,18 +68,19 @@ const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
 
         <div className="ba-modal-div">
           <div>Audit Description:</div>
-          <input
-            type="text"
-            maxLength="100"
-            autoComplete="off"
-            name="description"
-            className="bid-audit-modal-input"
-            onChange={(e) => setAuditDescription(e.target.value)}
-          />
-        </div>
-
-        <div className="bid-audit-modal-word-count">
-          {auditDescription?.length} / 100
+          <div>
+            <input
+              type="text"
+              maxLength="100"
+              autoComplete="off"
+              name="description"
+              className="bid-audit-modal-input"
+              onChange={(e) => setAuditDescription(e.target.value)}
+            />
+            <div className="bid-audit-modal-word-count">
+              {auditDescription?.length} / 100
+            </div>
+          </div>
         </div>
 
         <div className="bid-audit-modal-buttons">
