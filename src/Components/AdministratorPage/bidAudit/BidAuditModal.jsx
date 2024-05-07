@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
-import {
-  bidAuditCreateAudit,
-  bidAuditFetchCycles,
-} from 'actions/bidAudit';
+import { bidAuditCreateAudit, bidAuditFetchCycles } from 'actions/bidAudit';
 import { formatDate } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
@@ -29,13 +26,13 @@ const BidAuditModal = ({ setOpen }) => {
   const cancel = () => setOpen(false);
 
   const submit = () => {
-    const data = {
+    const formData = {
       id: assignmentCycle.id,
       auditNumber: assignmentCycle.audit_number,
       postByDate: formatDate(postByDate),
       auditDescription,
     };
-    dispatch(bidAuditCreateAudit(data, () => setOpen(false)));
+    dispatch(bidAuditCreateAudit(formData, () => setOpen(false)));
   };
 
   const handleCycleSelection = (id) => {
