@@ -16,6 +16,7 @@ const TMDatePicker = ({
   icon,
   isClearable,
   excludeDates,
+  disabled,
 }) => {
   const typeClasses = {
     filter: {
@@ -44,6 +45,7 @@ const TMDatePicker = ({
         className={`tm-datepicker ${typeClasses[type]?.datePicker}`}
         placeholderText={placeholderText}
         excludeDates={excludeDates}
+        disabled={disabled}
       />
     </div>
   );
@@ -66,6 +68,7 @@ TMDatePicker.propTypes = {
   isClearable: PropTypes.bool,
   showTimeSelect: PropTypes.bool,
   excludeDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  disabled: PropTypes.bool,
 };
 
 TMDatePicker.defaultProps = {
@@ -80,4 +83,5 @@ TMDatePicker.defaultProps = {
   isClearable: false,
   showTimeSelect: false,
   excludeDates: [],
+  disabled: false,
 };
