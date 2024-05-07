@@ -153,8 +153,10 @@ export function modifyAgenda(panel, legs, personId, ef, refData) {
 
 export function removeAgenda(aiData) {
   const { aiseqnum, aiupdatedate } = aiData;
-  // modifies the date to match the format in the db
-  const aiupdate = aiupdatedate?.replace('T', ' ').replace('Z', '').slice(0, -4);
+
+  const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})z$/i;
+  const aiupdate = aiupdatedate.replace(regex, '$1-$2-$3 $4:$5:$6');
+
   return (dispatch) => {
     if (cancelRemoveAI) { cancelRemoveAI('cancel'); }
     api()
