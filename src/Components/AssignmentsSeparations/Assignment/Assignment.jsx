@@ -319,6 +319,14 @@ const Assignment = (props) => {
             </select>
           </div>
           <div className="position-form--label-input-container">
+            <label htmlFor="assignment-adj">ADJ</label>
+            <input
+              id="assignment-adj"
+              value={adj}
+              onChange={(e) => setAdj(e?.target.value)}
+            />
+          </div>
+          <div className="position-form--label-input-container">
             <label htmlFor="assignment-travel">Travel</label>
             <select
               id="assignment-travel"
@@ -351,14 +359,6 @@ const Assignment = (props) => {
                 </option>
               ))}
             </select>
-          </div>
-          <div className="position-form--label-input-container">
-            <label htmlFor="assignment-adj">ADJ</label>
-            <input
-              id="assignment-adj"
-              value={adj}
-              onChange={(e) => setAdj(e?.target.value)}
-            />
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
