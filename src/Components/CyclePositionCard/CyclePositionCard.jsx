@@ -104,7 +104,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
       remarkText,
       nowTedFlag,
       incumbentVacancyCode,
-      tedOverrideDate,
+      tedOverrideDate: tedOverrideDate ? formatDate(tedOverrideDate, 'MM/YYYY') : tedOverrideDate,
       critNeedFlag,
       cycle_position_id,
       last_updated,

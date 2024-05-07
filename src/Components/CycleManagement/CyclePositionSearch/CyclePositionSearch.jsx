@@ -65,30 +65,6 @@ const CyclePositionSearch = ({ isAO, match }) => {
   const gradeOptions = cyclePosFilters?.gradeFilters || [];
   const skillOptions = cyclePosFilters?.skillsFilters || [];
 
-
-  useEffect(() => {
-    dispatch(cycleManagementAssignmentCycleFetchData(cycleId));
-    dispatch(cyclePositionFiltersFetchData());
-  }, []);
-
-  useEffect(() => {
-    if (cyclePositionEditWasSuccessful) {
-      setCardsInEditMode([]);
-      dispatch(cyclePositionEditSuccess(false));
-      dispatch(cycleManagementAssignmentCycleFetchData(cycleId));
-    }
-  }, [cyclePositionEditWasSuccessful]);
-
-
-  const onCyclePositionEditModeSearch = (editMode, id) => {
-    if (editMode) {
-      setCardsInEditMode([id]);
-      dispatch(cyclePositionGetPosition(id));
-    } else {
-      setCardsInEditMode(cardsInEditMode.filter(x => x !== id));
-    }
-  };
-
   const resetFilters = () => {
     setSelectedStatuses([]);
     setSelectedOrgs([]);
@@ -105,6 +81,27 @@ const CyclePositionSearch = ({ isAO, match }) => {
     skills: selectedSkills.map(f => (f?.code)),
   });
 
+  useEffect(() => {
+    dispatch(cycleManagementAssignmentCycleFetchData(cycleId));
+    dispatch(cyclePositionFiltersFetchData());
+  }, []);
+
+  useEffect(() => {
+    if (cyclePositionEditWasSuccessful) {
+      setCardsInEditMode([]);
+      dispatch(cyclePositionEditSuccess(false));
+      dispatch(cyclePositionSearchFetchData(getCurrentInputs()));
+    }
+  }, [cyclePositionEditWasSuccessful]);
+
+  const onCyclePositionEditModeSearch = (editMode, id) => {
+    if (editMode) {
+      setCardsInEditMode([id]);
+      dispatch(cyclePositionGetPosition(id));
+    } else {
+      setCardsInEditMode(cardsInEditMode.filter(x => x !== id));
+    }
+  };
 
   const noFiltersSelected = [
     selectedStatuses,
