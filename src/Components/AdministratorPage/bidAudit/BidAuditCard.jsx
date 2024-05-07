@@ -37,6 +37,7 @@ const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
 
   const onCancelForm = () => {
     setPbDate(posted_by_date ? new Date(posted_by_date) : '');
+    setDescription(audit_desc || '');
     swal.close();
   };
 

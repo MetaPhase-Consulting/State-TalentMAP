@@ -31,7 +31,7 @@ const BidAuditModal = ({ setOpen }) => {
   const submit = () => {
     const data = {
       id: assignmentCycle.id,
-      auditNumber: assignmentCycle.audit_number + 1,
+      auditNumber: assignmentCycle.audit_number,
       postByDate: formatDate(postByDate),
       auditDescription,
     };
@@ -65,7 +65,7 @@ const BidAuditModal = ({ setOpen }) => {
           <div className="ba-form">
             <div className="ba-modal-div">
               <div>Audit Number:</div>
-              <span className="bid-audit-modal-number">{assignmentCycle?.audit_number + 1 || '--'}</span>
+              <span className="bid-audit-modal-number">{assignmentCycle?.audit_number || '--'}</span>
             </div>
             <div className="ba-modal-div">
               <div>Assignment Cycle:</div>
