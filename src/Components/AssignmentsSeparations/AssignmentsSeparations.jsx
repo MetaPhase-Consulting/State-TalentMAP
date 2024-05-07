@@ -127,14 +127,14 @@ const AssignmentsSeparations = (props) => {
             Add or review the current assignments or separations for {employeeName}
           </span>
           <div className="add-buttons">
-            <div className="create-new-button">
+            <div className="icon-text-link no-underline">
               <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
                 <FA name="briefcase" />
                 Add New Assignment/Separation
               </a>
             </div>
             {useNotification() &&
-              <div className="create-new-button align-left">
+              <div className="icon-text-link no-underline align-left">
                 <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
                   <FA name="briefcase" />
                   Add Notification
@@ -142,7 +142,7 @@ const AssignmentsSeparations = (props) => {
               </div>
             }
             {useMemo() &&
-              <div className="create-new-button align-left">
+              <div className="icon-text-link no-underline align-left">
                 <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('memo')}>
                   <FA name="briefcase" />
                   Add Memo
