@@ -4,8 +4,10 @@ import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import { formatDate } from 'utilities';
 import swal from '@sweetalert/with-react';
+import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
 
-const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
+const BidAuditModal = ({ cycleOptions, cycleOptionsLoading, cycleOptionsErrored, onSubmit }) => {
   const [assignmentCycle, setAssignmentCycle] = useState('');
   const [auditDescription, setAuditDescription] = useState('');
   const [postByDate, setPostByDate] = useState('');
@@ -22,18 +24,30 @@ const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
   };
 
   const handleCycleSelection = (id) => {
-    const cycle = assignmentCycleOptions.find(x => x.id === Number(id));
+    const cycle = cycleOptions.find(x => x.id === Number(id));
     setAssignmentCycle(cycle);
   };
 
+  const getOverlay = () => {
+    let overlay;
+    if (cycleOptionsLoading) {
+      overlay = <Spinner type="small" size="small" />;
+    } else if (cycleOptionsErrored) {
+      overlay = <Alert type="error" title="Error loading cycles" messages={[{ body: 'Please close and try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
+  };
 
   return (
     <div className="bid-audit-modal-wrapper">
+      { getOverlay() ||
       <div className="usa-width-one-whole">
 
         <div className="ba-modal-div">
-          <span>Audit Number:</span>
-          <span>{assignmentCycle?.audit_number + 1 || '--'}</span>
+          <div>Audit Number:</div>
+          <span className="bid-audit-modal-number">{assignmentCycle?.audit_number + 1 || '--'}</span>
         </div>
 
         <div className="ba-modal-div">
@@ -45,7 +59,7 @@ const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
             onChange={(e) => handleCycleSelection(e.target.value)}
           >
             <option value="" disabled />
-            {assignmentCycleOptions?.map(cycle => (
+            {cycleOptions?.map(cycle => (
               <option key={cycle.id} value={cycle.id}>
                 {cycle.name}
               </option>
@@ -68,20 +82,20 @@ const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
 
         <div className="ba-modal-div">
           <div>Audit Description:</div>
-          <input
-            type="text"
-            maxLength="100"
-            autoComplete="off"
-            name="description"
-            className="bid-audit-modal-input"
-            onChange={(e) => setAuditDescription(e.target.value)}
-          />
+          <div>
+            <input
+              type="text"
+              maxLength="100"
+              autoComplete="off"
+              name="description"
+              className="bid-audit-modal-input"
+              onChange={(e) => setAuditDescription(e.target.value)}
+            />
+            <div className="bid-audit-modal-word-count">
+              {auditDescription?.length} / 100
+            </div>
+          </div>
         </div>
-
-        <div className="bid-audit-modal-word-count">
-          {auditDescription?.length} / 100
-        </div>
-
         <div className="bid-audit-modal-buttons">
           <button onClick={submit} disabled={!assignmentCycle || !auditDescription || !postByDate} type="submit">
             Submit
@@ -89,12 +103,13 @@ const BidAuditModal = ({ assignmentCycleOptions, onSubmit }) => {
           <button onClick={cancel}>Cancel</button>
         </div>
       </div>
+      }
     </div>
   );
 };
 
 BidAuditModal.propTypes = {
-  assignmentCycleOptions: PropTypes.arrayOf(
+  cycleOptions: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
@@ -102,6 +117,8 @@ BidAuditModal.propTypes = {
     }),
   ).isRequired,
   onSubmit: PropTypes.func.isRequired,
+  cycleOptionsLoading: PropTypes.bool.isRequired,
+  cycleOptionsErrored: PropTypes.bool.isRequired,
 };
 
 export default BidAuditModal;
