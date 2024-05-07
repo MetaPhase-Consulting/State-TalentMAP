@@ -130,7 +130,7 @@ const CyclePositionSearch = ({ isAO, match }) => {
 
 
   // Overlay for error, info, and loading state
-  const noResults = cyclePositions?.results?.length === 0;
+  const noResults = cyclePositions?.length === 0;
   const getOverlay = () => {
     let overlay;
     if (cyclePositionsLoading) {
