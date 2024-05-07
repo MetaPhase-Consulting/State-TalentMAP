@@ -34,6 +34,7 @@ const AgendaItemMaintenancePane = (props) => {
     sendMaintenancePaneInfo,
     legCount,
     saveAI,
+    removeAI,
     updateFormMode,
     sendAsgSepBid,
     asgSepBidData,
@@ -362,13 +363,21 @@ const AgendaItemMaintenancePane = (props) => {
     setIsNewSeparation();
     setPanelCat('S');
   };
-
   return (
     <div className="ai-maintenance-header">
       {!unitedLoading &&
         <>
           <div className="back-save-btns-container">
             <BackButton />
+            { agendaItem?.id &&
+            <button
+              className="delete-btn min-width-155"
+              onClick={removeAI}
+              disabled={agendaItem?.pmi_official_item_num}
+            >
+              Delete Agenda Item
+            </button>
+            }
             <button
               className={validationButton?.classNames}
               onClick={validationButton.clickFunction}
@@ -640,6 +649,7 @@ AgendaItemMaintenancePane.propTypes = {
   sendAsgSepBid: PropTypes.func,
   setIsNewSeparation: PropTypes.func,
   saveAI: PropTypes.func,
+  removeAI: PropTypes.func,
   legCount: PropTypes.number,
   agendaItem: AGENDA_ITEM.isRequired,
   readMode: PropTypes.bool,
@@ -672,6 +682,7 @@ AgendaItemMaintenancePane.defaultProps = {
   sendMaintenancePaneInfo: EMPTY_FUNCTION,
   sendAsgSepBid: EMPTY_FUNCTION,
   saveAI: EMPTY_FUNCTION,
+  removeAI: EMPTY_FUNCTION,
   updateFormMode: EMPTY_FUNCTION,
   legCount: 0,
   readMode: true,

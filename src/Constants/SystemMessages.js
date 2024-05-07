@@ -167,6 +167,11 @@ export const UPDATE_AGENDA_ITEM_SUCCESS = 'This Agenda Item has been saved succe
 export const UPDATE_AGENDA_ITEM_ERROR_TITLE = 'Agenda Item Error';
 export const UPDATE_AGENDA_ITEM_ERROR = 'There was an issue attempting to save this Agenda Item. Please try again.';
 
+export const DELETE_AGENDA_ITEM_SUCCESS_TITLE = 'Agenda Item Deleted';
+export const DELETE_AGENDA_ITEM_SUCCESS = 'This Agenda Item has been deleted successfully.';
+export const DELETE_AGENDA_ITEM_ERROR_TITLE = 'Agenda Item Error';
+export const DELETE_AGENDA_ITEM_ERROR = 'There was an issue attempting to delete this Agenda Item. Please try again.';
+
 export const ADD_FREQUENT_POSITION_ERROR_TITLE = 'Frequent Position Error';
 export const ADD_FREQUENT_POSITION_ERROR = 'Error adding Frequent Position. Please try again.';
 
@@ -284,6 +289,11 @@ export const UPDATE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Saved';
 export const UPDATE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully saved.';
 export const UPDATE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const UPDATE_BID_AUDIT_ERROR = 'There was an issue attempting to save this Bid Audit. Please try again.';
+
+export const CREATE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Created';
+export const CREATE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully created.';
+export const CREATE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Creation Error';
+export const CREATE_BID_AUDIT_ERROR = 'There was an issue attempting to create this Bid Audit. Please try again.';
 
 export const DELETE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Deleted';
 export const DELETE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully deleted.';
