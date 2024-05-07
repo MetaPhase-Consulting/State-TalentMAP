@@ -1,94 +1,36 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
 import Picky from 'react-picky';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, onEditModeSearch, renderSelectionList } from 'utilities';
+import { onEditModeSearch, renderSelectionList } from 'utilities';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import {
-  bidAuditCreateAudit,
-  bidAuditCreateAuditSuccess,
-  bidAuditFetchCycles,
   bidAuditFetchData,
-  bidAuditUpdateAudit,
-  bidAuditUpdateAuditSuccess,
   updateBidCount,
 } from 'actions/bidAudit';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import swal from '@sweetalert/with-react';
 import BidAuditCard from './BidAuditCard';
 import BidAuditModal from './BidAuditModal';
+import ReactModal from '../../ReactModal';
 
 
 const BidAudit = () => {
   const dispatch = useDispatch();
-  const bidAuditData = useSelector(state => state.bidAuditFetchData);
-  const bidAuditFetchLoading = useSelector(state => state.bidAuditFetchDataLoading);
-  const bidAuditFetchError = useSelector(state => state.bidAuditFetchDataErrored);
-  const bidAuditFetchCyclesLoading = useSelector(state => state.bidAuditFetchCyclesLoading);
-  const bidAuditCycles = useSelector(state => state.bidAuditCycles);
-  const bidAuditCreated = useSelector(state => state.bidAuditCreateAuditSuccess);
-  const bidAuditUpdated = useSelector(state => state.bidAuditUpdateAuditSuccess);
-
-  const [cardsInEditMode, setCardsInEditMode] = useState([]);
-  const [newAuditClicked, setNewAuditClicked] = useState(false);
 
   useEffect(() => {
     dispatch(bidAuditFetchData());
   }, []);
 
-  useEffect(() => {
-    if (bidAuditCreated) {
-      dispatch(bidAuditCreateAuditSuccess(false));
-      dispatch(bidAuditFetchData());
-      swal.close();
-    }
-  }, [bidAuditCreated]);
+  const bidAuditData = useSelector(state => state.bidAuditFetchData);
+  const bidAuditFetchLoading = useSelector(state => state.bidAuditFetchDataLoading);
+  const bidAuditFetchError = useSelector(state => state.bidAuditFetchDataErrored);
 
-  useEffect(() => {
-    if (bidAuditUpdated) {
-      setCardsInEditMode([]);
-      dispatch(bidAuditUpdateAuditSuccess(false));
-      dispatch(bidAuditFetchData());
-    }
-  }, [bidAuditUpdated]);
-
-  const onSubmitBidAuditUpdate = (cycleId, auditId, date, desc) => {
-    dispatch(bidAuditUpdateAudit({
-      id: cycleId,
-      auditNumber: auditId,
-      postByDate: formatDate(date),
-      auditDescription: desc,
-    }));
-  };
-
-  const onSubmit = (data) => {
-    dispatch(bidAuditCreateAudit(data));
-  };
-
-  useEffect(() => {
-    if (!bidAuditFetchCyclesLoading && bidAuditCycles?.length > 0 && newAuditClicked) {
-      setNewAuditClicked(false);
-      swal({
-        title: 'Create New Audit Cycle',
-        button: false,
-        content: (
-          <BidAuditModal assignmentCycleOptions={bidAuditCycles} onSubmit={onSubmit} />
-        ),
-      });
-    }
-  }, [bidAuditCycles]);
-
+  const [openModal, setOpenModal] = useState(false);
+  const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableSearch = cardsInEditMode.length > 0;
-
-
-  const onCreateNewAuditClick = (e) => {
-    e.preventDefault();
-    dispatch(bidAuditFetchCycles());
-    setNewAuditClicked(true);
-  };
 
   const cancelUpdateBidCount = () => swal.close();
 
@@ -97,8 +39,7 @@ const BidAudit = () => {
     swal.close();
   };
 
-  const onUpdateCountClick = (e) => {
-    e.preventDefault();
+  const onUpdateCountClick = () => {
     swal({
       title: 'Run Dynamic Audit to Update Bid Counts?',
       button: false,
@@ -220,10 +161,10 @@ const BidAudit = () => {
             <div className="filterby-label">Filter by:</div>
             <span className="filterby-clear">
               {clearFilters &&
-                  <button className="unstyled-button" onClick={resetFilters} disabled={disableSearch}>
-                    <FA name="times" />
-                    Clear Filters
-                  </button>
+                <button className="unstyled-button" onClick={resetFilters} disabled={disableSearch}>
+                  <FA name="times" />
+                  Clear Filters
+                </button>
               }
             </span>
           </div>
@@ -288,28 +229,32 @@ const BidAudit = () => {
             <div className="usa-width-one-whole position-search--results">
               <div className="usa-grid-full position-list">
                 <span className="ba-flex-end">
-                  <Tooltip title="Run Dynamic Audit">
-                    <FA name="clock-o" />
-                    {' '}
-                    <Link to="#" onClick={onUpdateCountClick}>
-                      {'Update Bid Count'}
-                    </Link>
-                  </Tooltip>
-                  <span className="ml-10">
-                    <FA name="plus" />
-                    {' '}
-                    <Link
-                      to="#"
-                      onClick={onCreateNewAuditClick}
+                  <div className="icon-text-link">
+                    <Tooltip title="Run Dynamic Audit">
+                      <a
+                        role="button"
+                        tabIndex={0}
+                        onClick={onUpdateCountClick}
+                      >
+                        <FA name="clock-o" />
+                        Update Bid Count
+                      </a>
+                    </Tooltip>
+                  </div>
+                  <div className="icon-text-link ml-10">
+                    <a
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setOpenModal(true)}
                     >
-                      {'Create New Audit Cycle'}
-                    </Link>
-                  </span>
+                      <FA name="plus" />
+                      Create New Audit Cycle
+                    </a>
+                  </div>
                 </span>
                 {bidAuditData$.map(data => (
                   <BidAuditCard
                     data={data}
-                    onSubmit={onSubmitBidAuditUpdate}
                     key={`${data.cycle_id}${data.audit_id}`}
                     onEditModeSearch={(editMode, id) =>
                       onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
@@ -320,7 +265,9 @@ const BidAudit = () => {
             </div>
           </>
         }
-
+        <ReactModal open={openModal} setOpen={setOpenModal}>
+          <BidAuditModal setOpen={setOpenModal} />
+        </ReactModal>
       </div>
   );
 };
