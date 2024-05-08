@@ -8,7 +8,7 @@ import {
   CREATE_ALT_SEPARATION_ERROR, CREATE_ALT_SEPARATION_ERROR_TITLE,
   CREATE_ALT_SEPARATION_SUCCESS, CREATE_ALT_SEPARATION_SUCCESS_TITLE,
   UPDATE_ALT_ASSIGNMENT_ERROR, UPDATE_ALT_ASSIGNMENT_ERROR_TITLE,
-  UPDATE_ALT_ASSIGNMENT_SUCCESS, UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE,
+  UPDATE_ALT_ASSIGNMENT_SUCCESS, UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE, UPDATE_ALT_SEPARATION_ERROR, UPDATE_ALT_SEPARATION_ERROR_TITLE, UPDATE_ALT_SEPARATION_SUCCESS, UPDATE_ALT_SEPARATION_SUCCESS_TITLE,
 } from '../Constants/SystemMessages';
 
 // ================ ASSIGNMENT HISTORY LIST ================
@@ -201,24 +201,24 @@ let cancelAction;
 export function assignmentSeparationAction(query, perdet, id, isSeparation, onSuccess) {
   const type = isSeparation ? 'separations' : 'assignments';
 
-  let toastSuccessMessage = UPDATE_ALT_ASSIGNMENT_SUCCESS;
-  let toastSuccessTitle = UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE;
-  let toastErrorMessage = UPDATE_ALT_ASSIGNMENT_ERROR;
-  let toastErrorTitle = UPDATE_ALT_ASSIGNMENT_ERROR_TITLE;
+  let toastSuccessMessage = CREATE_ALT_ASSIGNMENT_SUCCESS;
+  let toastSuccessTitle = CREATE_ALT_ASSIGNMENT_SUCCESS_TITLE;
+  let toastErrorMessage = CREATE_ALT_ASSIGNMENT_ERROR;
+  let toastErrorTitle = CREATE_ALT_ASSIGNMENT_ERROR_TITLE;
 
   if (!isSeparation && id) {
-    toastSuccessMessage = CREATE_ALT_ASSIGNMENT_SUCCESS;
-    toastSuccessTitle = CREATE_ALT_ASSIGNMENT_SUCCESS_TITLE;
-    toastErrorMessage = CREATE_ALT_ASSIGNMENT_ERROR;
-    toastErrorTitle = CREATE_ALT_ASSIGNMENT_ERROR_TITLE;
+    toastSuccessMessage = UPDATE_ALT_ASSIGNMENT_SUCCESS;
+    toastSuccessTitle = UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE;
+    toastErrorMessage = UPDATE_ALT_ASSIGNMENT_ERROR;
+    toastErrorTitle = UPDATE_ALT_ASSIGNMENT_ERROR_TITLE;
   }
 
   if (isSeparation) {
     if (id) {
-      toastSuccessMessage = CREATE_ALT_SEPARATION_SUCCESS;
-      toastSuccessTitle = CREATE_ALT_SEPARATION_SUCCESS_TITLE;
-      toastErrorMessage = CREATE_ALT_SEPARATION_ERROR;
-      toastErrorTitle = CREATE_ALT_SEPARATION_ERROR_TITLE;
+      toastSuccessMessage = UPDATE_ALT_SEPARATION_SUCCESS;
+      toastSuccessTitle = UPDATE_ALT_SEPARATION_SUCCESS_TITLE;
+      toastErrorMessage = UPDATE_ALT_SEPARATION_ERROR;
+      toastErrorTitle = UPDATE_ALT_SEPARATION_ERROR_TITLE;
     } else {
       toastSuccessMessage = CREATE_ALT_SEPARATION_SUCCESS;
       toastSuccessTitle = CREATE_ALT_SEPARATION_SUCCESS_TITLE;
