@@ -155,7 +155,7 @@ export function removeAgenda(aiData) {
   const { aiseqnum, aiupdatedate } = aiData;
 
   const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})z$/i;
-  const aiupdate = aiupdatedate.replace(regex, '$1-$2-$3 $4:$5:$6');
+  const aiupdate = aiupdatedate.replace(regex, '$1-$2-$3 $4:$5:$6').replace('T', ' ');
 
   return (dispatch) => {
     if (cancelRemoveAI) { cancelRemoveAI('cancel'); }

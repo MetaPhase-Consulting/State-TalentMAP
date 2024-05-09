@@ -29,6 +29,31 @@
 
       .add-buttons {
         padding-left: 5px;
+
+        .create-new-button {
+          display: flex;
+          justify-content: flex-end;
+          font-size: 17px;
+          cursor: pointer;
+
+          .fa {
+            margin-right: 5px;
+          }
+
+          a {
+            text-decoration: none;
+          }
+        }
+
+        &.disabled {
+          .create-new-button {
+            pointer-events: none;
+
+            a {
+              color: $bg-gray-dark-2;
+            }
+          }
+        }
       }
     }
   }

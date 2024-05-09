@@ -312,7 +312,7 @@ const Separation = (props) => {
           />
         }
       </div>,
-    cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
+    cancelText: 'Are you sure you want to discard all changes made to this Separation?',
     handleSubmit: () => onSubmitForm(),
     handleCancel: () => { toggleModal(false); setDisableOtherEdits(false); },
     handleEdit: {
@@ -349,7 +349,6 @@ const Separation = (props) => {
         <PositionExpandableContent
           sections={sections}
           form={form}
-          useCancelModal={false}
           saveText={isNew ? 'Create Separation' : 'Save Separation'}
         />
       }
