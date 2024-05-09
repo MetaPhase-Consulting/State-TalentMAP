@@ -170,3 +170,18 @@
     margin: 0px;
   }
 }
+
+.icon-text-link {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 17px;
+  cursor: pointer;
+
+  .fa {
+    margin-right: 5px;
+  }
+
+  &.no-underline a {
+    text-decoration: none;
+  }
+}

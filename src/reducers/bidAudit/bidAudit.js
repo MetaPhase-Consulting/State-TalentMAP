@@ -44,28 +44,6 @@ export function bidAuditCycles(state = [], action) {
   }
 }
 
-// ================ Bid Audit: Create Audit ================
-
-export function bidAuditCreateAuditSuccess(state = false, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_CREATE_AUDIT_SUCCESS':
-      return action.success;
-    default:
-      return state;
-  }
-}
-
-// ================ Bid Audit: Update Audit ================
-
-export function bidAuditUpdateAuditSuccess(state = false, action) {
-  switch (action.type) {
-    case 'BID_AUDIT_UPDATE_SUCCESS':
-      return action.success;
-    default:
-      return state;
-  }
-}
-
 // ================ Bid Audit: Get In Category/At Grade ================
 
 export function bidAuditSecondFetchDataErrored(state = false, action) {

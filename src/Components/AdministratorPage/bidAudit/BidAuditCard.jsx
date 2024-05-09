@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import DatePicker from 'react-datepicker';
-import FA from 'react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
-import { EMPTY_FUNCTION } from 'Constants/PropTypes';
-import TabbedCard from 'Components/TabbedCard';
+import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
-import PositionExpandableContent from 'Components/PositionExpandableContent';
+import { formatDate } from 'utilities';
+import { bidAuditUpdateAudit } from 'actions/bidAudit';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
+import TabbedCard from 'Components/TabbedCard';
 import { NO_VALUE } from 'Constants/SystemMessages';
+import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { history } from '../../../store';
 
-const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
+const BidAuditCard = ({ data, onEditModeSearch }) => {
   const {
     audit_id,
     audit_desc,
@@ -21,6 +24,8 @@ const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
     posted_by_date,
     audit_date,
   } = data;
+
+  const dispatch = useDispatch();
 
   const [description, setDescription] = useState(audit_desc || '');
   const [pbDate, setPbDate] = useState(posted_by_date ? new Date(posted_by_date) : '');
@@ -41,6 +46,16 @@ const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
     setPbDate(posted_by_date ? new Date(posted_by_date) : '');
     setDescription(audit_desc || '');
     swal.close();
+  };
+
+  const onSubmitForm = () => {
+    const formData = {
+      id: cycle_id,
+      auditNumber: audit_id,
+      postByDate: formatDate(pbDate),
+      auditDescription: description,
+    };
+    dispatch(bidAuditUpdateAudit(formData, setEditMode(false)));
   };
 
   const datePickerRef = useRef(null);
@@ -116,8 +131,8 @@ const BidAuditCard = ({ data, onEditModeSearch, onSubmit }) => {
     ),
     cancelText: 'Are you sure you want to discard all changes made to this position?',
     disableSubmit: (!pbDate || !description),
-    handleSubmit: () => onSubmit(cycle_id, audit_id, pbDate, description),
-    handleCancel: () => onCancelForm(),
+    handleSubmit: onSubmitForm,
+    handleCancel: onCancelForm,
     handleEdit: {
       editMode,
       setEditMode,
@@ -159,7 +174,6 @@ BidAuditCard.propTypes = {
     audit_date: PropTypes.string,
   }).isRequired,
   onEditModeSearch: PropTypes.func,
-  onSubmit: PropTypes.func.isRequired,
 };
 
 BidAuditCard.defaultProps = {

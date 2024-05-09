@@ -134,12 +134,12 @@ const AssignmentsSeparations = (props) => {
               </a>
             </div>
             {useNotification() &&
-              <div className="create-new-button align-left">
-                <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
-                  <FA name="briefcase" />
+               <div className="create-new-button align-left">
+                 <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
+                   <FA name="briefcase" />
                   Add Notification
-                </a>
-              </div>
+                 </a>
+               </div>
             }
             {useMemo() &&
               <div className="create-new-button align-left">
