@@ -125,14 +125,7 @@ export function bidAuditFetchCycles() {
 
 let cancelBidAuditCreate;
 
-export function bidAuditCreateAuditSuccess(bool) {
-  return {
-    type: 'BID_AUDIT_CREATE_AUDIT_SUCCESS',
-    success: bool,
-  };
-}
-
-export function bidAuditCreateAudit(data) {
+export function bidAuditCreateAudit(data, onSuccess) {
   return (dispatch) => {
     if (cancelBidAuditCreate) {
       cancelBidAuditCreate('cancel');
@@ -148,7 +141,8 @@ export function bidAuditCreateAudit(data) {
           dispatch(toastSuccess(
             CREATE_BID_AUDIT_SUCCESS, CREATE_BID_AUDIT_SUCCESS_TITLE,
           ));
-          dispatch(bidAuditCreateAuditSuccess(true));
+          dispatch(bidAuditFetchData());
+          if (onSuccess) onSuccess();
         });
       })
       .catch((err) => {
@@ -164,13 +158,7 @@ export function bidAuditCreateAudit(data) {
 
 let cancelModifyAuditUpdate;
 
-export function bidAuditUpdateAuditSuccess(bool) {
-  return {
-    type: 'BID_AUDIT_UPDATE_SUCCESS',
-    success: bool,
-  };
-}
-export function bidAuditUpdateAudit(data) {
+export function bidAuditUpdateAudit(data, onSuccess) {
   return (dispatch) => {
     if (cancelModifyAuditUpdate) {
       cancelModifyAuditUpdate('cancel');
@@ -186,7 +174,8 @@ export function bidAuditUpdateAudit(data) {
           dispatch(toastSuccess(
             UPDATE_BID_AUDIT_SUCCESS, UPDATE_BID_AUDIT_SUCCESS_TITLE,
           ));
-          dispatch(bidAuditUpdateAuditSuccess(true));
+          dispatch(bidAuditFetchData());
+          if (onSuccess) onSuccess();
         });
       })
       .catch((err) => {

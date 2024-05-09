@@ -157,7 +157,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
             <label htmlFor="cycle-position-statuses">Position Status</label>
             <select
               id="cycle-position-statuses"
-              defaultValue={cycleStatus}
+              value={cycleStatus}
               onChange={(e) => setCycleStatus(e?.target.value)}
             >
               {statusOptions.map(s => (
@@ -185,7 +185,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
             <label htmlFor="ted-now">Now</label>
             <select
               id="ted-now"
-              defaultValue={nowTedFlag}
+              value={nowTedFlag}
               onChange={(e) => setNowTedFlag(e?.target.value)}
             >
               <option value={'Y'}>Y</option>
@@ -197,7 +197,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
             <label htmlFor="cycle-position-incumbent">Incumbent</label>
             <select
               id="cycle-position-incumbent"
-              defaultValue={checkIncumbent()}
+              value={checkIncumbent()}
               onChange={(e) => setIncumbentVacancyCode(e?.target.value)}
             >
               <option value="">No Change</option>
@@ -231,7 +231,7 @@ const CyclePositionCard = ({ data, onEditModeSearch, isOpen, editableInfo, edita
             <label htmlFor="critical-need">Critical Need</label>
             <select
               id="critical-need"
-              defaultValue={critNeedFlag}
+              value={critNeedFlag}
               onChange={(e) => setCritNeedFlag(e?.target.value)}
             >
               <option value={'Y'}>Y</option>

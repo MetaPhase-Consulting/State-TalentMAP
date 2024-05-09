@@ -126,20 +126,20 @@ const AssignmentsSeparations = (props) => {
           <span>
             Add or review the current assignments or separations for {employeeName}
           </span>
-          <div className="add-buttons">
+          <div className={`add-buttons ${disableOtherEdits ? 'disabled' : ''}`}>
             <div className="create-new-button">
-              <a role="button" className="width-300" tabIndex={0} onClick={() => setOpenModal(true)}>
+              <a role="button" className="width-300" tabIndex={0} onClick={() => { if (!disableOtherEdits) setOpenModal(true); }}>
                 <FA name="briefcase" />
                 Add New Assignment/Separation
               </a>
             </div>
             {useNotification() &&
-              <div className="create-new-button align-left">
-                <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
-                  <FA name="briefcase" />
+               <div className="create-new-button align-left">
+                 <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
+                   <FA name="briefcase" />
                   Add Notification
-                </a>
-              </div>
+                 </a>
+               </div>
             }
             {useMemo() &&
               <div className="create-new-button align-left">
@@ -171,7 +171,7 @@ const AssignmentsSeparations = (props) => {
             title="Edit Mode"
             customClassName="mb-10"
             messages={[{
-              body: 'Discard or save your edits before editing another card.',
+              body: 'Discard or save your edits before editing or creating another card.',
             }]}
           />
         }

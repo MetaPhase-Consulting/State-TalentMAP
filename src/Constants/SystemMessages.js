@@ -367,3 +367,23 @@ export const CREATE_POSITION_CLASSIFICATION_SUCCESS_TITLE = 'Position Clasificat
 export const CREATE_POSITION_CLASSIFICATION_SUCCESS = 'This Position Clasifications has been successfully created.';
 export const CREATE_POSITION_CLASSIFICATION_ERROR_TITLE = 'Position Clasifications Error';
 export const CREATE_POSITION_CLASSIFICATION_ERROR = 'There was an issue attempting to create this Position Clasifications. Please try again.';
+
+export const UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE = 'Assignment Updated';
+export const UPDATE_ALT_ASSIGNMENT_SUCCESS = 'This Assignment has been successfully updated.';
+export const UPDATE_ALT_ASSIGNMENT_ERROR_TITLE = 'Assignment Update Error';
+export const UPDATE_ALT_ASSIGNMENT_ERROR = 'There was an issue attempting to update this Assignment. Please try again.';
+
+export const CREATE_ALT_ASSIGNMENT_SUCCESS_TITLE = 'Assignment Created';
+export const CREATE_ALT_ASSIGNMENT_SUCCESS = 'This Assignment has been successfully created.';
+export const CREATE_ALT_ASSIGNMENT_ERROR_TITLE = 'Assignment Creation Error';
+export const CREATE_ALT_ASSIGNMENT_ERROR = 'There was an issue attempting to create this Assignment. Please try again.';
+
+export const UPDATE_ALT_SEPARATION_SUCCESS_TITLE = 'Separation Updated';
+export const UPDATE_ALT_SEPARATION_SUCCESS = 'This Separation has been successfully updated.';
+export const UPDATE_ALT_SEPARATION_ERROR_TITLE = 'Separation Update Error';
+export const UPDATE_ALT_SEPARATION_ERROR = 'There was an issue attempting to update this Separation. Please try again.';
+
+export const CREATE_ALT_SEPARATION_SUCCESS_TITLE = 'Separation Created';
+export const CREATE_ALT_SEPARATION_SUCCESS = 'This Separation has been successfully created.';
+export const CREATE_ALT_SEPARATION_ERROR_TITLE = 'Separation Creation Error';
+export const CREATE_ALT_SEPARATION_ERROR = 'There was an issue attempting to create this Separation. Please try again.';
