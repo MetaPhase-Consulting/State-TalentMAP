@@ -143,6 +143,8 @@ const Assignment = (props) => {
   const [travel, setTravel] = useState('');
   const [funding, setFunding] = useState('');
   const [adj, setAdj] = useState('');
+  const [todOther, setTodOther] = useState('');
+  const [todMonths, setTodMonths] = useState('');
   const [salaryReimbursement, setSalaryReimbursement] = useState(false);
   const [travelReimbursement, setTravelReimbursement] = useState(false);
   const [training, setTraining] = useState(false);
@@ -161,6 +163,8 @@ const Assignment = (props) => {
       setTravel(details?.TF_CD || '');
       setFunding(details?.ASGD_ORG_CODE || '');
       setAdj(details?.ASGD_ADJUST_MONTHS_NUM || '');
+      setTodOther(details?.ASGD_TOD_OTHER_TEXT || '');
+      setTodMonths(details?.ASGD_TOD_MONTHS_NUM || '');
       setSalaryReimbursement(details?.ASGD_SALARY_REIMBURSE_IND === 'Y');
       setTravelReimbursement(details?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
       setTraining(details?.ASGD_TRAINING_IND === 'Y');
@@ -172,6 +176,9 @@ const Assignment = (props) => {
 
   const onSubmitForm = () => {
     const commonFields = {
+      tod_months_num: todMonths || null,
+      tod_other_text: todOther || null,
+      tod_adjust_months_num: null,
       eta,
       etd: ted,
       tod,
@@ -358,6 +365,24 @@ const Assignment = (props) => {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="tod-other">TOD Other</label>
+            <input
+              id="tod-other"
+              value={todOther}
+              onChange={(e) => setTodOther(e?.target.value)}
+              disabled
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="tod-months">TOD Months</label>
+            <input
+              id="tod-months"
+              value={todMonths}
+              onChange={(e) => setTodMonths(e?.target.value)}
+              disabled
+            />
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
