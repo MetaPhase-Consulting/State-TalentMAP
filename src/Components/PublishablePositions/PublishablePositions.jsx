@@ -372,7 +372,7 @@ const PublishablePositions = ({ viewType }) => {
                     additionalCallsLoading={additionalDataIsLoading}
                     onEditModeSearch={editState =>
                       setEditMode(editState)}
-                    disableEdit={editMode || (viewType === 'ao')}
+                    disableEdit={editMode || (viewType === 'bureau') || (viewType === 'post')}
                     onSubmit={editData => submitEdit(editData)}
                     filters={filters}
                     onShowMorePP={callAdditionalData}

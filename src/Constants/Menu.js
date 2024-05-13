@@ -384,6 +384,15 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'post_user',
         ],
       },
+      {
+        text: 'Publishable Positions',
+        route: '/profile/post/publishablepositions',
+        icon: ' fa-newspaper-o',
+        roles: [
+          'superuser',
+          'post_user',
+        ],
+      },
       checkFlag('flags.bidding_tool') ?
         {
           text: 'Bidding Tool',
