@@ -306,6 +306,7 @@ const PublishablePositionCard = ({
           sections={sections}
           form={form}
           appendAdditionalFieldsToBodyPrimary={false}
+          tempHideEdit={disableEdit}
           showLoadingAnimation={additionalCallsLoading}
           onShowMore={(e) => onShowMorePP(e)}
         />,

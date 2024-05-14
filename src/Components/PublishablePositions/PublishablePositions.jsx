@@ -373,6 +373,7 @@ const PublishablePositions = ({ viewType }) => {
                     onEditModeSearch={editState =>
                       setEditMode(editState)}
                     disableEdit={editMode || (viewType === 'bureau') || (viewType === 'post')}
+                    tempHideEdit={(viewType === 'bureau') || (viewType === 'post')}
                     onSubmit={editData => submitEdit(editData)}
                     filters={filters}
                     onShowMorePP={callAdditionalData}
