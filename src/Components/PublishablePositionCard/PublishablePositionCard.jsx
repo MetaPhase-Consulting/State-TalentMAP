@@ -34,7 +34,7 @@ const onRestore = (e) => {
 };
 
 const PublishablePositionCard = ({
-  data, onEditModeSearch, onSubmit, disableEdit,
+  data, onEditModeSearch, onSubmit, disableEdit, disableEditDetails,
   additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
@@ -154,6 +154,7 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-position-statuses">Publishable Status</label>
                 <select
+                  disabled={disableEditDetails}
                   className="publishable-position-inputs"
                   id="publishable-position-statuses"
                   defaultValue={status}
@@ -187,6 +188,7 @@ const PublishablePositionCard = ({
                 id="exclude-checkbox"
                 label="Exclude Position from Bid Audit"
                 value={exclude}
+                disabled={disableEditDetails}
                 onCheckBoxClick={e => setExclude(e)}
               />
               {DETO_RWA_FLAG() &&
@@ -306,7 +308,6 @@ const PublishablePositionCard = ({
           sections={sections}
           form={form}
           appendAdditionalFieldsToBodyPrimary={false}
-          tempHideEdit={disableEdit}
           showLoadingAnimation={additionalCallsLoading}
           onShowMore={(e) => onShowMorePP(e)}
         />,
@@ -334,6 +335,7 @@ PublishablePositionCard.propTypes = {
   cycles: BID_CYCLES.isRequired,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
+  disableEditDetails: PropTypes.bool,
   disableEdit: PropTypes.bool,
   additionalCallsLoading: PropTypes.bool,
   filters: PropTypes.shape({
@@ -345,6 +347,7 @@ PublishablePositionCard.propTypes = {
 PublishablePositionCard.defaultProps = {
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
+  disableEditDetails: false,
   disableEdit: false,
   additionalCallsLoading: false,
   onShowMorePP: EMPTY_FUNCTION,
