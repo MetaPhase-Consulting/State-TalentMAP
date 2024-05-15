@@ -7,7 +7,7 @@ import { useDataLoader } from 'hooks';
 import { getResult } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
-  NO_BUREAU, NO_GRADE, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
+  NO_BUREAU, NO_GRADE, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE, NO_POST,
   NO_STATUS, NO_TOUR_END_DATE, NO_VALUE,
 } from 'Constants/SystemMessages';
 import { assignmentSeparationAction } from 'actions/assignment';
@@ -103,6 +103,12 @@ const Assignment = (props) => {
     pos_results?.todo_tod_code || pos_results?.bt_tod_code || ''
   );
 
+  const addPositionNum = () => {
+    if (selectedPositionNumber) {
+      dispatch(positionsFetchData(`limit=50&page=1&position_num=${selectedPositionNumber}`));
+    }
+  };
+
   useEffect(() => {
     if (pos_results_loading) {
       setInputClass('loading-animation--3');
@@ -115,20 +121,19 @@ const Assignment = (props) => {
     }
   }, [pos_results, pos_results_loading, pos_results_errored]);
 
-  useEffect(() => {
-    if (isNew) {
-      /* eslint-disable quote-props */
-      sections.subheading = [
-        { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
-        { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
-        { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
-        { 'Location': pos_results?.pos_location_code || NO_POST },
-        { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
-        { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
-      ];
-      /* eslint-enable quote-props */
-    }
-  }, [pos_results]);
+  if (isNew) {
+    /* eslint-disable quote-props */
+    sections.subheading = [
+      { 'Position Number': pos_results?.pos_num_text || NO_POSITION_NUMBER },
+      { 'Position Title': pos_results?.pos_title_desc || NO_POSITION_TITLE },
+      { 'Bureau': pos_results?.pos_bureau_short_desc || NO_BUREAU },
+      { 'Location': pos_results?.pos_location_code || NO_POST },
+      { 'Org': pos_results?.pos_org_short_desc || NO_ORG },
+      { 'Grade': pos_results?.pos_grade_code || NO_GRADE },
+      { 'Pay Plan': pos_results?.pos_pay_plan_code || NO_GRADE },
+    ];
+    /* eslint-enable quote-props */
+  }
 
   const [status, setStatus] = useState('');
   const [action, setAction] = useState('');
@@ -138,6 +143,8 @@ const Assignment = (props) => {
   const [travel, setTravel] = useState('');
   const [funding, setFunding] = useState('');
   const [adj, setAdj] = useState('');
+  const [todOther, setTodOther] = useState('');
+  const [todMonths, setTodMonths] = useState('');
   const [salaryReimbursement, setSalaryReimbursement] = useState(false);
   const [travelReimbursement, setTravelReimbursement] = useState(false);
   const [training, setTraining] = useState(false);
@@ -148,7 +155,7 @@ const Assignment = (props) => {
   useEffect(() => {
     if (editMode) {
       setDisableOtherEdits(editMode);
-      setStatus(details?.ASGS_CODE || '');
+      setStatus(details?.ASGS_CODE || 'EF'); // Default to "Effective"
       setAction(details?.LAT_CODE || '');
       setTED(details?.ASGD_ETD_TED_DATE || '');
       setETA(details?.ASGD_ETA_DATE || '');
@@ -156,17 +163,22 @@ const Assignment = (props) => {
       setTravel(details?.TF_CD || '');
       setFunding(details?.ASGD_ORG_CODE || '');
       setAdj(details?.ASGD_ADJUST_MONTHS_NUM || '');
+      setTodOther(details?.ASGD_TOD_OTHER_TEXT || '');
+      setTodMonths(details?.ASGD_TOD_MONTHS_NUM || '');
       setSalaryReimbursement(details?.ASGD_SALARY_REIMBURSE_IND === 'Y');
       setTravelReimbursement(details?.ASGD_TRAVEL_REIMBURSE_IND === 'Y');
       setTraining(details?.ASGD_TRAINING_IND === 'Y');
       setCriticalNeed(details?.ASGD_CRITICAL_NEED_IND === 'Y');
-      setWaiver(details?.WRT_CODE_RR_REPAY || '');
+      setWaiver(details?.WRT_CODE_RR_REPAY || 'N'); // Default to "Not Used"
       setSent(details?.NOTE_LAST_SENT_DATE || '');
     }
   }, [editMode]);
 
   const onSubmitForm = () => {
     const commonFields = {
+      tod_months_num: todMonths || null,
+      tod_other_text: todOther || null,
+      tod_adjust_months_num: null,
       eta,
       etd: ted,
       tod,
@@ -214,12 +226,6 @@ const Assignment = (props) => {
       ));
     }
     setNewAsgSep('default');
-  };
-
-  const addPositionNum = () => {
-    if (selectedPositionNumber) {
-      dispatch(positionsFetchData(`limit = 50 & page=1 & position_num=${selectedPositionNumber} `));
-    }
   };
 
   const form = {
@@ -319,6 +325,14 @@ const Assignment = (props) => {
             </select>
           </div>
           <div className="position-form--label-input-container">
+            <label htmlFor="assignment-adj">ADJ</label>
+            <input
+              id="assignment-adj"
+              value={adj}
+              onChange={(e) => setAdj(e?.target.value)}
+            />
+          </div>
+          <div className="position-form--label-input-container">
             <label htmlFor="assignment-travel">Travel</label>
             <select
               id="assignment-travel"
@@ -353,16 +367,26 @@ const Assignment = (props) => {
             </select>
           </div>
           <div className="position-form--label-input-container">
-            <label htmlFor="assignment-adj">ADJ</label>
+            <label htmlFor="tod-other">TOD Other</label>
             <input
-              id="assignment-adj"
-              value={adj}
-              onChange={(e) => setAdj(e?.target.value)}
+              id="tod-other"
+              value={todOther}
+              onChange={(e) => setTodOther(e?.target.value)}
+              disabled
+            />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="tod-months">TOD Months</label>
+            <input
+              id="tod-months"
+              value={todMonths}
+              onChange={(e) => setTodMonths(e?.target.value)}
+              disabled
             />
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`salary - reimbursement - ${data.id ?? 'create'} `}
+              id={`salary-reimbursement-${data.id ?? 'create'}`}
               label="Salary Reimbursement"
               value={salaryReimbursement}
               className="mt-40"
@@ -372,7 +396,7 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`travel - reimbursement - ${data.id ?? 'create'} `}
+              id={`travel-reimbursement-${data.id ?? 'create'}`}
               label="Travel Reimbursement"
               value={travelReimbursement}
               className="mt-40"
@@ -382,12 +406,22 @@ const Assignment = (props) => {
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
-              id={`training - ${data.id ?? 'create'} `}
+              id={`training-${data.id ?? 'create'}`}
               label="Training"
               value={training}
               className="mt-40"
               excludeTmCheckboxClass
               onChange={() => setTraining(!training)}
+            />
+          </div>
+          <div className="position-form--label-input-container height-80">
+            <CheckBox
+              id={`critical-need-${data.id ?? 'create'}`}
+              label="Critical Need"
+              value={details?.ASGD_CRITICAL_NEED_IND === 'Y' || false}
+              className="mt-40"
+              excludeTmCheckboxClass
+              disabled
             />
           </div>
           <div className="position-form--label-input-container">
@@ -415,10 +449,18 @@ const Assignment = (props) => {
               onChange={(e) => setSent(e?.target.value)}
             />
           </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="diplomatic-title">Diplomatic Title</label>
+            <input
+              id="diplomatic-title"
+              value={data?.DIPLOMATIC_TITLE || NO_VALUE}
+              disabled
+            />
+          </div>
         </div>
       </div>,
     cancelText: 'Are you sure you want to discard all changes made to this Assignment?',
-    handleSubmit: () => onSubmitForm(),
+    handleSubmit: onSubmitForm,
     handleCancel: () => { toggleModal(false); setDisableOtherEdits(false); },
     handleEdit: {
       editMode,
