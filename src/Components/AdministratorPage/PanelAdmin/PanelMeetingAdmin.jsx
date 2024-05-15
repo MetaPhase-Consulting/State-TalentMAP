@@ -5,12 +5,13 @@ import DatePicker from 'react-datepicker';
 import { subMinutes } from 'date-fns';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
+import { convertQueryToString, userHasPermissions } from 'utilities';
 import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
 import { HISTORY_OBJECT } from 'Constants/PropTypes';
 import { panelMeetingsFetchData, panelMeetingsFiltersFetchData } from 'actions/panelMeetings';
 import { runPanelMeeting } from 'actions/panelMeetingAdmin';
 import { submitPanelMeeting } from '../../Panel/helpers';
-import { convertQueryToString, userHasPermissions } from '../../../utilities';
 import { panelMeetingAgendasFetchData } from '../../../actions/panelMeetingAgendas';
 import { useDataLoader } from '../../../hooks';
 import api from '../../../api';
@@ -21,6 +22,9 @@ const PanelMeetingAdmin = (props) => {
 
   const dispatch = useDispatch();
 
+  const userProfile = useSelector(state => state.userProfile);
+  const isFsbidAdmin = userHasPermissions(['fsbid_admin'], userProfile?.permission_groups);
+  const isPanelAdmin = userHasPermissions(['panel_admin'], userProfile?.permission_groups);
 
   // ============= Retrieve Data =============
 
@@ -188,9 +192,6 @@ const PanelMeetingAdmin = (props) => {
 
   // Helpers for input disabling conditions
 
-  const userProfile = useSelector(state => state.userProfile);
-  const isSuperUser = userHasPermissions(['superuser'], userProfile.permission_groups);
-
   const beforePanelMeetingDate = (
     panelMeetingDate$ ? (new Date(panelMeetingDate$.pmd_dttm) - new Date() > 0) : true
   );
@@ -204,19 +205,19 @@ const PanelMeetingAdmin = (props) => {
   // Only admins can access editable fields and run buttons
   // Additional business rules must be followed depending on the stage of the panel meeting
 
-  const disableMeetingType = !isSuperUser ||
+  const disableMeetingType = !isFsbidAdmin ||
     (!isCreate && !beforeAddendumCutoff);
 
-  const disableStatus = !isSuperUser ||
+  const disableStatus = !isFsbidAdmin ||
     (isCreate || !beforeAddendumCutoff);
 
-  const disablePanelMeetingDate = !isSuperUser ||
+  const disablePanelMeetingDate = !isFsbidAdmin ||
     (!isCreate && !beforePanelMeetingDate);
 
-  const disablePrelimCutoff = !isSuperUser ||
+  const disablePrelimCutoff = !isFsbidAdmin ||
     (!isCreate && !beforePrelimCutoff);
 
-  const disableAddendumCutoff = !isSuperUser ||
+  const disableAddendumCutoff = !isFsbidAdmin ||
     (!isCreate && !beforeAddendumCutoff);
 
   const disableRunPrelim = () => {
@@ -237,7 +238,6 @@ const PanelMeetingAdmin = (props) => {
       }
     });
     return (
-      !isSuperUser ||
       isCreate ||
       beforePrelimCutoff ||
       !beforePanelMeetingDate ||
@@ -256,7 +256,6 @@ const PanelMeetingAdmin = (props) => {
       }
     });
     return (
-      !isSuperUser ||
       isCreate ||
       beforeAddendumCutoff ||
       !beforePanelMeetingDate ||
@@ -266,10 +265,10 @@ const PanelMeetingAdmin = (props) => {
     );
   };
 
-  const disableClear = !isSuperUser ||
+  const disableClear = !isFsbidAdmin ||
     (!isCreate && !beforePanelMeetingDate);
 
-  const disableSave = !isSuperUser ||
+  const disableSave = !isFsbidAdmin ||
     (!isCreate && !beforePanelMeetingDate);
 
   const isLoading =
@@ -278,6 +277,9 @@ const PanelMeetingAdmin = (props) => {
     agendasIsLoading ||
     subsequentPanelsIsLoading;
 
+  if (isCreate && isPanelAdmin) {
+    return <Alert type="error" title="Permission Denied" messages={[{ body: 'Additional permissions are required to access this feature.' }]} />;
+  }
   return (
     (isLoading) ?
       <Spinner type="panel-admin-remarks" size="small" /> :
@@ -385,13 +387,15 @@ const PanelMeetingAdmin = (props) => {
                   ref={datePickerRef}
                 />
               </div>
-              <button
-                disabled={disableRunPrelim()}
-                className="text-button"
-                onClick={() => { handleRun('prelimRuntime'); }}
-              >
-                Run Official Preliminary
-              </button>
+              {isPanelAdmin &&
+                <button
+                  disabled={disableRunPrelim()}
+                  className="text-button"
+                  onClick={() => { handleRun('prelimRuntime'); }}
+                >
+                  Run Official Preliminary
+                </button>
+              }
             </div>
             <div className="panel-meeting-field">
               <label htmlFor="addendum-cutoff-date">Official Addendum Run Time</label>
@@ -409,20 +413,24 @@ const PanelMeetingAdmin = (props) => {
                   ref={datePickerRef}
                 />
               </div>
-              <button
-                disabled={disableRunAddendum()}
-                className="text-button"
-                onClick={() => { handleRun('addendumRuntime'); }}
-              >
-                Run Official Addendum
-              </button>
+              {isPanelAdmin &&
+                <button
+                  disabled={disableRunAddendum()}
+                  className="text-button"
+                  onClick={() => { handleRun('addendumRuntime'); }}
+                >
+                  Run Official Addendum
+                </button>
+              }
             </div>
           </div>
         </div>
-        <div className="position-form--actions">
-          <button onClick={clear} disabled={disableClear}>Clear</button>
-          <button onClick={submit} disabled={disableSave}>{isCreate ? 'Create' : 'Save'}</button>
-        </div>
+        {isFsbidAdmin &&
+          <div className="position-form--actions">
+            <button onClick={clear} disabled={disableClear}>Clear</button>
+            <button onClick={submit} disabled={disableSave}>{isCreate ? 'Create' : 'Save'}</button>
+          </div>
+        }
       </div>
   );
 };

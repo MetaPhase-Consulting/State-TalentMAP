@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import swal from '@sweetalert/with-react';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
+import { userHasPermissions } from 'utilities';
 import InteractiveElement from 'Components/InteractiveElement';
 import Spinner from 'Components/Spinner';
 import NavTabs from 'Components/NavTabs';
@@ -24,7 +25,11 @@ export const PPP = 'PPP';
 const PanelAdmin = (props) => {
   const usePanelAdminRemarks = () => checkFlag('flags.panel_admin_remarks');
   const usePanelAdminPanelMeeting = () => checkFlag('flags.panel_admin_panel_meeting');
-  const usePaneAdminPostPanel = () => checkFlag('flags.panel_admin_post_panel');
+  const usePanelAdminPostPanel = () => checkFlag('flags.panel_admin_post_panel');
+
+  const userProfile = useSelector(state => state.userProfile);
+  const isFsbidAdmin = userHasPermissions(['fsbid_admin'], userProfile?.permission_groups);
+  const isPanelAdmin = userHasPermissions(['panel_admin'], userProfile?.permission_groups);
 
   const dispatch = useDispatch();
 
@@ -55,13 +60,24 @@ const PanelAdmin = (props) => {
   const tabs = [];
 
   if (usePanelAdminPanelMeeting()) {
-    tabs.push({ text: 'Panel Meetings', value: PM });
+    tabs.push({
+      text: 'Panel Meetings',
+      value: PM,
+    });
   }
-  if (usePaneAdminPostPanel()) {
-    tabs.push({ text: 'Post Panel Processing', value: PPP, disabled: !enablePostPanelProcessing });
+  if (usePanelAdminPostPanel()) {
+    tabs.push({
+      text: 'Post Panel Processing',
+      value: PPP,
+      disabled: !enablePostPanelProcessing || !isPanelAdmin,
+    });
   }
   if (usePanelAdminRemarks()) {
-    tabs.push({ text: 'Maintain Remarks', value: RG });
+    tabs.push({
+      text: 'Maintain Remarks',
+      value: RG,
+      disabled: !isFsbidAdmin,
+    });
   }
 
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
