@@ -148,8 +148,7 @@ const BidAudit = () => {
     return overlay;
   };
 
-  return (bidAuditFetchLoading ?
-    <Spinner type="bureau-filters" size="small" /> :
+  return (
     <div className="position-search bid-audit-page">
       <div className="usa-grid-full position-search--header">
         <ProfileSectionTitle title="Bid Audit" icon="keyboard-o" className="xl-icon" />

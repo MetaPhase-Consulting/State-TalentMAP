@@ -123,8 +123,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
         </div>
         <div>
           <div className="ba-flex-end">
-            <button onClick={() => onOptionClick('category')}>View In Categories</button>
             <button onClick={() => onOptionClick('grade')}>View At Grades</button>
+            <button onClick={() => onOptionClick('category')}>View In Skill Categories</button>
           </div>
         </div>
       </div>

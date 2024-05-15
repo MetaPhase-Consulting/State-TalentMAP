@@ -1,4 +1,22 @@
 .bid-audit-page {
+  .ba-subheading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 15px;
+  }
+  .ba-audit-info {
+    color: $color-gray;
+    font-size: 16px;
+  }
+  .ba-scroll-container {
+    overflow: auto;
+    height: 1300px;
+  }
+  .ba-label {
+    width: fit-content;
+    padding-right: 5px;
+  }
   .bid-audit-form {
     .bid-audit-options {
       display: grid;

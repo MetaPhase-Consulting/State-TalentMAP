@@ -62,7 +62,7 @@ export function bidAuditSecondFetchDataLoading(state = false, action) {
       return state;
   }
 }
-export function bidAuditSecondFetchData(state = [], action) {
+export function bidAuditSecondFetchData(state = {}, action) {
   switch (action.type) {
     case 'BID_AUDIT_SECOND_FETCH_SUCCESS':
       return action.results;

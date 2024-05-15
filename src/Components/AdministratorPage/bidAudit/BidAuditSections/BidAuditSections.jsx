@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
 import CheckBox from '../../../CheckBox';
 
+// THIS FILE WILL BE DELETED IN NEXT PR
+
 const BidAuditSections = ({ onEditChange, rows }) => {
   const [isChecked, setIsChecked] = useState(false);
   const onEditClick = (e) => {
