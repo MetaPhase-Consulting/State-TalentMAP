@@ -42,25 +42,25 @@ const BidAuditCategory = (props) => {
   const [bidAuditCategoryData$, setBidAuditCategoryData$] = useState(bidAuditCategoryData?.in_categories);
   const [clearFilters, setClearFilters] = useState(false);
   const [selectedPositionCodes, setSelectedPositionCodes] = useState([]);
-  const [selectedEmployeeDesc, setSelectedEmployeeDesc] = useState([]);
-  const [selectedPositionDesc, setSelectedPositionDesc] = useState([]);
+  const [selectedEmployeeDescs, setSelectedEmployeeDescs] = useState([]);
+  const [selectedPositionDescs, setSelectedPositionDescs] = useState([]);
   const [selectedEmployeeCodes, setSelectedEmployeeCodes] = useState([]);
 
   const noFiltersSelected = [
     selectedEmployeeCodes,
     selectedPositionCodes,
-    selectedPositionDesc,
-    selectedEmployeeDesc].flat().length === 0;
+    selectedPositionDescs,
+    selectedEmployeeDescs].flat().length === 0;
 
   const resetFilters = () => {
     setSelectedPositionCodes([]);
     setSelectedEmployeeCodes([]);
-    setSelectedPositionDesc([]);
-    setSelectedEmployeeDesc([]);
+    setSelectedPositionDescs([]);
+    setSelectedEmployeeDescs([]);
     setClearFilters(false);
   };
 
-  const skillDataFiltered = () => {
+  const filterData = () => {
     if (noFiltersSelected) return bidAuditCategoryData?.in_categories;
     let skillCategories = bidAuditCategoryData?.in_categories;
     if (selectedPositionCodes.length > 0) {
@@ -73,21 +73,21 @@ const BidAuditCategory = (props) => {
         selectedEmployeeCodes.some(codes => codes.text === category.employee_skill_code),
       );
     }
-    if (selectedPositionDesc.length > 0) {
+    if (selectedPositionDescs.length > 0) {
       skillCategories = skillCategories.filter(category =>
-        selectedPositionDesc.some(descriptions => descriptions.text === category.position_skill_desc),
+        selectedPositionDescs.some(descriptions => descriptions.text === category.position_skill_desc),
       );
     }
-    if (selectedEmployeeDesc.length > 0) {
+    if (selectedEmployeeDescs.length > 0) {
       skillCategories = skillCategories.filter(category =>
-        selectedEmployeeDesc.some(descriptions => descriptions.text === category.employee_skill_desc),
+        selectedEmployeeDescs.some(descriptions => descriptions.text === category.employee_skill_desc),
       );
     }
     return skillCategories;
   };
 
   useEffect(() => {
-    setBidAuditCategoryData$(skillDataFiltered);
+    setBidAuditCategoryData$(filterData);
     if (noFiltersSelected) {
       setClearFilters(false);
     } else {
@@ -96,8 +96,8 @@ const BidAuditCategory = (props) => {
   }, [
     selectedPositionCodes,
     selectedEmployeeCodes,
-    selectedPositionDesc,
-    selectedEmployeeDesc,
+    selectedPositionDescs,
+    selectedEmployeeDescs,
     bidAuditCategoryData,
   ]);
 
@@ -184,7 +184,7 @@ const BidAuditCategory = (props) => {
     <div className="position-search bid-audit-page">
       <div className="usa-grid-full position-search--header">
         <BackButton />
-        <ProfileSectionTitle title="Bid Audit" icon="keyboard-o" className="xl-icon" />
+        <ProfileSectionTitle title="Bid Audit - In Skill Category" icon="keyboard-o" className="xl-icon" />
 
         <div className="filterby-container" >
           <div className="filterby-label">Filter by:</div>
@@ -200,10 +200,10 @@ const BidAuditCategory = (props) => {
 
         <div className="usa-width-one-whole position-search--filters--cm">
           <div className="filter-div">
-            <div className="ba-label">Position Code:</div>
+            <div className="ba-label">Position Skill Code:</div>
             <Picky
               {...pickyProps}
-              placeholder="Filter by Position Skill Code"
+              placeholder="Select Position Skill Code"
               options={getUniqData('position_skill_code')}
               valueKey="text"
               labelKey="text"
@@ -216,12 +216,12 @@ const BidAuditCategory = (props) => {
             <div className="ba-label">Position Skill:</div>
             <Picky
               {...pickyProps}
-              placeholder="Filter by Position Skill"
+              placeholder="Select Position Skill"
               options={getUniqData('position_skill_desc')}
               valueKey="text"
               labelKey="text"
-              onChange={setSelectedPositionDesc}
-              value={selectedPositionDesc}
+              onChange={setSelectedPositionDescs}
+              value={selectedPositionDescs}
               disabled={disableSearch}
             />
           </div>
@@ -229,7 +229,7 @@ const BidAuditCategory = (props) => {
             <div className="ba-label">Employee Skill Code:</div>
             <Picky
               {...pickyProps}
-              placeholder="Filter by Employee Skill Code"
+              placeholder="Select Employee Skill Code"
               options={getUniqData('employee_skill_code')}
               valueKey="text"
               labelKey="text"
@@ -242,12 +242,12 @@ const BidAuditCategory = (props) => {
             <div className="ba-label">Employee Skill:</div>
             <Picky
               {...pickyProps}
-              placeholder="Filter by Employee Skill"
+              placeholder="Select Employee Skill"
               options={getUniqData('employee_skill_desc')}
               valueKey="text"
               labelKey="text"
-              onChange={setSelectedEmployeeDesc}
-              value={selectedEmployeeDesc}
+              onChange={setSelectedEmployeeDescs}
+              value={selectedEmployeeDescs}
               disabled={disableSearch}
             />
           </div>
@@ -265,6 +265,9 @@ const BidAuditCategory = (props) => {
               <a role="button" tabIndex={0} onClick={() => onNewInCateogries()} >
                 <FA name="plus" />Add New In Skill-Category</a>
             </div>
+          </span>
+          <span className="ba-subheading">
+            <div className="ba-audit-sub-info">Employee Skills considered In-Skill for Positions in a Bid Cycle</div>
           </span>
 
           {
