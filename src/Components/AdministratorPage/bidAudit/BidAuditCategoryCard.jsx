@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
-import TabbedCard from 'Components/TabbedCard';
+import { Row } from 'Components/Layout';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
+import { NO_VALUE } from 'Constants/SystemMessages';
 
 const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
   const [editMode, setEditMode] = useState(false);
@@ -32,11 +33,10 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
       { '': '' },
     ],
     bodyPrimary: [
-      { 'Position Skill Code': data.position_skill_code },
-      { 'Position Skill Description': data.position_skill_desc },
+      { 'Position Skill': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
       { '': '' },
-      { 'Employee Skill Code': data.employee_skill_code },
-      { 'Employee Skill Description': data.employee_skill_desc },
+      { '': '' },
+      { 'Employee Skill': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
     ],
   };
 
@@ -86,24 +86,16 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
   };
 
   return (
-    <TabbedCard
-      tabs={
-        [
-          {
-            value: 'In Skill Categories',
-            content: (
-              <div className="position-content--container">
-                <PositionExpandableContent
-                  sections={inCategoriesSections}
-                  form={inCategoriesForm}
-                  saveText="Save In Category"
-                />
-              </div>
-            ),
-          },
-        ]
-      }
-    />
+    <Row fluid className="ba-card">
+      <div className="position-content--container">
+        <PositionExpandableContent
+          sections={inCategoriesSections}
+          form={inCategoriesForm}
+          saveText="Save In Category"
+          truncate={false}
+        />
+      </div>
+    </Row>
   );
 };
 
@@ -114,13 +106,12 @@ BidAuditCategoryCard.propTypes = {
     position_skill_desc: PropTypes.string,
     employee_skill_code: PropTypes.string,
     employee_skill_desc: PropTypes.string,
-  }),
+  }).isRequired,
   isOpen: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
 };
 
 BidAuditCategoryCard.defaultProps = {
-  data: {},
   isOpen: false,
   onEditModeSearch: EMPTY_FUNCTION,
 };

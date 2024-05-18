@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
-import TabbedCard from 'Components/TabbedCard';
+import { Row } from 'Components/Layout';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
+import { NO_VALUE } from 'Constants/SystemMessages';
 
 const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
   const [editMode, setEditMode] = useState(false);
@@ -33,14 +34,11 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
     ],
     bodyPrimary: [
       { 'Position Grade': data.position_grade_code },
-      { 'Position Skill Code': data.position_skill_code },
-      { 'Position Skill Description': data.position_skill_desc },
+      { 'Position Skill': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
       { '': '' },
       { 'Employee Grade': data.employee_grade_code },
-      { 'Employee Skill Code': data.employee_skill_code },
-      { 'Employee Skill Description': data.employee_skill_desc },
-      { 'Employee Tenure Code': data.employee_tenure_code },
-      { 'Employee Tenure Description': data.employee_tenure_desc },
+      { 'Employee Skill': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
+      { 'Employee Tenure': (data.employee_tenure_code ? `${data.employee_tenure_code} - ${data.employee_tenure_desc}` : NO_VALUE) },
     ],
   };
 
@@ -131,24 +129,15 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
   };
 
   return (
-    <TabbedCard
-      tabs={
-        [
-          {
-            value: 'At Grade',
-            content: (
-              <div className="position-content--container">
-                <PositionExpandableContent
-                  sections={atGradesSections}
-                  form={atGradesForm}
-                  saveText="Save In Category"
-                />
-              </div>
-            ),
-          },
-        ]
-      }
-    />
+    <Row fluid className="ba-card">
+      <div className="position-content--container">
+        <PositionExpandableContent
+          sections={atGradesSections}
+          form={atGradesForm}
+          saveText="Save In Category"
+        />
+      </div>
+    </Row>
   );
 };
 
@@ -163,13 +152,12 @@ BidAuditGradeCard.propTypes = {
     employee_skill_desc: PropTypes.string,
     employee_tenure_code: PropTypes.string,
     employee_tenure_desc: PropTypes.string,
-  }),
+  }).isRequired,
   isOpen: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
 };
 
 BidAuditGradeCard.defaultProps = {
-  data: {},
   isOpen: false,
   onEditModeSearch: EMPTY_FUNCTION,
 };

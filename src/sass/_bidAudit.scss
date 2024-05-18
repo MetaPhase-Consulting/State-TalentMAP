@@ -34,6 +34,15 @@
   }
 }
 
+.ba-card {
+  background-color: $color-white;
+  border: 1px solid $bg-gray-dark-3;
+  border-left: 8px solid $blue-primary;
+  margin-block: 20px;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 .ba-flex-end {
   display: flex;
   justify-content: end;

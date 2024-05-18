@@ -42,78 +42,55 @@ const BidAuditGrade = (props) => {
   const [bidAuditGradeData$, setBidAuditGradeData$] = useState(bidAuditGradeData?.in_categories);
   const [clearFilters, setClearFilters] = useState(false);
 
-  const [selectedPositionSkillCodes, setSelectedPositionSkillCodes] = useState([]);
-  const [selectedPositionSkillDesc, setSelectedPositionSkillDesc] = useState([]);
   const [selectedPositionGrades, setSelectedPositionGrades] = useState([]);
+  const [selectedPositionSkills, setSelectedPositionSkills] = useState([]);
   const [selectedEmployeeGrades, setSelectedEmployeeGrades] = useState([]);
-  const [selectedEmployeeSkillDescs, setSelectedEmployeeSkillDescs] = useState([]);
-  const [selectedEmployeeSkillCodes, setSelectedEmployeeSkillCodes] = useState([]);
-  const [selectedEmployeeTenureCodes, setSelectedEmployeeTenureCodes] = useState([]);
-  const [selectedEmployeeTenureDescs, setSelectedEmployeeTenureDescs] = useState([]);
+  const [selectedEmployeeSkills, setSelectedEmployeeSkills] = useState([]);
+  const [selectedEmployeeTenures, setSelectedEmployeeTenures] = useState([]);
 
   const noFiltersSelected = [
-    selectedPositionSkillCodes,
-    selectedPositionSkillDesc,
     selectedPositionGrades,
+    selectedPositionSkills,
     selectedEmployeeGrades,
-    selectedEmployeeSkillDescs,
-    selectedEmployeeSkillCodes,
-    selectedEmployeeTenureCodes,
-    selectedEmployeeTenureDescs].flat().length === 0;
+    selectedEmployeeSkills,
+    selectedEmployeeTenures].flat().length === 0;
 
   const resetFilters = () => {
-    setSelectedPositionSkillCodes([]);
-    setSelectedPositionSkillDesc([]);
     setSelectedPositionGrades([]);
+    setSelectedPositionSkills([]);
     setSelectedEmployeeGrades([]);
-    setSelectedEmployeeSkillDescs([]);
-    setSelectedEmployeeSkillCodes([]);
-    setSelectedEmployeeTenureCodes([]);
-    setSelectedEmployeeTenureDescs([]);
+    setSelectedEmployeeSkills([]);
+    setSelectedEmployeeTenures([]);
     setClearFilters(false);
   };
 
   const filterData = () => {
     if (noFiltersSelected) return bidAuditGradeData?.at_grades;
     let filteredData = bidAuditGradeData?.at_grades;
+
     if (selectedPositionGrades.length > 0) {
       filteredData = filteredData.filter(category =>
-        selectedPositionGrades.some(descriptions => descriptions.code === category.position_grade_code),
+        selectedPositionGrades.some(grade => grade.code === category.position_grade_code),
       );
     }
-    if (selectedPositionSkillCodes.length > 0) {
+    if (selectedPositionSkills.length > 0) {
       filteredData = filteredData.filter(category =>
-        selectedPositionSkillCodes.some(codes => codes.code === category.position_skill_code),
-      );
-    }
-    if (selectedPositionSkillDesc.length > 0) {
-      filteredData = filteredData.filter(category =>
-        selectedPositionSkillDesc.some(descriptions => descriptions.code === category.position_skill_desc),
+        selectedPositionSkills.some(skill => skill.code === category.position_skill_code),
       );
     }
     if (selectedEmployeeGrades.length > 0) {
       filteredData = filteredData.filter(category =>
-        selectedEmployeeGrades.some(codes => codes.code === category.employee_grade_code),
+        selectedEmployeeGrades.some(grade => grade.code === category.employee_grade_code),
       );
     }
-    if (selectedEmployeeSkillDescs.length > 0) {
+    if (selectedEmployeeSkills.length > 0) {
       filteredData = filteredData.filter(category =>
-        selectedEmployeeSkillDescs.some(codes => codes.code === category.employee_skill_desc),
+        selectedEmployeeSkills.some(skill => skill.code === category.employee_skill_code),
       );
     }
-    if (selectedEmployeeSkillCodes.length > 0) {
+    if (selectedEmployeeTenures.length > 0) {
       filteredData = filteredData.filter(category =>
-        selectedEmployeeSkillCodes.some(descriptions => descriptions.code === category.employee_skill_code),
-      );
-    }
-    if (selectedEmployeeTenureCodes.length > 0) {
-      filteredData = filteredData.filter(category =>
-        selectedEmployeeTenureCodes.some(descriptions => descriptions.code === category.employee_tenure_code),
-      );
-    }
-    if (selectedEmployeeTenureDescs.length > 0) {
-      filteredData = filteredData.filter(category =>
-        selectedEmployeeTenureDescs.some(codes => codes.code === category.employee_tenure_desc),
+        selectedEmployeeTenures.some(tenure => tenure.code === category.employee_tenure_code),
       );
     }
     return filteredData;
@@ -127,22 +104,29 @@ const BidAuditGrade = (props) => {
       setClearFilters(true);
     }
   }, [
-    selectedPositionSkillCodes,
-    selectedPositionSkillDesc,
     selectedPositionGrades,
+    selectedPositionSkills,
     selectedEmployeeGrades,
-    selectedEmployeeSkillDescs,
-    selectedEmployeeSkillCodes,
-    selectedEmployeeTenureCodes,
-    selectedEmployeeTenureDescs,
+    selectedEmployeeSkills,
+    selectedEmployeeTenures,
     bidAuditGradeData,
   ]);
 
-  const getUniqData = (value) => {
-    const gradeData = bidAuditGradeData?.at_grades?.map(atGradeData => atGradeData[value]);
-    const uniq = [...new Set(gradeData)];
-    const uniqObj = uniq?.map(x => ((!x || x === ' ') ? { code: x, text: 'None Listed' } : { code: x, text: x }));
-    return uniqObj;
+  const getUniqData = (value, desc) => {
+    const uniqFormattedGradeData = bidAuditGradeData?.at_grades?.reduce((acc, curr) => {
+      const keyValue = curr[value];
+      const isDuplicate = acc.some(x => x.code === keyValue);
+      if (!isDuplicate) {
+        if (desc) {
+          acc.push({
+            code: curr[value],
+            text: curr[value] ? `(${curr[value]}) ${curr[desc]}` : 'None Listed',
+          });
+        } else acc.push({ code: curr[value], text: curr[value] || 'None Listed' });
+      }
+      return acc;
+    }, []);
+    return uniqFormattedGradeData;
   };
 
   const pickyProps = {
@@ -204,7 +188,6 @@ const BidAuditGrade = (props) => {
           </div>
           <div className="filter-div-modal">
             <div className="label">Position Skill Code - Description:</div>
-            {/* these disabled dropdowns probably dont need to be dropdowns will fix in next PR */}
             <select disabled>
               {skillCode.map(grade => (
                 <option value={grade?.name} key={grade?.code}>{grade.name}</option>
@@ -282,7 +265,7 @@ const BidAuditGrade = (props) => {
             <div className="ba-label">Position Grade:</div>
             <Picky
               {...pickyProps}
-              placeholder="Select Position Skill Code"
+              placeholder="Select Position Grade"
               options={getUniqData('position_grade_code')}
               valueKey="code"
               labelKey="text"
@@ -292,28 +275,15 @@ const BidAuditGrade = (props) => {
             />
           </div>
           <div className="filter-div">
-            <div className="ba-label">Position Skill Code:</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Position Skill Code"
-              options={getUniqData('position_skill_code')}
-              valueKey="code"
-              labelKey="text"
-              onChange={setSelectedPositionSkillCodes}
-              value={selectedPositionSkillCodes}
-              disabled={disableSearch}
-            />
-          </div>
-          <div className="filter-div">
             <div className="ba-label">Position Skill:</div>
             <Picky
               {...pickyProps}
               placeholder="Select Position Skill"
-              options={getUniqData('position_skill_desc')}
+              options={getUniqData('position_skill_code', 'position_skill_desc')}
               valueKey="code"
               labelKey="text"
-              onChange={setSelectedPositionSkillDesc}
-              value={selectedPositionSkillDesc}
+              onChange={setSelectedPositionSkills}
+              value={selectedPositionSkills}
               disabled={disableSearch}
             />
           </div>
@@ -331,41 +301,15 @@ const BidAuditGrade = (props) => {
             />
           </div>
           <div className="filter-div">
-            <div className="ba-label">Employee Skill Code:</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Employee Skill Code"
-              options={getUniqData('employee_skill_code')}
-              valueKey="code"
-              labelKey="text"
-              onChange={setSelectedEmployeeSkillCodes}
-              value={selectedEmployeeSkillCodes}
-              disabled={disableSearch}
-            />
-          </div>
-          <div className="filter-div">
             <div className="ba-label">Employee Skill:</div>
             <Picky
               {...pickyProps}
               placeholder="Select Employee Skill"
-              options={getUniqData('employee_skill_desc')}
+              options={getUniqData('employee_skill_code', 'employee_skill_desc')}
               valueKey="code"
               labelKey="text"
-              onChange={setSelectedEmployeeSkillDescs}
-              value={selectedEmployeeSkillDescs}
-              disabled={disableSearch}
-            />
-          </div>
-          <div className="filter-div">
-            <div className="ba-label">Employee Tenure Code:</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Employee Tenure Code"
-              options={getUniqData('employee_tenure_code')}
-              valueKey="code"
-              labelKey="text"
-              onChange={setSelectedEmployeeTenureCodes}
-              value={selectedEmployeeTenureCodes}
+              onChange={setSelectedEmployeeSkills}
+              value={selectedEmployeeSkills}
               disabled={disableSearch}
             />
           </div>
@@ -373,12 +317,12 @@ const BidAuditGrade = (props) => {
             <div className="ba-label">Employee Tenure:</div>
             <Picky
               {...pickyProps}
-              placeholder="Select Employee Skill"
-              options={getUniqData('employee_tenure_desc')}
+              placeholder="Select Employee Tenure"
+              options={getUniqData('employee_tenure_code', 'employee_tenure_desc')}
               valueKey="code"
               labelKey="text"
-              onChange={setSelectedEmployeeTenureDescs}
-              value={selectedEmployeeTenureDescs}
+              onChange={setSelectedEmployeeTenures}
+              value={selectedEmployeeTenures}
               disabled={disableSearch}
             />
           </div>
@@ -390,15 +334,16 @@ const BidAuditGrade = (props) => {
 
           <span className="ba-subheading">
             <div className="ba-audit-info">{`Cycle Name: ${bidAuditGradeData?.audit_info?.cycle_name}`}</div>
-            <div className="ba-audit-info">{`Posted by Date: ${bidAuditGradeData?.audit_info?.posted_by_date}`}</div>
+            <div className="ba-audit-info">{`Positions Posted by: ${bidAuditGradeData?.audit_info?.posted_by_date}`}</div>
             <div className="ba-audit-info">{`Audit Number: ${bidAuditGradeData?.audit_info?.audit_number}`}</div>
+            <div className="ba-audit-info">{`Audit Description: ${bidAuditGradeData?.audit_info?.audit_desc}`}</div>
             <div className="icon-text-link ml-10">
               <a role="button" tabIndex={0} onClick={() => onNewAtGrade()} >
                 <FA name="plus" />Add New At Grade</a>
             </div>
           </span>
           <span className="ba-subheading">
-            <div className="ba-audit-sub-info">Employee Grades, Skills and Tenures considered At-Grade for Positions in a Bid Cycle</div>
+            <div className="ba-audit-sub-info">Employee Grades, Skills and Tenures considered At-Grade for Positions this Cycle</div>
           </span>
 
           {
