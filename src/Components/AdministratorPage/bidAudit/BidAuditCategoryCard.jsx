@@ -33,10 +33,10 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
       { '': '' },
     ],
     bodyPrimary: [
-      { 'Position Skill': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
+      { 'Position Skill Code & Description': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
       { '': '' },
       { '': '' },
-      { 'Employee Skill': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
+      { 'Employee Skill Code & Description': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
     ],
   };
 
