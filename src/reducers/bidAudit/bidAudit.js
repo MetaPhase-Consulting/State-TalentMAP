@@ -71,6 +71,33 @@ export function bidAuditSecondFetchData(state = {}, action) {
   }
 }
 
+// ================ Bid Audit: Get In Category/At Grade Modal Data ================
+
+export function bidAuditSecondFetchModalDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_SECOND_FETCH_MODAL_DATA_HAS_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function bidAuditSecondFetchModalDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_SECOND_FETCH_MODAL_DATA_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function bidAuditSecondFetchModalData(state = {}, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_SECOND_FETCH_MODAL_DATA_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+
 
 // ----------------------------------------------------------------------
 // ================ FUNCTIONS BELOW ARE CURRENTLY UNUSED ================

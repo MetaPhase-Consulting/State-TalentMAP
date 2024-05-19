@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
 import PropTypes from 'prop-types';
-import swal from '@sweetalert/with-react';
+import ReactModal from 'Components/ReactModal';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
@@ -12,6 +12,7 @@ import BackButton from 'Components/BackButton';
 import { bidAuditSecondFetchData } from 'actions/bidAudit';
 import { renderSelectionList } from 'utilities';
 import BidAuditCategoryCard from './BidAuditCategoryCard';
+import BidAuditCategoryModal from './BidAuditCategoryModal';
 
 const BidAuditCategory = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const BidAuditCategory = (props) => {
   const bidAuditCategoryFetchLoading = useSelector(state => state.bidAuditSecondFetchDataLoading);
   const bidAuditCategoryFetchError = useSelector(state => state.bidAuditSecondFetchDataErrored);
 
+  const [openModal, setOpenModal] = useState(false);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableSearch = cardsInEditMode.length > 0;
 
@@ -109,51 +111,6 @@ const BidAuditCategory = (props) => {
   // ======================================================================================= Filters
 
 
-  const onInCategoriesSave = () => {
-    swal.close();
-  };
-
-  const mockCategoryData = [
-    { code: 1, name: 'INFORMATION MANAGEMENT' },
-    { code: 2, name: 'SYSTEM MANAGEMENT' },
-    { code: 3, name: 'DATABASE MANAGEMENT' },
-    { code: 4, name: 'PIT' },
-    { code: 5, name: 'INFORMATION ADMIN' },
-    { code: 6, name: 'BUREAU MANAGEMENT' },
-  ];
-  const onNewInCateogries = () => {
-    swal({
-      title: 'Add New In Category',
-      button: false,
-      closeOnEsc: true,
-      content: (
-        <div className="position-form bid-audit-form-modal">
-          <div className="filter-div-modal">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {mockCategoryData.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {mockCategoryData.map(grade => (
-                <option value={grade.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <button onClick={onInCategoriesSave}>Save</button>
-            <button onClick={() => swal.close()}>Cancel</button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
-
   const noResults = bidAuditCategoryData$?.length === 0;
   const getOverlay = () => {
     let overlay;
@@ -227,7 +184,7 @@ const BidAuditCategory = (props) => {
             <div className="ba-audit-info">{`Audit Number: ${bidAuditCategoryData?.audit_info?.audit_number}`}</div>
             <div className="ba-audit-info">{`Audit Description: ${bidAuditCategoryData?.audit_info?.audit_desc}`}</div>
             <div className="icon-text-link ml-10">
-              <a role="button" tabIndex={0} onClick={() => onNewInCateogries()} >
+              <a role="button" tabIndex={0} onClick={() => setOpenModal(true)} >
                 <FA name="plus" />Add New In Skill-Category</a>
             </div>
           </span>
@@ -263,6 +220,9 @@ const BidAuditCategory = (props) => {
           </div>
         </div>
       }
+      <ReactModal open={openModal} setOpen={setOpenModal}>
+        <BidAuditCategoryModal setOpen={setOpenModal} />
+      </ReactModal>
     </div>
   );
 };
