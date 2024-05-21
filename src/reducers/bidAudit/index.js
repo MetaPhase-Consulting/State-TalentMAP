@@ -8,6 +8,9 @@ import {
   bidAuditSecondFetchData,
   bidAuditSecondFetchDataErrored,
   bidAuditSecondFetchDataLoading,
+  bidAuditSecondFetchModalData,
+  bidAuditSecondFetchModalDataErrored,
+  bidAuditSecondFetchModalDataLoading,
   // Below not integrated
   bidAuditEdit,
   bidAuditErrored,
@@ -25,6 +28,9 @@ export default {
   bidAuditSecondFetchData,
   bidAuditSecondFetchDataErrored,
   bidAuditSecondFetchDataLoading,
+  bidAuditSecondFetchModalData,
+  bidAuditSecondFetchModalDataErrored,
+  bidAuditSecondFetchModalDataLoading,
   bidAuditCycles,
   bidAuditFetchCyclesLoading,
   // Below not integrated

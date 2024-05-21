@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
 import PropTypes from 'prop-types';
-import swal from '@sweetalert/with-react';
+import ReactModal from 'Components/ReactModal';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
@@ -12,6 +12,7 @@ import BackButton from 'Components/BackButton';
 import { bidAuditSecondFetchData } from 'actions/bidAudit';
 import { renderSelectionList } from 'utilities';
 import BidAuditGradeCard from './BidAuditGradeCard';
+import BidAuditGradeModal from './BidAuditGradeModal';
 
 const BidAuditGrade = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const BidAuditGrade = (props) => {
   const bidAuditGradeFetchLoading = useSelector(state => state.bidAuditSecondFetchDataLoading);
   const bidAuditGradeFetchError = useSelector(state => state.bidAuditSecondFetchDataErrored);
 
+  const [openModal, setOpenModal] = useState(false);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableSearch = cardsInEditMode.length > 0;
 
@@ -140,93 +142,6 @@ const BidAuditGrade = (props) => {
   // ======================================================================================= Filters
 
 
-  const onAtGradeSave = () => {
-    swal.close();
-  };
-
-  const gradeOptions = [
-    { code: 1, name: '01' },
-    { code: 2, name: '02' },
-    { code: 3, name: '03' },
-    { code: 4, name: '04' },
-    { code: 5, name: '05' },
-    { code: 6, name: '06' },
-  ];
-
-  const skillCode = [
-    { code: 1, name: '2044' },
-    { code: 2, name: '2045' },
-    { code: 3, name: '2046' },
-    { code: 4, name: '2047' },
-    { code: 5, name: '2048' },
-    { code: 6, name: '2049' },
-  ];
-
-  const tenureCode = [
-    { code: 1, name: 'INFORMATION MANAGEMENT' },
-    { code: 2, name: 'SYSTEM MANAGEMENT' },
-    { code: 3, name: 'DATABASE MANAGEMENT' },
-    { code: 4, name: 'PIT' },
-    { code: 5, name: 'INFORMATION ADMIN' },
-    { code: 6, name: 'BUREAU MANAGEMENT' },
-  ];
-
-  const onNewAtGrade = () => {
-    swal({
-      title: 'Add New At Grade',
-      button: false,
-      closeOnEsc: true,
-      content: (
-        <div className="position-form bid-audit-form-modal">
-          <div className="filter-div-modal">
-            <div className="label">Position Grade:</div>
-            <select disabled>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade?.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Position Skill Code - Description:</div>
-            <select disabled>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Employee Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-div-modal">
-            <div className="label">Tenure Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <button onClick={onAtGradeSave}>Save</button>
-            <button onClick={() => swal.close()}>Cancel</button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
   const noResults = bidAuditGradeData$?.length === 0;
   const getOverlay = () => {
     let overlay;
@@ -338,7 +253,7 @@ const BidAuditGrade = (props) => {
             <div className="ba-audit-info">{`Audit Number: ${bidAuditGradeData?.audit_info?.audit_number}`}</div>
             <div className="ba-audit-info">{`Audit Description: ${bidAuditGradeData?.audit_info?.audit_desc}`}</div>
             <div className="icon-text-link ml-10">
-              <a role="button" tabIndex={0} onClick={() => onNewAtGrade()} >
+              <a role="button" tabIndex={0} onClick={() => setOpenModal(true)} >
                 <FA name="plus" />Add New At Grade</a>
             </div>
           </span>
@@ -374,6 +289,9 @@ const BidAuditGrade = (props) => {
           </div>
         </div>
       }
+      <ReactModal open={openModal} setOpen={setOpenModal}>
+        <BidAuditGradeModal setOpen={setOpenModal} />
+      </ReactModal>
     </div>
   );
 };

@@ -156,16 +156,6 @@
 
 $bid-audit-input-width: 460px;
 
-.bid-audit-form-modal {
-  .filter-div-modal {
-    padding: 10px;
-
-    .label {
-      text-align: left;
-    }
-  }
-}
-
 .bid-audit-modal-wrapper {
   background-color: white;
   border-radius: 5px;
@@ -182,7 +172,7 @@ $bid-audit-input-width: 460px;
   }
 
   .ba-form {
-    padding: 30px 0 40px;
+    padding: 30px 0 10px;
   }
 
   .ba-modal-div {
@@ -194,7 +184,7 @@ $bid-audit-input-width: 460px;
     min-height: 50px;
 
     >div:first-child {
-      width: 160px;
+      width: 215px;
       text-align: end;
       padding-right: 15px;
     }
