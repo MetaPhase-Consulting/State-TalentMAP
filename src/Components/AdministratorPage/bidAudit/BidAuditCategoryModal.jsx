@@ -62,7 +62,7 @@ const BidAuditCategoryModal = ({ match, setOpen }) => {
                 onChange={(e) => setPositionSkill(e.target.value)}
               >
                 <option value="" disabled />
-                {categoryOptions?.skill_options?.map(option => (
+                {categoryOptions?.position_skill_options?.map(option => (
                   <option value={option?.code} key={option?.code}>{`(${option.code}) ${option.text}`}</option>
                 ))}
               </select>
@@ -75,7 +75,7 @@ const BidAuditCategoryModal = ({ match, setOpen }) => {
                 onChange={(e) => setEmployeeSkill(e.target.value)}
               >
                 <option value="" disabled />
-                {categoryOptions?.skill_options?.map(option => (
+                {categoryOptions?.employee_skill_options?.map(option => (
                   <option value={option?.code} key={option?.code}>{`(${option.code}) ${option.text}`}</option>
                 ))}
               </select>

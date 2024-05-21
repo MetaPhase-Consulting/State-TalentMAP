@@ -76,7 +76,7 @@ const BidAuditGradeModal = ({ match, setOpen }) => {
                 onChange={(e) => setPositionGrade(e.target.value)}
               >
                 <option value="" disabled />
-                {secondFetchOptions?.grade_options?.map(grade => (
+                {secondFetchOptions?.position_grade_options?.map(grade => (
                   <option value={grade?.code} key={grade?.code}>{grade?.code}</option>
                 ))}
               </select>
@@ -89,7 +89,7 @@ const BidAuditGradeModal = ({ match, setOpen }) => {
                 onChange={(e) => setPositionSkill(e.target.value)}
               >
                 <option value="" />
-                {secondFetchOptions?.skill_options?.map(skill => (
+                {secondFetchOptions?.position_skill_options?.map(skill => (
                   <option value={skill?.code} key={skill?.code}>{`(${skill.code}) ${skill.text}`}</option>
                 ))}
               </select>
@@ -102,7 +102,7 @@ const BidAuditGradeModal = ({ match, setOpen }) => {
                 onChange={(e) => setEmployeeGrade(e.target.value)}
               >
                 <option value="" disabled />
-                {secondFetchOptions?.grade_options?.map(grade => (
+                {secondFetchOptions?.employee_grade_options?.map(grade => (
                   <option value={grade?.code} key={grade?.code}>{grade.code}</option>
                 ))}
               </select>
@@ -115,7 +115,7 @@ const BidAuditGradeModal = ({ match, setOpen }) => {
                 onChange={(e) => setEmployeeSkill(e.target.value)}
               >
                 <option value="" />
-                {secondFetchOptions?.skill_options?.map(skill => (
+                {secondFetchOptions?.employee_skill_options?.map(skill => (
                   <option value={skill?.code} key={skill?.code}>{`(${skill.code}) ${skill.text}`}</option>
                 ))}
               </select>
@@ -128,7 +128,7 @@ const BidAuditGradeModal = ({ match, setOpen }) => {
                 onChange={(e) => setEmployeeTenure(e.target.value)}
               >
                 <option value="" />
-                {secondFetchOptions?.tenure_options?.map(tenure => (
+                {secondFetchOptions?.employee_tenure_options?.map(tenure => (
                   <option value={tenure?.code} key={tenure?.code}>{`(${tenure.code}) ${tenure.text}`}</option>
                 ))}
               </select>
