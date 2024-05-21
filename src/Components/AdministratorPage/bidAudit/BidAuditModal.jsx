@@ -81,7 +81,7 @@ const BidAuditModal = ({ setOpen }) => {
               </select>
             </div>
             <div className="ba-modal-div">
-              <div>Posted By Date:</div>
+              <div>Positions Posted By:</div>
               <span className="date-picker-validation-container larger-date-picker">
                 <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
                 <DatePicker
