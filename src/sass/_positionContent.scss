@@ -276,6 +276,10 @@
   }
 }
 
+.publishable-position-inputs:disabled {
+  cursor: not-allowed;
+}
+
 .position-form {
   .position-form--heading {
     display: flex;
