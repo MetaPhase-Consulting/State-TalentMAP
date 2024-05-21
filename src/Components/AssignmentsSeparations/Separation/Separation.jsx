@@ -59,6 +59,15 @@ const Separation = (props) => {
 
   // ====================== View Mode ======================
 
+  const locationString = (location) => {
+    let displayText;
+    if (location) {
+      const { city, country, code } = location;
+      displayText = (city && country) ? `${city}, ${country}` : city || country || code || '';
+    }
+    return displayText;
+  };
+
   const sections = {
     /* eslint-disable quote-props */
     bodyPrimary: [
@@ -69,7 +78,13 @@ const Separation = (props) => {
       { 'Separation Date': getResult(details, 'SEPD_SEPARATION_DATE') || NO_VALUE },
       { 'US Indicator': getResult(details, 'SEPD_US_IND') || NO_VALUE },
       { 'Panel Meeting Date': getResult(details, 'PMD_DTTM') || NO_VALUE },
-      { 'Location': get(details, 'location') || NO_VALUE }, // TODO: format location string
+      {
+        'Location': locationString({
+          code: details?.DSC_CD,
+          city: details?.SEPD_CITY_TEXT,
+          country: details?.SEPD_COUNTRY_STATE_TEXT,
+        }) || NO_VALUE,
+      },
     ],
     /* eslint-enable quote-props */
   };
@@ -115,15 +130,6 @@ const Separation = (props) => {
       } : null);
     }
   }, [editMode]);
-
-  const locationString = () => {
-    let displayText;
-    if (location) {
-      const { city, country, code } = location;
-      displayText = (city && country) ? `${city}, ${country}` : city || country || code || '';
-    }
-    return displayText;
-  };
 
   const onSubmitForm = () => {
     const state = location?.state;
@@ -282,7 +288,7 @@ const Separation = (props) => {
           </div>
           <div className="position-form--label-input-container gsa-location-input">
             <label htmlFor="location">Location</label>
-            <input value={locationString() || ''} placeholder="Select Location" readOnly />
+            <input value={locationString(location) || ''} placeholder="Select Location" readOnly />
             {location &&
               <InteractiveElement
                 title="Remove Selected Location"
