@@ -39,7 +39,8 @@ const PublishablePositions = ({ viewType }) => {
   const dataIsLoading = useSelector(state => state.publishablePositionsIsLoading);
   const additionalDataIsLoading = false;
   // const additionalDataIsLoading = useSelector(state => state.publishablePositionsIsLoading);
-  const data = useSelector(state => state.publishablePositions.results);
+  const data = useSelector(state => state.publishablePositions);
+  const data$ = data?.results;
 
   const userSelections = useSelector(state => state.publishablePositionsSelections);
   const filtersHasErrored = useSelector(state => state.publishablePositionsFiltersHasErrored);
@@ -66,7 +67,7 @@ const PublishablePositions = ({ viewType }) => {
   const prevPage = usePrevious(page);
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
-  const count = data?.length || 0;
+  const count = data$?.length || 0;
 
   const statuses = filters?.statusFilters;
   const bureaus = filters?.bureauFilters;
@@ -191,7 +192,7 @@ const PublishablePositions = ({ viewType }) => {
       overlay = <Alert type="error" title="Error displaying Publishable Positions" messages={[{ body: 'Please try again.' }]} />;
     } else if (!filterSelectionValid()) {
       overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 distinct filters to search or search by Position Number.' }]} />;
-    } else if (!data?.length) {
+    } else if (!data$?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No positions for filter inputs.' }]} />;
     } else {
       return false;
@@ -410,7 +411,7 @@ const PublishablePositions = ({ viewType }) => {
           <div className="usa-width-one-whole position-search--results">
             <div className="usa-grid-full position-list">
               {
-                data.map(pubPos => (
+                data$.map(pubPos => (
                   <PublishablePositionCard
                     key={pubPos?.positionNumber}
                     data={pubPos}
