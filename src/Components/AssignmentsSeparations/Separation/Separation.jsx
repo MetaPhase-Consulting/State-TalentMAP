@@ -76,7 +76,7 @@ const Separation = (props) => {
       { 'Waiver': getResult(details, 'WRT_CODE_RR_REPAY') || NO_VALUE },
       { 'Travel': get(details, 'TF_CD') || NO_VALUE },
       { 'Separation Date': getResult(details, 'SEPD_SEPARATION_DATE') || NO_VALUE },
-      { 'US Indicator': getResult(details, 'SEPD_US_IND') || NO_VALUE },
+      { 'US Indicator': <CheckBox value={details?.SEPD_US_IND === 'Y'} disabled /> },
       { 'Panel Meeting Date': getResult(details, 'PMD_DTTM') || NO_VALUE },
       {
         'Location': locationString({
