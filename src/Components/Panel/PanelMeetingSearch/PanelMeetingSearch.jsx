@@ -42,7 +42,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
   const panelMeetingsHasErrored = useSelector(state => state.panelMeetingsFetchDataErrored);
   const userSelections = useSelector(state => state.panelMeetingsSelections);
   const userProfile = useSelector(state => state.userProfile);
-  const isSuperUser = userHasPermissions(['superuser'], userProfile?.permission_groups);
+  const isFsbidAdmin = userHasPermissions(['fsbid_admin'], userProfile?.permission_groups);
 
   const panelMeetings = get(panelMeetings$, 'results') || [];
 
@@ -289,7 +289,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
           </div>
         }
         {
-          isSuperUser && showAddPanelMeeting &&
+          isFsbidAdmin && showAddPanelMeeting &&
           <div className="admin-panel-meeting-add-meeting">
             <Link to={'/profile/administrator/panel'}>
               <FA name="sitemap" className="admin-panel-meeting-add-meeting-icon" />

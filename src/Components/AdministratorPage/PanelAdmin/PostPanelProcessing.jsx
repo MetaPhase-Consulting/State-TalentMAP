@@ -6,11 +6,12 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
 import { Tooltip } from 'react-tippy';
 import { editPostPanelProcessing, postPanelProcessingFetchData } from 'actions/postPanelProcessing';
 import { panelMeetingsFetchData } from 'actions/panelMeetings';
 import { runPanelMeeting } from 'actions/panelMeetingAdmin';
-import { userHasPermissions } from '../../../utilities';
+import { userHasPermissions } from 'utilities';
 
 
 const PostPanelProcessing = (props) => {
@@ -18,6 +19,8 @@ const PostPanelProcessing = (props) => {
 
   const dispatch = useDispatch();
 
+  const userProfile = useSelector(state => state.userProfile);
+  const isPanelAdmin = userHasPermissions(['panel_admin'], userProfile?.permission_groups);
 
   // ============= Retrieve Data =============
 
@@ -237,9 +240,6 @@ const PostPanelProcessing = (props) => {
 
   const isLoading = postPanelIsLoading || panelMeetingsIsLoading;
 
-  const userProfile = useSelector(state => state.userProfile);
-  const isSuperUser = userHasPermissions(['superuser'], userProfile.permission_groups);
-
   const beforePanelMeetingDate = (
     panelMeetingDate$ ? (new Date(panelMeetingDate$.pmd_dttm) - new Date() > 0) : true
   );
@@ -251,18 +251,16 @@ const PostPanelProcessing = (props) => {
   // Additional business rules must be followed depending on the stage of the panel meeting
   // Post Panel Started and Agenda Completed Time are disabled until further notice
 
-  const disableTable = !isSuperUser ||
-    (!beforeAgendaCompletedTime);
+  const disableTable = !isPanelAdmin || !beforeAgendaCompletedTime;
 
-  const disableRunPostPanel = !isSuperUser || (
+  const disableRunPostPanel = (
     postPanelRunTime$ ||
     !beforeAgendaCompletedTime ||
     !hasValidAgendaItems ||
     beforePanelMeetingDate
   );
 
-  const disableSave = !isSuperUser ||
-    (!beforeAgendaCompletedTime);
+  const disableSave = !isPanelAdmin || !beforeAgendaCompletedTime;
 
   const disableHold = (agenda, status) => {
     const isHold = status.code === 'H';
@@ -271,6 +269,9 @@ const PostPanelProcessing = (props) => {
     return isHold && !isChairHold && reachedMax;
   };
 
+  if (!isPanelAdmin) {
+    return <Alert type="error" title="Permission Denied" messages={[{ body: 'Additional permissions are required to access this feature.' }]} />;
+  }
   return (
     (isLoading) ?
       <Spinner type="panel-admin-remarks" size="small" /> :
@@ -399,13 +400,15 @@ const PostPanelProcessing = (props) => {
             </tbody>
           </table>
         </div>
-        <button
-          disabled={disableRunPostPanel}
-          className="text-button mb-20"
-          onClick={runPostPanelProcessing}
-        >
-          Run Post Panel Processing
-        </button>
+        {isPanelAdmin &&
+          <button
+            disabled={disableRunPostPanel}
+            className="text-button mb-20"
+            onClick={runPostPanelProcessing}
+          >
+            Run Post Panel Processing
+          </button>
+        }
         <div className="post-panel-grid-row">
           <div className="panel-meeting-field">
             <label htmlFor="addendum-cutoff-date">Agenda Completed Time</label>
@@ -426,9 +429,11 @@ const PostPanelProcessing = (props) => {
             </div>
           </div>
         </div>
-        <div className="position-form--actions">
-          <button onClick={submit} disabled={disableSave}>Save</button>
-        </div>
+        {isPanelAdmin &&
+          <div className="position-form--actions">
+            <button onClick={submit} disabled={disableSave}>Save</button>
+          </div>
+        }
       </div>
   );
 };

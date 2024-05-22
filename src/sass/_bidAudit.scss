@@ -1,4 +1,26 @@
 .bid-audit-page {
+  .ba-subheading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 15px;
+  }
+  .ba-audit-info {
+    color: $color-gray;
+    font-size: 16px;
+  }
+  .ba-audit-sub-info {
+    color: $color-gray;
+    font-size: 12px;
+  }
+  .ba-scroll-container {
+    overflow: auto;
+    height: 1300px;
+  }
+  .ba-label {
+    width: fit-content;
+    padding-right: 10px;
+  }
   .bid-audit-form {
     .bid-audit-options {
       display: grid;
@@ -10,6 +32,15 @@
       }
     }
   }
+}
+
+.ba-card {
+  background-color: $color-white;
+  border: 1px solid $bg-gray-dark-3;
+  border-left: 8px solid $blue-primary;
+  margin-block: 20px;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .ba-flex-end {
@@ -125,16 +156,6 @@
 
 $bid-audit-input-width: 460px;
 
-.bid-audit-form-modal {
-  .filter-div-modal {
-    padding: 10px;
-
-    .label {
-      text-align: left;
-    }
-  }
-}
-
 .bid-audit-modal-wrapper {
   background-color: white;
   border-radius: 5px;
@@ -151,7 +172,7 @@ $bid-audit-input-width: 460px;
   }
 
   .ba-form {
-    padding: 30px 0 40px;
+    padding: 30px 0 10px;
   }
 
   .ba-modal-div {
@@ -163,7 +184,7 @@ $bid-audit-input-width: 460px;
     min-height: 50px;
 
     >div:first-child {
-      width: 160px;
+      width: 215px;
       text-align: end;
       padding-right: 15px;
     }

@@ -340,7 +340,7 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         hidden={true}
         iconName="calendar"
         key="Panel"
-        link="/profile/panel_admin/"
+        link="/profile/panel_admin/panel"
         search=""
         title="Panel"
       />
@@ -382,6 +382,14 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/post/positionmanager"
         search=""
         title="Position Management"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-newspaper-o"
+        key="Publishable Positions"
+        link="/profile/post/publishablepositions"
+        search=""
+        title="Publishable Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
@@ -871,7 +879,7 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         hidden={true}
         iconName="calendar"
         key="Panel"
-        link="/profile/panel_admin/"
+        link="/profile/panel_admin/panel"
         search=""
         title="Panel"
       />
@@ -913,6 +921,14 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/post/positionmanager"
         search=""
         title="Position Management"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-newspaper-o"
+        key="Publishable Positions"
+        link="/profile/post/publishablepositions"
+        search=""
+        title="Publishable Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
