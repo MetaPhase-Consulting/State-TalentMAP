@@ -340,7 +340,7 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         hidden={true}
         iconName="calendar"
         key="Panel"
-        link="/profile/panel_admin/"
+        link="/profile/panel_admin/panel"
         search=""
         title="Panel"
       />
@@ -879,7 +879,7 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         hidden={true}
         iconName="calendar"
         key="Panel"
-        link="/profile/panel_admin/"
+        link="/profile/panel_admin/panel"
         search=""
         title="Panel"
       />
