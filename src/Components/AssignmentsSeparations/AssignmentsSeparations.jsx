@@ -23,7 +23,6 @@ const useBreadcrumbs = checkFlag('flags.breadcrumbs');
 
 const AssignmentsSeparations = (props) => {
   const id = props?.match.params.id;
-  const idk = [];
 
   const dispatch = useDispatch();
 
