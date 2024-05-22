@@ -134,12 +134,12 @@ const AssignmentsSeparations = (props) => {
               </a>
             </div>
             {useNotification() &&
-               <div className="create-new-button align-left">
-                 <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
-                   <FA name="briefcase" />
+              <div className="create-new-button align-left">
+                <a role="button" className="width-300" tabIndex={0} onClick={() => setCardMode('notification')}>
+                  <FA name="briefcase" />
                   Add Notification
-                 </a>
-               </div>
+                </a>
+              </div>
             }
             {useMemo() &&
               <div className="create-new-button align-left">
@@ -175,38 +175,56 @@ const AssignmentsSeparations = (props) => {
             }]}
           />
         }
-        {assignmentToggle && results?.QRY_LSTASGS_REF?.map(data => (
-          <TabbedCard
-            key={data?.ASG_SEQ_NUM}
-            tabs={[{
-              text: 'Assignment Overview',
-              value: 'ASSIGNMENT',
-              content: <Assignment
-                perdet={id}
-                setNewAsgSep={setCardMode}
-                data={data}
-                setDisableOtherEdits={setDisableOtherEdits}
-                disableOtherEdits={disableOtherEdits}
-              />,
+        {assignmentToggle && (results?.QRY_LSTASGS_REF?.length > 0 ?
+          results?.QRY_LSTASGS_REF?.map(data => (
+            <TabbedCard
+              key={data?.ASG_SEQ_NUM}
+              tabs={[{
+                text: 'Assignment Overview',
+                value: 'ASSIGNMENT',
+                content: <Assignment
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                  setDisableOtherEdits={setDisableOtherEdits}
+                  disableOtherEdits={disableOtherEdits}
+                />,
+              }]}
+            />
+          )) :
+          <Alert
+            type="info"
+            title="No Results"
+            messages={[{
+              body: 'There are no assignments at this time.',
             }]}
           />
-        ))}
-        {!assignmentToggle && results?.QRY_LSTSEPS_REF?.map(data => (
-          <TabbedCard
-            key={data?.SEP_SEQ_NUM}
-            tabs={[{
-              text: 'Separation Overview',
-              value: 'SEPARATION',
-              content: <Separation
-                perdet={id}
-                setNewAsgSep={setCardMode}
-                data={data}
-                setDisableOtherEdits={setDisableOtherEdits}
-                disableOtherEdits={disableOtherEdits}
-              />,
+        )}
+        {!assignmentToggle && (results?.QRY_LSTSEPS_REF?.length > 0 ?
+          results?.QRY_LSTSEPS_REF?.map(data => (
+            <TabbedCard
+              key={data?.SEP_SEQ_NUM}
+              tabs={[{
+                text: 'Separation Overview',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  setNewAsgSep={setCardMode}
+                  data={data}
+                  setDisableOtherEdits={setDisableOtherEdits}
+                  disableOtherEdits={disableOtherEdits}
+                />,
+              }]}
+            />
+          )) :
+          <Alert
+            type="info"
+            title="No Results"
+            messages={[{
+              body: 'There are no separations at this time.',
             }]}
           />
-        ))}
+        )}
         <ReactModal open={openModal} setOpen={setOpenModal}>
           <TabbedCard
             className="modal-child"
