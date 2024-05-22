@@ -1,7 +1,15 @@
 import { CancelToken } from 'axios';
 import {
+  CREATE_BID_AUDIT_CATEGORY_ERROR,
+  CREATE_BID_AUDIT_CATEGORY_ERROR_TITLE,
+  CREATE_BID_AUDIT_CATEGORY_SUCCESS,
+  CREATE_BID_AUDIT_CATEGORY_SUCCESS_TITLE,
   CREATE_BID_AUDIT_ERROR,
   CREATE_BID_AUDIT_ERROR_TITLE,
+  CREATE_BID_AUDIT_GRADE_ERROR,
+  CREATE_BID_AUDIT_GRADE_ERROR_TITLE,
+  CREATE_BID_AUDIT_GRADE_SUCCESS,
+  CREATE_BID_AUDIT_GRADE_SUCCESS_TITLE,
   CREATE_BID_AUDIT_SUCCESS,
   CREATE_BID_AUDIT_SUCCESS_TITLE,
   DELETE_BID_AUDIT_ERROR,
@@ -279,6 +287,122 @@ export function bidAuditSecondFetchData(cycleId, auditId, type) {
   };
 }
 
+
+// ================ Bid Audit: Get In Category/At Grade Modal Data ================
+
+let cancelBidAuditSecondFetchModalData;
+
+export function bidAuditSecondFetchModalDataErrored(bool) {
+  return {
+    type: 'BID_AUDIT_SECOND_FETCH_MODAL_DATA_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function bidAuditSecondFetchModalDataLoading(bool) {
+  return {
+    type: 'BID_AUDIT_SECOND_FETCH_MODAL_DATA_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function bidAuditSecondFetchModalDataSuccess(results) {
+  return {
+    type: 'BID_AUDIT_SECOND_FETCH_MODAL_DATA_SUCCESS',
+    results,
+  };
+}
+export function bidAuditSecondFetchModalData(cycleId, auditId, type) {
+  return (dispatch) => {
+    if (cancelBidAuditSecondFetchModalData) {
+      cancelBidAuditSecondFetchModalData('cancel');
+    }
+    batch(() => {
+      dispatch(bidAuditSecondFetchModalDataLoading(true));
+      dispatch(bidAuditSecondFetchModalDataErrored(false));
+    });
+    api()
+      .post(`/fsbid/bid_audit/options/${type}/`, {
+        cycleId, auditId,
+      }, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditSecondFetchModalData = c; }),
+      })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidAuditSecondFetchModalDataSuccess(data));
+          dispatch(bidAuditSecondFetchModalDataErrored(false));
+          dispatch(bidAuditSecondFetchModalDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(bidAuditSecondFetchModalDataSuccess([]));
+            dispatch(bidAuditSecondFetchModalDataErrored(true));
+            dispatch(bidAuditSecondFetchModalDataLoading(false));
+          });
+        }
+      });
+  };
+}
+
+// ================ Bid Audit: Create New In-Category ================
+
+let cancelBidAuditCreateCategory;
+
+export function bidAuditCreateCategory(data, onSuccess, onSuccess2) {
+  return (dispatch) => {
+    if (cancelBidAuditCreateCategory) {
+      cancelBidAuditCreateCategory('cancel');
+    }
+    api()
+      .post('/fsbid/bid_audit/create/category/', data, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditCreateCategory = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            CREATE_BID_AUDIT_CATEGORY_SUCCESS, CREATE_BID_AUDIT_CATEGORY_SUCCESS_TITLE,
+          ));
+          if (onSuccess) onSuccess();
+          if (onSuccess2) onSuccess2();
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(CREATE_BID_AUDIT_CATEGORY_ERROR, CREATE_BID_AUDIT_CATEGORY_ERROR_TITLE));
+        }
+      });
+  };
+}
+
+// ================ Bid Audit: Create New At-Grade ================
+
+let cancelBidAuditCreateGrade;
+
+export function bidAuditCreateGrade(data, onSuccess, onSuccess2) {
+  return (dispatch) => {
+    if (cancelBidAuditCreateGrade) {
+      cancelBidAuditCreateGrade('cancel');
+    }
+    api()
+      .post('/fsbid/bid_audit/create/grade/', data, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditCreateGrade = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            CREATE_BID_AUDIT_GRADE_SUCCESS, CREATE_BID_AUDIT_GRADE_SUCCESS_TITLE,
+          ));
+          if (onSuccess) onSuccess();
+          if (onSuccess2) onSuccess2();
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(CREATE_BID_AUDIT_GRADE_ERROR, CREATE_BID_AUDIT_GRADE_ERROR_TITLE));
+        }
+      });
+  };
+}
 
 // ----------------------------------------------------------------------
 // ================ FUNCTIONS BELOW ARE CURRENTLY UNUSED ================

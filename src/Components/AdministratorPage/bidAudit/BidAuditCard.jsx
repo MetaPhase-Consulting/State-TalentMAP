@@ -75,8 +75,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
     bodyPrimary: [
       { 'Audit Number': audit_id || NO_VALUE },
       { 'Description': audit_desc || NO_VALUE },
-      { 'Posted': posted_by_date || NO_VALUE },
-      { 'Audit Date': audit_date || NO_VALUE },
+      { 'Positions Posted By': posted_by_date || NO_VALUE },
+      { 'Audit Date': audit_date || '--' },
     ],
     /* eslint-enable quote-props */
     /* eslint-enable no-dupe-keys */
@@ -106,7 +106,7 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
         </div>
         <div className="position-form--inputs">
           <div className="position-form--label-input-container">
-            <label htmlFor="status">Posted By Date</label>
+            <label htmlFor="status">Positions Posted By</label>
             <div className="date-wrapper-react larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
               <FA name="times" className={`${pbDate ? '' : 'hide'}`} onClick={() => setPbDate(null)} />
@@ -123,8 +123,8 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
         </div>
         <div>
           <div className="ba-flex-end">
-            <button onClick={() => onOptionClick('category')}>View In Categories</button>
             <button onClick={() => onOptionClick('grade')}>View At Grades</button>
+            <button onClick={() => onOptionClick('category')}>View In Skill Categories</button>
           </div>
         </div>
       </div>
