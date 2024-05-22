@@ -5,6 +5,7 @@ import Picky from 'react-picky';
 import FA from 'react-fontawesome';
 import { sortBy, uniqBy } from 'lodash';
 import { toastError, toastSuccess } from 'actions/toast';
+import { usePrevious } from 'hooks';
 import {
   publishablePositionsEdit,
   publishablePositionsExport,
@@ -15,7 +16,11 @@ import {
 import Alert from 'Components/Alert/Alert';
 import ExportButton from 'Components/ExportButton';
 import Spinner from 'Components/Spinner';
+import { PANEL_MEETINGS_PAGE_SIZES } from 'Constants/Sort';
 import ScrollUpButton from 'Components/ScrollUpButton';
+import PaginationWrapper from 'Components/PaginationWrapper';
+import SelectForm from 'Components/SelectForm';
+import TotalResults from 'Components/TotalResults';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import { renderSelectionList } from 'utilities';
@@ -34,7 +39,8 @@ const PublishablePositions = ({ viewType }) => {
   const dataIsLoading = useSelector(state => state.publishablePositionsIsLoading);
   const additionalDataIsLoading = false;
   // const additionalDataIsLoading = useSelector(state => state.publishablePositionsIsLoading);
-  const data = useSelector(state => state.publishablePositions);
+  const data = useSelector(state => state.publishablePositions.results);
+
   const userSelections = useSelector(state => state.publishablePositionsSelections);
   const filtersHasErrored = useSelector(state => state.publishablePositionsFiltersHasErrored);
   const filtersIsLoading = useSelector(state => state.publishablePositionsFiltersIsLoading);
@@ -54,6 +60,14 @@ const PublishablePositions = ({ viewType }) => {
   const [editMode, setEditMode] = useState(false);
   const [exportIsLoading, setExportIsLoading] = useState(false);
 
+  const [page, setPage] = useState(userSelections?.page || 1);
+  const [limit, setLimit] = useState(userSelections?.limit || 5);
+
+  const prevPage = usePrevious(page);
+
+  const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
+  const count = data?.length || 0;
+
   const statuses = filters?.statusFilters;
   const bureaus = filters?.bureauFilters;
   const orgs = filters?.orgFilters;
@@ -68,6 +82,8 @@ const PublishablePositions = ({ viewType }) => {
   const gradeOptions = uniqBy(grades, 'code');
 
   const getQuery = () => ({
+    limit,
+    page,
     posNum: searchPosNum,
     statuses: selectedStatuses.map(f => (f?.code)),
     bureaus: selectedBureaus.map(f => (f?.description)),
@@ -78,6 +94,8 @@ const PublishablePositions = ({ viewType }) => {
   });
 
   const getCurrentInputs = () => ({
+    limit,
+    page,
     searchPosNum,
     selectedStatuses,
     selectedBureaus,
@@ -118,14 +136,23 @@ const PublishablePositions = ({ viewType }) => {
     return a.length > 1;
   };
 
-  const fetchAndSet = () => {
+  const fetchAndSet = (resetPage = false) => {
     setClearFilters(!!numSelectedFilters);
 
     if (filterSelectionValid()) {
+      if (resetPage) {
+        setPage(1);
+      }
       dispatch(publishablePositionsFetchData(getQuery()));
       dispatch(savePublishablePositionsSelections(getCurrentInputs()));
     }
   };
+
+  useEffect(() => {
+    fetchAndSet(false);
+  }, [
+    page,
+  ]);
 
   const pickyProps = {
     numberDisplayed: 1,
@@ -164,7 +191,7 @@ const PublishablePositions = ({ viewType }) => {
       overlay = <Alert type="error" title="Error displaying Publishable Positions" messages={[{ body: 'Please try again.' }]} />;
     } else if (!filterSelectionValid()) {
       overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 distinct filters to search or search by Position Number.' }]} />;
-    } else if (!data.length) {
+    } else if (!data?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No positions for filter inputs.' }]} />;
     } else {
       return false;
@@ -182,12 +209,16 @@ const PublishablePositions = ({ viewType }) => {
   }, []);
 
   useEffect(() => {
+    if (prevPage) {
+      fetchAndSet(true);
+    }
     if (tempsearchPosNum !== searchPosNum) {
       setSearchPosNum(tempsearchPosNum);
     } else {
-      fetchAndSet();
+      fetchAndSet(false);
     }
   }, [
+    limit,
     searchPosNum,
     selectedStatuses,
     selectedBureaus,
@@ -341,7 +372,21 @@ const PublishablePositions = ({ viewType }) => {
         getOverlay() ||
         <>
           <div className="position-search-controls--results padding-top results-dropdown">
+            <TotalResults
+              total={count}
+              pageNumber={page}
+              pageSize={limit}
+              suffix="Results"
+              isHidden={false}
+            />
             <ScrollUpButton />
+            <SelectForm
+              className="panel-select"
+              options={pageSizes.options}
+              label="Results:"
+              defaultSort={limit}
+              onSelectOption={e => setLimit(e.target.value)}
+            />
             <div className="export-button-container">
               <ExportButton
                 onClick={exportPublishablePositions}
@@ -379,6 +424,14 @@ const PublishablePositions = ({ viewType }) => {
                   />
                 ))
               }
+            </div>
+            <div className="usa-grid-full react-paginate">
+              <PaginationWrapper
+                pageSize={limit}
+                onPageChange={p => setPage(p.page)}
+                forcePage={page}
+                totalResults={count}
+              />
             </div>
           </div>
         </>
