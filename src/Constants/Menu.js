@@ -418,7 +418,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       children: [
         {
           text: 'Panel',
-          route: '/profile/panel_admin/',
+          route: '/profile/panel_admin/panel',
           icon: 'calendar',
           roles: [
             'panel_admin',
