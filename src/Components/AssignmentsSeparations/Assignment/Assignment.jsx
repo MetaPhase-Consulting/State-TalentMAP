@@ -421,7 +421,7 @@ const Assignment = (props) => {
               value={details?.ASGD_CRITICAL_NEED_IND === 'Y' || false}
               className="mt-40"
               excludeTmCheckboxClass
-              disabled
+              disabled={isNew}
             />
           </div>
           <div className="position-form--label-input-container">
