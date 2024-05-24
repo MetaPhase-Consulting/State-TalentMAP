@@ -23,17 +23,24 @@ const useMemo = () => checkFlag('flags.assignment_memo');
 const useBreadcrumbs = checkFlag('flags.breadcrumbs');
 
 export const panelMeetingLink = (pmSeqNum, date, editMode) => {
-  if (date) {
+  if ((!pmSeqNum || !date) && editMode) {
+    return (
+      <div className="create-new-button mt-10">
+        <a role="button" tabIndex={0} className="disabled-action">
+          Add
+        </a>
+      </div>
+    );
+  } else if (pmSeqNum) {
     return (
       <InteractiveElement>
         <Link className="create-ai-link" to={`/profile/administrator/panel/${pmSeqNum}`}>
-          {formatDate(date)}
+          {formatDate(date) || 'Link'}
         </Link>
       </InteractiveElement>
     );
-  }
-  if (editMode) {
-    return 'Add';
+  } else if (date) {
+    return formatDate(date);
   }
   return NO_VALUE;
 };
