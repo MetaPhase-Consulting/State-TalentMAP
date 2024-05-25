@@ -6,7 +6,7 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import { formatDate } from 'utilities';
-import { bidAuditUpdateAudit } from 'actions/bidAudit';
+import { bidAuditRunAudit, bidAuditUpdateAudit } from 'actions/bidAudit';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import TabbedCard from 'Components/TabbedCard';
 import { NO_VALUE } from 'Constants/SystemMessages';
@@ -63,6 +63,34 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
     datePickerRef.current.setOpen(true);
   };
 
+  const submitRunAudit = () => {
+    dispatch(bidAuditRunAudit({
+      cycleId: cycle_id,
+      auditNbr: audit_id,
+    }));
+    swal.close();
+  };
+
+  const onRunBidAudit = () => {
+    swal({
+      title: 'Run this Bid Audit?',
+      button: false,
+      content: (
+        <div>
+          <button onClick={submitRunAudit} type="submit">Yes</button>
+          <button onClick={() => swal.close()}>Cancel</button>
+        </div>
+      ),
+    });
+  };
+
+  const showRunBidAudit = () => (
+    <div className="ba-run-audit">
+      <a role="button" tabIndex={0} onClick={onRunBidAudit}>
+        Run Audit
+      </a>
+    </div>
+  );
 
   const bidAuditSections = {
     /* eslint-disable no-dupe-keys */
@@ -76,7 +104,7 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
       { 'Audit Number': audit_id || NO_VALUE },
       { 'Description': audit_desc || NO_VALUE },
       { 'Positions Posted By': posted_by_date || NO_VALUE },
-      { 'Audit Date': audit_date || '--' },
+      { 'Audit Date': audit_date || showRunBidAudit() },
     ],
     /* eslint-enable quote-props */
     /* eslint-enable no-dupe-keys */

@@ -121,7 +121,7 @@ const BidAuditGradeModal = ({ match, setOpen }) => {
               </select>
             </div>
             <div className="ba-modal-div">
-              <div>Tenure:</div>
+              <div>Employee Tenure:</div>
               <select
                 defaultValue=""
                 className="bid-audit-modal-input"

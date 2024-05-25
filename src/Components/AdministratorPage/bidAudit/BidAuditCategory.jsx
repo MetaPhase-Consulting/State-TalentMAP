@@ -189,7 +189,7 @@ const BidAuditCategory = (props) => {
             </div>
           </span>
           <span className="ba-subheading">
-            <div className="ba-audit-sub-info">Employee Skills considered In-Skill-Category for Positions, this Cycle</div>
+            <div className="ba-audit-sub-info">Employee Skills considered In-Skill for Positions, this Cycle</div>
           </span>
 
           {

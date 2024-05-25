@@ -68,7 +68,7 @@ const BidAuditCategoryModal = ({ match, setOpen }) => {
               </select>
             </div>
             <div className="ba-modal-div">
-              <div>Employee Skill In-Category:</div>
+              <div>Employee Skill:</div>
               <select
                 defaultValue=""
                 className="bid-audit-modal-input"
