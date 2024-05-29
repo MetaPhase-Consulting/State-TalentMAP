@@ -1,4 +1,4 @@
-/* eslint-disable complexity */
+/* eslint-disable */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InteractiveElement from 'Components/InteractiveElement';
@@ -146,7 +146,10 @@ const AgendaItemMaintenancePane = (props) => {
 
   useDidMountEffect(() => {
     setPositionNumber('');
-  }, [pos_results]);
+    if (!pos_results_loading && isEmpty(pos_results)) {
+      setInputClass('input-error');
+    }
+  }, [pos_results, pos_results_loading]);
 
   useDidMountEffect(() => {
     if (pos_results_errored) {
@@ -160,8 +163,6 @@ const AgendaItemMaintenancePane = (props) => {
     } else if (pos_results_loading) {
       setInputClass('loading-animation--3');
     } else if (posNumError) {
-      setInputClass('input-error');
-    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
       setInputClass('input-error');
     } else {
       setInputClass('input-default');

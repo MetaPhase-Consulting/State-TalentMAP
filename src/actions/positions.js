@@ -3,6 +3,10 @@ import api from '../api';
 import { toastError } from './toast';
 
 export function positionsHasErrored(bool) {
+  /* eslint-disable no-console */
+  console.log('🐙🐙🐙🐙🐙🐙🐙🐙🐙🐙');
+  console.log('🐙 current: bool:', bool);
+  console.log('🐙🐙🐙🐙🐙🐙🐙🐙🐙🐙');
   return {
     type: 'POSITIONS_HAS_ERRORED',
     hasErrored: bool,
@@ -46,6 +50,7 @@ export function resetPositionsFetchData() {
 
 export function positionsFetchData(query) {
   return (dispatch) => {
+    dispatch(positionsFetchDataSuccess({}));
     dispatch(positionsIsLoading(true));
     dispatch(positionsHasErrored(false));
     const prefix = '/fsbid/positions';
