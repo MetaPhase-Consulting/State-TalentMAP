@@ -3,10 +3,6 @@ import api from '../api';
 import { toastError } from './toast';
 
 export function positionsHasErrored(bool) {
-  /* eslint-disable no-console */
-  console.log('🐙🐙🐙🐙🐙🐙🐙🐙🐙🐙');
-  console.log('🐙 current: bool:', bool);
-  console.log('🐙🐙🐙🐙🐙🐙🐙🐙🐙🐙');
   return {
     type: 'POSITIONS_HAS_ERRORED',
     hasErrored: bool,
