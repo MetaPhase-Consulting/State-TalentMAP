@@ -290,6 +290,11 @@ export const UPDATE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully sa
 export const UPDATE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const UPDATE_BID_AUDIT_ERROR = 'There was an issue attempting to save this Bid Audit. Please try again.';
 
+export const UPDATE_BID_AUDIT_SUCCESS_TITLE_2 = 'Bid Audit Updates Saved';
+export const UPDATE_BID_AUDIT_SUCCESS_2 = 'This Bid Audit has been successfully updated.';
+export const UPDATE_BID_AUDIT_ERROR_TITLE_2 = 'Bid Audit Update Error';
+export const UPDATE_BID_AUDIT_ERROR_2 = 'There was an issue attempting to update this Bid Audit. Please try again.';
+
 export const CREATE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Created';
 export const CREATE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully created.';
 export const CREATE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Creation Error';
