@@ -101,6 +101,7 @@ $values in $filters-sizing-config {
 .disabled-action, .disabled-action>* {
   color: $color-gray;
   cursor: default;
+  pointer-events: none;
 }
 
 .align-right { text-align: right; }
