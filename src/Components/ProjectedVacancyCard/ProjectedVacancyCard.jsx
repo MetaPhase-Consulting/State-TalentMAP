@@ -29,7 +29,7 @@ const ProjectedVacancyCard = (props) => {
     selectOptions,
   } = props;
 
-  const id = result?.future_vacancy_seq_num || undefined;
+  const id = result?.fvseqnum || undefined;
 
   const bidSeasons = selectOptions?.bidSeasons?.length ? selectOptions.bidSeasons : [];
   const statuses = selectOptions?.statuses?.length ? selectOptions.statuses : [];
@@ -43,13 +43,13 @@ const ProjectedVacancyCard = (props) => {
     datePickerRef.current.setOpen(true);
   };
 
-  const [included, setIncluded] = useState(result?.future_vacancy_exclude_import_indicator === 'N');
-  const [season, setSeason] = useState(result?.bid_season_code);
-  const [status, setStatus] = useState(result?.future_vacancy_status_code);
+  const [included, setIncluded] = useState(result?.fvexclimportind === 'N');
+  const [season, setSeason] = useState(result?.fvbsnid);
+  const [status, setStatus] = useState(result?.fvscode);
   const [overrideTED, setOverrideTED] =
     useState(
-      result?.future_vacancy_override_tour_end_date ?
-        new Date(result.future_vacancy_override_tour_end_date) :
+      result?.fvoverrideteddate ?
+        new Date(result.fvoverrideteddate) :
         null,
     );
   const [langOffsetSummer, setLangOffsetSummer] =
@@ -74,12 +74,12 @@ const ProjectedVacancyCard = (props) => {
   useEffect(() => {
     onEditModeSearch(editMode, id);
     if (editMode) {
-      setIncluded(result?.future_vacancy_exclude_import_indicator === 'N');
-      setSeason(result?.bid_season_code);
-      setStatus(result?.future_vacancy_status_code);
+      setIncluded(result?.fvexclimportind === 'N');
+      setSeason(result?.fvbsnid);
+      setStatus(result?.fvscode);
       setOverrideTED(
-        result?.future_vacancy_override_tour_end_date ?
-          new Date(result.future_vacancy_override_tour_end_date) :
+        result?.fvoverrideteddate ?
+          new Date(result.fvoverrideteddate) :
           null,
       );
       setLangOffsetSummer(languageOffsets?.language_offset_summer || '');
@@ -89,7 +89,7 @@ const ProjectedVacancyCard = (props) => {
   }, [editMode]);
   useEffect(() => {
     if (!disableEdit) {
-      setIncluded(result?.future_vacancy_exclude_import_indicator === 'N');
+      setIncluded(result?.fvexclimportind === 'N');
     }
   }, [disableEdit]);
 
@@ -102,18 +102,18 @@ const ProjectedVacancyCard = (props) => {
         future_vacancy_override_tour_end_date: overrideTED ?
           overrideTED.toISOString().substring(0, 10) : null,
         future_vacancy_exclude_import_indicator: status === 'A' ? 'N' :
-          result?.future_vacancy_exclude_import_indicator,
+          result?.fvexclimportind,
       }],
       language_offsets: {
-        position_seq_num: result?.position_seq_num,
+        position_seq_num: result?.posseqnum,
         language_offset_summer: langOffsetSummer || null,
         language_offset_winter: langOffsetWinter || null,
       },
       capsule_description: {
-        position_seq_num: result?.position_seq_num,
+        position_seq_num: result?.posseqnum,
         capsule_description: textArea,
-        updater_id: result?.position_updater_id,
-        updated_date: result?.position_updated_date.replace(/\D/g, ''),
+        updater_id: result?.posupdateid,
+        updated_date: result?.posupdatedate.replace(/\D/g, ''),
       },
     };
     onSubmit(editData, setEditMode(false));
@@ -131,10 +131,10 @@ const ProjectedVacancyCard = (props) => {
 
   const displayLangs = () => {
     let displayText = '';
-    const langs = result?.position_language_proficiency_description?.split(';');
+    const langs = result?.pospositionlangprofdesc?.split(';');
     if (langs && langs.length) {
       langs.forEach((lang, i) => {
-        const langCodeAttr = `position_language_${i + 1}_code`;
+        const langCodeAttr = `poslanguage${i + 1}code`;
         const langCode = result?.[langCodeAttr] || undefined;
         if (langCode) {
           displayText += lang.replace(' ', ` (${langCode}) `);
@@ -149,23 +149,23 @@ const ProjectedVacancyCard = (props) => {
   /* eslint-disable quote-props */
   const sections = {
     subheading: [
-      { 'Position Number': result?.position_number || NO_POSITION_NUMBER },
-      { 'Skill': result?.position_skill_code || NO_SKILL },
-      { 'Position Title': result?.position_title || NO_POSITION_TITLE },
+      { 'Position Number': result?.posnumtext || NO_POSITION_NUMBER },
+      { 'Skill': result?.posskillcode || NO_SKILL },
+      { 'Position Title': result?.postitledesc || NO_POSITION_TITLE },
     ],
     bodyPrimary: [
       { 'Assignee TED': displayTedEmp(result?.assignee_tour_end_date, result?.assignee) },
       { 'Incumbent TED': displayTedEmp(result?.incumbent_tour_end_date, result?.incumbent) },
-      { 'Bid Season': result?.bid_season_description || DEFAULT_TEXT },
+      { 'Bid Season': result?.fvbsnid || DEFAULT_TEXT },
       { 'Tour of Duty': result?.tour_of_duty_description || NO_TOUR_OF_DUTY },
       { 'Languages': displayLangs() },
     ],
     bodySecondary: [
-      { 'Bureau': result?.bureau_short_description || NO_BUREAU },
-      { 'Location': result?.location_description || NO_POST },
-      { 'Status': result?.future_vacancy_status_description || NO_STATUS },
-      { 'Organization': result?.organization_short_description || NO_ORG },
-      { 'TED': formatDate(result?.future_vacancy_override_tour_end_date) || NO_TOUR_END_DATE },
+      { 'Bureau': result?.posbureaushortdesc || NO_BUREAU },
+      { 'Location': result?.poslocationcode || NO_POST },
+      { 'Status': result?.fvsdescrtxt || NO_STATUS },
+      { 'Organization': result?.posorgshortdesc || NO_ORG },
+      { 'TED': formatDate(result?.fvoverrideteddate) || NO_TOUR_END_DATE },
       {
         'Language Offset Summer': summerLanguageOffsets?.find(o =>
           o.code === languageOffsets?.language_offset_summer)?.description || DEFAULT_TEXT,
@@ -174,14 +174,14 @@ const ProjectedVacancyCard = (props) => {
         'Language Offset Winter': winterLanguageOffsets?.find(o =>
           o.code === languageOffsets?.language_offset_winter)?.description || DEFAULT_TEXT,
       },
-      { 'Grade': result?.position_grade_code || NO_GRADE },
-      { 'Pay Plan': result?.position_pay_plan_code || NO_GRADE },
+      { 'Grade': result?.posgradecode || NO_GRADE },
+      { 'Pay Plan': result?.pospayplancode || NO_GRADE },
       { 'Post Differential | Danger Pay': getDifferentials(differentials) },
     ],
     textarea: result?.capsule_description || 'No description.',
     metadata: [
-      { 'Position Posted': formatDate(result?.created_date) || NO_UPDATE_DATE },
-      { 'Last Updated': formatDate(result?.updated_date) || NO_UPDATE_DATE },
+      { 'Position Posted': formatDate(result?.fvcreatedate) || NO_UPDATE_DATE },
+      { 'Last Updated': formatDate(result?.fvscreatedate) || NO_UPDATE_DATE },
     ],
   };
   const form = {
@@ -190,11 +190,11 @@ const ProjectedVacancyCard = (props) => {
       { 'Incumbent TED': displayTedEmp(result?.incumbent_tour_end_date, result?.incumbent) },
       { 'Tour of Duty': result?.tour_of_duty_description || NO_TOUR_OF_DUTY },
       { 'Languages': displayLangs() },
-      { 'Bureau': result?.bureau_short_description || NO_BUREAU },
-      { 'Location': result?.location_description || NO_POST },
-      { 'Organization': result?.organization_short_description || NO_ORG },
-      { 'Grade': result?.position_grade_code || NO_GRADE },
-      { 'Pay Plan': result?.position_pay_plan_code || NO_GRADE },
+      { 'Bureau': result?.posbureaushortdesc || NO_BUREAU },
+      { 'Location': result?.poslocationcode || NO_POST },
+      { 'Organization': result?.posorgshortdesc || NO_ORG },
+      { 'Grade': result?.posgradecode || NO_GRADE },
+      { 'Pay Plan': result?.pospayplancode || NO_GRADE },
       { 'Post Differential | Danger Pay': getDifferentials(differentials) },
     ],
     inputBody: <div className="position-form">
