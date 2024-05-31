@@ -23,7 +23,7 @@ const useMemo = () => checkFlag('flags.assignment_memo');
 const useBreadcrumbs = checkFlag('flags.breadcrumbs');
 
 export const panelMeetingLink = (pmSeqNum, date, editMode) => {
-  if ((!pmSeqNum || !date) && editMode) {
+  if ((!pmSeqNum && !date) && editMode) {
     return (
       <div className="create-new-button mt-10">
         <a role="button" tabIndex={0} className="disabled-action">
