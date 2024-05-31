@@ -15,11 +15,35 @@ import Separation from './Separation';
 import ReactModal from '../ReactModal';
 import InteractiveElement from '../InteractiveElement';
 import api from '../../api';
+import { formatDate } from '../../utilities';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
 // eslint-disable-next-line no-unused-vars
 const useBreadcrumbs = checkFlag('flags.breadcrumbs');
+
+export const panelMeetingLink = (pmSeqNum, date, editMode) => {
+  if ((!pmSeqNum && !date) && editMode) {
+    return (
+      <div className="create-new-button mt-10">
+        <a role="button" tabIndex={0} className="disabled-action">
+          Add
+        </a>
+      </div>
+    );
+  } else if (pmSeqNum) {
+    return (
+      <InteractiveElement>
+        <Link className="create-ai-link" to={`/profile/administrator/panel/${pmSeqNum}`}>
+          {formatDate(date) || 'Link'}
+        </Link>
+      </InteractiveElement>
+    );
+  } else if (date) {
+    return formatDate(date);
+  }
+  return NO_VALUE;
+};
 
 const AssignmentsSeparations = (props) => {
   const id = props?.match.params.id;
