@@ -5,7 +5,8 @@ import { Row } from 'Components/Layout';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { NO_VALUE } from 'Constants/SystemMessages';
-import { bidAuditUpdateAuditGradeOrCategory } from 'actions/bidAudit';
+import swal from '@sweetalert/with-react';
+import { bidAuditDeleteAuditGradeOrCategory, bidAuditUpdateAuditGradeOrCategory } from 'actions/bidAudit';
 
 const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetchFunction, cycleId, auditNbr }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,38 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetch
     'category',
     () => refetchFunction(),
     ));
+  };
+
+  const onDeleteInCategory = () => {
+    swal.close();
+    dispatch(bidAuditDeleteAuditGradeOrCategory(
+      {
+        auditCategoryId: data.id,
+        cycleId,
+        auditNbr,
+      },
+      'category',
+      () => refetchFunction(),
+    ));
+  };
+
+  const onDelete = () => {
+    swal({
+      title: 'Confirm Delete',
+      button: false,
+      closeOnEsc: true,
+      content: (
+        <div className="simple-action-modal">
+          <div className="help-text">
+            <span>{'Are you sure you want to delete this In-Category relationship?'}</span>
+          </div>
+          <div className="modal-controls">
+            <button onClick={onDeleteInCategory}>Yes</button>
+            <button className="usa-button-secondary" onClick={() => swal.close()}>No</button>
+          </div>
+        </div>
+      ),
+    });
   };
 
   const onCancelForm = () => {
@@ -91,6 +124,9 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetch
               ))}
             </select>
           </div>
+        </div>
+        <div className="ba-delete-button-wrapper">
+          <button onClick={onDelete} className="ba-delete-button">Delete</button>
         </div>
       </div>
     ),
