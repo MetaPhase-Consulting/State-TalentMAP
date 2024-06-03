@@ -17,6 +17,7 @@ import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import GsaLocations from 'Components/Agenda/AgendaItemResearchPane/GsaLocations';
 import api from '../../../api';
+import { panelMeetingLink } from '../AssignmentsSeparations';
 
 const Separation = (props) => {
   const {
@@ -77,7 +78,7 @@ const Separation = (props) => {
       { 'Travel': get(details, 'TF_CD') || NO_VALUE },
       { 'Separation Date': getResult(details, 'SEPD_SEPARATION_DATE') || NO_VALUE },
       { 'US Indicator': <CheckBox value={details?.SEPD_US_IND === 'Y'} disabled /> },
-      { 'Panel Meeting Date': getResult(details, 'PMD_DTTM') || NO_VALUE },
+      { 'Panel Meeting Date': panelMeetingLink(details?.PMI_SEQ_NUM, details?.PMD_DTTM) },
       {
         'Location': locationString({
           code: details?.DSC_CD,
@@ -276,15 +277,7 @@ const Separation = (props) => {
           </div>
           <div className="position-form--label-input-container">
             <label htmlFor="panel-meeting-date">Panel Meeting Date</label>
-            <TMDatePicker
-              selected={panelMeetingDate}
-              onChange={setPanelMeetingDate}
-              showMonthDropdown
-              showYearDropdown
-              isClearable
-              type="form"
-              disabled
-            />
+            {panelMeetingLink(details?.PMI_SEQ_NUM, panelMeetingDate, true)}
           </div>
           <div className="position-form--label-input-container gsa-location-input">
             <label htmlFor="location">Location</label>
