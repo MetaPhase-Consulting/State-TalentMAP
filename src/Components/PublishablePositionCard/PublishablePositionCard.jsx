@@ -63,7 +63,7 @@ const PublishablePositionCard = ({
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
+      { 'PP/Grade': data?.combinedPPGrade },
       { 'Publishable Status': data?.psCD || DEFAULT_TEXT },
       { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
@@ -143,7 +143,7 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
+      { 'PP/Grade': data?.combinedPPGrade },
       { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     inputBody: (
