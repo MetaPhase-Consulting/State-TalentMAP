@@ -134,15 +134,17 @@ const AgendaItemMaintenanceContainer = (props) => {
         remark$.ari_insertions = textInputs[tempKey];
       }
 
-      remark$.user_remark_inserts = [];
-      remark$.remark_inserts.forEach(ri => (remark$.user_remark_inserts.push({
-        airiinsertiontext: textInputs[ri.rirmrkseqnum][ri.riseqnum],
-        airirmrkseqnum: ri.rirmrkseqnum,
-        aiririseqnum: ri.riseqnum,
-      })));
+      if (Object.keys(remark$).length !== 0) {
+        remark$.user_remark_inserts = [];
+        remark$.remark_inserts.forEach(ri => (remark$.user_remark_inserts.push({
+          airiinsertiontext: textInputs[ri.rirmrkseqnum][ri.riseqnum],
+          airirmrkseqnum: ri.rirmrkseqnum,
+          aiririseqnum: ri.riseqnum,
+        })));
 
-      userRemarks$.push(remark$);
-      setUserRemarks(userRemarks$);
+        userRemarks$.push(remark$);
+        setUserRemarks(userRemarks$);
+      }
     } else {
       setUserRemarks(filter(userRemarks$, (r) => r.seq_num !== remark.seq_num));
     }
