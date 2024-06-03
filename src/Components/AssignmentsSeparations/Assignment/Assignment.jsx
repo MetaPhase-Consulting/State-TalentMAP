@@ -19,6 +19,7 @@ import MonthYearInput from 'Components/MonthYearInput';
 import InteractiveElement from 'Components/InteractiveElement';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import api from '../../../api';
+import { panelMeetingLink } from '../AssignmentsSeparations';
 
 const Assignment = (props) => {
   const {
@@ -151,6 +152,7 @@ const Assignment = (props) => {
   const [criticalNeed, setCriticalNeed] = useState(false);
   const [waiver, setWaiver] = useState('');
   const [sent, setSent] = useState('');
+  const [panelMeetingDate, setPanelMeetingDate] = useState(null);
 
   useEffect(() => {
     if (editMode) {
@@ -171,6 +173,8 @@ const Assignment = (props) => {
       setCriticalNeed(details?.ASGD_CRITICAL_NEED_IND === 'Y');
       setWaiver(details?.WRT_CODE_RR_REPAY || 'N'); // Default to "Not Used"
       setSent(details?.NOTE_LAST_SENT_DATE || '');
+      setPanelMeetingDate(details?.PMD_DTTM ?
+        new Date(details?.PMD_DTTM) : null);
     }
   }, [editMode]);
 
@@ -182,9 +186,9 @@ const Assignment = (props) => {
       eta,
       etd: ted,
       tod,
-      salary_reimburse_ind: salaryReimbursement,
-      travel_reimburse_ind: travelReimbursement,
-      training_ind: training,
+      salary_reimburse_ind: salaryReimbursement ? 'Y' : 'N',
+      travel_reimburse_ind: travelReimbursement ? 'Y' : 'N',
+      training_ind: training ? 'Y' : 'N',
       org_code: funding,
       status_code: status,
       lat_code: action,
@@ -216,7 +220,7 @@ const Assignment = (props) => {
           ...commonFields,
           asg_id: asgId,
           revision_num: revisionNum,
-          critical_need_ind: criticalNeed,
+          critical_need_ind: criticalNeed ? 'Y' : 'N',
           updated_date: details?.ASGD_UPDATE_DATE,
         },
         perdet,
@@ -383,6 +387,10 @@ const Assignment = (props) => {
               onChange={(e) => setTodMonths(e?.target.value)}
               disabled
             />
+          </div>
+          <div className="position-form--label-input-container">
+            <label htmlFor="panel-meeting-date">Panel Meeting Date</label>
+            {panelMeetingLink(details?.PMI_SEQ_NUM, panelMeetingDate, true)}
           </div>
           <div className="position-form--label-input-container height-80">
             <CheckBox
