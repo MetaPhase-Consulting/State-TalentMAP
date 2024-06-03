@@ -385,7 +385,7 @@ const ProjectedVacancy = ({ isAO }) => {
         />
       }
       {getOverlay() || <>
-        <div className="position-search-controls--results padding-top results-dropdown">
+        <div className="viewing-results-and-dropdown--fullscreen padding-top results-dropdown">
           <TotalResults
             total={count}
             pageNumber={page}
