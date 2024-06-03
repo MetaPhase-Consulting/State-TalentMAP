@@ -3,6 +3,7 @@ import FA from 'react-fontawesome';
 import Linkify from 'react-linkify';
 import DatePicker from 'react-datepicker';
 import TextareaAutosize from 'react-textarea-autosize';
+import { Tooltip } from 'react-tippy';
 import PropTypes from 'prop-types';
 import { useDidMountEffect } from 'hooks';
 import { formatDate, getDifferentials } from 'utilities';
@@ -23,6 +24,8 @@ const ProjectedVacancyCard = (props) => {
     languageOffsets,
     updateIncluded,
     disableIncluded,
+    updateImport,
+    disableImport,
     disableEdit,
     onEditModeSearch,
     onSubmit,
@@ -43,6 +46,7 @@ const ProjectedVacancyCard = (props) => {
     datePickerRef.current.setOpen(true);
   };
 
+  const [cycleImport, setCycleImport] = useState(result?.future_vacancy_exclude_import_indicator === 'N');
   const [included, setIncluded] = useState(result?.future_vacancy_exclude_import_indicator === 'N');
   const [season, setSeason] = useState(result?.bid_season_code);
   const [status, setStatus] = useState(result?.future_vacancy_status_code);
@@ -69,6 +73,10 @@ const ProjectedVacancyCard = (props) => {
   useDidMountEffect(() => {
     updateIncluded(id, included);
   }, [included]);
+
+  useDidMountEffect(() => {
+    updateImport(id, cycleImport);
+  }, [cycleImport]);
 
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
@@ -306,13 +314,31 @@ const ProjectedVacancyCard = (props) => {
               form={form}
             />
             <div className="toggle-include">
-              <CheckBox
-                id={`included-checkbox-${id}`}
-                label="Included"
-                value={included}
-                onCheckBoxClick={() => setIncluded(!included)}
-                disabled={disableIncluded}
-              />
+              <Tooltip
+                title={disableIncluded ? 'Bureau users must cancel other edit drafts before attempting to edit the include selections.' : ''}
+                arrow
+              >
+                <CheckBox
+                  id={`included-checkbox-${id}`}
+                  label="Included"
+                  value={included}
+                  onCheckBoxClick={() => setIncluded(!included)}
+                  disabled={disableIncluded}
+                />
+              </Tooltip>
+              <Tooltip
+                title={disableImport ? 'AO users must select a Cycle filter and cancel other edit drafts before attempting to edit the import selections.' : ''}
+                arrow
+              >
+                <CheckBox
+                  id={`imported-checkbox-${id}`}
+                  label="Import to Cycle"
+                  // TODO: Add cycle name to label
+                  value={cycleImport}
+                  onCheckBoxClick={() => setCycleImport(!cycleImport)}
+                  disabled={disableImport}
+                />
+              </Tooltip>
             </div>
           </div>
         ),
@@ -329,6 +355,8 @@ ProjectedVacancyCard.propTypes = {
   }),
   updateIncluded: PropTypes.func,
   disableIncluded: PropTypes.bool,
+  updateImport: PropTypes.func,
+  disableImport: PropTypes.bool,
   disableEdit: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
@@ -349,6 +377,8 @@ ProjectedVacancyCard.defaultProps = {
   },
   updateIncluded: EMPTY_FUNCTION,
   disableIncluded: false,
+  updateImport: EMPTY_FUNCTION,
+  disableImport: false,
   disableEdit: false,
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
