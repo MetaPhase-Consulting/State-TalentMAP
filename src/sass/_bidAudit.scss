@@ -34,6 +34,13 @@
   }
 }
 
+.ba-run-audit {
+  cursor: pointer;
+  a {
+    text-decoration-line: none;
+  }
+}
+
 .ba-card {
   background-color: $color-white;
   border: 1px solid $bg-gray-dark-3;

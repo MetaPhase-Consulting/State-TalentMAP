@@ -310,6 +310,11 @@ export const DELETE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully de
 export const DELETE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const DELETE_BID_AUDIT_ERROR = 'There was an issue attempting to delete this Bid Audit. Please try again.';
 
+export const RUN_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Run';
+export const RUN_BID_AUDIT_SUCCESS = 'This Bid Audit has successfully run.';
+export const RUN_BID_AUDIT_ERROR_TITLE = 'Error Running Bid Audit';
+export const RUN_BID_AUDIT_ERROR = 'There was an issue attempting to run this Bid Audit. Please try again.';
+
 export const UPDATE_BID_COUNT_SUCCESS_TITLE = 'Bid Counts Updated';
 export const UPDATE_BID_COUNT_SUCCESS = 'The Dynamic Audit has run successfully.';
 export const UPDATE_BID_COUNT_ERROR_TITLE = 'Bid Counts Not Updated';
