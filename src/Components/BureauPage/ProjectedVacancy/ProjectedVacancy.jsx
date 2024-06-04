@@ -18,6 +18,7 @@ import ProjectedVacancyCard from '../../ProjectedVacancyCard/ProjectedVacancyCar
 
 const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
 
+// eslint-disable-next-line complexity
 const ProjectedVacancy = () => {
   const dispatch = useDispatch();
 
