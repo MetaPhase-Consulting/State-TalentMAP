@@ -126,7 +126,7 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFun
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Position Skill Code - Description:</div>
+            <div className="label">Position Skill:</div>
             <select
               value={posSkillCode}
               onChange={(e) => setPosSkillCode(e.target.value)}
@@ -154,7 +154,7 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFun
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Employee Skill Code - Description:</div>
+            <div className="label">Employee Skill:</div>
             <select
               value={empSkillCode}
               onChange={(e) => setEmpSkillCode(e.target.value)}
@@ -169,7 +169,7 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFun
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Tenure Code - Description:</div>
+            <div className="label">Employee Tenure:</div>
             <select
               value={empTenCode}
               onChange={(e) => setEmpTenCode(e.target.value)}
