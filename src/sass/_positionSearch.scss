@@ -102,6 +102,7 @@
     width: 100%;
     align-items: center;
   }
+
   .cm-new-merge {
     display: flex;
     flex-direction: column;
@@ -232,12 +233,14 @@
 
 .cm-cycle-classes {
   border-bottom: 2px solid $primary-blue;
-  .cm-cycle-classes-check{
+
+  .cm-cycle-classes-check {
     &.read-only {
       pointer-events: none;
       accent-color: darkorange;
     }
   }
+
   .position-content--subheader {
     margin: 20px 0px;
     display: flex;
@@ -253,6 +256,7 @@
       justify-content: flex-start !important;
     }
   }
+
   .toggle-edit-mode {
     display: flex;
     flex-direction: row;
@@ -273,6 +277,7 @@
     }
   }
 }
+
 .cm-classifications-scroll-container {
   overflow: auto;
   height: 1000px;
@@ -326,6 +331,7 @@
   justify-content: space-between;
   margin-top: 15px;
 }
+
 .ace-wrapper {
   padding-inline: 15px
 }
@@ -338,25 +344,31 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   row-gap: 10px;
   padding: 15px;
+
   .ac-buttons {
     flex-direction: row-reverse;
   }
+
   .ac-sections {
     display: flex;
     flex-direction: column;
     width: 300px;
+
     label {
       font-weight: bold;
       width: 100%;
     }
+
     .larger-date-picker {
       width: 300px;
     }
+
     .ac-validation-container {
       display: flex;
       flex-direction: row;
     }
   }
+
   .bs-validation-container {
 
     .exclusivePositions-new,
@@ -448,6 +460,7 @@
       .react-daterange-picker__wrapper {
         border: none;
         width: 250px;
+
         .react-daterange-picker__inputGroup {
           align-items: center;
           display: flex;
@@ -1251,10 +1264,40 @@
   color: $color-white;
   padding-block: 25px;
   padding-inline: 40px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 20px;
+
+  button {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 20px;
+    margin: 0 0 0 5px;
+  }
+}
+
+.double-action-banner {
+  background-color: $blue-primary;
+  color: $color-white;
+  padding-block: 20px;
+  padding-inline: 30px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .selected-submission-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.import-row {
+      border-top: 1px solid white;
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+  }
 
   button {
     font-size: 18px;
