@@ -116,37 +116,14 @@ const PublishablePositions = ({ viewType }) => {
     selectedBidCycles,
   ].flat().filter(text => text !== '').length;
 
-  const filterSelectionValid = () => {
-    // valid if:
-    // pos num
-    // at least two distinct filters
-    if (searchPosNum) {
-      return true;
-    }
-    const fils = [
-      searchPosNum,
-      selectedStatuses,
-      selectedBureaus,
-      selectedOrgs,
-      selectedGrades,
-      selectedSkills,
-      selectedBidCycles,
-    ];
-    const a = [];
-    fils.forEach(f => { if (f.length) { a.push(true); } });
-    return a.length > 1;
-  };
-
   const fetchAndSet = (resetPage = false) => {
     setClearFilters(!!numSelectedFilters);
 
-    if (filterSelectionValid()) {
-      if (resetPage) {
-        setPage(1);
-      }
-      dispatch(publishablePositionsFetchData(getQuery()));
-      dispatch(savePublishablePositionsSelections(getCurrentInputs()));
+    if (resetPage) {
+      setPage(1);
     }
+    dispatch(publishablePositionsFetchData(getQuery()));
+    dispatch(savePublishablePositionsSelections(getCurrentInputs()));
   };
 
   useEffect(() => {
@@ -190,8 +167,6 @@ const PublishablePositions = ({ viewType }) => {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
     } else if (dataHasErrored || filtersHasErrored) {
       overlay = <Alert type="error" title="Error displaying Publishable Positions" messages={[{ body: 'Please try again.' }]} />;
-    } else if (!filterSelectionValid()) {
-      overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 distinct filters to search or search by Position Number.' }]} />;
     } else if (!data$?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No positions for filter inputs.' }]} />;
     } else {
