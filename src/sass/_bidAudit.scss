@@ -54,6 +54,15 @@
   display: flex;
   justify-content: end;
 }
+.ba-delete-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ba-delete-button {
+  background-color: transparent;
+  color: $primary-blue;
+}
 
 .position-content--container {
   .position-content--details {
