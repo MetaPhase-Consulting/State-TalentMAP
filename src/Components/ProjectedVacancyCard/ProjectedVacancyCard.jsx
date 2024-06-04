@@ -302,6 +302,27 @@ const ProjectedVacancyCard = (props) => {
   };
   /* eslint-enable quote-props */
 
+  const includeCheckbox = (
+    <CheckBox
+      id={`included-checkbox-${id}`}
+      label="Included"
+      value={included}
+      onCheckBoxClick={() => setIncluded(!included)}
+      disabled={disableIncluded}
+    />
+  );
+
+  const importCheckbox = (
+    <CheckBox
+      id={`imported-checkbox-${id}`}
+      label="Import to Cycle"
+      // TODO: Add cycle name to label
+      value={cycleImport}
+      onCheckBoxClick={() => setCycleImport(!cycleImport)}
+      disabled={disableImport}
+    />
+  );
+
   return (
     <TabbedCard
       tabs={[{
@@ -314,31 +335,22 @@ const ProjectedVacancyCard = (props) => {
               form={form}
             />
             <div className="toggle-include">
-              <Tooltip
-                title={disableIncluded ? 'Bureau users must cancel other edit drafts before attempting to edit the include selections.' : ''}
-                arrow
-              >
-                <CheckBox
-                  id={`included-checkbox-${id}`}
-                  label="Included"
-                  value={included}
-                  onCheckBoxClick={() => setIncluded(!included)}
-                  disabled={disableIncluded}
-                />
-              </Tooltip>
-              <Tooltip
-                title={disableImport ? 'AO users must select a Cycle filter and cancel other edit drafts before attempting to edit the import selections.' : ''}
-                arrow
-              >
-                <CheckBox
-                  id={`imported-checkbox-${id}`}
-                  label="Import to Cycle"
-                  // TODO: Add cycle name to label
-                  value={cycleImport}
-                  onCheckBoxClick={() => setCycleImport(!cycleImport)}
-                  disabled={disableImport}
-                />
-              </Tooltip>
+              {!disableIncluded ? includeCheckbox :
+                <Tooltip
+                  title="Bureau users must cancel other edit drafts before attempting to edit the include selections."
+                  arrow
+                >
+                  {includeCheckbox}
+                </Tooltip>
+              }
+              {!disableImport ? importCheckbox :
+                <Tooltip
+                  title="AO users must select a Cycle filter and cancel other edit drafts before attempting to edit the import selections."
+                  arrow
+                >
+                  {importCheckbox}
+                </Tooltip>
+              }
             </div>
           </div>
         ),
