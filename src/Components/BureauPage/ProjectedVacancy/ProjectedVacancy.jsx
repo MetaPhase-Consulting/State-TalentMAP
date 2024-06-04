@@ -15,6 +15,8 @@ import ScrollUpButton from 'Components/ScrollUpButton';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import ProjectedVacancyCard from '../../ProjectedVacancyCard/ProjectedVacancyCard';
 
+const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
+
 const ProjectedVacancy = () => {
   const dispatch = useDispatch();
 
@@ -465,31 +467,33 @@ const ProjectedVacancy = () => {
                 </div>
               }
             </div>
-            <div className="selected-submission-row">
-              <span>
-                {importedPositions?.length} {importedPositions?.length === 1 ? 'Position' : 'Positions'} Selected for Import
-              </span>
-              {(isAo && importInEditMode) &&
-                <div>
-                  <button
-                    onClick={() => {
-                      setImportInEditMode(false);
-                      setImportedPositions(originalImport);
-                    }}
-                    disabled={!importedPositions?.length}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="usa-button-secondary"
-                    onClick={addToProposedCycle}
-                    disabled={!importedPositions?.length}
-                  >
-                    Add to Proposed Cycle
-                  </button>
-                </div>
-              }
-            </div>
+            {enableCycleImport() &&
+              <div className="selected-submission-row">
+                <span>
+                  {importedPositions?.length} {importedPositions?.length === 1 ? 'Position' : 'Positions'} Selected for Import
+                </span>
+                {(isAo && importInEditMode) &&
+                  <div>
+                    <button
+                      onClick={() => {
+                        setImportInEditMode(false);
+                        setImportedPositions(originalImport);
+                      }}
+                      disabled={!importedPositions?.length}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="usa-button-secondary"
+                      onClick={addToProposedCycle}
+                      disabled={!importedPositions?.length}
+                    >
+                      Add to Proposed Cycle
+                    </button>
+                  </div>
+                }
+              </div>
+            }
           </div>
           <div className="usa-grid-full position-list">
             {positions?.map(k => (
@@ -504,7 +508,7 @@ const ProjectedVacancy = () => {
                 updateIncluded={onIncludedUpdate}
                 disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode}
                 updateImport={onImportUpdate}
-                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode}
+                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode || !enableCycleImport()}
                 disableEdit={includedInEditMode || importInEditMode || disableSearch}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
