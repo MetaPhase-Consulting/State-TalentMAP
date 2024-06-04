@@ -83,6 +83,8 @@ const ProjectedVacancyCard = (props) => {
     onEditModeSearch(editMode, id);
     if (editMode) {
       setIncluded(result?.future_vacancy_exclude_import_indicator === 'N');
+      // TODO: Use real field applicable to cycle import
+      setCycleImport(result?.future_vacancy_exclude_import_indicator === 'N');
       setSeason(result?.bid_season_code);
       setStatus(result?.future_vacancy_status_code);
       setOverrideTED(
@@ -98,6 +100,8 @@ const ProjectedVacancyCard = (props) => {
   useEffect(() => {
     if (!disableEdit) {
       setIncluded(result?.future_vacancy_exclude_import_indicator === 'N');
+      // TODO: Use real field applicable to cycle import
+      setCycleImport(result?.future_vacancy_exclude_import_indicator === 'N');
     }
   }, [disableEdit]);
 

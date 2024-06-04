@@ -81,6 +81,7 @@ const ProjectedVacancy = () => {
     k => k.future_vacancy_seq_num,
   ) || [];
 
+  // TODO: Use real field for cycle import in this function
   const originalImport = positions?.filter(
     p => p.future_vacancy_exclude_import_indicator === 'N',
   )?.map(
@@ -272,10 +273,11 @@ const ProjectedVacancy = () => {
       }
 
       if (needsUpdate) {
+        const overrideTED = p.future_vacancy_override_tour_end_date;
         updatedPvs.push({
           ...p,
-          future_vacancy_override_tour_end_date: p.future_vacancy_override_tour_end_date ?
-            p.future_vacancy_override_tour_end_date.toISOString().substring(0, 10) : null,
+          future_vacancy_override_tour_end_date: overrideTED ?
+            new Date(overrideTED).toISOString().substring(0, 10) : null,
           future_vacancy_exclude_import_indicator: excludeIndicator,
           future_vacancy_status_code: statusCode,
         });
@@ -288,15 +290,16 @@ const ProjectedVacancy = () => {
   const addToProposedCycle = () => {
     const updatedPvs = [];
     positions.forEach(p => {
-      const include = includedPositions.find(o => o === p.future_vacancy_seq_num);
+      const imported = importedPositions.find(o => o === p.future_vacancy_seq_num);
       const currentValue = p.future_vacancy_exclude_import_indicator;
-      const needsUpdate = (currentValue === 'Y' && include) || (currentValue === 'N' && !include);
+      const needsUpdate = (currentValue === 'Y' && imported) || (currentValue === 'N' && !imported);
 
       if (needsUpdate) {
+        const overrideTED = p.future_vacancy_override_tour_end_date;
         updatedPvs.push({
           ...p,
-          future_vacancy_override_tour_end_date: p.future_vacancy_override_tour_end_date ?
-            p.future_vacancy_override_tour_end_date.toISOString().substring(0, 10) : null,
+          future_vacancy_override_tour_end_date: overrideTED ?
+            new Date(overrideTED).toISOString().substring(0, 10) : null,
           // TODO: Change proposed cycle field
         });
       }
@@ -470,7 +473,7 @@ const ProjectedVacancy = () => {
                 <div>
                   <button
                     onClick={() => {
-                      setImportedPositions(false);
+                      setImportInEditMode(false);
                       setImportedPositions(originalImport);
                     }}
                     disabled={!importedPositions?.length}
