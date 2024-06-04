@@ -61,6 +61,31 @@
   .tm-spinner-standard-center {
     left: 50% !important;
   }
+
+  .position-number-container {
+    position: relative;
+
+    .input-error {
+      background-color: $color-red-lightest;
+      border: 1px solid $color-red;
+    }
+
+    .add-pos-num-icon {
+      color: $primary-blue;
+      margin-left: -25px;
+      position: absolute;
+      top: 66px;
+      left: 300px;
+    }
+
+    .add-pos-num-icon:hover {
+      color: $primary-blue-darkest;
+    }
+
+    .fa {
+      padding-left: 0px;
+    }
+  }
 }
 
 .gsa-location-input {
@@ -88,36 +113,6 @@
 
   .fa {
     font-size: 20px;
-  }
-}
-
-.position-number-container {
-  position: relative;
-
-  .input-default {
-    background-color: $color-white;
-    border: 1px solid $bg-gray-dark-2;
-  }
-
-  .input-error {
-    background-color: $color-red-lightest;
-    border: 1px solid $color-red;
-  }
-
-  .add-pos-num-icon {
-    color: $primary-blue;
-    margin-left: -25px;
-    position: absolute;
-    top: 66px;
-    left: 300px;
-  }
-
-  .add-pos-num-icon:hover {
-    color: $primary-blue-darkest;
-  }
-
-  .fa {
-    padding-left: 0px;
   }
 }
 

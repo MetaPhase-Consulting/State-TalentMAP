@@ -248,3 +248,8 @@ $values in $filters-sizing-config {
 .font-bold {
   font-weight: bold;
 }
+
+.input-default {
+  background-color: $color-white;
+  border: 1px solid $bg-gray-dark-2;
+}

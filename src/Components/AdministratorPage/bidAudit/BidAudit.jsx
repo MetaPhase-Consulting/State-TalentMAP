@@ -241,7 +241,7 @@ const BidAudit = () => {
                   onClick={() => setOpenModal(true)}
                 >
                   <FA name="plus" />
-                  Create New Audit Cycle
+                  Create New Audit
                 </a>
               </div>
             </span>
