@@ -484,7 +484,7 @@ export function bidAuditDeleteAuditGradeOrCategory(data, type, onSuccess) {
       cancelDeleteAuditGradeOrCategory('cancel');
     }
     api()
-      .post(`/fsbid/bid_audit/delete_${type}/`, data, {
+      .delete(`/fsbid/bid_audit/delete_${type}/`, data, {
         cancelToken: new CancelToken((c) => { cancelDeleteAuditGradeOrCategory = c; }),
       })
       .then(() => {
