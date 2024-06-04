@@ -1292,10 +1292,10 @@
     justify-content: space-between;
     align-items: center;
 
-    &:first-of-type {
-      border-bottom: 1px solid white;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
+    &.import-row {
+      border-top: 1px solid white;
+      padding-top: 10px;
+      margin-top: 10px;
     }
   }
 

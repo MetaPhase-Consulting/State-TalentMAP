@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Tooltip } from 'react-tippy';
 import PropTypes from 'prop-types';
+import { checkFlag } from 'flags';
 import { useDidMountEffect } from 'hooks';
 import { formatDate, getDifferentials } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
@@ -16,6 +17,8 @@ import { Row } from 'Components/Layout';
 import CheckBox from 'Components/CheckBox';
 import TabbedCard from 'Components/TabbedCard';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
+
+const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
 
 // eslint-disable-next-line
 const ProjectedVacancyCard = (props) => {
@@ -347,14 +350,14 @@ const ProjectedVacancyCard = (props) => {
                   {includeCheckbox}
                 </Tooltip>
               }
-              {!disableImport ? importCheckbox :
+              {enableCycleImport() && (!disableImport ? importCheckbox :
                 <Tooltip
                   title="AO users must select a Cycle filter and cancel other edit drafts before attempting to edit the import selections."
                   arrow
                 >
                   {importCheckbox}
                 </Tooltip>
-              }
+              )}
             </div>
           </div>
         ),

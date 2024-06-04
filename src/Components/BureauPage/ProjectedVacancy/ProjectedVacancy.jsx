@@ -469,7 +469,7 @@ const ProjectedVacancy = () => {
               }
             </div>
             {enableCycleImport() &&
-              <div className="selected-submission-row">
+              <div className="selected-submission-row import-row">
                 <span>
                   {importedPositions?.length} {importedPositions?.length === 1 ? 'Position' : 'Positions'} Selected for Import
                 </span>
@@ -509,7 +509,7 @@ const ProjectedVacancy = () => {
                 updateIncluded={onIncludedUpdate}
                 disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode}
                 updateImport={onImportUpdate}
-                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode || !enableCycleImport()}
+                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode}
                 disableEdit={includedInEditMode || importInEditMode || disableSearch}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
