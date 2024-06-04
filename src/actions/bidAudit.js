@@ -16,6 +16,10 @@ import {
   DELETE_BID_AUDIT_ERROR_TITLE,
   DELETE_BID_AUDIT_SUCCESS,
   DELETE_BID_AUDIT_SUCCESS_TITLE,
+  DELETE_IN_CATEGORY_AT_GRADE_ERROR,
+  DELETE_IN_CATEGORY_AT_GRADE_ERROR_TITLE,
+  DELETE_IN_CATEGORY_AT_GRADE_SUCCESS,
+  DELETE_IN_CATEGORY_AT_GRADE_SUCCESS_TITLE,
   RUN_BID_AUDIT_ERROR,
   RUN_BID_AUDIT_ERROR_TITLE,
   RUN_BID_AUDIT_SUCCESS,
@@ -465,6 +469,36 @@ export function bidAuditUpdateAuditGradeOrCategory(data, type, onSuccess) {
       .catch((err) => {
         if (err?.message !== 'cancel') {
           dispatch(toastError(UPDATE_BID_AUDIT_ERROR_2, UPDATE_BID_AUDIT_ERROR_TITLE_2));
+        }
+      });
+  };
+}
+
+// ================ Bid Audit: Delete In-Catgory/At-Grade ================
+
+let cancelDeleteAuditGradeOrCategory;
+
+export function bidAuditDeleteAuditGradeOrCategory(data, type, onSuccess) {
+  return (dispatch) => {
+    if (cancelDeleteAuditGradeOrCategory) {
+      cancelDeleteAuditGradeOrCategory('cancel');
+    }
+    api()
+      .delete(`/fsbid/bid_audit/delete_${type}/`, data, {
+        cancelToken: new CancelToken((c) => { cancelDeleteAuditGradeOrCategory = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            DELETE_IN_CATEGORY_AT_GRADE_SUCCESS, DELETE_IN_CATEGORY_AT_GRADE_SUCCESS_TITLE,
+          ));
+          dispatch(bidAuditFetchData());
+          if (onSuccess) onSuccess();
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(DELETE_IN_CATEGORY_AT_GRADE_ERROR, DELETE_IN_CATEGORY_AT_GRADE_ERROR_TITLE));
         }
       });
   };
