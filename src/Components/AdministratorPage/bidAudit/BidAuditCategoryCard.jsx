@@ -52,10 +52,10 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetch
       { '': '' },
     ],
     bodyPrimary: [
-      { 'Position Skill Code & Description': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
+      { 'Position Skill': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
       { '': '' },
       { '': '' },
-      { 'Employee Skill Code & Description': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
+      { 'Employee Skill': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
     ],
   };
 
@@ -68,7 +68,7 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetch
       <div className="position-form bid-audit-form">
         <div className="bid-audit-options">
           <div className="filter-div">
-            <div className="label">Position Skill Code - Description:</div>
+            <div className="label">Position Skill:</div>
             <select
               value={posCode}
               onChange={(e) => setPosCode(e.target.value)}
@@ -80,7 +80,7 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetch
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Employee Skill Code - Description:</div>
+            <div className="label">Employee Skill:</div>
             <select
               value={empCode}
               onChange={(e) => setEmpCode(e.target.value)}
