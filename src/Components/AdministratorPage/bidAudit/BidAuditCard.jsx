@@ -73,12 +73,17 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
 
   const onRunBidAudit = () => {
     swal({
-      title: 'Run this Bid Audit?',
+      title: 'Run Bid Audit?',
       button: false,
       content: (
-        <div>
-          <button onClick={submitRunAudit} type="submit">Yes</button>
-          <button className="usa-button-secondary" onClick={() => swal.close()}>Cancel</button>
+        <div className="simple-action-modal">
+          <div className="help-text">
+            <span>{'Are you sure you want to run this Bid Audit?'}</span>
+          </div>
+          <div className="modal-controls">
+            <button onClick={submitRunAudit} type="submit">Yes</button>
+            <button className="usa-button-secondary" onClick={() => swal.close()}>Cancel</button>
+          </div>
         </div>
       ),
     });
