@@ -115,29 +115,12 @@ const ProjectedVacancy = ({ isAO }) => {
     selectedBidSeasons,
   });
 
-  const filterSelectionValid = () => {
-    // valid if: at least two distinct filters
-    const fils = [
-      selectedBureaus,
-      selectedOrganizations,
-      selectedGrades,
-      selectedLanguages,
-      selectedSkills,
-      selectedBidSeasons,
-    ];
-    const a = [];
-    fils.forEach(f => { if (f.length) { a.push(true); } });
-    return a.length > 1;
-  };
-
   const getOverlay = () => {
     let overlay;
     if (resultsLoading) {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
     } else if (resultsErrored) {
       overlay = <Alert type="error" title="Error displaying Projected Vacancies" messages={[{ body: 'Please try again.' }]} />;
-    } else if (!filterSelectionValid()) {
-      overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 distinct filters to search.' }]} />;
     } else if (!positionsData?.results?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No projected vacancies for filter inputs.' }]} />;
     } else {
@@ -190,13 +173,11 @@ const ProjectedVacancy = ({ isAO }) => {
     } else {
       setClearFilters(true);
     }
-    if (filterSelectionValid()) {
-      if (resetPage) {
-        setPage(1);
-      }
-      dispatch(projectedVacancyFetchData(getQuery()));
-      dispatch(saveProjectedVacancySelections(getCurrentInputs()));
+    if (resetPage) {
+      setPage(1);
     }
+    dispatch(projectedVacancyFetchData(getQuery()));
+    dispatch(saveProjectedVacancySelections(getCurrentInputs()));
   };
 
   useEffect(() => {
