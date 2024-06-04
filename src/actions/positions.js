@@ -46,6 +46,7 @@ export function resetPositionsFetchData() {
 
 export function positionsFetchData(query) {
   return (dispatch) => {
+    dispatch(positionsFetchDataSuccess({}));
     dispatch(positionsIsLoading(true));
     dispatch(positionsHasErrored(false));
     const prefix = '/fsbid/positions';
