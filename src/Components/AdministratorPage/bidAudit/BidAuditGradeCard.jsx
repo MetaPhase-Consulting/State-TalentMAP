@@ -5,8 +5,7 @@ import { Row } from 'Components/Layout';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { NO_VALUE } from 'Constants/SystemMessages';
-import swal from '@sweetalert/with-react';
-import { bidAuditDeleteAuditGradeOrCategory, bidAuditUpdateAuditGradeOrCategory } from 'actions/bidAudit';
+import { bidAuditUpdateAuditGradeOrCategory } from 'actions/bidAudit';
 
 const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFunction, cycleId, auditNbr }) => {
   const dispatch = useDispatch();
@@ -54,38 +53,6 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFun
     setEmpSkillCode(data?.employee_skill_code);
     setEmpGradeCode(data?.employee_grade_code);
     setEmpTenCode(data?.employee_tenure_code);
-  };
-
-  const onDeleteAtGrade = () => {
-    swal.close();
-    dispatch(bidAuditDeleteAuditGradeOrCategory(
-      {
-        auditGradeId: data.id,
-        cycleId,
-        auditNbr,
-      },
-      'grade',
-      () => refetchFunction(),
-    ));
-  };
-
-  const onDelete = () => {
-    swal({
-      title: 'Confirm Delete',
-      button: false,
-      closeOnEsc: true,
-      content: (
-        <div className="simple-action-modal">
-          <div className="help-text">
-            <span>{'Are you sure you want to delete this At-Grade relationship?'}</span>
-          </div>
-          <div className="modal-controls">
-            <button onClick={onDeleteAtGrade}>Yes</button>
-            <button className="usa-button-secondary" onClick={() => swal.close()}>No</button>
-          </div>
-        </div>
-      ),
-    });
   };
 
   // =============== View Mode ===============
@@ -183,9 +150,6 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFun
               ))}
             </select>
           </div>
-        </div>
-        <div className="ba-delete-button-wrapper">
-          <button onClick={onDelete} className="ba-delete-button">Delete</button>
         </div>
       </div>
     ),
