@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Picky from 'react-picky';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
+import { checkFlag } from 'flags';
 import { sortBy } from 'lodash';
 import {
   projectedVacancyEdit, projectedVacancyFetchData, projectedVacancyFilters,
