@@ -244,7 +244,7 @@ export function assignmentSeparationAction(query, perdet, id, isSeparation, onSu
         })
         .catch((err) => {
           if (err?.message !== 'cancel') {
-            dispatch(toastError(toastErrorMessage, toastErrorTitle));
+            dispatch(toastError(`${toastErrorMessage} ${err?.error_message ?? ''}`, toastErrorTitle));
           }
         });
     };
