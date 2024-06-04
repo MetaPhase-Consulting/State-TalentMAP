@@ -78,7 +78,7 @@ const BidAuditCard = ({ data, onEditModeSearch }) => {
       content: (
         <div>
           <button onClick={submitRunAudit} type="submit">Yes</button>
-          <button onClick={() => swal.close()}>Cancel</button>
+          <button className="usa-button-secondary" onClick={() => swal.close()}>Cancel</button>
         </div>
       ),
     });
