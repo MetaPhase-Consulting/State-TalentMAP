@@ -72,7 +72,7 @@ const ProjectedVacancy = () => {
   const resultsLoading = positionsLoading || languageOffsetsLoading || languageOffsetOptionsLoading;
   const resultsErrored =
     filtersErrored || languageOffsetOptionsErrored || positionsErrored || languageOffsetsErrored;
-  const disableSearch = cardsInEditMode?.length > 0;
+  const disableSearch = cardsInEditMode?.length > 0 || includedInEditMode || importInEditMode;
   const disableInput = filtersLoading || resultsLoading || disableSearch;
 
   const originalIncluded = positions?.filter(
@@ -499,9 +499,9 @@ const ProjectedVacancy = () => {
                   ) || {}
                 }
                 updateIncluded={onIncludedUpdate}
-                disableIncluded={disableSearch || !isBureau}
+                disableIncluded={disableSearch || !isBureau || importInEditMode}
                 updateImport={onImportUpdate}
-                disableImport={disableSearch || !isAo || !selectedCycle}
+                disableImport={disableSearch || !isAo || !selectedCycle || includedInEditMode}
                 disableEdit={includedInEditMode || importInEditMode || disableSearch}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
