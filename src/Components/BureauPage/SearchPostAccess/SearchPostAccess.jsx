@@ -248,7 +248,7 @@ const SearchPostAccess = () => {
                     options={orgOptions}
                     onChange={setSelectedOrgs}
                     valueKey="code"
-                    labelKey="description"
+                    labelKey="custom_description"
                     disabled={searchPostAccessFiltersLoading}
                   />
                 </div>
