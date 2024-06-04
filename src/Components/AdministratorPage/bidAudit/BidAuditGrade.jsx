@@ -9,7 +9,7 @@ import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import BackButton from 'Components/BackButton';
-import { bidAuditSecondFetchData } from 'actions/bidAudit';
+import { bidAuditSecondFetchData, bidAuditSecondFetchModalData } from 'actions/bidAudit';
 import { renderSelectionList } from 'utilities';
 import BidAuditGradeCard from './BidAuditGradeCard';
 import BidAuditGradeModal from './BidAuditGradeModal';
@@ -24,13 +24,23 @@ const BidAuditGrade = (props) => {
   const bidAuditGradeFetchLoading = useSelector(state => state.bidAuditSecondFetchDataLoading);
   const bidAuditGradeFetchError = useSelector(state => state.bidAuditSecondFetchDataErrored);
 
+  const secondFetchOptions = useSelector(state => state.bidAuditSecondFetchModalData);
+  const secondFetchOptionsLoading = useSelector(state => state.bidAuditSecondFetchModalDataLoading);
+  const secondFetchOptionsErrored = useSelector(state => state.bidAuditSecondFetchModalDataErrored);
+
   const [openModal, setOpenModal] = useState(false);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableSearch = cardsInEditMode.length > 0;
 
   useEffect(() => {
     dispatch(bidAuditSecondFetchData(routeCycleID, routeAuditID, 'grade'));
+    dispatch(bidAuditSecondFetchModalData(routeCycleID, routeAuditID, 'grade'));
   }, []);
+
+  const onRefetchData = () => {
+    dispatch(bidAuditSecondFetchData(routeCycleID, routeAuditID, 'grade'));
+    setCardsInEditMode([]);
+  };
 
   const onBidAuditGradeEdit = (editMode, id) => {
     if (editMode) {
@@ -145,9 +155,9 @@ const BidAuditGrade = (props) => {
   const noResults = bidAuditGradeData$?.length === 0;
   const getOverlay = () => {
     let overlay;
-    if (bidAuditGradeFetchLoading) {
+    if (bidAuditGradeFetchLoading || secondFetchOptionsLoading) {
       overlay = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
-    } else if (bidAuditGradeFetchError) {
+    } else if (bidAuditGradeFetchError || secondFetchOptionsErrored) {
       overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
     } else if (noResults) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
@@ -279,6 +289,10 @@ const BidAuditGrade = (props) => {
               bidAuditGradeData$?.map(positionData => (
                 <BidAuditGradeCard
                   data={positionData}
+                  cycleId={bidAuditGradeData?.audit_info?.cycle_id}
+                  auditNbr={bidAuditGradeData?.audit_info?.audit_number}
+                  options={secondFetchOptions}
+                  refetchFunction={() => onRefetchData()}
                   key={positionData.id}
                   isOpen={cardsInEditMode?.includes(positionData?.id)}
                   onEditModeSearch={(editMode, id) =>
@@ -290,7 +304,7 @@ const BidAuditGrade = (props) => {
         </div>
       }
       <ReactModal open={openModal} setOpen={setOpenModal}>
-        <BidAuditGradeModal setOpen={setOpenModal} />
+        <BidAuditGradeModal setOpen={setOpenModal} options={secondFetchOptions} />
       </ReactModal>
     </div>
   );

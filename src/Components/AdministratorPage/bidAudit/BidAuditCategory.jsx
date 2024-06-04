@@ -9,7 +9,7 @@ import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import BackButton from 'Components/BackButton';
-import { bidAuditSecondFetchData } from 'actions/bidAudit';
+import { bidAuditSecondFetchData, bidAuditSecondFetchModalData } from 'actions/bidAudit';
 import { renderSelectionList } from 'utilities';
 import BidAuditCategoryCard from './BidAuditCategoryCard';
 import BidAuditCategoryModal from './BidAuditCategoryModal';
@@ -24,13 +24,23 @@ const BidAuditCategory = (props) => {
   const bidAuditCategoryFetchLoading = useSelector(state => state.bidAuditSecondFetchDataLoading);
   const bidAuditCategoryFetchError = useSelector(state => state.bidAuditSecondFetchDataErrored);
 
+  const categoryOptions = useSelector(state => state.bidAuditSecondFetchModalData);
+  const categoryOptionsLoading = useSelector(state => state.bidAuditSecondFetchModalDataLoading);
+  const categoryOptionsErrored = useSelector(state => state.bidAuditSecondFetchModalDataErrored);
+
   const [openModal, setOpenModal] = useState(false);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
   const disableSearch = cardsInEditMode.length > 0;
 
   useEffect(() => {
     dispatch(bidAuditSecondFetchData(routeCycleID, routeAuditID, 'category'));
+    dispatch(bidAuditSecondFetchModalData(routeCycleID, routeAuditID, 'category'));
   }, []);
+
+  const onRefetchData = () => {
+    dispatch(bidAuditSecondFetchData(routeCycleID, routeAuditID, 'category'));
+    setCardsInEditMode([]);
+  };
 
   const onBidAuditCategoryEdit = (editMode, id) => {
     if (editMode) {
@@ -114,9 +124,9 @@ const BidAuditCategory = (props) => {
   const noResults = bidAuditCategoryData$?.length === 0;
   const getOverlay = () => {
     let overlay;
-    if (bidAuditCategoryFetchLoading) {
+    if (bidAuditCategoryFetchLoading || categoryOptionsLoading) {
       overlay = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
-    } else if (bidAuditCategoryFetchError) {
+    } else if (bidAuditCategoryFetchError || categoryOptionsErrored) {
       overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
     } else if (noResults) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
@@ -189,7 +199,7 @@ const BidAuditCategory = (props) => {
             </div>
           </span>
           <span className="ba-subheading">
-            <div className="ba-audit-sub-info">Employee Skills considered In-Skill-Category for Positions, this Cycle</div>
+            <div className="ba-audit-sub-info">Employee Skills considered In-Skill for Positions, this Cycle</div>
           </span>
 
           {
@@ -210,6 +220,10 @@ const BidAuditCategory = (props) => {
               bidAuditCategoryData$?.map(positionData => (
                 <BidAuditCategoryCard
                   data={positionData}
+                  cycleId={bidAuditCategoryData?.audit_info?.cycle_id}
+                  auditNbr={bidAuditCategoryData?.audit_info?.audit_number}
+                  options={categoryOptions}
+                  refetchFunction={() => onRefetchData()}
                   key={positionData.id}
                   isOpen={cardsInEditMode?.includes(positionData?.id)}
                   onEditModeSearch={(editMode, id) =>
@@ -221,7 +235,7 @@ const BidAuditCategory = (props) => {
         </div>
       }
       <ReactModal open={openModal} setOpen={setOpenModal}>
-        <BidAuditCategoryModal setOpen={setOpenModal} />
+        <BidAuditCategoryModal setOpen={setOpenModal} options={categoryOptions} />
       </ReactModal>
     </div>
   );
