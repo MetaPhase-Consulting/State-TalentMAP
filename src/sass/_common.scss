@@ -101,6 +101,7 @@ $values in $filters-sizing-config {
 .disabled-action, .disabled-action>* {
   color: $color-gray;
   cursor: default;
+  pointer-events: none;
 }
 
 .align-right { text-align: right; }
@@ -246,4 +247,9 @@ $values in $filters-sizing-config {
 
 .font-bold {
   font-weight: bold;
+}
+
+.input-default {
+  background-color: $color-white;
+  border: 1px solid $bg-gray-dark-2;
 }
