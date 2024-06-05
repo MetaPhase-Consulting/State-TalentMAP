@@ -150,7 +150,7 @@ const SearchPostAccess = () => {
     dispatch(searchPostAccessRemove(checkedPostIds));
   };
 
-  const tableHeaderNames = ['Access Type', 'Bureau', 'Post/Org', 'Employee', 'Role', 'Position', 'Title'];
+  const tableHeaderNames = ['Access Type', 'Bureau', 'Organization', 'Employee', 'Role', 'Position', 'Title'];
 
   const handleSelectAll = () => {
     if (!selectAll) {
