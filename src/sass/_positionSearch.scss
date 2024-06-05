@@ -60,7 +60,7 @@
   }
 
   .position-search-controls--results {
-    align-items: center;
+    align-items: baseline;
     display: flex;
     justify-content: flex-end;
     margin-top: 10px;
@@ -73,6 +73,8 @@
 
     div:first-child {
       margin-right: 10px;
+      display: flex;
+      gap: 3px;
     }
 
     div {
