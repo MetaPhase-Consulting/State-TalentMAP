@@ -19,13 +19,11 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFun
 
   useEffect(() => {
     onEditModeSearch(editMode, data?.id);
-    if (!editMode) {
-      setPosSkillCode(data?.position_skill_code);
-      setPosGradeCode(data?.position_grade_code);
-      setEmpSkillCode(data?.employee_skill_code);
-      setEmpGradeCode(data?.employee_grade_code);
-      setEmpTenCode(data?.employee_tenure_code);
-    }
+    setPosSkillCode(data?.position_skill_code);
+    setPosGradeCode(data?.position_grade_code);
+    setEmpSkillCode(data?.employee_skill_code);
+    setEmpGradeCode(data?.employee_grade_code);
+    setEmpTenCode(data?.employee_tenure_code);
   }, [editMode]);
 
   useEffect(() => {
