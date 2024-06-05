@@ -62,6 +62,10 @@
 .ba-delete-button {
   background-color: transparent;
   color: $primary-blue;
+  &:hover {
+    background-color: transparent;
+    color: $primary-blue;
+  }
 }
 
 .position-content--container {
