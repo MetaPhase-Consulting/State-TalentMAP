@@ -16,10 +16,8 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetch
 
   useEffect(() => {
     onEditModeSearch(editMode, data?.id);
-    if (!editMode) {
-      setPosCode(data?.position_skill_code);
-      setEmpCode(data?.employee_skill_code);
-    }
+    setPosCode(data?.position_skill_code);
+    setEmpCode(data?.employee_skill_code);
   }, [editMode]);
 
   useEffect(() => {
