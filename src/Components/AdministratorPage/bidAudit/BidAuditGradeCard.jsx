@@ -1,16 +1,29 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import swal from '@sweetalert/with-react';
+import { useDispatch } from 'react-redux';
 import { Row } from 'Components/Layout';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { NO_VALUE } from 'Constants/SystemMessages';
+import swal from '@sweetalert/with-react';
+import { bidAuditDeleteAuditGradeOrCategory, bidAuditUpdateAuditGradeOrCategory } from 'actions/bidAudit';
 
-const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
+const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen, options, refetchFunction, cycleId, auditNbr }) => {
+  const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
+  const [posSkillCode, setPosSkillCode] = useState(data?.position_skill_code);
+  const [posGradeCode, setPosGradeCode] = useState(data?.position_grade_code);
+  const [empSkillCode, setEmpSkillCode] = useState(data?.employee_skill_code);
+  const [empGradeCode, setEmpGradeCode] = useState(data?.employee_grade_code);
+  const [empTenCode, setEmpTenCode] = useState(data?.employee_tenure_code);
 
   useEffect(() => {
     onEditModeSearch(editMode, data?.id);
+    setPosSkillCode(data?.position_skill_code);
+    setPosGradeCode(data?.position_grade_code);
+    setEmpSkillCode(data?.employee_skill_code);
+    setEmpGradeCode(data?.employee_grade_code);
+    setEmpTenCode(data?.employee_tenure_code);
   }, [editMode]);
 
   useEffect(() => {
@@ -18,10 +31,59 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
   }, [isOpen]);
 
   const onSubmit = () => {
-    swal.close();
+    dispatch(bidAuditUpdateAuditGradeOrCategory({
+      auditGradeId: data.id,
+      cycleId,
+      auditNbr,
+      posSkillCode,
+      posGradeCode,
+      empSkillCode,
+      empGradeCode,
+      empTenCode,
+    },
+    'grade',
+    () => refetchFunction(),
+    ));
   };
+
   const onCancelForm = () => {
+    setPosSkillCode(data?.position_skill_code);
+    setPosGradeCode(data?.position_grade_code);
+    setEmpSkillCode(data?.employee_skill_code);
+    setEmpGradeCode(data?.employee_grade_code);
+    setEmpTenCode(data?.employee_tenure_code);
+  };
+
+  const onDeleteAtGrade = () => {
     swal.close();
+    dispatch(bidAuditDeleteAuditGradeOrCategory(
+      {
+        auditGradeId: data.id,
+        cycleId,
+        auditNbr,
+      },
+      'grade',
+      () => refetchFunction(),
+    ));
+  };
+
+  const onDelete = () => {
+    swal({
+      title: 'Confirm Delete',
+      button: false,
+      closeOnEsc: true,
+      content: (
+        <div className="simple-action-modal">
+          <div className="help-text">
+            <span>{'Are you sure you want to delete this At-Grade relationship?'}</span>
+          </div>
+          <div className="modal-controls">
+            <button onClick={onDeleteAtGrade}>Yes</button>
+            <button className="usa-button-secondary" onClick={() => swal.close()}>No</button>
+          </div>
+        </div>
+      ),
+    });
   };
 
   // =============== View Mode ===============
@@ -43,30 +105,7 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
   };
 
   // =============== Edit Mode ===============
-  const skillCode = [
-    { code: 1, name: 'INFORMATION MANAGEMENT' },
-    { code: 2, name: 'SYSTEM MANAGEMENT' },
-    { code: 3, name: 'DATABASE MANAGEMENT' },
-    { code: 4, name: 'PIT' },
-    { code: 5, name: 'INFORMATION ADMIN' },
-    { code: 6, name: 'BUREAU MANAGEMENT' },
-  ];
-  const gradeOptions = [
-    { code: 1, name: '01' },
-    { code: 2, name: '02' },
-    { code: 3, name: '03' },
-    { code: 4, name: '04' },
-    { code: 5, name: '05' },
-    { code: 6, name: '06' },
-  ];
-  const tenureCode = [
-    { code: 1, name: 'INFORMATION MANAGEMENT' },
-    { code: 2, name: 'SYSTEM MANAGEMENT' },
-    { code: 3, name: 'DATABASE MANAGEMENT' },
-    { code: 4, name: 'PIT' },
-    { code: 5, name: 'INFORMATION ADMIN' },
-    { code: 6, name: 'BUREAU MANAGEMENT' },
-  ];
+
   const atGradesForm = {
     /* eslint-disable quote-props */
     staticBody: [],
@@ -75,17 +114,27 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
         <div className="bid-audit-options">
           <div className="filter-div">
             <div className="label">Position Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade?.name}</option>
+            <select
+              value={posGradeCode}
+              onChange={(e) => setPosGradeCode(e.target.value)}
+            >
+              {options?.position_grade_options?.map(grade => (
+                <option value={grade?.code} key={grade?.code}>{grade?.code}</option>
               ))}
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
+            <div className="label">Position Skill:</div>
+            <select
+              value={posSkillCode}
+              onChange={(e) => setPosSkillCode(e.target.value)}
+            >
+              {posSkillCode
+                  && <option value={data?.employee_skill_code}>{`(${data?.employee_skill_code}) ${data?.employee_skill_desc}`}</option>
+              }
+              <option value="" />
+              {options?.position_skill_options?.map(option => (
+                <option value={option?.code} key={option?.code}>{`(${option.code}) ${option.text}`}</option>
               ))}
             </select>
           </div>
@@ -93,28 +142,48 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
         <div className="bid-audit-options">
           <div className="filter-div">
             <div className="label">Employee Grade:</div>
-            <select>
-              {gradeOptions.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
+            <select
+              value={empGradeCode}
+              onChange={(e) => setEmpGradeCode(e.target.value)}
+            >
+              {options?.employee_grade_options?.map(grade => (
+                <option value={grade?.code} key={grade?.code}>{grade.code}</option>
               ))}
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {skillCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
+            <div className="label">Employee Skill:</div>
+            <select
+              value={empSkillCode}
+              onChange={(e) => setEmpSkillCode(e.target.value)}
+            >
+              {empSkillCode
+                  && <option value={data?.employee_skill_code}>{`(${data?.employee_skill_code}) ${data?.employee_skill_desc}`}</option>
+              }
+              <option value="" />
+              {options?.employee_skill_options?.map(option => (
+                <option value={option?.code} key={option?.code}>{`(${option.code}) ${option.text}`}</option>
               ))}
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Tenure Code - Description:</div>
-            <select>
-              {tenureCode.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
+            <div className="label">Employee Tenure:</div>
+            <select
+              value={empTenCode}
+              onChange={(e) => setEmpTenCode(e.target.value)}
+            >
+              {empTenCode
+                  && <option value={data?.employee_tenure_code}>{`(${data?.employee_tenure_code}) ${data?.employee_tenure_desc}`}</option>
+              }
+              <option value="" />
+              {options?.employee_tenure_options?.map(option => (
+                <option value={option?.code} key={option?.code}>{`(${option?.code}) ${option?.text}`}</option>
               ))}
             </select>
           </div>
+        </div>
+        <div className="ba-delete-button-wrapper">
+          <button onClick={onDelete} className="ba-delete-button">Delete</button>
         </div>
       </div>
     ),
@@ -134,7 +203,7 @@ const BidAuditGradeCard = ({ data, onEditModeSearch, isOpen }) => {
         <PositionExpandableContent
           sections={atGradesSections}
           form={atGradesForm}
-          saveText="Save In Category"
+          saveText="Save At Grade"
         />
       </div>
     </Row>
@@ -153,7 +222,33 @@ BidAuditGradeCard.propTypes = {
     employee_tenure_code: PropTypes.string,
     employee_tenure_desc: PropTypes.string,
   }).isRequired,
+  options: PropTypes.shape({
+    position_skill_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+    position_grade_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+    employee_skill_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+    employee_grade_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+    employee_tenure_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+  }).isRequired,
   isOpen: PropTypes.bool,
+  onEditModeSearch: PropTypes.func,
+  cycleId: PropTypes.number.isRequired,
+  auditNbr: PropTypes.number.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
   onEditModeSearch: PropTypes.func,
 };
 

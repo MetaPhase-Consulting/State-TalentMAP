@@ -3,7 +3,9 @@ import FA from 'react-fontawesome';
 import Linkify from 'react-linkify';
 import DatePicker from 'react-datepicker';
 import TextareaAutosize from 'react-textarea-autosize';
+import { Tooltip } from 'react-tippy';
 import PropTypes from 'prop-types';
+import { checkFlag } from 'flags';
 import { useDidMountEffect } from 'hooks';
 import { formatDate, getDifferentials } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
@@ -16,6 +18,8 @@ import CheckBox from 'Components/CheckBox';
 import TabbedCard from 'Components/TabbedCard';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 
+const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
+
 // eslint-disable-next-line
 const ProjectedVacancyCard = (props) => {
   const {
@@ -23,6 +27,8 @@ const ProjectedVacancyCard = (props) => {
     languageOffsets,
     updateIncluded,
     disableIncluded,
+    updateImport,
+    disableImport,
     disableEdit,
     onEditModeSearch,
     onSubmit,
@@ -43,6 +49,7 @@ const ProjectedVacancyCard = (props) => {
     datePickerRef.current.setOpen(true);
   };
 
+  const [cycleImport, setCycleImport] = useState(result?.fvexclimportind === 'N');
   const [included, setIncluded] = useState(result?.fvexclimportind === 'N');
   const [season, setSeason] = useState(result?.fvbsnid);
   const [status, setStatus] = useState(result?.fvscode);
@@ -70,10 +77,15 @@ const ProjectedVacancyCard = (props) => {
     updateIncluded(id, included);
   }, [included]);
 
+  useDidMountEffect(() => {
+    updateImport(id, cycleImport);
+  }, [cycleImport]);
+
   const [editMode, setEditMode] = useState(false);
   useEffect(() => {
     onEditModeSearch(editMode, id);
     if (editMode) {
+      setCycleImport(result?.fvexclimportind === 'N');
       setIncluded(result?.fvexclimportind === 'N');
       setSeason(result?.fvbsnid);
       setStatus(result?.fvscode);
@@ -89,6 +101,7 @@ const ProjectedVacancyCard = (props) => {
   }, [editMode]);
   useEffect(() => {
     if (!disableEdit) {
+      setCycleImport(result?.fvexclimportind === 'N');
       setIncluded(result?.fvexclimportind === 'N');
     }
   }, [disableEdit]);
@@ -294,6 +307,27 @@ const ProjectedVacancyCard = (props) => {
   };
   /* eslint-enable quote-props */
 
+  const includeCheckbox = (
+    <CheckBox
+      id={`included-checkbox-${id}`}
+      label="Included"
+      value={included}
+      onCheckBoxClick={() => setIncluded(!included)}
+      disabled={disableIncluded}
+    />
+  );
+
+  const importCheckbox = (
+    <CheckBox
+      id={`imported-checkbox-${id}`}
+      label="Import to Cycle"
+      // TODO: Add cycle name to label
+      value={cycleImport}
+      onCheckBoxClick={() => setCycleImport(!cycleImport)}
+      disabled={disableImport}
+    />
+  );
+
   return (
     <TabbedCard
       tabs={[{
@@ -306,13 +340,22 @@ const ProjectedVacancyCard = (props) => {
               form={form}
             />
             <div className="toggle-include">
-              <CheckBox
-                id={`included-checkbox-${id}`}
-                label="Included"
-                value={included}
-                onCheckBoxClick={() => setIncluded(!included)}
-                disabled={disableIncluded}
-              />
+              {!disableIncluded ? includeCheckbox :
+                <Tooltip
+                  title="Bureau users must cancel other edit drafts before attempting to edit the include selections."
+                  arrow
+                >
+                  {includeCheckbox}
+                </Tooltip>
+              }
+              {enableCycleImport() && (!disableImport ? importCheckbox :
+                <Tooltip
+                  title="AO users must select a Cycle filter and cancel other edit drafts before attempting to edit the import selections."
+                  arrow
+                >
+                  {importCheckbox}
+                </Tooltip>
+              )}
             </div>
           </div>
         ),
@@ -329,6 +372,8 @@ ProjectedVacancyCard.propTypes = {
   }),
   updateIncluded: PropTypes.func,
   disableIncluded: PropTypes.bool,
+  updateImport: PropTypes.func,
+  disableImport: PropTypes.bool,
   disableEdit: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
@@ -349,6 +394,8 @@ ProjectedVacancyCard.defaultProps = {
   },
   updateIncluded: EMPTY_FUNCTION,
   disableIncluded: false,
+  updateImport: EMPTY_FUNCTION,
+  disableImport: false,
   disableEdit: false,
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,

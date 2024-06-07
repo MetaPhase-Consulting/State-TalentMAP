@@ -34,6 +34,13 @@
   }
 }
 
+.ba-run-audit {
+  cursor: pointer;
+  a {
+    text-decoration-line: none;
+  }
+}
+
 .ba-card {
   background-color: $color-white;
   border: 1px solid $bg-gray-dark-3;
@@ -46,6 +53,19 @@
 .ba-flex-end {
   display: flex;
   justify-content: end;
+}
+.ba-delete-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ba-delete-button {
+  background-color: transparent;
+  color: $primary-blue;
+  &:hover {
+    background-color: transparent;
+    color: $primary-blue;
+  }
 }
 
 .position-content--container {

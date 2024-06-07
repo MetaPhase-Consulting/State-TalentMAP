@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import { formatDateFromStr, renderSelectionList } from 'utilities';
+import { formatDateFromStr, formatLang, renderSelectionList } from 'utilities';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
@@ -63,9 +63,9 @@ const PublishablePositionCard = ({
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
-      { 'Publishable Status': data?.status || DEFAULT_TEXT },
-      { 'Language': data?.language || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combinedPPGrade },
+      { 'Publishable Status': data?.psCD || DEFAULT_TEXT },
+      { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
@@ -143,8 +143,8 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
-      { 'Language': data?.language || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combinedPPGrade },
+      { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     inputBody: (
       <div className="position-form">

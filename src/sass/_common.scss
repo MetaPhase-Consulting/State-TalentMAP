@@ -249,6 +249,11 @@ $values in $filters-sizing-config {
   font-weight: bold;
 }
 
+.input-default {
+  background-color: $color-white;
+  border: 1px solid $bg-gray-dark-2;
+}
+
 .viewing-results-and-dropdown--fullscreen {
   align-items: center;
   display: flex;

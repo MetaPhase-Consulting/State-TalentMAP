@@ -41,11 +41,15 @@ const BidAudit = () => {
       title: 'Run Dynamic Audit to Update Bid Counts?',
       button: false,
       content: (
-        <div>
-          <div>Will update the bid counts for all Positions within all Active Cycles,</div>
-          <div>that have at least one Bid Audit.</div>
-          <button onClick={submitUpdateBidCount} type="submit">Yes</button>
-          <button onClick={cancelUpdateBidCount}>Cancel</button>
+        <div className="simple-action-modal">
+          <div className="help-text">
+            <span>Will update the bid counts for all Positions within all Active Cycles,</span>
+            <div>that have at least one Bid Audit.</div>
+          </div>
+          <div className="modal-controls">
+            <button onClick={submitUpdateBidCount} type="submit">Yes</button>
+            <button className="usa-button-secondary" onClick={cancelUpdateBidCount}>Cancel</button>
+          </div>
         </div>
       ),
     });
@@ -241,7 +245,7 @@ const BidAudit = () => {
                   onClick={() => setOpenModal(true)}
                 >
                   <FA name="plus" />
-                  Create New Audit Cycle
+                  Create New Audit
                 </a>
               </div>
             </span>
