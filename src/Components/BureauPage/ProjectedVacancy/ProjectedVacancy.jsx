@@ -5,14 +5,19 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { sortBy } from 'lodash';
+import { usePrevious } from 'hooks';
 import {
   projectedVacancyEdit, projectedVacancyFetchData, projectedVacancyFilters,
   projectedVacancyLangOffsetOptions, projectedVacancyLangOffsets, saveProjectedVacancySelections,
 } from 'actions/projectedVacancy';
 import { onEditModeSearch, renderSelectionList, userHasPermissions } from 'utilities';
+import { PANEL_MEETINGS_PAGE_SIZES } from 'Constants/Sort';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
+import SelectForm from 'Components/SelectForm';
+import TotalResults from 'Components/TotalResults';
 import ScrollUpButton from 'Components/ScrollUpButton';
+import PaginationWrapper from 'Components/PaginationWrapper';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import ProjectedVacancyCard from '../../ProjectedVacancyCard/ProjectedVacancyCard';
 
@@ -38,10 +43,16 @@ const ProjectedVacancy = () => {
   const positionsData = useSelector(state => state.projectedVacancy);
   const positionsLoading = useSelector(state => state.projectedVacancyFetchDataLoading);
   const positionsErrored = useSelector(state => state.projectedVacancyFetchDataErrored);
-  const positions = positionsData?.length ? positionsData : [];
   const languageOffsets = useSelector(state => state.projectedVacancyLangOffsets) || [];
   const languageOffsetsLoading = useSelector(state => state.projectedVacancyLangOffsetsLoading);
   const languageOffsetsErrored = useSelector(state => state.projectedVacancyLangOffsetsErrored);
+
+  const [page, setPage] = useState(userSelections?.page || 1);
+  const [limit, setLimit] = useState(userSelections?.limit || 5);
+  const positions = positionsData?.results?.length ? positionsData?.results : [];
+  const prevPage = usePrevious(page);
+  const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
+  const count = positions?.length;
 
   const [includedPositions, setIncludedPositions] = useState([]);
   const [importedPositions, setImportedPositions] = useState([]);
@@ -93,6 +104,8 @@ const ProjectedVacancy = () => {
   ) || [];
 
   const getQuery = () => ({
+    limit,
+    page,
     bureaus: selectedBureaus?.map(o => o?.code),
     organizations: selectedOrganizations?.map(o => o?.short_description),
     bidSeasons: selectedBidSeasons?.map(o => o?.code),
@@ -114,6 +127,8 @@ const ProjectedVacancy = () => {
   };
 
   const getCurrentInputs = () => ({
+    limit,
+    page,
     selectedBureaus,
     selectedOrganizations,
     selectedGrades,
@@ -123,35 +138,13 @@ const ProjectedVacancy = () => {
     selectedCycle,
   });
 
-  const filterSelectionValid = () => {
-    // valid if: at least two distinct filters
-    const fils = [
-      selectedBureaus,
-      selectedOrganizations,
-      selectedGrades,
-      selectedLanguages,
-      selectedSkills,
-      selectedBidSeasons,
-    ];
-    const a = [];
-    fils.forEach(f => { if (f.length) { a.push(true); } });
-    if (selectedCycle) {
-      a.push(true);
-    }
-    return a.length > 1;
-  };
-
   const getOverlay = () => {
     let overlay;
     if (resultsLoading) {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
-    } else if (positionsData?.length >= 500) {
-      overlay = <Alert type="error" title="Result Load Reached Limit" messages={[{ body: 'The number of searched projected vacancies is too high to be displayed. Please refine the filter criteria.' }]} />;
     } else if (resultsErrored) {
       overlay = <Alert type="error" title="Error displaying Projected Vacancies" messages={[{ body: 'Please try again.' }]} />;
-    } else if (!filterSelectionValid()) {
-      overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 distinct filters to search.' }]} />;
-    } else if (!positionsData?.length) {
+    } else if (!positionsData?.results?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No projected vacancies for filter inputs.' }]} />;
     } else {
       return false;
@@ -199,7 +192,7 @@ const ProjectedVacancy = () => {
     }
   }, [importedPositions]);
 
-  const fetchAndSet = () => {
+  const fetchAndSet = (resetPage = false) => {
     const f = [
       selectedBureaus,
       selectedOrganizations,
@@ -213,15 +206,25 @@ const ProjectedVacancy = () => {
     } else {
       setClearFilters(true);
     }
-    if (filterSelectionValid()) {
-      dispatch(projectedVacancyFetchData(getQuery()));
-      dispatch(saveProjectedVacancySelections(getCurrentInputs()));
+    if (resetPage) {
+      setPage(1);
     }
+    dispatch(projectedVacancyFetchData(getQuery()));
+    dispatch(saveProjectedVacancySelections(getCurrentInputs()));
   };
 
   useEffect(() => {
-    fetchAndSet();
+    fetchAndSet(false);
+  }, [page]);
+
+  useEffect(() => {
+    if (prevPage) {
+      fetchAndSet(true);
+    } else {
+      fetchAndSet(false);
+    }
   }, [
+    limit,
     selectedBureaus,
     selectedOrganizations,
     selectedGrades,
@@ -259,13 +262,13 @@ const ProjectedVacancy = () => {
   const markAsIncluded = () => {
     const updatedPvs = [];
     positions.forEach(p => {
-      const include = includedPositions.find(o => o === p.future_vacancy_seq_num);
-      const currentValue = p.future_vacancy_exclude_import_indicator;
+      const include = includedPositions.find(o => o === p.fvseqnum);
+      const currentValue = p.fvexclimportind;
       const needsUpdate = (currentValue === 'Y' && include) || (currentValue === 'N' && !include);
 
       // Exclude is NULL when Status: Expired, Inactive, Proposed
       let excludeIndicator = null;
-      let statusCode = p.future_vacancy_status_code;
+      let statusCode = p.fvscode;
 
       if (include) {
         // Exclude is N when Status: Active
@@ -277,7 +280,7 @@ const ProjectedVacancy = () => {
       }
 
       if (needsUpdate) {
-        const overrideTED = p.future_vacancy_override_tour_end_date;
+        const overrideTED = p.fvoverrideteddate;
         updatedPvs.push({
           ...p,
           future_vacancy_override_tour_end_date: overrideTED ?
@@ -299,7 +302,7 @@ const ProjectedVacancy = () => {
       const needsUpdate = (currentValue === 'Y' && imported) || (currentValue === 'N' && !imported);
 
       if (needsUpdate) {
-        const overrideTED = p.future_vacancy_override_tour_end_date;
+        const overrideTED = p.fvoverrideteddate;
         updatedPvs.push({
           ...p,
           future_vacancy_override_tour_end_date: overrideTED ?
@@ -429,7 +432,6 @@ const ProjectedVacancy = () => {
           </div>
         </div>
       </div>
-      <ScrollUpButton />
       {disableSearch &&
         <Alert
           type="warning"
@@ -441,7 +443,24 @@ const ProjectedVacancy = () => {
           }]}
         />
       }
-      {getOverlay() ||
+      {getOverlay() || <>
+        <div className="viewing-results-and-dropdown--fullscreen padding-top results-dropdown">
+          <TotalResults
+            total={count}
+            pageNumber={page}
+            pageSize={limit}
+            suffix="Results"
+            isHidden={false}
+          />
+          <ScrollUpButton />
+          <SelectForm
+            className="panel-select"
+            options={pageSizes.options}
+            label="Results:"
+            defaultSort={limit}
+            onSelectOption={e => setLimit(e.target.value)}
+          />
+        </div>
         <div className="usa-width-one-whole position-search--results mt-20">
           <div className="double-action-banner">
             <div className="selected-submission-row">
@@ -524,8 +543,16 @@ const ProjectedVacancy = () => {
               />
             ))}
           </div>
+          <div className="usa-grid-full react-paginate">
+            <PaginationWrapper
+              pageSize={limit}
+              onPageChange={(p) => setPage(p.page)}
+              forcePage={page}
+              totalResults={count}
+            />
+          </div>
         </div>
-      }
+      </>}
     </div>
   );
 };
