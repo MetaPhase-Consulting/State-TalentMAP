@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import { formatDateFromStr, formatLang, renderSelectionList } from 'utilities';
+import { formatLang, renderSelectionList } from 'utilities';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
@@ -17,7 +16,6 @@ import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { checkFlag } from '../../flags';
 import PositionClassification from './PositionClassification/PositionClassification';
 
-
 const PP_CLASSIFICATIONS_FLAG = () => checkFlag('flags.publishable_positions_classifications');
 const PP_FLAG = () => checkFlag('flags.publishable_positions_additional');
 const DETO_RWA_FLAG = () => checkFlag('flags.deto_rwa');
@@ -27,10 +25,6 @@ const hardcodedFilters = {
   cycleFilters: [{ code: 1, description: '2010 Winter' }, { code: 2, description: '2007 Fall' }, { code: 3, description: '2009 Spring' }],
   todFilters: [{ code: 1, description: '' }, { code: 2, description: 'OTHER' }, { code: 3, description: 'INDEFINITE' }],
   functionalBureauFilters: [{ code: 1, description: '' }, { code: 2, description: 'bureau' }, { code: 3, description: 'bureau' }],
-};
-
-const onRestore = (e) => {
-  e.preventDefault();
 };
 
 const PublishablePositionCard = ({
@@ -64,8 +58,8 @@ const PublishablePositionCard = ({
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
       { 'PP/Grade': data?.combinedPPGrade },
-      { 'Publishable Status': data?.psCD || DEFAULT_TEXT },
-      { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
+      { 'Publishable Status': data?.psDesc || DEFAULT_TEXT },
+      { 'Languages': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
@@ -75,13 +69,11 @@ const PublishablePositionCard = ({
       : [],
     textarea: data?.positionDetails || 'No description.',
     metadata: [
-      { 'Last Updated': formatDateFromStr(data?.lastUpdated) },
+      { 'Capsule Last Updated': data?.positionDetailsLastUpdated },
+      { 'Position Last Updated': data?.positionLastUpdated },
     ],
     /* eslint-enable quote-props */
   };
-  if (PP_FLAG()) {
-    sections.subheading.push({ '': <Link to="#" onClick={onRestore} >Restore</Link> });
-  }
   if (DETO_RWA_FLAG()) {
     sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
   }
@@ -117,8 +109,8 @@ const PublishablePositionCard = ({
     const editData = {
       posSeqNum: data?.posSeqNum,
       positionDetails: textArea,
-      lastUpdatedUserID: data?.lastUpdatedUserID,
-      lastUpdated: data?.lastUpdated,
+      lastUpdatedUserID: data?.positionLastUpdatedUserID,
+      lastUpdated: data?.ORIGpositionLastUpdated,
     };
     onSubmit(editData);
   };
