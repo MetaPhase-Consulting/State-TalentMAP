@@ -40,11 +40,6 @@ const BiddingToolCard = (props) => {
   const resultIsLoading = (isCreate ?
     useSelector(state => state.biddingToolCreateDataLoading) :
     useSelector(state => state.biddingToolFetchDataLoading)) || false;
-  const deleteErrored = useSelector(state => state.biddingToolDeleteErrored);
-  const createErrored = useSelector(state => state.biddingToolCreateErrored);
-  const createSuccess = useSelector(state => state.biddingToolCreateSuccess);
-  const editErrored = useSelector(state => state.biddingToolEditErrored);
-  const editLoading = useSelector(state => state.biddingToolEditLoading);
 
   const locations = result?.locations || [];
   const statuses = result?.statuses || [];
@@ -272,19 +267,15 @@ const BiddingToolCard = (props) => {
   const onSubmit = () => {
     if (isCreate) {
       dispatch(biddingToolCreate(values));
-      const createdId = createSuccess?.data;
-      if (!createErrored && createdId) {
-        history.push(`${rootLocation()}/${createdId}`);
-      }
     } else {
-      dispatch(biddingToolEdit({
-        ...values,
-        updater_id: result?.updater_id,
-        updated_date: result?.updated_date,
-      }));
-      if (!editLoading && !editErrored) {
-        setEditMode(false);
-      }
+      dispatch(biddingToolEdit(
+        {
+          ...values,
+          updater_id: result?.updater_id,
+          updated_date: result?.updated_date,
+        },
+        () => setEditMode(false),
+      ));
     }
   };
 
@@ -319,15 +310,14 @@ const BiddingToolCard = (props) => {
   };
 
   const onDelete = () => {
-    dispatch(biddingToolDelete({
-      location: id,
-      updater_id: result?.updater_id,
-      updated_date: result?.updated_date,
-    }));
-    swal.close();
-    if (!deleteErrored) {
-      history.push(rootLocation());
-    }
+    dispatch(biddingToolDelete(
+      {
+        location: id,
+        updater_id: result?.updater_id,
+        updated_date: result?.updated_date,
+      },
+      () => swal.close(),
+    ));
   };
   const showDeleteModal = () => {
     swal({
