@@ -469,6 +469,16 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'superuser',
           ],
         } : null,
+      checkFlag('flags.projected_vacancy') ?
+        {
+          text: 'Projected Vacancy Management',
+          route: '/profile/ao/projectedvacancy',
+          icon: ' fa-keyboard-o',
+          roles: [
+            'superuser',
+            'bureau_user',
+          ],
+        } : null,
       {
         text: 'Available Bidders',
         route: '/profile/ao/availablebidders',

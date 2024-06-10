@@ -13,6 +13,7 @@ import PublishablePositions from 'Components/PublishablePositions/PublishablePos
 import AssignmentsSeparations from 'Components/AssignmentsSeparations';
 import BidderPortfolio from 'Containers/BidderPortfolio';
 import BiddingTool from '../BiddingFunctionsPage/BiddingTool/BiddingTool';
+import ProjectedVacancy from '../BureauPage/ProjectedVacancy';
 
 const AoPage = () => (
   <div className="usa-grid-full profile-content-container">
@@ -20,6 +21,7 @@ const AoPage = () => (
       <Route path="/profile/ao/employeeagendas" render={() => <EmployeeAgendaSearch isCDO={false} viewType="ao" />} />
       <Route path="/profile/ao/agendaitemhistory/:id" render={() => <AgendaItemHistory isCDO={false} viewType="ao" />} />
       <Route path="/profile/ao/editagendaitem/:id/:agendaID" render={() => <AgendaItemMaintenanceContainer isCDO={false} />} />
+      <Route path="/profile/ao/projectedvacancy" render={() => <ProjectedVacancy isCDO={false} isAO />} />
       <Route path="/profile/ao/createagendaitem/:id" render={() => <AgendaItemMaintenanceContainer isCDO={false} />} />
       <Route path="/profile/ao/panelmeetings" render={() => <PanelMeetingSearch isCDO={false} />} />
       <Route path="/profile/ao/availablebidders" render={() => <AvailableBidderContainer isCDO={false} isAO />} />
