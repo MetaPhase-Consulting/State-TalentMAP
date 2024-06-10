@@ -30,6 +30,7 @@ const ProjectedVacancyCard = (props) => {
     updateImport,
     disableImport,
     disableEdit,
+    isAO,
     onEditModeSearch,
     onSubmit,
     selectOptions,
@@ -313,7 +314,7 @@ const ProjectedVacancyCard = (props) => {
       label="Included"
       value={included}
       onCheckBoxClick={() => setIncluded(!included)}
-      disabled={disableIncluded}
+      disabled={disableIncluded || isAO}
     />
   );
 
@@ -375,6 +376,7 @@ ProjectedVacancyCard.propTypes = {
   updateImport: PropTypes.func,
   disableImport: PropTypes.bool,
   disableEdit: PropTypes.bool,
+  isAO: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
   selectOptions: PropTypes.shape({
@@ -397,6 +399,7 @@ ProjectedVacancyCard.defaultProps = {
   updateImport: EMPTY_FUNCTION,
   disableImport: false,
   disableEdit: false,
+  isAO: false,
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
   selectOptions: {

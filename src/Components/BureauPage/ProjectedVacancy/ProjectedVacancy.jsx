@@ -527,10 +527,11 @@ const ProjectedVacancy = () => {
                   ) || {}
                 }
                 updateIncluded={onIncludedUpdate}
-                disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode}
+                disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode || isAo}
                 updateImport={onImportUpdate}
                 disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode}
-                disableEdit={includedInEditMode || importInEditMode || disableSearch}
+                disableEdit={includedInEditMode || importInEditMode || disableSearch || isAo}
+                isAO={isAo}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
                 }
