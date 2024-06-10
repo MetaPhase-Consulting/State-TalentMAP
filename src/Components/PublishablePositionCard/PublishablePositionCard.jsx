@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
@@ -16,7 +15,6 @@ import TabbedCard from 'Components/TabbedCard';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { checkFlag } from '../../flags';
 import PositionClassification from './PositionClassification/PositionClassification';
-
 
 const PP_CLASSIFICATIONS_FLAG = () => checkFlag('flags.publishable_positions_classifications');
 const PP_FLAG = () => checkFlag('flags.publishable_positions_additional');
