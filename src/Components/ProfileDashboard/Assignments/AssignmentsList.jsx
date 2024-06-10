@@ -58,7 +58,7 @@ const AssignmentList = ({ id, showMaintainAssignmentLink }) => {
           {
             showMaintainAssignmentLink && showMaintainAssignments &&
               <div className="section-padded-inner-container small-link-container view-more-link-centered">
-                <Link to={`/profile/ao/${id}/assignments`}>Maintain Assignments</Link>
+                <Link to={`/profile/ao/${id}/assignmentsseparations`}>Maintain Assignments</Link>
               </div>
           }
         </div>

@@ -5,6 +5,8 @@
 .mt-50 { margin-top: 50px; }
 .mt-100 { margin-top: 100px; }
 
+.mr-30 { margin-right: 30px; }
+
 .mb-10 { margin-bottom: 10px; }
 .mb-20 { margin-bottom: 20px; }
 
@@ -29,7 +31,11 @@
 .pbl-20 { padding-block: 20px; }
 
 
+.height-80 { height: 80px; }
 .height-100 { height: 100px; }
+.min-height-50 { min-height: 50px; }
+.min-height-100 { min-height: 100px; }
+.min-height-150 { min-height: 150px; }
 
 
 .min-width-155 { min-width: 155px; }
@@ -46,6 +52,7 @@
 
 .display-flex { display: flex; }
 .justify-space-between { justify-content: space-between; }
+.justify-flex-end { justify-content: flex-end; }
 
 
 .breadcrumb-container {
@@ -97,6 +104,7 @@ $values in $filters-sizing-config {
 .disabled-action, .disabled-action>* {
   color: $color-gray;
   cursor: default;
+  pointer-events: none;
 }
 
 .align-right { text-align: right; }
@@ -242,4 +250,23 @@ $values in $filters-sizing-config {
 
 .font-bold {
   font-weight: bold;
+}
+
+.input-default {
+  background-color: $color-white;
+  border: 1px solid $bg-gray-dark-2;
+}
+
+.viewing-results-and-dropdown--fullscreen {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-inline: 35px;
+
+  label {
+    font-size: 13px;
+    margin-right: 10px;
+    margin-top: 8px;
+  }
 }

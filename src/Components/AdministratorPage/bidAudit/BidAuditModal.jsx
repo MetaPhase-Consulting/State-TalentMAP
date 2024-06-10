@@ -1,93 +1,126 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import Picky from 'react-picky';
+import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
-import { getGenericFilterOptions, renderSelectionList } from 'utilities';
-import TextareaAutosize from 'react-textarea-autosize';
-import swal from '@sweetalert/with-react';
+import { bidAuditCreateAudit, bidAuditFetchCycles } from 'actions/bidAudit';
+import { formatDate } from 'utilities';
+import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
 
-const BidAuditModal = ({ data, auditNumber }) => {
-  const genericData$ = data?.filters || [];
-  const assignmentCycleOptions = getGenericFilterOptions(genericData$, 'bidCycle', 'name');
+const BidAuditModal = ({ setOpen }) => {
+  const dispatch = useDispatch();
 
-  const [assignmentCycles, setAssignmentCycles] = useState('');
+  useEffect(() => {
+    dispatch(bidAuditFetchCycles());
+  }, []);
+
+  const cycleOptions = useSelector(state => state.bidAuditCycles);
+  const cycleOptionsLoading = useSelector(state => state.bidAuditFetchCyclesLoading);
+  const cycleOptionsErrored = useSelector(state => state.bidAuditFetchCyclesErrored);
+
+  const [assignmentCycle, setAssignmentCycle] = useState('');
   const [auditDescription, setAuditDescription] = useState('');
   const [postByDate, setPostByDate] = useState('');
 
-  const datePickerRef = useRef(null);
+  const cancel = () => setOpen(false);
 
-  const cancel = () => swal.close();
-  const submit = () => swal.close();
+  const submit = () => {
+    const formData = {
+      id: assignmentCycle.id,
+      auditNumber: assignmentCycle.audit_number,
+      postByDate: formatDate(postByDate),
+      auditDescription,
+    };
+    dispatch(bidAuditCreateAudit(formData, () => setOpen(false)));
+  };
 
-  const pickyProps = {
-    numberDisplayed: 1,
-    multiple: false,
-    includeFilter: true,
-    dropdownHeight: 255,
-    renderList: renderSelectionList,
-    includeSelectAll: false,
+  const handleCycleSelection = (id) => {
+    const cycle = cycleOptions.find(x => x.id === Number(id));
+    setAssignmentCycle(cycle);
+  };
+
+  const getOverlay = () => {
+    let overlay;
+    if (cycleOptionsLoading) {
+      overlay = <Spinner type="standard-center" size="small" />;
+    } else if (cycleOptionsErrored) {
+      overlay = <Alert type="error" title="Error loading cycles" messages={[{ body: 'Please close and try again.' }]} />;
+    } else {
+      return false;
+    }
+    return overlay;
   };
 
   return (
-    <div className="pt-20 bid-audit-modal-wrapper">
-      <div className="usa-width-one-whole position-search--filters--ba results-dropdown">
-        <div className="bid-audit-modal-input">
-          <span className="label">Audit Number: {auditNumber}</span>
+    <div className="modal-child bid-audit-modal-wrapper">
+      <div className="usa-width-one-whole">
+        <div className="ba-modal-title">
+          Create New Audit Cycle
         </div>
-        <div className="bid-audit-modal-input">
-          <div className="label">Assignment Cycle:</div>
-          <Picky
-            {...pickyProps}
-            placeholder="Select Assignment Cycle(s)"
-            value={assignmentCycles}
-            options={assignmentCycleOptions}
-            onChange={setAssignmentCycles}
-            valueKey="id"
-            labelKey="name"
-          />
-        </div>
-        <div className="bid-audit-modal-input">
-          <div className="label">Posted By Date:</div>
-          <span className="date-picker-validation-container larger-date-picker">
-            <FA name="fa-regular fa-calendar" className="fa fa-calendar" onClick={() => datePickerRef.current.setOpen(true)} />
-            <FA name="times" className={`${postByDate ? '' : 'hide'} fa-close`} onClick={() => setPostByDate(null)} />
-            <DatePicker
-              selected={postByDate}
-              onChange={(date) => setPostByDate(date)}
-              dateFormat="MM/dd/yyyy"
-              ref={datePickerRef}
-            />
-          </span>
-        </div>
-        <div className="bid-audit-modal-input">
-          <div className="label">Audit Description:</div>
-          <TextareaAutosize
-            maxRows={2}
-            minRows={1}
-            maxlength="100"
-            name="description"
-            defaultValue={auditDescription}
-            onChange={(e) => setAuditDescription(e.target.value)}
-          />
-        </div>
-        <div className="word-count">
-          {auditDescription?.length} / 100
-        </div>
-        <div className="bid-audit-modal-buttons">
-          <button onClick={submit} type="submit">Submit</button>
-          <button onClick={cancel}>Cancel</button>
-        </div>
+        {getOverlay() || <>
+          <div className="ba-form">
+            <div className="ba-modal-div">
+              <div>Audit Number:</div>
+              <span className="bid-audit-modal-number">{assignmentCycle?.audit_number || '--'}</span>
+            </div>
+            <div className="ba-modal-div">
+              <div>Assignment Cycle:</div>
+              <select
+                defaultValue=""
+                value={assignmentCycle?.id}
+                className="bid-audit-modal-input"
+                onChange={(e) => handleCycleSelection(e.target.value)}
+              >
+                <option value="" disabled />
+                {cycleOptions?.map(cycle => (
+                  <option key={cycle.id} value={cycle.id}>
+                    {cycle.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="ba-modal-div">
+              <div>Positions Posted By:</div>
+              <span className="date-picker-validation-container larger-date-picker">
+                <FA name="fa-regular fa-calendar" className="fa fa-calendar" />
+                <DatePicker
+                  selected={postByDate}
+                  onChange={(date) => setPostByDate(date)}
+                  dateFormat="MM/dd/yyyy"
+                />
+                <FA name="times" className={`${postByDate ? '' : 'hide'} fa-close`} onClick={() => setPostByDate('')} />
+              </span>
+            </div>
+            <div className="ba-modal-div">
+              <div>Audit Description:</div>
+              <div>
+                <input
+                  type="text"
+                  maxLength="100"
+                  autoComplete="off"
+                  name="description"
+                  className="bid-audit-modal-input"
+                  onChange={(e) => setAuditDescription(e.target.value)}
+                />
+                <div className="bid-audit-modal-word-count">
+                  {auditDescription?.length} / 100
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="position-form--actions">
+            <button type="cancel" onClick={cancel}>Cancel</button>
+            <button type="submit" onClick={submit} disabled={!assignmentCycle || !auditDescription || !postByDate}>Submit</button>
+          </div>
+        </>}
       </div>
     </div>
   );
 };
 
 BidAuditModal.propTypes = {
-  data: PropTypes.shape({
-    filters: PropTypes.shape({}),
-  }).isRequired,
-  auditNumber: PropTypes.number.isRequired,
+  setOpen: PropTypes.func.isRequired,
 };
 
 export default BidAuditModal;

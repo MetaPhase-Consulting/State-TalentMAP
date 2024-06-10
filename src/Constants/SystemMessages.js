@@ -167,6 +167,11 @@ export const UPDATE_AGENDA_ITEM_SUCCESS = 'This Agenda Item has been saved succe
 export const UPDATE_AGENDA_ITEM_ERROR_TITLE = 'Agenda Item Error';
 export const UPDATE_AGENDA_ITEM_ERROR = 'There was an issue attempting to save this Agenda Item. Please try again.';
 
+export const DELETE_AGENDA_ITEM_SUCCESS_TITLE = 'Agenda Item Deleted';
+export const DELETE_AGENDA_ITEM_SUCCESS = 'This Agenda Item has been deleted successfully.';
+export const DELETE_AGENDA_ITEM_ERROR_TITLE = 'Agenda Item Error';
+export const DELETE_AGENDA_ITEM_ERROR = 'There was an issue attempting to delete this Agenda Item. Please try again.';
+
 export const ADD_FREQUENT_POSITION_ERROR_TITLE = 'Frequent Position Error';
 export const ADD_FREQUENT_POSITION_ERROR = 'Error adding Frequent Position. Please try again.';
 
@@ -210,15 +215,15 @@ export const ADD_TO_PROPOSED_CYCLE_SUCCESS = 'Positions have been successfully a
 export const ADD_TO_PROPOSED_CYCLE_ERROR_TITLE = 'Error Adding to Proposed Cycle';
 export const ADD_TO_PROPOSED_CYCLE_ERROR = 'There was an issue attempting to add the positions to the proposed cycle. Please try again.';
 
-export const REMOVE_CYCLE_POSITION_SUCCESS_TITLE = 'Cycle Position Removed';
-export const REMOVE_CYCLE_POSITION_SUCCESS = 'Cycle Position has been removed.';
-export const REMOVE_CYCLE_POSITION_ERROR_TITLE = 'Cycle Position Delete Error';
-export const REMOVE_CYCLE_POSITION_ERROR = 'There was an issue attempting to remove this Cycle Position. Please try again.';
-
 export const EDIT_CYCLE_POSITION_SUCCESS_TITLE = 'Cycle Position Updated';
 export const EDIT_CYCLE_POSITION_SUCCESS = 'The Cycle Position has been updated';
 export const EDIT_CYCLE_POSITION_ERROR_TITLE = 'Cycle Position Edit Error';
 export const EDIT_CYCLE_POSITION_ERROR = 'There was an issue attempting to update this Cycle Position. Please try again.';
+
+export const EDIT_CYCLE_CLASSIFICATIONS_SUCCESS_TITLE = 'Cycle Date Classifications Updated';
+export const EDIT_CYCLE_CLASSIFICATIONS_SUCCESS = 'The Cycle Date Classifications have been updated';
+export const EDIT_CYCLE_CLASSIFICATIONS_ERROR_TITLE = 'Cycle Date Classifications Edit Error';
+export const EDIT_CYCLE_CLASSIFICATIONS_ERROR = 'There was an issue attempting to update the Cycle Date Classifications. Please try again.';
 
 export const EDIT_ASSIGNMENT_SUCCESS_TITLE = 'Assignment Updated';
 export const EDIT_ASSIGNMENT_SUCCESS = 'The Assignment has been updated';
@@ -285,10 +290,40 @@ export const UPDATE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully sa
 export const UPDATE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const UPDATE_BID_AUDIT_ERROR = 'There was an issue attempting to save this Bid Audit. Please try again.';
 
+export const UPDATE_BID_AUDIT_SUCCESS_TITLE_2 = 'Bid Audit Updates Saved';
+export const UPDATE_BID_AUDIT_SUCCESS_2 = 'This Bid Audit has been successfully updated.';
+export const UPDATE_BID_AUDIT_ERROR_TITLE_2 = 'Bid Audit Update Error';
+export const UPDATE_BID_AUDIT_ERROR_2 = 'There was an issue attempting to update this Bid Audit. Please try again.';
+
+export const CREATE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Created';
+export const CREATE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully created.';
+export const CREATE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Creation Error';
+export const CREATE_BID_AUDIT_ERROR = 'There was an issue attempting to create this Bid Audit. Please try again.';
+
+export const CREATE_BID_AUDIT_CATEGORY_SUCCESS_TITLE = 'In-Skill Added';
+export const CREATE_BID_AUDIT_CATEGORY_SUCCESS = 'New In-Skill Category has been successfully added.';
+export const CREATE_BID_AUDIT_CATEGORY_ERROR_TITLE = 'In-Skill Creation Error';
+export const CREATE_BID_AUDIT_CATEGORY_ERROR = 'There was an issue attempting to add this In-Skill Category. Please try again.';
+
+export const CREATE_BID_AUDIT_GRADE_SUCCESS_TITLE = 'At-Grade Added';
+export const CREATE_BID_AUDIT_GRADE_SUCCESS = 'New At-Grade has been successfully added.';
+export const CREATE_BID_AUDIT_GRADE_ERROR_TITLE = 'At-Grade Creation Error';
+export const CREATE_BID_AUDIT_GRADE_ERROR = 'There was an issue attempting to add this At-Grade. Please try again.';
+
 export const DELETE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Deleted';
 export const DELETE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully deleted.';
 export const DELETE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
 export const DELETE_BID_AUDIT_ERROR = 'There was an issue attempting to delete this Bid Audit. Please try again.';
+
+export const DELETE_IN_CATEGORY_AT_GRADE_SUCCESS_TITLE = 'Deleted';
+export const DELETE_IN_CATEGORY_AT_GRADE_SUCCESS = 'This relationship has been successfully deleted.';
+export const DELETE_IN_CATEGORY_AT_GRADE_ERROR_TITLE = 'Delete Error';
+export const DELETE_IN_CATEGORY_AT_GRADE_ERROR = 'There was an issue attempting to delete this relationship. Please try again.';
+
+export const RUN_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Run';
+export const RUN_BID_AUDIT_SUCCESS = 'This Bid Audit has successfully run.';
+export const RUN_BID_AUDIT_ERROR_TITLE = 'Error Running Bid Audit';
+export const RUN_BID_AUDIT_ERROR = 'There was an issue attempting to run this Bid Audit. Please try again.';
 
 export const UPDATE_BID_COUNT_SUCCESS_TITLE = 'Bid Counts Updated';
 export const UPDATE_BID_COUNT_SUCCESS = 'The Dynamic Audit has run successfully.';
@@ -357,3 +392,23 @@ export const CREATE_POSITION_CLASSIFICATION_SUCCESS_TITLE = 'Position Clasificat
 export const CREATE_POSITION_CLASSIFICATION_SUCCESS = 'This Position Clasifications has been successfully created.';
 export const CREATE_POSITION_CLASSIFICATION_ERROR_TITLE = 'Position Clasifications Error';
 export const CREATE_POSITION_CLASSIFICATION_ERROR = 'There was an issue attempting to create this Position Clasifications. Please try again.';
+
+export const UPDATE_ALT_ASSIGNMENT_SUCCESS_TITLE = 'Assignment Updated';
+export const UPDATE_ALT_ASSIGNMENT_SUCCESS = 'This Assignment has been successfully updated.';
+export const UPDATE_ALT_ASSIGNMENT_ERROR_TITLE = 'Assignment Update Error';
+export const UPDATE_ALT_ASSIGNMENT_ERROR = 'There was an issue attempting to update this Assignment. Please try again.';
+
+export const CREATE_ALT_ASSIGNMENT_SUCCESS_TITLE = 'Assignment Created';
+export const CREATE_ALT_ASSIGNMENT_SUCCESS = 'This Assignment has been successfully created.';
+export const CREATE_ALT_ASSIGNMENT_ERROR_TITLE = 'Assignment Creation Error';
+export const CREATE_ALT_ASSIGNMENT_ERROR = 'There was an issue attempting to create this Assignment. Please try again.';
+
+export const UPDATE_ALT_SEPARATION_SUCCESS_TITLE = 'Separation Updated';
+export const UPDATE_ALT_SEPARATION_SUCCESS = 'This Separation has been successfully updated.';
+export const UPDATE_ALT_SEPARATION_ERROR_TITLE = 'Separation Update Error';
+export const UPDATE_ALT_SEPARATION_ERROR = 'There was an issue attempting to update this Separation. Please try again.';
+
+export const CREATE_ALT_SEPARATION_SUCCESS_TITLE = 'Separation Created';
+export const CREATE_ALT_SEPARATION_SUCCESS = 'This Separation has been successfully created.';
+export const CREATE_ALT_SEPARATION_ERROR_TITLE = 'Separation Creation Error';
+export const CREATE_ALT_SEPARATION_ERROR = 'There was an issue attempting to create this Separation. Please try again.';

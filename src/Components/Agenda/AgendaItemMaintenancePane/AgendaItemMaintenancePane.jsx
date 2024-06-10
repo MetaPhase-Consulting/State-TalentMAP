@@ -34,6 +34,7 @@ const AgendaItemMaintenancePane = (props) => {
     sendMaintenancePaneInfo,
     legCount,
     saveAI,
+    removeAI,
     updateFormMode,
     sendAsgSepBid,
     asgSepBidData,
@@ -145,7 +146,10 @@ const AgendaItemMaintenancePane = (props) => {
 
   useDidMountEffect(() => {
     setPositionNumber('');
-  }, [pos_results]);
+    if (!pos_results_loading && isEmpty(pos_results)) {
+      setInputClass('input-error');
+    }
+  }, [pos_results, pos_results_loading]);
 
   useDidMountEffect(() => {
     if (pos_results_errored) {
@@ -159,8 +163,6 @@ const AgendaItemMaintenancePane = (props) => {
     } else if (pos_results_loading) {
       setInputClass('loading-animation--3');
     } else if (posNumError) {
-      setInputClass('input-error');
-    } else if (isEmpty(pos_results) && selectedPositionNumber.length) {
       setInputClass('input-error');
     } else {
       setInputClass('input-default');
@@ -362,13 +364,21 @@ const AgendaItemMaintenancePane = (props) => {
     setIsNewSeparation();
     setPanelCat('S');
   };
-
   return (
     <div className="ai-maintenance-header">
       {!unitedLoading &&
         <>
           <div className="back-save-btns-container">
             <BackButton />
+            { agendaItem?.id &&
+            <button
+              className="delete-btn min-width-155"
+              onClick={removeAI}
+              disabled={agendaItem?.pmi_official_item_num}
+            >
+              Delete Agenda Item
+            </button>
+            }
             <button
               className={validationButton?.classNames}
               onClick={validationButton.clickFunction}
@@ -640,6 +650,7 @@ AgendaItemMaintenancePane.propTypes = {
   sendAsgSepBid: PropTypes.func,
   setIsNewSeparation: PropTypes.func,
   saveAI: PropTypes.func,
+  removeAI: PropTypes.func,
   legCount: PropTypes.number,
   agendaItem: AGENDA_ITEM.isRequired,
   readMode: PropTypes.bool,
@@ -672,6 +683,7 @@ AgendaItemMaintenancePane.defaultProps = {
   sendMaintenancePaneInfo: EMPTY_FUNCTION,
   sendAsgSepBid: EMPTY_FUNCTION,
   saveAI: EMPTY_FUNCTION,
+  removeAI: EMPTY_FUNCTION,
   updateFormMode: EMPTY_FUNCTION,
   legCount: 0,
   readMode: true,

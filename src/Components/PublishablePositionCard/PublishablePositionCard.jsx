@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import Picky from 'react-picky';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import { formatDateFromStr, renderSelectionList } from 'utilities';
+import { formatLang, renderSelectionList } from 'utilities';
+import DatePicker from 'react-datepicker';
+import FA from 'react-fontawesome';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
 import CheckBox from 'Components/CheckBox';
@@ -13,7 +15,6 @@ import TabbedCard from 'Components/TabbedCard';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { checkFlag } from '../../flags';
 import PositionClassification from './PositionClassification/PositionClassification';
-
 
 const PP_CLASSIFICATIONS_FLAG = () => checkFlag('flags.publishable_positions_classifications');
 const PP_FLAG = () => checkFlag('flags.publishable_positions_additional');
@@ -26,17 +27,21 @@ const hardcodedFilters = {
   functionalBureauFilters: [{ code: 1, description: '' }, { code: 2, description: 'bureau' }, { code: 3, description: 'bureau' }],
 };
 
-
 const PublishablePositionCard = ({
-  data, onEditModeSearch, onSubmit, disableEdit,
+  data, onEditModeSearch, onSubmit, disableEdit, disableEditDetails,
   additionalCallsLoading, onShowMorePP }) => {
   // =============== Overview: View Mode ===============
 
+  // !!!!
+  // once we integrate with these, we'll want to update
+  // the Export to show and grab the new values
+  // !!!!
   const additionalRO = [
     { TED: data?.status || DEFAULT_TEXT },
     { Incumbent: data?.status || DEFAULT_TEXT },
     { 'Default TOD': data?.status || DEFAULT_TEXT },
     { Assignee: data?.status || DEFAULT_TEXT },
+    // read comment above
     { 'Post Differential | Danger Pay': data?.status || DEFAULT_TEXT },
     { 'Employee ID': data?.status || DEFAULT_TEXT },
     { 'Employee Status': data?.status || DEFAULT_TEXT },
@@ -52,9 +57,9 @@ const PublishablePositionCard = ({
     bodyPrimary: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
-      { 'Publishable Status': data?.status || DEFAULT_TEXT },
-      { 'Language': data?.language || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combinedPPGrade },
+      { 'Publishable Status': data?.psDesc || DEFAULT_TEXT },
+      { 'Languages': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
@@ -64,11 +69,11 @@ const PublishablePositionCard = ({
       : [],
     textarea: data?.positionDetails || 'No description.',
     metadata: [
-      { 'Last Updated': formatDateFromStr(data?.lastUpdated) },
+      { 'Capsule Last Updated': data?.positionDetailsLastUpdated },
+      { 'Position Last Updated': data?.positionLastUpdated },
     ],
     /* eslint-enable quote-props */
   };
-
   if (DETO_RWA_FLAG()) {
     sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
   }
@@ -89,6 +94,7 @@ const PublishablePositionCard = ({
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
+  const [ppDate, setPpDate] = useState('');
 
 
   const [textArea, setTextArea] = useState(data?.positionDetails || 'No description.');
@@ -103,8 +109,8 @@ const PublishablePositionCard = ({
     const editData = {
       posSeqNum: data?.posSeqNum,
       positionDetails: textArea,
-      lastUpdatedUserID: data?.lastUpdatedUserID,
-      lastUpdated: data?.lastUpdated,
+      lastUpdatedUserID: data?.positionLastUpdatedUserID,
+      lastUpdated: data?.ORIGpositionLastUpdated,
     };
     onSubmit(editData);
   };
@@ -116,6 +122,12 @@ const PublishablePositionCard = ({
     setTextArea(data?.positionDetails || 'No description.');
     setSelectedFuncBureau('');
     setOverrideTOD('');
+    setPpDate('');
+  };
+
+  const datePickerRef = useRef(null);
+  const openDatePicker = () => {
+    datePickerRef.current.setOpen(true);
   };
 
   const form = {
@@ -123,8 +135,8 @@ const PublishablePositionCard = ({
     staticBody: [
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
-      { 'PP/Grade': data?.combined_pp_grade },
-      { 'Language': data?.language || DEFAULT_TEXT },
+      { 'PP/Grade': data?.combinedPPGrade },
+      { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     inputBody: (
       <div className="position-form">
@@ -134,6 +146,8 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-position-statuses">Publishable Status</label>
                 <select
+                  disabled={disableEditDetails}
+                  className="publishable-position-inputs"
                   id="publishable-position-statuses"
                   defaultValue={status}
                   onChange={(e) => setStatus(e?.target.value)}
@@ -148,6 +162,7 @@ const PublishablePositionCard = ({
               <div className="position-form--input">
                 <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
+                  className="publishable-position-inputs"
                   id="publishable-pos-tod-override"
                   defaultValue={overrideTOD}
                   onChange={(e) => setOverrideTOD(e?.target.value)}
@@ -165,6 +180,7 @@ const PublishablePositionCard = ({
                 id="exclude-checkbox"
                 label="Exclude Position from Bid Audit"
                 value={exclude}
+                disabled={disableEditDetails}
                 onCheckBoxClick={e => setExclude(e)}
               />
               {DETO_RWA_FLAG() &&
@@ -221,6 +237,21 @@ const PublishablePositionCard = ({
               valueKey="code"
               labelKey="description"
             />
+            <div className="position-form--label-input-container">
+              <label htmlFor="status">Position TED</label>
+              <div className="date-wrapper-react larger-date-picker">
+                <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
+                <FA name="times" className={`${ppDate ? '' : 'hide'}`} onClick={() => setPpDate(null)} />
+                <DatePicker
+                  id={'pp-date'}
+                  selected={ppDate}
+                  onChange={setPpDate}
+                  dateFormat="MM/dd/yyyy"
+                  placeholderText="MM/DD/YYYY"
+                  ref={datePickerRef}
+                />
+              </div>
+            </div>
             <div className="pt-20">
               <div className="content-divider" />
               <div className="position-form--heading">
@@ -296,6 +327,7 @@ PublishablePositionCard.propTypes = {
   cycles: BID_CYCLES.isRequired,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
+  disableEditDetails: PropTypes.bool,
   disableEdit: PropTypes.bool,
   additionalCallsLoading: PropTypes.bool,
   filters: PropTypes.shape({
@@ -307,6 +339,7 @@ PublishablePositionCard.propTypes = {
 PublishablePositionCard.defaultProps = {
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
+  disableEditDetails: false,
   disableEdit: false,
   additionalCallsLoading: false,
   onShowMorePP: EMPTY_FUNCTION,

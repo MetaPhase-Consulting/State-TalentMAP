@@ -39,49 +39,44 @@
   font-size: 0;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, .4);
-  z-index: 10000;
-  pointer-events: none;
+  z-index: 900;
+  pointer-events: all;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.asg-modal-container {
-  width: 1200px;
-  max-width: calc(100vw - 100px);
-  max-height: calc(100vh - 100px);
-  font-size: 1.2rem;
-  border-radius: 1rem;
-  pointer-events: auto;
-  overflow-y: auto;
+.modal-container {
+  position: relative;
+  z-index: 900;
 
-  .tabbed-card {
-    margin-block: 0px;
+  .modal-close {
+    z-index: 1000;
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    color: $bg-gray-dark-2;
+    height: auto;
+    width: auto;
+    pointer-events: all;
   }
 
-  .position-number-container {
-    position: relative;
-    .input-default {
-      background-color: $color-white;
-      border: 1px solid $bg-gray-dark-2;
-    }
-    .input-error {
-       background-color: $color-red-lightest;
-       border: 1px solid $color-red;
-    }
-    .add-pos-num-icon {
-      color: $primary-blue;
-      margin-left: -25px;
-      position: absolute;
-      top: 66px;
-      left: 300px;
-    }
-    .add-pos-num-icon:hover {
-      color: $primary-blue-darkest;
-    }
-    .fa {
-      padding-left: 0px;
-    }
+  .modal-child {
+    width: 1200px;
+    max-width: calc(100vw - 100px);
+    max-height: calc(100vh - 100px);
+    font-size: 16px;
+    border-radius: 1rem;
+    pointer-events: auto;
+    overflow-y: auto;
+    margin-block: 0px;
+    z-index: 900;
+  }
+
+  .tm-spinner-standard-center {
+    left: 50% !important;
   }
 }
 

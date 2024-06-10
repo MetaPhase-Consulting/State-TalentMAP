@@ -1,3 +1,5 @@
+// ================ ASSIGNMENT LIST ================
+
 export function assignmentHasErrored(state = false, action) {
   switch (action.type) {
     case 'ASSIGNMENT_HAS_ERRORED':
@@ -23,18 +25,46 @@ export function assignment(state = [], action) {
   }
 }
 
-// Alt Assignment uses FSBID 1:1 proc
-export function altAssignmentHasErrored(state = false, action) {
+// ================ ALTERNATIVE ASSIGNMENTS AND SEPARATIONS LIST ================
+
+export function altAssignmentsSeparationsErrored(state = false, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_HAS_ERRORED':
+    case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function altAssignmentIsLoading(state = true, action) {
+export function altAssignmentsSeparationsLoading(state = true, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_IS_LOADING':
+    case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function altAssignmentsSeparations(state = [], action) {
+  switch (action.type) {
+    case 'ALT_ASSIGNMENTS_SEPARATIONS_FETCH_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
+// ================ ALTERNATIVE ASSIGNMENT DETAIL ================
+
+export function altAssignmentErrored(state = false, action) {
+  switch (action.type) {
+    case 'ALT_ASSIGNMENT_FETCH_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function altAssignmentLoading(state = true, action) {
+  switch (action.type) {
+    case 'ALT_ASSIGNMENT_FETCH_LOADING':
       return action.isLoading;
     default:
       return state;
@@ -42,37 +72,36 @@ export function altAssignmentIsLoading(state = true, action) {
 }
 export function altAssignment(state = [], action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_FETCH_DATA_SUCCESS':
-      return action.altAssignment;
+    case 'ALT_ASSIGNMENT_FETCH_SUCCESS':
+      return action.data;
     default:
       return state;
   }
 }
 
+// ================ ALTERNATIVE SEPARATION DETAIL ================
 
-// Alt Assignment Detail uses FSBID 1:1 proc for ref data and options
-export function altAssignmentDetailHasErrored(state = false, action) {
+export function altSeparationErrored(state = false, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_DETAIL_HAS_ERRORED':
+    case 'ALT_SEPARATION_ERRORED':
       return action.hasErrored;
     default:
       return state;
   }
 }
-export function altAssignmentDetailIsLoading(state = true, action) {
+export function altSeparationLoading(state = true, action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_DETAIL_IS_LOADING':
+    case 'ALT_SEPARATION_LOADING':
       return action.isLoading;
     default:
       return state;
   }
 }
-export function altAssignmentDetail(state = [], action) {
+export function altSeparation(state = [], action) {
   switch (action.type) {
-    case 'ALT_ASSIGNMENT_DETAIL_FETCH_DATA_SUCCESS':
-      return action.altAssignmentDetail;
+    case 'ALT_SEPARATION_SUCCESS':
+      return action.data;
     default:
       return state;
   }
 }
-//

@@ -1,6 +1,6 @@
 .larger-date-picker {
   .react-datepicker {
-    font-size: 1em;
+    font-size: 14px;
   }
 
   .react-datepicker__header {
@@ -19,7 +19,7 @@
   }
 
   .react-datepicker__current-month {
-    font-size: 1em;
+    font-size: 14px;
   }
 
   .react-datepicker__navigation {
@@ -47,7 +47,7 @@ $date-picker-width: 300px;
 
 .date-wrapper-react {
   padding-left: 10px;
-  
+
   .fa-calendar-o,
   .fa-calendar {
     color: $blue-primary;
@@ -138,25 +138,36 @@ $date-picker-width: 300px;
   .tm-datepicker::placeholder {
     color: $bg-gray-dark-2;
   }
+
   .tm-date-picker-range {
     font-size: 13px;
     height: 28px;
     border: 1px solid $bg-gray-dark-2;
   }
+
   .react-datepicker-popper {
     z-index: 10;
   }
+
   .react-datepicker__close-icon {
     padding: 0px;
     margin: 0px 5px 0px 0px;
+
     &::after {
       font-size: 20px;
       color: $alert-red;
       line-height: unset;
       background-color: transparent;
     }
+
     &:hover {
       background-color: transparent;
     }
+  }
+}
+
+.form-date-picker {
+  .react-datepicker-wrapper {
+    width: 300px;
   }
 }

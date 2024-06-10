@@ -1,9 +1,19 @@
+/* eslint-disable sort-imports */
 import {
-  bidAudit,
-  bidAuditEdit,
-  bidAuditErrored,
+  bidAuditFetchData,
   bidAuditFetchDataErrored,
   bidAuditFetchDataLoading,
+  bidAuditCycles,
+  bidAuditFetchCyclesLoading,
+  bidAuditSecondFetchData,
+  bidAuditSecondFetchDataErrored,
+  bidAuditSecondFetchDataLoading,
+  bidAuditSecondFetchModalData,
+  bidAuditSecondFetchModalDataErrored,
+  bidAuditSecondFetchModalDataLoading,
+  // Below not integrated
+  bidAuditEdit,
+  bidAuditErrored,
   bidAuditFilters,
   bidAuditFiltersFetchDataErrored,
   bidAuditFiltersFetchDataLoading,
@@ -12,11 +22,20 @@ import {
 } from './bidAudit';
 
 export default {
-  bidAudit,
-  bidAuditEdit,
-  bidAuditErrored,
+  bidAuditFetchData,
   bidAuditFetchDataErrored,
   bidAuditFetchDataLoading,
+  bidAuditSecondFetchData,
+  bidAuditSecondFetchDataErrored,
+  bidAuditSecondFetchDataLoading,
+  bidAuditSecondFetchModalData,
+  bidAuditSecondFetchModalDataErrored,
+  bidAuditSecondFetchModalDataLoading,
+  bidAuditCycles,
+  bidAuditFetchCyclesLoading,
+  // Below not integrated
+  bidAuditEdit,
+  bidAuditErrored,
   bidAuditFilters,
   bidAuditFiltersFetchDataErrored,
   bidAuditFiltersFetchDataLoading,
