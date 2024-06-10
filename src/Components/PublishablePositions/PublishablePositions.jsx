@@ -315,7 +315,7 @@ const PublishablePositions = ({ viewType }) => {
               />
             </div>
             <div className="filter-div">
-              <div className="label">Skills:</div>
+              <div className="label">Skill:</div>
               <Picky
                 {...pickyProps}
                 placeholder="Select Skill(s)"

@@ -5,7 +5,7 @@ import Picky from 'react-picky';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { BID_CYCLES, EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
-import { formatDateFromStr, formatLang, renderSelectionList } from 'utilities';
+import { formatLang, renderSelectionList } from 'utilities';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
@@ -58,8 +58,8 @@ const PublishablePositionCard = ({
       { 'Bureau': data?.bureau || DEFAULT_TEXT },
       { 'Organization': data?.org || DEFAULT_TEXT },
       { 'PP/Grade': data?.combinedPPGrade },
-      { 'Publishable Status': data?.psCD || DEFAULT_TEXT },
-      { 'Language': formatLang(data?.languages) || DEFAULT_TEXT },
+      { 'Publishable Status': data?.psDesc || DEFAULT_TEXT },
+      { 'Languages': formatLang(data?.languages) || DEFAULT_TEXT },
     ],
     bodySecondary: PP_FLAG() ?
       [
@@ -69,7 +69,8 @@ const PublishablePositionCard = ({
       : [],
     textarea: data?.positionDetails || 'No description.',
     metadata: [
-      { 'Last Updated': formatDateFromStr(data?.lastUpdated) },
+      { 'Capsule Last Updated': data?.positionDetailsLastUpdated },
+      { 'Position Last Updated': data?.positionLastUpdated },
     ],
     /* eslint-enable quote-props */
   };
@@ -108,8 +109,8 @@ const PublishablePositionCard = ({
     const editData = {
       posSeqNum: data?.posSeqNum,
       positionDetails: textArea,
-      lastUpdatedUserID: data?.lastUpdatedUserID,
-      lastUpdated: data?.lastUpdated,
+      lastUpdatedUserID: data?.positionLastUpdatedUserID,
+      lastUpdated: data?.ORIGpositionLastUpdated,
     };
     onSubmit(editData);
   };
