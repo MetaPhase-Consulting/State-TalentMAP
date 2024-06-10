@@ -38,6 +38,7 @@
     "persona_auth": true,
     "post_handshake": true,
     "projected_vacancy": true,
+    "projected_vacancy_edit": true,
     "projected_vacancy_cycle_import": true,
     "publishable_positions_additional": true,
     "publishable_positions_classifications": true,

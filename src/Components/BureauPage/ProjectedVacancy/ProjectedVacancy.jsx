@@ -22,6 +22,7 @@ import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTi
 import ProjectedVacancyCard from '../../ProjectedVacancyCard/ProjectedVacancyCard';
 
 const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
+const enableEdit = () => checkFlag('flags.projected_vacancy_edit');
 
 // eslint-disable-next-line complexity
 const ProjectedVacancy = () => {
@@ -415,20 +416,22 @@ const ProjectedVacancy = () => {
                 disabled={disableInput}
               />
             </div>
-            <div className="filter-div">
-              <div className="label">Cycle:</div>
-              <Picky
-                {...pickyProps}
-                multiple={false}
-                placeholder="Select Cycle"
-                value={selectedCycle}
-                options={languages}
-                onChange={setSelectedCycle}
-                valueKey="code"
-                labelKey="description"
-                disabled={disableInput}
-              />
-            </div>
+            {enableCycleImport &&
+              <div className="filter-div">
+                <div className="label">Cycle:</div>
+                <Picky
+                  {...pickyProps}
+                  multiple={false}
+                  placeholder="Select Cycle"
+                  value={selectedCycle}
+                  options={languages}
+                  onChange={setSelectedCycle}
+                  valueKey="code"
+                  labelKey="description"
+                  disabled={disableInput}
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -527,10 +530,10 @@ const ProjectedVacancy = () => {
                   ) || {}
                 }
                 updateIncluded={onIncludedUpdate}
-                disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode}
+                disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode || !enableEdit}
                 updateImport={onImportUpdate}
-                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode}
-                disableEdit={includedInEditMode || importInEditMode || disableSearch}
+                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode || !enableEdit}
+                disableEdit={includedInEditMode || importInEditMode || disableSearch || !enableEdit}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
                 }
