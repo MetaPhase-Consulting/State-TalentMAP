@@ -29,10 +29,6 @@ const hardcodedFilters = {
   functionalBureauFilters: [{ code: 1, description: '' }, { code: 2, description: 'bureau' }, { code: 3, description: 'bureau' }],
 };
 
-const onRestore = (e) => {
-  e.preventDefault();
-};
-
 const PublishablePositionCard = ({
   data, onEditModeSearch, onSubmit, disableEdit, disableEditDetails,
   additionalCallsLoading, onShowMorePP }) => {
@@ -79,9 +75,6 @@ const PublishablePositionCard = ({
     ],
     /* eslint-enable quote-props */
   };
-  if (PP_FLAG()) {
-    sections.subheading.push({ '': <Link to="#" onClick={onRestore} >Restore</Link> });
-  }
   if (DETO_RWA_FLAG()) {
     sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
   }
