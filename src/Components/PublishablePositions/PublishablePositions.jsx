@@ -347,7 +347,13 @@ const PublishablePositions = ({ viewType }) => {
       {
         getOverlay() ||
         <>
-          <div className="position-search-controls--results padding-top results-dropdown">
+          <div className="export-button-container mr-30 justify-flex-end">
+            <ExportButton
+              onClick={exportPublishablePositions}
+              isLoading={exportIsLoading}
+            />
+          </div>
+          <div className="viewing-results-and-dropdown--fullscreen padding-top results-dropdown">
             <TotalResults
               total={count}
               pageNumber={page}
@@ -363,12 +369,6 @@ const PublishablePositions = ({ viewType }) => {
               defaultSort={limit}
               onSelectOption={e => setLimit(e.target.value)}
             />
-            <div className="export-button-container">
-              <ExportButton
-                onClick={exportPublishablePositions}
-                isLoading={exportIsLoading}
-              />
-            </div>
           </div>
           {
             editMode &&
