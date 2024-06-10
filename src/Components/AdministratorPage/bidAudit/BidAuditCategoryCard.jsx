@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import swal from '@sweetalert/with-react';
+import { useDispatch } from 'react-redux';
 import { Row } from 'Components/Layout';
 import PositionExpandableContent from 'Components/PositionExpandableContent';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { NO_VALUE } from 'Constants/SystemMessages';
+import swal from '@sweetalert/with-react';
+import { bidAuditDeleteAuditGradeOrCategory, bidAuditUpdateAuditGradeOrCategory } from 'actions/bidAudit';
 
-const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
+const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen, options, refetchFunction, cycleId, auditNbr }) => {
+  const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
+  const [posCode, setPosCode] = useState(data?.position_skill_code);
+  const [empCode, setEmpCode] = useState(data?.employee_skill_code);
 
   useEffect(() => {
     onEditModeSearch(editMode, data?.id);
+    setPosCode(data?.position_skill_code);
+    setEmpCode(data?.employee_skill_code);
   }, [editMode]);
 
   useEffect(() => {
@@ -18,10 +25,53 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
   }, [isOpen]);
 
   const onSubmit = () => {
-    swal.close();
+    dispatch(bidAuditUpdateAuditGradeOrCategory({
+      auditCategoryId: data.id,
+      cycleId,
+      auditNbr,
+      posCode,
+      empCode,
+    },
+    'category',
+    () => refetchFunction(),
+    ));
   };
-  const onCancelForm = () => {
+
+  const onDeleteInCategory = () => {
     swal.close();
+    dispatch(bidAuditDeleteAuditGradeOrCategory(
+      {
+        auditCategoryId: data.id,
+        cycleId,
+        auditNbr,
+      },
+      'category',
+      () => refetchFunction(),
+    ));
+  };
+
+  const onDelete = () => {
+    swal({
+      title: 'Confirm Delete',
+      button: false,
+      closeOnEsc: true,
+      content: (
+        <div className="simple-action-modal">
+          <div className="help-text">
+            <span>{'Are you sure you want to delete this In-Category relationship?'}</span>
+          </div>
+          <div className="modal-controls">
+            <button onClick={onDeleteInCategory}>Yes</button>
+            <button className="usa-button-secondary" onClick={() => swal.close()}>No</button>
+          </div>
+        </div>
+      ),
+    });
+  };
+
+  const onCancelForm = () => {
+    setPosCode(data?.position_skill_code);
+    setEmpCode(data?.employee_skill_code);
   };
 
   // =============== View Mode ===============
@@ -33,22 +83,14 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
       { '': '' },
     ],
     bodyPrimary: [
-      { 'Position Skill Code & Description': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
+      { 'Position Skill': (data.position_skill_code ? `${data.position_skill_code} - ${data.position_skill_desc}` : NO_VALUE) },
       { '': '' },
       { '': '' },
-      { 'Employee Skill Code & Description': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
+      { 'Employee Skill': (data.employee_skill_code ? `${data.employee_skill_code} - ${data.employee_skill_desc}` : NO_VALUE) },
     ],
   };
 
   // =============== Edit Mode ===============
-  const mockData = [
-    { code: 1, name: 'INFORMATION MANAGEMENT' },
-    { code: 2, name: 'SYSTEM MANAGEMENT' },
-    { code: 3, name: 'DATABASE MANAGEMENT' },
-    { code: 4, name: 'PIT' },
-    { code: 5, name: 'INFORMATION ADMIN' },
-    { code: 6, name: 'BUREAU MANAGEMENT' },
-  ];
 
   const inCategoriesForm = {
     /* eslint-disable quote-props */
@@ -57,21 +99,32 @@ const BidAuditCategoryCard = ({ data, onEditModeSearch, isOpen }) => {
       <div className="position-form bid-audit-form">
         <div className="bid-audit-options">
           <div className="filter-div">
-            <div className="label">Position Skill Code - Description:</div>
-            <select>
-              {mockData.map(grade => (
-                <option value={grade?.name} key={grade?.code}>{grade.name}</option>
+            <div className="label">Position Skill:</div>
+            <select
+              value={posCode}
+              onChange={(e) => setPosCode(e.target.value)}
+            >
+              <option value={data?.position_skill_code}>{`(${data?.position_skill_code}) ${data?.position_skill_desc}`}</option>
+              {options?.position_skill_options?.map(option => (
+                <option value={option?.code} key={option?.code}>{`(${option.code}) ${option.text}`}</option>
               ))}
             </select>
           </div>
           <div className="filter-div">
-            <div className="label">Employee Skill Code - Description:</div>
-            <select>
-              {mockData.map(grade => (
-                <option value={grade.code} key={grade?.code}>{grade.name}</option>
+            <div className="label">Employee Skill:</div>
+            <select
+              value={empCode}
+              onChange={(e) => setEmpCode(e.target.value)}
+            >
+              <option value={data?.employee_skill_code}>{`(${data?.employee_skill_code}) ${data?.employee_skill_desc}`}</option>
+              {options?.employee_skill_options?.map(option => (
+                <option value={option?.code} key={option?.code}>{`(${option.code}) ${option.text}`}</option>
               ))}
             </select>
           </div>
+        </div>
+        <div className="ba-delete-button-wrapper">
+          <button onClick={onDelete} className="ba-delete-button">Delete</button>
         </div>
       </div>
     ),
@@ -109,6 +162,19 @@ BidAuditCategoryCard.propTypes = {
   }).isRequired,
   isOpen: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
+  options: PropTypes.shape({
+    position_skill_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+    employee_skill_options: PropTypes.arrayOf(PropTypes.shape({
+      code: PropTypes.string,
+      text: PropTypes.string,
+    })),
+  }).isRequired,
+  cycleId: PropTypes.number.isRequired,
+  auditNbr: PropTypes.number.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
 };
 
 BidAuditCategoryCard.defaultProps = {

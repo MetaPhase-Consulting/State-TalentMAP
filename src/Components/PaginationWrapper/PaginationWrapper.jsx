@@ -58,7 +58,10 @@ class PaginationWrapper extends Component {
 PaginationWrapper.propTypes = {
   previousLabel: PropTypes.node,
   nextLabel: PropTypes.node,
-  pageSize: PropTypes.number.isRequired,
+  pageSize: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   marginPagesDisplayed: PropTypes.number,
   pageRangeDisplayed: PropTypes.number,
   onPageChange: PropTypes.func.isRequired,
