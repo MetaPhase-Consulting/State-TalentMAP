@@ -39,10 +39,6 @@ const ProjectedVacancyCard = (props) => {
 
   const bidSeasons = selectOptions?.bidSeasons?.length ? selectOptions.bidSeasons : [];
   const statuses = selectOptions?.statuses?.length ? selectOptions.statuses : [];
-  const summerLanguageOffsets = selectOptions?.languageOffsets?.summer_language_offsets?.length
-    ? selectOptions.languageOffsets.summer_language_offsets : [];
-  const winterLanguageOffsets = selectOptions?.languageOffsets?.winter_language_offsets?.length
-    ? selectOptions.languageOffsets.winter_language_offsets : [];
 
   const datePickerRef = useRef(null);
   const openDatePicker = () => {
@@ -117,7 +113,7 @@ const ProjectedVacancyCard = (props) => {
         future_vacancy_exclude_import_indicator: status === 'A' ? 'N' :
           result?.fvexclimportind,
         // Placeholder to remind to include this during edit reintegration
-        fvcommenttxt: fvcommenttxt,
+        fvcommenttxt: textArea,
       }],
       language_offsets: {
         position_seq_num: result?.posseqnum,
