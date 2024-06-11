@@ -20,13 +20,10 @@ import PositionExpandableContent from 'Components/PositionExpandableContent';
 
 const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
 
-// eslint-disable-next-line
 const ProjectedVacancyCard = (props) => {
   const {
     result,
-    languageOffsets,
     updateIncluded,
-    disableIncluded,
     updateImport,
     disableImport,
     disableEdit,
@@ -46,7 +43,7 @@ const ProjectedVacancyCard = (props) => {
   };
 
   const [cycleImport, setCycleImport] = useState(result?.fvexclimportind === 'N');
-  const [included, setIncluded] = useState(result?.fvexclimportind === 'N');
+  const [included, setIncluded] = useState(result?.fvexclimportind);
   const [season, setSeason] = useState(result?.fvbsnid);
   const [status, setStatus] = useState(result?.fvscode);
   const [overrideTED, setOverrideTED] =
@@ -55,10 +52,6 @@ const ProjectedVacancyCard = (props) => {
         new Date(result.fvoverrideteddate) :
         null,
     );
-  const [langOffsetSummer, setLangOffsetSummer] =
-    useState(languageOffsets?.language_offset_summer || '');
-  const [langOffsetWinter, setLangOffsetWinter] =
-    useState(languageOffsets?.language_offset_winter || '');
   const [textArea, setTextArea] = useState(result?.fvcommenttxt || '');
 
   // const differentials = {
@@ -78,48 +71,36 @@ const ProjectedVacancyCard = (props) => {
   }, [cycleImport]);
 
   const [editMode, setEditMode] = useState(false);
+
   useEffect(() => {
     onEditModeSearch(editMode, id);
-    if (editMode) {
-      setCycleImport(result?.fvexclimportind === 'N');
-      setIncluded(result?.fvexclimportind === 'N');
-      setSeason(result?.fvbsnid);
-      setStatus(result?.fvscode);
-      setOverrideTED(
+    setCycleImport(result?.fvexclimportind === 'N');
+    setIncluded(result?.fvexclimportind);
+    setSeason(result?.fvbsnid);
+    setStatus(result?.fvscode);
+    setTextArea(result?.fvcommenttxt || '');
+    setOverrideTED(
         result?.fvoverrideteddate ?
           new Date(result.fvoverrideteddate) :
           null,
-      );
-      setLangOffsetSummer(languageOffsets?.language_offset_summer || '');
-      setLangOffsetWinter(languageOffsets?.language_offset_winter || '');
-      setTextArea(result?.fvcommenttxt || '');
-    }
+    );
   }, [editMode]);
+
   useEffect(() => {
     if (!disableEdit) {
       setCycleImport(result?.fvexclimportind === 'N');
-      setIncluded(result?.fvexclimportind === 'N');
     }
   }, [disableEdit]);
 
   const onSubmitForm = () => {
     const editData = {
-      projected_vacancy: [{
-        ...result,
-        bid_season_code: season,
-        future_vacancy_status_code: status,
-        future_vacancy_override_tour_end_date: overrideTED ?
-          overrideTED.toISOString().substring(0, 10) : null,
-        future_vacancy_exclude_import_indicator: status === 'A' ? 'N' :
-          result?.fvexclimportind,
-        // Placeholder to remind to include this during edit reintegration
-        fvcommenttxt: textArea,
-      }],
-      language_offsets: {
-        position_seq_num: result?.posseqnum,
-        language_offset_summer: langOffsetSummer || null,
-        language_offset_winter: langOffsetWinter || null,
-      },
+      ...result,
+      future_vacancy_exclude_import_indicator: included,
+      future_vacancy_bid_season_code: season,
+      future_vacancy_status_code: status,
+      future_vacancy_override_tour_end_date: overrideTED ?
+        overrideTED.toISOString().substring(0, 10) : null,
+      future_vacancy_comment_text: textArea,
     };
     onSubmit(editData, setEditMode(false));
   };
@@ -174,6 +155,7 @@ const ProjectedVacancyCard = (props) => {
       { 'Bid Season': result?.bsndescrtext || DEFAULT_TEXT },
       { 'Tour of Duty': result?.assigneeAssignment[0]?.toddesctext || NO_TOUR_OF_DUTY },
       { 'Languages': displayLangs() },
+      { 'Included': result?.fvexclimportind === 'Y' ? 'Yes' : 'No' },
     ],
     bodySecondary: [
       { 'Bureau': result?.posbureaushortdesc || NO_BUREAU },
@@ -226,7 +208,7 @@ const ProjectedVacancyCard = (props) => {
           <label htmlFor="season">Bid Season</label>
           <select
             id="season"
-            defaultValue={season}
+            value={season}
             onChange={(e) => setSeason(e.target.value)}
           >
             {bidSeasons?.map(b => (
@@ -238,7 +220,7 @@ const ProjectedVacancyCard = (props) => {
           <label htmlFor="status">Status</label>
           <select
             id="status"
-            defaultValue={status}
+            value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
             {statuses?.map(b => (
@@ -260,30 +242,18 @@ const ProjectedVacancyCard = (props) => {
             />
           </div>
         </div>
-        {/* <div className="position-form--label-input-container">
-          <label htmlFor="langOffsetSummer">Language Offset Summer</label>
+        <div className="position-form--label-input-container">
+          <label htmlFor="Included">Included</label>
           <select
-            id="langOffsetSummer"
-            value={langOffsetSummer}
-            onChange={(e) => setLangOffsetSummer(e.target.value)}
+            id="included"
+            value={included}
+            onChange={(e) => setIncluded(e.target.value)}
           >
-            {summerLanguageOffsets?.map(b => (
-              <option key={b.code || 'null'} value={b.code || ''}>{b.description || DEFAULT_TEXT}</option>
-            ))}
+            <option value={''} />
+            <option value={'Y'}>Yes</option>
+            <option value={'N'}>No</option>
           </select>
         </div>
-        <div className="position-form--label-input-container">
-          <label htmlFor="langOffsetWinter">Language Offset Winter</label>
-          <select
-            id="langOffsetWinter"
-            value={langOffsetWinter}
-            onChange={(e) => setLangOffsetWinter(e.target.value)}
-          >
-            {winterLanguageOffsets?.map(b => (
-              <option key={b.code || 'null'} value={b.code || ''}>{b.description || DEFAULT_TEXT}</option>
-            ))}
-          </select>
-        </div> */}
       </div>
       <div className="position-form--label-input-container">
         <Row fluid className="position-form--description">
@@ -295,7 +265,7 @@ const ProjectedVacancyCard = (props) => {
               maxLength="200"
               name="comment"
               placeholder="No Comment"
-              defaultValue={textArea}
+              value={textArea}
               onChange={(e) => setTextArea(e.target.value)}
               draggable={false}
             />
@@ -316,16 +286,6 @@ const ProjectedVacancyCard = (props) => {
     },
   };
   /* eslint-enable quote-props */
-
-  const includeCheckbox = (
-    <CheckBox
-      id={`included-checkbox-${id}`}
-      label="Included"
-      value={included}
-      onCheckBoxClick={() => setIncluded(!included)}
-      disabled={disableIncluded}
-    />
-  );
 
   const importCheckbox = (
     <CheckBox
@@ -349,24 +309,16 @@ const ProjectedVacancyCard = (props) => {
               sections={sections}
               form={form}
             />
-            <div className="toggle-include">
-              {!disableIncluded ? includeCheckbox :
-                <Tooltip
-                  title="Bureau users must cancel other edit drafts before attempting to edit the include selections."
-                  arrow
-                >
-                  {includeCheckbox}
-                </Tooltip>
-              }
-              {enableCycleImport() && (!disableImport ? importCheckbox :
+            {enableCycleImport() && (!disableImport ? importCheckbox :
+              <div className="toggle-include">
                 <Tooltip
                   title="AO users must select a Cycle filter and cancel other edit drafts before attempting to edit the import selections."
                   arrow
                 >
                   {importCheckbox}
                 </Tooltip>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         ),
       }]}
@@ -381,7 +333,6 @@ ProjectedVacancyCard.propTypes = {
     language_offset_winter: PropTypes.string,
   }),
   updateIncluded: PropTypes.func,
-  disableIncluded: PropTypes.bool,
   updateImport: PropTypes.func,
   disableImport: PropTypes.bool,
   disableEdit: PropTypes.bool,
@@ -403,7 +354,6 @@ ProjectedVacancyCard.defaultProps = {
     language_offset_winter: null,
   },
   updateIncluded: EMPTY_FUNCTION,
-  disableIncluded: false,
   updateImport: EMPTY_FUNCTION,
   disableImport: false,
   disableEdit: false,
