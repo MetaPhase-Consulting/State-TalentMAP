@@ -160,11 +160,6 @@ const ProjectedVacancy = () => {
   useEffect(() => {
     if (positions.length) {
       setImportedPositions(originalImport);
-      // const posNums = positions?.map(o => o.position_number);
-      // const uniqPosNums = [...new Set(posNums)];
-      // dispatch(projectedVacancyLangOffsets({
-      //   position_numbers: uniqPosNums || [],
-      // }));
     }
   }, [positions]);
 
