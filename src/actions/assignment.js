@@ -243,8 +243,13 @@ export function assignmentSeparationAction(query, perdet, id, isSeparation, onSu
           });
         })
         .catch((err) => {
+          const errorMsg = err?.response?.data?.error_message;
           if (err?.message !== 'cancel') {
-            dispatch(toastError(`${toastErrorMessage} ${err?.error_message ?? ''}`, toastErrorTitle));
+            if (errorMsg) {
+              dispatch(toastError(`${toastErrorMessage} ${errorMsg}`, toastErrorTitle));
+            } else {
+              dispatch(toastError(toastErrorMessage, toastErrorTitle));
+            }
           }
         });
     };
