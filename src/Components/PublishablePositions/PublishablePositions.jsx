@@ -47,6 +47,19 @@ const PublishablePositions = ({ viewType }) => {
   const filtersIsLoading = useSelector(state => state.publishablePositionsFiltersIsLoading);
   const filters = useSelector(state => state.publishablePositionsFilters);
 
+  const bureauPermissions = useSelector(state => state.userProfile.bureau_permissions);
+
+  const getBureauFilters = () => {
+    const originalBureaus = filters?.bureauFilters;
+    if (originalBureaus && viewType === 'bureau') {
+      const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
+      const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
+      // filter out if user does not have that bureau permission
+      return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.description));
+    }
+    return originalBureaus;
+  };
+
   const [tempsearchPosNum, tempsetSearchPosNum] = useState(userSelections?.searchPosNum || '');
   const [searchPosNum, setSearchPosNum] = useState(userSelections?.searchPosNum || '');
   const [selectedStatuses, setSelectedStatuses] = useState(userSelections?.selectedStatuses || []);
@@ -70,7 +83,7 @@ const PublishablePositions = ({ viewType }) => {
   const count = data$?.length || 0;
 
   const statuses = filters?.statusFilters;
-  const bureaus = filters?.bureauFilters;
+  const bureaus = getBureauFilters();
   const orgs = filters?.orgFilters;
   const grades = filters?.gradeFilters;
   const skills = filters?.skillsFilters;
