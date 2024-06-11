@@ -129,14 +129,25 @@ const PublishablePositions = ({ viewType }) => {
     selectedBidCycles,
   ].flat().filter(text => text !== '').length;
 
+  const filterSelectionValid = () => {
+    // valid if:
+    // not Bureau user
+    // a Bureau filter selected
+    if (viewType === 'bureau') {
+      return selectedBureaus.length > 0;
+    }
+    return true;
+  };
+
   const fetchAndSet = (resetPage = false) => {
     setClearFilters(!!numSelectedFilters);
-
-    if (resetPage) {
-      setPage(1);
+    if (filterSelectionValid()) {
+      if (resetPage) {
+        setPage(1);
+      }
+      dispatch(publishablePositionsFetchData(getQuery()));
+      dispatch(savePublishablePositionsSelections(getCurrentInputs()));
     }
-    dispatch(publishablePositionsFetchData(getQuery()));
-    dispatch(savePublishablePositionsSelections(getCurrentInputs()));
   };
 
   useEffect(() => {
@@ -180,6 +191,8 @@ const PublishablePositions = ({ viewType }) => {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
     } else if (dataHasErrored || filtersHasErrored) {
       overlay = <Alert type="error" title="Error displaying Publishable Positions" messages={[{ body: 'Please try again.' }]} />;
+    } else if (!filterSelectionValid()) {
+      overlay = <Alert type="info" title="Select Bureau Filter" messages={[{ body: 'Please select a Bureau Filter.' }]} />;
     } else if (!data$?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No positions for filter inputs.' }]} />;
     } else {
