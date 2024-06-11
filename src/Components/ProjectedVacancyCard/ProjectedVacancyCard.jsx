@@ -159,10 +159,20 @@ const ProjectedVacancyCard = (props) => {
       { 'Position Title': result?.postitledesc || NO_POSITION_TITLE },
     ],
     bodyPrimary: [
-      { 'Assignee TED': displayTedEmp(result?.assignee_tour_end_date, result?.assignee) },
-      { 'Incumbent TED': displayTedEmp(result?.incumbent_tour_end_date, result?.incumbent) },
-      { 'Bid Season': result?.fvbsnid || DEFAULT_TEXT },
-      { 'Tour of Duty': result?.tour_of_duty_description || NO_TOUR_OF_DUTY },
+      {
+        'Assignee TED': displayTedEmp(
+          result?.assigneeAssignment[0]?.asgdetdteddate,
+          result?.assigneeAssignment[0]?.perpiifullname,
+        )
+      },
+      {
+        'Incumbent TED': displayTedEmp(
+          result?.incumbentAssignment[0]?.asgdetdteddate,
+          result?.incumbentAssignment[0]?.perpiifullname,
+        )
+      },
+      { 'Bid Season': result?.bsndescrtext || DEFAULT_TEXT },
+      { 'Tour of Duty': result?.assigneeAssignment[0]?.toddesctext || NO_TOUR_OF_DUTY },
       { 'Languages': displayLangs() },
     ],
     bodySecondary: [
@@ -190,9 +200,19 @@ const ProjectedVacancyCard = (props) => {
   };
   const form = {
     staticBody: [
-      { 'Assignee TED': displayTedEmp(result?.assignee_tour_end_date, result?.assignee) },
-      { 'Incumbent TED': displayTedEmp(result?.incumbent_tour_end_date, result?.incumbent) },
-      { 'Tour of Duty': result?.tour_of_duty_description || NO_TOUR_OF_DUTY },
+      {
+        'Assignee TED': displayTedEmp(
+          result?.assigneeAssignment[0]?.asgdetdteddate,
+          result?.assigneeAssignment[0]?.perpiifullname,
+        )
+      },
+      {
+        'Incumbent TED': displayTedEmp(
+          result?.incumbentAssignment[0]?.asgdetdteddate,
+          result?.incumbentAssignment[0]?.perpiifullname,
+        )
+      },
+      { 'Tour of Duty': result?.assigneeAssignment[0]?.toddesctext || NO_TOUR_OF_DUTY },
       { 'Languages': displayLangs() },
       { 'Bureau': result?.posbureaushortdesc || NO_BUREAU },
       { 'Location': result?.poslocationcode || NO_POST },
