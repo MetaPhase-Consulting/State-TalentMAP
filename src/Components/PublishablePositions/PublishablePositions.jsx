@@ -47,7 +47,7 @@ const PublishablePositions = ({ viewType }) => {
   const filtersIsLoading = useSelector(state => state.publishablePositionsFiltersIsLoading);
   const filters = useSelector(state => state.publishablePositionsFilters);
 
-  const bureauPermissions = useSelector(state => state.userProfile.bureau_permissions);
+  const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
 
   const getBureauFilters = () => {
     const originalBureaus = filters?.bureauFilters;
