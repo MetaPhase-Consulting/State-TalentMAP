@@ -476,7 +476,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           icon: ' fa-keyboard-o',
           roles: [
             'superuser',
-            'bureau_user',
+            'ao_user',
           ],
         } : null,
       {
