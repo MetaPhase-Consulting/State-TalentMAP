@@ -163,13 +163,13 @@ const ProjectedVacancyCard = (props) => {
         'Assignee TED': displayTedEmp(
           result?.assigneeAssignment[0]?.asgdetdteddate,
           result?.assigneeAssignment[0]?.perpiifullname,
-        )
+        ),
       },
       {
         'Incumbent TED': displayTedEmp(
           result?.incumbentAssignment[0]?.asgdetdteddate,
           result?.incumbentAssignment[0]?.perpiifullname,
-        )
+        ),
       },
       { 'Bid Season': result?.bsndescrtext || DEFAULT_TEXT },
       { 'Tour of Duty': result?.assigneeAssignment[0]?.toddesctext || NO_TOUR_OF_DUTY },
@@ -204,13 +204,13 @@ const ProjectedVacancyCard = (props) => {
         'Assignee TED': displayTedEmp(
           result?.assigneeAssignment[0]?.asgdetdteddate,
           result?.assigneeAssignment[0]?.perpiifullname,
-        )
+        ),
       },
       {
         'Incumbent TED': displayTedEmp(
           result?.incumbentAssignment[0]?.asgdetdteddate,
           result?.incumbentAssignment[0]?.perpiifullname,
-        )
+        ),
       },
       { 'Tour of Duty': result?.assigneeAssignment[0]?.toddesctext || NO_TOUR_OF_DUTY },
       { 'Languages': displayLangs() },
