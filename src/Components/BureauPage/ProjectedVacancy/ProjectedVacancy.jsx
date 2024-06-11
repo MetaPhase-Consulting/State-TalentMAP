@@ -34,6 +34,7 @@ const ProjectedVacancy = () => {
 
   const userProfile = useSelector(state => state.userProfile);
   const isAo = userHasPermissions(['ao_user'], userProfile?.permission_groups);
+  const isBureau = userHasPermissions(['bureau_user'], userProfile?.permission_groups);
 
   const userSelections = useSelector(state => state.projectedVacancySelections);
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
@@ -443,7 +444,8 @@ const ProjectedVacancy = () => {
                 }
                 updateImport={onImportUpdate}
                 disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || !enableEdit}
-                disableEdit={importInEditMode || disableSearch || !enableEdit}
+                disableEdit={importInEditMode || disableSearch || !enableEdit || !isBureau}
+                isBureau={isBureau}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
                 }
