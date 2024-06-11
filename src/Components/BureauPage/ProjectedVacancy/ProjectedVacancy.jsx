@@ -26,6 +26,7 @@ import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTi
 import ProjectedVacancyCard from '../../ProjectedVacancyCard/ProjectedVacancyCard';
 
 const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
+const enableEdit = () => checkFlag('flags.projected_vacancy_edit');
 
 // eslint-disable-next-line complexity
 const ProjectedVacancy = () => {
@@ -33,7 +34,7 @@ const ProjectedVacancy = () => {
 
   const userProfile = useSelector(state => state.userProfile);
   const isAo = userHasPermissions(['ao_user'], userProfile?.permission_groups);
-  const isBureau = userHasPermissions(['bureau_user'], userProfile?.permission_groups);
+  // const isBureau = userHasPermissions(['bureau_user'], userProfile?.permission_groups);
 
   const userSelections = useSelector(state => state.projectedVacancySelections);
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
@@ -357,20 +358,22 @@ const ProjectedVacancy = () => {
                 disabled={disableInput}
               />
             </div>
-            <div className="filter-div">
-              <div className="label">Cycle:</div>
-              <Picky
-                {...pickyProps}
-                multiple={false}
-                placeholder="Select Cycle"
-                value={selectedCycle}
-                options={languages}
-                onChange={setSelectedCycle}
-                valueKey="code"
-                labelKey="description"
-                disabled={disableInput}
-              />
-            </div>
+            {enableCycleImport &&
+              <div className="filter-div">
+                <div className="label">Cycle:</div>
+                <Picky
+                  {...pickyProps}
+                  multiple={false}
+                  placeholder="Select Cycle"
+                  value={selectedCycle}
+                  options={languages}
+                  onChange={setSelectedCycle}
+                  valueKey="code"
+                  labelKey="description"
+                  disabled={disableInput}
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -444,10 +447,9 @@ const ProjectedVacancy = () => {
                     languageOffsets?.find(o => o?.position_number === k?.position_number)
                   ) || {}
                 }
-                disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode}
                 updateImport={onImportUpdate}
-                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle}
-                disableEdit={importInEditMode || disableSearch}
+                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || !enableEdit}
+                disableEdit={importInEditMode || disableSearch || !enableEdit}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
                 }

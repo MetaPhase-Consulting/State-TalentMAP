@@ -7,10 +7,10 @@ import { Tooltip } from 'react-tippy';
 import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { useDidMountEffect } from 'hooks';
-import { formatDate, getDifferentials } from 'utilities';
+import { formatDate } from 'utilities';
 import { EMPTY_FUNCTION, POSITION_DETAILS } from 'Constants/PropTypes';
 import {
-  DEFAULT_TEXT, NO_BUREAU, NO_GRADE, NO_LANGUAGES, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE,
+  DEFAULT_TEXT, NO_BUREAU, NO_LANGUAGES, NO_ORG, NO_POSITION_NUMBER, NO_POSITION_TITLE,
   NO_POST, NO_SKILL, NO_STATUS, NO_TOUR_END_DATE, NO_TOUR_OF_DUTY, NO_UPDATE_DATE,
 } from 'Constants/SystemMessages';
 import { Row } from 'Components/Layout';
@@ -23,7 +23,6 @@ const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import'
 const ProjectedVacancyCard = (props) => {
   const {
     result,
-    languageOffsets,
     updateIncluded,
     updateImport,
     disableImport,
@@ -37,10 +36,6 @@ const ProjectedVacancyCard = (props) => {
 
   const bidSeasons = selectOptions?.bidSeasons?.length ? selectOptions.bidSeasons : [];
   const statuses = selectOptions?.statuses?.length ? selectOptions.statuses : [];
-  const summerLanguageOffsets = selectOptions?.languageOffsets?.summer_language_offsets?.length
-    ? selectOptions.languageOffsets.summer_language_offsets : [];
-  const winterLanguageOffsets = selectOptions?.languageOffsets?.winter_language_offsets?.length
-    ? selectOptions.languageOffsets.winter_language_offsets : [];
 
   const datePickerRef = useRef(null);
   const openDatePicker = () => {
@@ -57,16 +52,15 @@ const ProjectedVacancyCard = (props) => {
         new Date(result.fvoverrideteddate) :
         null,
     );
-
   const [textArea, setTextArea] = useState(result?.fvcommenttxt || '');
 
-  const differentials = {
-    post: {
-      danger_pay: result?.bidding_tool_danger_rate_number,
-      differential_rate: result?.bidding_tool_differential_rate_number,
-      post_bidding_considerations_url: result?.obc_url,
-    },
-  };
+  // const differentials = {
+  //   post: {
+  //     danger_pay: result?.bidding_tool_danger_rate_number,
+  //     differential_rate: result?.bidding_tool_differential_rate_number,
+  //     post_bidding_considerations_url: result?.obc_url,
+  //   },
+  // };
 
   useDidMountEffect(() => {
     updateIncluded(id, included);
@@ -159,17 +153,16 @@ const ProjectedVacancyCard = (props) => {
       { 'Status': result?.fvsdescrtxt || NO_STATUS },
       { 'Organization': result?.posorgshortdesc || NO_ORG },
       { 'TED': formatDate(result?.fvoverrideteddate) || NO_TOUR_END_DATE },
-      {
-        'Language Offset Summer': summerLanguageOffsets?.find(o =>
-          o.code === languageOffsets?.language_offset_summer)?.description || DEFAULT_TEXT,
-      },
-      {
-        'Language Offset Winter': winterLanguageOffsets?.find(o =>
-          o.code === languageOffsets?.language_offset_winter)?.description || DEFAULT_TEXT,
-      },
-      { 'Grade': result?.posgradecode || NO_GRADE },
-      { 'Pay Plan': result?.pospayplancode || NO_GRADE },
-      { 'Post Differential | Danger Pay': getDifferentials(differentials) },
+      // {
+      //   'Language Offset Summer': summerLanguageOffsets?.find(o =>
+      //     o.code === languageOffsets?.language_offset_summer)?.description || DEFAULT_TEXT,
+      // },
+      // {
+      //   'Language Offset Winter': winterLanguageOffsets?.find(o =>
+      //     o.code === languageOffsets?.language_offset_winter)?.description || DEFAULT_TEXT,
+      // },
+      { 'PP/Grade': result?.combinedppgrade },
+      // { 'Post Differential | Danger Pay': getDifferentials(differentials) },
     ],
     textarea: result?.fvcommenttxt || 'No description.',
     metadata: [
@@ -186,9 +179,8 @@ const ProjectedVacancyCard = (props) => {
       { 'Bureau': result?.posbureaushortdesc || NO_BUREAU },
       { 'Location': result?.poslocationcode || NO_POST },
       { 'Organization': result?.posorgshortdesc || NO_ORG },
-      { 'Grade': result?.posgradecode || NO_GRADE },
-      { 'Pay Plan': result?.pospayplancode || NO_GRADE },
-      { 'Post Differential | Danger Pay': getDifferentials(differentials) },
+      { 'PP/Grade': result?.combinedppgrade },
+      // { 'Post Differential | Danger Pay': getDifferentials(differentials) },
     ],
     inputBody: <div className="position-form">
       <div className="position-form--inputs">
@@ -250,16 +242,16 @@ const ProjectedVacancyCard = (props) => {
             <TextareaAutosize
               maxRows={6}
               minRows={6}
-              maxLength="4000"
-              name="position-description"
-              placeholder="No Description"
+              maxLength="200"
+              name="comment"
+              placeholder="No Comment"
               value={textArea}
               onChange={(e) => setTextArea(e.target.value)}
               draggable={false}
             />
           </Linkify>
           <div className="word-count">
-            {textArea.length} / 4,000
+            {textArea.length} / 200
           </div>
         </Row>
       </div>
