@@ -7,8 +7,12 @@ import { checkFlag } from 'flags';
 import { sortBy } from 'lodash';
 import { usePrevious } from 'hooks';
 import {
-  projectedVacancyEdit, projectedVacancyFetchData, projectedVacancyFilters,
-  projectedVacancyLangOffsetOptions, projectedVacancyLangOffsets, saveProjectedVacancySelections,
+  projectedVacancyEdit,
+  projectedVacancyFetchData,
+  projectedVacancyFilters,
+  projectedVacancyLangOffsetOptions,
+  // projectedVacancyLangOffsets,
+  saveProjectedVacancySelections,
 } from 'actions/projectedVacancy';
 import { onEditModeSearch, renderSelectionList, userHasPermissions } from 'utilities';
 import { PANEL_MEETINGS_PAGE_SIZES } from 'Constants/Sort';
@@ -22,6 +26,7 @@ import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTi
 import ProjectedVacancyCard from '../../ProjectedVacancyCard/ProjectedVacancyCard';
 
 const enableCycleImport = () => checkFlag('flags.projected_vacancy_cycle_import');
+const enableEdit = () => checkFlag('flags.projected_vacancy_edit');
 
 // eslint-disable-next-line complexity
 const ProjectedVacancy = () => {
@@ -29,7 +34,6 @@ const ProjectedVacancy = () => {
 
   const userProfile = useSelector(state => state.userProfile);
   const isAo = userHasPermissions(['ao_user'], userProfile?.permission_groups);
-  const isBureau = userHasPermissions(['bureau_user'], userProfile?.permission_groups);
 
   const userSelections = useSelector(state => state.projectedVacancySelections);
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
@@ -54,10 +58,8 @@ const ProjectedVacancy = () => {
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
   const count = positions?.length;
 
-  const [includedPositions, setIncludedPositions] = useState([]);
   const [importedPositions, setImportedPositions] = useState([]);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
-  const [includedInEditMode, setIncludedInEditMode] = useState(false);
   const [importInEditMode, setImportInEditMode] = useState(false);
   const [clearFilters, setClearFilters] = useState(false);
   const [selectedBureaus, setSelectedBureaus] =
@@ -82,19 +84,12 @@ const ProjectedVacancy = () => {
   const bidSeasons = sortBy(filters?.bid_seasons || [], [o => o.description]);
   const organizations = sortBy(filters?.organizations || [], [o => o.description]);
   const statuses = sortBy(filters?.statuses || [], [o => o.description]);
-  // TODO: Include Cycle
 
   const resultsLoading = positionsLoading || languageOffsetsLoading || languageOffsetOptionsLoading;
   const resultsErrored =
     filtersErrored || languageOffsetOptionsErrored || positionsErrored || languageOffsetsErrored;
-  const disableSearch = cardsInEditMode?.length > 0 || includedInEditMode || importInEditMode;
+  const disableSearch = cardsInEditMode?.length > 0 || importInEditMode;
   const disableInput = filtersLoading || resultsLoading || disableSearch;
-
-  const originalIncluded = positions?.filter(
-    p => p.future_vacancy_exclude_import_indicator === 'N',
-  )?.map(
-    k => k.future_vacancy_seq_num,
-  ) || [];
 
   // TODO: Use real field for cycle import in this function
   const originalImport = positions?.filter(
@@ -152,8 +147,8 @@ const ProjectedVacancy = () => {
     return overlay;
   };
 
-  const submitEdit = (editData, onSuccess) => {
-    dispatch(projectedVacancyEdit(getQuery(), editData, onSuccess));
+  const submitEdit = (editData) => {
+    dispatch(projectedVacancyEdit(editData, () => dispatch(projectedVacancyFetchData(getQuery()))));
   };
 
   useEffect(() => {
@@ -164,24 +159,9 @@ const ProjectedVacancy = () => {
 
   useEffect(() => {
     if (positions.length) {
-      setIncludedPositions(originalIncluded);
       setImportedPositions(originalImport);
-      const posNums = positions?.map(o => o.position_number);
-      const uniqPosNums = [...new Set(posNums)];
-      dispatch(projectedVacancyLangOffsets({
-        position_numbers: uniqPosNums || [],
-      }));
     }
   }, [positions]);
-
-  useEffect(() => {
-    const diffExists = originalIncluded?.sort().join(',') !== includedPositions?.sort().join(',');
-    if (diffExists) {
-      setIncludedInEditMode(true);
-    } else {
-      setIncludedInEditMode(false);
-    }
-  }, [includedPositions]);
 
   useEffect(() => {
     const diffExists = originalImport?.sort().join(',') !== importedPositions?.sort().join(',');
@@ -243,55 +223,12 @@ const ProjectedVacancy = () => {
     includeSelectAll: true,
   };
 
-  const onIncludedUpdate = (id, include) => {
-    if (include) {
-      setIncludedPositions([...includedPositions, id]);
-    } else {
-      setIncludedPositions(includedPositions?.filter(x => x !== id));
-    }
-  };
-
   const onImportUpdate = (id, imported) => {
     if (imported) {
       setImportedPositions([...importedPositions, id]);
     } else {
       setImportedPositions(importedPositions?.filter(x => x !== id));
     }
-  };
-
-  const markAsIncluded = () => {
-    const updatedPvs = [];
-    positions.forEach(p => {
-      const include = includedPositions.find(o => o === p.fvseqnum);
-      const currentValue = p.fvexclimportind;
-      const needsUpdate = (currentValue === 'Y' && include) || (currentValue === 'N' && !include);
-
-      // Exclude is NULL when Status: Expired, Inactive, Proposed
-      let excludeIndicator = null;
-      let statusCode = p.fvscode;
-
-      if (include) {
-        // Exclude is N when Status: Active
-        excludeIndicator = 'N';
-        statusCode = 'A';
-      } else if (statusCode === 'X') {
-        // Exclude is Y when Status: Excluded
-        excludeIndicator = 'Y';
-      }
-
-      if (needsUpdate) {
-        const overrideTED = p.fvoverrideteddate;
-        updatedPvs.push({
-          ...p,
-          future_vacancy_override_tour_end_date: overrideTED ?
-            new Date(overrideTED).toISOString().substring(0, 10) : null,
-          future_vacancy_exclude_import_indicator: excludeIndicator,
-          future_vacancy_status_code: statusCode,
-        });
-      }
-    });
-    const editData = { projected_vacancy: updatedPvs };
-    dispatch(projectedVacancyEdit(getQuery(), editData));
   };
 
   const addToProposedCycle = () => {
@@ -312,7 +249,7 @@ const ProjectedVacancy = () => {
       }
     });
     const editData = { projected_vacancy: updatedPvs };
-    dispatch(projectedVacancyEdit(getQuery(), editData));
+    dispatch(projectedVacancyEdit(getQuery(), editData)); // swapped out PV Endpoints - this no longer works
   };
 
   return (filtersLoading ?
@@ -415,20 +352,22 @@ const ProjectedVacancy = () => {
                 disabled={disableInput}
               />
             </div>
-            <div className="filter-div">
-              <div className="label">Cycle:</div>
-              <Picky
-                {...pickyProps}
-                multiple={false}
-                placeholder="Select Cycle"
-                value={selectedCycle}
-                options={languages}
-                onChange={setSelectedCycle}
-                valueKey="code"
-                labelKey="description"
-                disabled={disableInput}
-              />
-            </div>
+            {enableCycleImport &&
+              <div className="filter-div">
+                <div className="label">Cycle:</div>
+                <Picky
+                  {...pickyProps}
+                  multiple={false}
+                  placeholder="Select Cycle"
+                  value={selectedCycle}
+                  options={languages}
+                  onChange={setSelectedCycle}
+                  valueKey="code"
+                  labelKey="description"
+                  disabled={disableInput}
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -455,6 +394,7 @@ const ProjectedVacancy = () => {
           <ScrollUpButton />
           <SelectForm
             className="panel-select"
+            id="panel-select"
             options={pageSizes.options}
             label="Results:"
             defaultSort={limit}
@@ -462,33 +402,8 @@ const ProjectedVacancy = () => {
           />
         </div>
         <div className="usa-width-one-whole position-search--results mt-20">
-          <div className="double-action-banner">
-            <div className="selected-submission-row">
-              <span>
-                {includedPositions?.length} {includedPositions?.length === 1 ? 'Position' : 'Positions'} Marked as Included
-              </span>
-              {(isBureau && includedInEditMode) &&
-                <div>
-                  <button
-                    onClick={() => {
-                      setIncludedInEditMode(false);
-                      setIncludedPositions(originalIncluded);
-                    }}
-                    disabled={!includedPositions?.length}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="usa-button-secondary"
-                    onClick={markAsIncluded}
-                    disabled={!includedPositions?.length}
-                  >
-                    Mark as Included
-                  </button>
-                </div>
-              }
-            </div>
-            {enableCycleImport() &&
+          {enableCycleImport() &&
+            <div className="double-action-banner">
               <div className="selected-submission-row import-row">
                 <span>
                   {importedPositions?.length} {importedPositions?.length === 1 ? 'Position' : 'Positions'} Selected for Import
@@ -514,8 +429,8 @@ const ProjectedVacancy = () => {
                   </div>
                 }
               </div>
-            }
-          </div>
+            </div>
+          }
           <div className="usa-grid-full position-list">
             {positions?.map(k => (
               <ProjectedVacancyCard
@@ -526,11 +441,9 @@ const ProjectedVacancy = () => {
                     languageOffsets?.find(o => o?.position_number === k?.position_number)
                   ) || {}
                 }
-                updateIncluded={onIncludedUpdate}
-                disableIncluded={cardsInEditMode?.length > 0 || !isBureau || importInEditMode || isAo}
                 updateImport={onImportUpdate}
-                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || includedInEditMode}
-                disableEdit={includedInEditMode || importInEditMode || disableSearch || isAo}
+                disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || !enableEdit}
+                disableEdit={importInEditMode || disableSearch || !enableEdit || isAo}
                 isAO={isAo}
                 onEditModeSearch={(editMode, id) =>
                   onEditModeSearch(editMode, id, setCardsInEditMode, cardsInEditMode)
