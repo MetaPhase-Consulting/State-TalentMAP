@@ -353,7 +353,7 @@ const ProjectedVacancy = () => {
                 disabled={disableInput}
               />
             </div>
-            {enableCycleImport &&
+            {enableCycleImport() &&
               <div className="filter-div">
                 <div className="label">Cycle:</div>
                 <Picky
