@@ -16,6 +16,7 @@ import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
+import { history } from '../store';
 
 let cancelBiddingTool;
 
@@ -120,51 +121,27 @@ export function biddingTools() {
 
 // ================ BIDDING TOOL DELETE ================
 
-export function biddingToolDeleteErrored(bool) {
-  return {
-    type: 'BIDDING_TOOL_DELETE_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function biddingToolDeleteLoading(bool) {
-  return {
-    type: 'BIDDING_TOOL_DELETE_LOADING',
-    isLoading: bool,
-  };
-}
-export function biddingToolDeleteSuccess(results) {
-  return {
-    type: 'BIDDING_TOOL_DELETE_SUCCESS',
-    results,
-  };
-}
-export function biddingToolDelete(query) {
+let cancelDelete;
+
+export function biddingToolDelete(query, onSuccess) {
   return (dispatch) => {
-    batch(() => {
-      dispatch(biddingToolDeleteLoading(true));
-      dispatch(biddingToolDeleteErrored(false));
-    });
-    api().delete('/fsbid/bidding_tool/', query)
-      .then(({ data }) => {
-        batch(() => {
-          dispatch(biddingToolDeleteErrored(false));
-          dispatch(biddingToolDeleteSuccess(data));
-          dispatch(toastSuccess(DELETE_BIDDING_TOOL_SUCCESS, DELETE_BIDDING_TOOL_SUCCESS_TITLE));
-          dispatch(biddingToolDeleteLoading(false));
-        });
+    if (cancelDelete) {
+      cancelDelete('cancel');
+    }
+
+    api().delete('/fsbid/bidding_tool/', query, {
+      cancelToken: new CancelToken((c) => { cancelDelete = c; }),
+    })
+      .then(() => {
+        dispatch(toastSuccess(DELETE_BIDDING_TOOL_SUCCESS, DELETE_BIDDING_TOOL_SUCCESS_TITLE));
+        history.push('/profile/biddingtool');
+        if (onSuccess) {
+          onSuccess();
+        }
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
-          batch(() => {
-            dispatch(biddingToolDeleteLoading(true));
-            dispatch(biddingToolDeleteErrored(false));
-          });
-        } else {
-          batch(() => {
-            dispatch(biddingToolDeleteErrored(true));
-            dispatch(toastError(DELETE_BIDDING_TOOL_ERROR, DELETE_BIDDING_TOOL_ERROR_TITLE));
-            dispatch(biddingToolDeleteLoading(false));
-          });
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(DELETE_BIDDING_TOOL_ERROR, DELETE_BIDDING_TOOL_ERROR_TITLE));
         }
       });
   };
@@ -172,51 +149,26 @@ export function biddingToolDelete(query) {
 
 // ================ BIDDING TOOL EDIT ================
 
-export function biddingToolEditErrored(bool) {
-  return {
-    type: 'BIDDING_TOOL_EDIT_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function biddingToolEditLoading(bool) {
-  return {
-    type: 'BIDDING_TOOL_EDIT_LOADING',
-    isLoading: bool,
-  };
-}
-export function biddingToolEditSuccess(results) {
-  return {
-    type: 'BIDDING_TOOL_EDIT_SUCCESS',
-    results,
-  };
-}
-export function biddingToolEdit(query) {
+let cancelEdit;
+
+export function biddingToolEdit(query, onSuccess) {
   return (dispatch) => {
-    batch(() => {
-      dispatch(biddingToolEditLoading(true));
-      dispatch(biddingToolEditErrored(false));
-    });
-    api().put('/fsbid/bidding_tool/', query)
-      .then(({ data }) => {
-        batch(() => {
-          dispatch(biddingToolEditErrored(false));
-          dispatch(biddingToolEditSuccess(data));
-          dispatch(toastSuccess(EDIT_BIDDING_TOOL_SUCCESS, EDIT_BIDDING_TOOL_SUCCESS_TITLE));
-          dispatch(biddingToolEditLoading(false));
-        });
+    if (cancelEdit) {
+      cancelEdit('cancel');
+    }
+
+    api().put('/fsbid/bidding_tool/', query, {
+      cancelToken: new CancelToken((c) => { cancelEdit = c; }),
+    })
+      .then(() => {
+        dispatch(toastSuccess(EDIT_BIDDING_TOOL_SUCCESS, EDIT_BIDDING_TOOL_SUCCESS_TITLE));
+        if (onSuccess) {
+          onSuccess();
+        }
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
-          batch(() => {
-            dispatch(biddingToolEditLoading(true));
-            dispatch(biddingToolEditErrored(false));
-          });
-        } else {
-          batch(() => {
-            dispatch(biddingToolEditErrored(true));
-            dispatch(toastError(EDIT_BIDDING_TOOL_ERROR, EDIT_BIDDING_TOOL_ERROR_TITLE));
-            dispatch(biddingToolEditLoading(false));
-          });
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(EDIT_BIDDING_TOOL_ERROR, EDIT_BIDDING_TOOL_ERROR_TITLE));
         }
       });
   };
@@ -225,51 +177,27 @@ export function biddingToolEdit(query) {
 
 // ================ BIDDING TOOL CREATE ================
 
-export function biddingToolCreateErrored(bool) {
-  return {
-    type: 'BIDDING_TOOL_CREATE_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function biddingToolCreateLoading(bool) {
-  return {
-    type: 'BIDDING_TOOL_CREATE_LOADING',
-    isLoading: bool,
-  };
-}
-export function biddingToolCreateSuccess(results) {
-  return {
-    type: 'BIDDING_TOOL_CREATE_SUCCESS',
-    results,
-  };
-}
-export function biddingToolCreate(query) {
+let cancelCreate;
+
+export function biddingToolCreate(query, onSuccess) {
   return (dispatch) => {
-    batch(() => {
-      dispatch(biddingToolCreateLoading(true));
-      dispatch(biddingToolCreateErrored(false));
-    });
-    api().put('/fsbid/bidding_tool/', query)
-      .then(({ data }) => {
-        batch(() => {
-          dispatch(biddingToolCreateErrored(false));
-          dispatch(biddingToolCreateSuccess(data));
-          dispatch(toastSuccess(CREATE_BIDDING_TOOL_SUCCESS, CREATE_BIDDING_TOOL_SUCCESS_TITLE));
-          dispatch(biddingToolCreateLoading(false));
-        });
+    if (cancelCreate) {
+      cancelCreate('cancel');
+    }
+
+    api().post('/fsbid/bidding_tool/', query, {
+      cancelToken: new CancelToken((c) => { cancelCreate = c; }),
+    })
+      .then((response) => {
+        dispatch(toastSuccess(CREATE_BIDDING_TOOL_SUCCESS, CREATE_BIDDING_TOOL_SUCCESS_TITLE));
+        history.push(`/profile/biddingtool/${response?.O_LOCATION_CODE}`);
+        if (onSuccess) {
+          onSuccess();
+        }
       })
       .catch((err) => {
-        if (err?.message === 'cancel') {
-          batch(() => {
-            dispatch(biddingToolCreateLoading(true));
-            dispatch(biddingToolCreateErrored(false));
-          });
-        } else {
-          batch(() => {
-            dispatch(biddingToolCreateErrored(true));
-            dispatch(toastError(CREATE_BIDDING_TOOL_ERROR, CREATE_BIDDING_TOOL_ERROR_TITLE));
-            dispatch(biddingToolCreateLoading(false));
-          });
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(CREATE_BIDDING_TOOL_ERROR, CREATE_BIDDING_TOOL_ERROR_TITLE));
         }
       });
   };

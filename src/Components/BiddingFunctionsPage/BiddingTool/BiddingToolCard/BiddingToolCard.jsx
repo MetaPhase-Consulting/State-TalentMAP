@@ -40,8 +40,6 @@ const BiddingToolCard = (props) => {
   const resultIsLoading = (isCreate ?
     useSelector(state => state.biddingToolCreateDataLoading) :
     useSelector(state => state.biddingToolFetchDataLoading)) || false;
-  const deleteErrored = useSelector(state => state.biddingToolDeleteErrored);
-  const createErrored = useSelector(state => state.biddingToolCreateErrored);
 
   const locations = result?.locations || [];
   const statuses = result?.statuses || [];
@@ -127,7 +125,37 @@ const BiddingToolCard = (props) => {
   const [values, setValues] = useState(initialValues);
   useEffect(() => {
     if (editMode) {
-      setValues(initialValues);
+      setValues({
+        location: result?.location,
+        status: result?.status,
+        tod: result?.tod,
+        unaccompanied_status: result?.unaccompanied_status,
+        housing: result?.housing,
+        quarters: result?.quarters,
+        efm_issues: result?.efm_issues,
+
+        snd: result?.snd ?? 'N',
+        hds: result?.hds ?? 'N',
+        apo_fpo_dpo: result?.apo_fpo_dpo ?? 'N',
+        consumable_allowance: result?.consumable_allowance ?? 'N',
+        fm_fp: result?.fm_fp ?? 'N',
+        inside_efm_employment: result?.inside_efm_employment ?? 'N',
+        outside_efm_employment: result?.outside_efm_employment ?? 'N',
+
+        cola: result?.cola,
+        differential_rate: result?.differential_rate,
+        danger_pay: result?.danger_pay,
+        climate_zone: result?.climate_zone,
+
+        rr_point: result?.rr_point ?? '',
+        medical: result?.medical ?? '',
+        remarks: result?.remarks ?? '',
+        quarters_remark: result?.quarters_remark ?? '',
+        special_ship_allowance: result?.special_ship_allowance ?? '',
+        school_year: result?.school_year ?? '',
+        grade_education: result?.grade_education ?? '',
+        efm_employment: result?.efm_employment ?? '',
+      });
     }
   }, [editMode]);
 
@@ -139,11 +167,11 @@ const BiddingToolCard = (props) => {
     { 'R & R Point': result?.rr_point || 'None Listed' },
     { 'COLA': result?.cola?.toString() || 'None Listed' },
     { 'Differential Rate': result?.differential_rate?.toString() || 'None Listed' },
-    { 'Consumable Allowance': result?.consumable_allowance ? 'Yes' : 'No' },
-    { 'APO/FPO/DPO': result?.apo_fpo_dpo ? 'Yes' : 'No' },
+    { 'Consumable Allowance': result?.consumable_allowance === 'Y' ? 'Yes' : 'No' },
+    { 'APO/FPO/DPO': result?.apo_fpo_dpo === 'Y' ? 'Yes' : 'No' },
     { 'Danger Pay': result?.danger_pay?.toString() || 'None Listed' },
-    { 'SND': result?.snd ? 'Yes' : 'No' },
-    { 'HDS': result?.hds ? 'Yes' : 'No' },
+    { 'SND': result?.snd === 'Y' ? 'Yes' : 'No' },
+    { 'HDS': result?.hds === 'Y' ? 'Yes' : 'No' },
     { 'Unaccompanied Status': unaccompaniedStatuses.find(o => o.code === result?.unaccompanied_status)?.description || 'None Listed' },
     { 'Housing Type': housingTypes.find(o => o.code === result?.housing_type)?.description || 'None Listed' },
     { 'Quarters': quartersTypes.find(o => o.code === result?.quarters_type)?.description || 'None Listed' },
@@ -239,15 +267,15 @@ const BiddingToolCard = (props) => {
   const onSubmit = () => {
     if (isCreate) {
       dispatch(biddingToolCreate(values));
-      if (!createErrored) {
-        history.push(`${rootLocation()}/${values.location}`);
-      }
     } else {
-      dispatch(biddingToolEdit({
-        ...values,
-        updater_id: result?.updater_id,
-        updated_date: result?.updated_date,
-      }));
+      dispatch(biddingToolEdit(
+        {
+          ...values,
+          updater_id: result?.updater_id,
+          updated_date: result?.updated_date,
+        },
+        () => setEditMode(false),
+      ));
     }
   };
 
@@ -282,15 +310,14 @@ const BiddingToolCard = (props) => {
   };
 
   const onDelete = () => {
-    dispatch(biddingToolDelete({
-      location: id,
-      updater_id: result?.updater_id,
-      updated_date: result?.updated_date,
-    }));
-    swal.close();
-    if (!deleteErrored) {
-      history.push(rootLocation());
-    }
+    dispatch(biddingToolDelete(
+      {
+        location: id,
+        updater_id: result?.updater_id,
+        updated_date: result?.updated_date,
+      },
+      () => swal.close(),
+    ));
   };
   const showDeleteModal = () => {
     swal({
