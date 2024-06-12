@@ -70,10 +70,10 @@ const PublishablePositions = ({ viewType }) => {
     const originalOrgs = filters?.orgFilters;
     if (originalOrgs && isPostView) {
       if (orgPermissions) {
-        const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ short_description }) => short_description);
+        const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ org }) => org);
         const useOrgDescPermissions = Object.keys(orgPermissionsGroups);
         // filter out if user does not have that org permission
-        return originalOrgs.filter((a) => useOrgDescPermissions.includes(a?.description));
+        return originalOrgs.filter((a) => useOrgDescPermissions.includes(a?.org));
       }
       return [];
     }
