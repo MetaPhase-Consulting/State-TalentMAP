@@ -90,6 +90,16 @@ const ProjectedVacancy = ({ viewType }) => {
     return originalBureaus;
   };
 
+  const filterSelectionValid = () => {
+    // valid if:
+    // not Bureau user
+    // a Bureau filter selected
+    if (viewType === 'bureau') {
+      return selectedBureaus.length > 0;
+    }
+    return true;
+  };
+
   const bureaus = getBureauFilters();
   const grades = sortBy(filters?.grades || [], [o => o.code]);
   const skills = sortBy(filters?.skills || [], [o => o.description]);
@@ -152,6 +162,8 @@ const ProjectedVacancy = ({ viewType }) => {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
     } else if (resultsErrored) {
       overlay = <Alert type="error" title="Error displaying Projected Vacancies" messages={[{ body: 'Please try again.' }]} />;
+    } else if (!filterSelectionValid()) {
+      overlay = <Alert type="info" title="Select Bureau Filter" messages={[{ body: 'Please select a Bureau Filter.' }]} />;
     } else if (!positionsData?.results?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No projected vacancies for filter inputs.' }]} />;
     } else {
@@ -199,11 +211,13 @@ const ProjectedVacancy = ({ viewType }) => {
     } else {
       setClearFilters(true);
     }
-    if (resetPage) {
-      setPage(1);
+    if (filterSelectionValid()) {
+      if (resetPage) {
+        setPage(1);
+      }
+      dispatch(projectedVacancyFetchData(getQuery()));
+      dispatch(saveProjectedVacancySelections(getCurrentInputs()));
     }
-    dispatch(projectedVacancyFetchData(getQuery()));
-    dispatch(saveProjectedVacancySelections(getCurrentInputs()));
   };
 
   useEffect(() => {
