@@ -47,12 +47,14 @@ const PublishablePositions = ({ viewType }) => {
   const filtersIsLoading = useSelector(state => state.publishablePositionsFiltersIsLoading);
   const filters = useSelector(state => state.publishablePositionsFilters);
 
+  const isBureauView = viewType === 'bureau';
+  const isPostView = viewType === 'post';
   const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
   const orgPermissions = useSelector(state => state.userProfile?.org_permissions);
 
   const getBureauFilters = () => {
     const originalBureaus = filters?.bureauFilters;
-    if (originalBureaus && viewType === 'bureau') {
+    if (originalBureaus && isBureauView) {
       if (bureauPermissions) {
         const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
         const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
@@ -66,7 +68,7 @@ const PublishablePositions = ({ viewType }) => {
 
   const getOrgFilters = () => {
     const originalOrgs = filters?.orgFilters;
-    if (originalOrgs && viewType === 'post') {
+    if (originalOrgs && isPostView) {
       if (orgPermissions) {
         const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ short_description }) => short_description);
         const useOrgDescPermissions = Object.keys(orgPermissionsGroups);
@@ -99,8 +101,6 @@ const PublishablePositions = ({ viewType }) => {
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
   const count = data$?.length || 0;
-  const isBureauView = viewType === 'bureau';
-  const isPostView = viewType === 'post';
 
   const statuses = filters?.statusFilters;
   const bureaus = getBureauFilters();
