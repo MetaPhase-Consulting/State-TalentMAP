@@ -28,7 +28,7 @@ const BureauPage = () => {
         <Route path="/profile/bureau/managepostaccess" render={() => <ManagePostAccess />} />
         <Route path="/profile/bureau/positionmanager/:type/:id" render={() => <PositionManagerDetails />} />
         <Route path="/profile/bureau/positionmanager" render={() => <PositionManager {...posManagerProps} />} />
-        <Route path="/profile/bureau/projectedvacancy" render={() => <ProjectedVacancy isCDO={false} isAO={false} />} />
+        <Route path="/profile/bureau/projectedvacancy" render={() => <ProjectedVacancy isCDO={false} isAO={false} viewType="bureau" />} />
         <Route path="/profile/bureau/publishablepositions" render={() => <PublishablePositions viewType="bureau" />} />
         <Route path="/profile/bureau/searchpostaccess" render={() => <SearchPostAccess />} />
         <Route path="/profile/bureau/biddingtool/:id" render={() => <BiddingTool />} />
