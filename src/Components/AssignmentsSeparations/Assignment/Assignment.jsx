@@ -182,7 +182,7 @@ const Assignment = (props) => {
     const commonFields = {
       tod_months_num: todMonths || null,
       tod_other_text: todOther || null,
-      tod_adjust_months_num: null,
+      tod_adjust_months_num: adj || null,
       eta,
       etd: ted,
       tod,
@@ -455,6 +455,7 @@ const Assignment = (props) => {
               id="assignment-sent"
               value={sent}
               onChange={(e) => setSent(e?.target.value)}
+              disabled
             />
           </div>
           <div className="position-form--label-input-container">
