@@ -190,7 +190,11 @@ export function biddingToolCreate(query, onSuccess) {
     })
       .then((response) => {
         dispatch(toastSuccess(CREATE_BIDDING_TOOL_SUCCESS, CREATE_BIDDING_TOOL_SUCCESS_TITLE));
-        history.push(`/profile/biddingtool/${response?.O_LOCATION_CODE}`);
+        if (response?.O_LOCATION_CODE) {
+          history.push(`/profile/biddingtool/${response?.O_LOCATION_CODE}`);
+        } else {
+          history.push('/profile/biddingtool');
+        }
         if (onSuccess) {
           onSuccess();
         }
