@@ -99,6 +99,8 @@ const PublishablePositions = ({ viewType }) => {
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
   const count = data$?.length || 0;
+  const isBureauView = viewType === 'bureau';
+  const isPostView = viewType === 'post';
 
   const statuses = filters?.statusFilters;
   const bureaus = getBureauFilters();
@@ -151,8 +153,11 @@ const PublishablePositions = ({ viewType }) => {
     // valid if:
     // not Bureau user
     // a Bureau filter selected
-    if (viewType === 'bureau') {
+    if (isBureauView) {
       return selectedBureaus.length > 0;
+    }
+    if (isPostView) {
+      return selectedOrgs.length > 0;
     }
     return true;
   };
@@ -210,7 +215,11 @@ const PublishablePositions = ({ viewType }) => {
     } else if (dataHasErrored || filtersHasErrored) {
       overlay = <Alert type="error" title="Error displaying Publishable Positions" messages={[{ body: 'Please try again.' }]} />;
     } else if (!filterSelectionValid()) {
-      overlay = <Alert type="info" title="Select Bureau Filter" messages={[{ body: 'Please select a Bureau Filter.' }]} />;
+      if (isBureauView) {
+        overlay = <Alert type="info" title="Select Bureau Filter" messages={[{ body: 'Please select a Bureau Filter.' }]} />;
+      } else {
+        overlay = <Alert type="info" title="Select Org Filter" messages={[{ body: 'Please select a Org Filter.' }]} />;
+      }
     } else if (!data$?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No positions for filter inputs.' }]} />;
     } else {
