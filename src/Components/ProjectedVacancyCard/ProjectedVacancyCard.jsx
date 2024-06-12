@@ -27,6 +27,7 @@ const ProjectedVacancyCard = (props) => {
     updateImport,
     disableImport,
     disableEdit,
+    isBureau,
     onEditModeSearch,
     onSubmit,
     selectOptions,
@@ -308,6 +309,7 @@ const ProjectedVacancyCard = (props) => {
             <PositionExpandableContent
               sections={sections}
               form={form}
+              tempHideEdit={!isBureau}
             />
             {enableCycleImport() && (!disableImport ? importCheckbox :
               <div className="toggle-include">
@@ -336,6 +338,7 @@ ProjectedVacancyCard.propTypes = {
   updateImport: PropTypes.func,
   disableImport: PropTypes.bool,
   disableEdit: PropTypes.bool,
+  isBureau: PropTypes.bool,
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
   selectOptions: PropTypes.shape({
@@ -357,6 +360,7 @@ ProjectedVacancyCard.defaultProps = {
   updateImport: EMPTY_FUNCTION,
   disableImport: false,
   disableEdit: false,
+  isBureau: false,
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
   selectOptions: {
