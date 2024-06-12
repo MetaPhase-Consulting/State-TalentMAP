@@ -26,7 +26,7 @@ const AoPage = () => (
       <Route path="/profile/ao/availablebidders" render={() => <AvailableBidderContainer isCDO={false} isAO />} />
       <Route path="/profile/ao/panelmeetingagendas/:pmID" render={() => <PanelMeetingAgendas isAO />} />
       <Route path="/profile/ao/cyclemanagement" render={() => <CycleManagement isAO />} />
-      <Route path="/profile/ao/projectedvacancy" render={() => <ProjectedVacancy isCDO={false} viewType="ao" />} />
+      <Route path="/profile/ao/projectedvacancy" render={() => <ProjectedVacancy viewType="ao" />} />
       <Route path="/profile/ao/assignmentcycle/:id" render={() => <AssignmentCycleEdit isAO />} />
       <Route path="/profile/ao/cyclepositionsearch/:id" render={() => <CyclePositionSearch isAO />} />
       <Route path="/profile/ao/cycleclassifications/" render={() => <CycleClassifications isAO />} />
