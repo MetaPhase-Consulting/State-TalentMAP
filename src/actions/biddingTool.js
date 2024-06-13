@@ -129,7 +129,7 @@ export function biddingToolDelete(query, onSuccess) {
       cancelDelete('cancel');
     }
 
-    api().delete('/fsbid/bidding_tool/', query, {
+    api().post('/fsbid/bidding_tool/delete/', query, {
       cancelToken: new CancelToken((c) => { cancelDelete = c; }),
     })
       .then(() => {
