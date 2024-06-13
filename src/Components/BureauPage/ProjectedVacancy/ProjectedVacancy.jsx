@@ -426,6 +426,7 @@ const ProjectedVacancy = ({ viewType }) => {
             label="Results:"
             defaultSort={limit}
             onSelectOption={e => setLimit(e.target.value)}
+            disabled={disableSearch}
           />
         </div>
         <div className="usa-width-one-whole position-search--results mt-20">
