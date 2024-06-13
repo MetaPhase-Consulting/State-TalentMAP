@@ -49,20 +49,20 @@ const PublishablePositions = ({ viewType }) => {
 
   const isBureauView = viewType === 'bureau';
   const isPostView = viewType === 'post';
-  const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
+  // const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
   const orgPermissions = useSelector(state => state.userProfile?.org_permissions);
 
   const getBureauFilters = () => {
     const originalBureaus = filters?.bureauFilters;
-    if (originalBureaus && isBureauView) {
-      if (bureauPermissions) {
-        const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
-        const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
-        // filter out if user does not have that bureau permission
-        return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.description));
-      }
-      return [];
-    }
+    // if (originalBureaus && isBureauView) {
+    //   if (bureauPermissions) {
+    //     const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
+    //     const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
+    //     // filter out if user does not have that bureau permission
+    //     return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.description));
+    //   }
+    //   return [];
+    // }
     return originalBureaus;
   };
 
