@@ -306,7 +306,7 @@ const BiddingToolCard = (props) => {
           updater_id: result?.updater_id,
           updated_date: result?.updated_date,
         },
-        () => setEditMode(false),
+        () => { setEditMode(false); history.go(0); },
       ));
     }
   };
