@@ -100,7 +100,6 @@ const ProjectedVacancy = ({ viewType }) => {
     return true;
   };
 
-  const bureaus = getBureauFilters();
   const grades = sortBy(filters?.grades || [], [o => o.code]);
   const skills = sortBy(filters?.skills || [], [o => o.description]);
   const languages = sortBy(filters?.languages || [], [o => o.description]);
@@ -324,7 +323,7 @@ const ProjectedVacancy = ({ viewType }) => {
                 {...pickyProps}
                 placeholder="Select Bureau(s)"
                 value={selectedBureaus}
-                options={bureaus}
+                options={getBureauFilters()}
                 onChange={setSelectedBureaus}
                 valueKey="code"
                 labelKey="description"
