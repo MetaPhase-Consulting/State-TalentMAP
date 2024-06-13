@@ -106,18 +106,21 @@ const PublishablePositionCard = ({
   }, [editMode, classificationsEditMode]);
 
   const onSubmitForm = () => {
+    const exclInd = exclude ? 'Y' : 'N';
     const editData = {
-      psCD: data?.psCD,
       aptSeqNum: data?.aptSeqNum,
-      created: data?.ORIGpposcreatetmsmpdt.replace(/T/g, ' '),
-      createdUserID: data?.pposcreateuserid,
-      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated.replace(/T/g, ' '),
-      posAuditExclusionInd: data?.posAuditExclusionInd,
-
       posSeqNum: data?.posSeqNum,
-      positionDetails: textArea,
+
+      psCD: disableEditDetails ? data?.psCD : status,
+      posAuditExclusionInd: disableEditDetails ? data?.posAuditExclusionInd : exclInd,
+
+      createdUserID: data?.pposcreateuserid,
+      created: data?.ORIGpposcreatetmsmpdt.replace(/T/g, ' '),
       lastUpdatedUserID: data?.positionLastUpdatedUserID,
       lastUpdated: data?.ORIGpositionLastUpdated.replace(/T/g, ' '),
+
+      positionDetails: textArea,
+      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated.replace(/T/g, ' '),
     };
     onSubmit(editData);
   };
