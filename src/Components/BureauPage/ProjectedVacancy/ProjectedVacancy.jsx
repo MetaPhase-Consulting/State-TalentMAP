@@ -35,7 +35,7 @@ const ProjectedVacancy = ({ viewType }) => {
   const isAo = userHasPermissions(['ao_user'], userProfile?.permission_groups);
   const isBureau = userHasPermissions(['bureau_user'], userProfile?.permission_groups);
   const bureauPermissions = useSelector(state => state.userProfile.bureau_permissions);
-  const isBureauView = viewType === 'bureau';
+  // const isBureauView = viewType === 'bureau';
 
   const userSelections = useSelector(state => state.projectedVacancySelections);
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
@@ -81,12 +81,12 @@ const ProjectedVacancy = ({ viewType }) => {
 
   const getBureauFilters = () => {
     const originalBureaus = sortBy(filters?.bureaus || [], [o => o.short_description]);
-    if (originalBureaus && isBureauView) {
-      const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
-      const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
-      // filter out if user does not have that bureau permission
-      return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.short_description));
-    }
+    // if (originalBureaus && isBureauView) {
+    //   const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
+    //   const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
+    //   // filter out if user does not have that bureau permission
+    //   return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.short_description));
+    // }
     return originalBureaus;
   };
 
@@ -100,7 +100,6 @@ const ProjectedVacancy = ({ viewType }) => {
     return true;
   };
 
-  const bureaus = getBureauFilters();
   const grades = sortBy(filters?.grades || [], [o => o.code]);
   const skills = sortBy(filters?.skills || [], [o => o.description]);
   const languages = sortBy(filters?.languages || [], [o => o.description]);
@@ -181,6 +180,10 @@ const ProjectedVacancy = ({ viewType }) => {
     dispatch(projectedVacancyFilters());
     dispatch(projectedVacancyLangOffsetOptions());
   }, []);
+
+  useEffect(() => {
+    getBureauFilters();
+  }, [filters, bureauPermissions]);
 
   useEffect(() => {
     if (positions.length) {
@@ -320,7 +323,7 @@ const ProjectedVacancy = ({ viewType }) => {
                 {...pickyProps}
                 placeholder="Select Bureau(s)"
                 value={selectedBureaus}
-                options={bureaus}
+                options={getBureauFilters()}
                 onChange={setSelectedBureaus}
                 valueKey="code"
                 labelKey="description"
