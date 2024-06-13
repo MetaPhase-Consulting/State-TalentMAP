@@ -467,7 +467,7 @@ const BiddingToolCard = (props) => {
               type="number"
               min="0"
               max="160"
-              defaultValue={values.cola}
+              value={values.cola}
               onChange={(e) => setValues({ ...values, cola: e.target.value })}
             />
           </div>
@@ -477,7 +477,7 @@ const BiddingToolCard = (props) => {
               id="differential-rate"
               type="number"
               min="0"
-              defaultValue={values.differential_rate}
+              value={values.differential_rate}
               onChange={(e) => setValues({ ...values, differential_rate: e.target.value })}
             />
           </div>
@@ -488,7 +488,7 @@ const BiddingToolCard = (props) => {
               type="number"
               min="0"
               max="35"
-              defaultValue={values.danger_pay}
+              value={values.danger_pay}
               onChange={(e) => setValues({ ...values, danger_pay: e.target.value })}
             />
           </div>
@@ -540,7 +540,7 @@ const BiddingToolCard = (props) => {
               id="climate-zone"
               type="number"
               min="0"
-              defaultValue={values.climate_zone}
+              value={values.climate_zone}
               onChange={(e) => setValues({ ...values, climate_zone: e.target.value })}
             />
           </div>
