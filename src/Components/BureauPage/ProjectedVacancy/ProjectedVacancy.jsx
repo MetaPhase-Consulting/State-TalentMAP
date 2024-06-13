@@ -183,6 +183,10 @@ const ProjectedVacancy = ({ viewType }) => {
   }, []);
 
   useEffect(() => {
+    getBureauFilters();
+  }, [filters]);
+
+  useEffect(() => {
     if (positions.length) {
       setImportedPositions(originalImport);
     }
