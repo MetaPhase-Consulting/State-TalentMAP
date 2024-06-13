@@ -35,7 +35,7 @@ const ProjectedVacancy = ({ viewType }) => {
   const isAo = userHasPermissions(['ao_user'], userProfile?.permission_groups);
   const isBureau = userHasPermissions(['bureau_user'], userProfile?.permission_groups);
   const bureauPermissions = useSelector(state => state.userProfile.bureau_permissions);
-  const isBureauView = viewType === 'bureau';
+  // const isBureauView = viewType === 'bureau';
 
   const userSelections = useSelector(state => state.projectedVacancySelections);
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
@@ -81,12 +81,12 @@ const ProjectedVacancy = ({ viewType }) => {
 
   const getBureauFilters = () => {
     const originalBureaus = sortBy(filters?.bureaus || [], [o => o.short_description]);
-    if (originalBureaus && isBureauView) {
-      const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
-      const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
-      // filter out if user does not have that bureau permission
-      return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.short_description));
-    }
+    // if (originalBureaus && isBureauView) {
+    //   const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
+    //   const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
+    //   // filter out if user does not have that bureau permission
+    //   return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.short_description));
+    // }
     return originalBureaus;
   };
 
