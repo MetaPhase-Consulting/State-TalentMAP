@@ -183,7 +183,7 @@ const ProjectedVacancy = ({ viewType }) => {
 
   useEffect(() => {
     getBureauFilters();
-  }, [filters]);
+  }, [filters, bureauPermissions]);
 
   useEffect(() => {
     if (positions.length) {
