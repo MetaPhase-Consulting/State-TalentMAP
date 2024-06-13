@@ -106,12 +106,13 @@ const PublishablePositionCard = ({
   }, [editMode, classificationsEditMode]);
 
   const onSubmitForm = () => {
+    const exclInd = exclude ? 'Y' : 'N';
     const editData = {
       aptSeqNum: data?.aptSeqNum,
       posSeqNum: data?.posSeqNum,
 
-      psCD: status,
-      posAuditExclusionInd: exclude ? 'Y' : 'N',
+      psCD: disableEditDetails ? data?.psCD : status,
+      posAuditExclusionInd: disableEditDetails ? data?.posAuditExclusionInd : exclInd,
 
       createdUserID: data?.pposcreateuserid,
       created: data?.ORIGpposcreatetmsmpdt.replace(/T/g, ' '),
