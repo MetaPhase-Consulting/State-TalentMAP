@@ -89,8 +89,8 @@ const PublishablePositionCard = ({
     renderList: renderSelectionList,
     className: 'width-280',
   };
-  const [status, setStatus] = useState('');
-  const [exclude, setExclude] = useState(true);
+  const [status, setStatus] = useState(data?.psCD || '');
+  const [exclude, setExclude] = useState(data?.posAuditExclusionInd === 'Y');
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
@@ -150,25 +150,25 @@ const PublishablePositionCard = ({
     ],
     inputBody: (
       <div className="position-form">
-        {PP_FLAG() &&
-          <div className="spaced-row">
-            <div className="dropdown-container">
-              <div className="position-form--input">
-                <label htmlFor="publishable-position-statuses">Publishable Status</label>
-                <select
-                  disabled={disableEditDetails}
-                  className="publishable-position-inputs"
-                  id="publishable-position-statuses"
-                  defaultValue={status}
-                  onChange={(e) => setStatus(e?.target.value)}
-                >
-                  {hardcodedFilters.statusFilters.map(s => (
-                    <option key={s.code} value={s.code}>
-                      {s.description}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        <div className="spaced-row">
+          <div className="dropdown-container">
+            <div className="position-form--input">
+              <label htmlFor="publishable-position-statuses">Publishable Status</label>
+              <select
+                disabled={disableEditDetails}
+                className="publishable-position-inputs"
+                id="publishable-position-statuses"
+                value={status}
+                onChange={(e) => setStatus(e?.target.value)}
+              >
+                {hardcodedFilters.statusFilters.map(s => (
+                  <option key={s.code} value={s.code}>
+                    {s.description}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {PP_FLAG() &&
               <div className="position-form--input">
                 <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
@@ -184,29 +184,29 @@ const PublishablePositionCard = ({
                   ))}
                 </select>
               </div>
-            </div>
-            <div>
-              <CheckBox
-                id="exclude-checkbox"
-                label="Exclude Position from Bid Audit"
-                value={exclude}
-                disabled={disableEditDetails}
-                onCheckBoxClick={e => setExclude(e)}
-              />
-              {DETO_RWA_FLAG() &&
-                <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
-                  <CheckBox
-                    id="deto-checkbox"
-                    label="RWA/DETO Eligible"
-                    value={data?.deto_rwa || false}
-                    onCheckBoxClick={() => { }}
-                    disabled
-                  />
-                </Tooltip>
-              }
-            </div>
+            }
           </div>
-        }
+          <div>
+            <CheckBox
+              id="exclude-checkbox"
+              label="Exclude Position from Bid Audit"
+              value={exclude}
+              disabled={disableEditDetails}
+              onCheckBoxClick={e => setExclude(e)}
+            />
+            {DETO_RWA_FLAG() &&
+              <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
+                <CheckBox
+                  id="deto-checkbox"
+                  label="RWA/DETO Eligible"
+                  value={data?.deto_rwa || false}
+                  onCheckBoxClick={() => { }}
+                  disabled
+                />
+              </Tooltip>
+            }
+          </div>
+        </div>
         <div>
           <Row fluid className="position-form--description">
             <span className="definition-title">Position Details</span>
