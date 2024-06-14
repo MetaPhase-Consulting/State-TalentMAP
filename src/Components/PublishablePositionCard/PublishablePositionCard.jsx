@@ -169,21 +169,23 @@ const PublishablePositionCard = ({
                   ))}
                 </select>
               </div>
-              <div className="position-form--input">
-                <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
-                <select
-                  className="publishable-position-inputs"
-                  id="publishable-pos-tod-override"
-                  defaultValue={overrideTOD}
-                  onChange={(e) => setOverrideTOD(e?.target.value)}
-                >
-                  {hardcodedFilters.todFilters.map(t => (
-                    <option key={t.code} value={t.code}>
-                      {t.description}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              {PP_FLAG() &&
+                <div className="position-form--input">
+                  <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
+                  <select
+                    className="publishable-position-inputs"
+                    id="publishable-pos-tod-override"
+                    defaultValue={overrideTOD}
+                    onChange={(e) => setOverrideTOD(e?.target.value)}
+                  >
+                    {hardcodedFilters.todFilters.map(t => (
+                      <option key={t.code} value={t.code}>
+                        {t.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              }
             </div>
             <div>
               <CheckBox
