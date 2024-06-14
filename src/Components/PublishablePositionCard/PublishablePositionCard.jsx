@@ -89,8 +89,8 @@ const PublishablePositionCard = ({
     renderList: renderSelectionList,
     className: 'width-280',
   };
-  const [status, setStatus] = useState('');
-  const [exclude, setExclude] = useState(true);
+  const [status, setStatus] = useState(data?.psCD || '');
+  const [exclude, setExclude] = useState(data?.posAuditExclusionInd === 'N');
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
@@ -159,7 +159,7 @@ const PublishablePositionCard = ({
                   disabled={disableEditDetails}
                   className="publishable-position-inputs"
                   id="publishable-position-statuses"
-                  defaultValue={status}
+                  value={status}
                   onChange={(e) => setStatus(e?.target.value)}
                 >
                   {hardcodedFilters.statusFilters.map(s => (
