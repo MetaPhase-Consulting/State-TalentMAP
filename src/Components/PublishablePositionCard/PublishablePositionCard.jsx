@@ -150,65 +150,63 @@ const PublishablePositionCard = ({
     ],
     inputBody: (
       <div className="position-form">
-        {PP_FLAG() &&
-          <div className="spaced-row">
-            <div className="dropdown-container">
+        <div className="spaced-row">
+          <div className="dropdown-container">
+            <div className="position-form--input">
+              <label htmlFor="publishable-position-statuses">Publishable Status</label>
+              <select
+                disabled={disableEditDetails}
+                className="publishable-position-inputs"
+                id="publishable-position-statuses"
+                value={status}
+                onChange={(e) => setStatus(e?.target.value)}
+              >
+                {hardcodedFilters.statusFilters.map(s => (
+                  <option key={s.code} value={s.code}>
+                    {s.description}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {PP_FLAG() &&
               <div className="position-form--input">
-                <label htmlFor="publishable-position-statuses">Publishable Status</label>
+                <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
-                  disabled={disableEditDetails}
                   className="publishable-position-inputs"
-                  id="publishable-position-statuses"
-                  value={status}
-                  onChange={(e) => setStatus(e?.target.value)}
+                  id="publishable-pos-tod-override"
+                  defaultValue={overrideTOD}
+                  onChange={(e) => setOverrideTOD(e?.target.value)}
                 >
-                  {hardcodedFilters.statusFilters.map(s => (
-                    <option key={s.code} value={s.code}>
-                      {s.description}
+                  {hardcodedFilters.todFilters.map(t => (
+                    <option key={t.code} value={t.code}>
+                      {t.description}
                     </option>
                   ))}
                 </select>
               </div>
-              {PP_FLAG() &&
-                <div className="position-form--input">
-                  <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
-                  <select
-                    className="publishable-position-inputs"
-                    id="publishable-pos-tod-override"
-                    defaultValue={overrideTOD}
-                    onChange={(e) => setOverrideTOD(e?.target.value)}
-                  >
-                    {hardcodedFilters.todFilters.map(t => (
-                      <option key={t.code} value={t.code}>
-                        {t.description}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              }
-            </div>
-            <div>
-              <CheckBox
-                id="exclude-checkbox"
-                label="Exclude Position from Bid Audit"
-                value={exclude}
-                disabled={disableEditDetails}
-                onCheckBoxClick={e => setExclude(e)}
-              />
-              {DETO_RWA_FLAG() &&
-                <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
-                  <CheckBox
-                    id="deto-checkbox"
-                    label="RWA/DETO Eligible"
-                    value={data?.deto_rwa || false}
-                    onCheckBoxClick={() => { }}
-                    disabled
-                  />
-                </Tooltip>
-              }
-            </div>
+            }
           </div>
-        }
+          <div>
+            <CheckBox
+              id="exclude-checkbox"
+              label="Exclude Position from Bid Audit"
+              value={exclude}
+              disabled={disableEditDetails}
+              onCheckBoxClick={e => setExclude(e)}
+            />
+            {DETO_RWA_FLAG() &&
+              <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
+                <CheckBox
+                  id="deto-checkbox"
+                  label="RWA/DETO Eligible"
+                  value={data?.deto_rwa || false}
+                  onCheckBoxClick={() => { }}
+                  disabled
+                />
+              </Tooltip>
+            }
+          </div>
+        </div>
         <div>
           <Row fluid className="position-form--description">
             <span className="definition-title">Position Details</span>
