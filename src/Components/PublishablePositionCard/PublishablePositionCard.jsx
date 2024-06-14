@@ -90,7 +90,7 @@ const PublishablePositionCard = ({
     className: 'width-280',
   };
   const [status, setStatus] = useState(data?.psCD || '');
-  const [exclude, setExclude] = useState(data?.posAuditExclusionInd === 'N');
+  const [exclude, setExclude] = useState(data?.posAuditExclusionInd === 'Y');
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
