@@ -724,6 +724,37 @@ const items =
       },
       {
         item: {
+          title: 'Critical Need',
+          sort: 1400,
+          description: 'criticalNeed',
+          selectionRef: ENDPOINT_PARAMS.criticalNeed,
+          text: 'Include Positions with a Critical Need',
+          onlyAvailablePositions: true,
+          choices: [
+          ],
+        },
+        data: [
+          { code: 'Y', description: 'Critical Need' },
+          { code: 'N', description: 'No Critical Need' },
+        ],
+      },
+      {
+        item: {
+          title: 'Critical Need',
+          sort: 1400,
+          description: 'criticalNeed-tandem',
+          selectionRef: ENDPOINT_PARAMS_TANDEM.criticalNeed,
+          text: 'Include Positions with a Critical Need',
+          isTandem: true,
+          onlyAvailablePositions: true,
+        },
+        data: [
+          { code: 'Y', description: 'Critical Need' },
+          { code: 'N', description: 'No Critical Need' },
+        ],
+      },
+      {
+        item: {
           title: 'DETO/RWA',
           sort: 1400,
           description: 'detoRwa',
