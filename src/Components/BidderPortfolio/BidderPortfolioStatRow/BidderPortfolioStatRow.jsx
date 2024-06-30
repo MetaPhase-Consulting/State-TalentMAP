@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { checkFlag } from 'flags';
@@ -49,6 +49,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
+  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+
   const editClient = (e) => {
     e.preventDefault();
     setEdit(previous => !previous);
@@ -60,6 +62,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
     // Nothing to do yet, will add later
     const clientData = {
       id,
+      per_seq_number: perdet,
+      bid_seasons: currentSeasons,
       comments: verifyComments,
       email: verifyAltEmail,
       bidder_type: currentBidderType,
