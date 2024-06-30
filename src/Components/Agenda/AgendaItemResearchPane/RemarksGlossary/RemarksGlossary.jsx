@@ -9,6 +9,7 @@ import Fuse from 'fuse.js';
 
 const RemarksGlossary = ({ isReadOnly, remarks, remarkCategories,
   userSelections, updateSelection }) => {
+  console.log('RemarksGlossary', remarks);
   const [textInputs, setTextInputs] = useState({});
 
   const setTextInput = (rSeq, riSeq, value) => {
