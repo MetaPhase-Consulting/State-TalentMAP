@@ -60,8 +60,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
     // Nothing to do yet, will add later
     const clientData = {
       id,
-      verifyComments,
-      verifyAltEmail,
+      comments: verifyComments,
+      email: verifyAltEmail,
       bidder_type: currentBidderType,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
