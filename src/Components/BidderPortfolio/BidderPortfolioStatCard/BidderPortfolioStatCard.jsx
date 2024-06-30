@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Cusp, Eligible } from 'Components/Ribbon';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { checkFlag } from 'flags';
@@ -24,7 +24,6 @@ import AddToInternalListButton from '../AddToInternalListButton';
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
   const dispatch = useDispatch();
   const showCDOD30 = checkFlag('flags.CDOD30');
-
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
@@ -50,6 +49,8 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
+  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+
   const editClient = (e) => {
     e.preventDefault();
     setEdit(previous => !previous);
@@ -61,6 +62,8 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     // Nothing to do yet, will add later
     const clientData = {
       id,
+      per_seq_number: perdet,
+      bidSeasons: currentSeasons,
       comments: verifyComments,
       email: verifyAltEmail,
       bidder_type: currentBidderType,
