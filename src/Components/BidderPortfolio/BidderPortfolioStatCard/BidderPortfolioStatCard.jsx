@@ -22,6 +22,7 @@ import SearchAsClientButton from '../SearchAsClientButton';
 import AddToInternalListButton from '../AddToInternalListButton';
 
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
+  console.log('userProfile', userProfile);
   const dispatch = useDispatch();
   const showCDOD30 = checkFlag('flags.CDOD30');
   const currentAssignmentText = get(userProfile, 'pos_location');
@@ -61,12 +62,10 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     setAltEmail(verifyAltEmail);
     // Nothing to do yet, will add later
     const clientData = {
-      id,
       per_seq_number: perdet,
       bid_seasons: currentSeasons,
       comments: verifyComments,
       email: verifyAltEmail,
-      bidder_type: currentBidderType,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);
