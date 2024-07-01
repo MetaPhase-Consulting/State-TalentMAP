@@ -22,7 +22,6 @@ import SearchAsClientButton from '../SearchAsClientButton';
 import AddToInternalListButton from '../AddToInternalListButton';
 
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
-  console.log('userProfile', userProfile);
   const dispatch = useDispatch();
   const showCDOD30 = checkFlag('flags.CDOD30');
   const currentAssignmentText = get(userProfile, 'pos_location');
