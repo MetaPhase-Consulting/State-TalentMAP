@@ -12,9 +12,7 @@ import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
 
 let cancelPVList;
-let cancelPVLangOffsetOptions;
 let cancelPVFilters;
-let cancelPVLangOffsets;
 
 // ================ GET LIST ================
 
@@ -133,55 +131,6 @@ export function projectedVacancyFilters() {
   };
 }
 
-// ================ GET LANGUAGE OFFSET OPTIONS ================
-
-export function projectedVacancyLangOffsetOptionsErrored(bool) {
-  return {
-    type: 'PROJECTED_VACANCY_LANG_OFFSET_OPTIONS_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function projectedVacancyLangOffsetOptionsLoading(bool) {
-  return {
-    type: 'PROJECTED_VACANCY_LANG_OFFSET_OPTIONS_LOADING',
-    isLoading: bool,
-  };
-}
-export function projectedVacancyLangOffsetOptionsSuccess(results) {
-  return {
-    type: 'PROJECTED_VACANCY_LANG_OFFSET_OPTIONS_SUCCESS',
-    results,
-  };
-}
-export function projectedVacancyLangOffsetOptions() {
-  return (dispatch) => {
-    if (cancelPVLangOffsetOptions) { cancelPVLangOffsetOptions('cancel'); }
-    batch(() => {
-      dispatch(projectedVacancyLangOffsetOptionsLoading(true));
-      dispatch(projectedVacancyLangOffsetOptionsErrored(false));
-    });
-    api().get('/fsbid/admin/projected_vacancies/language_offset_options/', {
-      cancelToken: new CancelToken((c) => { cancelPVLangOffsetOptions = c; }),
-    })
-      .then(({ data }) => {
-        batch(() => {
-          dispatch(projectedVacancyLangOffsetOptionsSuccess(data));
-          dispatch(projectedVacancyLangOffsetOptionsErrored(false));
-          dispatch(projectedVacancyLangOffsetOptionsLoading(false));
-        });
-      })
-      .catch((err) => {
-        if (err?.message !== 'cancel') {
-          batch(() => {
-            dispatch(projectedVacancyLangOffsetOptionsSuccess({}));
-            dispatch(projectedVacancyLangOffsetOptionsErrored(true));
-            dispatch(projectedVacancyLangOffsetOptionsLoading(false));
-          });
-        }
-      });
-  };
-}
-
 // ================ EDIT PROJECTED VACANCY ================
 
 let cancelProjectedVacancyEdit;
@@ -208,59 +157,6 @@ export function projectedVacancyEdit(data, onSuccess) {
             UPDATE_PROJECTED_VACANCY_ERROR,
             UPDATE_PROJECTED_VACANCY_ERROR_TITLE,
           ));
-        }
-      });
-  };
-}
-
-
-// ================ GET LANGUAGE OFFSET DATA ================
-
-export function projectedVacancyLangOffsetsErrored(bool) {
-  return {
-    type: 'PROJECTED_VACANCY_LANG_OFFSETS_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function projectedVacancyLangOffsetsLoading(bool) {
-  return {
-    type: 'PROJECTED_VACANCY_LANG_OFFSETS_LOADING',
-    isLoading: bool,
-  };
-}
-export function projectedVacancyLangOffsetsSuccess(results) {
-  return {
-    type: 'PROJECTED_VACANCY_LANG_OFFSETS_SUCCESS',
-    results,
-  };
-}
-export function projectedVacancyLangOffsets(query = {}) {
-  return (dispatch) => {
-    if (cancelPVLangOffsets) { cancelPVLangOffsets('cancel'); }
-    batch(() => {
-      dispatch(projectedVacancyLangOffsetsLoading(true));
-      dispatch(projectedVacancyLangOffsetsErrored(false));
-    });
-    const q = convertQueryToString(query);
-    const endpoint = '/fsbid/admin/projected_vacancies/language_offsets/';
-    const ep = `${endpoint}?${q}`;
-    api().get(ep, {
-      cancelToken: new CancelToken((c) => { cancelPVLangOffsets = c; }),
-    })
-      .then(({ data }) => {
-        batch(() => {
-          dispatch(projectedVacancyLangOffsetsSuccess(data));
-          dispatch(projectedVacancyLangOffsetsErrored(false));
-          dispatch(projectedVacancyLangOffsetsLoading(false));
-        });
-      })
-      .catch((err) => {
-        if (err?.message !== 'cancel') {
-          batch(() => {
-            dispatch(projectedVacancyLangOffsetsSuccess({}));
-            dispatch(projectedVacancyLangOffsetsErrored(true));
-            dispatch(projectedVacancyLangOffsetsLoading(false));
-          });
         }
       });
   };

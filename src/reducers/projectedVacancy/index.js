@@ -5,12 +5,6 @@ import {
   projectedVacancyFilters,
   projectedVacancyFiltersErrored,
   projectedVacancyFiltersLoading,
-  projectedVacancyLangOffsetOptions,
-  projectedVacancyLangOffsetOptionsErrored,
-  projectedVacancyLangOffsetOptionsLoading,
-  projectedVacancyLangOffsets,
-  projectedVacancyLangOffsetsErrored,
-  projectedVacancyLangOffsetsLoading,
   projectedVacancySelections,
 } from './projectedVacancy';
 
@@ -21,11 +15,5 @@ export default {
   projectedVacancyFilters,
   projectedVacancyFiltersErrored,
   projectedVacancyFiltersLoading,
-  projectedVacancyLangOffsetOptions,
-  projectedVacancyLangOffsetOptionsErrored,
-  projectedVacancyLangOffsetOptionsLoading,
-  projectedVacancyLangOffsets,
-  projectedVacancyLangOffsetsErrored,
-  projectedVacancyLangOffsetsLoading,
   projectedVacancySelections,
 };
