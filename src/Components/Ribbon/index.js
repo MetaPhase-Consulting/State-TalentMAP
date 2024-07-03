@@ -1,5 +1,6 @@
 import Featured from './Featured';
 import Handshake from './Handshake';
+import IsCritNeed from './IsCritNeed';
 import HistDiffToStaff from './HistDiffToStaff';
 import ServiceNeedDifferential from './ServiceNeedDifferential';
 import InBidList from './InBidList';
@@ -9,6 +10,7 @@ import Cusp from './Cusp';
 
 export {
   Handshake,
+  IsCritNeed,
   HistDiffToStaff,
   ServiceNeedDifferential,
   Featured,
