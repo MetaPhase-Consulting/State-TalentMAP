@@ -337,7 +337,7 @@ const items =
           sort: 400,
           description: 'tod',
           endpoint: 'tour_of_duty/?is_available=true&ordering=months',
-          endpointAP: 'fsbid/reference/tourofduties/?is_available=true&ordering=months',
+          endpointAP: 'fsbid/reference/toursofduty/?is_available=true&ordering=months',
           selectionRef: ENDPOINT_PARAMS.tod,
           text: 'Choose Tour of Duty length',
           onlyAvailablePositions: true,
@@ -354,7 +354,7 @@ const items =
           sort: 400,
           description: 'tod-tandem',
           endpoint: 'tour_of_duty/?is_available=true&ordering=months',
-          endpointAP: 'fsbid/reference/tourofduties/?is_available=true&ordering=months',
+          endpointAP: 'fsbid/reference/toursofduty/?is_available=true&ordering=months',
           selectionRef: ENDPOINT_PARAMS_TANDEM.tod,
           text: 'Choose Tour of Duty length',
           onlyAvailablePositions: true,
@@ -372,7 +372,7 @@ const items =
           sort: 400,
           description: 'tod',
           endpoint: 'tour_of_duty/?ordering=months',
-          endpointAP: 'fsbid/reference/tourofduties/?ordering=months',
+          endpointAP: 'fsbid/reference/toursofduty/?ordering=months',
           selectionRef: ENDPOINT_PARAMS.tod,
           text: 'Choose Tour of Duty length',
           tryCache: true,
@@ -389,7 +389,7 @@ const items =
           sort: 400,
           description: 'tod-tandem',
           endpoint: 'tour_of_duty/?ordering=months',
-          endpointAP: 'fsbid/reference/tourofduties/?ordering=months',
+          endpointAP: 'fsbid/reference/toursofduty/?ordering=months',
           selectionRef: ENDPOINT_PARAMS_TANDEM.tod,
           text: 'Choose Tour of Duty length',
           isTandem: true,
@@ -720,6 +720,37 @@ const items =
         data: [
           { code: 'Y', description: 'Hard to Fill' },
           { code: 'N', description: 'Not Hard to Fill' },
+        ],
+      },
+      {
+        item: {
+          title: 'Critical Need',
+          sort: 1400,
+          description: 'criticalNeed',
+          selectionRef: ENDPOINT_PARAMS.criticalNeed,
+          text: 'Include Positions with a Critical Need',
+          onlyAvailablePositions: true,
+          choices: [
+          ],
+        },
+        data: [
+          { code: 'Y', description: 'Critical Need' },
+          { code: 'N', description: 'No Critical Need' },
+        ],
+      },
+      {
+        item: {
+          title: 'Critical Need',
+          sort: 1400,
+          description: 'criticalNeed-tandem',
+          selectionRef: ENDPOINT_PARAMS_TANDEM.criticalNeed,
+          text: 'Include Positions with a Critical Need',
+          isTandem: true,
+          onlyAvailablePositions: true,
+        },
+        data: [
+          { code: 'Y', description: 'Critical Need' },
+          { code: 'N', description: 'No Critical Need' },
         ],
       },
       {
