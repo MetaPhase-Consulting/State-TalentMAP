@@ -220,6 +220,16 @@ export const GET_PROFILE_MENU = () => MenuConfig([
             'superuser',
           ],
         } : null,
+      checkFlag('flags.cycle_management') ?
+        {
+          text: 'Cycle Management',
+          route: '/profile/administrator/cyclemanagement',
+          icon: 'database',
+          roles: [
+            'superuser',
+            'fsbid_admin',
+          ],
+        } : null,
       checkFlag('flags.manage_entry_level') ?
         {
           text: 'Manage Entry Level',
@@ -310,16 +320,6 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           text: 'Manage Post Access',
           route: '/profile/bureau/managepostaccess',
           icon: 'building',
-          roles: [
-            'superuser',
-            'bureau_user',
-          ],
-        } : null,
-      checkFlag('flags.cycle_management') ?
-        {
-          text: 'Cycle Management',
-          route: '/profile/bureau/cyclemanagement',
-          icon: 'cogs',
           roles: [
             'superuser',
             'bureau_user',
@@ -488,16 +488,6 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           'superuser',
         ],
       },
-      checkFlag('flags.cycle_management') ?
-        {
-          text: 'Cycle Management',
-          route: '/profile/ao/cyclemanagement',
-          icon: 'cogs',
-          roles: [
-            'ao_user',
-            'superuser',
-          ],
-        } : null,
       checkFlag('flags.bidding_tool') ?
         {
           text: 'Bidding Tool',
