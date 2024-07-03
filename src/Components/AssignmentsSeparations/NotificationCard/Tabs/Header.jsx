@@ -1,28 +1,15 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import DatePicker from 'react-datepicker';
 import FA from 'react-fontawesome';
+import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
 import DefinitionList from '../../../DefinitionList';
 import InputActions from '../Common/InputActions';
 
-const result = {
-  classification: 'Unclassified',
-  clearance: 'None',
-  special_handling: 'None',
-  captions: 'TM Channel',
-  eo: 'E.O 12345',
-  tags: 'APER. AFIN',
-  eom: 'YY',
-  continuation: 'None',
-};
-
-const Header = () => {
-  const [draftingOffice, setDraftingOffice] = useState('');
-  const [date, setDate] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [subject, setSubject] = useState('');
+const Header = (props) => {
+  const { getCableValue, modCableValue } = props;
 
   const datePickerRef = useRef(null);
   const openDatePicker = () => {
@@ -31,14 +18,14 @@ const Header = () => {
 
   /* eslint-disable quote-props */
   const definitions = {
-    'Classification': result?.classification || '---',
-    'Clearance': result?.clearance || '---',
-    'Special Handling': result?.special_handling || '---',
-    'Captions': result?.captions || '---',
-    'E.O': result?.eo || '---',
-    'Tags': result?.tags || '---',
-    'EOM': result?.eom || '---',
-    'Continuation': result?.continuation || '---',
+    'Classification': getCableValue('CLASSIFICATION') || '---',
+    'Clearance': getCableValue('CLEARANCE') || '---',
+    'Special Handling': getCableValue('SPECIAL HANDLING') || '---',
+    'Captions': getCableValue('CAPTIONS') || '---',
+    'E.O': getCableValue('E.O.') || '---',
+    'Tags': getCableValue('TAGS') || '---',
+    'EOM': getCableValue('EOM') || '---',
+    'Continuation': getCableValue('CONTINUATION') || '---',
   };
   /* eslint-enable quote-props */
 
@@ -57,45 +44,20 @@ const Header = () => {
           <label htmlFor="drafting-office">Drafting Office</label>
           <input
             id="drafting-office"
-            defaultValue={draftingOffice}
-            onChange={(e) => setDraftingOffice(e.target.value)}
+            defaultValue={getCableValue('DRAFTING OFFICE')}
+            onChange={(e) => modCableValue('DRAFTING OFFICE', e.target.value)}
           />
-        </div>
-        <div className="position-form--label-input-container-flex">
-          <div>
-            <label htmlFor="date">Date</label>
-            <div className="date-wrapper-react larger-date-picker">
-              <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${date ? '' : 'hide'}`} onClick={() => setDate(null)} />
-              <DatePicker
-                id="date"
-                selected={date}
-                onChange={setDate}
-                dateFormat="MM/dd/yyyy"
-                placeholderText={'MM/DD/YYY'}
-                ref={datePickerRef}
-              />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="phone">Phone Number</label>
-            <input
-              id="phone"
-              defaultValue={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-          </div>
         </div>
         <Row fluid className="mt-20">
           <div className="position-form--label-input-container">
             <label htmlFor="date">Date</label>
             <div className="date-wrapper-react larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${date ? '' : 'hide'}`} onClick={() => setDate(null)} />
+              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '')} />
               <DatePicker
                 id="date"
-                selected={date}
-                onChange={setDate}
+                selected={(new Date(getCableValue('DATE'))) || ''}
+                onChange={(e) => modCableValue('DATE', e.target.value)}
                 dateFormat="MM/dd/yyyy"
                 placeholderText={'MM/DD/YYY'}
                 ref={datePickerRef}
@@ -107,8 +69,8 @@ const Header = () => {
           <label htmlFor="phone">Phone Number</label>
           <input
             id="phone"
-            defaultValue={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            value={getCableValue('TELEPHONE')}
+            onChange={(e) => modCableValue('TELEPHONE', e.target.value)}
           />
         </div>
         <Row fluid className="position-content--description">
@@ -117,16 +79,16 @@ const Header = () => {
             <TextareaAutosize
               maxRows={4}
               minRows={1}
-              maxlength="500"
+              maxLength="500"
               name="subject"
               placeholder="No Description"
-              defaultValue={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              value={getCableValue('SUBJECT')}
+              onChange={(e) => modCableValue('SUBJECT', e.target.value)}
               draggable={false}
             />
           </Linkify>
           <div className="word-count">
-            {subject?.length} / 500
+            {getCableValue('SUBJECT')?.length} / 500
           </div>
         </Row>
       </div>
@@ -136,6 +98,16 @@ const Header = () => {
       </div>
     </div>
   );
+};
+
+Header.propTypes = {
+  getCableValue: PropTypes.func,
+  modCableValue: PropTypes.func,
+};
+
+Header.defaultProps = {
+  getCableValue: undefined,
+  modCableValue: undefined,
 };
 
 export default Header;
