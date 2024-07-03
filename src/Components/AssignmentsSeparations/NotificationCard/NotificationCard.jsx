@@ -43,7 +43,7 @@ const NotificationCard = (props) => {
   useEffect(() => {
     if (id) {
       dispatch(noteCableFetchData({
-        I_ASG_SEQ_NUM: 318658, // TEMPORARILY HARD CODED
+        I_ASG_SEQ_NUM: 1, // TEMPORARILY HARD CODED
         I_ASGD_REVISION_NUM: revisionNum ?? 0,
       }));
     }
