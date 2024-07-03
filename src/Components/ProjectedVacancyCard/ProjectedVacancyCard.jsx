@@ -330,10 +330,6 @@ const ProjectedVacancyCard = (props) => {
 
 ProjectedVacancyCard.propTypes = {
   result: POSITION_DETAILS.isRequired,
-  languageOffsets: PropTypes.shape({
-    language_offset_summer: PropTypes.string,
-    language_offset_winter: PropTypes.string,
-  }),
   updateIncluded: PropTypes.func,
   updateImport: PropTypes.func,
   disableImport: PropTypes.bool,
@@ -342,20 +338,12 @@ ProjectedVacancyCard.propTypes = {
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
   selectOptions: PropTypes.shape({
-    languageOffsets: PropTypes.shape({
-      summer_language_offsets: PropTypes.arrayOf(PropTypes.shape({})),
-      winter_language_offsets: PropTypes.arrayOf(PropTypes.shape({})),
-    }),
     bidSeasons: PropTypes.arrayOf(PropTypes.shape({})),
     statuses: PropTypes.arrayOf(PropTypes.shape({})),
   }),
 };
 
 ProjectedVacancyCard.defaultProps = {
-  languageOffsets: {
-    language_offset_summer: null,
-    language_offset_winter: null,
-  },
   updateIncluded: EMPTY_FUNCTION,
   updateImport: EMPTY_FUNCTION,
   disableImport: false,
@@ -364,7 +352,6 @@ ProjectedVacancyCard.defaultProps = {
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
   selectOptions: {
-    languageOffsets: [],
     bidSeasons: [],
     statuses: [],
   },
