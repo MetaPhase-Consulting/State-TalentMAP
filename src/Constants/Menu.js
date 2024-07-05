@@ -451,7 +451,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       },
       checkFlag('flags.agenda_search') ?
         {
-          text: 'Employee Agendas',
+          text: 'Employees and Panel Agendas',
           route: '/profile/ao/employeeagendas',
           icon: 'sticky-note',
           roles: [
@@ -551,7 +551,7 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       },
       checkFlag('flags.agenda_search') ?
         {
-          text: 'Employee Agendas',
+          text: 'Employees and Panel Agendas',
           route: '/profile/cdo/employeeagendas',
           icon: 'sticky-note',
           roles: [
