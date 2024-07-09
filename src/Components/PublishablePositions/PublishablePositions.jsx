@@ -50,35 +50,35 @@ const PublishablePositions = ({ viewType }) => {
   const isBureauView = viewType === 'bureau';
   const isPostView = viewType === 'post';
   // const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
-  const orgPermissions = useSelector(state => state.userProfile?.org_permissions);
+  // const orgPermissions = useSelector(state => state.userProfile?.org_permissions);
 
-  const getBureauFilters = () => {
-    const originalBureaus = filters?.bureauFilters;
-    // if (originalBureaus && isBureauView) {
-    //   if (bureauPermissions) {
-    //     const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
-    //     const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
-    //     // filter out if user does not have that bureau permission
-    //     return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.description));
-    //   }
-    //   return [];
-    // }
-    return originalBureaus;
-  };
+  // const getBureauFilters = () => {
+  //   const originalBureaus = filters?.bureauFilters;
+  //   if (originalBureaus && isBureauView) {
+  //     if (bureauPermissions) {
+  //       const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
+  //       const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
+  //       // filter out if user does not have that bureau permission
+  //       return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.description));
+  //     }
+  //     return [];
+  //   }
+  //   return originalBureaus;
+  // };
 
-  const getOrgFilters = () => {
-    const originalOrgs = filters?.orgFilters;
-    if (originalOrgs && isPostView) {
-      if (orgPermissions) {
-        const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ code }) => code);
-        const userOrgCodePermissions = Object.keys(orgPermissionsGroups);
-        // filter out if user does not have that org permission
-        return originalOrgs.filter((a) => userOrgCodePermissions.includes(a?.code));
-      }
-      return [];
-    }
-    return originalOrgs;
-  };
+  // const getOrgFilters = () => {
+  //   const originalOrgs = filters?.orgFilters;
+  //   if (originalOrgs && isPostView) {
+  //     if (orgPermissions) {
+  //       const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ code }) => code);
+  //       const userOrgCodePermissions = Object.keys(orgPermissionsGroups);
+  //       // filter out if user does not have that org permission
+  //       return originalOrgs.filter((a) => userOrgCodePermissions.includes(a?.code));
+  //     }
+  //     return [];
+  //   }
+  //   return originalOrgs;
+  // };
 
   const [tempsearchPosNum, tempsetSearchPosNum] = useState(userSelections?.searchPosNum || '');
   const [searchPosNum, setSearchPosNum] = useState(userSelections?.searchPosNum || '');
@@ -103,8 +103,8 @@ const PublishablePositions = ({ viewType }) => {
   const count = data$?.length || 0;
 
   const statuses = filters?.statusFilters;
-  const bureaus = getBureauFilters();
-  const orgs = getOrgFilters();
+  const bureaus = filters?.bureauFilters;
+  const orgs = filters?.orgFilters;
   const grades = filters?.gradeFilters;
   const skills = filters?.skillsFilters;
   const cycles = filters?.cycleFilters;
