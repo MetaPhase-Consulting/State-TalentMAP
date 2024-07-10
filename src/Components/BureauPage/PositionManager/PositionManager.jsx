@@ -159,8 +159,10 @@ const PositionManager = props => {
 
   // Rerender and action on user selections
   useEffect(() => {
+    console.log('fromBureau', fromBureauMenu, 'noBureausSelected', noBureausSelected, 'fromPostMenu and noOrgsSelected', fromPostMenu, noOrgsSelected);
     if (prevPage) {
       if ((fromBureauMenu && !noBureausSelected) || (fromPostMenu && !noOrgsSelected)) {
+        console.log('Calling this useEffect 2');
         props.fetchBureauPositions(query, fromBureauMenu);
       }
       props.saveSelections(currentInputs);
