@@ -142,7 +142,6 @@ const PositionClassification = (props) => {
                     type="checkbox"
                     name={o.code}
                     checked={selections?.find(s => o.code === s.code && s.value === '1') || false}
-                    className={`cm-cycle-classes-check ${editMode ? '' : 'read-only'}`}
                     onChange={(event) => handleSelection(o.code, event)}
                     disabled={!editMode}
                   />
