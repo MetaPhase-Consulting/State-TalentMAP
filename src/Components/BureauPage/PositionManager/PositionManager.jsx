@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { BUREAU_POSITION_SORT, POSITION_MANAGER_PAGE_SIZES } from 'Constants/Sort';
-import { BUREAU_PERMISSIONS, BUREAU_USER_SELECTIONS, FILTERS_PARENT, ORG_PERMISSIONS, POSITION_SEARCH_RESULTS } from 'Constants/PropTypes';
 import Picky from 'react-picky';
 import { flatten, get, has, isEmpty, sortBy, throttle, uniqBy } from 'lodash';
 import { bureauPositionsFetchData, downloadBureauPositionsData, saveBureauUserSelections } from 'actions/bureauPositions';
@@ -28,6 +27,7 @@ const PositionManager = props => {
   const {
     fromBureauMenu,
     fromPostMenu,
+    viewType,
   } = props;
   const dispatch = useDispatch();
 
@@ -162,11 +162,8 @@ const PositionManager = props => {
 
   // Rerender and action on user selections
   useEffect(() => {
-    console.log('Outside condition: 1st requirement', (fromBureauMenu && !noBureausSelected), '2nd requirement', (fromPostMenu && !noOrgsSelected));
     if (prevPage) {
-      if ((fromBureauMenu && !noBureausSelected) || (fromPostMenu && !noOrgsSelected)) {
-        console.log('Calling this useEffect 2');
-        console.log('1st requirement', (fromBureauMenu && !noBureausSelected), '2nd requirement', (fromPostMenu && !noOrgsSelected));
+      if ((viewType === 'bureau' && !noBureausSelected) || (viewType === 'post' && !noOrgsSelected)) {
         dispatch(bureauPositionsFetchData(query, fromBureauMenu));
       }
       dispatch(saveBureauUserSelections(currentInputs));
@@ -629,30 +626,16 @@ const PositionManager = props => {
 };
 
 PositionManager.propTypes = {
-  bureauFilters: FILTERS_PARENT,
-  bureauPositions: POSITION_SEARCH_RESULTS,
-  bureauFiltersIsLoading: PropTypes.bool,
-  bureauPositionsIsLoading: PropTypes.bool,
-  bureauPositionsHasErrored: PropTypes.bool,
-  bureauPermissions: BUREAU_PERMISSIONS,
-  orgPermissions: ORG_PERMISSIONS,
-  userSelections: BUREAU_USER_SELECTIONS,
   fromBureauMenu: PropTypes.bool,
   fromPostMenu: PropTypes.bool,
+  viewType: PropTypes.string,
 };
 
 PositionManager.defaultProps = {
-  bureauFilters: { filters: [] },
-  bureauPositions: { results: [] },
-  bureauFiltersIsLoading: false,
-  bureauPositionsIsLoading: false,
-  bureauPositionsHasErrored: false,
-  bureauPermissions: [],
-  orgPermissions: [],
-  userSelections: {},
   showClear: false,
   fromBureauMenu: false,
   fromPostMenu: false,
+  viewType: '',
 };
 
 export default PositionManager;
