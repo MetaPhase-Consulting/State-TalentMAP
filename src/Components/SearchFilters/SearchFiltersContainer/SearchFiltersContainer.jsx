@@ -61,7 +61,6 @@ class SearchFiltersContainer extends Component {
         ordering: 'ted',
         cps_codes: null,
         htf_indicator: null,
-        cn_indicator: null,
       };
     }
     this.props.queryParamUpdate(config);
@@ -134,14 +133,14 @@ class SearchFiltersContainer extends Component {
 
     // get our normal multi-select filters
     const multiSelectFilterNames = ['bidSeason', 'bidCycle', 'skill', 'grade', 'region', 'tod', 'language',
-      'postDiff', 'dangerPay', 'postIndicators', 'unaccompaniedStatus', 'handshake', 'hardToFill', 'criticalNeed'];
+      'postDiff', 'dangerPay', 'postIndicators', 'unaccompaniedStatus', 'handshake', 'hardToFill'];
 
 
     const multiSelectFilterNamesTandemCommon = ['post', 'postDiff', 'dangerPay', 'postIndicators', 'unaccompaniedStatus'];
     const multiSelectFilterNamesTandem1 = ['bidSeason', 'bidCycle', 'skill', 'grade', 'region', 'tod', 'language', 'handshake',
-      'hardToFill', 'criticalNeed'];
+      'hardToFill'];
     const multiSelectFilterNamesTandem2 = ['bidSeason-tandem', 'bidCycle-tandem', 'skill-tandem', 'grade-tandem',
-      'region-tandem', 'tod-tandem', 'language-tandem', 'handshake-tandem', 'hardToFill-tandem', 'criticalNeed-tandem'];
+      'region-tandem', 'tod-tandem', 'language-tandem', 'handshake-tandem', 'hardToFill-tandem'];
 
     const blackList = []; // don't create accordions for these
 

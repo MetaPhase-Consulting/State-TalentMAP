@@ -27,7 +27,6 @@ export const ENDPOINT_PARAMS = {
   commuterPosts: 'position__cpn_codes__in',
   tmHandshake: 'lead_hs_status_code',
   hardToFill: 'htf_indicator',
-  criticalNeed: 'cn_indicator',
   ordering: 'ordering',
   detoRWA: 'deto_rwa',
 };

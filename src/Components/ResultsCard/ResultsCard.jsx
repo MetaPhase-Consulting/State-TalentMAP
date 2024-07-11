@@ -12,7 +12,7 @@ import MediaQueryWrapper from '../MediaQuery';
 import CompareCheck from '../CompareCheck/CompareCheck';
 import LanguageList from '../LanguageList';
 import BoxShadow from '../BoxShadow';
-import { Handshake, HistDiffToStaff, IsCritNeed, IsHardToFill, ServiceNeedDifferential } from '../Ribbon';
+import { Handshake, HistDiffToStaff, IsHardToFill, ServiceNeedDifferential } from '../Ribbon';
 import InBidListContainer from './InBidList';
 import HoverDescription from './HoverDescription';
 import BidListButton from '../../Containers/BidListButton';
@@ -267,9 +267,6 @@ class ResultsCard extends Component {
                     }
                     {
                       get(result, 'isHardToFill', false) && <IsHardToFill isWideResults className={ribbonClass} />
-                    }
-                    {
-                      get(result, 'isCritNeed', false) && <IsCritNeed isWideResults className={ribbonClass} />
                     }
                     {
                       // conditional rendering occurs inside the container
