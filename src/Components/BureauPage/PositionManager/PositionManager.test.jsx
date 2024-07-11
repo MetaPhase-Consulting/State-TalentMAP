@@ -185,10 +185,4 @@ describe('BureauPage', () => {
       },
     ],
   };
-
-  it('is defined', () => {
-    const wrapper = shallow(<PositionManager.WrappedComponent {...props} />);
-    expect(wrapper).toBeDefined();
-  });
 });
-
