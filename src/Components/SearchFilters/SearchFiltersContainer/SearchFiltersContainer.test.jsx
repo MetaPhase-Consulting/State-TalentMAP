@@ -113,7 +113,6 @@ describe('SearchFiltersContainerComponent', () => {
     expect(toggleValue.value).toEqual({
       cps_codes: null,
       htf_indicator: null,
-      cn_indicator: null,
       is_available_in_bidcycle: null,
       is_available_in_current_bidcycle: null,
       ordering: 'ted',
