@@ -115,12 +115,12 @@ const PublishablePositionCard = ({
       posAuditExclusionInd: disableEditDetails ? data?.posAuditExclusionInd : exclInd,
 
       createdUserID: data?.pposcreateuserid,
-      created: data?.ORIGpposcreatetmsmpdt.replace(/T/g, ' '),
+      created: data?.ORIGpposcreatetmsmpdt?.replace(/T/g, ' '),
       lastUpdatedUserID: data?.positionLastUpdatedUserID,
-      lastUpdated: data?.ORIGpositionLastUpdated.replace(/T/g, ' '),
+      lastUpdated: data?.ORIGpositionLastUpdated?.replace(/T/g, ' '),
 
       positionDetails: textArea,
-      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated.replace(/T/g, ' '),
+      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated?.replace(/T/g, ' '),
     };
     onSubmit(editData);
   };
