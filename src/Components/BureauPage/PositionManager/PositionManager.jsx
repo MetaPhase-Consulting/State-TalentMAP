@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { BUREAU_POSITION_SORT, POSITION_MANAGER_PAGE_SIZES } from 'Constants/Sort';
+import { BUREAU_PERMISSIONS, BUREAU_USER_SELECTIONS, FILTERS_PARENT, ORG_PERMISSIONS, POSITION_SEARCH_RESULTS } from 'Constants/PropTypes';
 import Picky from 'react-picky';
 import { flatten, get, has, isEmpty, sortBy, throttle, uniqBy } from 'lodash';
 import { bureauPositionsFetchData, downloadBureauPositionsData, saveBureauUserSelections } from 'actions/bureauPositions';
@@ -25,20 +26,17 @@ import BureauResultsCard from '../BureauResultsCard';
 const PositionManager = props => {
   // Props
   const {
+    bureauPermissions,
+    bureauFilters,
+    bureauPositions,
+    bureauFiltersIsLoading,
+    bureauPositionsIsLoading,
+    bureauPositionsHasErrored,
+    userSelections,
+    orgPermissions,
     fromBureauMenu,
     fromPostMenu,
-    viewType,
   } = props;
-  const dispatch = useDispatch();
-
-  const bureauPositions = useSelector(state => state.bureauPositions);
-  const bureauPositionsIsLoading = useSelector(state => state.bureauPositionsIsLoading);
-  const bureauPositionsHasErrored = useSelector(state => state.bureauPositionsHasErrored);
-  const bureauFilters = useSelector(state => state.filters);
-  const bureauFiltersIsLoading = useSelector(state => state.filtersIsLoading);
-  const bureauPermissions = useSelector(state => state.userProfile.bureau_permissions);
-  const orgPermissions = useSelector(state => state.userProfile.org_permissions);
-  const userSelections = useSelector(state => state.bureauUserSelections);
 
   const initialBureaus = (fromBureauMenu && get(bureauPermissions, '[0]')) ? [get(bureauPermissions, '[0]')] : [];
   const initialOrgs = (fromPostMenu && get(props, 'orgPermissions[0]')) ? [get(props, 'orgPermissions[0]')] : [];
@@ -105,6 +103,7 @@ const PositionManager = props => {
   const hardToFillOptions = uniqBy(get(hardToFill, 'data'), 'code');
   const sorts = BUREAU_POSITION_SORT;
 
+
   // Local state inputs to push to redux state
   const currentInputs = {
     page,
@@ -147,26 +146,24 @@ const PositionManager = props => {
     q: textInput || textSearch,
   };
 
-  // const noBureausSelected = selectedBureaus.filter(f => f).length < 1;
-  const noBureausSelected = selectedBureaus?.length === 0;
-  // const noOrgsSelected = selectedOrgs.filter(f => f).length < 1;
-  const noOrgsSelected = selectedOrgs?.length === 0;
+  const noBureausSelected = selectedBureaus.filter(f => f).length < 1;
+  const noOrgsSelected = selectedOrgs.filter(f => f).length < 1;
   const childRef = useRef();
 
   // Initial render
   useEffect(() => {
-    dispatch(filtersFetchData(bureauFilters, {}));
-    dispatch(bureauPositionsFetchData(query, fromBureauMenu));
-    dispatch(saveBureauUserSelections(currentInputs));
+    props.fetchFilters(bureauFilters, {});
+    props.fetchBureauPositions(query, fromBureauMenu);
+    props.saveSelections(currentInputs);
   }, []);
 
   // Rerender and action on user selections
   useEffect(() => {
     if (prevPage) {
-      if ((viewType === 'bureau' && !noBureausSelected) || (viewType === 'post' && !noOrgsSelected)) {
-        dispatch(bureauPositionsFetchData(query, fromBureauMenu));
+      if ((fromBureauMenu && !noBureausSelected) || (fromPostMenu && !noOrgsSelected)) {
+        props.fetchBureauPositions(query, fromBureauMenu);
       }
-      dispatch(saveBureauUserSelections(currentInputs));
+      props.saveSelections(currentInputs);
       setPage(1);
     }
   }, [
@@ -192,8 +189,8 @@ const PositionManager = props => {
   useEffect(() => {
     scrollToTop({ delay: 0, duration: 400 });
     if (prevPage) {
-      dispatch(bureauPositionsFetchData(query, fromBureauMenu));
-      dispatch(saveBureauUserSelections(currentInputs));
+      props.fetchBureauPositions(query, fromBureauMenu);
+      props.saveSelections(currentInputs);
     }
   }, [page]);
 
@@ -273,7 +270,7 @@ const PositionManager = props => {
     setSelectedGrades([]);
     setSelectedPosts([]);
     setSelectedTODs([]);
-    setSelectedOrgs([orgPermissions[0]]);
+    setSelectedOrgs([props.orgPermissions[0]]);
     setSelectedBureaus([bureauPermissions[0]].filter(f => f));
     setSelectedCycles([]);
     setSelectedLanguages([]);
@@ -626,16 +623,53 @@ const PositionManager = props => {
 };
 
 PositionManager.propTypes = {
+  fetchBureauPositions: PropTypes.func.isRequired,
+  fetchFilters: PropTypes.func.isRequired,
+  saveSelections: PropTypes.func.isRequired,
+  bureauFilters: FILTERS_PARENT,
+  bureauPositions: POSITION_SEARCH_RESULTS,
+  bureauFiltersIsLoading: PropTypes.bool,
+  bureauPositionsIsLoading: PropTypes.bool,
+  bureauPositionsHasErrored: PropTypes.bool,
+  bureauPermissions: BUREAU_PERMISSIONS,
+  orgPermissions: ORG_PERMISSIONS,
+  userSelections: BUREAU_USER_SELECTIONS,
   fromBureauMenu: PropTypes.bool,
   fromPostMenu: PropTypes.bool,
-  viewType: PropTypes.string,
 };
 
 PositionManager.defaultProps = {
+  bureauFilters: { filters: [] },
+  bureauPositions: { results: [] },
+  bureauFiltersIsLoading: false,
+  bureauPositionsIsLoading: false,
+  bureauPositionsHasErrored: false,
+  bureauPermissions: [],
+  orgPermissions: [],
+  userSelections: {},
   showClear: false,
   fromBureauMenu: false,
   fromPostMenu: false,
-  viewType: '',
 };
 
-export default PositionManager;
+const mapStateToProps = state => ({
+  bureauPositions: state.bureauPositions,
+  bureauPositionsIsLoading: state.bureauPositionsIsLoading,
+  bureauPositionsHasErrored: state.bureauPositionsHasErrored,
+  bureauFilters: state.filters,
+  bureauFiltersHasErrored: state.filtersHasErrored,
+  bureauFiltersIsLoading: state.filtersIsLoading,
+  bureauPermissions: state.userProfile.bureau_permissions,
+  orgPermissions: state.userProfile.org_permissions,
+  userSelections: state.bureauUserSelections,
+});
+
+export const mapDispatchToProps = dispatch => ({
+  fetchBureauPositions: (query, bureauMenu) =>
+    dispatch(bureauPositionsFetchData(query, bureauMenu)),
+  fetchFilters: (items, queryParams, savedFilters) =>
+    dispatch(filtersFetchData(items, queryParams, savedFilters)),
+  saveSelections: (selections) => dispatch(saveBureauUserSelections(selections)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PositionManager);
