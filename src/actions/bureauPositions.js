@@ -1,6 +1,6 @@
 import { downloadFromResponse, formatDate } from 'utilities';
 import { batch } from 'react-redux';
-import { get, identity, isArray, isEmpty, pickBy } from 'lodash';
+import { get, identity, isArray, pickBy } from 'lodash';
 import querystring from 'query-string';
 import { CancelToken } from 'axios';
 import { toastError } from './toast';
@@ -61,18 +61,19 @@ export function bureauPositionsFetchDataSuccess(results) {
   };
 }
 
-export function bureauPositionsFetchData(userQuery, fromBureauMenu = true) {
+export function bureauPositionsFetchData(userQuery) {
   // Ensure the userQuery includes bureaus or orgs, based on menu
   // - otherwise we risk querying unauthorized positions
-  if ((fromBureauMenu && isEmpty(get(userQuery, 'position__bureau__code__in', []))) ||
-    (!fromBureauMenu && isEmpty(get(userQuery, 'position__org__code__in', [])))) {
-    return (dispatch) => {
-      batch(() => {
-        dispatch(bureauPositionsHasErrored(true));
-        dispatch(bureauPositionsIsLoading(false));
-      });
-    };
-  }
+  // commenting out this block, its misfiring in TST2 7/2024
+  // if ((fromBureauMenu && isEmpty(get(userQuery, 'position__bureau__code__in', []))) ||
+  //   (!fromBureauMenu && isEmpty(get(userQuery, 'position__org__code__in', [])))) {
+  //   return (dispatch) => {
+  //     batch(() => {
+  //       dispatch(bureauPositionsHasErrored(true));
+  //       dispatch(bureauPositionsIsLoading(false));
+  //     });
+  //   };
+  // }
 
   // Combine defaults with given userQuery
   let q = pickBy(userQuery, identity);

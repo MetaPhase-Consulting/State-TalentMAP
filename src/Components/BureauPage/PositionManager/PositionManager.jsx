@@ -147,10 +147,8 @@ const PositionManager = props => {
     q: textInput || textSearch,
   };
 
-  // const noBureausSelected = selectedBureaus.filter(f => f).length < 1;
-  const noBureausSelected = selectedBureaus?.length === 0;
-  // const noOrgsSelected = selectedOrgs.filter(f => f).length < 1;
-  const noOrgsSelected = selectedOrgs?.length === 0;
+  const noBureausSelected = selectedBureaus.filter(f => f).length < 1;
+  const noOrgsSelected = selectedOrgs.filter(f => f).length < 1;
   const childRef = useRef();
 
   // Initial render
