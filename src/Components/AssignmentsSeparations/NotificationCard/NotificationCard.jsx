@@ -16,7 +16,7 @@ import Alert from '../../Alert';
 // import MemoHeader from './Tabs/MemoHeader';
 
 const NotificationCard = (props) => {
-  const { id, revisionNum } = props;
+  const { assignments } = props;
 
   const dispatch = useDispatch();
 
@@ -38,16 +38,19 @@ const NotificationCard = (props) => {
   const loading = noteLoading || cableLoading || refLoading;
   const errored = noteErrored || cableErrored || refErrored;
 
+  const [editMode, setEditMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
 
   useEffect(() => {
-    if (id) {
+    if (assignments?.length > 0) {
+      const seqNums = assignments?.map(a => a.seqNum).join(',');
+      const revisionNums = assignments?.map(a => a.revisionNum).join(',');
       dispatch(noteCableFetchData({
-        I_ASG_SEQ_NUM: 1, // TEMPORARILY HARD CODED
-        I_ASGD_REVISION_NUM: revisionNum ?? 0,
+        I_ASG_SEQ_NUM: seqNums,
+        I_ASGD_REVISION_NUM: revisionNums,
       }));
     }
-  }, [id]);
+  }, [assignments]);
 
   useEffect(() => {
     if (note$?.NM_SEQ_NUM) {
@@ -124,6 +127,27 @@ const NotificationCard = (props) => {
   };
 
   return (getOverlay() ||
+    !editMode ?
+    <TabbedCard
+      tabs={[{
+        text: 'Preview',
+        value: 'PREVIEW',
+        content: (
+          <div className="position-content position-form">
+            <button onClick={() => setEditMode(true)}>Edit</button>
+            <div>
+              Notification
+              The Notification Cable for _ will be emailed to the Dos Communications Center from the preparer.
+              Email
+            </div>
+            <div className="position-form--actions">
+              <button onClick={() => { }}>Cancel</button>
+              <button onClick={() => { }}>Email Cable</button>
+            </div>
+          </div>
+        ),
+      }]}
+    /> :
     <TabbedCard
       tabs={[{
         text: 'Header',
@@ -201,13 +225,11 @@ const NotificationCard = (props) => {
 };
 
 NotificationCard.propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  revisionNum: PropTypes.number,
+  assignments: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 NotificationCard.defaultProps = {
-  id: undefined,
-  revisionNum: undefined,
+  assignments: [],
 };
 
 export default NotificationCard;
