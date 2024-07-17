@@ -38,21 +38,23 @@ export const renderIFrame = (env) => {
 
 // function to initialize app, capture feature flags in localStorage
 export const init = (config) => {
-  const configCopy = { ...config };
+  sessionStorage.setItem('config', JSON.stringify(config));
   const isDev = some(['localhost', 'metaphasedev'], el => includes(window.location.hostname, el));
   // Change certain flags to true if isDev is true
   if (isDev) {
+    const configCopy = { ...config };
     configCopy.flags.persona_auth = true;
     configCopy.flags.settings = true;
+    sessionStorage.removeItem('config');
+    sessionStorage.setItem('config', JSON.stringify(configCopy));
   }
 
-  sessionStorage.setItem('config', JSON.stringify(configCopy));
 
   const env = determineEnv(window.location.href);
   const isPublic = includes(window.location.hostname, 'msappproxy');
 
-  const auth = get(configCopy, 'hrAuthUrl');
-  const publicAuth = get(configCopy, 'hrAuthUrlPublic');
+  const auth = get(config, 'hrAuthUrl');
+  const publicAuth = get(config, 'hrAuthUrlPublic');
 
   // Only pass tmusrname header if localhost or metaphase environment
   const withCredentials = !isDev;
