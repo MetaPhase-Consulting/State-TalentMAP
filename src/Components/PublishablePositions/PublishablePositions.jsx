@@ -451,6 +451,7 @@ const PublishablePositions = ({ viewType }) => {
                     onSubmit={editData => submitEdit(editData)}
                     filters={filters}
                     onShowMorePP={callAdditionalData}
+                    hideClassifications={isPostView}
                   />
                 ))
               }
