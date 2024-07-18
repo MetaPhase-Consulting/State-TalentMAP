@@ -27,6 +27,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
+  const hruID = get(userProfile, 'hru_id');
   const id = get(userProfile, 'employee_id');
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
   const languages = get(userProfile, 'current_assignment.position.language');
@@ -63,6 +64,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     const clientData = {
       per_seq_number: perdet,
       bid_seasons: currentSeasons,
+      hru_id: hruID,
       comments: verifyComments,
       email: verifyAltEmail,
     };
