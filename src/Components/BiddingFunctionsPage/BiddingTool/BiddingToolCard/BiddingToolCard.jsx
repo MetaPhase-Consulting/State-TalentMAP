@@ -40,8 +40,6 @@ const BiddingToolCard = (props) => {
   const resultIsLoading = (isCreate ?
     useSelector(state => state.biddingToolCreateDataLoading) :
     useSelector(state => state.biddingToolFetchDataLoading)) || false;
-  const deleteErrored = useSelector(state => state.biddingToolDeleteErrored);
-  const createErrored = useSelector(state => state.biddingToolCreateErrored);
 
   const locations = result?.locations || [];
   const statuses = result?.statuses || [];
@@ -62,13 +60,13 @@ const BiddingToolCard = (props) => {
   }, []);
 
   const initialValues = isCreate ? {
-    location: null,
-    status: null,
-    tod: null,
-    unaccompanied_status: null,
-    housing: null,
-    quarters: null,
-    efm_issues: null,
+    location: locations?.[0]?.code || '',
+    status: statuses?.[0]?.code || '',
+    tod: tods?.[0]?.code || '',
+    unaccompanied_status: unaccompaniedStatuses?.[0]?.code || '',
+    housing: housingTypes?.[0]?.code || '',
+    quarters: quartersTypes?.[0]?.code || '',
+    efm_issues: ehcps?.[0]?.code || '',
 
     snd: 'N',
     hds: 'N',
@@ -78,10 +76,10 @@ const BiddingToolCard = (props) => {
     inside_efm_employment: 'N',
     outside_efm_employment: 'N',
 
-    cola: null,
-    differential_rate: null,
-    danger_pay: null,
-    climate_zone: null,
+    cola: '0',
+    differential_rate: '0',
+    danger_pay: '0',
+    climate_zone: '0',
 
     rr_point: '',
     medical: '',
@@ -127,9 +125,71 @@ const BiddingToolCard = (props) => {
   const [values, setValues] = useState(initialValues);
   useEffect(() => {
     if (editMode) {
-      setValues(initialValues);
+      setValues({
+        location: result?.location,
+        status: result?.status,
+        tod: result?.tod,
+        unaccompanied_status: result?.unaccompanied_status,
+        housing: result?.housing,
+        quarters: result?.quarters,
+        efm_issues: result?.efm_issues,
+
+        snd: result?.snd ?? 'N',
+        hds: result?.hds ?? 'N',
+        apo_fpo_dpo: result?.apo_fpo_dpo ?? 'N',
+        consumable_allowance: result?.consumable_allowance ?? 'N',
+        fm_fp: result?.fm_fp ?? 'N',
+        inside_efm_employment: result?.inside_efm_employment ?? 'N',
+        outside_efm_employment: result?.outside_efm_employment ?? 'N',
+
+        cola: result?.cola,
+        differential_rate: result?.differential_rate,
+        danger_pay: result?.danger_pay,
+        climate_zone: result?.climate_zone,
+
+        rr_point: result?.rr_point ?? '',
+        medical: result?.medical ?? '',
+        remarks: result?.remarks ?? '',
+        quarters_remark: result?.quarters_remark ?? '',
+        special_ship_allowance: result?.special_ship_allowance ?? '',
+        school_year: result?.school_year ?? '',
+        grade_education: result?.grade_education ?? '',
+        efm_employment: result?.efm_employment ?? '',
+      });
+    } else {
+      setValues({
+        location: locations?.[0]?.code || '',
+        status: statuses?.[0]?.code || '',
+        tod: tods?.[0]?.code || '',
+        unaccompanied_status: unaccompaniedStatuses?.[0]?.code || '',
+        housing: housingTypes?.[0]?.code || '',
+        quarters: quartersTypes?.[0]?.code || '',
+        efm_issues: ehcps?.[0]?.code || '',
+
+        snd: 'N',
+        hds: 'N',
+        apo_fpo_dpo: 'N',
+        consumable_allowance: 'N',
+        fm_fp: 'N',
+        inside_efm_employment: 'N',
+        outside_efm_employment: 'N',
+
+        cola: '0',
+        differential_rate: '0',
+        danger_pay: '0',
+        climate_zone: '0',
+
+        rr_point: '',
+        medical: '',
+        remarks: '',
+        quarters_remark: '',
+        special_ship_allowance: '',
+        school_year: '',
+        grade_education: '',
+        efm_employment: '',
+      });
     }
-  }, [editMode]);
+  }, [editMode, result]);
 
   // ========================== VIEW MODE ==========================
 
@@ -139,11 +199,11 @@ const BiddingToolCard = (props) => {
     { 'R & R Point': result?.rr_point || 'None Listed' },
     { 'COLA': result?.cola?.toString() || 'None Listed' },
     { 'Differential Rate': result?.differential_rate?.toString() || 'None Listed' },
-    { 'Consumable Allowance': result?.consumable_allowance ? 'Yes' : 'No' },
-    { 'APO/FPO/DPO': result?.apo_fpo_dpo ? 'Yes' : 'No' },
+    { 'Consumable Allowance': result?.consumable_allowance === 'Y' ? 'Yes' : 'No' },
+    { 'APO/FPO/DPO': result?.apo_fpo_dpo === 'Y' ? 'Yes' : 'No' },
     { 'Danger Pay': result?.danger_pay?.toString() || 'None Listed' },
-    { 'SND': result?.snd ? 'Yes' : 'No' },
-    { 'HDS': result?.hds ? 'Yes' : 'No' },
+    { 'SND': result?.snd === 'Y' ? 'Yes' : 'No' },
+    { 'HDS': result?.hds === 'Y' ? 'Yes' : 'No' },
     { 'Unaccompanied Status': unaccompaniedStatuses.find(o => o.code === result?.unaccompanied_status)?.description || 'None Listed' },
     { 'Housing Type': housingTypes.find(o => o.code === result?.housing_type)?.description || 'None Listed' },
     { 'Quarters': quartersTypes.find(o => o.code === result?.quarters_type)?.description || 'None Listed' },
@@ -239,15 +299,15 @@ const BiddingToolCard = (props) => {
   const onSubmit = () => {
     if (isCreate) {
       dispatch(biddingToolCreate(values));
-      if (!createErrored) {
-        history.push(`${rootLocation()}/${values.location}`);
-      }
     } else {
-      dispatch(biddingToolEdit({
-        ...values,
-        updater_id: result?.updater_id,
-        updated_date: result?.updated_date,
-      }));
+      dispatch(biddingToolEdit(
+        {
+          ...values,
+          updater_id: result?.updater_id,
+          updated_date: result?.updated_date,
+        },
+        () => { setEditMode(false); history.go(0); },
+      ));
     }
   };
 
@@ -282,15 +342,14 @@ const BiddingToolCard = (props) => {
   };
 
   const onDelete = () => {
-    dispatch(biddingToolDelete({
-      location: id,
-      updater_id: result?.updater_id,
-      updated_date: result?.updated_date,
-    }));
-    swal.close();
-    if (!deleteErrored) {
-      history.push(rootLocation());
-    }
+    dispatch(biddingToolDelete(
+      {
+        location: id,
+        updater_id: result?.updater_id,
+        updated_date: result?.updated_date,
+      },
+      () => swal.close(),
+    ));
   };
   const showDeleteModal = () => {
     swal({
@@ -321,9 +380,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="gsa-location">GSA Location</label>
             <select
               id="location"
-              defaultValue={values.location}
+              value={values.location}
               onChange={(e) => setValues({ ...values, location: e.target.value })}
             >
+              <option value="" disabled>Select Location</option>
               {locations?.map(b => (
                 <option key={b.code} value={b.code}>{b.state_country}</option>
               ))}
@@ -333,9 +393,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="status">Status</label>
             <select
               id="status"
-              defaultValue={values.status}
+              value={values.status}
               onChange={(e) => setValues({ ...values, status: e.target.value })}
             >
+              <option value="" disabled>Select Status</option>
               {statuses?.map(b => (
                 <option key={b.code} value={b.code}>{b.description}</option>
               ))}
@@ -361,9 +422,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="tod">TOD</label>
             <select
               id="tod"
-              defaultValue={values.tod}
+              value={values.tod}
               onChange={(e) => setValues({ ...values, tod: e.target.value })}
             >
+              <option value="" disabled>Select TOD</option>
               {tods?.map(b => (
                 <option key={b.code} value={b.code}>{b.description}</option>
               ))}
@@ -381,9 +443,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="unaccompanied-status">Unaccompanied Status</label>
             <select
               id="unaccompanied-status"
-              defaultValue={values.unaccompanied_status}
+              value={values.unaccompanied_status}
               onChange={(e) => setValues({ ...values, unaccompanied_status: e.target.value })}
             >
+              <option value="" disabled>Select Unaccompanied Status</option>
               {unaccompaniedStatuses?.map(b => (
                 <option key={b.code} value={b.code}>{b.description}</option>
               ))}
@@ -404,7 +467,7 @@ const BiddingToolCard = (props) => {
               type="number"
               min="0"
               max="160"
-              defaultValue={values.cola}
+              value={values.cola}
               onChange={(e) => setValues({ ...values, cola: e.target.value })}
             />
           </div>
@@ -414,7 +477,7 @@ const BiddingToolCard = (props) => {
               id="differential-rate"
               type="number"
               min="0"
-              defaultValue={values.differential_rate}
+              value={values.differential_rate}
               onChange={(e) => setValues({ ...values, differential_rate: e.target.value })}
             />
           </div>
@@ -425,7 +488,7 @@ const BiddingToolCard = (props) => {
               type="number"
               min="0"
               max="35"
-              defaultValue={values.danger_pay}
+              value={values.danger_pay}
               onChange={(e) => setValues({ ...values, danger_pay: e.target.value })}
             />
           </div>
@@ -477,7 +540,7 @@ const BiddingToolCard = (props) => {
               id="climate-zone"
               type="number"
               min="0"
-              defaultValue={values.climate_zone}
+              value={values.climate_zone}
               onChange={(e) => setValues({ ...values, climate_zone: e.target.value })}
             />
           </div>
@@ -501,9 +564,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="housing-type">Housing Type</label>
             <select
               id="housing"
-              defaultValue={values.housing}
+              value={values.housing}
               onChange={(e) => setValues({ ...values, housing: e.target.value })}
             >
+              <option value="" disabled>Select Housing Type</option>
               {housingTypes?.map(b => (
                 <option key={b.code} value={b.code}>{b.description}</option>
               ))}
@@ -513,9 +577,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="qtrs-type">Qtrs. Type</label>
             <select
               id="quarters"
-              defaultValue={values.quarters}
+              value={values.quarters}
               onChange={(e) => setValues({ ...values, quarters: e.target.value })}
             >
+              <option value="" disabled>Select Quarters Type</option>
               {quartersTypes?.map(b => (
                 <option key={b.code} value={b.code}>{b.description}</option>
               ))}
@@ -627,9 +692,10 @@ const BiddingToolCard = (props) => {
             <label htmlFor="qtrs-type">EFM Issues</label>
             <select
               id="efm-issues"
-              defaultValue={values.efm_issues}
+              value={values.efm_issues}
               onChange={(e) => setValues({ ...values, efm_issues: e.target.value })}
             >
+              <option value="" disabled>Select EFM Issues</option>
               {ehcps.map(b => (
                 <option key={b.code} value={b.code}>{b.description}</option>
               ))}

@@ -47,6 +47,39 @@ const PublishablePositions = ({ viewType }) => {
   const filtersIsLoading = useSelector(state => state.publishablePositionsFiltersIsLoading);
   const filters = useSelector(state => state.publishablePositionsFilters);
 
+  const isBureauView = viewType === 'bureau';
+  const isPostView = viewType === 'post';
+  // const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
+  const orgPermissions = useSelector(state => state.userProfile?.org_permissions);
+
+  const getBureauFilters = () => {
+    const originalBureaus = filters?.bureauFilters;
+    // if (originalBureaus && isBureauView) {
+    //   if (bureauPermissions) {
+    //     const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
+    //     const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
+    //     // filter out if user does not have that bureau permission
+    //     return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.description));
+    //   }
+    //   return [];
+    // }
+    return originalBureaus;
+  };
+
+  const getOrgFilters = () => {
+    const originalOrgs = filters?.orgFilters;
+    if (originalOrgs && isPostView) {
+      if (orgPermissions) {
+        const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ code }) => code);
+        const userOrgCodePermissions = Object.keys(orgPermissionsGroups);
+        // filter out if user does not have that org permission
+        return originalOrgs.filter((a) => userOrgCodePermissions.includes(a?.code));
+      }
+      return [];
+    }
+    return originalOrgs;
+  };
+
   const [tempsearchPosNum, tempsetSearchPosNum] = useState(userSelections?.searchPosNum || '');
   const [searchPosNum, setSearchPosNum] = useState(userSelections?.searchPosNum || '');
   const [selectedStatuses, setSelectedStatuses] = useState(userSelections?.selectedStatuses || []);
@@ -70,8 +103,8 @@ const PublishablePositions = ({ viewType }) => {
   const count = data$?.length || 0;
 
   const statuses = filters?.statusFilters;
-  const bureaus = filters?.bureauFilters;
-  const orgs = filters?.orgFilters;
+  const bureaus = getBureauFilters();
+  const orgs = getOrgFilters();
   const grades = filters?.gradeFilters;
   const skills = filters?.skillsFilters;
   const cycles = filters?.cycleFilters;
@@ -116,14 +149,28 @@ const PublishablePositions = ({ viewType }) => {
     selectedBidCycles,
   ].flat().filter(text => text !== '').length;
 
+  const filterSelectionValid = () => {
+    // valid if:
+    // not Bureau user
+    // a Bureau filter selected
+    if (isBureauView) {
+      return selectedBureaus.length > 0;
+    }
+    if (isPostView) {
+      return selectedOrgs.length > 0;
+    }
+    return true;
+  };
+
   const fetchAndSet = (resetPage = false) => {
     setClearFilters(!!numSelectedFilters);
-
-    if (resetPage) {
-      setPage(1);
+    if (filterSelectionValid()) {
+      if (resetPage) {
+        setPage(1);
+      }
+      dispatch(publishablePositionsFetchData(getQuery()));
+      dispatch(savePublishablePositionsSelections(getCurrentInputs()));
     }
-    dispatch(publishablePositionsFetchData(getQuery()));
-    dispatch(savePublishablePositionsSelections(getCurrentInputs()));
   };
 
   useEffect(() => {
@@ -167,6 +214,12 @@ const PublishablePositions = ({ viewType }) => {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
     } else if (dataHasErrored || filtersHasErrored) {
       overlay = <Alert type="error" title="Error displaying Publishable Positions" messages={[{ body: 'Please try again.' }]} />;
+    } else if (!filterSelectionValid()) {
+      if (isBureauView) {
+        overlay = <Alert type="info" title="Select Bureau Filter" messages={[{ body: 'Please select a Bureau Filter.' }]} />;
+      } else {
+        overlay = <Alert type="info" title="Select Org Filter" messages={[{ body: 'Please select a Org Filter.' }]} />;
+      }
     } else if (!data$?.length) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No positions for filter inputs.' }]} />;
     } else {

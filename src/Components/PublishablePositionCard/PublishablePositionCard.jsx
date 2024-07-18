@@ -21,7 +21,7 @@ const PP_FLAG = () => checkFlag('flags.publishable_positions_additional');
 const DETO_RWA_FLAG = () => checkFlag('flags.deto_rwa');
 
 const hardcodedFilters = {
-  statusFilters: [{ code: 1, description: '' }, { code: 2, description: 'Publishable' }, { code: 3, description: 'Vet' }],
+  statusFilters: [{ code: 'N', description: 'Not Publishable' }, { code: 'P', description: 'Publishable' }, { code: 'V', description: 'Vet' }],
   cycleFilters: [{ code: 1, description: '2010 Winter' }, { code: 2, description: '2007 Fall' }, { code: 3, description: '2009 Spring' }],
   todFilters: [{ code: 1, description: '' }, { code: 2, description: 'OTHER' }, { code: 3, description: 'INDEFINITE' }],
   functionalBureauFilters: [{ code: 1, description: '' }, { code: 2, description: 'bureau' }, { code: 3, description: 'bureau' }],
@@ -89,8 +89,8 @@ const PublishablePositionCard = ({
     renderList: renderSelectionList,
     className: 'width-280',
   };
-  const [status, setStatus] = useState('');
-  const [exclude, setExclude] = useState(true);
+  const [status, setStatus] = useState(data?.psCD || '');
+  const [exclude, setExclude] = useState(data?.posAuditExclusionInd === 'Y');
   const [selectedCycles, setSelectedCycles] = useState([]);
   const [selectedFuncBureau, setSelectedFuncBureau] = useState('');
   const [overrideTOD, setOverrideTOD] = useState('');
@@ -106,11 +106,21 @@ const PublishablePositionCard = ({
   }, [editMode, classificationsEditMode]);
 
   const onSubmitForm = () => {
+    const exclInd = exclude ? 'Y' : 'N';
     const editData = {
+      aptSeqNum: data?.aptSeqNum,
       posSeqNum: data?.posSeqNum,
-      positionDetails: textArea,
+
+      psCD: disableEditDetails ? data?.psCD : status,
+      posAuditExclusionInd: disableEditDetails ? data?.posAuditExclusionInd : exclInd,
+
+      createdUserID: data?.pposcreateuserid,
+      created: data?.ORIGpposcreatetmsmpdt.replace(/T/g, ' '),
       lastUpdatedUserID: data?.positionLastUpdatedUserID,
-      lastUpdated: data?.ORIGpositionLastUpdated,
+      lastUpdated: data?.ORIGpositionLastUpdated.replace(/T/g, ' '),
+
+      positionDetails: textArea,
+      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated.replace(/T/g, ' '),
     };
     onSubmit(editData);
   };
@@ -140,25 +150,25 @@ const PublishablePositionCard = ({
     ],
     inputBody: (
       <div className="position-form">
-        {PP_FLAG() &&
-          <div className="spaced-row">
-            <div className="dropdown-container">
-              <div className="position-form--input">
-                <label htmlFor="publishable-position-statuses">Publishable Status</label>
-                <select
-                  disabled={disableEditDetails}
-                  className="publishable-position-inputs"
-                  id="publishable-position-statuses"
-                  defaultValue={status}
-                  onChange={(e) => setStatus(e?.target.value)}
-                >
-                  {hardcodedFilters.statusFilters.map(s => (
-                    <option key={s.code} value={s.code}>
-                      {s.description}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        <div className="spaced-row">
+          <div className="dropdown-container">
+            <div className="position-form--input">
+              <label htmlFor="publishable-position-statuses">Publishable Status</label>
+              <select
+                disabled={disableEditDetails}
+                className="publishable-position-inputs"
+                id="publishable-position-statuses"
+                value={status}
+                onChange={(e) => setStatus(e?.target.value)}
+              >
+                {hardcodedFilters.statusFilters.map(s => (
+                  <option key={s.code} value={s.code}>
+                    {s.description}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {PP_FLAG() &&
               <div className="position-form--input">
                 <label htmlFor="publishable-pos-tod-override">Override Position TOD</label>
                 <select
@@ -174,29 +184,29 @@ const PublishablePositionCard = ({
                   ))}
                 </select>
               </div>
-            </div>
-            <div>
-              <CheckBox
-                id="exclude-checkbox"
-                label="Exclude Position from Bid Audit"
-                value={exclude}
-                disabled={disableEditDetails}
-                onCheckBoxClick={e => setExclude(e)}
-              />
-              {DETO_RWA_FLAG() &&
-                <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
-                  <CheckBox
-                    id="deto-checkbox"
-                    label="RWA/DETO Eligible"
-                    value={data?.deto_rwa || false}
-                    onCheckBoxClick={() => { }}
-                    disabled
-                  />
-                </Tooltip>
-              }
-            </div>
+            }
           </div>
-        }
+          <div>
+            <CheckBox
+              id="exclude-checkbox"
+              label="Exclude Position from Bid Audit"
+              value={exclude}
+              disabled={disableEditDetails}
+              onCheckBoxClick={e => setExclude(e)}
+            />
+            {DETO_RWA_FLAG() &&
+              <Tooltip title="Eligibility can be modified in GEMS, contact your HRO to make changes.">
+                <CheckBox
+                  id="deto-checkbox"
+                  label="RWA/DETO Eligible"
+                  value={data?.deto_rwa || false}
+                  onCheckBoxClick={() => { }}
+                  disabled
+                />
+              </Tooltip>
+            }
+          </div>
+        </div>
         <div>
           <Row fluid className="position-form--description">
             <span className="definition-title">Position Details</span>

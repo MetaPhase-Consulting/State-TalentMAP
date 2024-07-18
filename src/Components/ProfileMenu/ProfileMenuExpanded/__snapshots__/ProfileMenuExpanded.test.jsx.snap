@@ -85,14 +85,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         search=""
         title="Saved Searches"
       />
-      <withRouter(NavLink)
-        hidden={false}
-        iconName="cogs"
-        key="Settings"
-        link="/profile/settings/"
-        search=""
-        title="Settings"
-      />
     </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
@@ -155,6 +147,14 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/ao/panelmeetings"
         search=""
         title="Panel Meetings"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Projected Vacancy Management"
+        link="/profile/ao/projectedvacancy"
+        search=""
+        title="Projected Vacancy Management"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -509,14 +509,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/administrator/orgstats/"
         search=""
         title="Org Stats"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="calendar"
-        key="Panel"
-        link="/profile/administrator/panel/"
-        search=""
-        title="Panel"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -624,14 +616,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         search=""
         title="Saved Searches"
       />
-      <withRouter(NavLink)
-        hidden={false}
-        iconName="cogs"
-        key="Settings"
-        link="/profile/settings/"
-        search=""
-        title="Settings"
-      />
     </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
@@ -694,6 +678,14 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/ao/panelmeetings"
         search=""
         title="Panel Meetings"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Projected Vacancy Management"
+        link="/profile/ao/projectedvacancy"
+        search=""
+        title="Projected Vacancy Management"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -1048,14 +1040,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/administrator/orgstats/"
         search=""
         title="Org Stats"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName="calendar"
-        key="Panel"
-        link="/profile/administrator/panel/"
-        search=""
-        title="Panel"
       />
       <withRouter(NavLink)
         hidden={true}

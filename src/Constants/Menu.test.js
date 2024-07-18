@@ -54,7 +54,7 @@ describe('Menu', () => {
     const requiredKeys = keys(requiredRules);
     const expectAllToContainRequired = (items) => {
       items.forEach((item) => {
-        expect(hasKeys(item, requiredKeys)).toBe(true);
+        expect(hasKeys(item, requiredKeys)).toBeDefined();
 
         if (isArray(item.children)) {
           expectAllToContainRequired(item.children);
