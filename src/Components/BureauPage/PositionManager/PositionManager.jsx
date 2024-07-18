@@ -37,8 +37,9 @@ const PositionManager = props => {
     fromBureauMenu,
     fromPostMenu,
   } = props;
+
   const initialBureaus = (fromBureauMenu && get(bureauPermissions, '[0]')) ? [get(bureauPermissions, '[0]')] : [];
-  const initialOrgs = (fromPostMenu && get(orgPermissions, '[0]')) ? [get(orgPermissions, '[0]')] : [];
+  const initialOrgs = (fromPostMenu && get(props, 'orgPermissions[0]')) ? [get(props, 'orgPermissions[0]')] : [];
 
   // Local state populating with defaults from previous user selections stored in redux
   const [page, setPage] = useState(userSelections.page || 1);
@@ -69,6 +70,7 @@ const PositionManager = props => {
   const [textSearch, setTextSearch] = useState(userSelections.textSearch || '');
   const [textInput, setTextInput] = useState(userSelections.textInput || '');
   const [clearFilters, setClearFilters] = useState(false);
+
   // Pagination
   const prevPage = usePrevious(page);
   const pageSizes = POSITION_MANAGER_PAGE_SIZES;
@@ -268,7 +270,7 @@ const PositionManager = props => {
     setSelectedGrades([]);
     setSelectedPosts([]);
     setSelectedTODs([]);
-    setSelectedOrgs([orgPermissions[0]]);
+    setSelectedOrgs([props.orgPermissions[0]]);
     setSelectedBureaus([bureauPermissions[0]].filter(f => f));
     setSelectedCycles([]);
     setSelectedLanguages([]);
