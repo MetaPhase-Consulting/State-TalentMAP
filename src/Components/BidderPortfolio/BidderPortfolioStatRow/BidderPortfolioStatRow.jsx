@@ -23,11 +23,11 @@ import AddToInternalListButton from '../AddToInternalListButton';
 const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewType }) => {
   const dispatch = useDispatch();
   const showCDOD30 = checkFlag('flags.CDOD30');
-  console.log('Users Profile:', userProfile);
+
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
-  // const perSecNum = get(userProfile, 'employee.per_seq_num');
+  const perSeqNum = get(userProfile, 'per_seq_num');
   const hruID = get(userProfile, 'hru_id');
   const id = get(userProfile, 'employee_id');
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
@@ -63,7 +63,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
     setAltEmail(verifyAltEmail);
     // Nothing to do yet, will add later
     const clientData = {
-      per_seq_number: perdet,
+      per_seq_number: perSeqNum,
       bid_seasons: currentSeasons,
       hru_id: hruID,
       comments: verifyComments,
