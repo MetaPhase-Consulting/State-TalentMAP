@@ -84,7 +84,7 @@
     "react-scrollbar": "^0.5.6",
     "react-select": "^1.1.0",
     "react-simple-dropdown": "^3.2.3",
-    "react-spring": "4.0.0",
+    "react-spring": "4.2.1",
     "react-sticky": "^6.0.3",
     "react-sticky-el": "^1.1.0",
     "react-switch": "^6.0.0",
