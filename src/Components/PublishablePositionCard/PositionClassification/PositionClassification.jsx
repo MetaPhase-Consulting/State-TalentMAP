@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { batch, useDispatch } from 'react-redux';
+import { batch, useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { useDataLoader } from 'hooks';
@@ -13,11 +13,15 @@ import {
 } from 'Constants/SystemMessages';
 import { toastError, toastSuccess } from 'actions/toast';
 import api from '../../../api';
+import { userHasPermissions } from '../../../utilities';
 
 const PositionClassification = (props) => {
   const { positionNumber, bureau, posSeqNum, editMode, setEditMode, disableEdit } = props;
 
   const dispatch = useDispatch();
+
+  const userProfile = useSelector(state => state.userProfile);
+  const isSuperUser = userHasPermissions(['superuser'], userProfile.permission_groups);
 
   const [refetch, setRefetch] = useState(true);
   const [classifications, setClassifications] = useState([]);
@@ -115,7 +119,7 @@ const PositionClassification = (props) => {
             <span className="span-text">{bureau} {positionNumber}</span>
           </div>
         </div>
-        {!editMode &&
+        {(!editMode && isSuperUser) &&
           <button
             className={`toggle-edit-mode ${disableEdit ? 'toggle-edit-mode-disabled' : ''}`}
             onClick={disableEdit ? () => { } : () => setEditMode(!editMode)}
@@ -151,7 +155,7 @@ const PositionClassification = (props) => {
           </tbody>
         </table>
       </div>
-      {editMode &&
+      {(editMode && isSuperUser) &&
         <div className="position-form--actions">
           <button onClick={handleCancel}>Cancel</button>
           <button onClick={handleSubmit}>Save</button>
