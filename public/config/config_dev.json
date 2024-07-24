@@ -40,6 +40,7 @@
     "projected_vacancy": true,
     "projected_vacancy_edit": true,
     "projected_vacancy_cycle_import": false,
+    "publishable_positions": false,
     "publishable_positions_additional": false,
     "publishable_positions_classifications": true,
     "register_checklist": false,
