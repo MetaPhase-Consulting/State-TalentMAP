@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import { checkFlag } from 'flags';
 import { useDataLoader } from 'hooks';
 import { formatDate } from 'utilities';
 import { altAssignmentsSeparations } from 'actions/assignment';
+import { noteCableFetchData } from 'actions/assignmentNotifications';
 import { NO_VALUE } from 'Constants/SystemMessages';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
@@ -17,12 +19,9 @@ import InteractiveElement from 'Components/InteractiveElement';
 import api from '../../api';
 import Assignment from './Assignment';
 import Separation from './Separation';
-import NotificationCard from './NotificationCard';
 
 const useNotification = () => checkFlag('flags.assignment_notification');
 const useMemo = () => checkFlag('flags.assignment_memo');
-// eslint-disable-next-line no-unused-vars
-const useBreadcrumbs = checkFlag('flags.breadcrumbs');
 
 export const panelMeetingLink = (pmSeqNum, date, editMode) => {
   if ((!pmSeqNum && !date) && editMode) {
@@ -48,6 +47,10 @@ export const panelMeetingLink = (pmSeqNum, date, editMode) => {
 };
 
 const AssignmentsSeparations = (props) => {
+  const location = props.location?.pathname;
+  const params = location.split('/');
+  const viewType = params[2];
+
   const id = props?.match.params.id;
 
   const dispatch = useDispatch();
@@ -72,11 +75,6 @@ const AssignmentsSeparations = (props) => {
 
   // ====================== UI State Management ======================
 
-  // cleanup role check links for breadcrumbs
-  const breadcrumbLinkRole = 'ao';
-
-  // default || memo || notification
-  const [cardMode, setCardMode] = useState('default');
   const [assignmentToggle, setAssignmentToggle] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [disableOtherEdits, setDisableOtherEdits] = useState(false);
@@ -130,7 +128,7 @@ const AssignmentsSeparations = (props) => {
       <div className="asg-content">
         {false &&
           <div className="breadcrumb-container">
-            <Link to={`/profile/public/${breadcrumbLinkRole}/`} className="breadcrumb-active">
+            <Link to={`/profile/public/${viewType}/`} className="breadcrumb-active">
               Bidder Portfolio
             </Link>
             <span className="breadcrumb-arrow">&gt;</span>
@@ -142,164 +140,165 @@ const AssignmentsSeparations = (props) => {
           Assignments and Separations
           <span className="asg-title-dash">
             {'- '}
-            <Link to={`/profile/public/${id}/ao`}>
+            <Link to={`/profile/public/${id}/${viewType}`}>
               <span className="asg-title">
                 {`${employeeName}`}
               </span>
             </Link>
           </span>
         </div>
-        {cardMode === 'default' &&
-          <div className="pt-20 asg-subheader">
-            <span>
-              Add or review the current assignments or separations for {employeeName}
-            </span>
-            <div className="add-buttons">
-              <div className={`create-new-button ${disableOtherEdits ? 'disabled' : ''}`}>
+        <div className="pt-20 asg-subheader">
+          <span>
+            Add or review the current assignments or separations for {employeeName}
+          </span>
+          <div className="add-buttons">
+            <div className={`create-new-button ${disableOtherEdits ? 'disabled' : ''}`}>
+              <a
+                role="button"
+                className="width-300"
+                tabIndex={0}
+                onClick={() => { if (!disableOtherEdits) setOpenModal(true); }}
+              >
+                <FA name="briefcase" />
+                Add New Assignment/Separation
+              </a>
+            </div>
+            {useNotification() &&
+              <div className={`create-new-button align-left ${(disableOtherEdits || !hasSelections) ? 'disabled' : ''}`}>
                 <a
                   role="button"
                   className="width-300"
                   tabIndex={0}
-                  onClick={() => { if (!disableOtherEdits) setOpenModal(true); }}
+                  onClick={() => {
+                    if (hasSelections) {
+                      const seqNums = selectedAssignments?.map(a => a.seqNum).join(',');
+                      const revisionNums = selectedAssignments?.map(a => a.revisionNum).join(',');
+                      dispatch(noteCableFetchData(
+                        {
+                          I_ASG_SEQ_NUM: seqNums,
+                          I_ASGD_REVISION_NUM: revisionNums,
+                        }, `/profile/${viewType}/${id}/assignmentsseparations`,
+                      ));
+                    }
+                  }}
                 >
                   <FA name="briefcase" />
-                  Add New Assignment/Separation
+                  Add Notification
                 </a>
               </div>
-              {useNotification() &&
-                <div className={`create-new-button align-left ${(disableOtherEdits || !hasSelections) ? 'disabled' : ''}`}>
-                  <a
-                    role="button"
-                    className="width-300"
-                    tabIndex={0}
-                    onClick={() => { if (hasSelections) setCardMode('notification'); }}
-                  >
-                    <FA name="briefcase" />
-                    Add Notification
-                  </a>
-                </div>
-              }
-              {useMemo() &&
-                <div className={`create-new-button align-left ${(disableOtherEdits || !hasSelections) ? 'disabled' : ''}`}>
-                  <a
-                    role="button"
-                    className="width-300"
-                    tabIndex={0}
-                    onClick={() => { if (hasSelections) setCardMode('memo'); }}
-                  >
-                    <FA name="briefcase" />
-                    Add Memo
-                  </a>
-                </div>
-              }
-            </div>
-          </div>
-        }
-        {cardMode === 'notification' &&
-          <NotificationCard assignments={selectedAssignments} />
-        }
-        {cardMode === 'default' &&
-          <>
-            <div className="results-mode">
-              <InteractiveElement
-                className={`${assignmentToggle ? 'active' : ''} ${(!assignmentToggle && disableOtherEdits) ? 'disabled' : ''}`}
-                onClick={() => { if (!disableOtherEdits) setAssignmentToggle(true); }}
-              >
-                Assignments
-              </InteractiveElement>
-              <InteractiveElement
-                className={`${!assignmentToggle ? 'active' : ''} ${(assignmentToggle && disableOtherEdits) ? 'disabled' : ''}`}
-                onClick={() => { if (!disableOtherEdits) setAssignmentToggle(false); }}
-              >
-                Separations
-              </InteractiveElement>
-            </div>
-            {disableOtherEdits &&
-              <Alert
-                type="warning"
-                title="Edit Mode"
-                customClassName="mb-10"
-                messages={[{
-                  body: 'Discard or save your edits before editing or creating another card.',
-                }]}
-              />
             }
-            {assignmentToggle && (results?.QRY_LSTASGS_REF?.length > 0 ?
-              results?.QRY_LSTASGS_REF?.map(data => (
-                <div className="position-content--container">
-                  <div className="toggle-include account-margin">
-                    <CheckBox
-                      id={`include-${data.ASG_SEQ_NUM}`}
-                      label="Include"
-                      disabled={disableOtherEdits}
-                      value={selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM)}
-                      onCheckBoxClick={() => {
-                        if (selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM)) {
-                          const filteredSelection = selectedAssignments.filter(a => a.seqNum !== data.ASG_SEQ_NUM);
-                          setSelectedAssignments(filteredSelection);
-                        } else {
-                          setSelectedAssignments([
-                            ...selectedAssignments,
-                            {
-                              seqNum: data.ASG_SEQ_NUM,
-                              revisionNum: data.ASGD_REVISION_NUM,
-                            },
-                          ]);
-                        }
-                      }}
-                    />
-                  </div>
-                  <TabbedCard
-                    key={data?.ASG_SEQ_NUM}
-                    tabs={[{
-                      text: 'Assignment Overview',
-                      value: 'ASSIGNMENT',
-                      content: <Assignment
-                        perdet={id}
-                        setNewAsgSep={setCardMode}
-                        data={data}
-                        setDisableOtherEdits={setDisableOtherEdits}
-                        disableOtherEdits={disableOtherEdits}
-                      />,
-                    }]}
-                  />
-                </div>
-              )) :
-              <Alert
-                type="info"
-                title="No Results"
-                messages={[{
-                  body: 'There are no assignments at this time.',
-                }]}
-              />
-            )}
-            {!assignmentToggle && (results?.QRY_LSTSEPS_REF?.length > 0 ?
-              results?.QRY_LSTSEPS_REF?.map(data => (
-                <TabbedCard
-                  key={data?.SEP_SEQ_NUM}
-                  tabs={[{
-                    text: 'Separation Overview',
-                    value: 'SEPARATION',
-                    content: <Separation
-                      perdet={id}
-                      setNewAsgSep={setCardMode}
-                      data={data}
-                      setDisableOtherEdits={setDisableOtherEdits}
-                      disableOtherEdits={disableOtherEdits}
-                    />,
-                  }]}
-                />
-              )) :
-              <Alert
-                type="info"
-                title="No Results"
-                messages={[{
-                  body: 'There are no separations at this time.',
-                }]}
-              />
-            )}
-          </>
+            {useMemo() &&
+              <div className={`create-new-button align-left ${(disableOtherEdits || !hasSelections) ? 'disabled' : ''}`}>
+                <a
+                  role="button"
+                  className="width-300"
+                  tabIndex={0}
+                  onClick={() => { }}
+                >
+                  <FA name="briefcase" />
+                  Add Memo
+                </a>
+              </div>
+            }
+          </div>
+        </div>
+        <div className="results-mode">
+          <InteractiveElement
+            className={`${assignmentToggle ? 'active' : ''} ${(!assignmentToggle && disableOtherEdits) ? 'disabled' : ''}`}
+            onClick={() => { if (!disableOtherEdits) setAssignmentToggle(true); }}
+          >
+            Assignments
+          </InteractiveElement>
+          <InteractiveElement
+            className={`${!assignmentToggle ? 'active' : ''} ${(assignmentToggle && disableOtherEdits) ? 'disabled' : ''}`}
+            onClick={() => { if (!disableOtherEdits) setAssignmentToggle(false); }}
+          >
+            Separations
+          </InteractiveElement>
+        </div>
+        {disableOtherEdits &&
+          <Alert
+            type="warning"
+            title="Edit Mode"
+            customClassName="mb-10"
+            messages={[{
+              body: 'Discard or save your edits before editing or creating another card.',
+            }]}
+          />
         }
+        {assignmentToggle && (results?.QRY_LSTASGS_REF?.length > 0 ?
+          results?.QRY_LSTASGS_REF?.map(data => (
+            <div key={`include-${data.ASG_SEQ_NUM}`} className="position-content--container" >
+              <div className="toggle-include account-margin">
+                <CheckBox
+                  id={`include-${data.ASG_SEQ_NUM}`}
+                  label="Include"
+                  disabled={disableOtherEdits}
+                  // eslint-disable-next-line no-unneeded-ternary
+                  value={selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM) ? true : false}
+                  onCheckBoxClick={() => {
+                    if (selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM)) {
+                      const filteredSelection = selectedAssignments.filter(a => a.seqNum !== data.ASG_SEQ_NUM);
+                      setSelectedAssignments(filteredSelection);
+                    } else {
+                      setSelectedAssignments([
+                        ...selectedAssignments,
+                        {
+                          seqNum: data.ASG_SEQ_NUM,
+                          revisionNum: data.ASGD_REVISION_NUM,
+                        },
+                      ]);
+                    }
+                  }}
+                />
+              </div>
+              <TabbedCard
+                key={data?.ASG_SEQ_NUM}
+                tabs={[{
+                  text: 'Assignment Overview',
+                  value: 'ASSIGNMENT',
+                  content: <Assignment
+                    perdet={id}
+                    data={data}
+                    setDisableOtherEdits={setDisableOtherEdits}
+                    disableOtherEdits={disableOtherEdits}
+                  />,
+                }]}
+              />
+            </div>
+          )) :
+          <Alert
+            type="info"
+            title="No Results"
+            messages={[{
+              body: 'There are no assignments at this time.',
+            }]}
+          />
+        )}
+        {!assignmentToggle && (results?.QRY_LSTSEPS_REF?.length > 0 ?
+          results?.QRY_LSTSEPS_REF?.map(data => (
+            <TabbedCard
+              key={data?.SEP_SEQ_NUM}
+              tabs={[{
+                text: 'Separation Overview',
+                value: 'SEPARATION',
+                content: <Separation
+                  perdet={id}
+                  data={data}
+                  setDisableOtherEdits={setDisableOtherEdits}
+                  disableOtherEdits={disableOtherEdits}
+                />,
+              }]}
+            />
+          )) :
+          <Alert
+            type="info"
+            title="No Results"
+            messages={[{
+              body: 'There are no separations at this time.',
+            }]}
+          />
+        )}
         <ReactModal open={openModal} setOpen={setOpenModal}>
           <TabbedCard
             className="modal-child"
@@ -308,7 +307,6 @@ const AssignmentsSeparations = (props) => {
               value: 'ASSIGNMENT',
               content: <Assignment
                 perdet={id}
-                setNewAsgSep={() => setCardMode('default')}
                 toggleModal={setOpenModal}
                 isNew
                 employee={modalEmployeeInfo}
@@ -318,7 +316,6 @@ const AssignmentsSeparations = (props) => {
               value: 'SEPARATION',
               content: <Separation
                 perdet={id}
-                setNewAsgSep={() => setCardMode('default')}
                 toggleModal={setOpenModal}
                 isNew
                 employee={modalEmployeeInfo}
@@ -337,10 +334,14 @@ AssignmentsSeparations.propTypes = {
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }),
   }),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
 };
 
 AssignmentsSeparations.defaultProps = {
   match: {},
+  location: {},
 };
 
-export default AssignmentsSeparations;
+export default withRouter(AssignmentsSeparations);
