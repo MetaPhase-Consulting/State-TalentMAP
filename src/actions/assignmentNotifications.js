@@ -12,7 +12,7 @@ import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
 import { REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
-// import { history } from '../store';
+import { history } from '../store';
 
 
 // ================ GET NOTE CABLE ================
@@ -36,7 +36,7 @@ export function noteCableFetchDataSuccess(results) {
   };
 }
 let cancelNoteCable;
-export function noteCableFetchData(query = {}) {
+export function noteCableFetchData(query = {}, location) {
   return (dispatch) => {
     if (cancelNoteCable) { cancelNoteCable('cancel'); }
     batch(() => {
@@ -54,7 +54,7 @@ export function noteCableFetchData(query = {}) {
           dispatch(noteCableFetchDataSuccess(data));
           dispatch(noteCableFetchDataErrored(false));
           dispatch(noteCableFetchDataLoading(false));
-          // history.push(`${location}/notification/${data[0]?.NM_SEQ_NUM}`);
+          history.push(`${location}/notification/${data[0]?.NM_SEQ_NUM}`);
         });
       })
       .catch((err) => {
