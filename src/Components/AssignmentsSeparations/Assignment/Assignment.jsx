@@ -26,7 +26,6 @@ const Assignment = (props) => {
     perdet,
     data,
     isNew,
-    setNewAsgSep,
     toggleModal,
     setDisableOtherEdits,
     disableOtherEdits,
@@ -229,7 +228,6 @@ const Assignment = (props) => {
         onUpdateSuccess,
       ));
     }
-    setNewAsgSep('default');
   };
 
   const form = {
@@ -519,7 +517,6 @@ Assignment.propTypes = {
   cycle: PropTypes.shape({
     cycle_name: PropTypes.string,
   }).isRequired,
-  setNewAsgSep: PropTypes.func,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
   setDisableOtherEdits: PropTypes.func,
@@ -530,7 +527,6 @@ Assignment.propTypes = {
 Assignment.defaultProps = {
   data: {},
   isNew: false,
-  setNewAsgSep: EMPTY_FUNCTION,
   toggleModal: EMPTY_FUNCTION,
   perdet: '',
   setDisableOtherEdits: EMPTY_FUNCTION,
