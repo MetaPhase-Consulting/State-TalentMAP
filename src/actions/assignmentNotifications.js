@@ -203,7 +203,7 @@ export function editNoteCable(data) {
       cancelEditNoteCable('cancel');
     }
     api()
-      .put('/fsbid/notification/cable/edit/', data, {
+      .post('/fsbid/notification/cable/edit/', data, {
         cancelToken: new CancelToken((c) => { cancelEditNoteCable = c; }),
       })
       .then(() => {
