@@ -12,7 +12,7 @@ import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
 import { REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
-import { history } from '../store';
+// import { history } from '../store';
 
 
 // ================ GET NOTE CABLE ================
@@ -36,7 +36,7 @@ export function noteCableFetchDataSuccess(results) {
   };
 }
 let cancelNoteCable;
-export function noteCableFetchData(query = {}, location) {
+export function noteCableFetchData(query = {}) {
   return (dispatch) => {
     if (cancelNoteCable) { cancelNoteCable('cancel'); }
     batch(() => {
@@ -54,7 +54,7 @@ export function noteCableFetchData(query = {}, location) {
           dispatch(noteCableFetchDataSuccess(data));
           dispatch(noteCableFetchDataErrored(false));
           dispatch(noteCableFetchDataLoading(false));
-          history.push(`${location}/notification/${data[0]?.NM_SEQ_NUM}`);
+          // history.push(`${location}/notification/${data[0]?.NM_SEQ_NUM}`);
         });
       })
       .catch((err) => {
@@ -226,7 +226,7 @@ export function editNoteCable(data) {
 // ================ REBUILD NOTIFICATION ================
 
 let cancelRebuildNotification;
-export function rebuildNotification(data) {
+export function rebuildNotification(data, onSuccess) {
   return (dispatch) => {
     if (cancelRebuildNotification) {
       cancelRebuildNotification('cancel');
@@ -240,6 +240,9 @@ export function rebuildNotification(data) {
           REBUILD_NOTIFICATION_SUCCESS,
           REBUILD_NOTIFICATION_SUCCESS_TITLE,
         ));
+        if (onSuccess) {
+          onSuccess();
+        }
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {

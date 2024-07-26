@@ -42,16 +42,20 @@ const NotificationCard = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
 
-  useEffect(() => {
+  const fetchNoteData = () => {
     if (note?.NM_SEQ_NUM) {
       dispatch(cableFetchData({
         I_NM_SEQ_NUM: note.NM_SEQ_NUM,
-        I_NM_NOTIFICATION_IND: 0,
+        I_NM_NOTIFICATION_IND: note.NM_NOTIFICATION_IND,
       }));
       dispatch(noteCableRefFetchData({
         I_NM_SEQ_NUM: note.NM_SEQ_NUM,
       }));
     }
+  };
+
+  useEffect(() => {
+    fetchNoteData();
   }, [note]);
 
   useEffect(() => {
@@ -109,11 +113,14 @@ const NotificationCard = (props) => {
           <button
             className="standard-add-button underlined"
             onClick={() => {
-              dispatch(rebuildNotification({
-                I_NME_SEQ_NUM: tabSeqNums,
-                I_NME_UPDATE_ID: tabUpdateIds,
-                I_NME_UPDATE_DATE: tabUpdateDates,
-              }));
+              dispatch(rebuildNotification(
+                {
+                  I_NME_SEQ_NUM: tabSeqNums,
+                  I_NME_UPDATE_ID: tabUpdateIds,
+                  I_NME_UPDATE_DATE: tabUpdateDates,
+                },
+                () => fetchNoteData(),
+              ));
             }}
           >
             <p>Rebuild Tab</p>
@@ -121,13 +128,20 @@ const NotificationCard = (props) => {
           <button
             className="standard-add-button underlined"
             onClick={() => {
-              dispatch(rebuildNotification({ I_NM_SEQ_NUM: note?.NM_SEQ_NUM }));
+              dispatch(rebuildNotification(
+                { I_NM_SEQ_NUM: note?.NM_SEQ_NUM },
+                () => fetchNoteData(),
+              ));
             }}
           >
             <p>Rebuild Notification</p>
           </button>
         </div>
         {children}
+        <div className="position-form--actions">
+          <button onClick={() => setEditMode(false)}>Back to Preview</button>
+          <button onClick={() => { }}>Save</button>
+        </div>
       </div>
     );
   };
