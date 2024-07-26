@@ -90,7 +90,7 @@ const AssignmentNotification = (props) => {
           </span>
         </div>
         {noteId &&
-          <NotificationCard note={note[0]} />
+          <NotificationCard note={note[0]} onCancel={() => history.push(`/profile/${viewType}/${id}/assignmentsseparations`)} />
         }
       </div>
     </div>
