@@ -1,14 +1,17 @@
 import {
-  UPDATE_PROJECTED_VACANCY_ERROR,
-  UPDATE_PROJECTED_VACANCY_ERROR_TITLE,
-  UPDATE_PROJECTED_VACANCY_SUCCESS,
-  UPDATE_PROJECTED_VACANCY_SUCCESS_TITLE,
+  GET_NOTIFICATION_ERROR,
+  GET_NOTIFICATION_ERROR_TITLE,
+  UPDATE_NOTIFICATION_ERROR,
+  UPDATE_NOTIFICATION_ERROR_TITLE,
+  UPDATE_NOTIFICATION_SUCCESS,
+  UPDATE_NOTIFICATION_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
+import { history } from '../store';
 
 
 // ================ GET NOTE CABLE ================
@@ -50,20 +53,25 @@ export function noteCableFetchData(query = {}) {
           dispatch(noteCableFetchDataSuccess(data));
           dispatch(noteCableFetchDataErrored(false));
           dispatch(noteCableFetchDataLoading(false));
+          history.push(`${location}/notification/${data[0]?.NM_SEQ_NUM}`);
         });
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
           batch(() => {
             dispatch(noteCableFetchDataSuccess({}));
-            dispatch(noteCableFetchDataErrored(false));
-            dispatch(noteCableFetchDataLoading(true));
+            dispatch(noteCableFetchDataErrored(true));
+            dispatch(noteCableFetchDataLoading(false));
+            dispatch(toastError(
+              GET_NOTIFICATION_ERROR,
+              GET_NOTIFICATION_ERROR_TITLE,
+            ));
           });
         } else {
           batch(() => {
             dispatch(noteCableFetchDataSuccess({}));
-            dispatch(noteCableFetchDataErrored(true));
-            dispatch(noteCableFetchDataLoading(false));
+            dispatch(noteCableFetchDataErrored(false));
+            dispatch(noteCableFetchDataLoading(true));
           });
         }
       });
@@ -199,16 +207,16 @@ export function projectedVacancyEdit(data, onSuccess) {
       })
       .then(() => {
         dispatch(toastSuccess(
-          UPDATE_PROJECTED_VACANCY_SUCCESS,
-          UPDATE_PROJECTED_VACANCY_SUCCESS_TITLE,
+          UPDATE_NOTIFICATION_SUCCESS,
+          UPDATE_NOTIFICATION_SUCCESS_TITLE,
         ));
         if (onSuccess) onSuccess();
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
           dispatch(toastError(
-            UPDATE_PROJECTED_VACANCY_ERROR,
-            UPDATE_PROJECTED_VACANCY_ERROR_TITLE,
+            UPDATE_NOTIFICATION_ERROR,
+            UPDATE_NOTIFICATION_ERROR_TITLE,
           ));
         }
       });
