@@ -4,9 +4,13 @@ import Linkify from 'react-linkify';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
-import { cableFetchData, noteCableRefFetchData } from 'actions/assignmentNotifications';
+import { cableFetchData, noteCableRefFetchData, rebuildNotification } from 'actions/assignmentNotifications';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
 import TabbedCard from 'Components/TabbedCard';
+import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
+import NavTabs from 'Components/NavTabs';
 import Header from './Tabs/Header';
 import EFM from './Tabs/EFM';
 import Remarks from './Tabs/Remarks';
@@ -14,15 +18,11 @@ import Training from './Tabs/Training';
 import Assignments from './Tabs/Assignments';
 import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
-import Spinner from '../../Spinner';
-import Alert from '../../Alert';
-import NavTabs from '../../NavTabs';
-import { rebuildNotification } from '../../../actions/assignmentNotifications';
 // import Memo from './Tabs/Memo';
 // import MemoHeader from './Tabs/MemoHeader';
 
 const NotificationCard = (props) => {
-  const { note } = props;
+  const { note, onCancel } = props;
 
   const dispatch = useDispatch();
 
@@ -231,7 +231,7 @@ const NotificationCard = (props) => {
           </div>
         </Row>
         <div className="position-form--actions">
-          <button onClick={() => { }}>Cancel</button>
+          <button onClick={onCancel}>Cancel</button>
           <button onClick={() => { }}>Email Cable</button>
         </div>
       </div>
@@ -333,10 +333,12 @@ NotificationCard.propTypes = {
   note: PropTypes.shape({
     NM_SEQ_NUM: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
+  onCancel: PropTypes.func,
 };
 
 NotificationCard.defaultProps = {
   note: undefined,
+  onCancel: EMPTY_FUNCTION,
 };
 
 export default NotificationCard;
