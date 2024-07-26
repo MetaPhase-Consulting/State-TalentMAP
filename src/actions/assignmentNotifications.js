@@ -35,7 +35,7 @@ export function noteCableFetchDataSuccess(results) {
   };
 }
 let cancelNoteCable;
-export function noteCableFetchData(query = {}) {
+export function noteCableFetchData(query = {}, location) {
   return (dispatch) => {
     if (cancelNoteCable) { cancelNoteCable('cancel'); }
     batch(() => {
