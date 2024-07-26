@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Linkify from 'react-linkify';
+import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
-import { cableFetchData, noteCableFetchData, noteCableRefFetchData } from 'actions/assignmentNotifications';
+import TextareaAutosize from 'react-textarea-autosize';
+import { cableFetchData, noteCableRefFetchData } from 'actions/assignmentNotifications';
+import { Row } from 'Components/Layout';
 import TabbedCard from 'Components/TabbedCard';
 import Header from './Tabs/Header';
 import EFM from './Tabs/EFM';
@@ -12,20 +16,16 @@ import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
 import Spinner from '../../Spinner';
 import Alert from '../../Alert';
+import NavTabs from '../../NavTabs';
 // import Memo from './Tabs/Memo';
 // import MemoHeader from './Tabs/MemoHeader';
 
 const NotificationCard = (props) => {
-  const { assignments } = props;
+  const { note } = props;
 
   const dispatch = useDispatch();
 
   // ====================== Data Retrieval ======================
-
-  const note = useSelector(state => state.noteCableFetchData);
-  const noteErrored = useSelector(state => state.noteCableFetchDataErrored);
-  const noteLoading = useSelector(state => state.noteCableFetchDataLoading);
-  const note$ = note[0] || undefined;
 
   // const cable = useSelector(state => state.cableFetchData);
   const cableErrored = useSelector(state => state.cableFetchDataErrored);
@@ -35,31 +35,20 @@ const NotificationCard = (props) => {
   const refErrored = useSelector(state => state.noteCableRefFetchDataErrored);
   const refLoading = useSelector(state => state.noteCableRefFetchDataLoading);
 
-  const loading = noteLoading || cableLoading || refLoading;
-  const errored = noteErrored || cableErrored || refErrored;
+  const loading = cableLoading || refLoading;
+  const errored = cableErrored || refErrored;
 
   const [editMode, setEditMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
 
   useEffect(() => {
-    if (assignments?.length > 0) {
-      const seqNums = assignments?.map(a => a.seqNum).join(',');
-      const revisionNums = assignments?.map(a => a.revisionNum).join(',');
-      dispatch(noteCableFetchData({
-        I_ASG_SEQ_NUM: seqNums,
-        I_ASGD_REVISION_NUM: revisionNums,
-      }));
-    }
-  }, [assignments]);
-
-  useEffect(() => {
-    if (note$?.NM_SEQ_NUM) {
+    if (note?.NM_SEQ_NUM) {
       dispatch(cableFetchData({
-        I_NM_SEQ_NUM: note$.NM_SEQ_NUM,
+        I_NM_SEQ_NUM: note.NM_SEQ_NUM,
         I_NM_NOTIFICATION_IND: 0,
       }));
       dispatch(noteCableRefFetchData({
-        I_NM_SEQ_NUM: note$.NM_SEQ_NUM,
+        I_NM_SEQ_NUM: note.NM_SEQ_NUM,
       }));
     }
   }, [note]);
@@ -72,8 +61,6 @@ const NotificationCard = (props) => {
 
   const getCableValue = (key) => {
     const section = noteCable.find(c => c.ME_DESC === key);
-    // console.log(noteCable);
-    // console.log(section);
     return section?.NME_DEFAULT_CLOB || '';
   };
 
@@ -126,28 +113,48 @@ const NotificationCard = (props) => {
     return overlay;
   };
 
-  return (getOverlay() ||
-    !editMode ?
-    <TabbedCard
-      tabs={[{
-        text: 'Preview',
-        value: 'PREVIEW',
-        content: (
-          <div className="position-content position-form">
-            <button onClick={() => setEditMode(true)}>Edit</button>
-            <div>
-              Notification
-              The Notification Cable for _ will be emailed to the Dos Communications Center from the preparer.
-              Email
-            </div>
-            <div className="position-form--actions">
-              <button onClick={() => { }}>Cancel</button>
-              <button onClick={() => { }}>Email Cable</button>
-            </div>
+  return (getOverlay() || (!editMode ?
+    <Row fluid className="tabbed-card box-shadow-standard">
+      <Row fluid className="tabbed-card--header">
+        <NavTabs
+          tabs={[{ text: 'Preview', value: 'PREVIEW' }]}
+          value="PREVIEW"
+          styleVariant="lightBorderBottom"
+        />
+      </Row>
+      <div className="position-content position-form">
+        <button className="toggle-edit-mode" onClick={() => setEditMode(true)}>
+          <FA name="pencil" />
+          <div>Edit</div>
+        </button>
+        <div>
+          Notification
+          The Notification Cable for {getCableValue('EMPLOYEE FULL NAME')} will be emailed to the Dos Communications Center from the preparer.
+          {getCableValue('FROM_ADDRESS')}
+          {getCableValue('TO_ADDRESS')}
+        </div>
+        <Row fluid className="position-content--description">
+          <Linkify properties={{ target: '_blank' }}>
+            <TextareaAutosize
+              maxRows={50}
+              minRows={1}
+              maxLength="500"
+              name="preview-body"
+              value={getCableValue('SUBJECT')}
+              draggable={false}
+              disabled
+            />
+          </Linkify>
+          <div className="word-count">
+            {getCableValue('SUBJECT')?.length} / 500
           </div>
-        ),
-      }]}
-    /> :
+        </Row>
+        <div className="position-form--actions">
+          <button onClick={() => { }}>Cancel</button>
+          <button onClick={() => { }}>Email Cable</button>
+        </div>
+      </div>
+    </Row> :
     <TabbedCard
       tabs={[{
         text: 'Header',
@@ -221,15 +228,17 @@ const NotificationCard = (props) => {
         //   content: memoContainer(<MemoHeader />),
       }]}
     />
-  );
+  ));
 };
 
 NotificationCard.propTypes = {
-  assignments: PropTypes.arrayOf(PropTypes.shape({})),
+  note: PropTypes.shape({
+    NM_SEQ_NUM: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }),
 };
 
 NotificationCard.defaultProps = {
-  assignments: [],
+  note: undefined,
 };
 
 export default NotificationCard;
