@@ -167,6 +167,31 @@ const NotificationCard = (props) => {
     return overlay;
   };
 
+  const getPreviewText = () => {
+    const textLines = [
+      `${getCableValue('CLASSIFICATION')}\n\n`,
+      `${getCableValue('DRAFTING OFFICE')}`,
+      `${getCableValue('DATE')} - ${getCableValue('TELEPHONE')}`,
+      `${getCableValue('APPROVING OFFICE')}\n`,
+      `${getCableValue('CLEARANCE')}\n`,
+      // `${getCableValue('DISTRIBUTION')}\n`,
+      // `${getCableValue('ACTION')}\n`,
+      // `${getCableValue('INFORMATION')}\n`,
+      `${getCableValue('SPECIAL HANDLING')}\n`,
+      `${getCableValue('CAPTIONS')}\n`,
+      `${getCableValue('E.O.')}\n`,
+      `${getCableValue('TAGS')}\n`,
+      `${getCableValue('SUBJECT')}\n`,
+      `1. ${getCableValue('ASSIGNMENTS')}\n`,
+      `2. ${getCableValue('COMBINED TOD')}\n`,
+      `3. ${getCableValue('EFM')}\n`,
+      `4. ${getCableValue('REMARKS')}\n`,
+      `5. ${getCableValue('PARAGRAPHS')}\n`,
+      `${getCableValue('EOM')}`,
+    ];
+    return textLines.join('\n');
+  };
+
   return (getOverlay() || (!editMode ?
     <Row fluid className="tabbed-card box-shadow-standard">
       <Row fluid className="tabbed-card--header">
@@ -176,16 +201,18 @@ const NotificationCard = (props) => {
           styleVariant="lightBorderBottom"
         />
       </Row>
-      <div className="position-content position-form">
-        <button className="toggle-edit-mode" onClick={() => setEditMode(true)}>
+      <div className="position-content position-form notification-card">
+        <button className="toggle-edit-mode notification-card__rebuild" onClick={() => setEditMode(true)}>
           <FA name="pencil" />
           <div>Edit</div>
         </button>
-        <div>
-          Notification
-          The Notification Cable for {getCableValue('EMPLOYEE FULL NAME')} will be emailed to the Dos Communications Center from the preparer.
-          {getCableValue('FROM_ADDRESS')}
-          {getCableValue('TO_ADDRESS')}
+        <div className="notification-card__header">
+          <span>
+            Notification
+          </span>
+          <span>
+            The Notification Cable for {getCableValue('EMPLOYEE FULL NAME')} will be emailed to the Dos Communications Center from the preparer {getCableValue('FROM_ADDRESS')}.
+          </span>
         </div>
         <Row fluid className="position-content--description">
           <Linkify properties={{ target: '_blank' }}>
@@ -194,13 +221,13 @@ const NotificationCard = (props) => {
               minRows={1}
               maxLength="500"
               name="preview-body"
-              value={getCableValue('SUBJECT')}
+              value={getPreviewText()}
               draggable={false}
               disabled
             />
           </Linkify>
           <div className="word-count">
-            {getCableValue('SUBJECT')?.length} / 500
+            {getPreviewText()?.length} / 500
           </div>
         </Row>
         <div className="position-form--actions">
