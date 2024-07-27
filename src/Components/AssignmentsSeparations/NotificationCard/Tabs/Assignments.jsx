@@ -3,30 +3,21 @@ import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import FA from 'react-fontawesome';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
 import InputActions from '../Common/InputActions';
 
-const orderedAssignments = [{
-  id: 1,
-  value: 'EF LM/OPS/TMP (123456/D1234567) Contract Assistant',
-}, {
-  id: 2,
-  value: 'EF LM/OPS/TMP (123456/D1234567) Contract Assistant',
-}, {
-  id: 3,
-  value: 'EF LM/OPS/TMP (123456/D1234567) Contract Assistant',
-}];
+const Assignments = (props) => {
+  const { getCableValue, modCableValue, assignments } = props;
 
-const Assignments = () => {
   const [previewText, setPreviewText] = useState('');
-  const [combinedTod, setCombinedTod] = useState('');
 
   // Have to get the assignments array into correct format for DnD
-  const orderedAssignmentsDnd = orderedAssignments.map((a) => ({
-    id: `item-${a.id}`,
+  const orderedAssignmentsDnd = assignments.map((a) => ({
+    id: `item-${a.NMAS_SEQ_NUM}`,
     content:
       <div className="ordered-assignment">
-        <span>{a.value}</span>
+        <span>{a.POS_TITLE_TXT}</span>
         <FA name="fa-regular fa-arrows" />
       </div>,
   }));
@@ -51,7 +42,7 @@ const Assignments = () => {
     const height = isDragging ? '130px' : '';
     const overflowY = isDragging ? 'hidden' : '';
     return {
-    // some basic styles to make the items look a bit nicer
+      // some basic styles to make the items look a bit nicer
       userSelect: 'none',
 
       height,
@@ -108,7 +99,7 @@ const Assignments = () => {
             <TextareaAutosize
               maxRows={4}
               minRows={4}
-              maxlength="500"
+              maxLength="500"
               name="preview-text"
               placeholder="No Description"
               defaultValue={previewText}
@@ -127,17 +118,17 @@ const Assignments = () => {
             <TextareaAutosize
               maxRows={4}
               minRows={4}
-              maxlength="500"
+              maxLength="500"
               name="combined-tod"
               placeholder="No Description"
-              defaultValue={combinedTod}
-              onChange={(e) => setCombinedTod(e.target.value)}
+              value={getCableValue('COMBINED TOD')}
+              onChange={(e) => modCableValue('COMBINED TOD', e.target.value)}
               className="enabled-input"
               draggable={false}
             />
           </Linkify>
           <div className="word-count">
-            {combinedTod?.length} / 500
+            {getCableValue('COMBINED TOD')?.length} / 500
           </div>
         </Row>
         <div className="position-form--actions">
@@ -147,6 +138,18 @@ const Assignments = () => {
       </div>
     </div>
   );
+};
+
+Assignments.propTypes = {
+  getCableValue: PropTypes.func,
+  modCableValue: PropTypes.func,
+  assignments: PropTypes.arrayOf(PropTypes.shape({})),
+};
+
+Assignments.defaultProps = {
+  getCableValue: undefined,
+  modCableValue: undefined,
+  assignments: undefined,
 };
 
 export default Assignments;

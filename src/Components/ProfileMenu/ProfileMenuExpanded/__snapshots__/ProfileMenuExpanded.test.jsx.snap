@@ -127,10 +127,10 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       <withRouter(NavLink)
         hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/ao/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -269,10 +269,10 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       <withRouter(NavLink)
         hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/cdo/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -650,10 +650,10 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       <withRouter(NavLink)
         hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/ao/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -792,10 +792,10 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       <withRouter(NavLink)
         hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/cdo/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}

@@ -35,7 +35,7 @@ const MemoHeader = () => {
             <TextareaAutosize
               maxRows={4}
               minRows={4}
-              maxlength="500"
+              maxLength="500"
               name="subject-input"
               placeholder="No Description"
               defaultValue={subjectInput}

@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
+import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
 import InputActions from '../Common/InputActions';
 
-const Training = () => {
-  const [training, setTraining] = useState('');
+const Training = (props) => {
+  const { getCableValue, modCableValue } = props;
 
   return (
     <div className="position-content position-form input-container">
@@ -16,17 +16,18 @@ const Training = () => {
           <TextareaAutosize
             maxRows={4}
             minRows={4}
-            maxlength="500"
+            maxLength="500"
             name="training"
             placeholder="No Description"
-            defaultValue={training}
-            onChange={(e) => setTraining(e.target.value)}
+            value={getCableValue('TRAINING')}
+            onChange={(e) => modCableValue('TRAINING', e.target.value)}
+            disabled
             className="enabled-input"
             draggable={false}
           />
         </Linkify>
         <div className="word-count">
-          {training?.length} / 500
+          {getCableValue('TRAINING')?.length} / 500
         </div>
       </Row>
       <div className="position-form--actions">
@@ -36,5 +37,16 @@ const Training = () => {
     </div>
   );
 };
+
+Training.propTypes = {
+  getCableValue: PropTypes.func,
+  modCableValue: PropTypes.func,
+};
+
+Training.defaultProps = {
+  getCableValue: undefined,
+  modCableValue: undefined,
+};
+
 
 export default Training;
