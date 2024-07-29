@@ -514,9 +514,9 @@ const Assignment = (props) => {
 Assignment.propTypes = {
   data: POSITION_DETAILS.isRequired,
   isNew: PropTypes.bool,
-  cycle: PropTypes.shape({
-    cycle_name: PropTypes.string,
-  }).isRequired,
+  // cycle: PropTypes.shape({
+  //   cycle_name: PropTypes.string,
+  // }).isRequired,
   toggleModal: PropTypes.func,
   perdet: PropTypes.string,
   setDisableOtherEdits: PropTypes.func,
