@@ -180,7 +180,13 @@ const NotificationCard = (props) => {
       }, {
         text: 'Assignments',
         value: 'ASSIGNMENTS',
-        content: freeTextContainer(<Assignments assignments={ref?.QRY_ASG_REF} />),
+        content: freeTextContainer(
+          <Assignments
+            getCableValue={getCableValue}
+            modCableValue={modCableValue}
+            assignments={ref?.QRY_ASG_REF}
+          />
+        ),
       }, {
         text: 'Paragraphs',
         value: 'PARAGRAPHS',
