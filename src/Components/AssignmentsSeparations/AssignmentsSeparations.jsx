@@ -66,7 +66,6 @@ const AssignmentsSeparations = (props) => {
     dispatch(altAssignmentsSeparations(id));
   }, [id]);
 
-  // eslint-disable-next-line no-unused-vars
   const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
   const employeeData$ = employeeData?.data;
   const employeeName = employeeDataLoading ? '' : employeeData$?.name;
@@ -113,7 +112,7 @@ const AssignmentsSeparations = (props) => {
     let overlay;
     if (resultsLoading || employeeDataLoading) {
       overlay = <Spinner type="standard-center" class="homepage-position-results" size="big" />;
-    } else if (resultsErrored) {
+    } else if (resultsErrored || employeeDataError) {
       overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
     } else if (noResults) {
       overlay = <Alert type="info" title="No results found" messages={[{ body: 'No assignments for this user.' }]} />;
