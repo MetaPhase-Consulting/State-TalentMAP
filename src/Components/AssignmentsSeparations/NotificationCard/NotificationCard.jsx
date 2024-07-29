@@ -185,7 +185,7 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
             assignments={ref?.QRY_ASG_REF}
-          />
+          />,
         ),
       }, {
         text: 'Paragraphs',
