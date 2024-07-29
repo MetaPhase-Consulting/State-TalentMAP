@@ -19,7 +19,7 @@ const showEditPanelMeeting = usePanelAdmin() && usePanelAdminPanelMeeting();
 
 const PanelMeetingSearchRow = ({ isCDO, pm }) => {
   const pmSeqNum = get(pm, 'pm_seq_num') || FALLBACK;
-  const remarks = get(pm, 'remarks') || Array.from({ length: 50 }, (_, index) => ({ text: `this is a long string${index + 1}` }));
+  const remarks = get(pm, 'remarks') || [{ text: '2nd Tour JO', rc_code: 'A' }, { text: 'ATA 03/03/2012', rc_code: 'T' }, { text: 'Approved off-panel on 03/03/2012', rc_code: 'M' }, { text: 'BOP', rc_code: 'E' }, { text: '123 BSAC', rc_code: 'B' }, { text: 'custom remark here', rc_code: 'M' }, { text: 'Breaks/curtails 2012 PSP/SIP link', rc_code: 'M' }, { text: 'CA EL LDP', rc_code: 'P' }, { text: '123 CA LNA Class', rc_code: 'B' }];
   const showPanelMeetingsAgendas = usePanelMeetingsAgendas();
   const userProfile = useSelector(state => state.userProfile);
   const isSuperUser = userHasPermissions(['superuser'], userProfile?.permission_groups);
