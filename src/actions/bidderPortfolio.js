@@ -37,9 +37,9 @@ export function bidderPortfolioSeasonsSuccess(results) {
   };
 }
 
-export function bidderTypeSuccess(results) {
+export function unassignedbidderTypeSuccess(results) {
   return {
-    type: 'BIDDER_TYPE_SUCCESS',
+    type: 'UNASSIGNED_BIDDER_TYPE_SUCCESS',
     results,
   };
 }
@@ -199,18 +199,18 @@ export function lookupAndSetCDO(id) {
   };
 }
 
-export function getBidderTypes(query) {
+export function getUnassignedBidderTypes(query) {
   return (dispatch) => {
     const endpoint = '/fsbid/client/';
     api().post(endpoint, query)
       .then(({ data }) => {
         batch(() => {
-          dispatch(bidderTypeSuccess(data));
+          dispatch(unassignedbidderTypeSuccess(data));
         });
       })
       .catch(() => {
         batch(() => {
-          dispatch(bidderTypeSuccess([]));
+          dispatch(unassignedbidderTypeSuccess([]));
         });
       });
   };
@@ -244,11 +244,11 @@ export function bidderPortfolioFetchData(query = {}) {
       }
       if (includes(UAvalues, 'noPanel')) {
         query$.noPanel = true;
-        dispatch(getBidderTypes(query$));
+        dispatch(getUnassignedBidderTypes(query$));
       }
       if (includes(UAvalues, 'noBids')) {
         query$.noBids = true;
-        dispatch(getBidderTypes(query$));
+        dispatch(getUnassignedBidderTypes(query$));
         // query$.noBids = true;
       }
     }

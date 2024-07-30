@@ -32,9 +32,9 @@ export function bidderPortfolioSeasons(state = [], action) {
       return state;
   }
 }
-export function bidderType(state = [], action) {
+export function unassignedbidderType(state = [], action) {
   switch (action.type) {
-    case 'BIDDER_TYPE_SUCCESS':
+    case 'UNASSIGNED_BIDDER_TYPE_SUCCESS':
       return action.results;
     default:
       return state;
