@@ -226,7 +226,6 @@ export function bidderPortfolioFetchData(query = {}) {
     const ids = cdos.map(m => m.hru_id).filter(f => f);
     const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
     const unassigned = get(state, 'bidderPortfolioSelectedUnassigned', []);
-    // let bidderPerSeqNum = [];
     let query$ = { ...query };
     if (ids.length) {
       query$.hru_id__in = ids.join();
@@ -256,7 +255,6 @@ export function bidderPortfolioFetchData(query = {}) {
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }
-
     const query$$ = stringify(query$);
     const endpoint = '/fsbid/client/';
     const q = `${endpoint}?${query$$}`;
