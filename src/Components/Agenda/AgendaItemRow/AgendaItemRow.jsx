@@ -114,12 +114,13 @@ const AgendaItemRow = props => {
           <div className="agenda-bottom-row">
             <div className="remarks-container">
               <div className="remarks-text">Remarks:</div>
-              {
-                remarks.map(remark => (
-                  <RemarksPill key={remark.text} remark={remark} />
-                ))
-              }
-              {agenda?.ahtCode &&
+              <div className="remarks-pill-container">
+                {
+                  remarks.map(remark => (
+                    <RemarksPill key={remark.text} remark={remark} />
+                  ))
+                }
+                {agenda?.ahtCode &&
                 <RemarksPill
                   key="hold-remark"
                   remark={{
@@ -130,7 +131,8 @@ const AgendaItemRow = props => {
                     `,
                   }}
                 />
-              }
+                }
+              </div>
             </div>
             <div className="ai-updater-creator">
               <div className="wrapper">
