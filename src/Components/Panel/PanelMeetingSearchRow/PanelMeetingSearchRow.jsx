@@ -50,7 +50,7 @@ const PanelMeetingSearchRow = ({ isCDO, pm }) => {
           }
         </div>
       </div>
-      <div className="panel-remarks-container">
+      <div className="remarks-container">
         <div className="remarks-text">Remarks:</div>
         <div className="remarks-pill-container">
           {
