@@ -14,6 +14,7 @@ import AssignmentsSeparations from 'Components/AssignmentsSeparations';
 import BidderPortfolio from 'Containers/BidderPortfolio';
 import BiddingTool from '../BiddingFunctionsPage/BiddingTool/BiddingTool';
 import ProjectedVacancy from '../BureauPage/ProjectedVacancy';
+import AssignmentNotification from '../AssignmentsSeparations/AssignmentNotification/AssignmentNotification';
 
 const AoPage = () => (
   <div className="usa-grid-full profile-content-container">
@@ -31,6 +32,7 @@ const AoPage = () => (
       <Route path="/profile/ao/cyclepositionsearch/:id" render={() => <CyclePositionSearch isAO />} />
       <Route path="/profile/ao/cycleclassifications/" render={() => <CycleClassifications isAO />} />
       <Route path="/profile/ao/publishablepositions" render={() => <PublishablePositions viewType="ao" />} />
+      <Route path="/profile/ao/:id/assignmentsseparations/notification/:noteID" render={(props) => <AssignmentNotification {...props} />} />
       <Route path="/profile/ao/:id/assignmentsseparations" render={(props) => <AssignmentsSeparations {...props} />} />
       <Route path="/profile/ao/bidderportfolio" render={() => <BidderPortfolio viewType="ao" />} />
       <Route path="/profile/ao/biddingtool/:id" render={() => <BiddingTool />} />
