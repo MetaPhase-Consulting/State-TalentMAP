@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
-import { filter, flatten, get, has, isEmpty, sortBy, uniqBy } from 'lodash';
+import { filter, flatten, get, has, isEmpty } from 'lodash';
 import { isDate, startOfDay } from 'date-fns-v2';
-import { useDataLoader, usePrevious } from 'hooks';
+import { usePrevious } from 'hooks';
 import { checkFlag } from 'flags';
 import { panelMeetingsExport, panelMeetingsFetchData, panelMeetingsFiltersFetchData, savePanelMeetingsSelections } from 'actions/panelMeetings';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
@@ -22,8 +22,6 @@ import TotalResults from 'Components/TotalResults';
 import TMDatePicker from 'Components/TMDatePicker';
 import ScrollUpButton from '../../ScrollUpButton';
 import { userHasPermissions } from '../../../utilities';
-import api from '../../../api';
-
 
 const usePanelAdmin = () => checkFlag('flags.panel_admin');
 const usePanelAdminPanelMeeting = () => checkFlag('flags.panel_admin_panel_meeting');
@@ -39,8 +37,6 @@ const PanelMeetingSearch = ({ isCDO }) => {
   const panelMeetingsFiltersHasErrored = useSelector(state =>
     state.panelMeetingsFiltersFetchDataErrored);
 
-  const { data: remarks, loading: remarksLoading } = useDataLoader(api().get, '/fsbid/agenda/remarks/');
-  const remarksOptions = uniqBy(sortBy(get(remarks, 'data.results'), [(c) => c.short_desc_text]), 'short_desc_text');
 
   const panelMeetings$ = useSelector(state => state.panelMeetings);
   const panelMeetingsIsLoading = useSelector(state => state.panelMeetingsFetchDataLoading);
@@ -64,13 +60,14 @@ const PanelMeetingSearch = ({ isCDO }) => {
 
   const meetingStatusFilterErrored = get(panelMeetingsFilters, 'panelStatuses') ? get(panelMeetingsFilters, 'panelStatuses').length === 0 : true;
   const meetingTypeFilterErrored = get(panelMeetingsFilters, 'panelTypes') ? get(panelMeetingsFilters, 'panelTypes').length === 0 : true;
+  const meetingRemarksErrored = get(panelMeetingsFilters, 'panelRemarks') ? get(panelMeetingsFilters, 'panelRemarks').length === 0 : true;
 
   const [clearFilters, setClearFilters] = useState(false);
   const [exportIsLoading, setExportIsLoading] = useState(false);
 
   const count = get(panelMeetings$, 'count') || 0;
 
-  const groupLoading = panelMeetingsIsLoading && panelMeetingsFiltersIsLoading && remarksLoading;
+  const groupLoading = panelMeetingsIsLoading && panelMeetingsFiltersIsLoading;
   const exportDisabled = !panelMeetings.length;
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
@@ -266,12 +263,12 @@ const PanelMeetingSearch = ({ isCDO }) => {
                 {...pickyProps}
                 placeholder="Select Remarks"
                 value={selectedRemarks}
-                options={remarksOptions}
+                options={get(panelMeetingsFilters, 'panelRemarks')}
                 onChange={setSelectedRemarks}
                 valueKey="seq_num"
                 labelKey="short_desc_text"
                 key="seq_num"
-                disabled={remarksLoading}
+                disabled={meetingRemarksErrored || panelMeetingsFiltersHasErrored}
               />
             </div>
           </div>
