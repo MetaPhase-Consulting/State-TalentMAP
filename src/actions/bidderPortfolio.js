@@ -37,6 +37,13 @@ export function bidderPortfolioSeasonsSuccess(results) {
   };
 }
 
+export function bidderTypeSuccess(results) {
+  return {
+    type: 'BIDDER_TYPE_SUCCESS',
+    results,
+  };
+}
+
 export function bidderPortfolioSelectedUnassigned(arr = []) {
   return {
     type: 'BIDDER_PORTFOLIO_SELECTED_UNASSIGNED',
@@ -192,6 +199,23 @@ export function lookupAndSetCDO(id) {
   };
 }
 
+export function getBidderTypes(query) {
+  return (dispatch) => {
+    const endpoint = '/fsbid/client/';
+    api().post(endpoint, query)
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidderTypeSuccess(data));
+        });
+      })
+      .catch(() => {
+        batch(() => {
+          dispatch(bidderTypeSuccess([]));
+        });
+      });
+  };
+}
+
 export function bidderPortfolioFetchData(query = {}) {
   return (dispatch, getState) => {
     if (cancelPortfolio) { cancelPortfolio('cancel'); }
@@ -202,6 +226,7 @@ export function bidderPortfolioFetchData(query = {}) {
     const ids = cdos.map(m => m.hru_id).filter(f => f);
     const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
     const unassigned = get(state, 'bidderPortfolioSelectedUnassigned', []);
+    // let bidderPerSeqNum = [];
     let query$ = { ...query };
     if (ids.length) {
       query$.hru_id__in = ids.join();
@@ -220,14 +245,18 @@ export function bidderPortfolioFetchData(query = {}) {
       }
       if (includes(UAvalues, 'noPanel')) {
         query$.noPanel = true;
+        dispatch(getBidderTypes(query$));
       }
       if (includes(UAvalues, 'noBids')) {
         query$.noBids = true;
+        dispatch(getBidderTypes(query$));
+        // query$.noBids = true;
       }
     }
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }
+
     const query$$ = stringify(query$);
     const endpoint = '/fsbid/client/';
     const q = `${endpoint}?${query$$}`;
