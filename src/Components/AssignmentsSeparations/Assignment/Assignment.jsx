@@ -504,7 +504,7 @@ const Assignment = (props) => {
         <PositionExpandableContent
           sections={sections}
           form={form}
-          saveText={isNew ? 'Create Assignment' : 'Save Assigment'}
+          saveText={isNew ? 'Create Assignment' : 'Save Assignment'}
         />
       }
     </div>

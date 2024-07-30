@@ -11,6 +11,7 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
+import { REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
 import { history } from '../store';
 
 
@@ -193,30 +194,61 @@ export function noteCableRefFetchData(query = {}) {
   };
 }
 
-// ================ EDIT PROJECTED VACANCY ================
+// ================ EDIT NOTIFICATION ================
 
-let cancelProjectedVacancyEdit;
-export function projectedVacancyEdit(data, onSuccess) {
+let cancelEditNoteCable;
+export function editNoteCable(data) {
   return (dispatch) => {
-    if (cancelProjectedVacancyEdit) {
-      cancelProjectedVacancyEdit('cancel');
+    if (cancelEditNoteCable) {
+      cancelEditNoteCable('cancel');
     }
     api()
-      .put('/fsbid/admin/projected_vacancies/edit/', data, {
-        cancelToken: new CancelToken((c) => { cancelProjectedVacancyEdit = c; }),
+      .post('/fsbid/notification/cable/edit/', data, {
+        cancelToken: new CancelToken((c) => { cancelEditNoteCable = c; }),
       })
       .then(() => {
         dispatch(toastSuccess(
           UPDATE_NOTIFICATION_SUCCESS,
           UPDATE_NOTIFICATION_SUCCESS_TITLE,
         ));
-        if (onSuccess) onSuccess();
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
           dispatch(toastError(
             UPDATE_NOTIFICATION_ERROR,
             UPDATE_NOTIFICATION_ERROR_TITLE,
+          ));
+        }
+      });
+  };
+}
+
+// ================ REBUILD NOTIFICATION ================
+
+let cancelRebuildNotification;
+export function rebuildNotification(data, onSuccess) {
+  return (dispatch) => {
+    if (cancelRebuildNotification) {
+      cancelRebuildNotification('cancel');
+    }
+    api()
+      .put('/fsbid/notification/rebuild/', data, {
+        cancelToken: new CancelToken((c) => { cancelRebuildNotification = c; }),
+      })
+      .then(() => {
+        dispatch(toastSuccess(
+          REBUILD_NOTIFICATION_SUCCESS,
+          REBUILD_NOTIFICATION_SUCCESS_TITLE,
+        ));
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(
+            REBUILD_NOTIFICATION_ERROR,
+            REBUILD_NOTIFICATION_ERROR_TITLE,
           ));
         }
       });

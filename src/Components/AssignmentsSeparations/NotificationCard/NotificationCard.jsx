@@ -17,6 +17,7 @@ import Routing from './Tabs/Routing';
 import Spinner from '../../Spinner';
 import Alert from '../../Alert';
 import NavTabs from '../../NavTabs';
+import { rebuildNotification } from '../../../actions/assignmentNotifications';
 // import Memo from './Tabs/Memo';
 // import MemoHeader from './Tabs/MemoHeader';
 
@@ -41,16 +42,20 @@ const NotificationCard = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
 
-  useEffect(() => {
+  const fetchNoteData = () => {
     if (note?.NM_SEQ_NUM) {
       dispatch(cableFetchData({
         I_NM_SEQ_NUM: note.NM_SEQ_NUM,
-        I_NM_NOTIFICATION_IND: 0,
+        I_NM_NOTIFICATION_IND: note.NM_NOTIFICATION_IND,
       }));
       dispatch(noteCableRefFetchData({
         I_NM_SEQ_NUM: note.NM_SEQ_NUM,
       }));
     }
+  };
+
+  useEffect(() => {
+    fetchNoteData();
   }, [note]);
 
   useEffect(() => {
@@ -78,19 +83,68 @@ const NotificationCard = (props) => {
     setNoteCable(sections);
   };
 
-  const freeTextContainer = (children) => (
-    <div className="notification-card">
-      <div className="notification-card__header">
-        <span>
-          Edit Notification
-        </span>
-        <span>
-          Please update all relevant information as it pertains to this note.
-        </span>
+  const freeTextContainer = (children, meDescs) => {
+    let tabSeqNums = '';
+    let tabUpdateIds = '';
+    let tabUpdateDates = '';
+    if (meDescs) {
+      meDescs.forEach(m => {
+        const separator = tabSeqNums === '' ? '' : ',';
+        const section = noteCable.find(c => c.ME_DESC === m);
+        if (section) {
+          tabSeqNums = tabSeqNums.concat(separator, section?.NME_SEQ_NUM);
+          tabUpdateIds = tabUpdateIds.concat(separator, section?.NME_UPDATE_ID);
+          tabUpdateDates = tabUpdateDates.concat(separator, section?.NME_UPDATE_DATE);
+        }
+      });
+    }
+
+    return (
+      <div className="notification-card">
+        <div className="notification-card__header">
+          <span>
+            Edit Notification
+          </span>
+          <span>
+            Please update all relevant information as it pertains to this note.
+          </span>
+        </div>
+        <div className="notification-card__rebuild">
+          <button
+            className="standard-add-button underlined"
+            onClick={() => {
+              dispatch(rebuildNotification(
+                {
+                  I_NME_SEQ_NUM: tabSeqNums,
+                  I_NME_UPDATE_ID: tabUpdateIds,
+                  I_NME_UPDATE_DATE: tabUpdateDates,
+                },
+                () => fetchNoteData(),
+              ));
+            }}
+          >
+            <p>Rebuild Tab</p>
+          </button>
+          <button
+            className="standard-add-button underlined"
+            onClick={() => {
+              dispatch(rebuildNotification(
+                { I_NM_SEQ_NUM: note?.NM_SEQ_NUM },
+                () => fetchNoteData(),
+              ));
+            }}
+          >
+            <p>Rebuild Notification</p>
+          </button>
+        </div>
+        {children}
+        <div className="position-form--actions">
+          <button onClick={() => setEditMode(false)}>Back to Preview</button>
+          <button onClick={() => { }}>Save</button>
+        </div>
       </div>
-      {children}
-    </div>
-  );
+    );
+  };
 
   // const memoContainer = (children) => (
   //   <div className="notification-card">
@@ -164,6 +218,11 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
           />,
+          [
+            'DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT',
+            'CLEARANCE', 'CLASSIFICATION', 'SPECIAL HANDLING',
+            'CAPTIONS', 'E.O.', 'TAGS', 'EOM', 'CONTINUATION',
+          ],
         ),
       }, {
         text: 'Routing',
@@ -176,6 +235,7 @@ const NotificationCard = (props) => {
             precedenceOptions={ref?.QRY_PT_REF}
             organizationOptions={ref?.QRY_ORGS_REF}
           />,
+          ['ACTION', 'INFORMATION', 'DISTRIBUTION'],
         ),
       }, {
         text: 'Assignments',
@@ -186,16 +246,18 @@ const NotificationCard = (props) => {
             modCableValue={modCableValue}
             assignments={ref?.QRY_ASG_REF}
           />,
+          ['ASSIGNMENTS', 'COMBINED TOD'],
         ),
       }, {
         text: 'Paragraphs',
         value: 'PARAGRAPHS',
         content: freeTextContainer(
           <Paragraphs
-            paragraphs={ref?.QRY_PARA_REF}
             getCableValue={getCableValue}
             modCableValue={modCableValue}
+            paragraphs={ref?.QRY_PARA_REF}
           />,
+          ['PARAGRAPHS'],
         ),
       }, {
         text: 'Training',
@@ -205,6 +267,7 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
           />,
+          ['TRAINING'],
         ),
       }, {
         text: 'EFM',
@@ -214,6 +277,7 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
           />,
+          ['EFM'],
         ),
       }, {
         text: 'Remarks',
@@ -223,6 +287,7 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
           />,
+          ['REMARKS'],
         ),
         // }, {
         //   text: 'Memo',

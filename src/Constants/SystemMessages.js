@@ -420,3 +420,8 @@ export const UPDATE_NOTIFICATION_SUCCESS_TITLE = 'Assignment Notification Saved'
 export const UPDATE_NOTIFICATION_SUCCESS = 'This Assignment Notification has been successfully saved.';
 export const UPDATE_NOTIFICATION_ERROR_TITLE = 'Assignment Notification Error';
 export const UPDATE_NOTIFICATION_ERROR = 'There was an issue attempting to save this Assignment Notification. Please try again.';
+
+export const REBUILD_NOTIFICATION_SUCCESS_TITLE = 'Assignment Notification Rebuilt';
+export const REBUILD_NOTIFICATION_SUCCESS = 'This Assignment Notification has been successfully rebuilt.';
+export const REBUILD_NOTIFICATION_ERROR_TITLE = 'Assignment Notification Rebuild Error';
+export const REBUILD_NOTIFICATION_ERROR = 'There was an issue attempting to rebuild this Assignment Notification. Please try again.';

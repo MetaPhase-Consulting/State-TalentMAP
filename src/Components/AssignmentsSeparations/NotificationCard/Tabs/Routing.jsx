@@ -118,10 +118,6 @@ const Routing = (props) => {
         <a href="tbd" rel="PMD" target="_blank">Add Another Distribution</a>
         <div className="content-divider" />
       </div>
-      <div className="position-form--actions">
-        <button onClick={() => { }}>Back</button>
-        <button onClick={() => { }}>Next</button>
-      </div>
     </div>
   );
 };
