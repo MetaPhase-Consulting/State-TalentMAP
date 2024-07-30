@@ -109,10 +109,6 @@ const Paragraphs = (props) => {
           {previewText?.length} / 500
         </div>
       </Row>
-      <div className="position-form--actions">
-        <button onClick={() => { }}>Back</button>
-        <button onClick={() => { }}>Next</button>
-      </div>
     </div>
   );
 };
