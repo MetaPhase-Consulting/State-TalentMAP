@@ -37,7 +37,6 @@ const PanelMeetingSearch = ({ isCDO }) => {
   const panelMeetingsFiltersHasErrored = useSelector(state =>
     state.panelMeetingsFiltersFetchDataErrored);
 
-
   const panelMeetings$ = useSelector(state => state.panelMeetings);
   const panelMeetingsIsLoading = useSelector(state => state.panelMeetingsFetchDataLoading);
   const panelMeetingsHasErrored = useSelector(state => state.panelMeetingsFetchDataErrored);
@@ -151,12 +150,13 @@ const PanelMeetingSearch = ({ isCDO }) => {
   };
 
   const renderSelectionList = ({ items, selected, ...rest }) => {
+    // remarks use seq_num, everything else uses code
     const codeOrSeqNum = has(items[0], 'seq_num') ? 'seq_num' : 'code';
     const getSelected = item => !!selected.find(f => f[codeOrSeqNum] === item[codeOrSeqNum]);
 
     return items.map(item => (
       <ListItem
-        key={codeOrSeqNum === 'code' ? item.code : item.codeOrSeqNum}
+        key={codeOrSeqNum === 'code' ? item.code : item.seq_num}
         item={item}
         {...rest}
         queryProp={codeOrSeqNum === 'code' ? 'text' : 'short_desc_text'}
