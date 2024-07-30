@@ -5,10 +5,6 @@ import AgendaItemHistory from 'Components/Agenda/AgendaItemHistory/AgendaItemHis
 import AgendaItemMaintenanceContainer from 'Components/Agenda/AgendaItemMaintenanceContainer/AgendaItemMaintenanceContainer';
 import PanelMeetingSearch from 'Components/Panel/PanelMeetingSearch/PanelMeetingSearch';
 import PanelMeetingAgendas from 'Components/Panel/PanelMeetingAgendas/PanelMeetingAgendas';
-import CycleManagement from 'Components/CycleManagement';
-import CyclePositionSearch from 'Components/CycleManagement/CyclePositionSearch';
-import CycleClassifications from 'Components/CycleManagement/CycleClassifications';
-import AssignmentCycleEdit from 'Components/CycleManagement/AssignmentCycleEdit';
 import PublishablePositions from 'Components/PublishablePositions/PublishablePositions';
 import AssignmentsSeparations from 'Components/AssignmentsSeparations';
 import BidderPortfolio from 'Containers/BidderPortfolio';
@@ -26,11 +22,7 @@ const AoPage = () => (
       <Route path="/profile/ao/panelmeetings" render={() => <PanelMeetingSearch isCDO={false} />} />
       <Route path="/profile/ao/availablebidders" render={() => <AvailableBidderContainer isCDO={false} isAO />} />
       <Route path="/profile/ao/panelmeetingagendas/:pmID" render={() => <PanelMeetingAgendas isAO />} />
-      <Route path="/profile/ao/cyclemanagement" render={() => <CycleManagement isAO />} />
       <Route path="/profile/ao/projectedvacancy" render={() => <ProjectedVacancy viewType="ao" />} />
-      <Route path="/profile/ao/assignmentcycle/:id" render={() => <AssignmentCycleEdit isAO />} />
-      <Route path="/profile/ao/cyclepositionsearch/:id" render={() => <CyclePositionSearch isAO />} />
-      <Route path="/profile/ao/cycleclassifications/" render={() => <CycleClassifications isAO />} />
       <Route path="/profile/ao/publishablepositions" render={() => <PublishablePositions viewType="ao" />} />
       <Route path="/profile/ao/:id/assignmentsseparations/notification/:noteID" render={(props) => <AssignmentNotification {...props} />} />
       <Route path="/profile/ao/:id/assignmentsseparations" render={(props) => <AssignmentsSeparations {...props} />} />

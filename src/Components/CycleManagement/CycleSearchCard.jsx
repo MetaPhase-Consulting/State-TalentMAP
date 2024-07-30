@@ -15,12 +15,11 @@ const CycleSearchCard = (props) => {
     end_date,
     excl_position,
     post_view,
-    isAO,
   } = props;
   const showCycleManagementPositions = useCycleManagementPositions();
 
-  const cycleLink = `/profile/${isAO ? 'ao' : 'bureau'}/assignmentcycle/${id}`;
-  const cycleLinkPositions = `/profile/${isAO ? 'ao' : 'bureau'}/cyclepositionsearch/${id}`;
+  const cycleLink = `/profile/administrator/assignmentcycle/${id}`;
+  const cycleLinkPositions = `/profile/administrator/cyclepositionsearch/${id}`;
 
   return (
     <Row fluid className="cycle-search-card box-shadow-standard">
@@ -72,7 +71,6 @@ CycleSearchCard.propTypes = {
   end_date: PropTypes.string,
   excl_position: PropTypes.string,
   post_view: PropTypes.string,
-  isAO: PropTypes.bool,
 };
 
 CycleSearchCard.defaultProps = {
