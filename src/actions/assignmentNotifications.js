@@ -100,14 +100,17 @@ export function cableFetchDataSuccess(results) {
   };
 }
 let cancelCable;
-export function cableFetchData() {
+export function cableFetchData(query = {}) {
   return (dispatch) => {
     if (cancelCable) { cancelCable('cancel'); }
     batch(() => {
       dispatch(cableFetchDataLoading(true));
       dispatch(cableFetchDataErrored(false));
     });
-    api().get('/fsbid/notification/cable/', {
+    const q = convertQueryToString(query);
+    const endpoint = '/fsbid/notification/cable/';
+    const ep = `${endpoint}?${q}`;
+    api().get(ep, {
       cancelToken: new CancelToken((c) => { cancelCable = c; }),
     })
       .then(({ data }) => {
