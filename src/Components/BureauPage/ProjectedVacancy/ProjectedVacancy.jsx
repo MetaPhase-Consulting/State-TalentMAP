@@ -10,7 +10,6 @@ import {
   projectedVacancyEdit,
   projectedVacancyFetchData,
   projectedVacancyFilters,
-  projectedVacancyLangOffsetOptions,
   saveProjectedVacancySelections,
 } from 'actions/projectedVacancy';
 import { onEditModeSearch, renderSelectionList, userHasPermissions } from 'utilities';
@@ -41,17 +40,9 @@ const ProjectedVacancy = ({ viewType }) => {
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
   const filtersLoading = useSelector(state => state.projectedVacancyFiltersLoading);
   const filtersErrored = useSelector(state => state.projectedVacancyFiltersErrored);
-  const languageOffsetOptions = useSelector(state => state.projectedVacancyLangOffsetOptions) || [];
-  const languageOffsetOptionsLoading =
-    useSelector(state => state.projectedVacancyLangOffsetOptionsLoading);
-  const languageOffsetOptionsErrored =
-    useSelector(state => state.projectedVacancyLangOffsetOptionsErrored);
   const positionsData = useSelector(state => state.projectedVacancy);
   const positionsLoading = useSelector(state => state.projectedVacancyFetchDataLoading);
   const positionsErrored = useSelector(state => state.projectedVacancyFetchDataErrored);
-  const languageOffsets = useSelector(state => state.projectedVacancyLangOffsets) || [];
-  const languageOffsetsLoading = useSelector(state => state.projectedVacancyLangOffsetsLoading);
-  const languageOffsetsErrored = useSelector(state => state.projectedVacancyLangOffsetsErrored);
 
   const [page, setPage] = useState(userSelections?.page || 1);
   const [limit, setLimit] = useState(userSelections?.limit || 5);
@@ -107,9 +98,8 @@ const ProjectedVacancy = ({ viewType }) => {
   const organizations = sortBy(filters?.organizations || [], [o => o.description]);
   const statuses = sortBy(filters?.statuses || [], [o => o.description]);
 
-  const resultsLoading = positionsLoading || languageOffsetsLoading || languageOffsetOptionsLoading;
-  const resultsErrored =
-    filtersErrored || languageOffsetOptionsErrored || positionsErrored || languageOffsetsErrored;
+  const resultsLoading = positionsLoading;
+  const resultsErrored = filtersErrored || positionsErrored;
   const disableSearch = cardsInEditMode?.length > 0 || importInEditMode;
   const disableInput = filtersLoading || resultsLoading || disableSearch;
 
@@ -178,7 +168,6 @@ const ProjectedVacancy = ({ viewType }) => {
   useEffect(() => {
     dispatch(saveProjectedVacancySelections(getCurrentInputs()));
     dispatch(projectedVacancyFilters());
-    dispatch(projectedVacancyLangOffsetOptions());
   }, []);
 
   useEffect(() => {
@@ -467,11 +456,6 @@ const ProjectedVacancy = ({ viewType }) => {
               <ProjectedVacancyCard
                 key={k.future_vacancy_seq_num}
                 result={k}
-                languageOffsets={
-                  (languageOffsets?.length &&
-                    languageOffsets?.find(o => o?.position_number === k?.position_number)
-                  ) || {}
-                }
                 updateImport={onImportUpdate}
                 disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || !enableEdit}
                 disableEdit={importInEditMode || disableSearch || !enableEdit || !isBureau}
@@ -481,7 +465,6 @@ const ProjectedVacancy = ({ viewType }) => {
                 }
                 onSubmit={editData => submitEdit(editData)}
                 selectOptions={{
-                  languageOffsets: languageOffsetOptions,
                   bidSeasons,
                   statuses,
                 }}

@@ -29,7 +29,7 @@ const hardcodedFilters = {
 
 const PublishablePositionCard = ({
   data, onEditModeSearch, onSubmit, disableEdit, disableEditDetails,
-  additionalCallsLoading, onShowMorePP }) => {
+  additionalCallsLoading, onShowMorePP, hideClassifications }) => {
   // =============== Overview: View Mode ===============
 
   // !!!!
@@ -115,12 +115,12 @@ const PublishablePositionCard = ({
       posAuditExclusionInd: disableEditDetails ? data?.posAuditExclusionInd : exclInd,
 
       createdUserID: data?.pposcreateuserid,
-      created: data?.ORIGpposcreatetmsmpdt.replace(/T/g, ' '),
+      created: data?.ORIGpposcreatetmsmpdt?.replace(/T/g, ' '),
       lastUpdatedUserID: data?.positionLastUpdatedUserID,
-      lastUpdated: data?.ORIGpositionLastUpdated.replace(/T/g, ' '),
+      lastUpdated: data?.ORIGpositionLastUpdated?.replace(/T/g, ' '),
 
       positionDetails: textArea,
-      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated.replace(/T/g, ' '),
+      positionDetailsLastUpdated: data?.ORIGpositionDetailsLastUpdated?.replace(/T/g, ' '),
     };
     onSubmit(editData);
   };
@@ -314,7 +314,7 @@ const PublishablePositionCard = ({
           onShowMore={(e) => onShowMorePP(e)}
         />,
         disabled: classificationsEditMode,
-      }, PP_CLASSIFICATIONS_FLAG() ? {
+      }, (PP_CLASSIFICATIONS_FLAG() && !hideClassifications) ? {
         text: 'Position Classification',
         value: 'CLASSIFICATION',
         content: <PositionClassification
@@ -344,6 +344,7 @@ PublishablePositionCard.propTypes = {
     filters: PropTypes.shape({}),
   }).isRequired,
   onShowMorePP: PropTypes.func,
+  hideClassifications: PropTypes.bool,
 };
 
 PublishablePositionCard.defaultProps = {
@@ -353,6 +354,7 @@ PublishablePositionCard.defaultProps = {
   disableEdit: false,
   additionalCallsLoading: false,
   onShowMorePP: EMPTY_FUNCTION,
+  hideClassifications: false,
 };
 
 export default PublishablePositionCard;

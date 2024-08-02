@@ -92,10 +92,6 @@ const Header = (props) => {
           </div>
         </Row>
       </div>
-      <div className="position-form--actions">
-        <button onClick={() => { }}>Cancel</button>
-        <button onClick={() => { }}>Next</button>
-      </div>
     </div>
   );
 };
