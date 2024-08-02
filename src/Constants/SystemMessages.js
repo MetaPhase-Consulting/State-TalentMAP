@@ -310,11 +310,6 @@ export const CREATE_BID_AUDIT_GRADE_SUCCESS = 'New At-Grade has been successfull
 export const CREATE_BID_AUDIT_GRADE_ERROR_TITLE = 'At-Grade Creation Error';
 export const CREATE_BID_AUDIT_GRADE_ERROR = 'There was an issue attempting to add this At-Grade. Please try again.';
 
-export const DELETE_BID_AUDIT_SUCCESS_TITLE = 'Bid Audit Deleted';
-export const DELETE_BID_AUDIT_SUCCESS = 'This Bid Audit has been successfully deleted.';
-export const DELETE_BID_AUDIT_ERROR_TITLE = 'Bid Audit Error';
-export const DELETE_BID_AUDIT_ERROR = 'There was an issue attempting to delete this Bid Audit. Please try again.';
-
 export const DELETE_IN_CATEGORY_AT_GRADE_SUCCESS_TITLE = 'Deleted';
 export const DELETE_IN_CATEGORY_AT_GRADE_SUCCESS = 'This relationship has been successfully deleted.';
 export const DELETE_IN_CATEGORY_AT_GRADE_ERROR_TITLE = 'Delete Error';
