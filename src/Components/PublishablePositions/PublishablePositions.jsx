@@ -334,7 +334,7 @@ const PublishablePositions = ({ viewType }) => {
                 value={selectedBureaus}
                 options={bureauOptions}
                 onChange={setSelectedBureaus}
-                valueKey="long_description"
+                valueKey="code"
                 labelKey="short_description"
                 disabled={editMode}
               />
