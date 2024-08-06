@@ -29,7 +29,8 @@ export const getIsGroupEnd = (results, i) => {
 
 const ResultsList = ({ results, isLoading, favorites, favoritesPV,
   favoritesTandem, favoritesPVTandem, bidList }, { isTandemSearch, newResultsCount }) => {
-  const mapResults = results.results || [];
+  const mapResults = results.results.filter(x => x.isPublishable !== 'Not Published') || [];
+  // check this new filter tomorrow
   return (
     <div className={isLoading ? 'results-loading' : null}>
       { mapResults.map((result, i) => {
