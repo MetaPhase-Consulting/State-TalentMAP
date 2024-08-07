@@ -71,7 +71,6 @@ const PublishablePositions = ({ viewType }) => {
   const prevPage = usePrevious(page);
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
-  const count = data$?.length || 0;
 
   const statuses = filters?.statusFilters;
   const orgs = filters?.orgFilters;
@@ -378,7 +377,7 @@ const PublishablePositions = ({ viewType }) => {
           </div>
           <div className="viewing-results-and-dropdown--fullscreen padding-top results-dropdown">
             <TotalResults
-              total={count}
+              total={data?.count}
               pageNumber={page}
               pageSize={limit}
               suffix="Results"
@@ -431,7 +430,7 @@ const PublishablePositions = ({ viewType }) => {
                 pageSize={limit}
                 onPageChange={p => setPage(p.page)}
                 forcePage={page}
-                totalResults={count}
+                totalResults={data?.count}
               />
             </div>
           </div>

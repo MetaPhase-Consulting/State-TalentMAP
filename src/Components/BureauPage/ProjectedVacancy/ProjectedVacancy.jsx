@@ -49,7 +49,6 @@ const ProjectedVacancy = ({ viewType }) => {
   const positions = positionsData?.results?.length ? positionsData?.results : [];
   const prevPage = usePrevious(page);
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
-  const count = positions?.length;
 
   const [importedPositions, setImportedPositions] = useState([]);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
@@ -390,7 +389,7 @@ const ProjectedVacancy = ({ viewType }) => {
       {getOverlay() || <>
         <div className="viewing-results-and-dropdown--fullscreen padding-top results-dropdown">
           <TotalResults
-            total={count}
+            total={positionsData?.count}
             pageNumber={page}
             pageSize={limit}
             suffix="Results"
@@ -462,7 +461,7 @@ const ProjectedVacancy = ({ viewType }) => {
               pageSize={limit}
               onPageChange={(p) => setPage(p.page)}
               forcePage={page}
-              totalResults={count}
+              totalResults={positionsData?.count}
             />
           </div>
         </div>
