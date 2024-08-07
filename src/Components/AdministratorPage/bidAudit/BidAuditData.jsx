@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -306,7 +306,7 @@ const BidAuditData = (props) => {
                 auditPositionFilterableData$?.map(data => {
                   const { position_info: pos, bidders } = data;
                   return (
-                    <>
+                    <Fragment key={pos.position_number}>
                       <tr key={pos.position_number} className="position-row">
                         <td>{pos.org_short_desc}</td>
                         <td>{pos.org_code}</td>
@@ -337,7 +337,7 @@ const BidAuditData = (props) => {
                           </tr>
                         ))
                       }
-                    </>
+                    </Fragment>
                   );
                 })
               }
