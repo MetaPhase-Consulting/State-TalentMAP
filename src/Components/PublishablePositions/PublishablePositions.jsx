@@ -50,21 +50,6 @@ const PublishablePositions = ({ viewType }) => {
   const isBureauView = viewType === 'bureau';
   const isPostView = viewType === 'post';
   const bureauPermissions = useSelector(state => state.userProfile?.bureau_permissions);
-  // const orgPermissions = useSelector(state => state.userProfile?.org_permissions);
-
-  // const getOrgFilters = () => {
-  //   const originalOrgs = filters?.orgFilters;
-  //   if (originalOrgs && isPostView) {
-  //     if (orgPermissions) {
-  //       const orgPermissionsGroups = Object.groupBy(orgPermissions, ({ code }) => code);
-  //       const userOrgCodePermissions = Object.keys(orgPermissionsGroups);
-  //       // filter out if user does not have that org permission
-  //       return originalOrgs.filter((a) => userOrgCodePermissions.includes(a?.code));
-  //     }
-  //     return [];
-  //   }
-  //   return originalOrgs;
-  // };
 
   const [tempsearchPosNum, tempsetSearchPosNum] = useState(userSelections?.searchPosNum || '');
   const [searchPosNum, setSearchPosNum] = useState(userSelections?.searchPosNum || '');
