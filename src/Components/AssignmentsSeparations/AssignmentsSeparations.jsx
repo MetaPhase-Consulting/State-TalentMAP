@@ -233,8 +233,7 @@ const AssignmentsSeparations = (props) => {
                   id={`include-${data.ASG_SEQ_NUM}`}
                   label="Include"
                   disabled={disableOtherEdits}
-                  // eslint-disable-next-line no-unneeded-ternary
-                  value={selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM) ? true : false}
+                  value={selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM) === true}
                   onCheckBoxClick={() => {
                     if (selectedAssignments?.find(a => a.seqNum === data.ASG_SEQ_NUM)) {
                       const filteredSelection = selectedAssignments.filter(a => a.seqNum !== data.ASG_SEQ_NUM);
