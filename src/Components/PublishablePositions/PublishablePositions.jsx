@@ -71,7 +71,6 @@ const PublishablePositions = ({ viewType }) => {
   const prevPage = usePrevious(page);
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
-  // const count = data$?.length || 0;
 
   const statuses = filters?.statusFilters;
   const orgs = filters?.orgFilters;
