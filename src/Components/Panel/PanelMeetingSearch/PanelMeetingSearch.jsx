@@ -328,7 +328,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
               {
                 panelMeetings.map(pm => (
                   <PanelMeetingSearchRow
-                    key={get(pm, 'pm_seq_num')}
+                    key={get(pm, 'pmi_pm_seq_num')}
                     pm={pm}
                     isCDO={isCDO}
                   />
