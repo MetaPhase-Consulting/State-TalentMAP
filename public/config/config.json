@@ -9,7 +9,7 @@
     "agenda_item_maintenance_create": true,
     "agenda_search": true,
     "assignment_memo": false,
-    "assignment_notification": false,
+    "assignment_notification": true,
     "bid_audit": true,
     "bid_season_management": true,
     "bidding_tool": true,
