@@ -78,6 +78,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
     ordering,
     type: selectedMeetingType.map(meetingObject => (get(meetingObject, 'code'))),
     status: selectedMeetingStatus.map(meetingObject => (get(meetingObject, 'code'))),
+    remark: selectedRemarks.map(remarkObject => (get(remarkObject, 'short_desc_text'))),
     // need to set to beginning of the day to avoid timezone issues
     'panel-date-start': isDate(get(selectedPanelMeetDate, '[0]')) ? startOfDay(get(selectedPanelMeetDate, '[0]')).toJSON() : '',
     'panel-date-end': isDate(get(selectedPanelMeetDate, '[1]')) ? startOfDay(get(selectedPanelMeetDate, '[1]')).toJSON() : '',
