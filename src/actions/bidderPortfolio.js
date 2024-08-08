@@ -200,12 +200,25 @@ export function lookupAndSetCDO(id) {
 }
 
 export function getUnassignedBidderTypes(query) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
+    const ids = cdos.map(m => m.hru_id).filter(f => f);
+    const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
+    let query$ = { ...query };
+    if (ids.length) {
+      query$.hru_id__in = ids.join();
+    }
+    if (isArray(seasons) && seasons.length) {
+      query$.bid_seasons = join(seasons, ',');
+    }
+    if (!query$.bid_seasons || !query$.bid_seasons.length) {
+      query$ = omit(query$, ['hasHandshake']); // hasHandshake requires at least one bid season
+    }
     const endpoint = '/fsbid/client/';
-    api().post(endpoint, query)
+    api().post(endpoint, query$)
       .then(({ data }) => {
         batch(() => {
-          console.log('DATAAAA', data);
           dispatch(unassignedbidderTypeSuccess(data));
         });
       })
@@ -253,6 +266,7 @@ export function bidderPortfolioFetchData(query = {}) {
         // query$.noBids = true;
       }
     }
+
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }
