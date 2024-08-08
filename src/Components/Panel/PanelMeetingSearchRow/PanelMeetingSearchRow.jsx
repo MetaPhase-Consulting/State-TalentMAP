@@ -54,13 +54,13 @@ const PanelMeetingSearchRow = ({ isCDO, pm }) => {
         <div className="remarks-text">Remarks:</div>
         <div className="remarks-pill-container">
           {
-            remarks.slice(0, expanded ? remarks.length : 5).map(remark => (
+            remarks.slice(0, expanded ? remarks.length : 8).map(remark => (
               <RemarksPill key={remark.text} remark={remark} />
             ))
           }
         </div>
         {
-          remarks.length > 5 && (
+          remarks.length > 8 && (
             <button className="expand-button" onClick={() => setExpanded(!expanded)}>
               {expanded ? <FontAwesome name={'minus'} /> : <FontAwesome name={'plus'} />}
             </button>
