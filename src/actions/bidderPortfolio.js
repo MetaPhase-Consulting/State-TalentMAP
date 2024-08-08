@@ -205,6 +205,7 @@ export function getUnassignedBidderTypes(query) {
     api().post(endpoint, query)
       .then(({ data }) => {
         batch(() => {
+          console.log('DATAAAA', data);
           dispatch(unassignedbidderTypeSuccess(data));
         });
       })
@@ -255,6 +256,7 @@ export function bidderPortfolioFetchData(query = {}) {
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }
+
     const query$$ = stringify(query$);
     const endpoint = '/fsbid/client/';
     const q = `${endpoint}?${query$$}`;
