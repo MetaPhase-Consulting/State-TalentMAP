@@ -157,7 +157,7 @@ export function biddingToolEdit(query, onSuccess) {
       cancelEdit('cancel');
     }
 
-    api().put('/fsbid/bidding_tool/', query, {
+    api().put('/fsbid/bidding_tool/edit/', query, {
       cancelToken: new CancelToken((c) => { cancelEdit = c; }),
     })
       .then(() => {
@@ -185,7 +185,7 @@ export function biddingToolCreate(query, onSuccess) {
       cancelCreate('cancel');
     }
 
-    api().post('/fsbid/bidding_tool/', query, {
+    api().post('/fsbid/bidding_tool/create/', query, {
       cancelToken: new CancelToken((c) => { cancelCreate = c; }),
     })
       .then((response) => {

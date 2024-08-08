@@ -8,7 +8,7 @@ export function noteCableFetchDataErrored(state = false, action) {
       return state;
   }
 }
-export function noteCableFetchDataLoading(state = true, action) {
+export function noteCableFetchDataLoading(state = false, action) {
   switch (action.type) {
     case 'NOTE_CABLE_FETCH_LOADING':
       return action.isLoading;
@@ -35,7 +35,7 @@ export function cableFetchDataErrored(state = false, action) {
       return state;
   }
 }
-export function cableFetchDataLoading(state = true, action) {
+export function cableFetchDataLoading(state = false, action) {
   switch (action.type) {
     case 'CABLE_FETCH_LOADING':
       return action.isLoading;
@@ -62,7 +62,7 @@ export function noteCableRefFetchDataErrored(state = false, action) {
       return state;
   }
 }
-export function noteCableRefFetchDataLoading(state = true, action) {
+export function noteCableRefFetchDataLoading(state = false, action) {
   switch (action.type) {
     case 'NOTE_CABLE_REF_FETCH_LOADING':
       return action.isLoading;
