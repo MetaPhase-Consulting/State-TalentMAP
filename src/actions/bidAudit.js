@@ -12,10 +12,6 @@ import {
   CREATE_BID_AUDIT_GRADE_SUCCESS_TITLE,
   CREATE_BID_AUDIT_SUCCESS,
   CREATE_BID_AUDIT_SUCCESS_TITLE,
-  DELETE_BID_AUDIT_ERROR,
-  DELETE_BID_AUDIT_ERROR_TITLE,
-  DELETE_BID_AUDIT_SUCCESS,
-  DELETE_BID_AUDIT_SUCCESS_TITLE,
   DELETE_IN_CATEGORY_AT_GRADE_ERROR,
   DELETE_IN_CATEGORY_AT_GRADE_ERROR_TITLE,
   DELETE_IN_CATEGORY_AT_GRADE_SUCCESS,
@@ -504,147 +500,60 @@ export function bidAuditDeleteAuditGradeOrCategory(data, type, onSuccess) {
   };
 }
 
-// ----------------------------------------------------------------------
-// ================ FUNCTIONS BELOW ARE CURRENTLY UNUSED ================
-// ----------------------------------------------------------------------
 
+// ================ Bid Audit: Get Audit Data ================
 
-// ================ Bid Audit: Get Audit ================
+let cancelBidAuditGetAuditData;
 
-export function bidAuditErrored(bool) {
+export function bidAuditGetAuditFetchDataErrored(bool) {
   return {
-    type: 'BID_AUDIT_HAS_ERRORED',
+    type: 'BID_AUDIT_GET_AUDIT_FETCH_HAS_ERRORED',
     hasErrored: bool,
   };
 }
-export function bidAuditLoading(bool) {
+export function bidAuditGetAuditFetchDataLoading(bool) {
   return {
-    type: 'BID_AUDIT_EDIT_IS_LOADING',
+    type: 'BID_AUDIT_GET_AUDIT_FETCH_IS_LOADING',
     isLoading: bool,
   };
 }
-export function bidAuditSuccess(results) {
+export function bidAuditGetAuditFetchDataSuccess(results) {
   return {
-    type: 'BID_AUDIT_SUCCESS',
+    type: 'BID_AUDIT_GET_AUDIT_FETCH_SUCCESS',
     results,
   };
 }
 
-
-// ================ Bid Audit: Delete ================
-
-export function bidAuditDeleteLoading(bool) {
-  return {
-    type: 'BID_AUDIT_DELETE_IS_LOADING',
-    isLoading: bool,
-  };
-}
-
-
-// ================ TBD? ================
-
-export function savebidAuditSelections(data) {
+export function bidAuditGetAuditFetchData(cycleId, auditId) {
   return (dispatch) => {
-    dispatch(bidAuditLoading(true));
-    dispatch(bidAuditErrored(false));
-    api().post('/Placeholder/', data)
-      .then(({ res }) => {
-        batch(() => {
-          dispatch(bidAuditErrored(false));
-          dispatch(bidAuditSuccess(res));
-          dispatch(toastSuccess(UPDATE_BID_AUDIT_SUCCESS,
-            UPDATE_BID_AUDIT_SUCCESS_TITLE));
-          dispatch(bidAuditLoading(false));
-        });
-      }).catch(() => {
-        batch(() => {
-          dispatch(toastError(UPDATE_BID_AUDIT_ERROR,
-            UPDATE_BID_AUDIT_ERROR_TITLE));
-          dispatch(bidAuditErrored(true));
-          dispatch(bidAuditLoading(false));
-        });
-      });
-  };
-}
-
-// ================ Bid Audit: Delete ================
-
-export function bidAuditDeleteDataErrored(bool) {
-  return {
-    type: 'BID_AUDIT_FETCH_HAS_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function bidAuditDeleteDataSuccess(results) {
-  return {
-    type: 'BID_AUDIT_DELETE_SUCCESS',
-    results,
-  };
-}
-export function deleteBidAudit(id) {
-  return (dispatch) => {
-    dispatch(bidAuditDeleteLoading(true));
-    api().delete(`/Placeholder/${id}/}`)
-      .then(() => {
-        dispatch(bidAuditDeleteLoading(false));
-        dispatch(bidAuditDeleteDataErrored(false));
-        dispatch(bidAuditDeleteDataSuccess('Successfully deleted the selected search.'));
-        dispatch(toastSuccess(
-          DELETE_BID_AUDIT_SUCCESS,
-          DELETE_BID_AUDIT_SUCCESS_TITLE,
-        ));
-      })
-      .catch(() => {
-        dispatch(toastError(
-          DELETE_BID_AUDIT_ERROR,
-          DELETE_BID_AUDIT_ERROR_TITLE,
-        ));
-        dispatch(bidAuditDeleteLoading(false));
-        dispatch(bidAuditDeleteDataSuccess(false));
-      });
-  };
-}
-
-
-// ================ Bid Audit: User Filter Selections ================
-
-export function bidAuditSelectionsSaveSuccess(result) {
-  return {
-    type: 'BID_AUDIT_SELECTIONS_SAVE_SUCCESS',
-    result,
-  };
-}
-export function saveBidAuditSelections(queryObject) {
-  return (dispatch) => dispatch(bidAuditSelectionsSaveSuccess(queryObject));
-}
-
-
-// ================ Bid Audit: Filters ================
-
-export function bidAuditFiltersFetchDataErrored(bool) {
-  return {
-    type: 'BID_AUDIT_FILTERS_FETCH_ERRORED',
-    hasErrored: bool,
-  };
-}
-export function bidAuditFiltersFetchDataLoading(bool) {
-  return {
-    type: 'BID_AUDIT_FILTERS_FETCH_IS_LOADING',
-    isLoading: bool,
-  };
-}
-export function bidAuditFiltersFetchDataSuccess(results) {
-  return {
-    type: 'BID_AUDIT_FILTERS_FETCH_SUCCESS',
-    results,
-  };
-}
-export function bidAuditFiltersFetchData() {
-  return (dispatch) => {
+    if (cancelBidAuditGetAuditData) {
+      cancelBidAuditGetAuditData('cancel');
+    }
     batch(() => {
-      dispatch(bidAuditFiltersFetchDataSuccess({}));
-      dispatch(bidAuditFiltersFetchDataLoading(false));
+      dispatch(bidAuditGetAuditFetchDataLoading(true));
+      dispatch(bidAuditGetAuditFetchDataErrored(false));
     });
+    api()
+      .post('/fsbid/bid_audit/data/', {
+        cycleId, auditId,
+      }, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditGetAuditData = c; }),
+      })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidAuditGetAuditFetchDataSuccess(data));
+          dispatch(bidAuditGetAuditFetchDataErrored(false));
+          dispatch(bidAuditGetAuditFetchDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(bidAuditGetAuditFetchDataSuccess([]));
+            dispatch(bidAuditGetAuditFetchDataErrored(true));
+            dispatch(bidAuditGetAuditFetchDataLoading(false));
+          });
+        }
+      });
   };
 }
-

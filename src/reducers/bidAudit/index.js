@@ -11,14 +11,9 @@ import {
   bidAuditSecondFetchModalData,
   bidAuditSecondFetchModalDataErrored,
   bidAuditSecondFetchModalDataLoading,
-  // Below not integrated
-  bidAuditEdit,
-  bidAuditErrored,
-  bidAuditFilters,
-  bidAuditFiltersFetchDataErrored,
-  bidAuditFiltersFetchDataLoading,
-  bidAuditLoading,
-  bidAuditSelections,
+  bidAuditGetAuditFetchDataErrored,
+  bidAuditGetAuditFetchDataLoading,
+  bidAuditGetAuditFetchDataSuccess,
 } from './bidAudit';
 
 export default {
@@ -33,12 +28,7 @@ export default {
   bidAuditSecondFetchModalDataLoading,
   bidAuditCycles,
   bidAuditFetchCyclesLoading,
-  // Below not integrated
-  bidAuditEdit,
-  bidAuditErrored,
-  bidAuditFilters,
-  bidAuditFiltersFetchDataErrored,
-  bidAuditFiltersFetchDataLoading,
-  bidAuditLoading,
-  bidAuditSelections,
+  bidAuditGetAuditFetchDataErrored,
+  bidAuditGetAuditFetchDataLoading,
+  bidAuditGetAuditFetchDataSuccess,
 };
