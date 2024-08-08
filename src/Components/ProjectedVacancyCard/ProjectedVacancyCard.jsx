@@ -179,7 +179,6 @@ const ProjectedVacancyCard = (props) => {
     ],
     textarea: result?.fvcommenttxt || 'No description.',
     metadata: [
-      { 'Position Posted': formatDate(result?.fvcreatedate) || NO_UPDATE_DATE },
       { 'Last Updated': formatDate(result?.fvupdatedate) || NO_UPDATE_DATE },
     ],
   };
