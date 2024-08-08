@@ -272,9 +272,9 @@ const PanelMeetingAgendas = (props) => {
 
   function renderSelectionList({ items, selected, ...rest }) {
     let codeOrText = 'code';
-    // only Remarks needs to use 'text'
-    if (has(items[0], 'text')) {
-      codeOrText = 'text';
+    // only Remarks needs to use 'short_desc_text'
+    if (has(items[0], 'seq_num')) {
+      codeOrText = 'short_desc_text';
     }
     // only Item Actions/Statuses need to use 'desc_text'
     if (has(items[0], 'desc_text')) {
@@ -290,12 +290,11 @@ const PanelMeetingAgendas = (props) => {
     const getSelected = item => !!selected.find(f => f[codeOrText] === item[codeOrText]);
     let queryProp = 'description';
     if (get(items, '[0].custom_description', false)) queryProp = 'custom_description';
-    else if (get(items, '[0].long_description', false)) queryProp = 'long_description';
-    else if (codeOrText === 'text') queryProp = 'text';
+    else if (has(items[0], 'name')) queryProp = 'name';
+    else if (codeOrText === 'mic_desc_text') queryProp = 'mic_desc_text';
     else if (codeOrText === 'desc_text') queryProp = 'desc_text';
     else if (codeOrText === 'abbr_desc_text') queryProp = 'abbr_desc_text';
-    else if (codeOrText === 'mic_desc_text') queryProp = 'mic_desc_text';
-    else if (has(items[0], 'name')) queryProp = 'name';
+    else if (codeOrText === 'short_desc_text') queryProp = 'short_desc_text';
     return items.map(item =>
       (<ListItem
         key={item[codeOrText]}
