@@ -6,7 +6,7 @@ import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 const RemarksPill = props => {
   const { remark, isEditable, updateSelection, fromAIM } = props;
 
-  const getRemarkText = (r) => {
+  const formatRemarkText = (r) => {
     // we can just grab the already merged text from the BE, but it would mean
     // we have to distinguish from the read/create RemarksGlossary renders
     const refInserts = r?.remark_inserts || [];
@@ -21,13 +21,15 @@ const RemarksPill = props => {
     return remarkText;
   };
 
+  const getRemarkText = (r) => r?.active_ind === 'N' ? `(Legacy) ${r?.air_remark_text}` : r?.air_remark_text;
+
   return (
     <div className={`remarks-pill remark-category--${remark?.rc_code}`}>
       {
         fromAIM ?
-          getRemarkText(remark)
+          formatRemarkText(remark)
           :
-          remark?.text
+          getRemarkText(remark)
       }
       { isEditable &&
         <FA name="times" onClick={() => updateSelection(remark)} />
@@ -51,7 +53,8 @@ RemarksPill.propTypes = {
         riinsertiontext: PropTypes.string,
       }),
     ),
-    ari_insertions: PropTypes.shape({}),
+    air_remark_text: PropTypes.string,
+    air_insertions: PropTypes.shape({}),
   }),
   isEditable: PropTypes.bool,
   updateSelection: PropTypes.func,
