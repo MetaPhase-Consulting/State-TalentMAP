@@ -178,6 +178,7 @@ AgendaItemRow.propTypes = {
         short_desc_text: PropTypes.string,
         text: PropTypes.string,
         active_ind: PropTypes.string,
+        air_remark_text: PropTypes.string,
         type: null,
       }),
     ),
