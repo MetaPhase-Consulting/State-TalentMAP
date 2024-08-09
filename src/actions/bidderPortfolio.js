@@ -11,6 +11,7 @@ import { toastError } from './toast';
 
 let cancelCDOs;
 let cancelPortfolio;
+let cancelUnnassignedBidders;
 
 export function bidderPortfolioSelectedSeasons(arr = []) {
   return {
@@ -235,9 +236,12 @@ export function getUnassignedBidderTypes(query = {}) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }
     const query$$ = stringify(query$);
+    if (cancelUnnassignedBidders) { cancelUnnassignedBidders('cancel'); }
     const endpoint = '/fsbid/client/';
     const q = `${endpoint}?${query$$}`;
-    api().post(q)
+    api().post(q, {
+      cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
+    })
       .then(({ data }) => {
         batch(() => {
           console.log(data);
@@ -279,13 +283,10 @@ export function bidderPortfolioFetchData(query = {}) {
         query$.hasHandshake = false;
       }
       if (includes(UAvalues, 'noPanel')) {
-        query$.noPanel = true;
         dispatch(getUnassignedBidderTypes(query$));
       }
       if (includes(UAvalues, 'noBids')) {
-        query$.noBids = true;
         dispatch(getUnassignedBidderTypes(query$));
-        // query$.noBids = true;
       }
     }
 
