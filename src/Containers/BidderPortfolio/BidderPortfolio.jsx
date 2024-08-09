@@ -70,6 +70,7 @@ class BidderPortfolio extends Component {
   // Form our query and then retrieve bidders.
   getBidderPortfolio() {
     const query = this.createSearchQuery();
+    // this.props.fetchBidderPortfolio(query);
     this.props.fetchUnassignedBidderTypes(query);
   }
 
