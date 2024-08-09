@@ -19,7 +19,6 @@ const showEditPanelMeeting = usePanelAdmin() && usePanelAdminPanelMeeting();
 
 const PanelMeetingSearchRow = ({ isCDO, pm }) => {
   const pmSeqNum = get(pm, 'pmi_pm_seq_num') || FALLBACK;
-  // TODO: replace fallback with [], once api portion is complete
   const remarks = get(pm, 'allRemarks') || [];
   const showPanelMeetingsAgendas = usePanelMeetingsAgendas();
   const userProfile = useSelector(state => state.userProfile);
