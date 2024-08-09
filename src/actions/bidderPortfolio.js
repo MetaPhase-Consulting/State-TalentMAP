@@ -199,12 +199,13 @@ export function lookupAndSetCDO(id) {
   };
 }
 
-export function getUnassignedBidderTypes(query) {
+export function getUnassignedBidderTypes(query = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
     const ids = cdos.map(m => m.hru_id).filter(f => f);
     const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
+    const unassigned = get(state, 'bidderPortfolioSelectedUnassigned', []);
     let query$ = { ...query };
     if (ids.length) {
       query$.hru_id__in = ids.join();
@@ -215,10 +216,31 @@ export function getUnassignedBidderTypes(query) {
     if (!query$.bid_seasons || !query$.bid_seasons.length) {
       query$ = omit(query$, ['hasHandshake']); // hasHandshake requires at least one bid season
     }
+    if (get(query, 'hasHandshake') === 'unassigned_filters') {
+      query$ = omit(query$, ['hasHandshake']);
+      const UAvalues = unassigned.map(a => a.value);
+      if (includes(UAvalues, 'noHandshake')) {
+        query$.hasHandshake = false;
+      }
+      if (includes(UAvalues, 'noPanel')) {
+        query$.noPanel = true;
+      }
+      if (includes(UAvalues, 'noBids')) {
+        query$.noBids = true;
+        // query$.noBids = true;
+      }
+    }
+
+    if (!query$.ordering) {
+      query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
+    }
+    const query$$ = stringify(query$);
     const endpoint = '/fsbid/client/';
-    api().post(endpoint, query$)
+    const q = `${endpoint}?${query$$}`;
+    api().post(q)
       .then(({ data }) => {
         batch(() => {
+          console.log(data);
           dispatch(unassignedbidderTypeSuccess(data));
         });
       })
