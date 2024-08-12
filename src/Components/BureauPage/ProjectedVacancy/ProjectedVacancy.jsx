@@ -10,7 +10,6 @@ import {
   projectedVacancyEdit,
   projectedVacancyFetchData,
   projectedVacancyFilters,
-  projectedVacancyLangOffsetOptions,
   saveProjectedVacancySelections,
 } from 'actions/projectedVacancy';
 import { onEditModeSearch, renderSelectionList, userHasPermissions } from 'utilities';
@@ -41,24 +40,15 @@ const ProjectedVacancy = ({ viewType }) => {
   const filters = useSelector(state => state.projectedVacancyFilters) || [];
   const filtersLoading = useSelector(state => state.projectedVacancyFiltersLoading);
   const filtersErrored = useSelector(state => state.projectedVacancyFiltersErrored);
-  const languageOffsetOptions = useSelector(state => state.projectedVacancyLangOffsetOptions) || [];
-  const languageOffsetOptionsLoading =
-    useSelector(state => state.projectedVacancyLangOffsetOptionsLoading);
-  const languageOffsetOptionsErrored =
-    useSelector(state => state.projectedVacancyLangOffsetOptionsErrored);
   const positionsData = useSelector(state => state.projectedVacancy);
   const positionsLoading = useSelector(state => state.projectedVacancyFetchDataLoading);
   const positionsErrored = useSelector(state => state.projectedVacancyFetchDataErrored);
-  const languageOffsets = useSelector(state => state.projectedVacancyLangOffsets) || [];
-  const languageOffsetsLoading = useSelector(state => state.projectedVacancyLangOffsetsLoading);
-  const languageOffsetsErrored = useSelector(state => state.projectedVacancyLangOffsetsErrored);
 
   const [page, setPage] = useState(userSelections?.page || 1);
   const [limit, setLimit] = useState(userSelections?.limit || 5);
   const positions = positionsData?.results?.length ? positionsData?.results : [];
   const prevPage = usePrevious(page);
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
-  const count = positions?.length;
 
   const [importedPositions, setImportedPositions] = useState([]);
   const [cardsInEditMode, setCardsInEditMode] = useState([]);
@@ -79,17 +69,6 @@ const ProjectedVacancy = ({ viewType }) => {
   const [selectedCycle, setSelectedCycle] =
     useState(userSelections?.selectedCycle || null);
 
-  const getBureauFilters = () => {
-    const originalBureaus = sortBy(filters?.bureaus || [], [o => o.short_description]);
-    // if (originalBureaus && isBureauView) {
-    //   const bureauPermissionsGroups = Object.groupBy(bureauPermissions, ({ short_description }) => short_description);
-    //   const userBureauDescPermissions = Object.keys(bureauPermissionsGroups);
-    //   // filter out if user does not have that bureau permission
-    //   return originalBureaus.filter((a) => userBureauDescPermissions.includes(a?.short_description));
-    // }
-    return originalBureaus;
-  };
-
   const filterSelectionValid = () => {
     // valid if:
     // not Bureau user
@@ -106,10 +85,10 @@ const ProjectedVacancy = ({ viewType }) => {
   const bidSeasons = sortBy(filters?.bid_seasons || [], [o => o.description]);
   const organizations = sortBy(filters?.organizations || [], [o => o.description]);
   const statuses = sortBy(filters?.statuses || [], [o => o.description]);
+  const bureaus = sortBy(bureauPermissions || [], [(b) => b.long_description]);
 
-  const resultsLoading = positionsLoading || languageOffsetsLoading || languageOffsetOptionsLoading;
-  const resultsErrored =
-    filtersErrored || languageOffsetOptionsErrored || positionsErrored || languageOffsetsErrored;
+  const resultsLoading = positionsLoading;
+  const resultsErrored = filtersErrored || positionsErrored;
   const disableSearch = cardsInEditMode?.length > 0 || importInEditMode;
   const disableInput = filtersLoading || resultsLoading || disableSearch;
 
@@ -178,12 +157,7 @@ const ProjectedVacancy = ({ viewType }) => {
   useEffect(() => {
     dispatch(saveProjectedVacancySelections(getCurrentInputs()));
     dispatch(projectedVacancyFilters());
-    dispatch(projectedVacancyLangOffsetOptions());
   }, []);
-
-  useEffect(() => {
-    getBureauFilters();
-  }, [filters, bureauPermissions]);
 
   useEffect(() => {
     if (positions.length) {
@@ -323,10 +297,10 @@ const ProjectedVacancy = ({ viewType }) => {
                 {...pickyProps}
                 placeholder="Select Bureau(s)"
                 value={selectedBureaus}
-                options={getBureauFilters()}
+                options={bureaus}
                 onChange={setSelectedBureaus}
                 valueKey="code"
-                labelKey="description"
+                labelKey="short_description"
                 disabled={disableInput}
               />
             </div>
@@ -415,7 +389,7 @@ const ProjectedVacancy = ({ viewType }) => {
       {getOverlay() || <>
         <div className="viewing-results-and-dropdown--fullscreen padding-top results-dropdown">
           <TotalResults
-            total={count}
+            total={positionsData?.count}
             pageNumber={page}
             pageSize={limit}
             suffix="Results"
@@ -467,11 +441,6 @@ const ProjectedVacancy = ({ viewType }) => {
               <ProjectedVacancyCard
                 key={k.future_vacancy_seq_num}
                 result={k}
-                languageOffsets={
-                  (languageOffsets?.length &&
-                    languageOffsets?.find(o => o?.position_number === k?.position_number)
-                  ) || {}
-                }
                 updateImport={onImportUpdate}
                 disableImport={cardsInEditMode?.length > 0 || !isAo || !selectedCycle || !enableEdit}
                 disableEdit={importInEditMode || disableSearch || !enableEdit || !isBureau}
@@ -481,7 +450,6 @@ const ProjectedVacancy = ({ viewType }) => {
                 }
                 onSubmit={editData => submitEdit(editData)}
                 selectOptions={{
-                  languageOffsets: languageOffsetOptions,
                   bidSeasons,
                   statuses,
                 }}
@@ -493,7 +461,7 @@ const ProjectedVacancy = ({ viewType }) => {
               pageSize={limit}
               onPageChange={(p) => setPage(p.page)}
               forcePage={page}
-              totalResults={count}
+              totalResults={positionsData?.count}
             />
           </div>
         </div>

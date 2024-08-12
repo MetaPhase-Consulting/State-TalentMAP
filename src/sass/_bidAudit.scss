@@ -259,3 +259,70 @@ $bid-audit-input-width: 460px;
     height: 44px;
   }
 }
+
+.bid-data-heading {
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  background-color: $tertiary-cool-blue;
+  color: $color-white;
+  margin: 20px 30px 20px 20px;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  span {
+    align-self: center;
+  }
+}
+
+.bid-data-shuffle {
+  text-decoration: none;
+  cursor: pointer;
+}
+.bid-data-shuffle-disabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.bid-data--results {
+  padding: 0 35px 20px;
+  .bid-data-scroll-container {
+    overflow: auto;
+    height: 900px;
+    }
+  .bid-data-custom-table {
+    th {
+      color: $color-white;
+      background-color: $bg-blue-dark-1;
+      // Position sticky not supported on ie11
+      // Position sticky has partial support on browsers (Must target th; not thead)
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      border: none;
+    }
+    tr {
+      height: 50px;
+    }
+    tbody {
+      td {
+        border: none;
+        // padding: 8px;
+      }
+    }
+    .position-row {
+      // Position sticky not supported on ie11
+      // Position sticky has partial support on browsers (Must target th; not thead)
+      position: -webkit-sticky;
+      position: sticky;
+      top: 55px;
+      td {
+        font-weight: bold;
+        background-color: $tertiary-cool-blue;
+        color: $color-white;
+      }
+    }
+  }
+}

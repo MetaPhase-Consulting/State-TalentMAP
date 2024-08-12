@@ -79,10 +79,13 @@
   margin-bottom: 10px;
   margin-left: 0;
   padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
+  .main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
   .button-box {
     width: 75px;
     line-height: 25px;

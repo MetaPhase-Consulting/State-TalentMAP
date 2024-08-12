@@ -30,7 +30,7 @@ const Memo = () => {
             disabled
             maxRows={4}
             minRows={4}
-            maxlength="500"
+            maxLength="500"
             name="body"
             placeholder="No Description"
             defaultValue={body}
