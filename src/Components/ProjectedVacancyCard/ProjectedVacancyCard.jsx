@@ -81,9 +81,9 @@ const ProjectedVacancyCard = (props) => {
     setStatus(result?.fvscode);
     setTextArea(result?.fvcommenttxt || '');
     setOverrideTED(
-        result?.fvoverrideteddate ?
-          new Date(result.fvoverrideteddate) :
-          null,
+      result?.fvoverrideteddate ?
+        new Date(result.fvoverrideteddate) :
+        null,
     );
   }, [editMode]);
 
@@ -94,14 +94,16 @@ const ProjectedVacancyCard = (props) => {
   }, [disableEdit]);
 
   const onSubmitForm = () => {
+    const currTimestamp = new Date().toISOString();
     const editData = {
       ...result,
-      future_vacancy_exclude_import_indicator: included,
-      future_vacancy_bid_season_code: season,
-      future_vacancy_status_code: status,
-      future_vacancy_override_tour_end_date: overrideTED ?
+      fvexclimportind: included,
+      fvbsnid: season,
+      fvfvscode: status,
+      fvoverrideteddate: overrideTED ?
         overrideTED.toISOString().substring(0, 10) : null,
-      future_vacancy_comment_text: textArea,
+      fvcommenttxt: textArea,
+      fvupdatedate: currTimestamp.replace(/T/g, ' ').substring(0, currTimestamp.length - 5),
     };
     onSubmit(editData, setEditMode(false));
   };
@@ -177,8 +179,7 @@ const ProjectedVacancyCard = (props) => {
     ],
     textarea: result?.fvcommenttxt || 'No description.',
     metadata: [
-      { 'Position Posted': formatDate(result?.fvcreatedate) || NO_UPDATE_DATE },
-      { 'Last Updated': formatDate(result?.fvscreatedate) || NO_UPDATE_DATE },
+      { 'Last Updated': formatDate(result?.fvupdatedate) || NO_UPDATE_DATE },
     ],
   };
   const form = {
