@@ -32,6 +32,14 @@ export function bidderPortfolioSeasons(state = [], action) {
       return state;
   }
 }
+export function unassignedbidderType(state = [], action) {
+  switch (action.type) {
+    case 'UNASSIGNED_BIDDER_TYPE_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
 export function bidderPortfolioSelectedUnassigned(state = [], action) {
   switch (action.type) {
     case 'BIDDER_PORTFOLIO_SELECTED_UNASSIGNED':
