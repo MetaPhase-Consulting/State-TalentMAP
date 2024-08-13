@@ -32,6 +32,10 @@ import {
   UPDATE_BID_COUNT_ERROR_TITLE,
   UPDATE_BID_COUNT_SUCCESS,
   UPDATE_BID_COUNT_SUCCESS_TITLE,
+  UPDATE_HTF_ERROR,
+  UPDATE_HTF_ERROR_TITLE,
+  UPDATE_HTF_SUCCESS,
+  UPDATE_HTF_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import { batch } from 'react-redux';
 import api from '../api';
@@ -553,6 +557,89 @@ export function bidAuditGetAuditFetchData(cycleId, auditId) {
             dispatch(bidAuditGetAuditFetchDataErrored(true));
             dispatch(bidAuditGetAuditFetchDataLoading(false));
           });
+        }
+      });
+  };
+}
+
+// ================ Bid Audit: Get Postion HTF Data ================
+
+let cancelBidAuditGetHTFData;
+
+export function bidAuditHTFFetchModalDataErrored(bool) {
+  return {
+    type: 'BID_AUDIT_HTF_FETCH_MODAL_DATA_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function bidAuditHTFFetchModalDataLoading(bool) {
+  return {
+    type: 'BID_AUDIT_HTF_FETCH_MODAL_DATA_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function bidAuditHTFFetchModalDataSuccess(results) {
+  return {
+    type: 'BID_AUDIT_HTF_FETCH_MODAL_DATA_SUCCESS',
+    results,
+  };
+}
+export function bidAuditHTFFetchModalData(cyclePositionId) {
+  return (dispatch) => {
+    if (cancelBidAuditGetHTFData) {
+      cancelBidAuditGetHTFData('cancel');
+    }
+    batch(() => {
+      dispatch(bidAuditHTFFetchModalDataLoading(true));
+      dispatch(bidAuditHTFFetchModalDataErrored(false));
+    });
+    api()
+      .get(`/fsbid/bid_audit/htf/${cyclePositionId}/`, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditGetHTFData = c; }),
+      })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidAuditHTFFetchModalDataSuccess(data));
+          dispatch(bidAuditHTFFetchModalDataErrored(false));
+          dispatch(bidAuditHTFFetchModalDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(bidAuditHTFFetchModalDataSuccess({}));
+            dispatch(bidAuditHTFFetchModalDataErrored(true));
+            dispatch(bidAuditHTFFetchModalDataLoading(false));
+          });
+        }
+      });
+  };
+}
+
+// ================ Bid Audit: Update HTF ================
+
+let cancelUpdateHTF;
+
+export function bidAuditUpdateHTF(data, onSuccess) {
+  return (dispatch) => {
+    if (cancelUpdateHTF) {
+      cancelUpdateHTF('cancel');
+    }
+    api()
+      .post(`/fsbid/bid_audit/htf/${data.id}/`, data, {
+        cancelToken: new CancelToken((c) => { cancelUpdateHTF = c; }),
+      })
+      .then(() => {
+        batch(() => {
+          dispatch(toastSuccess(
+            UPDATE_HTF_SUCCESS, UPDATE_HTF_SUCCESS_TITLE,
+          ));
+          if (onSuccess) onSuccess();
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(UPDATE_HTF_ERROR, UPDATE_HTF_ERROR_TITLE));
         }
       });
   };

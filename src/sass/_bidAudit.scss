@@ -279,6 +279,9 @@ $bid-audit-input-width: 460px;
   text-decoration: none;
   cursor: pointer;
 }
+.bid-data-shuffle:hover {
+  color: $blue-primary-light;
+}
 .bid-data-shuffle-disabled {
   color: currentColor;
   cursor: not-allowed;
@@ -325,4 +328,27 @@ $bid-audit-input-width: 460px;
       }
     }
   }
+}
+
+.ba-data-htf {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ba-data-htf:hover {
+  color: $blue-primary-light;
+}
+
+.ba-htf-help-text {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 20px 0;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.ba-data-form--actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
