@@ -87,7 +87,7 @@ const NotificationCard = (props) => {
     let tabUpdateDates = '';
     if (meDescs) {
       meDescs.forEach(m => {
-        const separator = tabSeqNums === '' ? '' : ',';
+        const separator = tabSeqNums === '' ? '' : '|';
         const section = noteCable.find(c => c.ME_DESC === m);
         if (section) {
           tabSeqNums = tabSeqNums.concat(separator, section?.NME_SEQ_NUM);
