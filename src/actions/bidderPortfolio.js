@@ -210,7 +210,9 @@ export function getUnassignedBidderTypes(query = {}) {
       cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
     })
       .then(({ data }) => {
+        console.log('Pending Data', data);
         batch(() => {
+          console.log('Found Data', data);
           dispatch(unassignedbidderTypeSuccess(data));
         });
       })
