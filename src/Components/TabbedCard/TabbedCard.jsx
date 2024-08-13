@@ -21,7 +21,7 @@ const TabbedCard = ({ tabs, className }) => {
         />
       </Row>
       {/* eslint-disable eqeqeq */}
-      {existingTabs?.find(tab => activeTab == tab.value)?.content}
+      {existingTabs?.find(tab => activeTab === tab.value)?.content}
     </Row>
   );
 };
