@@ -17,8 +17,8 @@ const AssignmentNotification = (props) => {
   const params = location.split('/');
   const viewType = params[2];
 
-  const id = props?.match.params.id;
-  const noteId = props?.match.params.noteID;
+  const clientId = props?.match.params.id;
+  const noteId = props?.match.params.noteMemoID;
 
   const dispatch = useDispatch();
 
@@ -34,10 +34,10 @@ const AssignmentNotification = (props) => {
   const noteLoading = useSelector(state => state.noteCableFetchDataLoading);
 
   useEffect(() => {
-    dispatch(altAssignmentsSeparations(id));
-  }, [id]);
+    dispatch(altAssignmentsSeparations(clientId));
+  }, [clientId]);
 
-  const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${id}/`);
+  const { data: employeeData, error: employeeDataError, loading: employeeDataLoading } = useDataLoader(api().get, `/fsbid/client/${clientId}/`);
   const employeeData$ = employeeData?.data;
   const employeeName = employeeDataLoading ? '' : employeeData$?.name;
 
@@ -46,7 +46,7 @@ const AssignmentNotification = (props) => {
 
   useEffect(() => {
     if (noteId && note?.length < 1) {
-      history.push(`/profile/${viewType}/${id}/assignmentsseparations`);
+      history.push(`/profile/${viewType}/${clientId}/assignmentsseparations`);
     }
   }, []);
 
@@ -73,7 +73,7 @@ const AssignmentNotification = (props) => {
               Bidder Portfolio
             </Link>
             <span className="breadcrumb-arrow">&gt;</span>
-            <span>{id}</span>
+            <span>{clientId}</span>
           </div>
         }
         <div className="asg-header">
@@ -81,7 +81,7 @@ const AssignmentNotification = (props) => {
           Assignments and Separations
           <span className="asg-title-dash">
             {'- '}
-            <Link to={`/profile/public/${id}/${viewType}`}>
+            <Link to={`/profile/public/${clientId}/${viewType}`}>
               <span className="asg-title">
                 {`${employeeName}`}
               </span>
@@ -89,7 +89,7 @@ const AssignmentNotification = (props) => {
           </span>
         </div>
         {noteId &&
-          <NotificationCard note={note[0]} onCancel={() => history.push(`/profile/${viewType}/${id}/assignmentsseparations`)} />
+          <NotificationCard note={note[0]} onCancel={() => history.push(`/profile/${viewType}/${clientId}/assignmentsseparations`)} />
         }
       </div>
     </div>
@@ -100,7 +100,7 @@ AssignmentNotification.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      noteID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      noteMemoID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }),
   }),
   location: PropTypes.shape({
