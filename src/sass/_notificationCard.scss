@@ -12,6 +12,15 @@
       font-size: 18px;
       padding-bottom: 10px;
     }
+
+    .notification-card__header-subtitle:last-of-type {
+      margin-bottom: -15px;
+    }
+  }
+
+  .notification-card__header-subtitle {
+    font-weight: 600;
+    padding: 15px 0 5px;
   }
 
   .notification-card__rebuild {

@@ -11,7 +11,7 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
-import { REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
+import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
 import { history } from '../store';
 
 
@@ -36,7 +36,7 @@ export function noteCableFetchDataSuccess(results) {
   };
 }
 let cancelNoteCable;
-export function noteCableFetchData(query = {}, location) {
+export function noteCableFetchData(query = {}, location, memo) {
   return (dispatch) => {
     if (cancelNoteCable) { cancelNoteCable('cancel'); }
     batch(() => {
@@ -54,7 +54,7 @@ export function noteCableFetchData(query = {}, location) {
           dispatch(noteCableFetchDataSuccess(data));
           dispatch(noteCableFetchDataErrored(false));
           dispatch(noteCableFetchDataLoading(false));
-          history.push(`${location}/notification/${data[0]?.NM_SEQ_NUM}`);
+          history.push(`${location}/${memo ? 'memo' : 'notification'}/${data[0]?.NM_SEQ_NUM}`);
         });
       })
       .catch((err) => {
@@ -63,10 +63,17 @@ export function noteCableFetchData(query = {}, location) {
             dispatch(noteCableFetchDataSuccess({}));
             dispatch(noteCableFetchDataErrored(true));
             dispatch(noteCableFetchDataLoading(false));
-            dispatch(toastError(
-              GET_NOTIFICATION_ERROR,
-              GET_NOTIFICATION_ERROR_TITLE,
-            ));
+            if (memo) {
+              dispatch(toastError(
+                GET_MEMO_ERROR,
+                GET_MEMO_ERROR_TITLE,
+              ));
+            } else {
+              dispatch(toastError(
+                GET_NOTIFICATION_ERROR,
+                GET_NOTIFICATION_ERROR_TITLE,
+              ));
+            }
           });
         } else {
           batch(() => {

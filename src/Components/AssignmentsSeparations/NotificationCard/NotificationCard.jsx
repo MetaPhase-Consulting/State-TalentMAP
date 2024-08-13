@@ -18,17 +18,15 @@ import Training from './Tabs/Training';
 import Assignments from './Tabs/Assignments';
 import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
-// import Memo from './Tabs/Memo';
-// import MemoHeader from './Tabs/MemoHeader';
 
 const NotificationCard = (props) => {
-  const { note, onCancel } = props;
+  const { note, onCancel, memo } = props;
 
   const dispatch = useDispatch();
 
   // ====================== Data Retrieval ======================
 
-  // const cable = useSelector(state => state.cableFetchData);
+  const cable = useSelector(state => state.cableFetchData);
   const cableErrored = useSelector(state => state.cableFetchDataErrored);
   const cableLoading = useSelector(state => state.cableFetchDataLoading);
 
@@ -146,15 +144,6 @@ const NotificationCard = (props) => {
     );
   };
 
-  // const memoContainer = (children) => (
-  //   <div className="notification-card">
-  //     <div className="notification-card__header">
-  //       <span>Memorandum</span>
-  //     </div>
-  //     {children}
-  //   </div>
-  // );
-
   const getOverlay = () => {
     let overlay;
     if (loading) {
@@ -168,7 +157,12 @@ const NotificationCard = (props) => {
   };
 
   const getPreviewText = () => {
-    const textLines = [
+    const textLines = memo ? [
+      `${getCableValue('ASSIGNMENTS')}\n`,
+      `${getCableValue('COMBINED TOD')}\n`,
+      `${getCableValue('REMARKS')}\n`,
+      `${getCableValue('PARAGRAPHS')}\n`,
+    ] : [
       `${getCableValue('CLASSIFICATION')}\n\n`,
       `${getCableValue('DRAFTING OFFICE')}`,
       `${getCableValue('DATE')} - ${getCableValue('TELEPHONE')}`,
@@ -207,12 +201,38 @@ const NotificationCard = (props) => {
           <div>Edit</div>
         </button>
         <div className="notification-card__header">
-          <span>
-            Notification
-          </span>
-          <span>
-            The Notification Cable for {getCableValue('EMPLOYEE FULL NAME')} will be emailed to the Dos Communications Center from the preparer {getCableValue('FROM_ADDRESS')}.
-          </span>
+          {memo ?
+            <>
+              <span>
+                Memorandum
+              </span>
+              <span className="notification-card__header-subtitle">To</span>
+              <span>
+                {getCableValue('TO_ADDRESS') ?? '---'}
+              </span>
+              <span className="notification-card__header-subtitle">From</span>
+              <span>
+                {getCableValue('FROM_ADDRESS') ?? '---'}
+              </span>
+              <span className="notification-card__header-subtitle">Subject</span>
+              <span>
+                {getCableValue('SUBJECT') ?? '---'}
+              </span>
+              <span className="notification-card__header-subtitle">Last Sent</span>
+              <span>
+                {cable?.O_LAST_SENT_DATE ?? '---'}
+              </span>
+              <span className="notification-card__header-subtitle">Body</span>
+            </> :
+            <>
+              <span>
+                Notification
+              </span>
+              <span>
+                The Notification Cable for {getCableValue('EMPLOYEE FULL NAME')} will be emailed to the Dos Communications Center from the preparer {getCableValue('FROM_ADDRESS')}.
+              </span>
+            </>
+          }
         </div>
         <Row fluid className="position-content--description">
           <Linkify properties={{ target: '_blank' }}>
@@ -232,12 +252,12 @@ const NotificationCard = (props) => {
         </Row>
         <div className="position-form--actions">
           <button onClick={onCancel}>Cancel</button>
-          <button onClick={() => { }}>Email Cable</button>
+          <button onClick={() => { }}>Email {memo ? 'Memo' : 'Cable'}</button>
         </div>
       </div>
-    </Row> :
+    </Row > :
     <TabbedCard
-      tabs={[{
+      tabs={[memo ? null : {
         text: 'Header',
         value: 'HEADER',
         content: freeTextContainer(
@@ -251,7 +271,7 @@ const NotificationCard = (props) => {
             'CAPTIONS', 'E.O.', 'TAGS', 'EOM', 'CONTINUATION',
           ],
         ),
-      }, {
+      }, memo ? null : {
         text: 'Routing',
         value: 'ROUTING',
         content: freeTextContainer(
@@ -286,7 +306,7 @@ const NotificationCard = (props) => {
           />,
           ['PARAGRAPHS'],
         ),
-      }, {
+      }, memo ? null : {
         text: 'Training',
         value: 'TRAINING',
         content: freeTextContainer(
@@ -296,7 +316,7 @@ const NotificationCard = (props) => {
           />,
           ['TRAINING'],
         ),
-      }, {
+      }, memo ? null : {
         text: 'EFM',
         value: 'EFM',
         content: freeTextContainer(
@@ -316,14 +336,6 @@ const NotificationCard = (props) => {
           />,
           ['REMARKS'],
         ),
-        // }, {
-        //   text: 'Memo',
-        //   value: 'MEMO',
-        //   content: memoContainer(<Memo />),
-        // }, {
-        //   text: 'Memo Header',
-        //   value: 'MEMOHEADER',
-        //   content: memoContainer(<MemoHeader />),
       }]}
     />
   ));
@@ -334,11 +346,13 @@ NotificationCard.propTypes = {
     NM_SEQ_NUM: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   onCancel: PropTypes.func,
+  memo: PropTypes.bool,
 };
 
 NotificationCard.defaultProps = {
   note: undefined,
   onCancel: EMPTY_FUNCTION,
+  memo: false,
 };
 
 export default NotificationCard;
