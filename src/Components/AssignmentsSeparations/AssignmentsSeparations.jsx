@@ -192,7 +192,20 @@ const AssignmentsSeparations = (props) => {
                   role="button"
                   className="width-300"
                   tabIndex={0}
-                  onClick={() => { }}
+                  onClick={() => {
+                    if (hasSelections) {
+                      const seqNums = selectedAssignments?.map(a => a.seqNum).join(',');
+                      const revisionNums = selectedAssignments?.map(a => a.revisionNum).join(',');
+                      dispatch(noteCableFetchData(
+                        {
+                          I_ASG_SEQ_NUM: seqNums,
+                          I_ASGD_REVISION_NUM: revisionNums,
+                        },
+                        `/profile/${viewType}/${id}/assignmentsseparations`,
+                        true,
+                      ));
+                    }
+                  }}
                 >
                   <FA name="briefcase" />
                   Add Memo
