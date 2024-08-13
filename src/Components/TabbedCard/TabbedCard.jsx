@@ -20,7 +20,6 @@ const TabbedCard = ({ tabs, className }) => {
           styleVariant="lightBorderBottom"
         />
       </Row>
-      {/* eslint-disable eqeqeq */}
       {existingTabs?.find(tab => activeTab === tab.value)?.content}
     </Row>
   );
