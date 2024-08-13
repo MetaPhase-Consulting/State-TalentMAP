@@ -23,9 +23,8 @@ import NewAssignmentCycle from './NewAssignmentCycle';
 import MergeAssignmentCycles from './MergeAssignmentCycles';
 import { history } from '../../store';
 
-const CycleManagement = (props) => {
+const CycleManagement = () => {
   const dispatch = useDispatch();
-  const { isAO } = props;
 
   // Redux State
   const userProfile = useSelector(state => state.userProfile);
@@ -46,7 +45,7 @@ const CycleManagement = (props) => {
   const noFiltersSelected = [selectedCycles, selectedStatus].flat().length === 0
     && !selectedDate;
 
-  const cycleClassLink = `/profile/${isAO ? 'ao' : 'bureau'}/cycleclassifications`;
+  const cycleClassLink = '/profile/administrator/cycleclassifications';
 
   const getCurrentInputs = () => ({
     selectedCycles,
@@ -111,7 +110,7 @@ const CycleManagement = (props) => {
     if (cycleManagementMergeSuccess) {
       swal.close();
       dispatch(cycleManagementMergeCycleSuccess(false));
-      history.push(`/profile/${isAO ? 'ao' : 'bureau'}/assignmentcycle/${mergeTargetCycle}`);
+      history.push(`/profile/administrator/assignmentcycle/${mergeTargetCycle}`);
     }
   }, [cycleManagementMergeSuccess]);
 
@@ -286,7 +285,7 @@ const CycleManagement = (props) => {
               <div className="cm-lower-section">
                 {cycleManagementData$?.map(data => (
                   <CycleSearchCard
-                    {...{ ...data, isAO }}
+                    {...{ ...data }}
                     isSuperUser={isSuperUser}
                   />
                 ))}

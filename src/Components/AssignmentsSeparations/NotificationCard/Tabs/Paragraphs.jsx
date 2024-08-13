@@ -2,61 +2,16 @@ import { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import FA from 'react-fontawesome';
+import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
 import InteractiveElement from 'Components/InteractiveElement';
 import CheckBox from '../../../CheckBox/CheckBox';
 import InputActions from '../Common/InputActions';
 
-const chosenParagraphs = [{
-  id: 1,
-  active: true,
-  title: 'Additional Information',
-  value: 'Lorem ipsum',
-}, {
-  id: 2,
-  active: true,
-  title: 'Arrival',
-  value: 'Lorem ipsum',
-}, {
-  id: 3,
-  active: false,
-  title: 'Arrival',
-  value: 'Lorem ipsum',
-}, {
-  id: 4,
-  active: false,
-  title: 'Arrival',
-  value: 'Lorem ipsum',
-}, {
-  id: 5,
-  active: false,
-  title: 'Arrival',
-  value: 'Lorem ipsum',
-}, {
-  id: 6,
-  active: false,
-  title: 'Check-in/OIP Support',
-  value: 'Lorem ipsum',
-}, {
-  id: 7,
-  active: false,
-  title: 'Chief of Mission Business Class Travel',
-  value: 'Lorem ipsum',
-}, {
-  id: 8,
-  active: false,
-  title: 'Chief of Mission Separation Medical Exam',
-  value: 'Lorem ipsum',
-}, {
-  id: 9,
-  active: false,
-  title: 'Contact Information',
-  value: 'Lorem ipsum',
-}];
+const Paragraphs = (props) => {
+  const { paragraphs } = props;
 
-const Paragraphs = () => {
   const [previewText, setPreviewText] = useState('');
-  const value = '';
 
   // Instead of making a ton of variables for tracking the various input data for all
   // paragraphs, I made a data object array that tracks all the important information
@@ -66,9 +21,15 @@ const Paragraphs = () => {
   const [paragraphDataObjects, setParagraphDataObjects] = useState([]);
 
   useEffect(() => {
-    setParagraphDataObjects(chosenParagraphs.map((p) => (
-      { id: p.id, paragraph_title: p.title, input: '', checked: false, open: false }
-    )));
+    if (paragraphs) {
+      setParagraphDataObjects(paragraphs.map((p) => ({
+        id: p.NOTP_CODE,
+        paragraph_title: p.NOTP_SHORT_DESC_TEXT,
+        input: p.NOTP_DESC_TEXT,
+        checked: p.INC_IND === 1,
+        open: false,
+      })));
+    }
   }, []);
 
   const handleCheck = id => {
@@ -101,8 +62,7 @@ const Paragraphs = () => {
                 <CheckBox
                   id={`ep-checkbox-${o.id}`}
                   name="exclusivePosition"
-                  value={value}
-                  checked={value}
+                  value={o.checked}
                   onChange={() => handleCheck(o.id)}
                 />
                 <span>{o.paragraph_title}</span>
@@ -118,7 +78,7 @@ const Paragraphs = () => {
                 <TextareaAutosize
                   maxRows={4}
                   minRows={4}
-                  maxlength="500"
+                  maxLength="500"
                   name={`${o.title}-input`}
                   placeholder="No Description"
                   value={paragraphDataObjects?.find(item => item.id === o.id)?.input}
@@ -136,7 +96,7 @@ const Paragraphs = () => {
           <TextareaAutosize
             maxRows={4}
             minRows={4}
-            maxlength="500"
+            maxLength="500"
             name="preview-text"
             placeholder="No Description"
             defaultValue={previewText}
@@ -149,12 +109,16 @@ const Paragraphs = () => {
           {previewText?.length} / 500
         </div>
       </Row>
-      <div className="position-form--actions">
-        <button onClick={() => { }}>Back</button>
-        <button onClick={() => { }}>Next</button>
-      </div>
     </div>
   );
+};
+
+Paragraphs.propTypes = {
+  paragraphs: PropTypes.arrayOf(PropTypes.shape({})),
+};
+
+Paragraphs.defaultProps = {
+  paragraphs: undefined,
 };
 
 export default Paragraphs;
