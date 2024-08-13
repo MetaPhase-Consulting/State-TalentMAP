@@ -16,7 +16,7 @@ const AssignmentNotification = (props) => {
   const location = props.location?.pathname;
   const params = location.split('/');
   const viewType = params[2];
-
+  const noteType = params[5];
   const clientId = props?.match.params.id;
   const noteId = props?.match.params.noteMemoID;
 
@@ -89,7 +89,11 @@ const AssignmentNotification = (props) => {
           </span>
         </div>
         {noteId &&
-          <NotificationCard note={note[0]} onCancel={() => history.push(`/profile/${viewType}/${clientId}/assignmentsseparations`)} />
+          <NotificationCard
+            note={note[0]}
+            onCancel={() => history.push(`/profile/${viewType}/${clientId}/assignmentsseparations`)}
+            memo={noteType === 'memo'}
+          />
         }
       </div>
     </div>
