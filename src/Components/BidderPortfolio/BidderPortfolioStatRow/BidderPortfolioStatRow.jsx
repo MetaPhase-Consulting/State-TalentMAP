@@ -61,7 +61,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const saveEdit = () => {
     setComments(verifyComments);
     setAltEmail(verifyAltEmail);
-    // Nothing to do yet, will add later
+
     const clientData = {
       per_seq_number: perSeqNum,
       bid_seasons: currentSeasons,
