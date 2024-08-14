@@ -5,6 +5,9 @@ import {
   bidAuditFetchDataLoading,
   bidAuditCycles,
   bidAuditFetchCyclesLoading,
+  bidAuditHTFFetchModalData,
+  bidAuditHTFFetchModalDataErrored,
+  bidAuditHTFFetchModalDataLoading,
   bidAuditSecondFetchData,
   bidAuditSecondFetchDataErrored,
   bidAuditSecondFetchDataLoading,
@@ -31,4 +34,7 @@ export default {
   bidAuditGetAuditFetchDataErrored,
   bidAuditGetAuditFetchDataLoading,
   bidAuditGetAuditFetchDataSuccess,
+  bidAuditHTFFetchModalData,
+  bidAuditHTFFetchModalDataErrored,
+  bidAuditHTFFetchModalDataLoading,
 };

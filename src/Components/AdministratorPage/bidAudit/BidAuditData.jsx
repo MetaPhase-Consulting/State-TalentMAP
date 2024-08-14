@@ -7,9 +7,11 @@ import FA from 'react-fontawesome';
 import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import BackButton from 'Components/BackButton';
+import ReactModal from 'Components/ReactModal';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import { bidAuditGetAuditFetchData } from 'actions/bidAudit';
 import { formatDate, renderSelectionList } from 'utilities';
+import BidAuditHTFModal from './BidAuditHTFModal';
 import { history } from '../../../store';
 
 const BidAuditData = (props) => {
@@ -21,6 +23,10 @@ const BidAuditData = (props) => {
   const bidAuditData = useSelector(state => state.bidAuditGetAuditFetchDataSuccess);
   const bidAuditDataFetchLoading = useSelector(state => state.bidAuditGetAuditFetchDataLoading);
   const bidAuditDataFetchError = useSelector(state => state.bidAuditGetAuditFetchDataErrored);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [HTFPositionID, setHTFPositionID] = useState(null);
+  const [HTFPositionNumber, setHTFPositionNumber] = useState(null);
 
   // Initial Render
   useEffect(() => {
@@ -45,6 +51,11 @@ const BidAuditData = (props) => {
     }
   };
 
+  const onClickPositionHTF = (auditCyclePositionId, positionNumber) => {
+    setHTFPositionID(auditCyclePositionId);
+    setHTFPositionNumber(positionNumber);
+    setOpenModal(true);
+  };
 
   // ======================================================================================= Filters;
   // Use this state variable to render the data filtered by the Picky Dropdown
@@ -266,13 +277,16 @@ const BidAuditData = (props) => {
           Cycle: {bidAuditData?.ref_data?.cycle_name || '--'}
         </span>
         <span>
+          Audit Date: {bidAuditData?.ref_data?.audit_date ? formatDate(bidAuditData?.ref_data?.audit_date) : '--'}
+        </span>
+        <span>
           Audit Num: {bidAuditData?.ref_data?.audit_number || '--'}
         </span>
         <span>
           Description: {bidAuditData?.ref_data?.audit_desc || '--'}
         </span>
         <span>
-          Audit Date: {bidAuditData?.ref_data?.audit_date ? formatDate(bidAuditData?.ref_data?.audit_date) : '--'}
+          Posted by Date: {bidAuditData?.ref_data?.audit_posted_by_date ? formatDate(bidAuditData?.ref_data?.audit_posted_by_date) : '--'}
         </span>
         <span>
           <a
@@ -318,7 +332,16 @@ const BidAuditData = (props) => {
                         <td>--</td>
                         <td>{pos.position_incumbent_ted}</td>
                         <td>{`${pos.count_total_bidders}(${pos.count_at_grade}/${pos.count_in_category})${pos.count_at_grade_in_category}`}</td>
-                        <td>{pos.hard_to_fill_ind}</td>
+                        <td>
+                          <a
+                            role="button"
+                            tabIndex={0}
+                            className="ba-data-htf"
+                            onClick={() => onClickPositionHTF(pos.audit_cycle_position_id, pos.position_number)}
+                          >
+                            {pos.hard_to_fill_ind}
+                          </a>
+                        </td>
                       </tr>
                       {
                         bidders?.map(bid => (
@@ -347,6 +370,14 @@ const BidAuditData = (props) => {
         </div>
         }
       </div>
+      <ReactModal open={openModal} setOpen={setOpenModal}>
+        <BidAuditHTFModal
+          id={HTFPositionID}
+          setOpen={setOpenModal}
+          position={HTFPositionNumber}
+          onSuccessFunction={() => dispatch(bidAuditGetAuditFetchData(routeCycleID, routeAuditID))}
+        />
+      </ReactModal>
     </div>
   );
 };
