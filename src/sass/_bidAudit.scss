@@ -264,7 +264,7 @@ $bid-audit-input-width: 460px;
   height: 75px;
   display: flex;
   justify-content: space-between;
-  background-color: $tertiary-cool-blue;
+  background-color: $bg-blue-dark-1;
   color: $color-white;
   margin: 20px 30px 20px 20px;
   border-radius: 5px;
@@ -298,7 +298,7 @@ $bid-audit-input-width: 460px;
   .bid-data-custom-table {
     th {
       color: $color-white;
-      background-color: $bg-blue-dark-1;
+      background-color: $tertiary-cool-blue;
       // Position sticky not supported on ie11
       // Position sticky has partial support on browsers (Must target th; not thead)
       position: -webkit-sticky;
@@ -323,7 +323,7 @@ $bid-audit-input-width: 460px;
       top: 55px;
       td {
         font-weight: bold;
-        background-color: $tertiary-cool-blue;
+        background-color: $bg-blue-dark-1;
         color: $color-white;
       }
     }
