@@ -277,13 +277,16 @@ const BidAuditData = (props) => {
           Cycle: {bidAuditData?.ref_data?.cycle_name || '--'}
         </span>
         <span>
+          Audit Date: {bidAuditData?.ref_data?.audit_date ? formatDate(bidAuditData?.ref_data?.audit_date) : '--'}
+        </span>
+        <span>
           Audit Num: {bidAuditData?.ref_data?.audit_number || '--'}
         </span>
         <span>
           Description: {bidAuditData?.ref_data?.audit_desc || '--'}
         </span>
         <span>
-          Audit Date: {bidAuditData?.ref_data?.audit_date ? formatDate(bidAuditData?.ref_data?.audit_date) : '--'}
+          Posted by Date: {bidAuditData?.ref_data?.audit_posted_by_date ? formatDate(bidAuditData?.ref_data?.audit_posted_by_date) : '--'}
         </span>
         <span>
           <a

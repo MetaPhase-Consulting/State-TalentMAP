@@ -38,11 +38,11 @@ const BidAuditHTFModal = ({ id, setOpen, position, onSuccessFunction }) => {
       { getOverlay() ||
       <div className="usa-width-one-whole">
         <div className="ba-modal-title">
-                Manually Designate Position as Hard to Fill
+          Update Position Hard to Fill
         </div>
         <div className="ba-form">
           <div className="ba-htf-help-text">
-            <span>{`Mark Position ${position} as HTF?`}</span>
+            <span>{`Change HTF Designation for Position ${position}?`}</span>
           </div>
           <div className="ba-data-form--actions">
             <button onClick={() => updateHTF()}>Yes</button>
