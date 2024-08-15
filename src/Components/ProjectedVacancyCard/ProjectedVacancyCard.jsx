@@ -103,7 +103,6 @@ const ProjectedVacancyCard = (props) => {
       fvoverrideteddate: overrideTED ?
         overrideTED.toISOString().substring(0, 10) : null,
       fvcommenttxt: textArea,
-      fvupdatedate: currTimestamp.substring(0, currTimestamp.length - 5),
     };
     onSubmit(editData, setEditMode(false));
   };
