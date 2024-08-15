@@ -325,6 +325,11 @@ export const UPDATE_BID_COUNT_SUCCESS = 'The Dynamic Audit has run successfully.
 export const UPDATE_BID_COUNT_ERROR_TITLE = 'Bid Counts Not Updated';
 export const UPDATE_BID_COUNT_ERROR = 'There was an issue attempting to run this Dynamic Bid Audit. Please try again.';
 
+export const UPDATE_HTF_SUCCESS_TITLE = 'Position Updated';
+export const UPDATE_HTF_SUCCESS = 'This Position has been updated successfully.';
+export const UPDATE_HTF_ERROR_TITLE = 'Position Not Updated';
+export const UPDATE_HTF_ERROR = 'There was an issue attempting to update this Postion. Please try again.';
+
 export const JOB_CATEGORIES_EDIT_SUCCESS_TITLE = 'Job Category Edits Successfully Saved';
 export const JOB_CATEGORIES_EDIT_SUCCESS = 'Your edits to the selected Job Category have been saved';
 export const JOB_CATEGORIES_EDIT_ERROR_TITLE = 'Job Category Edit Error';

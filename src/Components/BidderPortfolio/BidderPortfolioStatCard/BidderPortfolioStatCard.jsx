@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Cusp, Eligible } from 'Components/Ribbon';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { checkFlag } from 'flags';
@@ -24,10 +24,11 @@ import AddToInternalListButton from '../AddToInternalListButton';
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
   const dispatch = useDispatch();
   const showCDOD30 = checkFlag('flags.CDOD30');
-
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
+  const perSeqNum = get(userProfile, 'per_seq_num');
+  const hruID = get(userProfile, 'hru_id');
   const id = get(userProfile, 'employee_id');
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
   const languages = get(userProfile, 'current_assignment.position.language');
@@ -50,6 +51,8 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
+  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+
   const editClient = (e) => {
     e.preventDefault();
     setEdit(previous => !previous);
@@ -58,12 +61,13 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const saveEdit = () => {
     setComments(verifyComments);
     setAltEmail(verifyAltEmail);
-    // Nothing to do yet, will add later
+
     const clientData = {
-      id,
-      verifyComments,
-      verifyAltEmail,
-      bidder_type: currentBidderType,
+      per_seq_number: perSeqNum,
+      bid_seasons: currentSeasons,
+      hru_id: hruID,
+      comments: verifyComments,
+      email: verifyAltEmail,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);

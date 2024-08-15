@@ -225,6 +225,19 @@ export function bidderPortfolioFetchData(query = {}) {
         query$.noBids = true;
       }
     }
+
+    // hasHandshake is a special case where we need to change the query to match the API for cusp_bidders
+    if (get(query, 'hasHandshake') === 'cusp_bidders') {
+      query$ = omit(query$, ['hasHandshake']);
+      query$.cusp_bidder = true;
+    }
+
+    // hasHandshake is a special case where we need to change the query to match the API for eligible_bidders
+    if (get(query, 'hasHandshake') === 'eligible_bidders') {
+      query$ = omit(query$, ['hasHandshake']);
+      query$.eligible_bidder = true;
+    }
+
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }
@@ -361,7 +374,7 @@ export function saveBidderPortfolioSelections(client) {
     dispatch(bidderPortfolioSeasonsIsLoading(true));
     dispatch(bidderPortfolioSeasonsHasErrored(false));
     api()
-      .post('Placeholder/', client)
+      .post('/fsbid/client/', client)
       .then(({ data }) => {
         batch(() => {
           dispatch(bidderPortfolioSeasonsHasErrored(false));
