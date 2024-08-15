@@ -63,9 +63,9 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     setAltEmail(verifyAltEmail);
 
     const clientData = {
-      per_seq_number: perSeqNum,
+      per_seq_number: Number(perSeqNum),
       bid_seasons: currentSeasons,
-      hru_id: hruID,
+      hru_id: Number(hruID),
       comments: verifyComments,
       email: verifyAltEmail,
     };
