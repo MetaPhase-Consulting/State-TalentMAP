@@ -94,7 +94,6 @@ const ProjectedVacancyCard = (props) => {
   }, [disableEdit]);
 
   const onSubmitForm = () => {
-    const currTimestamp = new Date().toISOString();
     const editData = {
       ...result,
       fvexclimportind: included,
