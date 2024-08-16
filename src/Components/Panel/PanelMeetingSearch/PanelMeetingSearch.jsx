@@ -183,7 +183,8 @@ const PanelMeetingSearch = ({ isCDO }) => {
     setClearFilters(false);
   };
 
-  const noPanelMeetingResults = count <= 0;
+  // WS workaround for count not working correctly right now
+  const noPanelMeetingResults = panelMeetings.length <= 0;
 
   const getOverlay = () => {
     let toReturn;
