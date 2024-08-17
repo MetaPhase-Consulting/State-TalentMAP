@@ -374,7 +374,7 @@ export function saveBidderPortfolioSelections(client) {
     dispatch(bidderPortfolioSeasonsIsLoading(true));
     dispatch(bidderPortfolioSeasonsHasErrored(false));
     api()
-      .post('/fsbid/client/', client)
+      .post('/fsbid/client/update/', client)
       .then(({ data }) => {
         batch(() => {
           dispatch(bidderPortfolioSeasonsHasErrored(false));
