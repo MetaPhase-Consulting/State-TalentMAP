@@ -6,7 +6,7 @@ import { Cusp, Eligible } from 'Components/Ribbon';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
-import { checkFlag } from 'flags';
+-import { checkFlag } from 'flags';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
@@ -63,12 +63,13 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     setAltEmail(verifyAltEmail);
 
     const clientData = {
-      per_seq_number: perSeqNum,
+      per_seq_number: Number(perSeqNum),
       bid_seasons: currentSeasons,
-      hru_id: hruID,
+      hru_id: Number(hruID),
       comments: verifyComments,
       email: verifyAltEmail,
     };
+
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);
   };
