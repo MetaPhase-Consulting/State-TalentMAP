@@ -18,7 +18,7 @@ const RemarksPill = props => {
         find(r?.user_remark_inserts, { aiririseqnum: refInsert?.riseqnum })?.airiinsertiontext);
     });
 
-    return remarkText;
+    return r?.active_ind === 'N' ? `(Legacy) ${remarkText}` : remarkText;
   };
 
   const getRemarkText = (r) => r?.active_ind === 'N' ? `(Legacy) ${r?.air_remark_text}` : r?.air_remark_text;
