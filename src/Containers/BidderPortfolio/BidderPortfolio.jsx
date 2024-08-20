@@ -70,8 +70,8 @@ class BidderPortfolio extends Component {
   // Form our query and then retrieve bidders.
   getBidderPortfolio() {
     const query = this.createSearchQuery();
-    // this.props.fetchBidderPortfolio(query);
-    this.props.fetchUnassignedBidderTypes(query);
+    this.props.fetchBidderPortfolio(query);
+    // this.props.fetchUnassignedBidderTypes(query);
   }
 
   // We use a human-readable "type" query param for navigation that isn't actually
@@ -153,8 +153,8 @@ BidderPortfolio.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
-  // fetchBidderPortfolio: PropTypes.func.isRequired,
-  fetchUnassignedBidderTypes: PropTypes.func.isRequired,
+  fetchBidderPortfolio: PropTypes.func.isRequired,
+  // fetchUnassignedBidderTypes: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
@@ -184,8 +184,8 @@ BidderPortfolio.defaultProps = {
   bidderPortfolio: { results: [] },
   bidderPortfolioIsLoading: false,
   bidderPortfolioHasErrored: false,
-  // fetchBidderPortfolio: EMPTY_FUNCTION,
-  fetchUnassignedBidderTypes: EMPTY_FUNCTION,
+  fetchBidderPortfolio: EMPTY_FUNCTION,
+  // fetchUnassignedBidderTypes: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
   bidderPortfolioCountsIsLoading: false,
   bidderPortfolioCountsHasErrored: false,
@@ -233,7 +233,7 @@ const mapStateToProps = state => ({
 
 export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
-  fetchUnassignedBidderTypes: query => dispatch(getUnassignedBidderTypes(query)),
+  // fetchUnassignedBidderTypes: query => dispatch(getUnassignedBidderTypes(query)),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),
