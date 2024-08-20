@@ -367,6 +367,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
                     key={get(pm, 'pm_seq_num')}
                     pm={pm}
                     isCDO={isCDO}
+                    selectAll={selectAll}
                   />
                 ))
               }

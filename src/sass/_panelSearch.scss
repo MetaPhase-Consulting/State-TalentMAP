@@ -92,6 +92,10 @@
   margin-left: 0;
   padding: 15px 20px;
 
+  &.highlighted {
+    box-shadow: 2px 0 8px rgba($primary-alt-dark, 0.5);
+  }
+
   .main-row {
     display: flex;
     align-items: center;
