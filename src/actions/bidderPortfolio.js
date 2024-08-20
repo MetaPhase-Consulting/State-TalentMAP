@@ -238,6 +238,26 @@ export function bidderPortfolioFetchData(query = {}) {
       query$.eligible_bidder = true;
     }
 
+    if (get(query, 'hasHandshake') === 'panel_clients') {
+      query$ = omit(query$, ['hasHandshake']);
+      query$.panel_clients = true;
+    }
+
+    if (get(query, 'hasHandshake') === 'languages') {
+      query$ = omit(query$, ['hasHandshake']);
+      query$.languages = true;
+    }
+
+    if (get(query, 'hasHandshake') === 'classification') {
+      query$ = omit(query$, ['hasHandshake']);
+      query$.classification = true;
+    }
+
+    if (get(query, 'hasHandshake') === 'separations') {
+      query$ = omit(query$, ['hasHandshake']);
+      query$.separations = true;
+    }
+
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
     }

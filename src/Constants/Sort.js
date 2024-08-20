@@ -108,11 +108,18 @@ export const BID_PORTFOLIO_FILTERS = {
   ],
 };
 
+
 BID_PORTFOLIO_FILTERS.defaultSort = BID_PORTFOLIO_FILTERS.options[0].value;
 const showCDOD30 = checkFlag('flags.CDOD30');
 if (showCDOD30) {
-  BID_PORTFOLIO_FILTERS.options.push({ value: 'eligible_bidders', text: 'Eligible Bidders' },
-    { value: 'cusp_bidders', text: 'Cusp Bidders' });
+  BID_PORTFOLIO_FILTERS.options.push(
+    { value: 'eligible_bidders', text: 'Eligible Bidders' },
+    { value: 'cusp_bidders', text: 'Cusp Bidders' },
+    { value: 'separations', text: 'Separations' },
+    { value: 'classification', text: 'Classification' },
+    { value: 'panel_clients', text: 'Panel Clients' },
+    { value: 'languages', text: 'Languages' },
+  );
 }
 
 export const UNASSIGNED_BIDDERS_FILTERS = {
