@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { checkFlag } from 'flags';
@@ -27,6 +27,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
+  const perSeqNum = get(userProfile, 'per_seq_num');
+  const hruID = get(userProfile, 'hru_id');
   const id = get(userProfile, 'employee_id');
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
   const languages = get(userProfile, 'current_assignment.position.language');
@@ -49,6 +51,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
+  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+
   const editClient = (e) => {
     e.preventDefault();
     setEdit(previous => !previous);
@@ -57,12 +61,13 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const saveEdit = () => {
     setComments(verifyComments);
     setAltEmail(verifyAltEmail);
-    // Nothing to do yet, will add later
+
     const clientData = {
-      id,
-      verifyComments,
-      verifyAltEmail,
-      bidder_type: currentBidderType,
+      per_seq_number: perSeqNum,
+      bid_seasons: currentSeasons,
+      hru_id: hruID,
+      comments: verifyComments,
+      email: verifyAltEmail,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);

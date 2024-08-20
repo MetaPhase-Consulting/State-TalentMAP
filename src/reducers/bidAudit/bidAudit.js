@@ -124,3 +124,30 @@ export function bidAuditGetAuditFetchDataSuccess(state = {}, action) {
       return state;
   }
 }
+
+// ================ Bid Audit: Get Postion HTF Data ================
+
+export function bidAuditHTFFetchModalDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_HTF_FETCH_MODAL_DATA_HAS_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function bidAuditHTFFetchModalDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_HTF_FETCH_MODAL_DATA_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function bidAuditHTFFetchModalData(state = {}, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_HTF_FETCH_MODAL_DATA_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
