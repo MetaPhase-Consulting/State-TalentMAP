@@ -200,17 +200,30 @@ export function lookupAndSetCDO(id) {
   };
 }
 
-export function getUnassignedBidderTypes(query = {}) {
+export function getUnassignedBidderTypes(query = {}, bidType) {
   return (dispatch) => {
+    const firstQuery = { ...query };
     if (cancelUnnassignedBidders) { cancelUnnassignedBidders('cancel'); }
-    const query$$ = stringify(query);
+    if (bidType === 'noPanel') {
+      firstQuery.noPanel = true;
+    }
+    if (bidType === 'noBids') {
+      firstQuery.noBids = true;
+    }
+
+    const query$$ = stringify(firstQuery);
     const endpoint = '/fsbid/client/unassigned/';
     const q = `${endpoint}?${query$$}`;
     api().post(q, {
       cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
     })
       .then(({ data }) => {
+        const tempData = data;
         batch(() => {
+          if (tempData.length === 0) {
+            dispatch(bidderPortfolioFetchDataSuccess([]));
+            return;
+          }
           dispatch(unassignedbidderTypeSuccess(data));
           const newQuery = { ...query, perdet_seq_num: data };
           const query$$$ = stringify(newQuery);
@@ -280,13 +293,13 @@ export function bidderPortfolioFetchData(query = {}) {
         query$.hasHandshake = false;
       }
       if (includes(UAvalues, 'noPanel')) {
-        query$.noPanel = true;
-        dispatch(getUnassignedBidderTypes(query$));
+        // query$.noPanel = true;
+        dispatch(getUnassignedBidderTypes(query$, 'noPanel'));
         return;
       }
       if (includes(UAvalues, 'noBids')) {
-        query$.noBids = true;
-        dispatch(getUnassignedBidderTypes(query$));
+        // query$.noBids = true;
+        dispatch(getUnassignedBidderTypes(query$, 'noBids'));
         return;
       }
     }
