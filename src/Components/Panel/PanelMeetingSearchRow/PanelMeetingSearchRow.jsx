@@ -17,7 +17,7 @@ const usePanelAdmin = () => checkFlag('flags.panel_admin');
 const usePanelAdminPanelMeeting = () => checkFlag('flags.panel_admin_panel_meeting');
 const showEditPanelMeeting = usePanelAdmin() && usePanelAdminPanelMeeting();
 
-const PanelMeetingSearchRow = ({ isCDO, pm }) => {
+const PanelMeetingSearchRow = ({ isCDO, pm, selectAll }) => {
   const pmSeqNum = get(pm, 'pmi_pm_seq_num') || FALLBACK;
   const remarks = get(pm, 'allRemarks') || [];
   const showPanelMeetingsAgendas = usePanelMeetingsAgendas();
@@ -29,7 +29,7 @@ const PanelMeetingSearchRow = ({ isCDO, pm }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="panel-meeting-row">
+    <div className={`panel-meeting-row ${selectAll ? 'highlighted' : ''}`}>
       <div className="main-row">
         <PanelMeetingTracker panelMeeting={pm} />
         <div className="button-box-container">
@@ -73,11 +73,13 @@ const PanelMeetingSearchRow = ({ isCDO, pm }) => {
 PanelMeetingSearchRow.propTypes = {
   isCDO: PropTypes.bool,
   pm: PANEL_MEETING,
+  selectAll: PropTypes.bool,
 };
 
 PanelMeetingSearchRow.defaultProps = {
   isCDO: false,
   pm: {},
+  selectAll: false,
 };
 
 export default PanelMeetingSearchRow;
