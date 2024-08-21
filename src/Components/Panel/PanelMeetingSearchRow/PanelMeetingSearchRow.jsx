@@ -17,7 +17,7 @@ const usePanelAdmin = () => checkFlag('flags.panel_admin');
 const usePanelAdminPanelMeeting = () => checkFlag('flags.panel_admin_panel_meeting');
 const showEditPanelMeeting = usePanelAdmin() && usePanelAdminPanelMeeting();
 
-const PanelMeetingSearchRow = ({ isCDO, pm }) => {
+const PanelMeetingSearchRow = ({ isCDO, pm, selectAll }) => {
   const pmSeqNum = get(pm, 'pm_seq_num') || FALLBACK;
   // TODO: replace fallback with [], once api portion is complete
   const remarks = get(pm, 'remarks') || [{ text: '2nd Tour JO', rc_code: 'A' }, { text: 'ATA 03/03/2012', rc_code: 'T' }, { text: 'Approved off-panel on 03/03/2012', rc_code: 'M' }, { text: 'BOP', rc_code: 'E' }, { text: '123 BSAC', rc_code: 'B' }, { text: 'custom remark here', rc_code: 'M' }, { text: 'Breaks/curtails 2012 PSP/SIP link', rc_code: 'M' }, { text: 'CA EL LDP', rc_code: 'P' }, { text: '123 CA LNA Class', rc_code: 'B' }];
@@ -30,7 +30,7 @@ const PanelMeetingSearchRow = ({ isCDO, pm }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="panel-meeting-row">
+    <div className={`panel-meeting-row ${selectAll ? 'highlighted' : ''}`}>
       <div className="main-row">
         <PanelMeetingTracker panelMeeting={pm} />
         <div className="button-box-container">
@@ -74,11 +74,13 @@ const PanelMeetingSearchRow = ({ isCDO, pm }) => {
 PanelMeetingSearchRow.propTypes = {
   isCDO: PropTypes.bool,
   pm: PANEL_MEETING,
+  selectAll: PropTypes.bool,
 };
 
 PanelMeetingSearchRow.defaultProps = {
   isCDO: false,
   pm: {},
+  selectAll: false,
 };
 
 export default PanelMeetingSearchRow;
