@@ -210,10 +210,38 @@ export function getUnassignedBidderTypes(query = {}) {
       cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
     })
       .then(({ data }) => {
-        console.log('Pending Data', data);
         batch(() => {
-          console.log('Found Data', data);
           dispatch(unassignedbidderTypeSuccess(data));
+          const newQuery = { ...query, perdet_seq_num: data };
+          const query$$$ = stringify(newQuery);
+          const secondEndpoint = '/fsbid/client/';
+          const url = `${secondEndpoint}?${query$$$}`;
+          api().get(url, {
+            cancelToken: new CancelToken((c) => {
+              cancelPortfolio = c;
+            }),
+          })
+            .then(({ secondData }) => {
+              batch(() => {
+                dispatch(bidderPortfolioLastQuery(query$$$, secondData.count, secondEndpoint));
+                dispatch(bidderPortfolioFetchDataSuccess(secondData));
+                dispatch(bidderPortfolioHasErrored(false));
+                dispatch(bidderPortfolioIsLoading(false));
+              });
+            })
+            .catch((m) => {
+              if (get(m, 'message') === 'cancel') {
+                batch(() => {
+                  dispatch(bidderPortfolioHasErrored(false));
+                  dispatch(bidderPortfolioIsLoading(true));
+                });
+              } else {
+                batch(() => {
+                  dispatch(bidderPortfolioHasErrored(true));
+                  dispatch(bidderPortfolioIsLoading(false));
+                });
+              }
+            });
         });
       })
       .catch(() => {
@@ -254,10 +282,12 @@ export function bidderPortfolioFetchData(query = {}) {
       if (includes(UAvalues, 'noPanel')) {
         query$.noPanel = true;
         dispatch(getUnassignedBidderTypes(query$));
+        return;
       }
       if (includes(UAvalues, 'noBids')) {
         query$.noBids = true;
         dispatch(getUnassignedBidderTypes(query$));
+        return;
       }
     }
 
