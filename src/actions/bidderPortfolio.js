@@ -8,7 +8,6 @@ import { BID_PORTFOLIO_SORTS } from 'Constants/Sort';
 import { BIDDER_PORTFOLIO_ADD_ERROR, BIDDER_PORTFOLIO_ADD_SUCCESS } from '../Constants/SystemMessages';
 import api from '../api';
 import { toastError } from './toast';
-import { cancel } from 'redux-saga/effects';
 
 let cancelCDOs;
 let cancelPortfolio;
@@ -316,14 +315,12 @@ export function bidderPortfolioFetchData(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
-      if (includes(UAvalues, 'noPanel')) {
-        // query$.noPanel = true;
-        return;
-      }
-      if (includes(UAvalues, 'noBids')) {
-        // query$.noBids = true;
-        return;
-      }
+      // if (includes(UAvalues, 'noPanel')) {
+      //   // query$.noPanel = true;
+      // }
+      // if (includes(UAvalues, 'noBids')) {
+      //   // query$.noBids = true;
+      // }
     }
 
     // hasHandshake is a special case where we need to change the query to match the API for cusp_bidders
