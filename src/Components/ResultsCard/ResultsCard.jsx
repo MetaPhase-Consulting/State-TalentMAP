@@ -12,7 +12,7 @@ import MediaQueryWrapper from '../MediaQuery';
 import CompareCheck from '../CompareCheck/CompareCheck';
 import LanguageList from '../LanguageList';
 import BoxShadow from '../BoxShadow';
-import { Handshake, HistDiffToStaff, IsCritNeed, IsHardToFill, ServiceNeedDifferential } from '../Ribbon';
+import { Handshake, HistDiffToStaff, IsCritNeed, IsHardToFill, RWADetoRibbon, ServiceNeedDifferential } from '../Ribbon';
 import InBidListContainer from './InBidList';
 import HoverDescription from './HoverDescription';
 import BidListButton from '../../Containers/BidListButton';
@@ -119,10 +119,11 @@ class ResultsCard extends Component {
       };
     }
 
+    const isAvailTeleworkPos = pos?.avail_telework_pos === 'Y';
     if (DETO_RWA_FLAG()) {
       sections[1] = {
         ...sections[1],
-        'RWA/DETO Eligible': pos?.avail_telework_pos === 'Y' ? 'Eligible' : 'Not Eligible',
+        'RWA/DETO Eligible': isAvailTeleworkPos ? 'Eligible' : 'Not Eligible',
       };
     }
 
@@ -270,6 +271,9 @@ class ResultsCard extends Component {
                     }
                     {
                       get(result, 'isCritNeed', false) && <IsCritNeed isWideResults className={ribbonClass} />
+                    }
+                    {
+                      isAvailTeleworkPos && <RWADetoRibbon isWideResults className={ribbonClass} />
                     }
                     {
                       // conditional rendering occurs inside the container
