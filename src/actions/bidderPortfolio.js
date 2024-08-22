@@ -8,6 +8,7 @@ import { BID_PORTFOLIO_SORTS } from 'Constants/Sort';
 import { BIDDER_PORTFOLIO_ADD_ERROR, BIDDER_PORTFOLIO_ADD_SUCCESS } from '../Constants/SystemMessages';
 import api from '../api';
 import { toastError } from './toast';
+import { cancel } from 'redux-saga/effects';
 
 let cancelCDOs;
 let cancelPortfolio;
@@ -200,20 +201,43 @@ export function lookupAndSetCDO(id) {
   };
 }
 
-export function getUnassignedBidderTypes(query = {}, bidType) {
-  return (dispatch) => {
-    const firstQuery = { ...query };
-    if (cancelUnnassignedBidders) { cancelUnnassignedBidders('cancel'); }
-    if (bidType === 'noPanel') {
-      firstQuery.noPanel = true;
+export function getUnassignedBidderTypes(query = {}) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
+    const ids = cdos.map(m => m.hru_id).filter(f => f);
+    const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
+    const unassigned = get(state, 'bidderPortfolioSelectedUnassigned', []);
+    let query$ = { ...query };
+    if (ids.length) {
+      query$.hru_id__in = ids.join();
     }
-    if (bidType === 'noBids') {
-      firstQuery.noBids = true;
+    if (isArray(seasons) && seasons.length) {
+      query$.bid_seasons = join(seasons, ',');
+    }
+    if (!query$.bid_seasons || !query$.bid_seasons.length) {
+      query$ = omit(query$, ['hasHandshake']); // hasHandshake requires at least one bid season
+    }
+    if (get(query, 'hasHandshake') === 'unassigned_filters') {
+      query$ = omit(query$, ['hasHandshake']);
+      const UAvalues = unassigned.map(a => a.value);
+      if (includes(UAvalues, 'noHandshake')) {
+        query$.hasHandshake = false;
+      }
+      if (includes(UAvalues, 'noPanel')) {
+        query$.noPanel = true;
+      }
+      if (includes(UAvalues, 'noBids')) {
+        query$.noBids = true;
+      }
     }
 
-    const query$$ = stringify(firstQuery);
+    const query$$ = stringify(query$);
     const endpoint = '/fsbid/client/unassigned/';
     const q = `${endpoint}?${query$$}`;
+    if (cancelUnnassignedBidders) {
+      cancelUnnassignedBidders('cancel');
+    }
     api().post(q, {
       cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
     })
@@ -294,12 +318,10 @@ export function bidderPortfolioFetchData(query = {}) {
       }
       if (includes(UAvalues, 'noPanel')) {
         // query$.noPanel = true;
-        dispatch(getUnassignedBidderTypes(query$, 'noPanel'));
         return;
       }
       if (includes(UAvalues, 'noBids')) {
         // query$.noBids = true;
-        dispatch(getUnassignedBidderTypes(query$, 'noBids'));
         return;
       }
     }
