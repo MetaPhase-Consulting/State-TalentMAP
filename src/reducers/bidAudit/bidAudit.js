@@ -151,3 +151,30 @@ export function bidAuditHTFFetchModalData(state = {}, action) {
       return state;
   }
 }
+
+// ================ Bid Audit: Get MDS Data ================
+
+export function bidAuditGetMDSFetchDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_GET_MDS_FETCH_HAS_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function bidAuditGetMDSFetchDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_GET_MDS_FETCH_IS_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function bidAuditGetMDSFetchDataSuccess(state = {}, action) {
+  switch (action.type) {
+    case 'BID_AUDIT_GET_MDS_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}

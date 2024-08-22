@@ -8,8 +8,10 @@ import Alert from 'Components/Alert';
 import Spinner from 'Components/Spinner';
 import BackButton from 'Components/BackButton';
 import ReactModal from 'Components/ReactModal';
+import InteractiveElement from 'Components/InteractiveElement';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
-import { bidAuditGetAuditFetchData } from 'actions/bidAudit';
+import { bidAuditGetAuditFetchData, bidAuditGetMDSFetchData } from 'actions/bidAudit';
+import { cyclePositionFiltersFetchData } from 'actions/cycleManagement';
 import { formatDate, renderSelectionList } from 'utilities';
 import BidAuditHTFModal from './BidAuditHTFModal';
 import { history } from '../../../store';
@@ -20,17 +22,24 @@ const BidAuditData = (props) => {
   const routeCycleID = props?.match.params.cycleId;
   const routeAuditID = props?.match.params.auditId;
 
+  const cyclePosFilters = useSelector(state => state.cyclePositionsFilters);
+  const cyclePosFiltersLoading = useSelector(state => state.cyclePositionFiltersIsLoading);
+
   const bidAuditData = useSelector(state => state.bidAuditGetAuditFetchDataSuccess);
   const bidAuditDataFetchLoading = useSelector(state => state.bidAuditGetAuditFetchDataLoading);
   const bidAuditDataFetchError = useSelector(state => state.bidAuditGetAuditFetchDataErrored);
 
+  const bidAuditMDSData = useSelector(state => state.bidAuditGetMDSFetchDataSuccess);
+  const bidAuditMDSDataFetchLoading = useSelector(state => state.bidAuditGetMDSFetchDataLoading);
+  const bidAuditMDSDataFetchError = useSelector(state => state.bidAuditGetMDSFetchDataErrored);
+
   const [openModal, setOpenModal] = useState(false);
   const [HTFPositionID, setHTFPositionID] = useState(null);
   const [HTFPositionNumber, setHTFPositionNumber] = useState(null);
+  const [dataTabActive, setDataTabActive] = useState(true);
 
-  // Initial Render
   useEffect(() => {
-    dispatch(bidAuditGetAuditFetchData(routeCycleID, routeAuditID));
+    dispatch(cyclePositionFiltersFetchData());
   }, []);
 
   const tableHeaderNames = [
@@ -45,6 +54,14 @@ const BidAuditData = (props) => {
     'HTF',
   ];
 
+  const tableHeaderMDSNames = [
+    'Cycle Name',
+    'Duty Station',
+    'Positions',
+    'Quantity HTF',
+    'MDS',
+  ];
+
   const onShuffleAudit = (auditNum) => {
     if (auditNum) {
       history.push(`/profile/administrator/bidaudit/data/${routeCycleID}/${auditNum}/`);
@@ -57,100 +74,61 @@ const BidAuditData = (props) => {
     setOpenModal(true);
   };
 
-  // ======================================================================================= Filters;
-  // Use this state variable to render the data filtered by the Picky Dropdown
-  const [auditPositionFilterableData$, setAuditPositionFilterableData$] = useState(bidAuditData?.audit_data || []);
 
-  const [selectedPositionGrades, setSelectedPositionGrades] = useState([]);
-  const [selectedPositionSkills, setSelectedPositionSkills] = useState([]);
-  const [selectedPositionOrgs, setSelectedPositionOrgs] = useState([]);
-  const [selectedPositionHTF, setSelectedPositionHTF] = useState([]);
-  const [selectedPositionNumber, setSelectedPositionNumber] = useState([]);
+  // ======================================================================================= Filters;
+
+  const bureauOptions = cyclePosFilters?.bureauFilters || [];
+  const orgOptions = cyclePosFilters?.orgFilters || [];
+  const skillOptions = cyclePosFilters?.skillsFilters || [];
+  const gradeOptions = cyclePosFilters?.gradeFilters || [];
 
   const [clearFilters, setClearFilters] = useState(false);
+  const [selectedPositionBureaus, setSelectedPositionBureaus] = useState([]);
+  const [selectedPositionOrgs, setSelectedPositionOrgs] = useState([]);
+  const [selectedPositionSkills, setSelectedPositionSkills] = useState([]);
+  const [selectedPositionGrades, setSelectedPositionGrades] = useState([]);
 
-  const noFiltersSelected = [
+  const getQuery = () => ({
+    bureaus: selectedPositionBureaus.map(bureau => (bureau?.code)),
+    orgs: selectedPositionOrgs.map(org => (org?.code)),
+    skills: selectedPositionSkills.map(loc => (loc?.code)),
+    grades: selectedPositionGrades.map(role => (role?.code)),
+    cycleId: routeCycleID,
+    auditId: routeAuditID,
+  });
+
+  const filters = [
     selectedPositionGrades,
     selectedPositionSkills,
     selectedPositionOrgs,
-    selectedPositionHTF,
-    selectedPositionNumber].flat().length === 0;
+    selectedPositionBureaus,
+  ];
+
+  const fetchAndSet = () => {
+    const filterCount = filters.flat().length;
+    setClearFilters(!!filterCount);
+    if (filterCount >= 2) {
+      dispatch(bidAuditGetAuditFetchData(getQuery()));
+      dispatch(bidAuditGetMDSFetchData(getQuery()));
+    }
+  };
+
+  // Re-Render on Filter Selections
+  useEffect(() => {
+    fetchAndSet();
+  }, [
+    selectedPositionGrades,
+    selectedPositionSkills,
+    selectedPositionOrgs,
+    selectedPositionBureaus,
+  ]);
 
   const resetFilters = () => {
     setSelectedPositionGrades([]);
     setSelectedPositionSkills([]);
     setSelectedPositionOrgs([]);
-    setSelectedPositionHTF([]);
-    setSelectedPositionNumber([]);
+    setSelectedPositionBureaus([]);
     setClearFilters(false);
-  };
-
-  const filterData = () => {
-    if (noFiltersSelected) return bidAuditData?.audit_data;
-    let filteredData = bidAuditData?.audit_data;
-
-    if (selectedPositionGrades.length > 0) {
-      filteredData = filteredData.filter(data =>
-        selectedPositionGrades.some(grade => grade.code === data?.position_info?.position_grade),
-      );
-    }
-    if (selectedPositionSkills.length > 0) {
-      filteredData = filteredData.filter(data =>
-        selectedPositionSkills.some(skill => skill.code === data?.position_info?.position_skill),
-      );
-    }
-    if (selectedPositionOrgs.length > 0) {
-      filteredData = filteredData.filter(data =>
-        selectedPositionOrgs.some(org => org.code === data?.position_info?.org_code),
-      );
-    }
-    if (selectedPositionHTF.length > 0) {
-      filteredData = filteredData.filter(data =>
-        selectedPositionHTF.some(pos => pos.code === data?.position_info?.hard_to_fill_ind),
-      );
-    }
-    if (selectedPositionNumber.length > 0) {
-      filteredData = filteredData.filter(data =>
-        selectedPositionNumber.some(pos => pos.code === data?.position_info?.position_number),
-      );
-    }
-    return filteredData;
-  };
-
-  // When a filter is selected, update the filtered data
-
-  useEffect(() => {
-    setAuditPositionFilterableData$(filterData);
-    if (noFiltersSelected) {
-      setClearFilters(false);
-    } else {
-      setClearFilters(true);
-    }
-  }, [
-    selectedPositionGrades,
-    selectedPositionSkills,
-    selectedPositionOrgs,
-    selectedPositionHTF,
-    selectedPositionNumber,
-    bidAuditData,
-  ]);
-
-  // Pass in a value, and return an array of unique objects for the Picky Dropdown
-  const getUniqData = (value, desc) => {
-    const uniqFormattedPositionData = bidAuditData?.audit_data?.reduce((acc, curr) => {
-      const keyValue = curr.position_info[value];
-      const isDuplicate = acc.some(x => x.code === keyValue);
-      if (!isDuplicate) {
-        if (desc) {
-          acc.push({
-            code: curr.position_info[value],
-            text: curr.position_info[value] ? `(${curr.position_info[value]}) ${curr.position_info[desc]}` : 'None Listed',
-          });
-        } else acc.push({ code: curr.position_info[value], text: curr.position_info[value] || 'None Listed' });
-      }
-      return acc;
-    }, []);
-    return uniqFormattedPositionData;
   };
 
   const pickyProps = {
@@ -161,23 +139,136 @@ const BidAuditData = (props) => {
     renderList: renderSelectionList,
     includeSelectAll: true,
   };
+
   // ======================================================================================= Filters
 
 
-  const noResults = auditPositionFilterableData$?.length === 0;
+  const noBidDataResults = bidAuditData?.audit_data?.length === 0;
+  const noMDSResults = bidAuditMDSData?.mds_audit_data?.length === 0;
+  const isLoading = bidAuditDataFetchLoading || bidAuditMDSDataFetchLoading || cyclePosFiltersLoading;
+
   const getOverlay = () => {
     let overlay;
-    if (bidAuditDataFetchLoading) {
+    if (isLoading) {
       overlay = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
-    } else if (bidAuditDataFetchError) {
+    } else if (bidAuditDataFetchError || bidAuditMDSDataFetchError) {
       overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
-    } else if (noResults) {
-      overlay = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
+    } else if (filters.flat().length < 2) {
+      overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 filters to search.' }]} />;
     } else {
       return false;
     }
     return overlay;
   };
+
+  const bidDataTable = () => {
+    if (noBidDataResults) {
+      return (
+        <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />
+      );
+    }
+    return (
+      <div className="bid-data-scroll-container">
+        <table className="bid-data-custom-table">
+          <thead>
+            <tr>
+              {
+                tableHeaderNames.map((item) => (
+                  <th key={item}>{item}</th>
+                ))
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {bidAuditData?.audit_data?.map(data => {
+              const { position_info: pos, bidders } = data;
+              return (
+                <Fragment key={pos.position_number}>
+                  <tr key={pos.position_number} className="position-row">
+                    <td>{pos.org_short_desc}</td>
+                    <td>{pos.org_code}</td>
+                    <td>{pos.position_number}</td>
+                    <td>{`(${pos.position_skill}) ${pos.position_title}`}</td>
+                    <td>{pos.position_grade}</td>
+                    <td>{pos.position_lang}</td>
+                    <td>{pos.position_incumbent_name}</td>
+                    <td>--</td>
+                    <td>{pos.position_incumbent_ted}</td>
+                    <td>{`${pos.count_total_bidders}(${pos.count_at_grade}/${pos.count_in_category})${pos.count_at_grade_in_category}`}</td>
+                    <td>
+                      <a
+                        role="button"
+                        tabIndex={0}
+                        className="ba-data-htf"
+                        onClick={() => onClickPositionHTF(pos.audit_cycle_position_id, pos.position_number)}
+                      >
+                        {pos.hard_to_fill_ind}
+                      </a>
+                    </td>
+                  </tr>
+                  {
+                    bidders?.map(bid => (
+                      <tr key={bid.bidder_name}>
+                        <td>{bid.bidder_name}</td>
+                        <td>{bid.bidder_org_desc}</td>
+                        <td>{bid.bidder_position_number}</td>
+                        <td>{`(${bid.bidder_skill}) ${bid.bidder_position_title}`}</td>
+                        <td>{bid.bidder_grade}</td>
+                        <td>{bid.bidder_lang}</td>
+                        <td>--</td>
+                        <td>{bid.bidder_cats || '--'}</td>
+                        <td>{bid.bidder_ted}</td>
+                        <td>{`(${bid.bidder_is_at_grade}/${bid.bidder_is_in_category})`}</td>
+                        <td>--</td>
+                      </tr>
+                    ))
+                  }
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const mdsTable = () => {
+    if (noMDSResults) {
+      return (
+        <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />
+      );
+    }
+    return (
+      <div className="bid-data-scroll-container">
+        <table className="ba-mds-table">
+          <thead>
+            <tr>
+              {
+                tableHeaderMDSNames.map((item) => (
+                  <th key={item}>{item}</th>
+                ))
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {
+              bidAuditMDSData?.mds_audit_data?.map(data => (
+                <Fragment key={data.id}>
+                  <tr key={data.cycle_name}>
+                    <td>{data.cycle_name}</td>
+                    <td>{data.duty_station}</td>
+                    <td>{data.positions}</td>
+                    <td>{data.quantity_htf}</td>
+                    <td>{data.mds_ind}</td>
+                  </tr>
+                </Fragment>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
 
   return (
     <div className="position-search bid-audit-page">
@@ -199,25 +290,37 @@ const BidAuditData = (props) => {
 
         <div className="usa-width-one-whole position-search--filters--cm">
           <div className="filter-div">
-            <div className="ba-label">Position Number:</div>
+            <div className="ba-label">Location(Org):</div>
             <Picky
               {...pickyProps}
-              placeholder="Select Position Number"
-              options={getUniqData('position_number')}
+              placeholder="Select Location(Org)"
+              options={orgOptions}
               valueKey="code"
-              labelKey="text"
-              onChange={setSelectedPositionNumber}
-              value={selectedPositionNumber}
+              labelKey="description"
+              onChange={setSelectedPositionOrgs}
+              value={selectedPositionOrgs}
             />
           </div>
           <div className="filter-div">
-            <div className="ba-label">Position Grade:</div>
+            <div className="ba-label">Bureau:</div>
             <Picky
               {...pickyProps}
-              placeholder="Select Position Grade"
-              options={getUniqData('position_grade')}
+              placeholder="Select Bureau"
+              options={bureauOptions}
               valueKey="code"
-              labelKey="text"
+              labelKey="description"
+              onChange={setSelectedPositionBureaus}
+              value={selectedPositionBureaus}
+            />
+          </div>
+          <div className="filter-div">
+            <div className="ba-label">Grade:</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Grade"
+              options={gradeOptions}
+              valueKey="code"
+              labelKey="description"
               onChange={setSelectedPositionGrades}
               value={selectedPositionGrades}
             />
@@ -227,35 +330,11 @@ const BidAuditData = (props) => {
             <Picky
               {...pickyProps}
               placeholder="Select Position Skill"
-              options={getUniqData('position_skill', 'position_title')}
+              options={skillOptions}
               valueKey="code"
-              labelKey="text"
+              labelKey="description"
               onChange={setSelectedPositionSkills}
               value={selectedPositionSkills}
-            />
-          </div>
-          <div className="filter-div">
-            <div className="ba-label">Position Location(Org):</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Position Org"
-              options={getUniqData('org_code', 'org_short_desc')}
-              valueKey="code"
-              labelKey="text"
-              onChange={setSelectedPositionOrgs}
-              value={selectedPositionOrgs}
-            />
-          </div>
-          <div className="filter-div">
-            <div className="ba-label">Position Hard to Fill:</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Position HTF"
-              options={getUniqData('hard_to_fill_ind')}
-              valueKey="code"
-              labelKey="text"
-              onChange={setSelectedPositionHTF}
-              value={selectedPositionHTF}
             />
           </div>
         </div>
@@ -301,81 +380,40 @@ const BidAuditData = (props) => {
         </span>
       </div>
 
-      <div className="usa-width-one-whole bid-data--results">
-        {getOverlay() ||
-        <div className="bid-data-scroll-container">
-          <table className="bid-data-custom-table">
-            <thead>
-              <tr>
-                {
-                  tableHeaderNames.map((item) => (
-                    <th key={item}>{item}</th>
-                  ))
-                }
-              </tr>
-            </thead>
+      <div className="bid-data--results">
+        <div className={'ba-navTabs'}>
+          <InteractiveElement
+            onClick={() => setDataTabActive(true)}
+            className={`ba-table-tab ${dataTabActive ? 'ba-table-tab-active' : ''}`}
+          >
+            <div className="ba-tab tab-active">
+              {'Bid Data'}
+            </div>
+          </InteractiveElement>
 
-            <tbody>
-              {
-                auditPositionFilterableData$?.map(data => {
-                  const { position_info: pos, bidders } = data;
-                  return (
-                    <Fragment key={pos.position_number}>
-                      <tr key={pos.position_number} className="position-row">
-                        <td>{pos.org_short_desc}</td>
-                        <td>{pos.org_code}</td>
-                        <td>{pos.position_number}</td>
-                        <td>{`(${pos.position_skill}) ${pos.position_title}`}</td>
-                        <td>{pos.position_grade}</td>
-                        <td>{pos.position_lang}</td>
-                        <td>{pos.position_incumbent_name}</td>
-                        <td>--</td>
-                        <td>{pos.position_incumbent_ted}</td>
-                        <td>{`${pos.count_total_bidders}(${pos.count_at_grade}/${pos.count_in_category})${pos.count_at_grade_in_category}`}</td>
-                        <td>
-                          <a
-                            role="button"
-                            tabIndex={0}
-                            className="ba-data-htf"
-                            onClick={() => onClickPositionHTF(pos.audit_cycle_position_id, pos.position_number)}
-                          >
-                            {pos.hard_to_fill_ind}
-                          </a>
-                        </td>
-                      </tr>
-                      {
-                        bidders?.map(bid => (
-                          <tr key={bid.bidder_name}>
-                            <td>{bid.bidder_name}</td>
-                            <td>{bid.bidder_org_desc}</td>
-                            <td>{bid.bidder_position_number}</td>
-                            <td>{`(${bid.bidder_skill}) ${bid.bidder_position_title}`}</td>
-                            <td>{bid.bidder_grade}</td>
-                            <td>{bid.bidder_lang}</td>
-                            <td>--</td>
-                            <td>{bid.bidder_cats || '--'}</td>
-                            <td>{bid.bidder_ted}</td>
-                            <td>{`(${bid.bidder_is_at_grade}/${bid.bidder_is_in_category})`}</td>
-                            <td>--</td>
-                          </tr>
-                        ))
-                      }
-                    </Fragment>
-                  );
-                })
-              }
-            </tbody>
-
-          </table>
+          <InteractiveElement
+            onClick={() => setDataTabActive(false)}
+            className={`ba-table-tab ${dataTabActive ? '' : 'ba-table-tab-active'}`}
+          >
+            <div className="tab tab-active">
+              {'MDS'}
+            </div>
+          </InteractiveElement>
         </div>
+
+        {getOverlay() ||
+            <>
+              { dataTabActive ? bidDataTable() : mdsTable() }
+            </>
         }
       </div>
+
       <ReactModal open={openModal} setOpen={setOpenModal}>
         <BidAuditHTFModal
           id={HTFPositionID}
           setOpen={setOpenModal}
           position={HTFPositionNumber}
-          onSuccessFunction={() => dispatch(bidAuditGetAuditFetchData(routeCycleID, routeAuditID))}
+          onSuccessFunction={() => dispatch(bidAuditGetAuditFetchData(getQuery()))}
         />
       </ReactModal>
     </div>
