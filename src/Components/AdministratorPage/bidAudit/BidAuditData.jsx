@@ -290,30 +290,6 @@ const BidAuditData = (props) => {
 
         <div className="usa-width-one-whole position-search--filters--cm">
           <div className="filter-div">
-            <div className="ba-label">Location(Org):</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Location(Org)"
-              options={orgOptions}
-              valueKey="code"
-              labelKey="description"
-              onChange={setSelectedPositionOrgs}
-              value={selectedPositionOrgs}
-            />
-          </div>
-          <div className="filter-div">
-            <div className="ba-label">Bureau:</div>
-            <Picky
-              {...pickyProps}
-              placeholder="Select Bureau"
-              options={bureauOptions}
-              valueKey="code"
-              labelKey="description"
-              onChange={setSelectedPositionBureaus}
-              value={selectedPositionBureaus}
-            />
-          </div>
-          <div className="filter-div">
             <div className="ba-label">Grade:</div>
             <Picky
               {...pickyProps}
@@ -335,6 +311,30 @@ const BidAuditData = (props) => {
               labelKey="description"
               onChange={setSelectedPositionSkills}
               value={selectedPositionSkills}
+            />
+          </div>
+          <div className="filter-div">
+            <div className="ba-label">Bureau:</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Bureau"
+              options={bureauOptions}
+              valueKey="code"
+              labelKey="description"
+              onChange={setSelectedPositionBureaus}
+              value={selectedPositionBureaus}
+            />
+          </div>
+          <div className="filter-div">
+            <div className="ba-label">Location(Org):</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Location(Org)"
+              options={orgOptions}
+              valueKey="code"
+              labelKey="description"
+              onChange={setSelectedPositionOrgs}
+              value={selectedPositionOrgs}
             />
           </div>
         </div>
