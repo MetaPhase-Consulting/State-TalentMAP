@@ -122,7 +122,7 @@ class ResultsCard extends Component {
     if (DETO_RWA_FLAG()) {
       sections[1] = {
         ...sections[1],
-        'RWA/DETO Eligible': pos?.deto_rwa ? 'Eligible' : 'Not Eligible',
+        'RWA/DETO Eligible': pos?.avail_telework_pos === 'Y' ? 'Eligible' : 'Not Eligible',
       };
     }
 
