@@ -109,7 +109,7 @@ const BidAuditData = (props) => {
   const fetchAndSet = () => {
     const filterCount = filters.flat().length;
     setClearFilters(!!filterCount);
-    if (filterCount >= 2) {
+    if (filterCount >= 1) {
       dispatch(bidAuditGetAuditFetchData(getQuery()));
       dispatch(bidAuditGetMDSFetchData(getQuery()));
     }
