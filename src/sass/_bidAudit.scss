@@ -308,6 +308,9 @@ $bid-audit-input-width: 460px;
       position: sticky;
       top: 0;
       border: none;
+      &:nth-child(10) {
+        min-width: 130px;
+      }
     }
     tr {
       height: 50px;
@@ -323,11 +326,14 @@ $bid-audit-input-width: 460px;
       // Position sticky has partial support on browsers (Must target th; not thead)
       position: -webkit-sticky;
       position: sticky;
-      top: 50px;
+      top: 55px;
       td {
         font-weight: bold;
         background-color: $bg-blue-dark-1;
         color: $color-white;
+        &:nth-child(4) {
+          min-width: 250px;
+        }
       }
     }
   }

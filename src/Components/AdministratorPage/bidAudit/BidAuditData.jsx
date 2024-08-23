@@ -43,7 +43,7 @@ const BidAuditData = (props) => {
   }, []);
 
   const tableHeaderNames = [
-    'Location (Org) / Bidder',
+    'Location(Org) / Bidder',
     'Org Code', 'Position',
     'Skill / Title',
     'Grade', 'Language',
@@ -302,11 +302,14 @@ const BidAuditData = (props) => {
             />
           </div>
           <div className="filter-div">
-            <div className="ba-label">Position Skill:</div>
+            <div className="ba-label">Skill:</div>
             <Picky
               {...pickyProps}
-              placeholder="Select Position Skill"
-              options={skillOptions}
+              placeholder="Select Skill"
+              options={skillOptions.map(x => ({
+                code: x.code,
+                description: `(${x.code}) ${x.description}`,
+              }))}
               valueKey="code"
               labelKey="description"
               onChange={setSelectedPositionSkills}
