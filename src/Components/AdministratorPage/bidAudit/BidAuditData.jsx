@@ -38,10 +38,6 @@ const BidAuditData = (props) => {
   const [HTFPositionNumber, setHTFPositionNumber] = useState(null);
   const [dataTabActive, setDataTabActive] = useState(true);
 
-  useEffect(() => {
-    dispatch(cyclePositionFiltersFetchData());
-  }, []);
-
   const tableHeaderNames = [
     'Location(Org) / Bidder',
     'Org Code', 'Position',
@@ -104,6 +100,12 @@ const BidAuditData = (props) => {
     selectedPositionBureaus,
   ];
 
+  // initial render
+  useEffect(() => {
+    dispatch(cyclePositionFiltersFetchData());
+    dispatch(bidAuditGetAuditFetchData(getQuery()));
+  }, []);
+
   const fetchAndSet = () => {
     const filterCount = filters.flat().length;
     setClearFilters(!!filterCount);
@@ -153,8 +155,8 @@ const BidAuditData = (props) => {
       overlay = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
     } else if (bidAuditDataFetchError || bidAuditMDSDataFetchError) {
       overlay = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
-    } else if (filters.flat().length < 2) {
-      overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 2 filters to search.' }]} />;
+    } else if (filters.flat().length < 1) {
+      overlay = <Alert type="info" title="Select Filters" messages={[{ body: 'Please select at least 1 filter to search.' }]} />;
     } else {
       return false;
     }
