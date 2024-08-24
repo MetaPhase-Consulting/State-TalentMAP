@@ -296,6 +296,9 @@ $bid-audit-input-width: 460px;
     height: 900px;
     }
   .bid-data-custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
     th {
       color: $color-white;
       background-color: $tertiary-cool-blue;
@@ -305,6 +308,9 @@ $bid-audit-input-width: 460px;
       position: sticky;
       top: 0;
       border: none;
+      &:nth-child(10) {
+        min-width: 130px;
+      }
     }
     tr {
       height: 50px;
@@ -312,7 +318,7 @@ $bid-audit-input-width: 460px;
     tbody {
       td {
         border: none;
-        // padding: 8px;
+        border-bottom: 1px solid $bg-gray-dark-3;
       }
     }
     .position-row {
@@ -325,6 +331,9 @@ $bid-audit-input-width: 460px;
         font-weight: bold;
         background-color: $bg-blue-dark-1;
         color: $color-white;
+        &:nth-child(4) {
+          min-width: 250px;
+        }
       }
     }
   }
@@ -351,4 +360,53 @@ $bid-audit-input-width: 460px;
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+}
+
+.ba-table-tab {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.ba-table-tab-active {
+  border-bottom: 3px solid $primary-blue;
+  color: $primary-blue;
+}
+
+.ba-navTabs {
+  display: flex;
+  border-bottom: 2px solid $bg-gray-dark-3;
+  .ba-tab {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  >div:not(:last-child) {
+    margin-right: 15px;
+  }
+}
+
+.ba-mds-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  th {
+    color: $color-white;
+    background-color: $tertiary-cool-blue;
+    border: none;
+    padding: 8px;
+    height: 50px;
+    text-align: left;
+    font-weight: bold;
+    // Position sticky not supported on ie11
+    // Position sticky has partial support on browsers (Must target th; not thead)
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+  }
+  td {
+    border: none;
+    border-bottom: 1px solid $bg-gray-dark-3;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+  }
 }
