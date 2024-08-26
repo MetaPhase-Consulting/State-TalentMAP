@@ -1,4 +1,5 @@
 import { CancelToken } from 'axios';
+import { convertQueryToString } from 'utilities';
 import {
   CREATE_BID_AUDIT_CATEGORY_ERROR,
   CREATE_BID_AUDIT_CATEGORY_ERROR_TITLE,
@@ -528,7 +529,7 @@ export function bidAuditGetAuditFetchDataSuccess(results) {
   };
 }
 
-export function bidAuditGetAuditFetchData(cycleId, auditId) {
+export function bidAuditGetAuditFetchData(query = {}) {
   return (dispatch) => {
     if (cancelBidAuditGetAuditData) {
       cancelBidAuditGetAuditData('cancel');
@@ -537,10 +538,9 @@ export function bidAuditGetAuditFetchData(cycleId, auditId) {
       dispatch(bidAuditGetAuditFetchDataLoading(true));
       dispatch(bidAuditGetAuditFetchDataErrored(false));
     });
+    const q = convertQueryToString(query);
     api()
-      .post('/fsbid/bid_audit/data/', {
-        cycleId, auditId,
-      }, {
+      .get(`/fsbid/bid_audit/data/?${q}`, {
         cancelToken: new CancelToken((c) => { cancelBidAuditGetAuditData = c; }),
       })
       .then(({ data }) => {
@@ -640,6 +640,62 @@ export function bidAuditUpdateHTF(data, onSuccess) {
       .catch((err) => {
         if (err?.message !== 'cancel') {
           dispatch(toastError(UPDATE_HTF_ERROR, UPDATE_HTF_ERROR_TITLE));
+        }
+      });
+  };
+}
+
+// ================ Bid Audit: Get MDS Data ================
+
+let cancelBidAuditGetMDSData;
+
+export function bidAuditGetMDSFetchDataErrored(bool) {
+  return {
+    type: 'BID_AUDIT_GET_MDS_FETCH_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function bidAuditGetMDSFetchDataLoading(bool) {
+  return {
+    type: 'BID_AUDIT_GET_MDS_FETCH_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function bidAuditGetMDSFetchDataSuccess(results) {
+  return {
+    type: 'BID_AUDIT_GET_MDS_FETCH_SUCCESS',
+    results,
+  };
+}
+
+export function bidAuditGetMDSFetchData(query = {}) {
+  return (dispatch) => {
+    if (cancelBidAuditGetMDSData) {
+      cancelBidAuditGetMDSData('cancel');
+    }
+    batch(() => {
+      dispatch(bidAuditGetMDSFetchDataLoading(true));
+      dispatch(bidAuditGetMDSFetchDataErrored(false));
+    });
+    const q = convertQueryToString(query);
+    api()
+      .get(`/fsbid/bid_audit/mds/?${q}`, {
+        cancelToken: new CancelToken((c) => { cancelBidAuditGetMDSData = c; }),
+      })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(bidAuditGetMDSFetchDataSuccess(data));
+          dispatch(bidAuditGetMDSFetchDataErrored(false));
+          dispatch(bidAuditGetMDSFetchDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(bidAuditGetMDSFetchDataSuccess([]));
+            dispatch(bidAuditGetMDSFetchDataErrored(true));
+            dispatch(bidAuditGetMDSFetchDataLoading(false));
+          });
         }
       });
   };
