@@ -148,14 +148,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         search=""
         title="Projected Vacancy Management"
       />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/ao/publishablepositions"
-        search=""
-        title="Publishable Positions"
-      />
     </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
@@ -210,14 +202,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/bureau/projectedvacancy"
         search=""
         title="Projected Vacancy Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/bureau/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -366,14 +350,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/post/positionmanager"
         search=""
         title="Position Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/post/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
@@ -671,14 +647,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         search=""
         title="Projected Vacancy Management"
       />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/ao/publishablepositions"
-        search=""
-        title="Publishable Positions"
-      />
     </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
@@ -733,14 +701,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/bureau/projectedvacancy"
         search=""
         title="Projected Vacancy Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/bureau/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -889,14 +849,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/post/positionmanager"
         search=""
         title="Position Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/post/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
