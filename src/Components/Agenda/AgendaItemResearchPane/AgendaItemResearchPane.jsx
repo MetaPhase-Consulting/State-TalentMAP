@@ -10,13 +10,13 @@ import Spinner from 'Components/Spinner';
 import { useDataLoader } from 'hooks';
 import Alert from 'Components/Alert';
 import Languages from 'Components/ProfileDashboard/Languages/Languages';
+import Classifications from 'Components/ProfileDashboard/Classifications';
 import { fetchClassifications, fetchUserClassifications } from 'actions/classifications';
 import { addFrequentPositionsData } from 'actions/positions';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import AssignmentHistory from './AssignmentHistory';
 import FrequentPositions from './FrequentPositions';
 import RemarksGlossary from './RemarksGlossary';
-import Classifications from './Classifications';
 import GsaLocations from './GsaLocations';
 import api from '../../../api';
 
@@ -48,15 +48,10 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
   } = props;
 
   const [selectedNav, setSelectedNav] = useState(get(tabs, '[0].value') || '');
-  const classifications = useSelector(state => state.classifications);
   const classificationsError = useSelector(state => state.classificationsHasErrored);
   const classificationsLoading = useSelector(state => state.classificationsIsLoading);
-  const clientClassifications = useSelector(state => state.userClassifications);
   const clientClassificationsLoading = useSelector(state => state.userClassificationsIsLoading);
   const clientClassificationsError = useSelector(state => state.userClassificationsHasErrored);
-
-  const classificationsProps = { classifications, clientClassifications };
-
 
   const { data: asgHistory, error: asgHistError, loading: asgHistLoading } = useDataLoader(api().get, `/fsbid/assignment_history/${perdet}/`);
   const { data: remarks, error: rmrkDataError, loading: rmrkDataLoading } = useDataLoader(api().get, '/fsbid/agenda/remarks/');
@@ -153,9 +148,13 @@ const AgendaItemResearchPane = forwardRef((props = { perdet: '', clientData: {},
         if (clientClassificationsError || classificationsError) {
           return errorAlert;
         }
-        return (<div id="aim-classifications"> {/* needed for css specificity */}
-          <Classifications {...classificationsProps} />
-        </div>);
+        return (
+          <div id="aim-classifications"> {/* needed for css specificity */}
+            <div className="usa-grid-full classifications-container">
+              <Classifications userId={perdet} />
+            </div>
+          </div>
+        );
 
       case RG:
         if (rmrkDataError || rmrkCatError) {

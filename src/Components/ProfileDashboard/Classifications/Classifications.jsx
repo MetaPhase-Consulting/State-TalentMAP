@@ -2,26 +2,33 @@ import PropTypes from 'prop-types';
 import { difference, isEmpty } from 'lodash';
 import FA from 'react-fontawesome';
 import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { updateClassifications } from 'actions/classifications';
-import { CLASSIFICATIONS, CLIENT_CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchClassifications, fetchUserClassifications, updateClassifications } from 'actions/classifications';
 import { orderClassifications } from 'Components/BidderPortfolio/helpers';
 import SectionTitle from '../SectionTitle';
 import CheckboxList from '../../BidderPortfolio/CheckboxList';
 
+
 const Classifications = props => {
   const {
-    classifications,
-    clientClassifications,
-    updateUserClassifications,
     userId,
     isPublic,
     hideTitle,
     canEditClassifications,
   } = props;
 
+  const dispatch = useDispatch();
+
+  const clientClassifications = useSelector(state => state.userClassificationsSuccess);
+  const classifications = useSelector(state => state.classificationsFetchDataSuccess);
+
   const [editView, setEditView] = useState(false);
   const [userInput, setUserInput] = useState(clientClassifications);
+
+  useEffect(() => {
+    dispatch(fetchClassifications());
+    dispatch(fetchUserClassifications(userId));
+  }, []);
 
   useEffect(() => {
     setUserInput(clientClassifications);
@@ -53,7 +60,7 @@ const Classifications = props => {
     if (isEmpty(updateDiff.insert) && isEmpty(updateDiff.delete)) {
       setEditView(false);
     } else {
-      updateUserClassifications(updateDiff, userId);
+      dispatch(updateClassifications(updateDiff, userId));
     }
   };
 
@@ -112,9 +119,6 @@ const Classifications = props => {
 };
 
 Classifications.propTypes = {
-  classifications: CLASSIFICATIONS,
-  clientClassifications: CLIENT_CLASSIFICATIONS,
-  updateUserClassifications: PropTypes.func,
   userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isPublic: PropTypes.bool,
   hideTitle: PropTypes.bool,
@@ -122,18 +126,10 @@ Classifications.propTypes = {
 };
 
 Classifications.defaultProps = {
-  classifications: [],
-  clientClassifications: [],
-  updateUserClassifications: EMPTY_FUNCTION,
   userId: '',
   isPublic: false,
   hideTitle: false,
   canEditClassifications: false,
 };
 
-export const mapDispatchToProps = dispatch => ({
-  updateUserClassifications: (classification, id) =>
-    dispatch(updateClassifications(classification, id)),
-});
-
-export default connect(null, mapDispatchToProps)(Classifications);
+export default Classifications;

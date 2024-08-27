@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { BID_RESULTS, CLASSIFICATIONS, CLIENT_CLASSIFICATIONS,
+import { BID_RESULTS,
   EMPTY_FUNCTION, FAVORITE_POSITIONS_ARRAY, NOTIFICATION_RESULTS, USER_PROFILE } from 'Constants/PropTypes';
 import SearchAsClientButton from 'Components/BidderPortfolio/SearchAsClientButton/SearchAsClientButton';
 import { includes } from 'lodash';
@@ -22,7 +22,7 @@ import AgendaItemHistoryLink from './AgendaItemHistoryLink';
 const ProfileDashboard = ({
   userProfile, isLoading, notifications, isPublic,
   notificationsIsLoading, bidList, bidListIsLoading, favoritePositions, favoritePositionsIsLoading,
-  submitBidPosition, deleteBid, classifications, clientClassifications, registerHandshake,
+  submitBidPosition, deleteBid, registerHandshake,
   showBidTracker, showClassifications, showSearchAsClient,
   unregisterHandshake, showLanguages, canEditClassifications,
   showAgendaItemHistory, showAssignmentHistory, showMaintainAssignmentLink,
@@ -105,8 +105,6 @@ const ProfileDashboard = ({
                       isPublic && showClassifications &&
                       <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
                         <Classifications
-                          classifications={classifications}
-                          clientClassifications={clientClassifications}
                           userId={userProfile.perdet_seq_number}
                           isPublic={isPublic}
                           canEditClassifications={canEditClassifications}
@@ -135,8 +133,6 @@ const ProfileDashboard = ({
                       !isPublic && isBidder &&
                       <BoxShadow className="usa-width-one-whole user-dashboard-section assignments-section">
                         <Classifications
-                          classifications={classifications}
-                          clientClassifications={clientClassifications}
                           userId={userProfile.perdet_seq_number}
                           isPublic={isPublic}
                         />
@@ -195,8 +191,6 @@ ProfileDashboard.propTypes = {
   deleteBid: PropTypes.func,
   registerHandshake: PropTypes.func,
   unregisterHandshake: PropTypes.func,
-  classifications: CLASSIFICATIONS,
-  clientClassifications: CLIENT_CLASSIFICATIONS,
   isAOView: PropTypes.bool,
 };
 
@@ -214,8 +208,6 @@ ProfileDashboard.defaultProps = {
   deleteBid: EMPTY_FUNCTION,
   registerHandshake: EMPTY_FUNCTION,
   unregisterHandshake: EMPTY_FUNCTION,
-  classifications: [],
-  clientClassifications: [],
   isAOView: false,
 };
 
