@@ -30,6 +30,7 @@ export function renderList({ items, selected, ...rest }) {
 class BidControls extends Component {
   constructor(props) {
     super(props);
+    console.log('props', props);
     this.state = {
       hasSeasons: true,
       proxyCdos: this.props.selection || [],

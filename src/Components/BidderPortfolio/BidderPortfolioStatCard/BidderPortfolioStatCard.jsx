@@ -6,7 +6,6 @@ import { Cusp, Eligible } from 'Components/Ribbon';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
-import { checkFlag } from 'flags';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
@@ -23,7 +22,7 @@ import AddToInternalListButton from '../AddToInternalListButton';
 
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
   const dispatch = useDispatch();
-  const showCDOD30 = checkFlag('flags.CDOD30');
+  const showCDOD30 = true;
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
@@ -45,17 +44,22 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const [altEmail, setAltEmail] = useState('');
   const [verifyComments, setVerifyComments] = useState('');
   const [verifyAltEmail, setVerifyAltEmail] = useState('');
+  const [currentSeasons, setCurrentSeasons] = useState('');
 
   const cusp = included;
   const eligible = !included;
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
-  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+  const seasonList = useSelector(state => state.bidderPortfolioSeasons);
 
   const editClient = (e) => {
     e.preventDefault();
     setEdit(previous => !previous);
+  };
+
+  const onSeasonChange = (e) => {
+    setCurrentSeasons(e.target.value);
   };
 
   const saveEdit = () => {
@@ -229,11 +233,21 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
         {
           showMore && showCDOD30 &&
           <div>
+            <dt>Bid Season:</dt>
+            <div className="filter-div">
+              <select disabled={!edit} onChange={onSeasonChange}>
+                {
+                  seasonList.map((cycle) => (
+                    <option key={cycle.id} value={cycle.id}>{cycle.description}</option>
+                  ))
+                }
+              </select>
+            </div>
             <dt>Comments:</dt>
             <div className="stat-card-data-point stat-card-comments">
               <TextareaAutosize
                 className="stat-card-textarea"
-                disabled={!edit}
+                disabled={!edit || !currentSeasons}
                 maxLength="255"
                 name="note"
                 placeholder="No Notes"
