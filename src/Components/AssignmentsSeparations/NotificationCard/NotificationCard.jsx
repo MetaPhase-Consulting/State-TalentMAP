@@ -266,11 +266,7 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
           />,
-          [
-            'DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT',
-            'CLEARANCE', 'CLASSIFICATION', 'SPECIAL HANDLING',
-            'CAPTIONS', 'E.O.', 'TAGS', 'EOM', 'CONTINUATION',
-          ],
+          ['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT'],
         ),
       } : {
         text: 'Header',
