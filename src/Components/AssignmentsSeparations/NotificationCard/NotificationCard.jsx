@@ -18,6 +18,7 @@ import Training from './Tabs/Training';
 import Assignments from './Tabs/Assignments';
 import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
+import MemoHeader from './Tabs/MemoHeader';
 
 const NotificationCard = (props) => {
   const { note, onCancel, memo } = props;
@@ -101,10 +102,10 @@ const NotificationCard = (props) => {
       <div className="notification-card">
         <div className="notification-card__header">
           <span>
-            Edit Notification
+            Edit {memo ? 'Memo' : 'Notification'}
           </span>
           <span>
-            Please update all relevant information as it pertains to this note.
+            Please update all relevant information as it pertains to this {memo ? 'memo' : 'note'}.
           </span>
         </div>
         <div className="notification-card__rebuild">
@@ -132,7 +133,7 @@ const NotificationCard = (props) => {
               ));
             }}
           >
-            <p>Rebuild Notification</p>
+            <p>Rebuild {memo ? 'Memo' : 'Notification'}</p>
           </button>
         </div>
         {children}
@@ -257,7 +258,21 @@ const NotificationCard = (props) => {
       </div>
     </Row > :
     <TabbedCard
-      tabs={[memo ? null : {
+      tabs={[memo ? {
+        text: 'Header',
+        value: 'HEADER',
+        content: freeTextContainer(
+          <MemoHeader
+            getCableValue={getCableValue}
+            modCableValue={modCableValue}
+          />,
+          [
+            'DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT',
+            'CLEARANCE', 'CLASSIFICATION', 'SPECIAL HANDLING',
+            'CAPTIONS', 'E.O.', 'TAGS', 'EOM', 'CONTINUATION',
+          ],
+        ),
+      } : {
         text: 'Header',
         value: 'HEADER',
         content: freeTextContainer(
