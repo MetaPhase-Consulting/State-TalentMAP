@@ -5,15 +5,12 @@ import AgendaItemHistory from 'Components/Agenda/AgendaItemHistory/AgendaItemHis
 import AgendaItemMaintenanceContainer from 'Components/Agenda/AgendaItemMaintenanceContainer/AgendaItemMaintenanceContainer';
 import PanelMeetingSearch from 'Components/Panel/PanelMeetingSearch/PanelMeetingSearch';
 import PanelMeetingAgendas from 'Components/Panel/PanelMeetingAgendas/PanelMeetingAgendas';
-import CycleManagement from 'Components/CycleManagement';
-import CyclePositionSearch from 'Components/CycleManagement/CyclePositionSearch';
-import CycleClassifications from 'Components/CycleManagement/CycleClassifications';
-import AssignmentCycleEdit from 'Components/CycleManagement/AssignmentCycleEdit';
 import PublishablePositions from 'Components/PublishablePositions/PublishablePositions';
 import AssignmentsSeparations from 'Components/AssignmentsSeparations';
 import BidderPortfolio from 'Containers/BidderPortfolio';
 import BiddingTool from '../BiddingFunctionsPage/BiddingTool/BiddingTool';
 import ProjectedVacancy from '../BureauPage/ProjectedVacancy';
+import AssignmentNotification from '../AssignmentsSeparations/AssignmentNotification/AssignmentNotification';
 
 const AoPage = () => (
   <div className="usa-grid-full profile-content-container">
@@ -25,12 +22,10 @@ const AoPage = () => (
       <Route path="/profile/ao/panelmeetings" render={() => <PanelMeetingSearch isCDO={false} />} />
       <Route path="/profile/ao/availablebidders" render={() => <AvailableBidderContainer isCDO={false} isAO />} />
       <Route path="/profile/ao/panelmeetingagendas/:pmID" render={() => <PanelMeetingAgendas isAO />} />
-      <Route path="/profile/ao/cyclemanagement" render={() => <CycleManagement isAO />} />
       <Route path="/profile/ao/projectedvacancy" render={() => <ProjectedVacancy viewType="ao" />} />
-      <Route path="/profile/ao/assignmentcycle/:id" render={() => <AssignmentCycleEdit isAO />} />
-      <Route path="/profile/ao/cyclepositionsearch/:id" render={() => <CyclePositionSearch isAO />} />
-      <Route path="/profile/ao/cycleclassifications/" render={() => <CycleClassifications isAO />} />
       <Route path="/profile/ao/publishablepositions" render={() => <PublishablePositions viewType="ao" />} />
+      <Route path="/profile/ao/:id/assignmentsseparations/notification/:noteMemoID" render={(props) => <AssignmentNotification {...props} />} />
+      <Route path="/profile/ao/:id/assignmentsseparations/memo/:noteMemoID" render={(props) => <AssignmentNotification {...props} />} />
       <Route path="/profile/ao/:id/assignmentsseparations" render={(props) => <AssignmentsSeparations {...props} />} />
       <Route path="/profile/ao/bidderportfolio" render={() => <BidderPortfolio viewType="ao" />} />
       <Route path="/profile/ao/biddingtool/:id" render={() => <BiddingTool />} />

@@ -1,14 +1,18 @@
 import {
-  UPDATE_PROJECTED_VACANCY_ERROR,
-  UPDATE_PROJECTED_VACANCY_ERROR_TITLE,
-  UPDATE_PROJECTED_VACANCY_SUCCESS,
-  UPDATE_PROJECTED_VACANCY_SUCCESS_TITLE,
+  GET_NOTIFICATION_ERROR,
+  GET_NOTIFICATION_ERROR_TITLE,
+  UPDATE_NOTIFICATION_ERROR,
+  UPDATE_NOTIFICATION_ERROR_TITLE,
+  UPDATE_NOTIFICATION_SUCCESS,
+  UPDATE_NOTIFICATION_SUCCESS_TITLE,
 } from 'Constants/SystemMessages';
 import { CancelToken } from 'axios';
 import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
+import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
+import { history } from '../store';
 
 
 // ================ GET NOTE CABLE ================
@@ -32,7 +36,7 @@ export function noteCableFetchDataSuccess(results) {
   };
 }
 let cancelNoteCable;
-export function noteCableFetchData(query = {}) {
+export function noteCableFetchData(query = {}, location, memo) {
   return (dispatch) => {
     if (cancelNoteCable) { cancelNoteCable('cancel'); }
     batch(() => {
@@ -50,20 +54,32 @@ export function noteCableFetchData(query = {}) {
           dispatch(noteCableFetchDataSuccess(data));
           dispatch(noteCableFetchDataErrored(false));
           dispatch(noteCableFetchDataLoading(false));
+          history.push(`${location}/${memo ? 'memo' : 'notification'}/${data[0]?.NM_SEQ_NUM}`);
         });
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
           batch(() => {
             dispatch(noteCableFetchDataSuccess({}));
-            dispatch(noteCableFetchDataErrored(false));
-            dispatch(noteCableFetchDataLoading(true));
+            dispatch(noteCableFetchDataErrored(true));
+            dispatch(noteCableFetchDataLoading(false));
+            if (memo) {
+              dispatch(toastError(
+                GET_MEMO_ERROR,
+                GET_MEMO_ERROR_TITLE,
+              ));
+            } else {
+              dispatch(toastError(
+                GET_NOTIFICATION_ERROR,
+                GET_NOTIFICATION_ERROR_TITLE,
+              ));
+            }
           });
         } else {
           batch(() => {
             dispatch(noteCableFetchDataSuccess({}));
-            dispatch(noteCableFetchDataErrored(true));
-            dispatch(noteCableFetchDataLoading(false));
+            dispatch(noteCableFetchDataErrored(false));
+            dispatch(noteCableFetchDataLoading(true));
           });
         }
       });
@@ -91,14 +107,17 @@ export function cableFetchDataSuccess(results) {
   };
 }
 let cancelCable;
-export function cableFetchData() {
+export function cableFetchData(query = {}) {
   return (dispatch) => {
     if (cancelCable) { cancelCable('cancel'); }
     batch(() => {
       dispatch(cableFetchDataLoading(true));
       dispatch(cableFetchDataErrored(false));
     });
-    api().get('/fsbid/notification/cable/', {
+    const q = convertQueryToString(query);
+    const endpoint = '/fsbid/notification/cable/';
+    const ep = `${endpoint}?${q}`;
+    api().get(ep, {
       cancelToken: new CancelToken((c) => { cancelCable = c; }),
     })
       .then(({ data }) => {
@@ -185,30 +204,61 @@ export function noteCableRefFetchData(query = {}) {
   };
 }
 
-// ================ EDIT PROJECTED VACANCY ================
+// ================ EDIT NOTIFICATION ================
 
-let cancelProjectedVacancyEdit;
-export function projectedVacancyEdit(data, onSuccess) {
+let cancelEditNoteCable;
+export function editNoteCable(data) {
   return (dispatch) => {
-    if (cancelProjectedVacancyEdit) {
-      cancelProjectedVacancyEdit('cancel');
+    if (cancelEditNoteCable) {
+      cancelEditNoteCable('cancel');
     }
     api()
-      .put('/fsbid/admin/projected_vacancies/edit/', data, {
-        cancelToken: new CancelToken((c) => { cancelProjectedVacancyEdit = c; }),
+      .post('/fsbid/notification/cable/edit/', data, {
+        cancelToken: new CancelToken((c) => { cancelEditNoteCable = c; }),
       })
       .then(() => {
         dispatch(toastSuccess(
-          UPDATE_PROJECTED_VACANCY_SUCCESS,
-          UPDATE_PROJECTED_VACANCY_SUCCESS_TITLE,
+          UPDATE_NOTIFICATION_SUCCESS,
+          UPDATE_NOTIFICATION_SUCCESS_TITLE,
         ));
-        if (onSuccess) onSuccess();
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
           dispatch(toastError(
-            UPDATE_PROJECTED_VACANCY_ERROR,
-            UPDATE_PROJECTED_VACANCY_ERROR_TITLE,
+            UPDATE_NOTIFICATION_ERROR,
+            UPDATE_NOTIFICATION_ERROR_TITLE,
+          ));
+        }
+      });
+  };
+}
+
+// ================ REBUILD NOTIFICATION ================
+
+let cancelRebuildNotification;
+export function rebuildNotification(data, onSuccess) {
+  return (dispatch) => {
+    if (cancelRebuildNotification) {
+      cancelRebuildNotification('cancel');
+    }
+    api()
+      .put('/fsbid/notification/rebuild/', data, {
+        cancelToken: new CancelToken((c) => { cancelRebuildNotification = c; }),
+      })
+      .then(() => {
+        dispatch(toastSuccess(
+          REBUILD_NOTIFICATION_SUCCESS,
+          REBUILD_NOTIFICATION_SUCCESS_TITLE,
+        ));
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(
+            REBUILD_NOTIFICATION_ERROR,
+            REBUILD_NOTIFICATION_ERROR_TITLE,
           ));
         }
       });

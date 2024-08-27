@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
-import { filter, flatten, get, isEmpty } from 'lodash';
+import { filter, flatten, get, has, isEmpty } from 'lodash';
 import { isDate, startOfDay } from 'date-fns-v2';
 import { usePrevious } from 'hooks';
 import { checkFlag } from 'flags';
@@ -22,6 +22,8 @@ import TotalResults from 'Components/TotalResults';
 import TMDatePicker from 'Components/TMDatePicker';
 import ScrollUpButton from '../../ScrollUpButton';
 import { userHasPermissions } from '../../../utilities';
+import CheckBox from '../../CheckBox';
+import { PREVENT_DEFAULT } from '../../../Constants/PropTypes';
 
 const usePanelAdmin = () => checkFlag('flags.panel_admin');
 const usePanelAdminPanelMeeting = () => checkFlag('flags.panel_admin_panel_meeting');
@@ -55,14 +57,18 @@ const PanelMeetingSearch = ({ isCDO }) => {
   const [selectedMeetingType, setSelectedMeetingType] = useState(get(userSelections, 'selectedMeetingType') || []);
   const [selectedMeetingStatus, setSelectedMeetingStatus] = useState(get(userSelections, 'selectedMeetingStatus') || []);
   const [selectedPanelMeetDate, setSelectedPanelMeetDate] = useState(get(userSelections, 'selectedPanelMeetDate') || [null, null]);
+  const [selectedRemarks, setSelectedRemarks] = useState(get(userSelections, 'selectedRemarks') || []);
 
   const meetingStatusFilterErrored = get(panelMeetingsFilters, 'panelStatuses') ? get(panelMeetingsFilters, 'panelStatuses').length === 0 : true;
   const meetingTypeFilterErrored = get(panelMeetingsFilters, 'panelTypes') ? get(panelMeetingsFilters, 'panelTypes').length === 0 : true;
+  const meetingRemarksErrored = get(panelMeetingsFilters, 'panelRemarks') ? get(panelMeetingsFilters, 'panelRemarks').length === 0 : true;
 
   const [clearFilters, setClearFilters] = useState(false);
   const [exportIsLoading, setExportIsLoading] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
 
   const count = get(panelMeetings$, 'count') || 0;
+  const noPanelMeetingResults = count <= 0;
 
   const groupLoading = panelMeetingsIsLoading && panelMeetingsFiltersIsLoading;
   const exportDisabled = !panelMeetings.length;
@@ -76,6 +82,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
     ordering,
     type: selectedMeetingType.map(meetingObject => (get(meetingObject, 'code'))),
     status: selectedMeetingStatus.map(meetingObject => (get(meetingObject, 'code'))),
+    remark: selectedRemarks.map(remarkObject => (get(remarkObject, 'short_desc_text'))),
     // need to set to beginning of the day to avoid timezone issues
     'panel-date-start': isDate(get(selectedPanelMeetDate, '[0]')) ? startOfDay(get(selectedPanelMeetDate, '[0]')).toJSON() : '',
     'panel-date-end': isDate(get(selectedPanelMeetDate, '[1]')) ? startOfDay(get(selectedPanelMeetDate, '[1]')).toJSON() : '',
@@ -88,6 +95,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
     selectedMeetingType,
     selectedMeetingStatus,
     selectedPanelMeetDate,
+    selectedRemarks,
   });
 
   useEffect(() => {
@@ -100,11 +108,15 @@ const PanelMeetingSearch = ({ isCDO }) => {
       selectedMeetingType,
       selectedMeetingStatus,
       selectedPanelMeetDate,
+      selectedRemarks,
     ];
     if (isEmpty(filter(flatten(filters)))) {
       setClearFilters(false);
     } else {
       setClearFilters(true);
+    }
+    if (selectAll) {
+      setSelectAll(false);
     }
     if (resetPage) {
       setPage(1);
@@ -123,6 +135,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
     selectedMeetingType,
     selectedMeetingStatus,
     selectedPanelMeetDate,
+    selectedRemarks,
   ]);
 
   useEffect(() => {
@@ -145,16 +158,19 @@ const PanelMeetingSearch = ({ isCDO }) => {
   };
 
   const renderSelectionList = ({ items, selected, ...rest }) => {
-    const getSelected = item => !!selected.find(f => f.code === item.code);
-    return items.map(item =>
-      (<ListItem
-        key={item.code}
+    // remarks use seq_num, everything else uses code
+    const codeOrSeqNum = has(items[0], 'seq_num') ? 'seq_num' : 'code';
+    const getSelected = item => !!selected.find(f => f[codeOrSeqNum] === item[codeOrSeqNum]);
+
+    return items.map(item => (
+      <ListItem
+        key={codeOrSeqNum === 'code' ? item.code : item.seq_num}
         item={item}
         {...rest}
-        queryProp={'text'}
+        queryProp={codeOrSeqNum === 'code' ? 'text' : 'short_desc_text'}
         getIsSelected={getSelected}
-      />),
-    );
+      />
+    ));
   };
 
   const pickyProps = {
@@ -170,10 +186,10 @@ const PanelMeetingSearch = ({ isCDO }) => {
     setSelectedMeetingType([]);
     setSelectedMeetingStatus([]);
     setSelectedPanelMeetDate([null, null]);
+    setSelectedRemarks([]);
     setClearFilters(false);
+    setSelectAll(false);
   };
-
-  const noPanelMeetingResults = count <= 0;
 
   const getOverlay = () => {
     let toReturn;
@@ -248,11 +264,25 @@ const PanelMeetingSearch = ({ isCDO }) => {
                 isClearable
               />
             </div>
+            <div className="filter-div">
+              <div className="label">Remarks:</div>
+              <Picky
+                {...pickyProps}
+                placeholder="Select Remarks"
+                value={selectedRemarks}
+                options={get(panelMeetingsFilters, 'panelRemarks')}
+                onChange={setSelectedRemarks}
+                valueKey="seq_num"
+                labelKey="short_desc_text"
+                key="seq_num"
+                disabled={meetingRemarksErrored || panelMeetingsFiltersHasErrored}
+              />
+            </div>
           </div>
         </div>
         {
           !groupLoading &&
-          <div className="results-dropdown controls-container">
+          <div className="viewing-results-and-dropdown--fullscreen results-dropdown">
             <TotalResults
               total={count}
               pageNumber={page}
@@ -262,6 +292,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
             />
             <div className="panel-results-controls">
               <SelectForm
+                id="panel-sort"
                 className="panel-select panel-sort"
                 options={sorts.options}
                 label="Sort by:"
@@ -270,6 +301,7 @@ const PanelMeetingSearch = ({ isCDO }) => {
                 disabled={panelMeetingsIsLoading}
               />
               <SelectForm
+                id="panel-limit"
                 className="panel-select"
                 options={pageSizes.options}
                 label="Results:"
@@ -298,14 +330,45 @@ const PanelMeetingSearch = ({ isCDO }) => {
           </div>
         }
         {
+          !groupLoading &&
+          <div className="panel-select-all-container">
+            <div className="select-all">
+              <CheckBox
+                id="selectAll"
+                label={selectAll ? 'Deselect All' : 'Select All'}
+                value={selectAll}
+                onCheckBoxClick={() => setSelectAll(!selectAll)}
+                disabled={panelMeetingsIsLoading}
+              />
+            </div>
+            {
+              selectAll &&
+                <div className="view-all">
+                  {/** Disabled link until endpoint is updated */}
+                  <Link
+                    className="disabled-link"
+                    to={'/panelmeetings/agendas'}
+                    onClick={() => {
+                      /** @TODO update "to" link and handle click */
+                      PREVENT_DEFAULT();
+                    }}
+                  >
+                    <FA className="icon" name="eye" /> {'View All Panel Agendas'}
+                  </Link>
+                </div>
+            }
+          </div>
+        }
+        {
           overlay ||
             <div className="usa-width-one-whole panel-search-lower-section results-dropdown">
               {
                 panelMeetings.map(pm => (
                   <PanelMeetingSearchRow
-                    key={get(pm, 'pm_seq_num')}
+                    key={get(pm, 'pmi_pm_seq_num')}
                     pm={pm}
                     isCDO={isCDO}
+                    selectAll={selectAll}
                   />
                 ))
               }

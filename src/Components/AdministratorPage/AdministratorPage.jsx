@@ -2,6 +2,10 @@ import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import BidCycles from 'Containers/BidCycles';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
+import CycleManagement from 'Components/CycleManagement';
+import CyclePositionSearch from 'Components/CycleManagement/CyclePositionSearch';
+import AssignmentCycleEdit from 'Components/CycleManagement/AssignmentCycleEdit';
+import CycleClassifications from 'Components/CycleManagement/CycleClassifications';
 import Dashboard from './Dashboard';
 import BureauExceptions from './BureauExceptions/';
 import Logs from './Logs';
@@ -13,6 +17,7 @@ import ManageBidSeasons from './ManageBidSeasons/ManageBidSeasons';
 import BidAudit from './bidAudit/BidAudit';
 import BidAuditCategory from './bidAudit/BidAuditCategory';
 import BidAuditGrade from './bidAudit/BidAuditGrade';
+import BidAuditData from './bidAudit/BidAuditData';
 import CycleJobCategories from './CycleJobCategories/CycleJobCategories';
 import ManageEntryLevel from './ManageEntryLevel/ManageEntryLevel';
 import JobCategories from './JobCategories/JobCategories';
@@ -70,6 +75,7 @@ const AdministratorPage = (props) => {
         <Route path="/profile/administrator/managebidseasons" render={() => <ManageBidSeasons />} />
         <Route path="/profile/administrator/bidaudit/category/:cycleId/:auditId" render={() => <BidAuditCategory />} />
         <Route path="/profile/administrator/bidaudit/grade/:cycleId/:auditId" render={() => <BidAuditGrade />} />
+        <Route path="/profile/administrator/bidaudit/data/:cycleId/:auditId" render={() => <BidAuditData />} />
         <Route path="/profile/administrator/bidaudit/" render={() => <BidAudit />} />
         <Route path="/profile/administrator/panel/:pmSeqNum" render={() => <PanelAdmin />} />
         <Route path="/profile/administrator/panel/" render={() => <PanelAdmin />} />
@@ -79,6 +85,10 @@ const AdministratorPage = (props) => {
         <Route path="/profile/administrator/orgstats" render={() => <OrgStats />} />
         <Route path="/profile/administrator/biddingtool/:id" render={() => <BiddingTool />} />
         <Route path="/profile/administrator/biddingtool/" render={() => <BiddingTool />} />
+        <Route path="/profile/administrator/cyclemanagement" render={() => <CycleManagement />} />
+        <Route path="/profile/administrator/assignmentcycle/:id" render={() => <AssignmentCycleEdit />} />
+        <Route path="/profile/administrator/cyclepositionsearch/:id" render={() => <CyclePositionSearch />} />
+        <Route path="/profile/administrator/cycleclassifications/" render={() => <CycleClassifications />} />
       </Switch>
     </div>
   );

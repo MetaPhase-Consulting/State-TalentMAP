@@ -126,19 +126,11 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       />
       <withRouter(NavLink)
         hidden={true}
-        iconName="cogs"
-        key="Cycle Management"
-        link="/profile/ao/cyclemanagement"
-        search=""
-        title="Cycle Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/ao/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -155,14 +147,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/ao/projectedvacancy"
         search=""
         title="Projected Vacancy Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/ao/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
@@ -197,14 +181,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       />
       <withRouter(NavLink)
         hidden={true}
-        iconName="cogs"
-        key="Cycle Management"
-        link="/profile/bureau/cyclemanagement"
-        search=""
-        title="Cycle Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
         iconName="building"
         key="Manage Post Access"
         link="/profile/bureau/managepostaccess"
@@ -226,14 +202,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/bureau/projectedvacancy"
         search=""
         title="Projected Vacancy Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/bureau/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -285,10 +253,10 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       <withRouter(NavLink)
         hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/cdo/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -383,14 +351,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         search=""
         title="Position Management"
       />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/post/publishablepositions"
-        search=""
-        title="Publishable Positions"
-      />
     </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
@@ -461,6 +421,14 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         link="/profile/administrator/cyclejobcategories/"
         search=""
         title="Cycle Job Categories"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="database"
+        key="Cycle Management"
+        link="/profile/administrator/cyclemanagement"
+        search=""
+        title="Cycle Management"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -657,19 +625,11 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       />
       <withRouter(NavLink)
         hidden={true}
-        iconName="cogs"
-        key="Cycle Management"
-        link="/profile/ao/cyclemanagement"
-        search=""
-        title="Cycle Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/ao/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -686,14 +646,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/ao/projectedvacancy"
         search=""
         title="Projected Vacancy Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/ao/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
@@ -728,14 +680,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       />
       <withRouter(NavLink)
         hidden={true}
-        iconName="cogs"
-        key="Cycle Management"
-        link="/profile/bureau/cyclemanagement"
-        search=""
-        title="Cycle Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
         iconName="building"
         key="Manage Post Access"
         link="/profile/bureau/managepostaccess"
@@ -757,14 +701,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/bureau/projectedvacancy"
         search=""
         title="Projected Vacancy Management"
-      />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/bureau/publishablepositions"
-        search=""
-        title="Publishable Positions"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -816,10 +752,10 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       <withRouter(NavLink)
         hidden={true}
         iconName="sticky-note"
-        key="Employee Agendas"
+        key="Employees and Panel Agendas"
         link="/profile/cdo/employeeagendas"
         search=""
-        title="Employee Agendas"
+        title="Employees and Panel Agendas"
       />
       <withRouter(NavLink)
         hidden={true}
@@ -914,14 +850,6 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         search=""
         title="Position Management"
       />
-      <withRouter(NavLink)
-        hidden={true}
-        iconName=" fa-newspaper-o"
-        key="Publishable Positions"
-        link="/profile/post/publishablepositions"
-        search=""
-        title="Publishable Positions"
-      />
     </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
@@ -992,6 +920,14 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/administrator/cyclejobcategories/"
         search=""
         title="Cycle Job Categories"
+      />
+      <withRouter(NavLink)
+        hidden={true}
+        iconName="database"
+        key="Cycle Management"
+        link="/profile/administrator/cyclemanagement"
+        search=""
+        title="Cycle Management"
       />
       <withRouter(NavLink)
         hidden={true}

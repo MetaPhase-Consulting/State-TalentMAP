@@ -81,9 +81,9 @@ const ProjectedVacancyCard = (props) => {
     setStatus(result?.fvscode);
     setTextArea(result?.fvcommenttxt || '');
     setOverrideTED(
-        result?.fvoverrideteddate ?
-          new Date(result.fvoverrideteddate) :
-          null,
+      result?.fvoverrideteddate ?
+        new Date(result.fvoverrideteddate) :
+        null,
     );
   }, [editMode]);
 
@@ -96,12 +96,12 @@ const ProjectedVacancyCard = (props) => {
   const onSubmitForm = () => {
     const editData = {
       ...result,
-      future_vacancy_exclude_import_indicator: included,
-      future_vacancy_bid_season_code: season,
-      future_vacancy_status_code: status,
-      future_vacancy_override_tour_end_date: overrideTED ?
+      fvexclimportind: included,
+      fvbsnid: season,
+      fvfvscode: status,
+      fvoverrideteddate: overrideTED ?
         overrideTED.toISOString().substring(0, 10) : null,
-      future_vacancy_comment_text: textArea,
+      fvcommenttxt: textArea,
     };
     onSubmit(editData, setEditMode(false));
   };
@@ -177,8 +177,7 @@ const ProjectedVacancyCard = (props) => {
     ],
     textarea: result?.fvcommenttxt || 'No description.',
     metadata: [
-      { 'Position Posted': formatDate(result?.fvcreatedate) || NO_UPDATE_DATE },
-      { 'Last Updated': formatDate(result?.fvscreatedate) || NO_UPDATE_DATE },
+      { 'Last Updated': formatDate(result?.fvupdatedate) || NO_UPDATE_DATE },
     ],
   };
   const form = {
@@ -330,10 +329,6 @@ const ProjectedVacancyCard = (props) => {
 
 ProjectedVacancyCard.propTypes = {
   result: POSITION_DETAILS.isRequired,
-  languageOffsets: PropTypes.shape({
-    language_offset_summer: PropTypes.string,
-    language_offset_winter: PropTypes.string,
-  }),
   updateIncluded: PropTypes.func,
   updateImport: PropTypes.func,
   disableImport: PropTypes.bool,
@@ -342,20 +337,12 @@ ProjectedVacancyCard.propTypes = {
   onEditModeSearch: PropTypes.func,
   onSubmit: PropTypes.func,
   selectOptions: PropTypes.shape({
-    languageOffsets: PropTypes.shape({
-      summer_language_offsets: PropTypes.arrayOf(PropTypes.shape({})),
-      winter_language_offsets: PropTypes.arrayOf(PropTypes.shape({})),
-    }),
     bidSeasons: PropTypes.arrayOf(PropTypes.shape({})),
     statuses: PropTypes.arrayOf(PropTypes.shape({})),
   }),
 };
 
 ProjectedVacancyCard.defaultProps = {
-  languageOffsets: {
-    language_offset_summer: null,
-    language_offset_winter: null,
-  },
   updateIncluded: EMPTY_FUNCTION,
   updateImport: EMPTY_FUNCTION,
   disableImport: false,
@@ -364,7 +351,6 @@ ProjectedVacancyCard.defaultProps = {
   onEditModeSearch: EMPTY_FUNCTION,
   onSubmit: EMPTY_FUNCTION,
   selectOptions: {
-    languageOffsets: [],
     bidSeasons: [],
     statuses: [],
   },

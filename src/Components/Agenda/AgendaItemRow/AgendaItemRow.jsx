@@ -114,12 +114,13 @@ const AgendaItemRow = props => {
           <div className="agenda-bottom-row">
             <div className="remarks-container">
               <div className="remarks-text">Remarks:</div>
-              {
-                remarks.map(remark => (
-                  <RemarksPill key={remark.text} remark={remark} />
-                ))
-              }
-              {agenda?.ahtCode &&
+              <div className="remarks-pill-container">
+                {
+                  remarks.map(remark => (
+                    <RemarksPill key={remark.text} remark={remark} />
+                  ))
+                }
+                {agenda?.ahtCode &&
                 <RemarksPill
                   key="hold-remark"
                   remark={{
@@ -130,7 +131,8 @@ const AgendaItemRow = props => {
                     `,
                   }}
                 />
-              }
+                }
+              </div>
             </div>
             <div className="ai-updater-creator">
               <div className="wrapper">
@@ -153,6 +155,7 @@ const AgendaItemRow = props => {
   );
 };
 
+// @TODO: Double check all propTypes compared to Dev1
 AgendaItemRow.propTypes = {
   isCreate: PropTypes.bool,
   agenda: PropTypes.shape({
@@ -166,6 +169,7 @@ AgendaItemRow.propTypes = {
     ahtDescText: PropTypes.string,
     aihHoldNum: PropTypes.number,
     aihHoldComment: PropTypes.string,
+    // @TODO: Possibly need to fix this
     remarks: PropTypes.arrayOf(
       PropTypes.shape({
         seq_num: PropTypes.number,
@@ -174,6 +178,7 @@ AgendaItemRow.propTypes = {
         short_desc_text: PropTypes.string,
         text: PropTypes.string,
         active_ind: PropTypes.string,
+        air_remark_text: PropTypes.string,
         type: null,
       }),
     ),
@@ -193,7 +198,7 @@ AgendaItemRow.propTypes = {
         grade: PropTypes.string,
         action: PropTypes.string,
         travel: PropTypes.string,
-        languages: POS_LANGUAGES,
+        languages: POS_LANGUAGES, // @TODO: Fix this, console warning getting string, expect array
         pay_plan: PropTypes.string,
       }),
     ),
@@ -209,6 +214,7 @@ AgendaItemRow.propTypes = {
         custom_description: PropTypes.string,
       }),
     ),
+    // @TODO: console warning, getting object not array
     cdo: PropTypes.arrayOf(
       PropTypes.shape({
         first_name: PropTypes.string,
@@ -247,7 +253,7 @@ AgendaItemRow.propTypes = {
     }),
   }),
   isCDO: PropTypes.bool,
-  perdet: PropTypes.string,
+  perdet: PropTypes.number,
   isPanelMeetingView: PropTypes.bool,
 };
 
