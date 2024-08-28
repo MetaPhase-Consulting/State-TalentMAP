@@ -246,10 +246,11 @@ export function getUnassignedBidderTypes(query = {}) {
           batch(() => {
             if (tempData.length === 0) {
               dispatch(bidderPortfolioFetchDataSuccess([]));
-              return;
+            } else {
+              dispatch(bidderPortfolioFetchDataSuccess(tempData));
             }
-            dispatch(unassignedbidderTypeSuccess(data));
-            const newQuery = { ...query, perdet_seq_num: data };
+            dispatch(unassignedbidderTypeSuccess(tempData));
+            const newQuery = { ...query$, perdet_seq_num: tempData };
             const query$$$ = stringify(newQuery);
             const secondEndpoint = '/fsbid/client/';
             const url = `${secondEndpoint}?${query$$$}`;
