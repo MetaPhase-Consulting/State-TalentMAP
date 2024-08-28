@@ -2,6 +2,7 @@ import { batch } from 'react-redux';
 import { get } from 'lodash';
 import { convertQueryToString, downloadFromResponse, formatDate } from 'utilities';
 import api from '../api';
+import { meetingCategoryMap } from '../Components/Panel/Constants';
 
 export function panelMeetingAgendasFetchDataErrored(bool) {
   return {
@@ -33,20 +34,45 @@ export function panelMeetingAgendasExport(pmseqnum = '') {
     });
 }
 
-export function panelMeetingAgendasFetchData(query = {}, id) {
+export function panelMeetingAgendasFetchData(query = {}, panelMeetings = []) {
   return (dispatch) => {
     batch(() => {
       dispatch(panelMeetingAgendasFetchDataLoading(true));
       dispatch(panelMeetingAgendasFetchDataErrored(false));
     });
     const q = convertQueryToString(query);
-    const endpoint = `/fsbid/panel/${id}/agendas/`;
+    const endpoint = '/fsbid/agenda/agenda_items/';
     const ep = `${endpoint}?${q}`;
     dispatch(panelMeetingAgendasFetchDataLoading(true));
     api().get(ep)
       .then(({ data }) => {
+        const agendas = data.results.results;
+        const agendasByPanelMeeting = panelMeetings.map((pm) => {
+          // Filter agendas by panel meeting sequence number
+          const filteredAgendas = agendas.filter((agenda) => agenda.pmi_pm_seq_num === pm.pmi_pm_seq_num);
+
+          // Initialize an empty object with keys from meetingCategoryMap
+          const categorizedAgendas = Object.keys(meetingCategoryMap).reduce((acc, key) => {
+            acc[meetingCategoryMap[key]] = [];
+            return acc;
+          }, {});
+
+          // Iterate over filteredAgendas and categorize them
+          filteredAgendas.forEach((agenda) => {
+            const category = meetingCategoryMap[agenda.pmi_mic_code];
+            if (category) {
+              categorizedAgendas[category].push(agenda);
+            }
+          });
+
+          return {
+            ...pm,
+            agendas: categorizedAgendas,
+          };
+        });
+
         batch(() => {
-          dispatch(panelMeetingAgendasFetchDataSuccess(data.results));
+          dispatch(panelMeetingAgendasFetchDataSuccess(agendasByPanelMeeting));
           dispatch(panelMeetingAgendasFetchDataErrored(false));
           dispatch(panelMeetingAgendasFetchDataLoading(false));
         });
