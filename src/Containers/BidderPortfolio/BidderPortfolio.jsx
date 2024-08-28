@@ -39,7 +39,7 @@ class BidderPortfolio extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const props = ['cdos', 'selectedSeasons', 'selectedUnassigned'];
+    const props = ['cdos', 'selectedSeasons']; // removed , 'selectedUnassigned'
     if (!isEqual(pick(this.props, props), pick(nextProps, props))) {
       this.getBidderPortfolio();
     }
@@ -71,7 +71,9 @@ class BidderPortfolio extends Component {
   getBidderPortfolio() {
     const query = this.createSearchQuery();
 
-    if (query.hasHandshake === 'unassigned_filters') {
+    const noPanel = this.props.selectedUnassigned.some(obj => obj.value === 'noPanel');
+    const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
+    if (noBids || noPanel) {
       this.props.fetchUnassignedBidderTypes(query);
     } else {
       this.props.fetchBidderPortfolio(query);
