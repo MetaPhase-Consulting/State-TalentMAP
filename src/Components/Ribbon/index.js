@@ -7,7 +7,6 @@ import InBidList from './InBidList';
 import IsHardToFill from './IsHardToFill';
 import Eligible from './Eligible';
 import Cusp from './Cusp';
-import RWADetoRibbon from './RWADeto';
 
 export {
   Handshake,
@@ -19,7 +18,6 @@ export {
   IsHardToFill,
   Eligible,
   Cusp,
-  RWADetoRibbon,
 };
 
 export { default } from './Ribbon';
