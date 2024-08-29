@@ -223,6 +223,12 @@ export function getUnassignedBidderTypes(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
+      if (includes(UAvalues, 'noPanel')) {
+        query$.noPanel = true;
+      }
+      if (includes(UAvalues, 'noBids')) {
+        query$.noBids = true;
+      }
     }
 
     const query$$ = stringify(query$);
@@ -231,50 +237,49 @@ export function getUnassignedBidderTypes(query = {}) {
     if (cancelUnnassignedBidders) {
       cancelUnnassignedBidders('cancel');
     }
-    if (ids.length) {
-      api().post(q, {
-        cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
-      })
-        .then(({ data }) => {
-          const tempData = data;
-          batch(() => {
-            if (tempData.length === 0) {
-              dispatch(bidderPortfolioFetchDataSuccess([]));
-            }
-            dispatch(unassignedbidderTypeSuccess(tempData));
-            const newQuery = { ...query$, perdet_seq_num: tempData.toString() };
-            const query$$$ = stringify(newQuery);
-            const secondEndpoint = '/fsbid/client/';
-            const url = `${secondEndpoint}?${query$$$}`;
-            api().get(url, {
-              cancelToken: new CancelToken((c) => {
-                cancelPortfolio = c;
-              }),
+    api().post(q, {
+      cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
+    })
+      .then(({ data }) => {
+        const tempData = data;
+        batch(() => {
+          if (tempData.length === 0) {
+            dispatch(bidderPortfolioFetchDataSuccess([]));
+            return;
+          }
+          dispatch(unassignedbidderTypeSuccess(data));
+          const newQuery = { ...query, perdet_seq_num: data.toString() };
+          const query$$$ = stringify(newQuery);
+          const secondEndpoint = '/fsbid/client/';
+          const url = `${secondEndpoint}?${query$$$}`;
+          api().get(url, {
+            cancelToken: new CancelToken((c) => {
+              cancelPortfolio = c;
+            }),
+          })
+            .then(({ secondData }) => {
+              batch(() => {
+                dispatch(bidderPortfolioLastQuery(query$$$, secondData.count, secondEndpoint));
+                dispatch(bidderPortfolioFetchDataSuccess(secondData));
+                dispatch(bidderPortfolioHasErrored(false));
+                dispatch(bidderPortfolioIsLoading(false));
+              });
             })
-              .then(({ secondData }) => {
+            .catch((m) => {
+              if (get(m, 'message') === 'cancel') {
                 batch(() => {
-                  dispatch(bidderPortfolioLastQuery(query$$$, secondData.count, secondEndpoint));
-                  dispatch(bidderPortfolioFetchDataSuccess(secondData));
                   dispatch(bidderPortfolioHasErrored(false));
+                  dispatch(bidderPortfolioIsLoading(true));
+                });
+              } else {
+                batch(() => {
+                  dispatch(bidderPortfolioHasErrored(true));
                   dispatch(bidderPortfolioIsLoading(false));
                 });
-              })
-              .catch((m) => {
-                if (get(m, 'message') === 'cancel') {
-                  batch(() => {
-                    dispatch(bidderPortfolioHasErrored(false));
-                    dispatch(bidderPortfolioIsLoading(true));
-                  });
-                } else {
-                  batch(() => {
-                    dispatch(bidderPortfolioHasErrored(true));
-                    dispatch(bidderPortfolioIsLoading(false));
-                  });
-                }
-              });
-          });
+              }
+            });
         });
-    }
+      });
   };
 }
 
@@ -305,6 +310,12 @@ export function bidderPortfolioFetchData(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
+      // if (includes(UAvalues, 'noPanel')) {
+      //   // query$.noPanel = true;
+      // }
+      // if (includes(UAvalues, 'noBids')) {
+      //   // query$.noBids = true;
+      // }
     }
 
     // hasHandshake is a special case where we need to change the query to match the API for cusp_bidders
