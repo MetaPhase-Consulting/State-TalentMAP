@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
 import FA from 'react-fontawesome';
+import { Tooltip } from 'react-tippy';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
@@ -10,7 +10,6 @@ import InputActions from '../Common/InputActions';
 const Assignments = (props) => {
   const { getCableValue, modCableValue, assignments } = props;
 
-  const [previewText, setPreviewText] = useState('');
 
   // Have to get the assignments array into correct format for DnD
   const orderedAssignmentsDnd = assignments.map((a) => ({
@@ -92,24 +91,30 @@ const Assignments = (props) => {
       </div>
       <div className="content-divider" />
       <div className="input-container">
-        <InputActions />
+        <InputActions
+          keys={['ASSIGNMENTS', 'COMBINED TOD']}
+          getCableValue={getCableValue}
+          modCableValue={modCableValue}
+        />
         <Row fluid className="position-content--description">
           <span className="definition-title">Preview Text</span>
-          <Linkify properties={{ target: '_blank' }}>
-            <TextareaAutosize
-              maxRows={4}
-              minRows={4}
-              maxLength="500"
-              name="preview-text"
-              placeholder="No Description"
-              defaultValue={previewText}
-              onChange={(e) => setPreviewText(e.target.value)}
-              className="enabled-input"
-              draggable={false}
-            />
-          </Linkify>
+          <Tooltip title="Save changes to generate new preview text.">
+            <Linkify properties={{ target: '_blank' }}>
+              <TextareaAutosize
+                maxRows={8}
+                minRows={4}
+                maxLength="500"
+                name="preview-text"
+                placeholder="No Description"
+                value={getCableValue('ASSIGNMENTS')}
+                className="enabled-input"
+                draggable={false}
+                disabled
+              />
+            </Linkify>
+          </Tooltip>
           <div className="word-count">
-            {previewText?.length} / 500
+            {getCableValue('ASSIGNMENTS')?.length} / 500
           </div>
         </Row>
         <Row fluid className="position-content--description">
