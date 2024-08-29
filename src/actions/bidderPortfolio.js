@@ -223,6 +223,12 @@ export function getUnassignedBidderTypes(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
+      if (includes(UAvalues, 'noPanel')) {
+        query$.noPanel = true;
+      }
+      if (includes(UAvalues, 'noBids')) {
+        query$.noBids = true;
+      }
     }
 
     const query$$ = stringify(query$);
