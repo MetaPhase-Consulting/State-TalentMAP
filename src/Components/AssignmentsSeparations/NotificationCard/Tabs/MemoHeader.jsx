@@ -10,7 +10,11 @@ const MemoHeader = (props) => {
   return (
     <div className="position-content position-form input-container">
       <div className="memo-input-container">
-        <InputActions />
+        <InputActions
+          keys={['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT']}
+          getCableValue={getCableValue}
+          modCableValue={modCableValue}
+        />
         <div className="position-form--label-input-container">
           <label htmlFor="drafting-office">To</label>
           <input
