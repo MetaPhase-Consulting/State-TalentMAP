@@ -9,7 +9,11 @@ const Training = (props) => {
 
   return (
     <div className="position-content position-form input-container">
-      <InputActions />
+      <InputActions
+        keys={['TRAINING']}
+        getCableValue={getCableValue}
+        modCableValue={modCableValue}
+      />
       <Row fluid className="position-content--description">
         <span className="definition-title">Training</span>
         <Linkify properties={{ target: '_blank' }}>
@@ -21,7 +25,6 @@ const Training = (props) => {
             placeholder="No Description"
             value={getCableValue('TRAINING')}
             onChange={(e) => modCableValue('TRAINING', e.target.value)}
-            disabled
             className="enabled-input"
             draggable={false}
           />

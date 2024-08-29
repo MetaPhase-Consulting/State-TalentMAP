@@ -39,12 +39,16 @@ const Header = (props) => {
       </Row>
       <div className="content-divider" />
       <div className="input-container">
-        <InputActions />
+        <InputActions
+          keys={['DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT']}
+          getCableValue={getCableValue}
+          modCableValue={modCableValue}
+        />
         <div className="position-form--label-input-container">
           <label htmlFor="drafting-office">Drafting Office</label>
           <input
             id="drafting-office"
-            defaultValue={getCableValue('DRAFTING OFFICE')}
+            value={getCableValue('DRAFTING OFFICE')}
             onChange={(e) => modCableValue('DRAFTING OFFICE', e.target.value)}
           />
         </div>
@@ -53,10 +57,10 @@ const Header = (props) => {
             <label htmlFor="date">Date</label>
             <div className="date-wrapper-react larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '')} />
+              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '', true)} />
               <DatePicker
                 id="date"
-                selected={(new Date(getCableValue('DATE'))) || ''}
+                selected={getCableValue('DATE') !== '' ? (new Date(getCableValue('DATE'))) : ''}
                 onChange={(e) => modCableValue('DATE', e.target.value)}
                 dateFormat="MM/dd/yyyy"
                 placeholderText={'MM/DD/YYY'}

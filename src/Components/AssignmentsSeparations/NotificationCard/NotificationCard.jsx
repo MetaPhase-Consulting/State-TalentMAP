@@ -63,24 +63,44 @@ const NotificationCard = (props) => {
     }
   }, [ref]);
 
-  const getCableValue = (key) => {
+  const getCableValue = (key, returnAll) => {
     const section = noteCable.find(c => c.ME_DESC === key);
-    return section?.NME_DEFAULT_CLOB || '';
+    if (returnAll) {
+      return section;
+    }
+    if (section?.NME_CLEAR_IND === 'Y') {
+      return '';
+    }
+    return section?.NME_OVERRIDE_CLOB || section?.NME_DEFAULT_CLOB;
   };
 
   const modCableValue = (key, override, clear) => {
     const sections = noteCable.map(c => {
-      if (c.ME_DESC === key) {
+      if ((Array.isArray(key) && key.includes(c.ME_DESC)) || c.ME_DESC === key) {
         return {
           ...c,
           NME_OVERRIDE_CLOB: override || '',
-          NME_CLEAR_IND: clear ? 'N' : 'Y',
+          NME_CLEAR_IND: clear ? 'Y' : 'N',
         };
       }
       return c;
     });
     setNoteCable(sections);
   };
+
+  // const modParagraphValue = (key, description, clear) => {
+  //   const sections = noteCable.map(c => {
+  //     if ((Array.isArray(key) && key.includes(c.ME_DESC)) || c.ME_DESC === key) {
+  //       return {
+  //         ...c,
+  //         NME_OVERRIDE_CLOB: override || '',
+  //         NME_CLEAR_IND: clear ? 'Y' : 'N',
+  //       };
+  //     }
+  //     return c;
+  //   });
+  //   setNoteCable(sections);
+  // };
 
   const freeTextContainer = (children, meDescs) => {
     let tabSeqNums = '';
@@ -119,6 +139,7 @@ const NotificationCard = (props) => {
                   I_NME_UPDATE_DATE: tabUpdateDates,
                 },
                 () => fetchNoteData(),
+                memo,
               ));
             }}
           >
@@ -130,6 +151,7 @@ const NotificationCard = (props) => {
               dispatch(rebuildNotification(
                 { I_NM_SEQ_NUM: note?.NM_SEQ_NUM },
                 () => fetchNoteData(),
+                memo,
               ));
             }}
           >
