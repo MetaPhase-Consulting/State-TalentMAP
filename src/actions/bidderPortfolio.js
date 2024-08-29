@@ -223,12 +223,6 @@ export function getUnassignedBidderTypes(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
-      if (includes(UAvalues, 'noPanel')) {
-        query$.noPanel = true;
-      }
-      if (includes(UAvalues, 'noBids')) {
-        query$.noBids = true;
-      }
     }
 
     const query$$ = stringify(query$);
@@ -313,12 +307,6 @@ export function bidderPortfolioFetchData(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
-      // if (includes(UAvalues, 'noPanel')) {
-      //   // query$.noPanel = true;
-      // }
-      // if (includes(UAvalues, 'noBids')) {
-      //   // query$.noBids = true;
-      // }
     }
 
     // hasHandshake is a special case where we need to change the query to match the API for cusp_bidders
