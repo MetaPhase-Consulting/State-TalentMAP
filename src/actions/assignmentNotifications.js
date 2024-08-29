@@ -11,7 +11,7 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
-import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
+import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_MEMO_ERROR, REBUILD_MEMO_ERROR_TITLE, REBUILD_MEMO_SUCCESS, REBUILD_MEMO_SUCCESS_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
 import { history } from '../store';
 
 
@@ -236,7 +236,7 @@ export function editNoteCable(data) {
 // ================ REBUILD NOTIFICATION ================
 
 let cancelRebuildNotification;
-export function rebuildNotification(data, onSuccess) {
+export function rebuildNotification(data, onSuccess, memo) {
   return (dispatch) => {
     if (cancelRebuildNotification) {
       cancelRebuildNotification('cancel');
@@ -246,20 +246,34 @@ export function rebuildNotification(data, onSuccess) {
         cancelToken: new CancelToken((c) => { cancelRebuildNotification = c; }),
       })
       .then(() => {
-        dispatch(toastSuccess(
-          REBUILD_NOTIFICATION_SUCCESS,
-          REBUILD_NOTIFICATION_SUCCESS_TITLE,
-        ));
+        if (memo) {
+          dispatch(toastSuccess(
+            REBUILD_MEMO_SUCCESS,
+            REBUILD_MEMO_SUCCESS_TITLE,
+          ));
+        } else {
+          dispatch(toastSuccess(
+            REBUILD_NOTIFICATION_SUCCESS,
+            REBUILD_NOTIFICATION_SUCCESS_TITLE,
+          ));
+        }
         if (onSuccess) {
           onSuccess();
         }
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
-          dispatch(toastError(
-            REBUILD_NOTIFICATION_ERROR,
-            REBUILD_NOTIFICATION_ERROR_TITLE,
-          ));
+          if (memo) {
+            dispatch(toastError(
+              REBUILD_MEMO_ERROR,
+              REBUILD_MEMO_ERROR_TITLE,
+            ));
+          } else {
+            dispatch(toastError(
+              REBUILD_NOTIFICATION_ERROR,
+              REBUILD_NOTIFICATION_ERROR_TITLE,
+            ));
+          }
         }
       });
   };
