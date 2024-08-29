@@ -240,8 +240,6 @@ export function getUnassignedBidderTypes(query = {}) {
           batch(() => {
             if (tempData.length === 0) {
               dispatch(bidderPortfolioFetchDataSuccess([]));
-            } else {
-              dispatch(bidderPortfolioFetchDataSuccess(tempData));
             }
             dispatch(unassignedbidderTypeSuccess(tempData));
             const newQuery = { ...query$, perdet_seq_num: tempData.toString() };
