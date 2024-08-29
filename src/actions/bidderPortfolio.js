@@ -223,12 +223,6 @@ export function getUnassignedBidderTypes(query = {}) {
       if (includes(UAvalues, 'noHandshake')) {
         query$.hasHandshake = false;
       }
-      if (includes(UAvalues, 'noPanel')) {
-        query$.noPanel = true;
-      }
-      if (includes(UAvalues, 'noBids')) {
-        query$.noBids = true;
-      }
     }
 
     const query$$ = stringify(query$);
@@ -248,7 +242,7 @@ export function getUnassignedBidderTypes(query = {}) {
             return;
           }
           dispatch(unassignedbidderTypeSuccess(data));
-          const newQuery = { ...query, perdet_seq_num: data.toString() };
+          const newQuery = { ...query, perdet_seq_num: tempData.toString() };
           const query$$$ = stringify(newQuery);
           const secondEndpoint = '/fsbid/client/';
           const url = `${secondEndpoint}?${query$$$}`;
