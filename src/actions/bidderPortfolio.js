@@ -251,7 +251,7 @@ export function getUnassignedBidderTypes(query = {}) {
               return;
             }
             dispatch(unassignedbidderTypeSuccess(data));
-            const newQuery = { ...query$, perdet_seq_num: data };
+            const newQuery = { ...query$, perdet_seq_num: join(data, ',') };
             const query$$$ = stringify(newQuery);
             const secondEndpoint = '/fsbid/client/';
             const url = `${secondEndpoint}?${query$$$}`;
