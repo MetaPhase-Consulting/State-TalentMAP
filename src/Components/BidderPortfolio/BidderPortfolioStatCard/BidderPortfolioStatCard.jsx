@@ -6,7 +6,6 @@ import { Cusp, Eligible } from 'Components/Ribbon';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
-import { checkFlag } from 'flags';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
@@ -23,7 +22,7 @@ import AddToInternalListButton from '../AddToInternalListButton';
 
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
   const dispatch = useDispatch();
-  const showCDOD30 = checkFlag('flags.CDOD30');
+  const showCDOD30 = true;
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
@@ -45,13 +44,14 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const [altEmail, setAltEmail] = useState('');
   const [verifyComments, setVerifyComments] = useState('');
   const [verifyAltEmail, setVerifyAltEmail] = useState('');
+  const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
   const eligible = !included;
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
-  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+  const bidderPortfolioSeasons = useSelector(state => state.bidderPortfolioSeasons);
 
   const editClient = (e) => {
     e.preventDefault();
@@ -64,7 +64,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
 
     const clientData = {
       per_seq_number: perSeqNum,
-      bid_seasons: currentSeasons,
+      bid_seasons: currentSeason,
       hru_id: hruID,
       comments: verifyComments,
       email: verifyAltEmail,
@@ -101,6 +101,10 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     setVerifyComments('');
     setVerifyAltEmail('');
     setEdit(false);
+  };
+
+  const onSeasonChange = (e) => {
+    setCurrentSeason(Number(e.target.value));
   };
 
   const ribbons = (
@@ -229,11 +233,22 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
         {
           showMore && showCDOD30 &&
           <div>
+            <div className="filter-div">
+              <div className="label">Bid Season:</div>
+              <select onChange={onSeasonChange} disabled={!edit}>
+                <option key={0} value={0}>Please Select A Season</option>
+                {
+                  bidderPortfolioSeasons.map(season => (
+                    <option key={season.id} value={season.id}>{season.description}</option>
+                  ))
+                }
+              </select>
+            </div>
             <dt>Comments:</dt>
-            <div className="stat-card-data-point stat-card-comments">
+            <div classyungame="stat-card-data-point stat-card-comments">
               <TextareaAutosize
                 className="stat-card-textarea"
-                disabled={!edit}
+                disabled={!edit || currentSeason === 0}
                 maxLength="255"
                 name="note"
                 placeholder="No Notes"
@@ -247,7 +262,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
           showSaveAndCancel && showCDOD30 &&
           <div className="stat-card-btn-container">
             <button className="stat-card-cancel-btn" onClick={onCancel}>Cancel</button>
-            <button onClick={saveEdit} disabled={!verifyComments && !verifyAltEmail}>Save</button>
+            <button onClick={saveEdit} disabled={currentSeason === 0 || (!verifyComments && !verifyAltEmail)}>Save</button>
           </div>
         }
         {
