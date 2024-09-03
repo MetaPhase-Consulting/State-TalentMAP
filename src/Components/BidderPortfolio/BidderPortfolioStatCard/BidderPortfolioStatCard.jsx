@@ -245,7 +245,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
               </select>
             </div>
             <dt>Comments:</dt>
-            <div classyungame="stat-card-data-point stat-card-comments">
+            <div className="stat-card-data-point stat-card-comments">
               <TextareaAutosize
                 className="stat-card-textarea"
                 disabled={!edit || currentSeason === 0}
