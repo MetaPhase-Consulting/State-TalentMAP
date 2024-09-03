@@ -11,7 +11,7 @@ import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
 import TextareaAutosize from 'react-textarea-autosize';
-import { saveBidderPortfolioSelections } from 'actions/bidderPortfolio';
+import { fetchBidderPortfolio, saveBidderPortfolioSelections } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import InteractiveElement from 'Components/InteractiveElement';
 
@@ -59,6 +59,12 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     setEdit(previous => !previous);
   };
 
+  const getBidderPortfolio = () => {
+    const query = this.createSearchQuery();
+    query.hru_id__in = hruID;
+    dispatch(fetchBidderPortfolio(query));
+  };
+
   const saveEdit = () => {
     setComments(verifyComments);
     setAltEmail(verifyAltEmail);
@@ -71,6 +77,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
       email: verifyAltEmail,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
+    getBidderPortfolio();
     setEdit(false);
   };
 
