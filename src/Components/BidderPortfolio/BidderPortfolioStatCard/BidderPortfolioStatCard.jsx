@@ -101,6 +101,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const onCancel = () => {
     setVerifyComments('');
     setVerifyAltEmail('');
+    setComments('');
     setEdit(false);
   };
 
@@ -253,6 +254,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
                 maxLength="255"
                 name="note"
                 placeholder="No Notes"
+                value={verifyComments}
                 defaultValue={!comments ? '' : comments}
                 onChange={(e) => setVerifyComments(e.target.value)}
               />

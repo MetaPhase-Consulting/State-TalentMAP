@@ -101,6 +101,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const onCancel = () => {
     setVerifyComments('');
     setVerifyAltEmail('');
+    setComments('');
     setEdit(false);
   };
 
@@ -255,6 +256,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
               maxLength="255"
               name="note"
               placeholder="No Notes"
+              value={verifyComments}
               defaultValue={!comments ? '' : comments}
               onChange={(e) => setVerifyComments(e.target.value)}
             />
