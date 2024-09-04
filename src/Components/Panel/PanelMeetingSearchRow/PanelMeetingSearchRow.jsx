@@ -35,7 +35,13 @@ const PanelMeetingSearchRow = ({ isCDO, pm, selectAll }) => {
         <div className="button-box-container">
           {
             showPanelMeetingsAgendas &&
-            <LinkButton className="button-box" toLink={`/profile/${userRole}/panelmeetingagendas/${pmSeqNum}`}>View</LinkButton>
+            <LinkButton
+              className="button-box"
+              toLink={{
+                pathname: `/profile/${userRole}/panelmeetingagendas`,
+                state: { panelMeetings: [pm] },
+              }}
+            >View</LinkButton>
           }
           {
             isSuperUser && showEditPanelMeeting &&
