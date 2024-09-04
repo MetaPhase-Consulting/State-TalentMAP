@@ -410,7 +410,7 @@ export function saveBidderPortfolioSelections(data = {}) {
       .catch(() => {
         dispatch(toastError(BIDDER_PORTFOLIO_UPDATE_ERROR));
         dispatch(bidderPortfolioSaveSeasonsHasErrored(true));
-        dispatch(bidderPortfolioIsLoading(false));
+        dispatch(bidderPortfolioSaveSeasonsIsLoading(false));
       });
   };
 }
