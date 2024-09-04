@@ -1,28 +1,25 @@
-import PropTypes from 'prop-types';
+import PropTypes, { arrayOf, string } from 'prop-types';
 import FA from 'react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import InteractiveElement from 'Components/InteractiveElement';
 import { filter, flatten, get, has, includes, isEmpty, sortBy, uniqBy } from 'lodash';
+import { format } from 'date-fns-v2';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle/ProfileSectionTitle';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { panelMeetingAgendasExport, panelMeetingAgendasFetchData, savePanelMeetingAgendasSelections } from 'actions/panelMeetingAgendas';
-import { panelMeetingsFetchData } from 'actions/panelMeetings';
+import { panelMeetingAgendasFetchData, savePanelMeetingAgendasSelections } from 'actions/panelMeetingAgendas';
 import { useDataLoader } from 'hooks';
 import { filtersFetchData } from 'actions/filters/filters';
 import Fuse from 'fuse.js';
 import Spinner from 'Components/Spinner';
-import AgendaItemRow from 'Components/Agenda/AgendaItemRow';
-import PanelMeetingTracker from 'Components/Panel/PanelMeetingTracker';
-import { meetingCategoryMap } from 'Components/Panel/Constants';
-import ExportButton from 'Components/ExportButton';
-import PrintPanelMeetingAgendas from './PrintPanelMeetingAgendas';
-import api from '../../../api';
 import ScrollUpButton from '../../ScrollUpButton';
 import BackButton from '../../BackButton';
+import AgendaItemRow from '../../Agenda/AgendaItemRow';
+import { PANEL_MEETING } from '../../../Constants/PropTypes';
+import { meetingCategoryMap } from '../Constants';
+import api from '../../../api';
 
 const fuseOptions = {
   shouldSort: false,
@@ -62,39 +59,45 @@ const fuseOptions = {
 };
 
 const PanelMeetingAgendas = (props) => {
-  // eslint-disable-next-line no-unused-vars
-  const { isAO, isCDO } = props;
+  const { isCDO, location } = props;
 
-  const pmSeqNum = get(props, 'match.params.pmID');
-  const panelMeetingData = useSelector(state => state.panelMeetings);
-  const panelMeetingsIsLoading = useSelector(state => state.panelMeetingsFetchDataLoading);
-  const panelMeetingsHasErrored = useSelector(state => state.panelMeetingsFetchDataErrored);
+  const panelMeetings = location.state?.panelMeetings || [];
+  const pmSeqNums = panelMeetings.map(pm => pm.pmi_pm_seq_num);
 
-  const agendasCategorized = {
-    Review: [],
-    'Off Panel': [],
-    Discuss: [],
-    Separations: [],
-    Express: [],
-    'Volunteer Cable': [],
-    Addendum: [],
-    'Addendum(Volunteer Cable)': [],
-    'Position Challenge': [],
-    'Employee Challenge': [],
-  };
+  const isAgendaLoading = useSelector(state => state.panelMeetingAgendasFetchDataLoading);
+  const agendas = useSelector(state => state.panelMeetingAgendas);
+  const [agendas$, setAgendas$] = useState(agendas);
+  const agendasByPanelMeeting = panelMeetings.map((pm) => {
+    // Filter agendas by panel meeting sequence number
+    const filteredAgendas = agendas$.filter((agenda) => agenda.pmi_pm_seq_num === pm.pmi_pm_seq_num);
+
+    // Initialize an empty object with keys from meetingCategoryMap
+    const categorizedAgendas = Object.keys(meetingCategoryMap).reduce((acc, key) => {
+      acc[meetingCategoryMap[key]] = [];
+      return acc;
+    }, {});
+
+    // Iterate over filteredAgendas and categorize them
+    filteredAgendas.forEach((agenda) => {
+      const category = meetingCategoryMap[agenda.pmi_mic_code];
+      if (category) {
+        categorizedAgendas[category].push(agenda);
+      }
+    });
+
+    return {
+      ...pm,
+      agendas: categorizedAgendas,
+    };
+  });
+  const isAllCategoriesEmpty = (agenda) => Object.values(agenda).every(category => category.length === 0);
 
   const childRef = useRef();
   const dispatch = useDispatch();
 
-  // TODO: Re-enable skill and bureau picky once implemented
-
-  const genericFiltersIsLoading = useSelector(state => state.filtersIsLoading);
-
   const userSelections = useSelector(state => state.panelMeetingAgendasSelections);
+  const genericFiltersIsLoading = useSelector(state => state.filtersIsLoading);
   const genericFilters = useSelector(state => state.filters);
-  const isAgendaLoading = useSelector(state => state.panelMeetingAgendasFetchDataLoading);
-  const agendas = useSelector(state => state.panelMeetingAgendas);
-  const [agendas$, setAgendas$] = useState(agendas);
 
   const genericFilters$ = get(genericFilters, 'filters') || [];
   const bureaus = genericFilters$.find(f => get(f, 'item.description') === 'region');
@@ -121,7 +124,6 @@ const PanelMeetingAgendas = (props) => {
     includes([orgsLoading, remarksLoading, statusLoading,
       actionLoading, categoryLoading], true);
 
-  const [showPanelMeetingInfo, setShowPanelMeetingInfo] = useState(false);
   const [selectedBureaus, setSelectedBureaus] = useState(get(userSelections, 'selectedBureaus') || []);
   const [selectedOrgs, setSelectedOrgs] = useState(get(userSelections, 'selectedOrgs') || []);
   const [selectedCategories, setSelectedCategories] = useState(get(userSelections, 'selectedCategories') || []);
@@ -133,7 +135,6 @@ const PanelMeetingAgendas = (props) => {
   const [selectedSkills, setSelectedSkills] = useState(get(userSelections, 'selectedSkills') || []);
   const [textSearch, setTextSearch] = useState(get(userSelections, 'textSearch') || '');
   const [clearFilters, setClearFilters] = useState(false);
-  const [exportIsLoading, setExportIsLoading] = useState(false);
   const [printView, setPrintView] = useState(false);
 
   const isLoading = genericFiltersIsLoading || panelFiltersIsLoading || isAgendaLoading;
@@ -239,9 +240,8 @@ const PanelMeetingAgendas = (props) => {
   };
 
   useEffect(() => {
-    dispatch(panelMeetingAgendasFetchData({}, pmSeqNum));
+    dispatch(panelMeetingAgendasFetchData({ pmipmseqnum: pmSeqNums }));
     dispatch(filtersFetchData(genericFilters));
-    dispatch(panelMeetingsFetchData({ id: pmSeqNum }));
   }, []);
 
   useEffect(() => {
@@ -262,13 +262,6 @@ const PanelMeetingAgendas = (props) => {
     selectedSkills,
     textSearch,
   ]);
-
-  function categorizeAgendas() {
-    agendas$.forEach(a => {
-      agendasCategorized[meetingCategoryMap[get(a, 'pmi_mic_code')]].push(a);
-    });
-    return agendasCategorized;
-  }
 
   function renderSelectionList({ items, selected, ...rest }) {
     let codeOrText = 'code';
@@ -330,29 +323,18 @@ const PanelMeetingAgendas = (props) => {
     setClearFilters(false);
   };
 
-  const exportPanelMeetingAgendas = () => {
-    if (!exportIsLoading) {
-      setExportIsLoading(true);
-      panelMeetingAgendasExport(pmSeqNum)
-        .then(() => {
-          setExportIsLoading(false);
-        })
-        .catch(() => {
-          setExportIsLoading(false);
-        });
-    }
-  };
-
   const getOverlay = () => {
     let overlay;
     if (isLoading) overlay = <Spinner type="bureau-filters" size="small" />;
     if (printView) {
       overlay = (
-        <PrintPanelMeetingAgendas
-          panelMeetingData={panelMeetingData}
-          closePrintView={() => setPrintView(false)}
-          agendas={agendas$}
-        />
+        // @TODO update PrintPanelMeetingAgendas
+        // <PrintPanelMeetingAgendas
+        //   panelMeetingData={panelMeetingData}
+        //   closePrintView={() => setPrintView(false)}
+        //   agendas={agendas$}
+        // />
+        <div> PRINT VIEW WIP </div>
       );
     }
     return overlay;
@@ -506,55 +488,56 @@ const PanelMeetingAgendas = (props) => {
           </div>
           <ScrollUpButton />
           {
-            <div className="panel-meeting-agendas-rows-container">
-              <InteractiveElement title="Toggle Panel Information" onClick={() => setShowPanelMeetingInfo(!showPanelMeetingInfo)}>
-                <div className={`mt-30 mbl-20 ml-20 collapsible-container ${showPanelMeetingInfo ? 'collapsible-container-expanded' : ''}`}>
-                  <div className={`collapsible-title ${showPanelMeetingInfo ? 'collapsible-title-expanded' : ''}`}>
-                    Panel Meeting Information
-                  </div>
-                  {
-                    !panelMeetingsIsLoading && !panelMeetingsHasErrored &&
-                     <div className={`collapsible-section ${showPanelMeetingInfo ? 'showCollapse' : 'hideCollapse'}`}>
-                       <PanelMeetingTracker panelMeeting={get(panelMeetingData, 'results.[0]')} />
-                     </div>
-                  }
-                </div>
-              </InteractiveElement>
+            <div className="panel-meeting-agendas-container">
               <div className="total-results">
                 <div>
-                  {/* eslint-disable-next-line max-len */}
                   Viewing <strong>{agendas$.length}</strong> of <strong>{agendas.length}</strong> Total Results
                 </div>
                 { <button onClick={() => setPrintView(true)}>Print View</button> }
-                {
-                  false &&
-                  <div className="export-button-container">
-                    <ExportButton
-                      onClick={exportPanelMeetingAgendas}
-                      isLoading={exportIsLoading}
-                      disabled
-                    />
-                  </div>
-                }
               </div>
               {
-                Object.keys(categorizeAgendas()).map(header => (
-                  <>
-                    <div className="pma-category-header">{header}</div>
-                    <div className="agenda-item-row-container">
-                      {
-                        agendasCategorized[header].map(result => (
-                          <AgendaItemRow
-                            agenda={result}
-                            key={result.id}
-                            isCDO={isCDO}
-                            isPanelMeetingView
-                          />
-                        ))
-                      }
+                agendasByPanelMeeting.map((pm) => {
+                  // If all categories are empty, skip this pm
+                  if (isAllCategoriesEmpty(pm.agendas)) {
+                    return null;
+                  }
+                  // Find panel meeting date
+                  const panelMeetingDate = pm.panelMeetingDates.find(pmd => pmd.mdt_code === 'MEET');
+                  return (
+                    <div className="pma-pm-container" key={pm.pmi_pm_seq_num}>
+                      <div className="pm-header">
+                        {pm.pmt_code} {format(new Date(panelMeetingDate.pmd_dttm), 'MM/dd/yy')} - {pm.pms_desc_text}
+                      </div>
+                      <div className="pm-agendas-container">
+                        {
+                          Object.keys(pm.agendas).map((category) => (
+                            <div key={category}>
+                              <div className="category-header">
+                                {category}
+                              </div>
+                              <div className="agenda-item-row-container">
+                                {
+                                  pm.agendas[category].length > 0 ? (
+                                    pm.agendas[category].map(agenda => (
+                                      <AgendaItemRow
+                                        agenda={agenda}
+                                        key={agenda.id}
+                                        isCDO={isCDO}
+                                        isPanelMeetingView
+                                      />
+                                    ))
+                                  ) : (
+                                    <div className="ai-empty-row">(No Agendas)</div>
+                                  )
+                                }
+                              </div>
+                            </div>
+                          ))
+                        }
+                      </div>
                     </div>
-                  </>
-                ))
+                  );
+                })
               }
             </div>
           }
@@ -565,12 +548,11 @@ const PanelMeetingAgendas = (props) => {
 
 PanelMeetingAgendas.propTypes = {
   isCDO: PropTypes.bool,
-  isAO: PropTypes.bool,
+  location: PropTypes.shape({ pathname: string, state: { panelMeetings: arrayOf(PANEL_MEETING) } }).isRequired,
 };
 
 PanelMeetingAgendas.defaultProps = {
   isCDO: false,
-  isAO: false,
 };
 
 export default withRouter(PanelMeetingAgendas);
