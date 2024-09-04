@@ -404,7 +404,7 @@ export function saveBidderPortfolioSelections(data = {}) {
           dispatch(bidderPortfolioSaveSeasonsHasErrored(false));
           dispatch(bidderPortfolioSaveSeasonsSuccess(res));
           dispatch(toastSuccess(BIDDER_PORTFOLIO_UPDATE_SUCCESS));
-          dispatch(bidderPortfolioIsLoading(false));
+          dispatch(bidderPortfolioSaveSeasonsIsLoading(false));
         });
       })
       .catch(() => {
