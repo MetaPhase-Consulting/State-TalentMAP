@@ -43,8 +43,6 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const [included, setIncluded] = useState(bidderType === 'cusp');
   const [comments, setComments] = useState('');
   const [altEmail, setAltEmail] = useState('');
-  const [verifyComments, setVerifyComments] = useState('');
-  const [verifyAltEmail, setVerifyAltEmail] = useState('');
   const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
@@ -60,15 +58,12 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   };
 
   const saveEdit = () => {
-    setComments(verifyComments);
-    setAltEmail(verifyAltEmail);
-
     const clientData = {
       per_seq_number: perSeqNum,
       bid_seasons: [currentSeason],
       hru_id: hruID,
-      comments: verifyComments,
-      email: verifyAltEmail,
+      comments,
+      email: altEmail,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);
@@ -99,8 +94,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   };
 
   const onCancel = () => {
-    setVerifyComments('');
-    setVerifyAltEmail('');
+    setAltEmail('');
     setComments('');
     setEdit(false);
   };
@@ -211,7 +205,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
                   type="text"
                   defaultValue=""
                   placeholder="example@gmail.com"
-                  onChange={(e) => setVerifyAltEmail(e.target.value)}
+                  onChange={(e) => setAltEmail(e.target.value)}
                 />
               }
             </div>
@@ -256,9 +250,9 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
               maxLength="255"
               name="note"
               placeholder="No Notes"
-              value={verifyComments}
+              value={comments}
               defaultValue={!comments ? '' : comments}
-              onChange={(e) => setVerifyComments(e.target.value)}
+              onChange={(e) => setComments(e.target.value)}
             />
           </div>
         </div>
@@ -267,7 +261,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
         showSaveAndCancel && showEdit && showCDOD30 &&
         <div className="stat-card-btn-container">
           <button onClick={onCancel}>Cancel</button>
-          <button onClick={saveEdit} disabled={currentSeason === 0 || (!verifyComments && !verifyAltEmail)}>Save</button>
+          <button onClick={saveEdit} disabled={currentSeason === 0 || (!comments && !altEmail)}>Save</button>
         </div>
       }
       {

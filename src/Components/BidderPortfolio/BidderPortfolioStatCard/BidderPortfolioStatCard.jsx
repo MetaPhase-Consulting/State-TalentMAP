@@ -6,7 +6,7 @@ import { Cusp, Eligible } from 'Components/Ribbon';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
-import { checkFlag } from 'flags';
+// import { checkFlag } from 'flags';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
@@ -23,7 +23,7 @@ import AddToInternalListButton from '../AddToInternalListButton';
 
 const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewType }) => {
   const dispatch = useDispatch();
-  const showCDOD30 = checkFlag('flags.CDOD30');
+  const showCDOD30 = true;
   const currentAssignmentText = get(userProfile, 'pos_location');
   const clientClassifications = get(userProfile, 'classifications');
   const perdet = get(userProfile, 'perdet_seq_number');
@@ -43,8 +43,6 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState('');
   const [altEmail, setAltEmail] = useState('');
-  const [verifyComments, setVerifyComments] = useState('');
-  const [verifyAltEmail, setVerifyAltEmail] = useState('');
   const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
@@ -60,15 +58,12 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   };
 
   const saveEdit = () => {
-    setComments(verifyComments);
-    setAltEmail(verifyAltEmail);
-
     const clientData = {
       per_seq_number: perSeqNum,
       bid_seasons: [currentSeason],
       hru_id: hruID,
-      comments: verifyComments,
-      email: verifyAltEmail,
+      comments,
+      email: altEmail,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);
@@ -99,8 +94,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   };
 
   const onCancel = () => {
-    setVerifyComments('');
-    setVerifyAltEmail('');
+    setAltEmail('');
     setComments('');
     setEdit(false);
   };
@@ -208,7 +202,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
                   type="text"
                   defaultValue=""
                   placeholder="example@gmail.com"
-                  onChange={(e) => setVerifyAltEmail(e.target.value)}
+                  onChange={(e) => setAltEmail(e.target.value)}
                 />
               }
             </div>
@@ -254,9 +248,9 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
                 maxLength="255"
                 name="note"
                 placeholder="No Notes"
-                value={verifyComments}
+                value={comments}
                 defaultValue={!comments ? '' : comments}
-                onChange={(e) => setVerifyComments(e.target.value)}
+                onChange={(e) => setComments(e.target.value)}
               />
             </div>
           </div>
@@ -265,7 +259,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
           showSaveAndCancel && showCDOD30 &&
           <div className="stat-card-btn-container">
             <button className="stat-card-cancel-btn" onClick={onCancel}>Cancel</button>
-            <button onClick={saveEdit} disabled={currentSeason === 0 || (!verifyComments && !verifyAltEmail)}>Save</button>
+            <button onClick={saveEdit} disabled={currentSeason === 0 || (!comments && !altEmail)}>Save</button>
           </div>
         }
         {
