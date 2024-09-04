@@ -11,6 +11,7 @@ import { toastError } from './toast';
 
 let cancelCDOs;
 let cancelPortfolio;
+let cancelSave;
 
 export function bidderPortfolioSelectedSeasons(arr = []) {
   return {
@@ -369,16 +370,20 @@ export function bidderPortfolioSelections(queryObject) {
   return (dispatch) => dispatch(bidderPortfolioSelectionsSaveSuccess(queryObject));
 }
 
-export function saveBidderPortfolioSelections(client) {
+export function saveBidderPortfolioSelections(data = {}) {
   return (dispatch) => {
+    if (cancelSave) { cancelSave('cancel'); }
     dispatch(bidderPortfolioSeasonsIsLoading(true));
     dispatch(bidderPortfolioSeasonsHasErrored(false));
-    api()
-      .post('/fsbid/client/', client)
-      .then(({ data }) => {
+
+    const endpoint = '/fsbid/client/update/';
+    api().post(endpoint, data, {
+      cancelToken: new CancelToken((c) => { cancelSave = c; }),
+    })
+      .then(({ res }) => {
         batch(() => {
           dispatch(bidderPortfolioSeasonsHasErrored(false));
-          dispatch(bidderPortfolioSeasonsSuccess(data));
+          dispatch(bidderPortfolioSeasonsSuccess(res));
           dispatch(toastSuccess(BIDDER_PORTFOLIO_ADD_SUCCESS));
           dispatch(bidderPortfolioIsLoading(false));
         });
