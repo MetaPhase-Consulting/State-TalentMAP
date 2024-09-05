@@ -29,7 +29,7 @@ export const ENDPOINT_PARAMS = {
   hardToFill: 'htf_indicator',
   criticalNeed: 'cn_indicator',
   ordering: 'ordering',
-  availTeleworkPos: 'avail_telework_pos',
+  pvEleTelework: 'pv_ele_telework',
 };
 
 export const ENDPOINT_PARAMS_TANDEM = {
