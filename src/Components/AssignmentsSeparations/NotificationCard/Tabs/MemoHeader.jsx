@@ -1,32 +1,34 @@
-import { useState } from 'react';
 import Linkify from 'react-linkify';
 import TextareaAutosize from 'react-textarea-autosize';
+import PropTypes from 'prop-types';
 import { Row } from 'Components/Layout';
 import InputActions from '../Common/InputActions';
 
-const MemoHeader = () => {
-  const [toInput, setToInput] = useState('{{First Name, Last Name}}');
-  const [fromInput, setFromInput] = useState('{{First Name, Last Name}}');
-  const [subjectInput, setSubjectInput] = useState('Lorem ipsum dolar sit amet');
+const MemoHeader = (props) => {
+  const { getCableValue, modCableValue } = props;
 
   return (
     <div className="position-content position-form input-container">
       <div className="memo-input-container">
-        <InputActions />
+        <InputActions
+          keys={['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT']}
+          getCableValue={getCableValue}
+          modCableValue={modCableValue}
+        />
         <div className="position-form--label-input-container">
           <label htmlFor="drafting-office">To</label>
           <input
             id="to-input"
-            defaultValue={toInput}
-            onChange={(e) => setToInput(e.target.value)}
+            value={getCableValue('TO_ADDRESS')}
+            onChange={(e) => modCableValue('TO_ADDRESS', e.target.value)}
           />
         </div>
         <div className="position-form--label-input-container">
           <label htmlFor="drafting-office">From</label>
           <input
             id="from-input"
-            defaultValue={fromInput}
-            onChange={(e) => setFromInput(e.target.value)}
+            value={getCableValue('FROM_ADDRESS')}
+            onChange={(e) => modCableValue('FROM_ADDRESS', e.target.value)}
           />
         </div>
         <Row fluid className="position-content--description">
@@ -38,23 +40,29 @@ const MemoHeader = () => {
               maxLength="500"
               name="subject-input"
               placeholder="No Description"
-              defaultValue={subjectInput}
-              onChange={(e) => setSubjectInput(e.target.value)}
+              value={getCableValue('SUBJECT')}
+              onChange={(e) => modCableValue('SUBJECT', e.target.value)}
               className="enabled-input"
               draggable={false}
             />
           </Linkify>
           <div className="word-count">
-            {subjectInput?.length} / 500
+            {getCableValue('SUBJECT')?.length} / 500
           </div>
         </Row>
       </div>
-      <div className="position-form--actions">
-        <button onClick={() => { }}>Cancel</button>
-        <button onClick={() => { }}>Next</button>
-      </div>
     </div>
   );
+};
+
+MemoHeader.propTypes = {
+  getCableValue: PropTypes.func,
+  modCableValue: PropTypes.func,
+};
+
+MemoHeader.defaultProps = {
+  getCableValue: undefined,
+  modCableValue: undefined,
 };
 
 export default MemoHeader;

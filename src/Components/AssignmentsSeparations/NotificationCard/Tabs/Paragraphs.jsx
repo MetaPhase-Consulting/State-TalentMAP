@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
+import { Tooltip } from 'react-tippy';
 import TextareaAutosize from 'react-textarea-autosize';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
@@ -9,9 +10,7 @@ import CheckBox from '../../../CheckBox/CheckBox';
 import InputActions from '../Common/InputActions';
 
 const Paragraphs = (props) => {
-  const { paragraphs } = props;
-
-  const [previewText, setPreviewText] = useState('');
+  const { paragraphs, getCableValue, modCableValue } = props;
 
   // Instead of making a ton of variables for tracking the various input data for all
   // paragraphs, I made a data object array that tracks all the important information
@@ -22,7 +21,8 @@ const Paragraphs = (props) => {
 
   useEffect(() => {
     if (paragraphs) {
-      setParagraphDataObjects(paragraphs.map((p) => ({
+      const ordered = paragraphs.sort((a, b) => a.ORDER_NUM - b.ORDER_NUM);
+      setParagraphDataObjects(ordered.map((p) => ({
         id: p.NOTP_CODE,
         paragraph_title: p.NOTP_SHORT_DESC_TEXT,
         input: p.NOTP_DESC_TEXT,
@@ -52,11 +52,15 @@ const Paragraphs = (props) => {
 
   return (
     <div className="position-content position-form input-container">
-      <InputActions />
+      <InputActions
+        keys={['PARAGRAPHS']}
+        getCableValue={getCableValue}
+        modCableValue={modCableValue}
+      />
       <div className="mb-20">
         <span className="section-title">Chosen Paragraphs</span>
         {paragraphDataObjects.map(o => (
-          <div>
+          <div key={o.id}>
             <div className="chosen-paragraph">
               <div>
                 <CheckBox
@@ -76,7 +80,7 @@ const Paragraphs = (props) => {
             {paragraphDataObjects?.find(item => item.id === o.id)?.open &&
               <div>
                 <TextareaAutosize
-                  maxRows={4}
+                  maxRows={6}
                   minRows={4}
                   maxLength="500"
                   name={`${o.title}-input`}
@@ -92,21 +96,23 @@ const Paragraphs = (props) => {
       </div>
       <Row fluid className="position-content--description">
         <span className="definition-title">Preview Text</span>
-        <Linkify properties={{ target: '_blank' }}>
-          <TextareaAutosize
-            maxRows={4}
-            minRows={4}
-            maxLength="500"
-            name="preview-text"
-            placeholder="No Description"
-            defaultValue={previewText}
-            onChange={(e) => setPreviewText(e.target.value)}
-            className="enabled-input"
-            draggable={false}
-          />
-        </Linkify>
+        <Tooltip title="Save changes to generate new preview text.">
+          <Linkify properties={{ target: '_blank' }}>
+            <TextareaAutosize
+              maxRows={8}
+              minRows={4}
+              maxLength="500"
+              name="preview-text"
+              placeholder="No Description"
+              value={getCableValue('PARAGRAPHS')}
+              className="enabled-input"
+              draggable={false}
+              disabled
+            />
+          </Linkify>
+        </Tooltip>
         <div className="word-count">
-          {previewText?.length} / 500
+          {getCableValue('PARAGRAPHS')?.length} / 500
         </div>
       </Row>
     </div>
@@ -115,10 +121,14 @@ const Paragraphs = (props) => {
 
 Paragraphs.propTypes = {
   paragraphs: PropTypes.arrayOf(PropTypes.shape({})),
+  getCableValue: PropTypes.func,
+  modCableValue: PropTypes.func,
 };
 
 Paragraphs.defaultProps = {
   paragraphs: undefined,
+  getCableValue: PropTypes.func,
+  modCableValue: undefined,
 };
 
 export default Paragraphs;

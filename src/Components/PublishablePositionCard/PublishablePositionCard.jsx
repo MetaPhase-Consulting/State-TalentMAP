@@ -74,7 +74,7 @@ const PublishablePositionCard = ({
     /* eslint-enable quote-props */
   };
   if (DETO_RWA_FLAG()) {
-    sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.deto_rwa ? 'Eligible' : 'Not Eligible' });
+    sections.bodyPrimary.push({ 'RWA/DETO Eligible': data?.availTeleworkPos ? 'Eligible' : 'Not Eligible' });
   }
 
   // =============== Overview: Edit Mode ===============
