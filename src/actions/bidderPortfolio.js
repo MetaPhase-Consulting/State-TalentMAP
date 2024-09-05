@@ -221,9 +221,7 @@ export function getUnassignedBidderTypes(query = {}) {
     if (get(query, 'hasHandshake') === 'unassigned_filters') {
       query$ = omit(query$, ['hasHandshake']);
       const UAvalues = unassigned.map(a => a.value);
-      if (includes(UAvalues, 'noHandshake')) {
-        query$.hasHandshake = false;
-      }
+
       if (includes(UAvalues, 'noPanel')) {
         query$.noPanel = true;
       }
@@ -232,7 +230,7 @@ export function getUnassignedBidderTypes(query = {}) {
       }
     }
 
-    const filters = ['handshake', 'noHandshake', 'eligible_bidders', 'cusp_bidders',
+    const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
       'separations', 'languages'];
     // filters
     if (isArray(filters) && filters.length) {
@@ -274,7 +272,6 @@ export function getUnassignedBidderTypes(query = {}) {
               }),
             })
               .then(({ secondData }) => {
-                console.log(query$$$, secondData.count, secondEndpoint);
                 batch(() => {
                   dispatch(bidderPortfolioLastQuery(query$$$, secondData.count, secondEndpoint));
                   dispatch(bidderPortfolioFetchDataSuccess(secondData));
