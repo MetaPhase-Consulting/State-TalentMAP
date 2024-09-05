@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-// import { checkFlag } from 'flags';
+import { checkFlag } from 'flags';
 
 // BEGIN: KEEP THESE CONSTANTS TOGETHER IN THIS ORDER
 const POSITION_SEARCH_SORTS$ = {
@@ -102,20 +102,20 @@ BID_PORTFOLIO_SORTS.defaultSort = BID_PORTFOLIO_SORTS.options[0].value;
 export const BID_PORTFOLIO_FILTERS = {
   options: [
     { value: '', text: 'All' },
-    { value: 'handShake', text: 'Handshake' },
+    { value: 'handshake', text: 'Handshake' },
     { value: 'noHandshake', text: 'No Handshake' },
     { value: 'unassigned_filters', text: 'Unassigned Filters' },
   ],
 };
 
 BID_PORTFOLIO_FILTERS.defaultSort = BID_PORTFOLIO_FILTERS.options[0].value;
-// const showCDOD30 = checkFlag('flags.CDOD30');
-const showCDOD30 = true;
+const showCDOD30 = checkFlag('flags.CDOD30');
 if (showCDOD30) {
   BID_PORTFOLIO_FILTERS.options.push(
     { value: 'eligible_bidders', text: 'Eligible Bidders' },
     { value: 'cusp_bidders', text: 'Cusp Bidders' },
     { value: 'separations', text: 'Separations' },
+    // Will add these 2 next sprint
     // { value: 'classification', text: 'Classification' },
     // { value: 'panel_clients', text: 'Panel Clients' },
     { value: 'languages', text: 'Languages' },

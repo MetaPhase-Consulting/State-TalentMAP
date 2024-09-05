@@ -232,7 +232,7 @@ export function getUnassignedBidderTypes(query = {}) {
       }
     }
 
-    const filters = ['handShake', 'noHandshake', 'eligible_bidders', 'cusp_bidders',
+    const filters = ['handshake', 'noHandshake', 'eligible_bidders', 'cusp_bidders',
       'separations', 'languages'];
     // filters
     if (isArray(filters) && filters.length) {
