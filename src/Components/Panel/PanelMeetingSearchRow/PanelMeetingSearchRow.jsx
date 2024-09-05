@@ -60,7 +60,7 @@ const PanelMeetingSearchRow = ({ isCDO, pm, selectAll }) => {
         <div className="remarks-pill-container">
           {
             remarks.slice(0, expanded ? remarks.length : 8).map(remark => (
-              <RemarksPill key={remark.text} remark={remark} />
+              <RemarksPill key={`${pmSeqNum}-${remark.air_remark_text}`} remark={remark} />
             ))
           }
         </div>

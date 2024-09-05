@@ -117,7 +117,7 @@ const AgendaItemRow = props => {
               <div className="remarks-pill-container">
                 {
                   remarks.map(remark => (
-                    <RemarksPill key={remark.text} remark={remark} />
+                    <RemarksPill key={`${perdet$}-${remark.air_remark_text}`} remark={remark} />
                   ))
                 }
                 {agenda?.ahtCode &&
