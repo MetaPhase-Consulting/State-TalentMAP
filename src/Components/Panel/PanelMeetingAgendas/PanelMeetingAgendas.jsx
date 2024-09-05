@@ -1,4 +1,4 @@
-import PropTypes, { arrayOf, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -17,6 +17,7 @@ import Spinner from 'Components/Spinner';
 import ScrollUpButton from '../../ScrollUpButton';
 import BackButton from '../../BackButton';
 import AgendaItemRow from '../../Agenda/AgendaItemRow';
+import PrintPanelMeetingAgendas from './PrintPanelMeetingAgendas';
 import { PANEL_MEETING } from '../../../Constants/PropTypes';
 import { meetingCategoryMap } from '../Constants';
 import api from '../../../api';
@@ -91,7 +92,6 @@ const PanelMeetingAgendas = (props) => {
     };
   });
   const isAllCategoriesEmpty = (agenda) => Object.values(agenda).every(category => category.length === 0);
-
   const childRef = useRef();
   const dispatch = useDispatch();
 
@@ -328,13 +328,10 @@ const PanelMeetingAgendas = (props) => {
     if (isLoading) overlay = <Spinner type="bureau-filters" size="small" />;
     if (printView) {
       overlay = (
-        // @TODO update PrintPanelMeetingAgendas
-        // <PrintPanelMeetingAgendas
-        //   panelMeetingData={panelMeetingData}
-        //   closePrintView={() => setPrintView(false)}
-        //   agendas={agendas$}
-        // />
-        <div> PRINT VIEW WIP </div>
+        <PrintPanelMeetingAgendas
+          closePrintView={() => setPrintView(false)}
+          panelMeetingsWithAgendas={agendasByPanelMeeting}
+        />
       );
     }
     return overlay;
@@ -548,8 +545,12 @@ const PanelMeetingAgendas = (props) => {
 
 PanelMeetingAgendas.propTypes = {
   isCDO: PropTypes.bool,
-  location: PropTypes.shape({ pathname: string, state: { panelMeetings: arrayOf(PANEL_MEETING) } }).isRequired,
-};
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    state: PropTypes.shape({
+      panelMeetings: PropTypes.arrayOf(PANEL_MEETING),
+    }),
+  }).isRequired };
 
 PanelMeetingAgendas.defaultProps = {
   isCDO: false,
