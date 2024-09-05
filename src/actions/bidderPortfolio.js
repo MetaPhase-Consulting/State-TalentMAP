@@ -217,6 +217,7 @@ export function getUnassignedBidderTypes(query = {}) {
     if (!query$.bid_seasons || !query$.bid_seasons.length) {
       query$ = omit(query$, ['hasHandshake']); // hasHandshake requires at least one bid season
     }
+    // unassigned bidders
     if (get(query, 'hasHandshake') === 'unassigned_filters') {
       query$ = omit(query$, ['hasHandshake']);
       const UAvalues = unassigned.map(a => a.value);
@@ -229,6 +230,17 @@ export function getUnassignedBidderTypes(query = {}) {
       if (includes(UAvalues, 'noBids')) {
         query$.noBids = true;
       }
+    }
+
+    const filters = ['handShake', 'noHandshake', 'eligible_bidders', 'cusp_bidders',
+      'separations', 'languages'];
+    // filters
+    if (isArray(filters) && filters.length) {
+      filters.forEach(filter => {
+        if (get(query, 'hasHandshake') === filter) {
+          query$[filter] = true;
+        }
+      });
     }
 
     const query$$ = stringify(query$);
