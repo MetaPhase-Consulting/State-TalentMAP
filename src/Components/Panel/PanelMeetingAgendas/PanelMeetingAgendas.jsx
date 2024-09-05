@@ -92,6 +92,7 @@ const PanelMeetingAgendas = (props) => {
     };
   });
   const isAllCategoriesEmpty = (agenda) => Object.values(agenda).every(category => category.length === 0);
+
   const childRef = useRef();
   const dispatch = useDispatch();
 
@@ -494,10 +495,6 @@ const PanelMeetingAgendas = (props) => {
               </div>
               {
                 agendasByPanelMeeting.map((pm) => {
-                  // If all categories are empty, skip this pm
-                  if (isAllCategoriesEmpty(pm.agendas)) {
-                    return null;
-                  }
                   // Find panel meeting date
                   const panelMeetingDate = pm.panelMeetingDates.find(pmd => pmd.mdt_code === 'MEET');
                   return (
@@ -505,33 +502,39 @@ const PanelMeetingAgendas = (props) => {
                       <div className="pm-header">
                         {pm.pmt_code} {format(new Date(panelMeetingDate.pmd_dttm), 'MM/dd/yy')} - {pm.pms_desc_text}
                       </div>
-                      <div className="pm-agendas-container">
-                        {
-                          Object.keys(pm.agendas).map((category) => (
-                            <div key={category}>
-                              <div className="category-header">
-                                {category}
-                              </div>
-                              <div className="agenda-item-row-container">
-                                {
-                                  pm.agendas[category].length > 0 ? (
-                                    pm.agendas[category].map(agenda => (
-                                      <AgendaItemRow
-                                        agenda={agenda}
-                                        key={agenda.id}
-                                        isCDO={isCDO}
-                                        isPanelMeetingView
-                                      />
-                                    ))
-                                  ) : (
-                                    <div className="ai-empty-row">(No Agendas)</div>
-                                  )
-                                }
-                              </div>
-                            </div>
-                          ))
-                        }
-                      </div>
+                      {
+                        isAllCategoriesEmpty(pm.agendas) ? (
+                          <div className="pm-empty-row">No agendas</div>
+                        ) : (
+                          <div className="pm-agendas-container">
+                            {
+                              Object.keys(pm.agendas).map((category) => (
+                                <div key={category}>
+                                  <div className="category-header">
+                                    {category}
+                                  </div>
+                                  <div className="agenda-item-row-container">
+                                    {
+                                      pm.agendas[category].length > 0 ? (
+                                        pm.agendas[category].map(agenda => (
+                                          <AgendaItemRow
+                                            agenda={agenda}
+                                            key={agenda.id}
+                                            isCDO={isCDO}
+                                            isPanelMeetingView
+                                          />
+                                        ))
+                                      ) : (
+                                        <div className="ai-empty-row">(No Agendas)</div>
+                                      )
+                                    }
+                                  </div>
+                                </div>
+                              ))
+                            }
+                          </div>
+                        )
+                      }
                     </div>
                   );
                 })

@@ -26,6 +26,13 @@
         border-top: 2px solid $bg-gray-dark-2;
       }
 
+      .pm-empty-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 0 10px 0;
+        margin: 0 15px 0 20px;
+      }
+
       .pm-agendas-container {
         display: flex;
         flex-direction: column;
