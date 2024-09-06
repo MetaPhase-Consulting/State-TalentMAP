@@ -214,21 +214,16 @@ AgendaItemRow.propTypes = {
         custom_description: PropTypes.string,
       }),
     ),
-    // @TODO: console warning, getting object not array
-    cdo: PropTypes.arrayOf(
-      PropTypes.shape({
-        first_name: PropTypes.string,
-        last_name: PropTypes.string,
-      }),
-    ),
+    cdo: PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+    }),
     pay_plan_code: PropTypes.string,
     grade: PropTypes.string,
     combined_pp_grade: PropTypes.string,
-    org: PropTypes.arrayOf(
-      PropTypes.shape({
-        org_descr: PropTypes.string,
-      }),
-    ),
+    org: PropTypes.shape({
+      org_descr: PropTypes.string,
+    }),
     full_name: PropTypes.string,
     update_date: PropTypes.string,
     modifier_name: PropTypes.number,
