@@ -435,8 +435,8 @@ export const GET_PROFILE_MENU = () => MenuConfig([
     toggleMenuSection: true,
     expandedSection: true,
     roles: [
-      'ao_user',
       'superuser',
+      'ao_user',
     ],
     children: [
       {
@@ -573,6 +573,18 @@ export const GET_PROFILE_MENU = () => MenuConfig([
           ],
         } : null,
     ],
+  },
+  {
+    text: 'Entry Level',
+    icon: 'street-view',
+    toggleMenuSection: true,
+    expandedSection: true,
+    roles: [
+      'superuser',
+      'el_cdo',
+      'fsbid_admin',
+    ],
+    children: [],
   },
 ].filter(x => x));
 
