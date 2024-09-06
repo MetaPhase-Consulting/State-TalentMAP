@@ -275,6 +275,20 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         }
       }
       hidden={true}
+      iconName="street-view"
+      key="Entry Level"
+      search=""
+      title="Entry Level"
+      toggleMenuSection={[Function]}
+    />
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
       iconName="sitemap"
       key="FSBid Admin"
       search=""
@@ -766,6 +780,20 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         title="Panel Meetings"
       />
     </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
+      iconName="street-view"
+      key="Entry Level"
+      search=""
+      title="Entry Level"
+      toggleMenuSection={[Function]}
+    />
     <withRouter(NavLink)
       expandedSection={
         Object {
