@@ -584,7 +584,18 @@ export const GET_PROFILE_MENU = () => MenuConfig([
       'el_cdo',
       'fsbid_admin',
     ],
-    children: [],
+    children: [
+      {
+        text: 'Maintain Entry Level Positions',
+        route: '/profile/entrylevel/maintainpositions',
+        icon: ' fa-keyboard-o',
+        roles: [
+          'superuser',
+          'el_cdo',
+          'fsbid_admin',
+        ],
+      },
+    ],
   },
 ].filter(x => x));
 
