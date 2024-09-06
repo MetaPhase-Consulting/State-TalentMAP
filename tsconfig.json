@@ -45,9 +45,16 @@
 
     /* Module Resolution Options */
     // "moduleResolution": "node",                  /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    // "baseUrl": "./",                             /* Base directory to resolve non-absolute module names. */
-    "paths": {                                      /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
-
+    "baseUrl": "./",                                /* Base directory to resolve non-absolute module names. */
+    "paths": {
+      "actions/*": ["src/actions/*"],
+      "Components/*": ["src/Components/*"],
+      "Constants/*": ["src/Constants/*"],
+      "Containers/*": ["src/Containers/*"],
+      "reducers/*": ["src/reducers/*"],
+      "utilities": ["src/utilities.js"],
+      "flags": ["src/flags.js"],
+      "hooks": ["src/hooks.js"],
     },
     // "rootDirs": [],                              /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                             /* List of folders to include type definitions from. */
