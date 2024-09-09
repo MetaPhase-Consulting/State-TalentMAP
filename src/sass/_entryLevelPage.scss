@@ -1,0 +1,11 @@
+.entry-level-page {
+  .select-filter {
+    background-image: $angle-down-black;
+    background-position-x: calc(100% - 8px);
+    width: 240px;
+
+    &--disabled {
+        color: #b4b4b4;
+    }
+  }
+}
