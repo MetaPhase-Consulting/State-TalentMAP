@@ -247,8 +247,6 @@ export function getUnassignedBidderTypes(query = {}) {
     if (cancelUnnassignedBidders) {
       cancelUnnassignedBidders('cancel');
     }
-    dispatch(bidderPortfolioIsLoading(true));
-    dispatch(bidderPortfolioHasErrored(false));
     if (ids.length) {
       api().post(q, {
         cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
@@ -258,34 +256,39 @@ export function getUnassignedBidderTypes(query = {}) {
           const query$$$ = stringify(newQuery);
           const secondEndpoint = '/fsbid/client/';
           const url = `${secondEndpoint}?${query$$$}`;
+
           if (data.length === 0) {
-            dispatch(bidderPortfolioLastQuery(query$$$, 0, secondEndpoint));
-            dispatch(bidderPortfolioFetchDataSuccess([]));
+            dispatch(bidderPortfolioLastQuery(query$$$, data.count, secondEndpoint));
+            dispatch(bidderPortfolioFetchDataSuccess({ results: [], count: 0 }));
             dispatch(bidderPortfolioHasErrored(false));
             dispatch(bidderPortfolioIsLoading(false));
           } else {
-            dispatch(unassignedbidderTypeSuccess(data));
-            if (ids.length) {
-              api().get(url, {
-                cancelToken: new CancelToken((c) => {
-                  cancelPortfolio = c;
-                }),
+            api().get(url, {
+              cancelToken: new CancelToken((c) => {
+                cancelPortfolio = c;
+              }),
+            })
+              .then(({ secondData }) => {
+                batch(() => {
+                  dispatch(bidderPortfolioLastQuery(query$$$, secondData.count, secondEndpoint));
+                  dispatch(bidderPortfolioFetchDataSuccess(secondData));
+                  dispatch(bidderPortfolioHasErrored(false));
+                  dispatch(bidderPortfolioIsLoading(false));
+                });
               })
-                .then(({ secondData }) => {
-                  batch(() => {
-                    dispatch(bidderPortfolioLastQuery(query$$$, secondData.count, secondEndpoint));
-                    dispatch(bidderPortfolioFetchDataSuccess(secondData));
-                    dispatch(bidderPortfolioHasErrored(false));
-                    dispatch(bidderPortfolioIsLoading(false));
-                  });
-                })
-                .catch(() => {
+              .catch((m) => {
+                if (get(m, 'message') === 'cancel') {
                   batch(() => {
                     dispatch(bidderPortfolioHasErrored(false));
                     dispatch(bidderPortfolioIsLoading(true));
                   });
-                });
-            }
+                } else {
+                  batch(() => {
+                    dispatch(bidderPortfolioHasErrored(true));
+                    dispatch(bidderPortfolioIsLoading(false));
+                  });
+                }
+              });
           }
         });
     }
