@@ -11,7 +11,7 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
-import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_MEMO_ERROR, REBUILD_MEMO_ERROR_TITLE, REBUILD_MEMO_SUCCESS, REBUILD_MEMO_SUCCESS_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE } from '../Constants/SystemMessages';
+import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_MEMO_ERROR, REBUILD_MEMO_ERROR_TITLE, REBUILD_MEMO_SUCCESS, REBUILD_MEMO_SUCCESS_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE, SEND_MEMO_ERROR, SEND_MEMO_ERROR_TITLE, SEND_MEMO_SUCCESS, SEND_MEMO_SUCCESS_TITLE, SEND_NOTIFICATION_ERROR, SEND_NOTIFICATION_ERROR_TITLE, SEND_NOTIFICATION_SUCCESS, SEND_NOTIFICATION_SUCCESS_TITLE, UPDATE_MEMO_ERROR, UPDATE_MEMO_ERROR_TITLE, UPDATE_MEMO_SUCCESS, UPDATE_MEMO_SUCCESS_TITLE } from '../Constants/SystemMessages';
 import { history } from '../store';
 
 
@@ -204,10 +204,10 @@ export function noteCableRefFetchData(query = {}) {
   };
 }
 
-// ================ EDIT NOTIFICATION ================
+// ================ EDIT NOTIFICATION/MEMO ================
 
 let cancelEditNoteCable;
-export function editNoteCable(data) {
+export function editNoteCable(data, onSuccess, memo) {
   return (dispatch) => {
     if (cancelEditNoteCable) {
       cancelEditNoteCable('cancel');
@@ -217,17 +217,34 @@ export function editNoteCable(data) {
         cancelToken: new CancelToken((c) => { cancelEditNoteCable = c; }),
       })
       .then(() => {
-        dispatch(toastSuccess(
-          UPDATE_NOTIFICATION_SUCCESS,
-          UPDATE_NOTIFICATION_SUCCESS_TITLE,
-        ));
+        if (memo) {
+          dispatch(toastSuccess(
+            UPDATE_MEMO_SUCCESS,
+            UPDATE_MEMO_SUCCESS_TITLE,
+          ));
+        } else {
+          dispatch(toastSuccess(
+            UPDATE_NOTIFICATION_SUCCESS,
+            UPDATE_NOTIFICATION_SUCCESS_TITLE,
+          ));
+        }
+        if (onSuccess) {
+          onSuccess();
+        }
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
-          dispatch(toastError(
-            UPDATE_NOTIFICATION_ERROR,
-            UPDATE_NOTIFICATION_ERROR_TITLE,
-          ));
+          if (memo) {
+            dispatch(toastSuccess(
+              UPDATE_MEMO_ERROR,
+              UPDATE_MEMO_ERROR_TITLE,
+            ));
+          } else {
+            dispatch(toastError(
+              UPDATE_NOTIFICATION_ERROR,
+              UPDATE_NOTIFICATION_ERROR_TITLE,
+            ));
+          }
         }
       });
   };
@@ -272,6 +289,52 @@ export function rebuildNotification(data, onSuccess, memo) {
             dispatch(toastError(
               REBUILD_NOTIFICATION_ERROR,
               REBUILD_NOTIFICATION_ERROR_TITLE,
+            ));
+          }
+        }
+      });
+  };
+}
+
+// ================ SEND NOTIFICATION/MEMO ================
+
+let cancelSendNotification;
+export function sendNotification(data, onSuccess, memo) {
+  return (dispatch) => {
+    if (cancelSendNotification) {
+      cancelSendNotification('cancel');
+    }
+    api()
+      .put('/fsbid/notification/send/', data, {
+        cancelToken: new CancelToken((c) => { cancelRebuildNotification = c; }),
+      })
+      .then(() => {
+        if (memo) {
+          dispatch(toastSuccess(
+            SEND_MEMO_SUCCESS,
+            SEND_MEMO_SUCCESS_TITLE,
+          ));
+        } else {
+          dispatch(toastSuccess(
+            SEND_NOTIFICATION_SUCCESS,
+            SEND_NOTIFICATION_SUCCESS_TITLE,
+          ));
+        }
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          if (memo) {
+            dispatch(toastError(
+              SEND_MEMO_ERROR,
+              SEND_MEMO_ERROR_TITLE,
+            ));
+          } else {
+            dispatch(toastError(
+              SEND_NOTIFICATION_ERROR,
+              SEND_NOTIFICATION_ERROR_TITLE,
             ));
           }
         }
