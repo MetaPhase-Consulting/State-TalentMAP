@@ -118,7 +118,7 @@ class BidderPortfolioPage extends Component {
                 <Spinner type="homepage-position-results" size="big" />
             }
             {
-              bidderPortfolioHasErrored &&
+              !isLoading &&
                 <ErrorBoundary>
                   <BidderPortfolioContainer
                     bidderPortfolio={bidderPortfolio}

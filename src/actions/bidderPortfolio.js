@@ -254,16 +254,17 @@ export function getUnassignedBidderTypes(query = {}) {
         cancelToken: new CancelToken((c) => { cancelUnnassignedBidders = c; }),
       })
         .then(({ data }) => {
+          const newQuery = { ...query$, perdet_seq_num: join(data, ',') };
+          const query$$$ = stringify(newQuery);
+          const secondEndpoint = '/fsbid/client/';
+          const url = `${secondEndpoint}?${query$$$}`;
           if (data.length === 0) {
+            dispatch(bidderPortfolioLastQuery(query$$$, 0, secondEndpoint));
             dispatch(bidderPortfolioFetchDataSuccess([]));
             dispatch(bidderPortfolioHasErrored(false));
             dispatch(bidderPortfolioIsLoading(false));
           } else {
             dispatch(unassignedbidderTypeSuccess(data));
-            const newQuery = { ...query$, perdet_seq_num: join(data, ',') };
-            const query$$$ = stringify(newQuery);
-            const secondEndpoint = '/fsbid/client/';
-            const url = `${secondEndpoint}?${query$$$}`;
             if (ids.length) {
               api().get(url, {
                 cancelToken: new CancelToken((c) => {
