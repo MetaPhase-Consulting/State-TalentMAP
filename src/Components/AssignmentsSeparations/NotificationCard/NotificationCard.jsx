@@ -4,7 +4,10 @@ import Linkify from 'react-linkify';
 import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
-import { cableFetchData, noteCableRefFetchData, rebuildNotification } from 'actions/assignmentNotifications';
+import {
+  cableFetchData, editNoteCable, noteCableRefFetchData,
+  rebuildNotification, sendNotification,
+} from 'actions/assignmentNotifications';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
 import TabbedCard from 'Components/TabbedCard';
@@ -40,6 +43,8 @@ const NotificationCard = (props) => {
 
   const [editMode, setEditMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
+  const [noteRouting, setNoteRouting] = useState(ref?.QRY_NMD_REF || []);
+  const [noteParagraphs, setNoteParagraphs] = useState([]);
 
   const fetchNoteData = () => {
     if (note?.NM_SEQ_NUM) {
@@ -61,6 +66,13 @@ const NotificationCard = (props) => {
     if (ref?.QRY_CABLE_REF) {
       setNoteCable(ref?.QRY_CABLE_REF);
     }
+    if (ref?.QRY_NMD_REF) {
+      setNoteRouting(ref?.QRY_NMD_REF);
+    }
+    if (ref?.QRY_PARA_REF) {
+      const selectedParagraphs = ref?.QRY_PARA_REF?.filter(p => p.INC_IND === 1);
+      setNoteParagraphs(selectedParagraphs.map(p => p.NOTP_CODE));
+    }
   }, [ref]);
 
   const getCableValue = (key, returnAll) => {
@@ -74,13 +86,13 @@ const NotificationCard = (props) => {
     return section?.NME_OVERRIDE_CLOB || section?.NME_DEFAULT_CLOB;
   };
 
-  const modCableValue = (key, override, clear) => {
+  const modCableValue = (key, override) => {
     const sections = noteCable.map(c => {
-      if ((Array.isArray(key) && key.includes(c.ME_DESC)) || c.ME_DESC === key) {
+      if (c.ME_DESC === key) {
         return {
           ...c,
           NME_OVERRIDE_CLOB: override || '',
-          NME_CLEAR_IND: clear ? 'Y' : 'N',
+          NME_CLEAR_IND: 'N',
         };
       }
       return c;
@@ -88,19 +100,154 @@ const NotificationCard = (props) => {
     setNoteCable(sections);
   };
 
-  // const modParagraphValue = (key, description, clear) => {
-  //   const sections = noteCable.map(c => {
-  //     if ((Array.isArray(key) && key.includes(c.ME_DESC)) || c.ME_DESC === key) {
-  //       return {
-  //         ...c,
-  //         NME_OVERRIDE_CLOB: override || '',
-  //         NME_CLEAR_IND: clear ? 'Y' : 'N',
-  //       };
-  //     }
-  //     return c;
-  //   });
-  //   setNoteCable(sections);
-  // };
+  const modRoutingValue = (nmdSeqNum, key, value) => {
+    if (nmdSeqNum) {
+      const routings = noteRouting.map(r => {
+        if (r.NMD_SEQ_NUM === nmdSeqNum) {
+          const newR = r;
+          newR[key] = value;
+          return newR;
+        }
+        return r;
+      });
+      setNoteRouting(routings);
+    } else if (key === 'DT_CODE') {
+      const routings = [...noteRouting];
+      routings.push({
+        NMD_SEQ_NUM: Math.random().toString(),
+        NME_SEQ_NUM: null,
+        DT_CODE: value,
+        PT_CODE: null,
+        ORG_CODE: null,
+        CP_SEQ_NUM: null,
+        NMD_SLUG_TEXT: null,
+        NMD_UPDATE_ID: null,
+        NMD_UPDATE_DATE: null,
+      });
+      setNoteRouting(routings);
+    }
+  };
+
+  const handleDefaultClear = (cableKeys, clear) => {
+    const sections = noteCable.map(c => {
+      if (cableKeys.includes(c.ME_DESC)) {
+        return {
+          ...c,
+          NME_OVERRIDE_CLOB: clear ? c.NME_OVERRIDE_CLOB : '',
+          NME_CLEAR_IND: clear ? 'Y' : 'N',
+        };
+      }
+      return c;
+    });
+    setNoteCable(sections);
+    if (cableKeys.includes('PARAGRAPHS')) {
+      if (clear) {
+        setNoteParagraphs([]);
+      } else if (ref?.QRY_PARA_REF) {
+        const selectedParagraphs = ref?.QRY_PARA_REF?.filter(p => p.INC_IND === 1);
+        setNoteParagraphs(selectedParagraphs.map(p => p.NOTP_CODE));
+      }
+    }
+  };
+
+  const handleSave = () => {
+    const paragraph = getCableValue('PARAGRAPHS', true);
+    const distribution = getCableValue('DISTRIBUTION', true);
+    const information = getCableValue('INFORMATION', true);
+    const action = getCableValue('ACTION', true);
+
+    let HDR_NME_SEQ_NUM = '';
+    let HDR_CLOB_LENGTH = '';
+    let HDR_NME_OVERRIDE_CLOB = '';
+    let HDR_NME_UPDATE_ID = '';
+    let HDR_NME_UPDATE_DATE = '';
+    let HDR_NME_CLEAR_IND = '';
+
+    noteCable.forEach(s => {
+      const separator = HDR_NME_SEQ_NUM === '' ? '' : ',';
+      HDR_NME_SEQ_NUM = HDR_NME_SEQ_NUM.concat(separator, s.NME_SEQ_NUM);
+      HDR_CLOB_LENGTH = HDR_CLOB_LENGTH.concat(separator, s.NME_OVERRIDE_CLOB.length);
+      HDR_NME_OVERRIDE_CLOB = HDR_NME_OVERRIDE_CLOB.concat(separator, s.NME_OVERRIDE_CLOB);
+      HDR_NME_UPDATE_ID = HDR_NME_UPDATE_ID.concat(separator, s.NME_UPDATE_ID);
+      HDR_NME_UPDATE_DATE = HDR_NME_UPDATE_DATE.concat(separator, s.NME_UPDATE_DATE);
+      HDR_NME_CLEAR_IND = HDR_NME_CLEAR_IND.concat(separator, s.NME_CLEAR_IND);
+    });
+
+    let INC_IND = '';
+    let NMD_SEQ_NUM = '';
+    let DT_CODE = '';
+    let PT_CODE = '';
+    let ORG_CODE = '';
+    let CP_SEQ_NUM = '';
+    let NMD_SLUG_TEXT = '';
+    let NMD_UPDATE_ID = '';
+    let NMD_UPDATE_DATE = '';
+
+    noteRouting.forEach(s => {
+      const separator = INC_IND === '' ? '' : ',';
+      INC_IND = INC_IND.concat(separator, 1);
+      NMD_SEQ_NUM = NMD_SEQ_NUM.concat(separator, s.NMD_UPDATE_DATE ? s.NMD_SEQ_NUM : '');
+      DT_CODE = DT_CODE.concat(separator, s.DT_CODE);
+      PT_CODE = PT_CODE.concat(separator, s.PT_CODE);
+      ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE);
+      CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM);
+      NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT);
+      NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID);
+      NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE);
+    });
+
+    const req = {
+      I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
+
+      I_HDR_NME_SEQ_NUM: HDR_NME_SEQ_NUM,
+      I_HDR_CLOB_LENGTH: HDR_CLOB_LENGTH,
+      I_HDR_NME_OVERRIDE_CLOB: HDR_NME_OVERRIDE_CLOB,
+      I_HDR_NME_UPDATE_ID: HDR_NME_UPDATE_ID,
+      I_HDR_NME_UPDATE_DATE: HDR_NME_UPDATE_DATE,
+      I_HDR_NME_CLEAR_IND: HDR_NME_CLEAR_IND,
+
+      I_ASG_NME_SEQ_NUM: null,
+      I_ASG_NMAS_SEQ_NUM: null,
+      I_ASG_NMAS_UPDATE_ID: null,
+      I_ASG_NMAS_UPDATE_DT: null,
+
+      I_PARA_NME_SEQ_NUM: paragraph.NME_SEQ_NUM,
+      I_PARA_NOTP_CODE: noteParagraphs.join(),
+      I_PARA_NME_UPDATE_ID: paragraph.NME_UPDATE_ID,
+      I_PARA_NME_UPDATE_DATE: paragraph.NME_UPDATE_DATE,
+
+      I_DIST_NME_SEQ_NUM: distribution.NME_SEQ_NUM,
+      I_DIST_NME_UPDATE_ID: distribution.NME_UPDATE_ID,
+      I_DIST_NME_UPDATE_DATE: distribution.NME_UPDATE_DATE,
+
+      I_ACT_NME_SEQ_NUM: action.NME_SEQ_NUM,
+      I_ACT_NME_UPDATE_ID: action.NME_UPDATE_ID,
+      I_ACT_NME_UPDATE_DATE: action.NME_UPDATE_DATE,
+
+      I_INFO_NME_SEQ_NUM: information.NME_SEQ_NUM,
+      I_INFO_NME_UPDATE_ID: information.NME_UPDATE_ID,
+      I_INFO_NME_UPDATE_DATE: information.NME_UPDATE_DATE,
+
+      I_INC_IND: INC_IND,
+      I_NMD_SEQ_NUM: NMD_SEQ_NUM,
+      I_DT_CODE: DT_CODE,
+      I_PT_CODE: PT_CODE,
+      I_ORG_CODE: ORG_CODE,
+      I_CP_SEQ_NUM: CP_SEQ_NUM,
+      I_NMD_SLUG_TEXT: NMD_SLUG_TEXT,
+      I_NMD_UPDATE_ID: NMD_UPDATE_ID,
+      I_NMD_UPDATE_DATE: NMD_UPDATE_DATE,
+    };
+
+    editNoteCable(req, fetchNoteData, memo);
+  };
+
+  const handleSend = () => {
+    sendNotification({
+      I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
+      I_NOTE_TYPE: memo ? 'M' : 'C',
+    }, null, memo);
+  };
 
   const freeTextContainer = (children, meDescs) => {
     let tabSeqNums = '';
@@ -161,7 +308,7 @@ const NotificationCard = (props) => {
         {children}
         <div className="position-form--actions">
           <button onClick={() => setEditMode(false)}>Back to Preview</button>
-          <button onClick={() => { }}>Save</button>
+          <button onClick={() => handleSave()}>Save</button>
         </div>
       </div>
     );
@@ -275,7 +422,7 @@ const NotificationCard = (props) => {
         </Row>
         <div className="position-form--actions">
           <button onClick={onCancel}>Cancel</button>
-          <button onClick={() => { }}>Email {memo ? 'Memo' : 'Cable'}</button>
+          <button onClick={() => handleSend()}>Email {memo ? 'Memo' : 'Cable'}</button>
         </div>
       </div>
     </Row > :
@@ -287,6 +434,7 @@ const NotificationCard = (props) => {
           <MemoHeader
             getCableValue={getCableValue}
             modCableValue={modCableValue}
+            handleDefaultClear={handleDefaultClear}
           />,
           ['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT'],
         ),
@@ -297,6 +445,7 @@ const NotificationCard = (props) => {
           <Header
             getCableValue={getCableValue}
             modCableValue={modCableValue}
+            handleDefaultClear={handleDefaultClear}
           />,
           [
             'DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT',
@@ -309,8 +458,8 @@ const NotificationCard = (props) => {
         value: 'ROUTING',
         content: freeTextContainer(
           <Routing
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
+            routingValue={noteRouting}
+            modRoutingValue={modRoutingValue}
             postOptions={ref?.QRY_POST_REF}
             precedenceOptions={ref?.QRY_PT_REF}
             organizationOptions={ref?.QRY_ORGS_REF}
@@ -324,6 +473,7 @@ const NotificationCard = (props) => {
           <Assignments
             getCableValue={getCableValue}
             modCableValue={modCableValue}
+            handleDefaultClear={handleDefaultClear}
             assignments={ref?.QRY_ASG_REF}
           />,
           ['ASSIGNMENTS', 'COMBINED TOD'],
@@ -334,8 +484,11 @@ const NotificationCard = (props) => {
         content: freeTextContainer(
           <Paragraphs
             getCableValue={getCableValue}
-            modCableValue={modCableValue}
+            handleDefaultClear={handleDefaultClear}
+            selections={noteParagraphs}
+            setSelections={setNoteParagraphs}
             paragraphs={ref?.QRY_PARA_REF}
+            defaultSelections={ref?.QRY_PARA_REF?.filter(p => p.INC_IND === 1).map(p => p.NOTP_CODE)}
           />,
           ['PARAGRAPHS'],
         ),
@@ -346,6 +499,7 @@ const NotificationCard = (props) => {
           <Training
             getCableValue={getCableValue}
             modCableValue={modCableValue}
+            handleDefaultClear={handleDefaultClear}
           />,
           ['TRAINING'],
         ),
@@ -366,6 +520,7 @@ const NotificationCard = (props) => {
           <Remarks
             getCableValue={getCableValue}
             modCableValue={modCableValue}
+            handleDefaultClear={handleDefaultClear}
           />,
           ['REMARKS'],
         ),
