@@ -39,6 +39,9 @@
   }
 
   .notification-card__sub-section {
+    display: flex;
+    flex-direction: column;
+
     .sub-header {
       font-weight: 500;
       font-size: 20px;
@@ -124,5 +127,15 @@
 
   label {
     margin: 0px;
+  }
+}
+
+.routing-sub-section {
+  margin: 10px 0px 10px 0px;
+  padding: 20px 10px 10px 10px;
+  background-color: $bg-gray-dark-4;
+
+  label {
+    margin-top: 0px;
   }
 }
