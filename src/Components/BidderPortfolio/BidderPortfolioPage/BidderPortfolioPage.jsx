@@ -55,8 +55,6 @@ class BidderPortfolioPage extends Component {
     // for bidder results, however, we'll wait until everything is loaded
     const bidderPortfolioIsLoadingNotErrored = (bidderPortfolioIsLoading ||
       classificationsIsLoading) && !bidderPortfolioHasErrored && !classificationsHasErrored;
-    console.log('bidderPortfolioIsLoading', bidderPortfolioIsLoading, 'classificationsIsLoading', classificationsIsLoading,
-      'bidderPortfolioHasErrored', bidderPortfolioHasErrored, 'classificationsHasErrored', classificationsHasErrored);
     const isLoading = bidderPortfolioIsLoadingNotErrored;
     // whether or not we should use the list view
     const isListView = this.state.viewType.value === 'grid';
@@ -120,7 +118,7 @@ class BidderPortfolioPage extends Component {
                 <Spinner type="homepage-position-results" size="big" />
             }
             {
-              !isLoading &&
+              bidderPortfolioHasErrored &&
                 <ErrorBoundary>
                   <BidderPortfolioContainer
                     bidderPortfolio={bidderPortfolio}
