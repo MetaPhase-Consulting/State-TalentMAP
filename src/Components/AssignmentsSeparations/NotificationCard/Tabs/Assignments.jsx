@@ -8,8 +8,7 @@ import { Row } from 'Components/Layout';
 import InputActions from '../Common/InputActions';
 
 const Assignments = (props) => {
-  const { getCableValue, modCableValue, assignments } = props;
-
+  const { getCableValue, modCableValue, handleDefaultClear, assignments } = props;
 
   // Have to get the assignments array into correct format for DnD
   const orderedAssignmentsDnd = assignments.map((a) => ({
@@ -94,7 +93,7 @@ const Assignments = (props) => {
         <InputActions
           keys={['ASSIGNMENTS', 'COMBINED TOD']}
           getCableValue={getCableValue}
-          modCableValue={modCableValue}
+          handleDefaultClear={handleDefaultClear}
         />
         <Row fluid className="position-content--description">
           <span className="definition-title">Preview Text</span>
@@ -107,7 +106,7 @@ const Assignments = (props) => {
                 name="preview-text"
                 placeholder="No Description"
                 value={getCableValue('ASSIGNMENTS')}
-                className="enabled-input"
+                className="disabled-input"
                 draggable={false}
                 disabled
               />
@@ -128,7 +127,6 @@ const Assignments = (props) => {
               placeholder="No Description"
               value={getCableValue('COMBINED TOD')}
               onChange={(e) => modCableValue('COMBINED TOD', e.target.value)}
-              className="enabled-input"
               draggable={false}
             />
           </Linkify>
@@ -142,14 +140,13 @@ const Assignments = (props) => {
 };
 
 Assignments.propTypes = {
-  getCableValue: PropTypes.func,
-  modCableValue: PropTypes.func,
+  getCableValue: PropTypes.func.isRequired,
+  modCableValue: PropTypes.func.isRequired,
+  handleDefaultClear: PropTypes.func.isRequired,
   assignments: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 Assignments.defaultProps = {
-  getCableValue: undefined,
-  modCableValue: undefined,
   assignments: undefined,
 };
 

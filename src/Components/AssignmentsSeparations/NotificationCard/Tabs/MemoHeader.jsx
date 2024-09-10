@@ -5,7 +5,7 @@ import { Row } from 'Components/Layout';
 import InputActions from '../Common/InputActions';
 
 const MemoHeader = (props) => {
-  const { getCableValue, modCableValue } = props;
+  const { getCableValue, modCableValue, handleDefaultClear } = props;
 
   return (
     <div className="position-content position-form input-container">
@@ -13,7 +13,7 @@ const MemoHeader = (props) => {
         <InputActions
           keys={['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT']}
           getCableValue={getCableValue}
-          modCableValue={modCableValue}
+          handleDefaultClear={handleDefaultClear}
         />
         <div className="position-form--label-input-container">
           <label htmlFor="drafting-office">To</label>
@@ -42,7 +42,6 @@ const MemoHeader = (props) => {
               placeholder="No Description"
               value={getCableValue('SUBJECT')}
               onChange={(e) => modCableValue('SUBJECT', e.target.value)}
-              className="enabled-input"
               draggable={false}
             />
           </Linkify>
@@ -56,13 +55,12 @@ const MemoHeader = (props) => {
 };
 
 MemoHeader.propTypes = {
-  getCableValue: PropTypes.func,
-  modCableValue: PropTypes.func,
+  getCableValue: PropTypes.func.isRequired,
+  modCableValue: PropTypes.func.isRequired,
+  handleDefaultClear: PropTypes.func.isRequired,
 };
 
 MemoHeader.defaultProps = {
-  getCableValue: undefined,
-  modCableValue: undefined,
 };
 
 export default MemoHeader;

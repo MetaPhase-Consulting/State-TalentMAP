@@ -5,27 +5,26 @@ import { Row } from 'Components/Layout';
 import InputActions from '../Common/InputActions';
 
 const Training = (props) => {
-  const { getCableValue, modCableValue } = props;
+  const { getCableValue, modCableValue, handleDefaultClear } = props;
 
   return (
     <div className="position-content position-form input-container">
       <InputActions
         keys={['TRAINING']}
         getCableValue={getCableValue}
-        modCableValue={modCableValue}
+        handleDefaultClear={handleDefaultClear}
       />
       <Row fluid className="position-content--description">
         <span className="definition-title">Training</span>
         <Linkify properties={{ target: '_blank' }}>
           <TextareaAutosize
-            maxRows={4}
+            maxRows={8}
             minRows={4}
             maxLength="500"
             name="training"
             placeholder="No Description"
             value={getCableValue('TRAINING')}
             onChange={(e) => modCableValue('TRAINING', e.target.value)}
-            className="enabled-input"
             draggable={false}
           />
         </Linkify>
@@ -38,13 +37,12 @@ const Training = (props) => {
 };
 
 Training.propTypes = {
-  getCableValue: PropTypes.func,
-  modCableValue: PropTypes.func,
+  getCableValue: PropTypes.func.isRequired,
+  modCableValue: PropTypes.func.isRequired,
+  handleDefaultClear: PropTypes.func.isRequired,
 };
 
 Training.defaultProps = {
-  getCableValue: undefined,
-  modCableValue: undefined,
 };
 
 
