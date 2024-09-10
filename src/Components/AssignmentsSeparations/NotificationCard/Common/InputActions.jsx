@@ -1,17 +1,12 @@
 import PropTypes from 'prop-types';
 
 const InputActions = (props) => {
-  const { keys, modCableValue, getCableValue } = props;
-
-  const handleDefault = () => {
-    modCableValue(keys, '');
-  };
-
-  const handleClear = () => {
-    modCableValue(keys, '', true);
-  };
+  const { keys, handleDefaultClear, getCableValue, paragraphSelections, paragraphDefault } = props;
 
   const isDefault = () => {
+    if (keys.includes('PARAGRAPHS')) {
+      return paragraphSelections.sort().join(',') === paragraphDefault.sort().join(',');
+    }
     let def = true;
     keys.forEach(key => {
       const value = getCableValue(key, true);
@@ -23,6 +18,9 @@ const InputActions = (props) => {
   };
 
   const isClear = () => {
+    if (keys.includes('PARAGRAPHS')) {
+      return paragraphSelections.length === 0;
+    }
     let clear = true;
     keys.forEach(key => {
       const value = getCableValue(key, true);
@@ -41,7 +39,7 @@ const InputActions = (props) => {
           id="default"
           name="default"
           checked={isDefault()}
-          onChange={() => handleDefault()}
+          onChange={() => handleDefaultClear(keys)}
         />
         <label htmlFor="default">Default</label>
       </div>
@@ -51,7 +49,7 @@ const InputActions = (props) => {
           id="clear"
           name="clear"
           checked={isClear()}
-          onChange={() => handleClear()}
+          onChange={() => handleDefaultClear(keys, true)}
         />
         <label htmlFor="clear">Clear All</label>
       </div>
@@ -62,10 +60,14 @@ const InputActions = (props) => {
 InputActions.propTypes = {
   keys: PropTypes.arrayOf(PropTypes.string).isRequired,
   getCableValue: PropTypes.func.isRequired,
-  modCableValue: PropTypes.func.isRequired,
+  handleDefaultClear: PropTypes.func.isRequired,
+  paragraphSelections: PropTypes.arrayOf(PropTypes.string),
+  paragraphDefault: PropTypes.arrayOf(PropTypes.string),
 };
 
 InputActions.defaultProps = {
+  paragraphSelections: [],
+  paragraphDefault: [],
 };
 
 export default InputActions;
