@@ -278,18 +278,11 @@ export function getUnassignedBidderTypes(query = {}) {
                     dispatch(bidderPortfolioIsLoading(false));
                   });
                 })
-                .catch((m) => {
-                  if (get(m, 'message') === 'cancel') {
-                    batch(() => {
-                      dispatch(bidderPortfolioHasErrored(false));
-                      dispatch(bidderPortfolioIsLoading(true));
-                    });
-                  } else {
-                    batch(() => {
-                      dispatch(bidderPortfolioHasErrored(true));
-                      dispatch(bidderPortfolioIsLoading(false));
-                    });
-                  }
+                .catch(() => {
+                  batch(() => {
+                    dispatch(bidderPortfolioHasErrored(false));
+                    dispatch(bidderPortfolioIsLoading(true));
+                  });
                 });
             }
           }
