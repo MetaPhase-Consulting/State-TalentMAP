@@ -39,7 +39,7 @@ class BidderPortfolio extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const props = ['cdos', 'selectedSeasons']; // removed , 'selectedUnassigned'
+    const props = ['cdos', 'selectedSeasons', 'selectedUnassigned'];
     if (!isEqual(pick(this.props, props), pick(nextProps, props))) {
       this.getBidderPortfolio();
     }
