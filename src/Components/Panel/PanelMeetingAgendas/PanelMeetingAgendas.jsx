@@ -21,6 +21,7 @@ import PrintPanelMeetingAgendas from './PrintPanelMeetingAgendas';
 import { PANEL_MEETING } from '../../../Constants/PropTypes';
 import { meetingCategoryMap } from '../Constants';
 import api from '../../../api';
+import { DEFAULT_TEXT } from '../../../Constants/SystemMessages';
 
 const fuseOptions = {
   shouldSort: false,
@@ -496,11 +497,11 @@ const PanelMeetingAgendas = (props) => {
               {
                 agendasByPanelMeeting.map((pm) => {
                   // Find panel meeting date
-                  const panelMeetingDate = pm.panelMeetingDates.find(pmd => pmd.mdt_code === 'MEET');
+                  const panelMeetingDate = pm.panelMeetingDates.find(pmd => pmd.mdt_code === 'MEET') || DEFAULT_TEXT;
                   return (
                     <div className="pma-pm-container" key={pm.pmi_pm_seq_num}>
                       <div className="pm-header">
-                        {pm.pmt_code} {format(new Date(panelMeetingDate.pmd_dttm), 'MM/dd/yy')} - {pm.pms_desc_text}
+                        {get(pm, 'pmt_code')} {panelMeetingDate !== DEFAULT_TEXT ? format(new Date(panelMeetingDate.pmd_dttm), 'MM/dd/yy') : ''} - {get(pm, 'pms_desc_text')}
                       </div>
                       {
                         isAllCategoriesEmpty(pm.agendas) ? (
