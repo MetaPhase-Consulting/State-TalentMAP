@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Linkify from 'react-linkify';
 import { Tooltip } from 'react-tippy';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -10,44 +10,35 @@ import CheckBox from '../../../CheckBox/CheckBox';
 import InputActions from '../Common/InputActions';
 
 const Paragraphs = (props) => {
-  const { paragraphs, getCableValue, modCableValue } = props;
+  const {
+    selections,
+    setSelections,
+    paragraphs,
+    getCableValue,
+    handleDefaultClear,
+    defaultSelections,
+  } = props;
 
-  // Instead of making a ton of variables for tracking the various input data for all
-  // paragraphs, I made a data object array that tracks all the important information
-  // we need to both render the UI and to submit input data to the BE. To access the
-  // data for any given paragraph, just do a simple .find
+  const [expanded, setExpanded] = useState([]);
 
-  const [paragraphDataObjects, setParagraphDataObjects] = useState([]);
-
-  useEffect(() => {
-    if (paragraphs) {
-      const ordered = paragraphs.sort((a, b) => a.ORDER_NUM - b.ORDER_NUM);
-      setParagraphDataObjects(ordered.map((p) => ({
-        id: p.NOTP_CODE,
-        paragraph_title: p.NOTP_SHORT_DESC_TEXT,
-        input: p.NOTP_DESC_TEXT,
-        checked: p.INC_IND === 1,
-        open: false,
-      })));
+  const handleCheck = (id) => {
+    let newSelections = [...selections];
+    if (selections.includes(id)) {
+      newSelections = newSelections.filter(s => s.NOTP_CODE === id);
+    } else {
+      newSelections.push(id);
     }
-  }, []);
-
-  const handleCheck = id => {
-    setParagraphDataObjects(paragraphDataObjects.map((item) => (
-      item.id === id ? { ...item, checked: !item.checked } : item
-    )));
+    setSelections(newSelections);
   };
 
-  const handleExpand = id => {
-    setParagraphDataObjects(paragraphDataObjects.map((item) => (
-      item.id === id ? { ...item, open: !item.open } : item
-    )));
-  };
-
-  const handleTextInput = (e, id) => {
-    setParagraphDataObjects(paragraphDataObjects.map((item) => (
-      item.id === id ? { ...item, input: e.target.value } : item
-    )));
+  const handleExpand = (id) => {
+    let newExpanded = [...expanded];
+    if (expanded.includes(id)) {
+      newExpanded = newExpanded.filter(s => s.NOTP_CODE === id);
+    } else {
+      newExpanded.push(id);
+    }
+    setExpanded(newExpanded);
   };
 
   return (
@@ -55,39 +46,41 @@ const Paragraphs = (props) => {
       <InputActions
         keys={['PARAGRAPHS']}
         getCableValue={getCableValue}
-        modCableValue={modCableValue}
+        handleDefaultClear={handleDefaultClear}
+        paragraphSelections={selections}
+        paragraphDefault={defaultSelections}
       />
       <div className="mb-20">
         <span className="section-title">Chosen Paragraphs</span>
-        {paragraphDataObjects.map(o => (
-          <div key={o.id}>
+        {paragraphs.sort((a, b) => a.ORDER_NUM - b.ORDER_NUM).map(o => (
+          <div key={o.NOTP_CODE}>
             <div className="chosen-paragraph">
               <div>
                 <CheckBox
-                  id={`ep-checkbox-${o.id}`}
-                  name="exclusivePosition"
-                  value={o.checked}
-                  onChange={() => handleCheck(o.id)}
+                  id={`${o.NOTP_CODE}-checkbox`}
+                  name={`${o.NOTP_CODE}-checkbox`}
+                  value={selections.includes(o.NOTP_CODE)}
+                  onChange={() => handleCheck(o.NOTP_CODE)}
                 />
-                <span>{o.paragraph_title}</span>
+                <span>{o.NOTP_SHORT_DESC_TEXT}</span>
               </div>
               <div>
-                <InteractiveElement className="toggle-more" onClick={() => handleExpand(o.id)}>
-                  <FA id={o.id} name={`chevron-${paragraphDataObjects?.find(item => item.id === o.id)?.open ? 'up' : 'down'}`} />
+                <InteractiveElement className="toggle-more" onClick={() => handleExpand(o.NOTP_CODE)}>
+                  <FA id={o.NOTP_CODE} name={`chevron-${expanded.includes(o.NOTP_CODE) ? 'up' : 'down'}`} />
                 </InteractiveElement>
               </div>
             </div>
-            {paragraphDataObjects?.find(item => item.id === o.id)?.open &&
+            {expanded.includes(o.NOTP_CODE) &&
               <div>
                 <TextareaAutosize
                   maxRows={6}
                   minRows={4}
                   maxLength="500"
-                  name={`${o.title}-input`}
+                  name={`${o.NOTP_CODE}-input`}
                   placeholder="No Description"
-                  value={paragraphDataObjects?.find(item => item.id === o.id)?.input}
-                  onChange={(e) => handleTextInput(e, o.id)}
-                  className="enabled-input"
+                  value={paragraphs?.find(item => item.NOTP_CODE === o.NOTP_CODE)?.NOTP_DESC_TEXT}
+                  className="disabled-input"
+                  disabled
                 />
               </div>
             }
@@ -99,13 +92,13 @@ const Paragraphs = (props) => {
         <Tooltip title="Save changes to generate new preview text.">
           <Linkify properties={{ target: '_blank' }}>
             <TextareaAutosize
-              maxRows={8}
+              maxRows={12}
               minRows={4}
               maxLength="500"
               name="preview-text"
               placeholder="No Description"
               value={getCableValue('PARAGRAPHS')}
-              className="enabled-input"
+              className="disabled-input"
               draggable={false}
               disabled
             />
@@ -120,15 +113,19 @@ const Paragraphs = (props) => {
 };
 
 Paragraphs.propTypes = {
+  selections: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setSelections: PropTypes.func.isRequired,
   paragraphs: PropTypes.arrayOf(PropTypes.shape({})),
-  getCableValue: PropTypes.func,
-  modCableValue: PropTypes.func,
+  getCableValue: PropTypes.func.isRequired,
+  handleDefaultClear: PropTypes.func.isRequired,
+  defaultSelections: PropTypes.arrayOf(PropTypes.string),
 };
 
 Paragraphs.defaultProps = {
+  selections: undefined,
+  setSelections: undefined,
   paragraphs: undefined,
-  getCableValue: PropTypes.func,
-  modCableValue: undefined,
+  defaultSelections: undefined,
 };
 
 export default Paragraphs;
