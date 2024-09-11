@@ -45,7 +45,7 @@ const EmployeeAgendaSearchCard = ({ isCDO, result, viewType }) => {
   const agendaID = get(agenda, 'agendaID');
   const agendaIDExist = !!agendaID;
 
-  // handles error where some employees have no Profile
+
   const currentPost = (currentCity || currentCountry || currentOrg) ? `${currentCity} ${currentCountry} ${currentOrg}` : FALLBACK;
   const hsPost = (hsCity || hsCountry || hsOrg) ? `${hsCity} ${hsCountry} ${hsOrg}` : FALLBACK;
 
