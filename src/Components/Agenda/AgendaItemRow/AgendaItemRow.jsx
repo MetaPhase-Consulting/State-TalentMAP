@@ -198,7 +198,7 @@ AgendaItemRow.propTypes = {
         grade: PropTypes.string,
         action: PropTypes.string,
         travel: PropTypes.string,
-        languages: POS_LANGUAGES, // @TODO: Fix this, console warning getting string, expect array
+        languages: PropTypes.oneOfType([POS_LANGUAGES, PropTypes.string]),
         pay_plan: PropTypes.string,
       }),
     ),
