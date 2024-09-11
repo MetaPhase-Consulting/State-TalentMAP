@@ -263,6 +263,8 @@ export function getUnassignedBidderTypes(query = {}) {
             dispatch(bidderPortfolioHasErrored(false));
             dispatch(bidderPortfolioIsLoading(false));
           } else {
+            dispatch(bidderPortfolioIsLoading(true));
+            dispatch(bidderPortfolioHasErrored(false));
             api().get(url, {
               cancelToken: new CancelToken((c) => {
                 cancelPortfolio = c;
