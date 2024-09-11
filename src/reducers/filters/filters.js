@@ -758,7 +758,7 @@ const items =
           title: 'DETO/RWA',
           sort: 1400,
           description: 'detoRwa',
-          selectionRef: ENDPOINT_PARAMS.pvEleTelework,
+          selectionRef: ENDPOINT_PARAMS.eligibleTelework,
           text: 'RWA/DETO Eligible',
         },
         data: [
@@ -771,7 +771,7 @@ const items =
           title: 'DETO/RWA',
           sort: 1400,
           description: 'detoRwa-tandem',
-          selectionRef: ENDPOINT_PARAMS_TANDEM.pvEleTelework,
+          selectionRef: ENDPOINT_PARAMS_TANDEM.eligibleTelework,
           text: 'RWA/DETO Eligible',
           isTandem: true,
         },
