@@ -202,6 +202,8 @@ export function lookupAndSetCDO(id) {
 
 export function getUnassignedBidderTypes(query = {}) {
   return (dispatch, getState) => {
+    dispatch(bidderPortfolioIsLoading(true));
+    dispatch(bidderPortfolioHasErrored(false));
     const state = getState();
     const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
     const ids = cdos.map(m => m.hru_id).filter(f => f);
@@ -263,8 +265,6 @@ export function getUnassignedBidderTypes(query = {}) {
             dispatch(bidderPortfolioHasErrored(false));
             dispatch(bidderPortfolioIsLoading(false));
           } else {
-            dispatch(bidderPortfolioIsLoading(true));
-            dispatch(bidderPortfolioHasErrored(false));
             api().get(url, {
               cancelToken: new CancelToken((c) => {
                 cancelPortfolio = c;
