@@ -123,7 +123,6 @@ if (showCDOD30) {
 
 export const UNASSIGNED_BIDDERS_FILTERS = {
   options: [
-    { value: 'noHandshake', text: 'No Handshake' },
     { value: 'noPanel', text: 'No Panel' },
     { value: 'noBids', text: 'Has Not Placed Bids' },
   ],
