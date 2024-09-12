@@ -58,6 +58,7 @@ class BidderPortfolioPage extends Component {
     const isLoading = bidderPortfolioIsLoadingNotErrored;
     console.log('isLoading:', (bidderPortfolioIsLoading ||
       classificationsIsLoading) && !bidderPortfolioHasErrored && !classificationsHasErrored);
+    console.log('haserrored:', bidderPortfolioHasErrored);
     // whether or not we should use the list view
     const isListView = this.state.viewType.value === 'grid';
 
