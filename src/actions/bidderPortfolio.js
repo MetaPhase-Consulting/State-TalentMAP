@@ -259,7 +259,7 @@ export function getUnassignedBidderTypes(query = {}) {
 
           if (data.length === 0) {
             dispatch(bidderPortfolioLastQuery(query$$$, 0));
-            dispatch(bidderPortfolioFetchDataSuccess({ count: 0 }));
+            dispatch(bidderPortfolioFetchDataSuccess({ results: [], count: 0 }));
             dispatch(bidderPortfolioHasErrored(false));
             dispatch(bidderPortfolioIsLoading(false));
           } else {
