@@ -23,7 +23,6 @@ import TMDatePicker from 'Components/TMDatePicker';
 import ScrollUpButton from '../../ScrollUpButton';
 import { userHasPermissions } from '../../../utilities';
 import CheckBox from '../../CheckBox';
-import { PREVENT_DEFAULT } from '../../../Constants/PropTypes';
 
 const usePanelAdmin = () => checkFlag('flags.panel_admin');
 const usePanelAdminPanelMeeting = () => checkFlag('flags.panel_admin_panel_meeting');
@@ -42,12 +41,12 @@ const PanelMeetingSearch = ({ isCDO }) => {
   const panelMeetings$ = useSelector(state => state.panelMeetings);
   const panelMeetingsIsLoading = useSelector(state => state.panelMeetingsFetchDataLoading);
   const panelMeetingsHasErrored = useSelector(state => state.panelMeetingsFetchDataErrored);
+
   const userSelections = useSelector(state => state.panelMeetingsSelections);
   const userProfile = useSelector(state => state.userProfile);
   const isFsbidAdmin = userHasPermissions(['fsbid_admin'], userProfile?.permission_groups);
 
   const panelMeetings = get(panelMeetings$, 'results') || [];
-
   const [page, setPage] = useState(get(userSelections, 'page') || 1);
   const [limit, setLimit] = useState(get(userSelections, 'limit') || PANEL_MEETINGS_PAGE_SIZES.defaultSize);
   const [ordering, setOrdering] = useState(get(userSelections, 'ordering') || PANEL_MEETINGS_SORT.defaultSort);
@@ -75,6 +74,8 @@ const PanelMeetingSearch = ({ isCDO }) => {
 
   const pageSizes = PANEL_MEETINGS_PAGE_SIZES;
   const sorts = PANEL_MEETINGS_SORT;
+
+  const userRole = isCDO ? 'cdo' : 'ao';
 
   const getQuery = () => ({
     limit,
@@ -344,13 +345,10 @@ const PanelMeetingSearch = ({ isCDO }) => {
             {
               selectAll &&
                 <div className="view-all">
-                  {/** Disabled link until endpoint is updated */}
                   <Link
-                    className="disabled-link"
-                    to={'/panelmeetings/agendas'}
-                    onClick={() => {
-                      /** @TODO update "to" link and handle click */
-                      PREVENT_DEFAULT();
+                    to={{
+                      pathname: `/profile/${userRole}/panelmeetingagendas`,
+                      state: { panelMeetings },
                     }}
                   >
                     <FA className="icon" name="eye" /> {'View All Panel Agendas'}
