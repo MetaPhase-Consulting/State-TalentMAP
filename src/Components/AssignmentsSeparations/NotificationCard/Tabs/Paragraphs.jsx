@@ -24,7 +24,7 @@ const Paragraphs = (props) => {
   const handleCheck = (id) => {
     let newSelections = [...selections];
     if (selections.includes(id)) {
-      newSelections = newSelections.filter(s => s.NOTP_CODE === id);
+      newSelections = newSelections.filter(s => s !== id);
     } else {
       newSelections.push(id);
     }
