@@ -510,7 +510,7 @@ const PanelMeetingAgendas = (props) => {
                           <div className="pm-agendas-container">
                             {
                               Object.keys(pm.agendas).map((category) => (
-                                <div key={category}>
+                                <div key={category} className="category-container">
                                   <div className="category-header">
                                     {category}
                                   </div>

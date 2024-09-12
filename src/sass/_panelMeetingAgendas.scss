@@ -24,6 +24,7 @@
         padding: 10px 0 10px 0;
         border-bottom: 2px solid $bg-gray-dark-2;
         border-top: 2px solid $bg-gray-dark-2;
+        font-weight: bold;
       }
 
       .pm-empty-row {
@@ -36,11 +37,17 @@
       .pm-agendas-container {
         display: flex;
         flex-direction: column;
-        padding: 10px 0 10px 0;
+        margin: 0 15px 0 20px;
+
+        .category-container {
+          display: flex;
+          flex-direction: column;
+          padding: 10px 0 10px 0;
+        }
         
         .category-header{
-          padding: 10px 0 10px 0;
-          margin: 0 15px 0 20px;
+          display: flex;
+          flex-direction: column;
           border-bottom: solid 2px $color-gray-light;
         }
       }
