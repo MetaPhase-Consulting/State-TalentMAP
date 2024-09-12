@@ -123,6 +123,7 @@ const NotificationCard = (props) => {
         NMD_SLUG_TEXT: null,
         NMD_UPDATE_ID: null,
         NMD_UPDATE_DATE: null,
+        INC_IND: 1,
       });
       setNoteRouting(routings);
     }
@@ -184,16 +185,18 @@ const NotificationCard = (props) => {
     let NMD_UPDATE_DATE = '';
 
     noteRouting.forEach(s => {
-      const separator = INC_IND === '' ? '' : ',';
-      INC_IND = INC_IND.concat(separator, 1);
-      NMD_SEQ_NUM = NMD_SEQ_NUM.concat(separator, s.NMD_UPDATE_DATE ? s.NMD_SEQ_NUM : '');
-      DT_CODE = DT_CODE.concat(separator, s.DT_CODE);
-      PT_CODE = PT_CODE.concat(separator, s.PT_CODE);
-      ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE);
-      CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM);
-      NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT);
-      NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID);
-      NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE);
+      if (s.INC_IND !== 0 || s.NMD_UPDATE_DATE) {
+        const separator = INC_IND === '' ? '' : ',';
+        INC_IND = INC_IND.concat(separator, s.INC_IND ?? 1);
+        NMD_SEQ_NUM = NMD_SEQ_NUM.concat(separator, s.NMD_UPDATE_DATE ? s.NMD_SEQ_NUM : '');
+        DT_CODE = DT_CODE.concat(separator, s.DT_CODE);
+        PT_CODE = PT_CODE.concat(separator, s.PT_CODE);
+        ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE);
+        CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM);
+        NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT);
+        NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID);
+        NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE);
+      }
     });
 
     const req = {

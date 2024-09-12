@@ -134,8 +134,16 @@
   margin: 10px 0px 10px 0px;
   padding: 20px 10px 10px 10px;
   background-color: $bg-gray-dark-4;
+  position: relative;
 
   label {
     margin-top: 0px;
+  }
+
+  .routing-delete-button {
+    color: $secondary-dark;
+    position: absolute;
+    top: 15px;
+    right: 15px;
   }
 }
