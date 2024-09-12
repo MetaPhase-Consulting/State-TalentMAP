@@ -235,13 +235,11 @@ export function getUnassignedBidderTypes(query = {}) {
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
       'separations', 'languages'];
     // filters
-    if (isArray(filters) && filters.length) {
-      filters.forEach(filter => {
-        if (get(query, 'hasHandshake') === filter) {
-          query$[filter] = true;
-        }
-      });
-    }
+    filters.forEach(filter => {
+      if (get(query, 'hasHandshake') === filter) {
+        query$[filter] = true;
+      }
+    });
 
     const query$$ = stringify(query$);
     const endpoint = '/fsbid/client/unassigned/';
@@ -260,8 +258,8 @@ export function getUnassignedBidderTypes(query = {}) {
           const url = `${secondEndpoint}?${query$$$}`;
 
           if (data.length === 0) {
-            dispatch(bidderPortfolioLastQuery(query$$$, data.count, secondEndpoint));
-            dispatch(bidderPortfolioFetchDataSuccess({ results: [], count: 0 }));
+            dispatch(bidderPortfolioLastQuery(query$$$, 0));
+            dispatch(bidderPortfolioFetchDataSuccess({ count: 0 }));
             dispatch(bidderPortfolioHasErrored(false));
             dispatch(bidderPortfolioIsLoading(false));
           } else {

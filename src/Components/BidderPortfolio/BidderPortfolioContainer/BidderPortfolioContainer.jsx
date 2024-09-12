@@ -31,7 +31,7 @@ class BidderPortfolioContainer extends Component {
     const showNoCdosAlert = !cdosLength;
     const showEdit$ = !hideControls && showCDOD30;
     const showExpand = !hideControls;
-    console.log('Container isLoading:', isLoading, 'Container hasErrored:', hasErrored);
+    console.log('noResults:', noResults);
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
         {
