@@ -105,6 +105,7 @@ class BidControls extends Component {
   };
 
   onUnassignedChange = q => {
+    console.log('q', q[0]?.value);
     this.setState({ unassignedBidders: q }, this.generatePills);
     this.props.queryParamUpdate({});
     this.props.setUnassigned(q);
