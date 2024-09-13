@@ -317,7 +317,7 @@ export function bidderPortfolioFetchData(query = {}) {
       query$.bid_seasons = join(seasons, ',');
     }
     if (!query$.bid_seasons || !query$.bid_seasons.length) {
-      query$ = omit(query$, ['hasHandshake']); // hasHandshake requires at least one bid season
+      query$ = omit(query$, ['hasHandshake', 'handshake']); // hasHandshake requires at least one bid season
     }
     if (get(query, 'hasHandshake') === 'unassigned_filters') {
       query$ = omit(query$, ['hasHandshake']);
