@@ -147,8 +147,8 @@ class SearchFiltersContainer extends Component {
 
     if (DETO_RWA_FLAG()) {
       multiSelectFilterNames.push('detoRwa');
-      multiSelectFilterNamesTandem1.push('detoRwa');
-      multiSelectFilterNamesTandem2.push('detoRwa-tandem');
+      // multiSelectFilterNamesTandem1.push('detoRwa-tandem'); //TODO: Pending fix of endpoints noted in TM-6521
+      // multiSelectFilterNamesTandem2.push('detoRwa-tandem'); //TODO: Pending fix of endpoints noted in TM-6521
     }
 
     // START TOGGLE FILTERS
