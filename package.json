@@ -87,6 +87,7 @@
     "react-spring": "4.0.0",
     "react-sticky": "^6.0.3",
     "react-sticky-el": "^1.1.0",
+    "react-super-responsive-table": "^6.0.0",
     "react-switch": "^6.0.0",
     "react-textarea-autosize": "^8.3.3",
     "react-time-picker": "^4.3.0",
@@ -106,9 +107,9 @@
     "use-query-params": "^1.2.3",
     "uswds": "~1.6.12"
   },
-    "resolutions": {
-      "**/**/type-fest": "0.21.3",
-      "enzyme/cheerio": "1.0.0-rc.12"
+  "resolutions": {
+    "**/**/type-fest": "0.21.3",
+    "enzyme/cheerio": "1.0.0-rc.12"
   },
   "@comment devDependencies": [
     "dart-sass 1.33.0 introduces a breaking change to division. This causes uswds compilation to fail. https://github.com/sass/dart-sass/releases/tag/1.33.0",

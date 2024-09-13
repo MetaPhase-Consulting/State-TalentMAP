@@ -12376,6 +12376,11 @@ react-styleguidist@11.1.6:
     webpack-dev-server "^3.11.0"
     webpack-merge "^4.2.2"
 
+react-super-responsive-table@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-super-responsive-table/-/react-super-responsive-table-6.0.0.tgz#8f9ea739bfb8c6e2ea5bfd0c46574e56fd9b9d8e"
+  integrity sha512-ju9Itm/GMLPz/Ncvz8fVUjRol2PJ/vcOKUJKgaY6/FQtDVhCjsWdR2IzSMrESyCvvgpD9z4wm+kI2Av0XYGf5g==
+
 react-switch@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-6.0.0.tgz#bd4a2dea08f211b8a32e55e8314fd44bc1ec947e"
