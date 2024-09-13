@@ -214,7 +214,7 @@ const handleError = (error, dispatch) => {
   }
 };
 
-export function getUnassignedBidderTypes(query = {}) {
+export function getClientPerdets(query = {}) {
   return async (dispatch, getState) => {
     try {
       dispatch(bidderPortfolioIsLoading(true));
@@ -253,7 +253,7 @@ export function getUnassignedBidderTypes(query = {}) {
       });
 
       const queryString = stringify(query$);
-      const endpoint = '/fsbid/client/unassigned/';
+      const endpoint = '/fsbid/client/client_perdets/';
       const url = `${endpoint}?${queryString}`;
 
       if (cancelUnnassignedBidders) {
