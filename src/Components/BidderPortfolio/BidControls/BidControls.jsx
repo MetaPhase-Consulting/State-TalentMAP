@@ -69,6 +69,12 @@ class BidControls extends Component {
   }
 
   onSeasonChange = (seasons, value) => {
+    const BID_PORTFOLIO_FILTERS$ = BID_PORTFOLIO_FILTERS;
+    if (!this.state.hasSeasons) {
+      this.setState({ filterBy: BID_PORTFOLIO_FILTERS$.options[
+        findIndex(BID_PORTFOLIO_FILTERS$.options, (o) => o.value ===
+          this.props.defaultHandshake)] });
+    }
     const hasSeasons = !!seasons.length;
     const { filterBy } = this.state;
     if (!this.state.bidSeasons.length && this.state.hasSeasons) {
