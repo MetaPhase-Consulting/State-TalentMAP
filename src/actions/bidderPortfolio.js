@@ -235,7 +235,7 @@ export function getClientPerdets(query = {}) {
         query$.bid_seasons = seasons.join(',');
       }
       if (!query$.bid_seasons) {
-        query$ = omit(query$, ['hasHandshake']);
+        query$ = omit(query$, ['hasHandshake', 'handshake']);
       }
 
       if (get(query, 'hasHandshake') === 'unassigned_filters') {
