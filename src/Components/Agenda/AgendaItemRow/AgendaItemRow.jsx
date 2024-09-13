@@ -117,7 +117,7 @@ const AgendaItemRow = props => {
               <div className="remarks-pill-container">
                 {
                   remarks.map(remark => (
-                    <RemarksPill key={remark.text} remark={remark} />
+                    <RemarksPill key={`${perdet$}-${remark.air_remark_text}`} remark={remark} />
                   ))
                 }
                 {agenda?.ahtCode &&
@@ -198,7 +198,7 @@ AgendaItemRow.propTypes = {
         grade: PropTypes.string,
         action: PropTypes.string,
         travel: PropTypes.string,
-        languages: POS_LANGUAGES, // @TODO: Fix this, console warning getting string, expect array
+        languages: PropTypes.oneOfType([POS_LANGUAGES, PropTypes.string]),
         pay_plan: PropTypes.string,
       }),
     ),
@@ -214,21 +214,16 @@ AgendaItemRow.propTypes = {
         custom_description: PropTypes.string,
       }),
     ),
-    // @TODO: console warning, getting object not array
-    cdo: PropTypes.arrayOf(
-      PropTypes.shape({
-        first_name: PropTypes.string,
-        last_name: PropTypes.string,
-      }),
-    ),
+    cdo: PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+    }),
     pay_plan_code: PropTypes.string,
     grade: PropTypes.string,
     combined_pp_grade: PropTypes.string,
-    org: PropTypes.arrayOf(
-      PropTypes.shape({
-        org_descr: PropTypes.string,
-      }),
-    ),
+    org: PropTypes.shape({
+      org_descr: PropTypes.string,
+    }),
     full_name: PropTypes.string,
     update_date: PropTypes.string,
     modifier_name: PropTypes.number,
