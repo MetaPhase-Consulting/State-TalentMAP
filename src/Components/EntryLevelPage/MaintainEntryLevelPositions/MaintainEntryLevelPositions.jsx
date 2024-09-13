@@ -6,21 +6,25 @@ import { renderSelectionList } from 'utilities';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle';
 import CheckBox from 'Components/CheckBox';
-import SelectForm from 'Components/SelectForm';
 import { filter, flatten, isEmpty } from 'lodash';
+import ExportButton from 'Components/ExportButton';
+import SelectForm from 'Components/SelectForm';
+import { POSITION_PAGE_SIZES } from 'Constants/Sort';
+import PaginationWrapper from 'Components/PaginationWrapper';
 
 const MaintainEntryLevelPositions = () => {
-  const isLoading = useSelector(state => state.isLoading);
   const userSelections = useSelector(state => state.entryLevelSelections);
+  const [page, setPage] = useState(userSelections.page || 1);
+  const [limit, setLimit] = useState(userSelections.limit || 10);
   const [selectedTps, setSelectedTps] = useState(userSelections?.selectedTps || []);
   const [selectedBureaus, setSelectedBureaus] = useState(userSelections?.selectedBureaus || []);
   const [selectedOrgs, setSelectedOrgs] = useState(userSelections?.selectedOrgs || []);
   const [selectedGrades, setSelectedGrades] = useState(userSelections?.selectedGrade || []);
   const [selectedSkills, setSelectedSkills] = useState(userSelections?.selectedSkills || []);
+  const [selectedJobs, setSelectedJobs] = useState(userSelections?.selectedJobs || []);
   const [selectedLanguages, setSelectedLanguages] = useState(userSelections?.selectedLanguage || []);
   const [overseas, setOverseas] = useState(userSelections?.overseas || false);
   const [domestic, setDomestic] = useState(userSelections?.domestic || false);
-  const [selectedGridPreference, setSelectedGridPreference] = useState(userSelections?.gridPreference || '');
   const [textSearch, setTextSearch] = useState('');
   const [clearFilters, setClearFilters] = useState(false);
 
@@ -30,8 +34,8 @@ const MaintainEntryLevelPositions = () => {
   const orgFilters = []; // = elFiltersList?.orgFilters;
   const gradeFilters = []; // = elFiltersList?.gradeFilters;
   const skillsFilters = []; // = elFiltersList?.skillsFilters;
+  const jcFilters = []; // = elFiltersList?.jcFilters;
   const languageFilters = []; // = elFiltersList?.languageFilters;
-  const gridPreferences = [{ value: '1', text: 'Grid 1' }, { value: '2', text: 'Grid 2' }];
 
   const childRef = useRef();
 
@@ -42,9 +46,10 @@ const MaintainEntryLevelPositions = () => {
       selectedOrgs,
       selectedGrades,
       selectedSkills,
+      selectedJobs,
       selectedLanguages,
     ];
-    if (isEmpty(filter(flatten(filters))) && !overseas && !domestic && isEmpty(selectedGridPreference) && isEmpty(textSearch)) {
+    if (isEmpty(filter(flatten(filters))) && !overseas && !domestic && isEmpty(textSearch)) {
       setClearFilters(false);
     } else {
       setClearFilters(true);
@@ -60,7 +65,6 @@ const MaintainEntryLevelPositions = () => {
     setSelectedLanguages([]);
     setOverseas(false);
     setDomestic(false);
-    setSelectedGridPreference('');
     setClearFilters(false);
   };
 
@@ -75,7 +79,7 @@ const MaintainEntryLevelPositions = () => {
 
   useEffect(() => {
     fetchAndSet();
-  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, selectedGridPreference, textSearch]);
+  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, textSearch]);
 
   return (
     <div className="entry-level-page position-search search-bar-container">
@@ -161,6 +165,18 @@ const MaintainEntryLevelPositions = () => {
             />
           </div>
           <div className="filter-div">
+            <div className="label">Job Categories:</div>
+            <Picky
+              {...pickyProps}
+              placeholder="Select Job Categories(s)"
+              value={selectedJobs}
+              options={jcFilters}
+              onChange={setSelectedJobs}
+              valueKey="code"
+              labelKey="description"
+            />
+          </div>
+          <div className="filter-div">
             <div className="label">Languages:</div>
             <Picky
               {...pickyProps}
@@ -188,19 +204,36 @@ const MaintainEntryLevelPositions = () => {
               disabled={overseas}
             />
           </div>
-          <div className="filter-div">
-            <div className="label">Grid Preferences:</div>
-            <SelectForm
-              id="grid-preference-filter"
-              className={`select-filter ${selectedGridPreference === '' ? 'select-filter--disabled' : ''}`}
-              options={gridPreferences}
-              defaultSort={selectedGridPreference}
-              onSelectOption={e => setSelectedGridPreference(e.target.value)}
-              disabled={isLoading}
-              includeFirstEmptyOption
-              labelSrOnly
-            />
+        </div>
+      </div>
+      <div className="usa-width-one-whole">
+        <div className="results-dropdown controls-container">
+          <div className="el-table-header">Maintain Entry Level Positions</div>
+          <div className="position-search-controls--right">
+            <div className="position-search-controls--results">
+              <SelectForm
+                id="position-manager-num-results"
+                options={POSITION_PAGE_SIZES.options}
+                label="Results:"
+                defaultSort={limit}
+                onSelectOption={value => setLimit(value.target.value)}
+              />
+            </div>
+            <div className="export-button-container">
+              <ExportButton />
+            </div>
           </div>
+        </div>
+        <div className="el- table">
+          Table Here
+        </div>
+        <div className="usa-grid-full react-paginate position-search-controls--pagination">
+          <PaginationWrapper
+            pageSize={limit}
+            onPageChange={p => setPage(p.page)}
+            forcePage={page}
+            totalResults={20}
+          />
         </div>
       </div>
     </div>
