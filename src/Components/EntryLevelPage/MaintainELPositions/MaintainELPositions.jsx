@@ -11,6 +11,7 @@ import ExportButton from 'Components/ExportButton';
 import SelectForm from 'Components/SelectForm';
 import { POSITION_PAGE_SIZES } from 'Constants/Sort';
 import PaginationWrapper from 'Components/PaginationWrapper';
+import MaintainELPositionsTable from '../MaintainELPositionsTable';
 
 const MaintainEntryLevelPositions = () => {
   const userSelections = useSelector(state => state.entryLevelSelections);
@@ -82,16 +83,18 @@ const MaintainEntryLevelPositions = () => {
   }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, textSearch]);
 
   return (
-    <div className="entry-level-page position-search search-bar-container">
+    <div className="entry-level-page position-search">
       <div className="usa-grid-full position-search--header">
-        <ProfileSectionTitle title="Maintain Entry Level Positions" icon="keyboard-o" />
-        <PositionManagerSearch
-          ref={childRef}
-          placeHolder="Search using Position Number or Position Title"
-          textSearch={textSearch}
-          onChange={setTextSearch}
-          noButton
-        />
+        <ProfileSectionTitle title="Entry Level Search" icon="keyboard-o" />
+        <div className="search-bar-container">
+          <PositionManagerSearch
+            ref={childRef}
+            placeHolder="Search using Position Number or Position Title"
+            textSearch={textSearch}
+            onChange={setTextSearch}
+            noButton
+          />
+        </div>
         <div className="filterby-container">
           <div className="filterby-label">Filter by:</div>
           <div className="filterby-clear">
@@ -206,33 +209,31 @@ const MaintainEntryLevelPositions = () => {
           </div>
         </div>
       </div>
-      <div className="usa-width-one-whole">
-        <div className="results-dropdown controls-container">
-          <div className="el-table-header">Maintain Entry Level Positions</div>
-          <div className="position-search-controls--right">
-            <div className="position-search-controls--results">
-              <SelectForm
-                id="position-manager-num-results"
-                options={POSITION_PAGE_SIZES.options}
-                label="Results:"
-                defaultSort={limit}
-                onSelectOption={value => setLimit(value.target.value)}
-              />
-            </div>
-            <div className="export-button-container">
-              <ExportButton />
-            </div>
+      <div className="controls-container results-dropdown">
+        <div className="el-page-header">Maintain Entry Level Positions</div>
+        <div className="position-search-controls--right">
+          <div className="position-search-controls--results">
+            <SelectForm
+              id="position-manager-num-results"
+              options={POSITION_PAGE_SIZES.options}
+              label="Results:"
+              defaultSort={limit}
+              onSelectOption={value => setLimit(value.target.value)}
+            />
+          </div>
+          <div className="export-button-container">
+            <ExportButton />
           </div>
         </div>
-        <div className="el- table">
-          Table Here
-        </div>
-        <div className="usa-grid-full react-paginate position-search-controls--pagination">
+      </div>
+      <div className="usa-width-one-whole position-search--results">
+        <MaintainELPositionsTable />
+        <div className="usa-grid-full react-paginate">
           <PaginationWrapper
             pageSize={limit}
             onPageChange={p => setPage(p.page)}
             forcePage={page}
-            totalResults={20}
+            totalResults={1}
           />
         </div>
       </div>
