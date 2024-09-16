@@ -42,6 +42,7 @@ const NotificationCard = (props) => {
   const errored = cableErrored || refErrored;
 
   const [editMode, setEditMode] = useState(false);
+  const [recipientMode, setRecipientMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
   const [noteRouting, setNoteRouting] = useState(ref?.QRY_NMD_REF || []);
   const [noteParagraphs, setNoteParagraphs] = useState([]);
@@ -359,7 +360,7 @@ const NotificationCard = (props) => {
     return textLines.join('\n');
   };
 
-  return (getOverlay() || (!editMode ?
+  const previewCard = (
     <Row fluid className="tabbed-card box-shadow-standard">
       <Row fluid className="tabbed-card--header">
         <NavTabs
@@ -425,10 +426,41 @@ const NotificationCard = (props) => {
         </Row>
         <div className="position-form--actions">
           <button onClick={onCancel}>Cancel</button>
-          <button onClick={() => handleSend()}>Email {memo ? 'Memo' : 'Cable'}</button>
+          <button onClick={() => { if (memo) { setRecipientMode(true); } else { handleSend(); } }}>
+            {memo ? 'Select Memo Recipients' : 'Send Cable'}</button>
         </div>
       </div>
-    </Row > :
+    </Row>
+  );
+
+  const recipientCard = (
+    <Row fluid className="tabbed-card box-shadow-standard">
+      <Row fluid className="tabbed-card--header">
+        <NavTabs
+          tabs={[{ text: 'Recipients', value: 'RECIPIENTS' }]}
+          value="RECIPIENTS"
+          styleVariant="lightBorderBottom"
+        />
+      </Row>
+      <div className="position-content position-form notification-card">
+        <div className="notification-card__header">
+          <span>
+            Memorandum
+          </span>
+          <span>
+            Search by last name for a list of recipients to add to the email.
+          </span>
+        </div>
+
+        <div className="position-form--actions">
+          <button onClick={() => setRecipientMode(false)}>Back to Preview</button>
+          <button onClick={() => handleSend()}>Email Memo</button>
+        </div>
+      </div>
+    </Row>
+  );
+
+  const editCard = (
     <TabbedCard
       tabs={[memo ? {
         text: 'Header',
@@ -529,7 +561,18 @@ const NotificationCard = (props) => {
         ),
       }]}
     />
-  ));
+  );
+
+  const cardMode = () => {
+    if (recipientMode) {
+      return recipientCard;
+    } else if (!editMode) {
+      return previewCard;
+    }
+    return editCard;
+  };
+
+  return (getOverlay() || cardMode());
 };
 
 NotificationCard.propTypes = {
