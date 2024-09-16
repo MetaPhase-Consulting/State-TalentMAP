@@ -43,15 +43,14 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState('');
   const [altEmail, setAltEmail] = useState('');
-  const [verifyComments, setVerifyComments] = useState('');
-  const [verifyAltEmail, setVerifyAltEmail] = useState('');
+  const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
   const eligible = !included;
   const showToggle = bidderType !== null;
   const showSaveAndCancel = edit && showMore;
 
-  const currentSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
+  const bidderPortfolioSeasons = useSelector(state => state.bidderPortfolioSeasons);
 
   const editClient = (e) => {
     e.preventDefault();
@@ -59,15 +58,12 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   };
 
   const saveEdit = () => {
-    setComments(verifyComments);
-    setAltEmail(verifyAltEmail);
-
     const clientData = {
       per_seq_number: perSeqNum,
-      bid_seasons: currentSeasons,
+      bid_seasons: [currentSeason],
       hru_id: hruID,
-      comments: verifyComments,
-      email: verifyAltEmail,
+      comments,
+      email: altEmail,
     };
     dispatch(saveBidderPortfolioSelections(clientData));
     setEdit(false);
@@ -98,9 +94,13 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   };
 
   const onCancel = () => {
-    setVerifyComments('');
-    setVerifyAltEmail('');
+    setAltEmail('');
+    setComments('');
     setEdit(false);
+  };
+
+  const onSeasonChange = (e) => {
+    setCurrentSeason(Number(e.target.value));
   };
 
   const ribbons = (
@@ -202,7 +202,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
                   type="text"
                   defaultValue=""
                   placeholder="example@gmail.com"
-                  onChange={(e) => setVerifyAltEmail(e.target.value)}
+                  onChange={(e) => setAltEmail(e.target.value)}
                 />
               }
             </div>
@@ -229,16 +229,28 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
         {
           showMore && showCDOD30 &&
           <div>
+            <div className="filter-div">
+              <div className="label">Bid Season:</div>
+              <select onChange={onSeasonChange} disabled={!edit}>
+                <option key={0} value={0}>Please Select A Season</option>
+                {
+                  bidderPortfolioSeasons.map(season => (
+                    <option key={season.id} value={season.id}>{season.description}</option>
+                  ))
+                }
+              </select>
+            </div>
             <dt>Comments:</dt>
             <div className="stat-card-data-point stat-card-comments">
               <TextareaAutosize
                 className="stat-card-textarea"
-                disabled={!edit}
+                disabled={!edit || currentSeason === 0}
                 maxLength="255"
                 name="note"
                 placeholder="No Notes"
+                value={comments}
                 defaultValue={!comments ? '' : comments}
-                onChange={(e) => setVerifyComments(e.target.value)}
+                onChange={(e) => setComments(e.target.value)}
               />
             </div>
           </div>
@@ -247,7 +259,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
           showSaveAndCancel && showCDOD30 &&
           <div className="stat-card-btn-container">
             <button className="stat-card-cancel-btn" onClick={onCancel}>Cancel</button>
-            <button onClick={saveEdit} disabled={!verifyComments && !verifyAltEmail}>Save</button>
+            <button onClick={saveEdit} disabled={currentSeason === 0 || (!comments && !altEmail)}>Save</button>
           </div>
         }
         {

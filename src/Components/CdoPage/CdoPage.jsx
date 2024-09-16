@@ -24,6 +24,7 @@ const CdoPage = () => (
       <Route path="/profile/cdo/:id/assignmentsseparations/notification/:noteMemoID" render={(props) => <AssignmentNotification {...props} />} />
       <Route path="/profile/cdo/:id/assignmentsseparations/memo/:noteMemoID" render={(props) => <AssignmentNotification {...props} />} />
       <Route path="/profile/cdo/:id/assignmentsseparations" render={(props) => <AssignmentsSeparations {...props} />} />
+      <Route path="/profile/cdo/panelmeetingagendas" render={(props) => <PanelMeetingAgendas {...props} isCDO />} />
       <Route path="/profile/cdo/biddingtool/:id" render={() => <BiddingTool />} />
       <Route path="/profile/cdo/biddingtool/" render={() => <BiddingTool />} />
     </Switch>
