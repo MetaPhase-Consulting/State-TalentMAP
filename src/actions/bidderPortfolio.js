@@ -232,7 +232,7 @@ export function getClientPerdets(query = {}) {
         query$.hru_id__in = ids.join();
       }
       if (seasons.length) {
-        query$.bid_seasons = seasons.join(',');
+        query$.bid_seasons = seasons.join(', ');
       }
       if (!query$.bid_seasons) {
         query$ = omit(query$, ['hasHandshake', 'handshake']);
