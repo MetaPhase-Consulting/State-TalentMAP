@@ -227,7 +227,9 @@ const MaintainEntryLevelPositions = () => {
         </div>
       </div>
       <div className="usa-width-one-whole position-search--results">
-        <MaintainELPositionsTable />
+        <div className="usa-grid-full el-table-container">
+          <MaintainELPositionsTable />
+        </div>
         <div className="usa-grid-full react-paginate">
           <PaginationWrapper
             pageSize={limit}
