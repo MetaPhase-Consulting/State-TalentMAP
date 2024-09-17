@@ -1,6 +1,6 @@
 {
   "name": "talentmap",
-  "version": "13.0",
+  "version": "13.0.1-126",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.17.9",
