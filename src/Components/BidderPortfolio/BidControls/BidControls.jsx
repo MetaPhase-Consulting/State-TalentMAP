@@ -259,6 +259,7 @@ class BidControls extends Component {
                 value={panelClientDate}
                 onChange={(e) => this.state({ panelClientDate: e.target.value })}
               >
+                {/* placeholder for now */}
                 <option value="" disabled />
               </select>
             </div>
