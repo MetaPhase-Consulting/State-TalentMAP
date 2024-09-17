@@ -259,9 +259,7 @@ class BidControls extends Component {
                 value={panelClientDate}
                 onChange={(e) => this.state({ panelClientDate: e.target.value })}
               >
-                <option>10/21/2025</option>
-                <option>10/21/2026</option>
-                <option>10/21/2027</option>
+                <option value="" disabled />
               </select>
             </div>
             }
