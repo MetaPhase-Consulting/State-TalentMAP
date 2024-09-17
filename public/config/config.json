@@ -19,7 +19,7 @@
     "cycle_job_categories": true,
     "cycle_management": true,
     "cycle_management_positions": true,
-    "deto_rwa": false,
+    "deto_rwa": true,
     "fsbid_admin": true,
     "handshake_bidding": true,
     "job_categories": true,
