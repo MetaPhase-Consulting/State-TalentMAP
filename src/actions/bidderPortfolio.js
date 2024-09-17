@@ -265,6 +265,7 @@ export function getClientPerdets(query = {}) {
       if (ids.length) {
         const response = await api().post(url, { cancelToken });
         const { data } = response;
+        query$ = omit(query$, ['noBids']);
         const newQuery = { ...query$, perdet_seq_num: data.join(',') };
         const secondQueryString = stringify(newQuery);
         const secondEndpoint = '/fsbid/client/';
