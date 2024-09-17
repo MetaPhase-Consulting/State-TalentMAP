@@ -232,7 +232,7 @@ export function getClientPerdets(query = {}) {
         query$.hru_id__in = ids.join();
       }
       if (seasons.length) {
-        query$.bid_seasons = seasons.join(', ');
+        query$.bid_seasons = seasons.join(',');
       }
       if (!query$.bid_seasons) {
         query$ = omit(query$, ['hasHandshake', 'handshake']);
@@ -265,7 +265,6 @@ export function getClientPerdets(query = {}) {
       if (ids.length) {
         const response = await api().post(url, { cancelToken });
         const { data } = response;
-        query$ = omit(query$, ['noBids']);
         const newQuery = { ...query$, perdet_seq_num: data.join(',') };
         const secondQueryString = stringify(newQuery);
         const secondEndpoint = '/fsbid/client/';
@@ -309,7 +308,6 @@ export function bidderPortfolioFetchData(query = {}) {
     const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
     const ids = cdos.map(m => m.hru_id).filter(f => f);
     const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
-    const unassigned = get(state, 'bidderPortfolioSelectedUnassigned', []);
     let query$ = { ...query };
     if (ids.length) {
       query$.hru_id__in = ids.join();
@@ -322,10 +320,8 @@ export function bidderPortfolioFetchData(query = {}) {
     }
     if (get(query, 'hasHandshake') === 'unassigned_filters') {
       query$ = omit(query$, ['hasHandshake']);
-      const UAvalues = unassigned.map(a => a.value);
-      if (includes(UAvalues, 'noHandshake')) {
-        query$.hasHandshake = false;
-      }
+      query$ = omit(query$, ['noBids']);
+      query$ = omit(query$, ['noPanel']);
     }
 
     // hasHandshake is a special case where we need to change the query to match the API for cusp_bidders
