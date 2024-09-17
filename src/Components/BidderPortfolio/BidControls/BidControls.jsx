@@ -98,8 +98,10 @@ class BidControls extends Component {
     this.setState({ filterBy: BID_PORTFOLIO_FILTERS$.options[
       findIndex(BID_PORTFOLIO_FILTERS$.options, (o) => o.value === q)] },
     this.generatePills);
-    this.setState({ unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons) });
-    this.setState({ panelClient: (q === 'panel_clients' && this.state.hasSeasons) });
+    this.setState({
+      unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons),
+      panelClient: (q === 'panel_clients' && this.state.hasSeasons),
+    });
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
     } else {
