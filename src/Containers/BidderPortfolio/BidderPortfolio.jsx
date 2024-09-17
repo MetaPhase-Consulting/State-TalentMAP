@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
-import { BID_PORTFOLIO_FILTERS, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
+import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
 import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
@@ -231,8 +231,8 @@ const mapStateToProps = state => ({
   classificationsHasErrored: state.classificationsHasErrored,
   classifications: state.classifications,
   defaultPageSize: get(state, `sortPreferences.${CLIENTS_PAGE_SIZES}.defaultSort`, CLIENTS_PAGE_SIZES.defaultSort),
-  defaultHandshakeFilter: get(state, `sortPreferences.${BID_PORTFOLIO_FILTERS}.options[0].value`, BID_PORTFOLIO_FILTERS.options[0].value),
-  defaultSort: BID_PORTFOLIO_SORTS_TYPE.defaultSort,
+  defaultHandshakeFilter: get(state, `sortPreferences.${BID_PORTFOLIO_FILTERS_TYPE}.defaultSort`, BID_PORTFOLIO_FILTERS_TYPE.defaultSort),
+  defaultSort: get(state, `sortPreferences.${BID_PORTFOLIO_SORTS_TYPE}.defaultSort`, BID_PORTFOLIO_SORTS_TYPE.defaultSort),
   selectedUnassigned: state.bidderPortfolioSelectedUnassigned,
   availableBiddersIdsLoading: state.availableBiddersIdsLoading,
   bidderPortfolioPagination: state.bidderPortfolioPagination,
