@@ -114,9 +114,6 @@ if (showCDOD30) {
     { value: 'eligible_bidders', text: 'Eligible Bidders' },
     { value: 'cusp_bidders', text: 'Cusp Bidders' },
     { value: 'separations', text: 'Separations' },
-    // Will add these 2 next sprint
-    // { value: 'classification', text: 'Classification' },
-    // { value: 'panel_clients', text: 'Panel Clients' },
     { value: 'languages', text: 'Languages' },
   );
 }
