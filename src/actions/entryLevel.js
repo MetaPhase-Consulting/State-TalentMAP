@@ -39,7 +39,7 @@ export function entryLevelEdit(data) {
       dispatch(entryLevelEditErrored(false));
     });
 
-    api().post('/fsbid/positions/el_positions/save', data)
+    api().post('/fsbid/positions/el_positions/save/', data)
       .then(() => {
         const toastTitle = UPDATE_ENTRY_LEVEL_SUCCESS_TITLE;
         const toastMessage = UPDATE_ENTRY_LEVEL_SUCCESS;
