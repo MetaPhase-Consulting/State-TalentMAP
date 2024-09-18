@@ -82,6 +82,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     const updatedRows = [...rows];
     updatedRows[params.node.id] = params.data;
     setRows(updatedRows);
+    console.log = params.data;
     dispatch(entryLevelEdit(params.data));
   };
 
