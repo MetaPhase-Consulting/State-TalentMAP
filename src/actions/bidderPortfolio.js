@@ -245,7 +245,7 @@ export function getClientPerdets(query = {}) {
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'classification']; // add 'panel_clients' back later
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
@@ -318,10 +318,12 @@ export function bidderPortfolioFetchData(query = {}) {
     if (!query$.bid_seasons || !query$.bid_seasons.length) {
       query$ = omit(query$, ['hasHandshake', 'handshake']); // hasHandshake requires at least one bid season
     }
-    if (get(query, 'hasHandshake') === 'unassigned_filters') {
-      query$ = omit(query$, ['hasHandshake']);
-      query$ = omit(query$, ['noBids']);
-      query$ = omit(query$, ['noPanel']);
+    if (get(query, 'hasHandshake')) {
+      query$ = omit(query$, [
+        'hasHandshake', 'noBids', 'noPanel', 'handshake',
+        'eligible_bidders', 'cusp_bidders', 'separations',
+        'languages', 'classification', 'panel_clients',
+      ]);
     }
 
     if (!query$.ordering) {
