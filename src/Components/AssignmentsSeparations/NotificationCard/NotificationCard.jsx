@@ -5,15 +5,17 @@ import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import {
-  cableFetchData, editNoteCable, noteCableRefFetchData,
+  cableFetchData, editNoteCable, getGal, noteCableRefFetchData,
   rebuildNotification, sendNotification,
 } from 'actions/assignmentNotifications';
+import { ifEnter } from 'utilities';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
 import TabbedCard from 'Components/TabbedCard';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import NavTabs from 'Components/NavTabs';
+import InteractiveElement from 'Components/InteractiveElement';
 import Header from './Tabs/Header';
 import EFM from './Tabs/EFM';
 import Remarks from './Tabs/Remarks';
@@ -38,6 +40,10 @@ const NotificationCard = (props) => {
   const refErrored = useSelector(state => state.noteCableRefFetchDataErrored);
   const refLoading = useSelector(state => state.noteCableRefFetchDataLoading);
 
+  const gal = useSelector(state => state.getGal);
+  // const galErrored = useSelector(state => state.getGalErrored);
+  // const galLoading = useSelector(state => state.getGalLoading);
+
   const loading = cableLoading || refLoading;
   const errored = cableErrored || refErrored;
 
@@ -45,7 +51,10 @@ const NotificationCard = (props) => {
   const [recipientMode, setRecipientMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
   const [noteRouting, setNoteRouting] = useState(ref?.QRY_NMD_REF || []);
+  const [noteAssignments, setNoteAssignments] = useState([]);
   const [noteParagraphs, setNoteParagraphs] = useState([]);
+  const [galQuery, setGalQuery] = useState('');
+  const [recipients, setRecipients] = useState([]);
 
   const fetchNoteData = () => {
     if (note?.NM_SEQ_NUM) {
@@ -69,6 +78,9 @@ const NotificationCard = (props) => {
     }
     if (ref?.QRY_NMD_REF) {
       setNoteRouting(ref?.QRY_NMD_REF);
+    }
+    if (ref?.QRY_ASG_REF) {
+      setNoteAssignments(ref?.QRY_ASG_REF);
     }
     if (ref?.QRY_PARA_REF) {
       const selectedParagraphs = ref?.QRY_PARA_REF?.filter(p => p.INC_IND === 1);
@@ -153,18 +165,12 @@ const NotificationCard = (props) => {
   };
 
   const handleSave = () => {
-    const paragraph = getCableValue('PARAGRAPHS', true);
-    const distribution = getCableValue('DISTRIBUTION', true);
-    const information = getCableValue('INFORMATION', true);
-    const action = getCableValue('ACTION', true);
-
     let HDR_NME_SEQ_NUM = '';
     let HDR_CLOB_LENGTH = '';
     let HDR_NME_OVERRIDE_CLOB = '';
     let HDR_NME_UPDATE_ID = '';
     let HDR_NME_UPDATE_DATE = '';
     let HDR_NME_CLEAR_IND = '';
-
     noteCable.forEach(s => {
       const separator = HDR_NME_SEQ_NUM === '' ? '' : ',';
       HDR_NME_SEQ_NUM = HDR_NME_SEQ_NUM.concat(separator, s.NME_SEQ_NUM);
@@ -174,83 +180,101 @@ const NotificationCard = (props) => {
       HDR_NME_UPDATE_DATE = HDR_NME_UPDATE_DATE.concat(separator, s.NME_UPDATE_DATE);
       HDR_NME_CLEAR_IND = HDR_NME_CLEAR_IND.concat(separator, s.NME_CLEAR_IND);
     });
-
-    let INC_IND = '';
-    let NMD_SEQ_NUM = '';
-    let DT_CODE = '';
-    let PT_CODE = '';
-    let ORG_CODE = '';
-    let CP_SEQ_NUM = '';
-    let NMD_SLUG_TEXT = '';
-    let NMD_UPDATE_ID = '';
-    let NMD_UPDATE_DATE = '';
-
-    noteRouting.forEach(s => {
-      if (s.INC_IND !== 0 || s.NMD_UPDATE_DATE) {
-        const separator = INC_IND === '' ? '' : ',';
-        INC_IND = INC_IND.concat(separator, s.INC_IND ?? 1);
-        NMD_SEQ_NUM = NMD_SEQ_NUM.concat(separator, s.NMD_UPDATE_DATE ? s.NMD_SEQ_NUM : '');
-        DT_CODE = DT_CODE.concat(separator, s.DT_CODE);
-        PT_CODE = PT_CODE.concat(separator, s.PT_CODE);
-        ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE);
-        CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM);
-        NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT);
-        NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID);
-        NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE);
-      }
-    });
-
-    const req = {
-      I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
-
+    const cableReq = {
       I_HDR_NME_SEQ_NUM: HDR_NME_SEQ_NUM,
       I_HDR_CLOB_LENGTH: HDR_CLOB_LENGTH,
       I_HDR_NME_OVERRIDE_CLOB: HDR_NME_OVERRIDE_CLOB,
       I_HDR_NME_UPDATE_ID: HDR_NME_UPDATE_ID,
       I_HDR_NME_UPDATE_DATE: HDR_NME_UPDATE_DATE,
       I_HDR_NME_CLEAR_IND: HDR_NME_CLEAR_IND,
+    };
 
-      I_ASG_NME_SEQ_NUM: null,
-      I_ASG_NMAS_SEQ_NUM: null,
-      I_ASG_NMAS_UPDATE_ID: null,
-      I_ASG_NMAS_UPDATE_DT: null,
+    const assignmentReq = {
+      I_ASG_NME_SEQ_NUM: noteAssignments[0].NME_SEQ_NUM,
+      I_ASG_NMAS_SEQ_NUM: noteAssignments.map(a => a.NMAS_SEQ_NUM).join(),
+    };
 
+    const paragraph = getCableValue('PARAGRAPHS', true);
+    const paragraphReq = {
       I_PARA_NME_SEQ_NUM: paragraph.NME_SEQ_NUM,
       I_PARA_NOTP_CODE: noteParagraphs.join(),
       I_PARA_NME_UPDATE_ID: paragraph.NME_UPDATE_ID,
       I_PARA_NME_UPDATE_DATE: paragraph.NME_UPDATE_DATE,
-
-      I_DIST_NME_SEQ_NUM: distribution.NME_SEQ_NUM,
-      I_DIST_NME_UPDATE_ID: distribution.NME_UPDATE_ID,
-      I_DIST_NME_UPDATE_DATE: distribution.NME_UPDATE_DATE,
-
-      I_ACT_NME_SEQ_NUM: action.NME_SEQ_NUM,
-      I_ACT_NME_UPDATE_ID: action.NME_UPDATE_ID,
-      I_ACT_NME_UPDATE_DATE: action.NME_UPDATE_DATE,
-
-      I_INFO_NME_SEQ_NUM: information.NME_SEQ_NUM,
-      I_INFO_NME_UPDATE_ID: information.NME_UPDATE_ID,
-      I_INFO_NME_UPDATE_DATE: information.NME_UPDATE_DATE,
-
-      I_INC_IND: INC_IND,
-      I_NMD_SEQ_NUM: NMD_SEQ_NUM,
-      I_DT_CODE: DT_CODE,
-      I_PT_CODE: PT_CODE,
-      I_ORG_CODE: ORG_CODE,
-      I_CP_SEQ_NUM: CP_SEQ_NUM,
-      I_NMD_SLUG_TEXT: NMD_SLUG_TEXT,
-      I_NMD_UPDATE_ID: NMD_UPDATE_ID,
-      I_NMD_UPDATE_DATE: NMD_UPDATE_DATE,
     };
 
-    editNoteCable(req, fetchNoteData, memo);
+    let req = {
+      I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
+      ...cableReq,
+      ...assignmentReq,
+    };
+
+    // Additional Logic and Parameters for Notification
+    if (!memo) {
+      let INC_IND = '';
+      let NMD_SEQ_NUM = '';
+      let DT_CODE = '';
+      let PT_CODE = '';
+      let ORG_CODE = '';
+      let CP_SEQ_NUM = '';
+      let NMD_SLUG_TEXT = '';
+      let NMD_UPDATE_ID = '';
+      let NMD_UPDATE_DATE = '';
+      noteRouting.forEach(s => {
+        if (s.INC_IND !== 0 || s.NMD_UPDATE_DATE) {
+          const separator = INC_IND === '' ? '' : ',';
+          INC_IND = INC_IND.concat(separator, s.INC_IND ?? 1);
+          NMD_SEQ_NUM = NMD_SEQ_NUM.concat(separator, s.NMD_UPDATE_DATE ? s.NMD_SEQ_NUM : '');
+          DT_CODE = DT_CODE.concat(separator, s.DT_CODE);
+          PT_CODE = PT_CODE.concat(separator, s.PT_CODE);
+          ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE);
+          CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM);
+          NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT);
+          NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID);
+          NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE);
+        }
+      });
+      const distribution = getCableValue('DISTRIBUTION', true);
+      const information = getCableValue('INFORMATION', true);
+      const action = getCableValue('ACTION', true);
+      const routingReq = {
+        I_DIST_NME_SEQ_NUM: distribution.NME_SEQ_NUM,
+        I_DIST_NME_UPDATE_ID: distribution.NME_UPDATE_ID,
+        I_DIST_NME_UPDATE_DATE: distribution.NME_UPDATE_DATE,
+
+        I_ACT_NME_SEQ_NUM: action.NME_SEQ_NUM,
+        I_ACT_NME_UPDATE_ID: action.NME_UPDATE_ID,
+        I_ACT_NME_UPDATE_DATE: action.NME_UPDATE_DATE,
+
+        I_INFO_NME_SEQ_NUM: information.NME_SEQ_NUM,
+        I_INFO_NME_UPDATE_ID: information.NME_UPDATE_ID,
+        I_INFO_NME_UPDATE_DATE: information.NME_UPDATE_DATE,
+
+        I_INC_IND: INC_IND,
+        I_NMD_SEQ_NUM: NMD_SEQ_NUM,
+        I_DT_CODE: DT_CODE,
+        I_PT_CODE: PT_CODE,
+        I_ORG_CODE: ORG_CODE,
+        I_CP_SEQ_NUM: CP_SEQ_NUM,
+        I_NMD_SLUG_TEXT: NMD_SLUG_TEXT,
+        I_NMD_UPDATE_ID: NMD_UPDATE_ID,
+        I_NMD_UPDATE_DATE: NMD_UPDATE_DATE,
+      };
+
+      req = {
+        ...req,
+        ...paragraphReq,
+        ...routingReq,
+      };
+    }
+
+    dispatch(editNoteCable(req, fetchNoteData, memo));
   };
 
   const handleSend = () => {
-    sendNotification({
+    dispatch(sendNotification({
       I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
       I_NOTE_TYPE: memo ? 'M' : 'C',
-    }, null, memo);
+    }, null, memo));
   };
 
   const freeTextContainer = (children, meDescs) => {
@@ -433,6 +457,7 @@ const NotificationCard = (props) => {
     </Row>
   );
 
+  console.log(recipients);
   const recipientCard = (
     <Row fluid className="tabbed-card box-shadow-standard">
       <Row fluid className="tabbed-card--header">
@@ -451,7 +476,70 @@ const NotificationCard = (props) => {
             Search by last name for a list of recipients to add to the email.
           </span>
         </div>
-
+        <div className="gal-lookup">
+          <div className="gal-lookup__input">
+            <label htmlFor="gal-lookup" className="gal-label">GAL Lookup</label>
+            <div>
+              <input
+                id="gal-lookup"
+                name="gal-lookup"
+                placeholder="Last Name"
+                value={galQuery}
+                onChange={(e) => setGalQuery(e.target.value)}
+                onKeyUp={(e) => { if (ifEnter(e)) dispatch(getGal({ PV_LAST_NAME_I: galQuery })); }}
+              />
+              <button onClick={() => dispatch(getGal({ PV_LAST_NAME_I: galQuery }))}>
+                Search
+              </button>
+            </div>
+          </div>
+          <div className="recipients">
+            <div className="recipients-list">
+              <div className="gal-label">Recipients</div>
+              {gal?.length > 0 &&
+                <div className="gal-result">
+                  {gal?.map(g => (
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="gal-result__item clickable"
+                      onClick={() => {
+                        const match = recipients.find(r => r.GAL_SMTP_EMAIL_ADRS_TEXT === g.GAL_SMTP_EMAIL_ADRS_TEXT);
+                        if (!match) {
+                          setRecipients([...recipients, g]);
+                        }
+                      }}
+                    >
+                      {g.GAL_DISPLAY_NAME}
+                    </div>
+                  ))}
+                </div>
+              }
+            </div>
+            <div className="recipients-list">
+              <div className="gal-label">Added Recipients</div>
+              {recipients?.length > 0 &&
+                <div className="gal-result">
+                  {recipients?.map(g => (
+                    <div className="gal-result__item">
+                      <div>{g.GAL_DISPLAY_NAME}</div>
+                      <InteractiveElement
+                        title={`Remove Recipient ${g.GAL_DISPLAY_NAME}`}
+                        onClick={() => {
+                          const removed = recipients.filter(r => r.GAL_SMTP_EMAIL_ADRS_TEXT !== g.GAL_SMTP_EMAIL_ADRS_TEXT);
+                          setRecipients(removed);
+                        }}
+                        className="delete-button"
+                      >
+                        <FA name="trash" className="fa-lg" />
+                      </InteractiveElement>
+                    </div>
+                  ))}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
         <div className="position-form--actions">
           <button onClick={() => setRecipientMode(false)}>Back to Preview</button>
           <button onClick={() => handleSend()}>Email Memo</button>
@@ -509,7 +597,8 @@ const NotificationCard = (props) => {
             getCableValue={getCableValue}
             modCableValue={modCableValue}
             handleDefaultClear={handleDefaultClear}
-            assignments={ref?.QRY_ASG_REF}
+            assignments={noteAssignments}
+            setAssignments={setNoteAssignments}
           />,
           ['ASSIGNMENTS', 'COMBINED TOD'],
         ),
