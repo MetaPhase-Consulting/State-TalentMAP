@@ -15,7 +15,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     { field: 'mcEndDate', headerName: 'Cede End Date', editable: true, width: 125 },
     { field: 'bureau', headerName: 'Bureau', width: 75 },
     { field: 'od', headerName: 'Overseas / Domestic', width: 100 },
-    { field: 'location', headerName: 'Location / Org', width: 150 },
+    { field: 'location', headerName: 'Location / Org', width: 125 },
     { field: 'positionNumber', headerName: 'Position Number', width: 100 },
     { field: 'skill', headerName: 'Skill', width: 75 },
     { field: 'positionTitle', headerName: 'Title', width: 200 },
