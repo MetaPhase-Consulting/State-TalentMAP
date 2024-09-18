@@ -7,18 +7,18 @@ const MaintainELPositionsTable = ({ elPositions }) => {
 
   const [headers] = useState([
     // checkbox uses space bar to change value
-    { field: 'el', headerName: 'EL Managed', editable: true, width: 100 },
+    { field: 'el', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', editable: true, width: 100 },
     { field: 'lna', headerName: 'LNA', editable: true, width: 75 },
     { field: 'fica', headerName: 'FICA', editable: true, width: 75 },
     { field: 'elToMl', headerName: 'EL to ML OTO', editable: true, width: 100 },
     { field: 'mlToEl', headerName: 'ML to EL OTO', editable: true, width: 100 },
-    { field: 'cedeEndDate', headerName: 'Cede End Date', editable: true, width: 125 },
+    { field: 'mcEndDate', headerName: 'Cede End Date', editable: true, width: 125 },
     { field: 'bureau', headerName: 'Bureau', width: 75 },
     { field: 'od', headerName: 'Overseas / Domestic', width: 100 },
     { field: 'location', headerName: 'Location / Org', width: 150 },
     { field: 'positionNumber', headerName: 'Position Number', width: 100 },
-    { field: 'skill', headerName: 'Skill', width: 150 },
-    { field: 'title', headerName: 'Title', width: 150 },
+    { field: 'skill', headerName: 'Skill', width: 75 },
+    { field: 'positionTitle', headerName: 'Title', width: 200 },
     { field: 'grade', headerName: 'Grade', width: 75 },
     { field: 'languages', headerName: 'Languages', width: 175 },
     { field: 'incumbent', headerName: 'Incumbent', width: 150 },
