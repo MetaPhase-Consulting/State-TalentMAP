@@ -248,17 +248,21 @@ const MaintainEntryLevelPositions = () => {
           <div className="controls-container results-dropdown">
             <div className="el-page-header">Maintain Entry Level Positions</div>
             <div className="position-search-controls--right">
-              <div className="position-search-controls--results">
-                <SelectForm
-                  id="position-manager-num-results"
-                  options={POSITION_PAGE_SIZES.options}
-                  label="Results:"
-                  defaultSort={limit}
-                  onSelectOption={value => setLimit(value.target.value)}
-                />
-              </div>
+              {
+                false &&
+                // hidden until pagination added to endpoint
+                <div className="position-search-controls--results">
+                  <SelectForm
+                    id="position-manager-num-results"
+                    options={POSITION_PAGE_SIZES.options}
+                    label="Results:"
+                    defaultSort={limit}
+                    onSelectOption={value => setLimit(value.target.value)}
+                  />
+                </div>
+              }
               <div className="export-button-container">
-                <ExportButton />
+                <ExportButton disabled />
               </div>
             </div>
           </div>
@@ -269,14 +273,18 @@ const MaintainEntryLevelPositions = () => {
               <div className="usa-grid-full el-table-container">
                 <MaintainELPositionsTable elPositions={elPositions} />
               </div>
-              <div className="usa-grid-full react-paginate">
-                <PaginationWrapper
-                  pageSize={limit}
-                  onPageChange={p => setPage(p.page)}
-                  forcePage={page}
-                  totalResults={1}
-                />
-              </div>
+              {
+                false &&
+                // hidden until pagination added to endpoint
+                <div className="usa-grid-full react-paginate">
+                  <PaginationWrapper
+                    pageSize={limit}
+                    onPageChange={p => setPage(p.page)}
+                    forcePage={page}
+                    totalResults={1}
+                  />
+                </div>
+              }
             </>
             }
           </div>
