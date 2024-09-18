@@ -206,6 +206,7 @@ const NotificationCard = (props) => {
       I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
       ...cableReq,
       ...assignmentReq,
+      ...paragraphReq,
     };
 
     // Additional Logic and Parameters for Notification
@@ -262,7 +263,6 @@ const NotificationCard = (props) => {
 
       req = {
         ...req,
-        ...paragraphReq,
         ...routingReq,
       };
     }
