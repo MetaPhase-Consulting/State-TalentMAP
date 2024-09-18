@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
-import { entryLevelFiltersFetchData } from 'actions/entryLevel';
+import { entryLevelFetchData, entryLevelFiltersFetchData } from 'actions/entryLevel';
 import { renderSelectionList } from 'utilities';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle';
@@ -14,6 +14,7 @@ import PaginationWrapper from 'Components/PaginationWrapper';
 import { filter, flatten, isEmpty } from 'lodash';
 import { POSITION_PAGE_SIZES } from 'Constants/Sort';
 import Spinner from 'Components/Spinner';
+import Alert from 'Components/Alert';
 
 const MaintainEntryLevelPositions = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const MaintainEntryLevelPositions = () => {
   const [textSearch, setTextSearch] = useState('');
   const [clearFilters, setClearFilters] = useState(false);
 
-  // const elFiltersHasErrored = useSelector(state => state.entryLevelFiltersFetchDataErrored);
+  const elFiltersHasErrored = useSelector(state => state.entryLevelFiltersFetchDataErrored);
   const elFiltersIsLoading = useSelector(state => state.entryLevelFiltersFetchDataLoading);
   const elFiltersList = useSelector(state => state.entryLevelFilters);
   const tpFilters = elFiltersList?.tpFilters;
@@ -44,11 +45,12 @@ const MaintainEntryLevelPositions = () => {
   const jcFilters = elFiltersList?.jcFilters;
   const languageFilters = elFiltersList?.languageFilters;
 
+  const elPositionsHasErrored = useSelector(state => state.entryLevelPositionsHasErrored);
+  const elPositionsIsLoading = useSelector(state => state.entryLevelPositionsIsLoading);
+  const elPositions = useSelector(state => state.entryLevelPositions);
+
   const childRef = useRef();
 
-  useEffect(() => {
-    dispatch(entryLevelFiltersFetchData());
-  }, []);
 
   const fetchAndSet = () => {
     const filters = [
@@ -92,13 +94,19 @@ const MaintainEntryLevelPositions = () => {
     fetchAndSet();
   }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, textSearch]);
 
+  useEffect(() => {
+    dispatch(entryLevelFiltersFetchData());
+    dispatch(entryLevelFetchData());
+  }, []);
+
   const isLoading = elFiltersIsLoading;
   const getOverlay = () => {
     let toReturn;
-    // if (elPositionsIsLoading) {
-    //   toReturn = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
-    // } else if (panelMeetingsHasErrored || panelMeetingsFiltersHasErrored) {
-    //   toReturn = <Alert type="error" title="Error loading panel meetings" messages={[{ body: 'Please try again.' }]} />;
+    if (elPositionsIsLoading) {
+      toReturn = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
+    } else if (elPositionsHasErrored || elFiltersHasErrored) {
+      toReturn = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
+    }
     // } else if (noPanelMeetingResults) {
     //   toReturn = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
     // }
@@ -259,7 +267,7 @@ const MaintainEntryLevelPositions = () => {
               getOverlay() ||
             <>
               <div className="usa-grid-full el-table-container">
-                <MaintainELPositionsTable />
+                <MaintainELPositionsTable elPositions={elPositions} />
               </div>
               <div className="usa-grid-full react-paginate">
                 <PaginationWrapper
