@@ -32,14 +32,14 @@ export function entryLevelEditSuccess(results) {
     results,
   };
 }
-export function entryLevelEdit(id, data) {
+export function entryLevelEdit(data) {
   return (dispatch) => {
     batch(() => {
       dispatch(entryLevelEditLoading(true));
       dispatch(entryLevelEditErrored(false));
     });
 
-    api().patch(`/entryLevel/save/${id}`, data)
+    api().post('/fsbid/positions/el_positions/save', data)
       .then(() => {
         const toastTitle = UPDATE_ENTRY_LEVEL_SUCCESS_TITLE;
         const toastMessage = UPDATE_ENTRY_LEVEL_SUCCESS;
@@ -47,7 +47,6 @@ export function entryLevelEdit(id, data) {
           dispatch(entryLevelEditErrored(false));
           dispatch(entryLevelEditSuccess(true));
           dispatch(toastSuccess(toastMessage, toastTitle));
-          dispatch(entryLevelEditSuccess());
           dispatch(entryLevelEditLoading(false));
         });
       })
@@ -100,7 +99,6 @@ export function entryLevelFetchDataSuccess(results) {
     results,
   };
 }
-
 export function entryLevelFetchData(query = {}) {
   return (dispatch) => {
     if (cancelELdata) { cancelELdata('cancel'); }

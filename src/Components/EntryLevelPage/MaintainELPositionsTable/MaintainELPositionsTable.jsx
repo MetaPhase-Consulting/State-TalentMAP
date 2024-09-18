@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { entryLevelEdit } from 'actions/entryLevel';
 
 const MaintainELPositionsTable = ({ elPositions }) => {
+  const dispatch = useDispatch();
   const gridRef = useRef(null);
 
   const [headers] = useState([
@@ -79,6 +82,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     const updatedRows = [...rows];
     updatedRows[params.node.id] = params.data;
     setRows(updatedRows);
+    dispatch(entryLevelEdit(params.data));
   };
 
   return (
