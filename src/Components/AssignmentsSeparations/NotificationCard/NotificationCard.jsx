@@ -457,7 +457,6 @@ const NotificationCard = (props) => {
     </Row>
   );
 
-  console.log(recipients);
   const recipientCard = (
     <Row fluid className="tabbed-card box-shadow-standard">
       <Row fluid className="tabbed-card--header">
