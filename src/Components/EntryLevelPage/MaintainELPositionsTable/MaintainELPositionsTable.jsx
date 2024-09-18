@@ -6,13 +6,12 @@ const MaintainELPositionsTable = ({ elPositions }) => {
   const gridRef = useRef(null);
 
   const [headers] = useState([
-    // checkbox uses space bar to change value
     { field: 'el', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', editable: true, width: 100 },
     { field: 'lna', headerName: 'LNA', editable: true, width: 75 },
     { field: 'fica', headerName: 'FICA', editable: true, width: 75 },
     { field: 'elToMl', headerName: 'EL to ML OTO', editable: true, width: 100 },
     { field: 'mlToEl', headerName: 'ML to EL OTO', editable: true, width: 100 },
-    { field: 'mcEndDate', headerName: 'Cede End Date', editable: true, width: 125 },
+    { field: 'mcEndDate', headerName: 'Cede End Date', type: 'customDate', cellEditor: 'agDateCellEditor', editable: true, width: 125 },
     { field: 'bureau', headerName: 'Bureau', width: 75 },
     { field: 'od', headerName: 'Overseas / Domestic', width: 100 },
     { field: 'location', headerName: 'Location / Org', width: 125 },
@@ -22,9 +21,9 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     { field: 'grade', headerName: 'Grade', width: 75 },
     { field: 'languages', headerName: 'Languages', width: 175 },
     { field: 'incumbent', headerName: 'Incumbent', width: 150 },
-    { field: 'incumbentTED', headerName: 'Incumbent TED', width: 125 },
+    { field: 'incumbentTED', headerName: 'Incumbent TED', type: 'customDate', width: 125 },
     { field: 'assignee', headerName: 'Assignee', width: 150 },
-    { field: 'assigneeTED', headerName: 'Assignee TED', width: 125 },
+    { field: 'assigneeTED', headerName: 'Assignee TED', type: 'customDate', width: 125 },
   ]);
 
   const mapObjectToRow = (obj) => ({
@@ -33,7 +32,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     fica: obj.FICA === 'true',
     elToMl: obj.ELTOML === 'true',
     mlToEl: obj.MC === 'true',
-    mcEndDate: obj.mcEndDate,
+    mcEndDate: obj.mcEndDate ? new Date(obj.mcEndDate) : null,
     bureau: obj.bureau,
     od: obj.OD,
     location: obj.org,
@@ -43,9 +42,9 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     grade: obj.grade,
     languages: obj.languages,
     incumbent: obj.incumbent,
-    incumbentTED: obj.incumbentTED,
+    incumbentTED: obj.incumbentTED ? new Date(obj.incumbentTED) : null,
     assignee: obj.assignee,
-    assigneeTED: obj.assigneeTED,
+    assigneeTED: obj.assigneeTED ? new Date(obj.assigneeTED) : null,
   });
 
   const [rows, setRows] = useState([]);
@@ -59,6 +58,20 @@ const MaintainELPositionsTable = ({ elPositions }) => {
 
   const defaultColDef = {
     sortable: false,
+  };
+
+  const columnTypes = {
+    customDate: {
+      extendsDataType: 'date',
+      baseDataType: 'date',
+      valueFormatter: params =>
+        // convert to `dd/mm/yyyy`
+        params.value == null
+          ? ''
+          : `${params.value.getMonth() + 1}/${params.value.getDate()}/${params.value.getFullYear()}`
+
+      ,
+    },
   };
 
   const onCellValueChanged = (params) => {
@@ -75,6 +88,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
         columnDefs={headers}
         rowData={rows}
         onCellValueChanged={onCellValueChanged}
+        columnTypes={columnTypes}
         defaultColDef={defaultColDef}
         singleClickEdit
       />
