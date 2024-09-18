@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { checkFlag } from 'flags';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from 'Constants/PropTypes';
-import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
+import { NO_COMMENTS, NO_EMAIL_ADDRESS, NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
 import TextareaAutosize from 'react-textarea-autosize';
 import { saveBidderPortfolioSelections } from 'actions/bidderPortfolio';
@@ -41,8 +41,8 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
   const [included, setIncluded] = useState(bidderType === 'cusp');
   const [showMore, setShowMore] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [comments, setComments] = useState('');
-  const [altEmail, setAltEmail] = useState('');
+  const [comments, setComments] = useState(userProfile.comments || NO_COMMENTS);
+  const [altEmail, setAltEmail] = useState(userProfile.alt_email || NO_EMAIL_ADDRESS);
   const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
@@ -190,11 +190,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
             <div className={!edit && 'stat-card-data-point'} >
               <dt>Alt Email:</dt>
               <dd>
-                {
-                  altEmail ?
-                    <a href={`mailto:${altEmail}`}>{altEmail}</a> :
-                    'None Listed'
-                }
+                <a href={`mailto:${altEmail}`}>{altEmail}</a>
               </dd>
               {
                 edit &&

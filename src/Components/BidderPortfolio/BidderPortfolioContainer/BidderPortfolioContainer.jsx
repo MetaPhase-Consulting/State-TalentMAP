@@ -31,7 +31,6 @@ class BidderPortfolioContainer extends Component {
     const showNoCdosAlert = !cdosLength;
     const showEdit$ = !hideControls && showCDOD30;
     const showExpand = !hideControls;
-
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
         {

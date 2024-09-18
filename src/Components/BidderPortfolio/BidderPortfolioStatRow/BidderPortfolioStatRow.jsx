@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { checkFlag } from 'flags';
 import { Cusp, Eligible } from 'Components/Ribbon';
-import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
+import { NO_COMMENTS, NO_EMAIL_ADDRESS, NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
 import { formatDate, getBidderPortfolioUrl } from 'utilities';
 import FA from 'react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -41,8 +41,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const [edit, setEdit] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [included, setIncluded] = useState(bidderType === 'cusp');
-  const [comments, setComments] = useState('');
-  const [altEmail, setAltEmail] = useState('');
+  const [comments, setComments] = useState(userProfile.comments || NO_COMMENTS);
+  const [altEmail, setAltEmail] = useState(userProfile.alt_email || NO_EMAIL_ADDRESS);
   const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
@@ -191,14 +191,9 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
             </div>
             <div className={!edit && 'stat-card-data-point'}>
               <dt>Alt Email:</dt>
-              {
-                altEmail ?
-                  <dd>
-                    <a href={`mailto:${altEmail}`}>{altEmail}</a>
-                  </dd> :
-                  <dd>
-                  None Listed
-                  </dd>}
+              <dd>
+                <a href={`mailto:${altEmail}`}>{altEmail}</a>
+              </dd>
               {
                 edit &&
                 <input
