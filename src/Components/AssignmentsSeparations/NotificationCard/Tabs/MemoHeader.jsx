@@ -16,7 +16,7 @@ const MemoHeader = (props) => {
           handleDefaultClear={handleDefaultClear}
         />
         <div className="position-form--label-input-container">
-          <label htmlFor="drafting-office">To</label>
+          <label htmlFor="to-input">To</label>
           <input
             id="to-input"
             value={getCableValue('TO_ADDRESS')}
@@ -24,7 +24,7 @@ const MemoHeader = (props) => {
           />
         </div>
         <div className="position-form--label-input-container">
-          <label htmlFor="drafting-office">From</label>
+          <label htmlFor="from-input">From</label>
           <input
             id="from-input"
             value={getCableValue('FROM_ADDRESS')}
