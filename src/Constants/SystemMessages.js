@@ -453,3 +453,6 @@ export const SEND_MEMO_SUCCESS_TITLE = 'Assignment Memo Sent';
 export const SEND_MEMO_SUCCESS = 'This Assignment Memo has been successfully sent.';
 export const SEND_MEMO_ERROR_TITLE = 'Assignment Memo Send Error';
 export const SEND_MEMO_ERROR = 'There was an issue attempting to send this Assignment Memo. Please try again.';
+
+export const GET_GAL_ERROR_TITLE = 'GAL Lookup Error';
+export const GET_GAL_ERROR = 'There was an issue attempting this GAL Lookup. Please try again.';

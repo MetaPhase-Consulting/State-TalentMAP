@@ -11,7 +11,16 @@ import { batch } from 'react-redux';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
-import { GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE, REBUILD_MEMO_ERROR, REBUILD_MEMO_ERROR_TITLE, REBUILD_MEMO_SUCCESS, REBUILD_MEMO_SUCCESS_TITLE, REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE, REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE, SEND_MEMO_ERROR, SEND_MEMO_ERROR_TITLE, SEND_MEMO_SUCCESS, SEND_MEMO_SUCCESS_TITLE, SEND_NOTIFICATION_ERROR, SEND_NOTIFICATION_ERROR_TITLE, SEND_NOTIFICATION_SUCCESS, SEND_NOTIFICATION_SUCCESS_TITLE, UPDATE_MEMO_ERROR, UPDATE_MEMO_ERROR_TITLE, UPDATE_MEMO_SUCCESS, UPDATE_MEMO_SUCCESS_TITLE } from '../Constants/SystemMessages';
+import {
+  GET_GAL_ERROR, GET_GAL_ERROR_TITLE, GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE,
+  REBUILD_MEMO_ERROR, REBUILD_MEMO_ERROR_TITLE, REBUILD_MEMO_SUCCESS, REBUILD_MEMO_SUCCESS_TITLE,
+  REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE,
+  REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE,
+  SEND_MEMO_ERROR, SEND_MEMO_ERROR_TITLE, SEND_MEMO_SUCCESS, SEND_MEMO_SUCCESS_TITLE,
+  SEND_NOTIFICATION_ERROR, SEND_NOTIFICATION_ERROR_TITLE,
+  SEND_NOTIFICATION_SUCCESS, SEND_NOTIFICATION_SUCCESS_TITLE,
+  UPDATE_MEMO_ERROR, UPDATE_MEMO_ERROR_TITLE, UPDATE_MEMO_SUCCESS, UPDATE_MEMO_SUCCESS_TITLE,
+} from '../Constants/SystemMessages';
 import { history } from '../store';
 
 
@@ -337,6 +346,70 @@ export function sendNotification(data, onSuccess, memo) {
               SEND_NOTIFICATION_ERROR_TITLE,
             ));
           }
+        }
+      });
+  };
+}
+
+
+// ================ GAL LOOKUP ================
+
+export function getGalErrored(bool) {
+  return {
+    type: 'GAL_FETCH_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function getGalLoading(bool) {
+  return {
+    type: 'GAL_FETCH_LOADING',
+    isLoading: bool,
+  };
+}
+export function getGalSuccess(results) {
+  return {
+    type: 'GAL_FETCH_SUCCESS',
+    results,
+  };
+}
+let cancelGetGal;
+export function getGal(query = {}) {
+  return (dispatch) => {
+    if (cancelGetGal) { cancelGetGal('cancel'); }
+    batch(() => {
+      dispatch(getGalLoading(true));
+      dispatch(getGalErrored(false));
+    });
+    const q = convertQueryToString(query);
+    const endpoint = '/fsbid/notification/gal/';
+    const ep = `${endpoint}?${q}`;
+    api().get(ep, {
+      cancelToken: new CancelToken((c) => { cancelGetGal = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(getGalSuccess(data));
+          dispatch(getGalErrored(false));
+          dispatch(getGalLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(getGalSuccess({}));
+            dispatch(getGalErrored(true));
+            dispatch(getGalLoading(false));
+            dispatch(toastError(
+              GET_GAL_ERROR,
+              GET_GAL_ERROR_TITLE,
+            ));
+          });
+        } else {
+          batch(() => {
+            dispatch(getGalSuccess({}));
+            dispatch(getGalErrored(false));
+            dispatch(getGalLoading(true));
+          });
         }
       });
   };
