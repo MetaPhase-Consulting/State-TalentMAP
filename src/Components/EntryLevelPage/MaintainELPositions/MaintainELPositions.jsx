@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
-import { entryLevelFetchData, entryLevelFiltersFetchData } from 'actions/entryLevel';
+import { entryLevelEdit, entryLevelFetchData, entryLevelFiltersFetchData } from 'actions/entryLevel';
 import { renderSelectionList } from 'utilities';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle';
@@ -51,6 +51,9 @@ const MaintainEntryLevelPositions = () => {
 
   const childRef = useRef();
 
+  const testSave = () => {
+    dispatch(entryLevelEdit({}));
+  };
 
   const fetchAndSet = () => {
     const filters = [
@@ -262,7 +265,7 @@ const MaintainEntryLevelPositions = () => {
                 </div>
               }
               <div className="export-button-container">
-                <ExportButton disabled />
+                <ExportButton onClick={testSave} />
               </div>
             </div>
           </div>
