@@ -9,45 +9,45 @@ const MaintainELPositionsTable = ({ elPositions }) => {
   const gridRef = useRef(null);
 
   const [headers] = useState([
-    { field: 'el', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', editable: true, width: 100 },
-    { field: 'lna', headerName: 'LNA', editable: true, width: 75 },
-    { field: 'fica', headerName: 'FICA', editable: true, width: 75 },
-    { field: 'elToMl', headerName: 'EL to ML OTO', editable: true, width: 100 },
-    { field: 'mlToEl', headerName: 'ML to EL OTO', editable: true, width: 100 },
-    { field: 'mcEndDate', headerName: 'Cede End Date', type: 'customDate', cellEditor: 'agDateCellEditor', editable: true, width: 125 },
-    { field: 'bureau', headerName: 'Bureau', width: 75 },
-    { field: 'od', headerName: 'Overseas / Domestic', width: 100 },
-    { field: 'location', headerName: 'Location / Org', width: 125 },
-    { field: 'positionNumber', headerName: 'Position Number', width: 100 },
-    { field: 'skill', headerName: 'Skill', width: 75 },
-    { field: 'positionTitle', headerName: 'Title', width: 200 },
-    { field: 'grade', headerName: 'Grade', width: 75 },
-    { field: 'languages', headerName: 'Languages', width: 175 },
-    { field: 'incumbent', headerName: 'Incumbent', width: 150 },
-    { field: 'incumbentTED', headerName: 'Incumbent TED', type: 'customDate', width: 125 },
-    { field: 'assignee', headerName: 'Assignee', width: 150 },
-    { field: 'assigneeTED', headerName: 'Assignee TED', type: 'customDate', width: 125 },
+    { field: 'EL', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', cellDataType: 'boolean', editable: true, width: 100 },
+    { field: 'LNA', headerName: 'LNA', cellDataType: 'boolean', editable: true, width: 75 },
+    { field: 'FICA', headerName: 'FICA', cellDataType: 'boolean', editable: true, width: 75 },
+    { field: 'ELTOML', headerName: 'EL to ML OTO', cellDataType: 'boolean', editable: true, width: 100 },
+    { field: 'MC', headerName: 'ML to EL OTO', cellDataType: 'boolean', editable: true, width: 100 },
+    { field: 'MC_END_DATE', headerName: 'Cede End Date', type: 'customDate', cellEditor: 'agDateCellEditor', editable: true, width: 125 },
+    { field: 'BUREAU_SHORT_DESC', headerName: 'Bureau', width: 75 },
+    { field: 'POS_OVERSEAS_DESC', headerName: 'Overseas / Domestic', width: 100 },
+    { field: 'ORG_SHORT_DESC', headerName: 'Location / Org', width: 125 },
+    { field: 'POS_SEQ_NUM', headerName: 'Position Number', width: 100 },
+    { field: 'POS_SKILL_CODE', headerName: 'Skill', width: 75 },
+    { field: 'POS_TITLE_DESC', headerName: 'Title', width: 200 },
+    { field: 'POS_GRADE_CODE', headerName: 'Grade', width: 75 },
+    { field: 'POS_POSITION_LANG_PROF_CODE', headerName: 'Languages', width: 175 },
+    { field: 'INCUMBENT', headerName: 'Incumbent', width: 150 },
+    { field: 'INCUMBENT_TED', headerName: 'Incumbent TED', type: 'customDate', width: 125 },
+    { field: 'ASSIGNEE', headerName: 'Assignee', width: 150 },
+    { field: 'ASSIGNEE_TED', headerName: 'Assignee TED', type: 'customDate', width: 125 },
   ]);
 
   const mapObjectToRow = (obj) => ({
-    el: obj.EL === 'true',
-    lna: obj.LNA === 'true',
-    fica: obj.FICA === 'true',
-    elToMl: obj.ELTOML === 'true',
-    mlToEl: obj.MC === 'true',
-    mcEndDate: obj.mcEndDate ? new Date(obj.mcEndDate) : null,
-    bureau: obj.bureau,
-    od: obj.OD,
-    location: obj.org,
-    positionNumber: obj.positionNumber,
-    skill: obj.skill,
-    positionTitle: obj.positionTitle,
-    grade: obj.grade,
-    languages: obj.languages,
-    incumbent: obj.incumbent,
-    incumbentTED: obj.incumbentTED ? new Date(obj.incumbentTED) : null,
-    assignee: obj.assignee,
-    assigneeTED: obj.assigneeTED ? new Date(obj.assigneeTED) : null,
+    EL: obj.EL === 'true',
+    LNA: obj.LNA === 'true',
+    FICA: obj.FICA === 'true',
+    ELTOML: obj.ELTOML === 'true',
+    MC: obj.MC === 'true',
+    MC_END_DATE: obj.mcEndDate ? new Date(obj.mcEndDate) : null,
+    BUREAU_SHORT_DESC: obj.bureau,
+    POS_OVERSEAS_DESC: obj.OD,
+    ORG_SHORT_DESC: obj.org,
+    POS_SEQ_NUM: obj.positionNumber,
+    POS_SKILL_CODE: obj.skill,
+    POS_TITLE_DESC: obj.positionTitle,
+    POS_GRADE_CODE: obj.grade,
+    POS_POSITION_LANG_PROF_CODE: obj.languages,
+    INCUMBENT: obj.incumbent,
+    INCUMBENT_TED: obj.incumbentTED ? new Date(obj.incumbentTED) : null,
+    ASSIGNEE: obj.assignee,
+    ASSIGNEE_TED: obj.assigneeTED ? new Date(obj.assigneeTED) : null,
   });
 
   const [rows, setRows] = useState([]);
@@ -78,12 +78,18 @@ const MaintainELPositionsTable = ({ elPositions }) => {
   };
 
   const onCellValueChanged = (params) => {
-    // @TODO connect to api /save
-    const updatedRows = [...rows];
-    updatedRows[params.node.id] = params.data;
-    setRows(updatedRows);
-    console.log = params.data;
-    dispatch(entryLevelEdit(params.data));
+    // Grab the editable columns only
+    const editedData = Object.fromEntries(Object.entries(params.data).slice(0, 6));
+    // Convert MC_END_DATE back to a string if it exists
+    if (editedData.MC_END_DATE) {
+      editedData.MC_END_DATE = editedData.MC_END_DATE.toISOString();
+    }
+    // Add seqnum to the edited data
+    const data = {
+      POS_SEQ_NUM: params.data.POS_SEQ_NUM,
+      ...editedData,
+    };
+    dispatch(entryLevelEdit(data));
   };
 
   return (
