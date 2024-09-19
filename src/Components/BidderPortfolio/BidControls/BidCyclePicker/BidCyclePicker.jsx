@@ -121,6 +121,7 @@ class BidCyclePicker extends Component {
           onChange={this.selectMultipleOption}
           numberDisplayed={1}
           dropdownHeight={225}
+          // multiple //commented out to prevent multiple selections
           renderList={renderList}
           disabled={isLoading}
           includeSelectAll
