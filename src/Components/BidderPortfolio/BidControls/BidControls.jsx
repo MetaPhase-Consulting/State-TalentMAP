@@ -10,7 +10,8 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioSetUnassigned } from 'actions/bidderPortfolio';
+import { bidderPortfolioSetUnassigned, setIsCDOD30 } from 'actions/bidderPortfolio';
+import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
 import ResultsViewBy from '../../ResultsViewBy/ResultsViewBy';
@@ -40,6 +41,7 @@ class BidControls extends Component {
       panelClientDate: '',
       unassignedBidders: [],
       pills: [],
+      isCDOD30: false,
     };
   }
 
@@ -110,16 +112,23 @@ class BidControls extends Component {
   };
 
   onUnassignedChange = q => {
-    this.setState({ unassignedBidders: q }, this.generatePills);
+    this.setState({ unassignedBidders: [q] }, this.generatePills);
     this.props.queryParamUpdate({});
-    this.props.setUnassigned(q);
+    this.props.setUnassigned([q]);
   };
 
   onSortChange = q => {
     const orderingObject = { ordering: q.target.value };
     this.props.queryParamUpdate(orderingObject);
   };
-
+  onCDOChange = () => {
+    const { isCDOD30 } = this.state;
+    this.setState({ isCDOD30: !isCDOD30 });
+    this.props.setCDOD30(!isCDOD30);
+    if (!isCDOD30) {
+      this.resetAllFilters();
+    }
+  };
   updateQueryLimit = q => {
     const { updatePagination } = this.props;
     updatePagination({ pageNumber: 1, pageSize: q.target.value });
@@ -186,7 +195,7 @@ class BidControls extends Component {
   render() {
     const { viewType, changeViewType, defaultHandshake,
       defaultOrdering, pageSize, getKeyword, updatePagination } = this.props;
-    const { panelClient, panelClientDate, hasSeasons, pills, proxyCdos, unassignedBidders, unassignedFilter } = this.state;
+    const { panelClient, isCDOD30, panelClientDate, hasSeasons, pills, proxyCdos, unassignedBidders, unassignedFilter } = this.state;
     const pageSizes = CLIENTS_PAGE_SIZES.options;
     const displayUnassignedFilter = useUnassignedFilter();
     const showClear = !!pills.length || getKeyword;
@@ -218,8 +227,10 @@ class BidControls extends Component {
               setSeasonsCb={(b, value) => this.onSeasonChange(b, value)}
               setClick={(a) => { this.updateMultiSelect = a; }}
               updatePagination={updatePagination}
+              isMultiple={!isCDOD30}
             />
-            {
+            { isCDOD30 &&
+            <>
               <PreferenceWrapper
                 onSelect={(q) => this.onFilterChange(q.target.value)}
                 keyRef={BID_PORTFOLIO_FILTERS_TYPE}
@@ -232,25 +243,24 @@ class BidControls extends Component {
                   disabled={!hasSeasons}
                 />
               </PreferenceWrapper>
-            }
-            { unassignedFilter &&
-            <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
-              <div className="label">Unassigned Bidders:</div>
-              <Picky
-                placeholder="Select Criteria"
-                value={unassignedBidders}
-                options={UNASSIGNED_BIDDERS_FILTERS.options}
-                onChange={this.onUnassignedChange}
-                numberDisplayed={2}
-                multiple
-                dropdownHeight={255}
-                renderList={renderList}
-                valueKey="value"
-                labelKey="text"
-                includeSelectAll
-                disabled={!unassignedFilter}
-              />
-            </div>
+              <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
+                <div className="label">Unassigned Bidders:</div>
+                <Picky
+                  placeholder="Select Criteria"
+                  value={unassignedBidders}
+                  options={UNASSIGNED_BIDDERS_FILTERS.options}
+                  onChange={this.onUnassignedChange}
+                  numberDisplayed={2}
+                  dropdownHeight={255}
+                  // multiple //commented out to prevent multiple selections
+                  renderList={renderList}
+                  valueKey="value"
+                  labelKey="text"
+                  includeSelectAll
+                  disabled={!unassignedFilter}
+                />
+              </div>
+            </>
             }
             { panelClient &&
             <div className={`unassigned-bidder-picker-container usa-form ${!panelClient ? 'unassigned-disabled' : ''}`}>
@@ -279,6 +289,14 @@ class BidControls extends Component {
         </div>
         <div className="usa-width-one-whole portfolio-sort-container results-dropdown">
           <ResultsViewBy initial={viewType} onClick={changeViewType} />
+          <div className="jc-toggle-container">
+            <ToggleButton
+              labelTextRight={!isCDOD30 ? 'Toggle CDO D3.0 View' : 'Toggle Client Search View'}
+              onChange={this.onCDOChange}
+              checked={isCDOD30}
+              onColor="#0071BC"
+            />
+          </div>
         </div>
         <div className="usa-width-one-whole portfolio-filter-pills-container">
           { showClear && <ResetFilters resetFilters={this.resetAllFilters} /> }
@@ -301,6 +319,7 @@ BidControls.propTypes = {
   defaultOrdering: PropTypes.string.isRequired,
   selection: PropTypes.arrayOf(PropTypes.shape({})),
   setUnassigned: PropTypes.func.isRequired,
+  setCDOD30: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
@@ -322,6 +341,7 @@ const mapStateToProps = state => ({
 
 export const mapDispatchToProps = dispatch => ({
   setUnassigned: (arr = []) => dispatch(bidderPortfolioSetUnassigned(arr)),
+  setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);
