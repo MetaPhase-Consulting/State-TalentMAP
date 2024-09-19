@@ -51,10 +51,6 @@ const MaintainEntryLevelPositions = () => {
 
   const childRef = useRef();
 
-  const testSave = () => {
-    dispatch(entryLevelEdit({}));
-  };
-
   const fetchAndSet = () => {
     const filters = [
       selectedTps,
@@ -265,7 +261,7 @@ const MaintainEntryLevelPositions = () => {
                 </div>
               }
               <div className="export-button-container">
-                <ExportButton onClick={testSave} />
+                <ExportButton disabled />
               </div>
             </div>
           </div>
