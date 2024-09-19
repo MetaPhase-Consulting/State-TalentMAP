@@ -222,6 +222,7 @@ class BidControls extends Component {
               setSeasonsCb={(b, value) => this.onSeasonChange(b, value)}
               setClick={(a) => { this.updateMultiSelect = a; }}
               updatePagination={updatePagination}
+              isMultiple={!isCDOD30}
             />
             { isCDOD30 &&
             <>

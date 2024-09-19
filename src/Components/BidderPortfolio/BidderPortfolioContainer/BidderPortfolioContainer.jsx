@@ -106,6 +106,7 @@ BidderPortfolioContainer.propTypes = {
   cdosLength: PropTypes.number,
   hideControls: PropTypes.bool,
   hasErrored: PropTypes.bool,
+  isCDOD30: PropTypes.bool,
   updatePagination: PropTypes.func,
   viewType: PropTypes.string,
 };
