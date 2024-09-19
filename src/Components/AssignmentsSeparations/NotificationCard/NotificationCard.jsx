@@ -8,6 +8,7 @@ import {
   cableFetchData, editNoteCable, getGal, noteCableRefFetchData,
   rebuildNotification, sendNotification,
 } from 'actions/assignmentNotifications';
+import { checkFlag } from 'flags';
 import { ifEnter } from 'utilities';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
@@ -25,10 +26,15 @@ import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
 import MemoHeader from './Tabs/MemoHeader';
 
+const useNotificationSend = () => checkFlag('flags.assignment_notification_send');
+const useMemoSend = () => checkFlag('flags.assignment_memo_send');
+
 const NotificationCard = (props) => {
   const { note, onCancel, memo } = props;
 
   const dispatch = useDispatch();
+
+  const useSend = memo ? useMemoSend() : useNotificationSend();
 
   // ====================== Data Retrieval ======================
 
@@ -165,6 +171,8 @@ const NotificationCard = (props) => {
   };
 
   const handleSave = () => {
+    // --------- Cable Sections ---------
+
     let HDR_NME_SEQ_NUM = '';
     let HDR_CLOB_LENGTH = '';
     let HDR_NME_OVERRIDE_CLOB = '';
@@ -175,9 +183,9 @@ const NotificationCard = (props) => {
       const separator = HDR_NME_SEQ_NUM === '' ? '' : ',';
       HDR_NME_SEQ_NUM = HDR_NME_SEQ_NUM.concat(separator, s.NME_SEQ_NUM);
       HDR_CLOB_LENGTH = HDR_CLOB_LENGTH.concat(separator, s.NME_OVERRIDE_CLOB.length);
-      HDR_NME_OVERRIDE_CLOB = HDR_NME_OVERRIDE_CLOB.concat(separator, s.NME_OVERRIDE_CLOB);
-      HDR_NME_UPDATE_ID = HDR_NME_UPDATE_ID.concat(separator, s.NME_UPDATE_ID);
-      HDR_NME_UPDATE_DATE = HDR_NME_UPDATE_DATE.concat(separator, s.NME_UPDATE_DATE);
+      HDR_NME_OVERRIDE_CLOB = HDR_NME_OVERRIDE_CLOB.concat(separator, s.NME_OVERRIDE_CLOB ?? '');
+      HDR_NME_UPDATE_ID = HDR_NME_UPDATE_ID.concat(separator, s.NME_UPDATE_ID ?? '');
+      HDR_NME_UPDATE_DATE = HDR_NME_UPDATE_DATE.concat(separator, s.NME_UPDATE_DATE ?? '');
       HDR_NME_CLEAR_IND = HDR_NME_CLEAR_IND.concat(separator, s.NME_CLEAR_IND);
     });
     const cableReq = {
@@ -189,10 +197,14 @@ const NotificationCard = (props) => {
       I_HDR_NME_CLEAR_IND: HDR_NME_CLEAR_IND,
     };
 
+    // --------- Assignment Order ---------
+
     const assignmentReq = {
       I_ASG_NME_SEQ_NUM: noteAssignments[0].NME_SEQ_NUM,
       I_ASG_NMAS_SEQ_NUM: noteAssignments.map(a => a.NMAS_SEQ_NUM).join(),
     };
+
+    // --------- Paragraph Selections ---------
 
     const paragraph = getCableValue('PARAGRAPHS', true);
     const paragraphReq = {
@@ -202,6 +214,8 @@ const NotificationCard = (props) => {
       I_PARA_NME_UPDATE_DATE: paragraph.NME_UPDATE_DATE,
     };
 
+    // --------- Base Request ---------
+
     let req = {
       I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
       ...cableReq,
@@ -210,7 +224,10 @@ const NotificationCard = (props) => {
     };
 
     // Additional Logic and Parameters for Notification
+
     if (!memo) {
+      // --------- Routing Items ---------
+
       let INC_IND = '';
       let NMD_SEQ_NUM = '';
       let DT_CODE = '';
@@ -226,12 +243,12 @@ const NotificationCard = (props) => {
           INC_IND = INC_IND.concat(separator, s.INC_IND ?? 1);
           NMD_SEQ_NUM = NMD_SEQ_NUM.concat(separator, s.NMD_UPDATE_DATE ? s.NMD_SEQ_NUM : '');
           DT_CODE = DT_CODE.concat(separator, s.DT_CODE);
-          PT_CODE = PT_CODE.concat(separator, s.PT_CODE);
-          ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE);
-          CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM);
-          NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT);
-          NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID);
-          NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE);
+          PT_CODE = PT_CODE.concat(separator, s.PT_CODE ?? '');
+          ORG_CODE = ORG_CODE.concat(separator, s.ORG_CODE ?? '');
+          CP_SEQ_NUM = CP_SEQ_NUM.concat(separator, s.CP_SEQ_NUM ?? '');
+          NMD_SLUG_TEXT = NMD_SLUG_TEXT.concat(separator, s.NMD_SLUG_TEXT ?? '');
+          NMD_UPDATE_ID = NMD_UPDATE_ID.concat(separator, s.NMD_UPDATE_ID ?? '');
+          NMD_UPDATE_DATE = NMD_UPDATE_DATE.concat(separator, s.NMD_UPDATE_DATE ?? '');
         }
       });
       const distribution = getCableValue('DISTRIBUTION', true);
@@ -260,6 +277,9 @@ const NotificationCard = (props) => {
         I_NMD_UPDATE_ID: NMD_UPDATE_ID,
         I_NMD_UPDATE_DATE: NMD_UPDATE_DATE,
       };
+
+      // --------- Notification Request ---------
+      // Memos exclude routing and do not need these parameters
 
       req = {
         ...req,
@@ -449,9 +469,15 @@ const NotificationCard = (props) => {
           </div>
         </Row>
         <div className="position-form--actions">
-          <button onClick={onCancel}>Cancel</button>
-          <button onClick={() => { if (memo) { setRecipientMode(true); } else { handleSend(); } }}>
-            {memo ? 'Select Memo Recipients' : 'Send Cable'}</button>
+          {useSend ?
+            <>
+              <button onClick={onCancel}>Cancel</button>
+              <button onClick={() => { if (memo) { setRecipientMode(true); } else { handleSend(); } }}>
+                {memo ? 'Select Memo Recipients' : 'Send Cable'}
+              </button>
+            </> :
+            <button onClick={onCancel}>Back</button>
+          }
         </div>
       </div>
     </Row>
