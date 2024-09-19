@@ -84,6 +84,12 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     if (editedData.MC_END_DATE) {
       editedData.MC_END_DATE = editedData.MC_END_DATE.toISOString();
     }
+    // Convert checkboxes to strings
+    Object.keys(editedData).forEach((key) => {
+      if (typeof editedData[key] === 'boolean') {
+        editedData[key] = editedData[key].toString();
+      }
+    });
     // Add seqnum to the edited data
     const data = {
       POS_SEQ_NUM: params.data.POS_SEQ_NUM,
