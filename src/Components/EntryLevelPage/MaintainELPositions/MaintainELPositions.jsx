@@ -99,7 +99,7 @@ const MaintainEntryLevelPositions = () => {
     dispatch(entryLevelFetchData());
   }, []);
 
-  const isLoading = elFiltersIsLoading;
+  const isLoading = elFiltersIsLoading || elPositionsIsLoading;
   const getOverlay = () => {
     let toReturn;
     if (elPositionsIsLoading) {
