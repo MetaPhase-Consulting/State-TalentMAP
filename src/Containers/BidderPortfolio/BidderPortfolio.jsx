@@ -142,6 +142,7 @@ class BidderPortfolio extends Component {
           defaultOrdering={ordering.value}
           updatePagination={updatePagination}
           viewType={viewType}
+          isCDOD30={this.props.isCDOD30}
         />
       </div>
     );
@@ -157,6 +158,7 @@ BidderPortfolio.propTypes = {
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolioCDOs: PropTypes.func.isRequired,
+  isCDOD30: PropTypes.bool,
   cdos: PropTypes.arrayOf(PropTypes.shape({})),
   selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])), // eslint-disable-line
   fetchClassifications: PropTypes.func.isRequired,
@@ -190,6 +192,7 @@ BidderPortfolio.defaultProps = {
   classificationsIsLoading: false,
   classificationsHasErrored: false,
   fetchClassifications: EMPTY_FUNCTION,
+  isCDOD30: false,
   cdos: [],
   selectedSeasons: [],
   classifications: [],
@@ -226,6 +229,7 @@ const mapStateToProps = state => ({
   selectedUnassigned: state.bidderPortfolioSelectedUnassigned,
   availableBiddersIdsLoading: state.availableBiddersIdsLoading,
   bidderPortfolioPagination: state.bidderPortfolioPagination,
+  isCDOD30: state.isCDOD30,
 });
 
 export const mapDispatchToProps = dispatch => ({

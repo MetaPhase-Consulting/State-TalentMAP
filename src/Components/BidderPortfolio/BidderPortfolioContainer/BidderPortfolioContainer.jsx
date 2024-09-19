@@ -23,7 +23,7 @@ class BidderPortfolioContainer extends Component {
 
   render() {
     const { bidderPortfolio, pageSize, showListView, isLoading, viewType,
-      cdosLength, hideControls, classifications, hasErrored, pageNumber } = this.props;
+      cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30 } = this.props;
 
     const showCDOD30 = checkFlag('flags.CDOD30');
 
@@ -34,8 +34,13 @@ class BidderPortfolioContainer extends Component {
 
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
+        {!showNoCdosAlert && !hasErrored && isCDOD30 &&
+          <div className="usa-grid-full bidder-portfolio-listing">
+            <h1>PLACE FOR TABLE</h1>
+          </div>
+        }
         {
-          !showNoCdosAlert && !hasErrored &&
+          !showNoCdosAlert && !hasErrored && !isCDOD30 &&
           (
             showListView ?
               <BidderPortfolioGridList
@@ -112,6 +117,7 @@ BidderPortfolioContainer.defaultProps = {
   cdosLength: 0,
   hideControls: false,
   hasErrored: false,
+  isCDOD30: false,
   updatePagination: EMPTY_FUNCTION,
   viewType: '',
 };

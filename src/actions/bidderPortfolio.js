@@ -178,6 +178,13 @@ export function bidderPortfolioSetUnassigned(UA = []) {
   };
 }
 
+export function setIsCDOD30(bool) {
+  return {
+    type: 'BIDDER_CDO_IS_CDOD30',
+    isCDOD30: bool,
+  };
+}
+
 export function bidderPortfolioSeasonsFetchData() {
   return (dispatch) => {
     batch(() => {

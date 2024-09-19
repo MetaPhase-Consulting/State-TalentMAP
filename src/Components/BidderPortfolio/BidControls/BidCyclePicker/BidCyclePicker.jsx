@@ -104,7 +104,7 @@ class BidCyclePicker extends Component {
 
   selectMultipleOption(value) {
     const { updatePagination, pageSize } = this.props;
-    const value$ = every(value, isObject) ? flatMap(value, a => a.description) : value;
+    const value$ = every([value], isObject) ? flatMap([value], a => a.description) : [value];
     this.setState({ arrayValue: value$ }, () => this.setSeasons());
     updatePagination({ pageNumber: 1, pageSize });
   }
@@ -120,7 +120,6 @@ class BidCyclePicker extends Component {
           options={seasons}
           onChange={this.selectMultipleOption}
           numberDisplayed={1}
-          multiple
           dropdownHeight={225}
           renderList={renderList}
           disabled={isLoading}
