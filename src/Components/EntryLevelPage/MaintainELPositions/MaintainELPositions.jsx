@@ -48,6 +48,7 @@ const MaintainEntryLevelPositions = () => {
   const elPositionsHasErrored = useSelector(state => state.entryLevelPositionsHasErrored);
   const elPositionsIsLoading = useSelector(state => state.entryLevelPositionsIsLoading);
   const elPositions = useSelector(state => state.entryLevelPositions);
+  const count = elPositions?.length || 0;
 
   const childRef = useRef();
 
@@ -105,10 +106,9 @@ const MaintainEntryLevelPositions = () => {
       toReturn = <Spinner type="bureau-results" class="homepage-position-results" size="big" />;
     } else if (elPositionsHasErrored || elFiltersHasErrored) {
       toReturn = <Alert type="error" title="Error loading results" messages={[{ body: 'Please try again.' }]} />;
+    } else if (count === 0) {
+      toReturn = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
     }
-    // } else if (noPanelMeetingResults) {
-    //   toReturn = <Alert type="info" title="No results found" messages={[{ body: 'Please broaden your search criteria and try again.' }]} />;
-    // }
     if (toReturn) {
       return <div className="usa-width-one-whole empl-search-lower-section results-dropdown">{toReturn}</div>;
     }
@@ -280,7 +280,7 @@ const MaintainEntryLevelPositions = () => {
                     pageSize={limit}
                     onPageChange={p => setPage(p.page)}
                     forcePage={page}
-                    totalResults={1}
+                    totalResults={count}
                   />
                 </div>
               }
