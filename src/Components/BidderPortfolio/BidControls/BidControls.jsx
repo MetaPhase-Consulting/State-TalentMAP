@@ -71,7 +71,6 @@ class BidControls extends Component {
   }
 
   onSeasonChange = (seasons, value) => {
-    console.log('seasons', seasons, 'value', value);
     const hasSeasons = !!seasons.length;
     const { filterBy } = this.state;
     if (!this.state.bidSeasons.length && this.state.hasSeasons) {
