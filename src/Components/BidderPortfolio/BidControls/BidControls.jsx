@@ -36,6 +36,8 @@ class BidControls extends Component {
       bidSeasons: [],
       filterBy: {},
       unassignedFilter: false,
+      panelClient: false,
+      panelClientDate: '',
       unassignedBidders: [],
       pills: [],
     };
@@ -96,7 +98,10 @@ class BidControls extends Component {
     this.setState({ filterBy: BID_PORTFOLIO_FILTERS$.options[
       findIndex(BID_PORTFOLIO_FILTERS$.options, (o) => o.value === q)] },
     this.generatePills);
-    this.setState({ unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons) });
+    this.setState({
+      unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons),
+      panelClient: (q === 'panel_clients' && this.state.hasSeasons),
+    });
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
     } else {
@@ -181,7 +186,7 @@ class BidControls extends Component {
   render() {
     const { viewType, changeViewType, defaultHandshake,
       defaultOrdering, pageSize, getKeyword, updatePagination } = this.props;
-    const { hasSeasons, pills, proxyCdos, unassignedBidders, unassignedFilter } = this.state;
+    const { panelClient, panelClientDate, hasSeasons, pills, proxyCdos, unassignedBidders, unassignedFilter } = this.state;
     const pageSizes = CLIENTS_PAGE_SIZES.options;
     const displayUnassignedFilter = useUnassignedFilter();
     const showClear = !!pills.length || getKeyword;
@@ -228,7 +233,7 @@ class BidControls extends Component {
                 />
               </PreferenceWrapper>
             }
-            { displayUnassignedFilter &&
+            { unassignedFilter &&
             <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
               <div className="label">Unassigned Bidders:</div>
               <Picky
@@ -245,6 +250,18 @@ class BidControls extends Component {
                 includeSelectAll
                 disabled={!unassignedFilter}
               />
+            </div>
+            }
+            { panelClient &&
+            <div className={`unassigned-bidder-picker-container usa-form ${!panelClient ? 'unassigned-disabled' : ''}`}>
+              <div className="label">Panel Client Date:</div>
+              <select
+                value={panelClientDate}
+                onChange={(e) => this.state({ panelClientDate: e.target.value })}
+              >
+                {/* placeholder for now */}
+                <option value="" disabled />
+              </select>
             </div>
             }
             <PreferenceWrapper
