@@ -260,6 +260,7 @@ exports[`BidderPortfolioPageComponent matches snapshot 1`] = `
           classifications={Array []}
           hasErrored={false}
           hideControls={true}
+          isCDOD30={false}
           isLoading={false}
           pageNumber={1}
           pageSize={8}
