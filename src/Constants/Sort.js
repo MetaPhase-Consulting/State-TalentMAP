@@ -115,7 +115,8 @@ if (showCDOD30) {
     { value: 'cusp_bidders', text: 'Cusp Bidders' },
     { value: 'separations', text: 'Separations' },
     { value: 'languages', text: 'Languages' },
-  );
+    { value: 'classification', text: 'Classification' },
+    { value: 'panel_clients', text: 'Panel Clients' });
 }
 
 export const UNASSIGNED_BIDDERS_FILTERS = {
