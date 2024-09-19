@@ -92,11 +92,7 @@ exports[`BidControlsComponent matches snapshot when isLoading is false 1`] = `
               },
               Object {
                 "text": "Handshake",
-                "value": "true",
-              },
-              Object {
-                "text": "No Handshake",
-                "value": "false",
+                "value": "handshake",
               },
               Object {
                 "text": "Unassigned Filters",
@@ -258,11 +254,7 @@ exports[`BidControlsComponent matches snapshot when isLoading is true 1`] = `
               },
               Object {
                 "text": "Handshake",
-                "value": "true",
-              },
-              Object {
-                "text": "No Handshake",
-                "value": "false",
+                "value": "handshake",
               },
               Object {
                 "text": "Unassigned Filters",
