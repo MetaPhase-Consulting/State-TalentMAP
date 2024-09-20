@@ -90,9 +90,9 @@ const MaintainEntryLevelPositions = () => {
       setClearFilters(false);
     } else {
       setClearFilters(true);
-      dispatch(entryLevelFetchData(getQuery()));
     }
     dispatch(saveEntryLevelSelections(getCurrentInputs()));
+    dispatch(entryLevelFetchData(getQuery()));
   };
 
   const resetFilters = () => {
@@ -113,7 +113,6 @@ const MaintainEntryLevelPositions = () => {
 
   useEffect(() => {
     dispatch(entryLevelFiltersFetchData());
-    dispatch(entryLevelFetchData(getQuery()));
   }, []);
 
   const pickyProps = {
