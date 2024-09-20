@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
 import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
+import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
@@ -39,7 +39,7 @@ class BidderPortfolio extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const props = ['cdos', 'selectedSeasons', 'selectedUnassigned'];
+    const props = ['cdos', 'selectedSeasons']; // removed 'selectedUnassigned'
     if (!isEqual(pick(this.props, props), pick(nextProps, props))) {
       this.getBidderPortfolio();
     }
@@ -70,7 +70,15 @@ class BidderPortfolio extends Component {
   // Form our query and then retrieve bidders.
   getBidderPortfolio() {
     const query = this.createSearchQuery();
-    this.props.fetchBidderPortfolio(query);
+    const noPanel = this.props.selectedUnassigned.some(obj => obj.value === 'noPanel');
+    const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
+    const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
+      'separations', 'languages', 'classification']; // add 'panel_clients' back later
+    if (noBids || noPanel || filters.includes(query.hasHandshake)) {
+      this.props.fetchUnassignedBidderTypes(query);
+    } else {
+      this.props.fetchBidderPortfolio(query);
+    }
   }
 
   // We use a human-readable "type" query param for navigation that isn't actually
@@ -142,6 +150,7 @@ class BidderPortfolio extends Component {
           defaultOrdering={ordering.value}
           updatePagination={updatePagination}
           viewType={viewType}
+          isCDOD30={this.props.isCDOD30}
         />
       </div>
     );
@@ -153,10 +162,12 @@ BidderPortfolio.propTypes = {
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
+  fetchUnassignedBidderTypes: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolioCDOs: PropTypes.func.isRequired,
+  isCDOD30: PropTypes.bool,
   cdos: PropTypes.arrayOf(PropTypes.shape({})),
   selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])), // eslint-disable-line
   fetchClassifications: PropTypes.func.isRequired,
@@ -183,6 +194,7 @@ BidderPortfolio.defaultProps = {
   bidderPortfolioIsLoading: false,
   bidderPortfolioHasErrored: false,
   fetchBidderPortfolio: EMPTY_FUNCTION,
+  fetchUnassignedBidderTypes: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
   bidderPortfolioCountsIsLoading: false,
   bidderPortfolioCountsHasErrored: false,
@@ -190,6 +202,7 @@ BidderPortfolio.defaultProps = {
   classificationsIsLoading: false,
   classificationsHasErrored: false,
   fetchClassifications: EMPTY_FUNCTION,
+  isCDOD30: false,
   cdos: [],
   selectedSeasons: [],
   classifications: [],
@@ -226,10 +239,12 @@ const mapStateToProps = state => ({
   selectedUnassigned: state.bidderPortfolioSelectedUnassigned,
   availableBiddersIdsLoading: state.availableBiddersIdsLoading,
   bidderPortfolioPagination: state.bidderPortfolioPagination,
+  isCDOD30: state.isCDOD30,
 });
 
 export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
+  fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),
