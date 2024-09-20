@@ -10,7 +10,7 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioSetUnassigned, setIsCDOD30 } from 'actions/bidderPortfolio';
+import { bidderPortfolioSetUnassigned, setEditClassification, setIsCDOD30 } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -38,7 +38,6 @@ class BidControls extends Component {
       filterBy: {},
       unassignedFilter: false,
       panelClient: false,
-      classifications: false,
       panelClientDate: '',
       unassignedBidders: [],
       pills: [],
@@ -105,8 +104,8 @@ class BidControls extends Component {
     this.setState({
       unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons),
       panelClient: (q === 'panel_clients' && this.state.hasSeasons),
-      classifications: (q === 'classification' && this.state.hasSeasons),
     });
+    this.props.setEditClassification(q === 'classification');
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
     } else {
@@ -325,6 +324,7 @@ BidControls.propTypes = {
   selection: PropTypes.arrayOf(PropTypes.shape({})),
   setUnassigned: PropTypes.func.isRequired,
   setCDOD30: PropTypes.func.isRequired,
+  setEditClassification: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
   panelClientFetchData: PropTypes.arrayOf(PropTypes.shape({})),
   getKeyword: PropTypes.string.isRequired,
@@ -350,6 +350,7 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   setUnassigned: (arr = []) => dispatch(bidderPortfolioSetUnassigned(arr)),
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
+  setEditClassification: (bool) => dispatch(setEditClassification(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);

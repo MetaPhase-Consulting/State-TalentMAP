@@ -74,7 +74,7 @@ class BidderPortfolio extends Component {
     const noPanel = this.props.selectedUnassigned.some(obj => obj.value === 'noPanel');
     const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
-      'separations', 'languages', 'classification']; // add 'panel_clients' back later
+      'separations', 'languages']; // add 'panel_clients' and 'classification' back later
     if (noBids || noPanel || filters.includes(query.hasHandshake)) {
       this.props.fetchUnassignedBidderTypes(query);
     } else {
@@ -152,6 +152,7 @@ class BidderPortfolio extends Component {
           updatePagination={updatePagination}
           viewType={viewType}
           isCDOD30={this.props.isCDOD30}
+          setEditClassification={this.props.setEditClassification}
         />
       </div>
     );
@@ -169,6 +170,7 @@ BidderPortfolio.propTypes = {
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolioCDOs: PropTypes.func.isRequired,
   isCDOD30: PropTypes.bool,
+  setEditClassification: PropTypes.bool,
   cdos: PropTypes.arrayOf(PropTypes.shape({})),
   selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])), // eslint-disable-line
   fetchClassifications: PropTypes.func.isRequired,
@@ -206,6 +208,7 @@ BidderPortfolio.defaultProps = {
   fetchClassifications: EMPTY_FUNCTION,
   fetchPanelDates: EMPTY_FUNCTION,
   isCDOD30: false,
+  setEditClassification: false,
   cdos: [],
   selectedSeasons: [],
   classifications: [],
@@ -243,6 +246,7 @@ const mapStateToProps = state => ({
   availableBiddersIdsLoading: state.availableBiddersIdsLoading,
   bidderPortfolioPagination: state.bidderPortfolioPagination,
   isCDOD30: state.isCDOD30,
+  setEditClassification: state.setEditClassification,
 });
 
 export const mapDispatchToProps = dispatch => ({

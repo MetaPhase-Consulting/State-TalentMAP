@@ -32,6 +32,16 @@ export function isCDOD30(state = false, action) {
       return state;
   }
 }
+
+export function setEditClassification(state = false, action) {
+  switch (action.type) {
+    case 'BIDDER_PORTFOLIO_EDIT_CLASSIFICATION':
+      return action.editClassification;
+    default:
+      return state;
+  }
+}
+
 export function bidderPortfolioSeasons(state = [], action) {
   switch (action.type) {
     case 'BIDDER_PORTFOLIO_SEASONS_SUCCESS':

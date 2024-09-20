@@ -191,6 +191,13 @@ export function setIsCDOD30(bool) {
   };
 }
 
+export function setEditClassification(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_EDIT_CLASSIFICATION',
+    editClassification: bool,
+  };
+}
+
 export function bidderPortfolioSeasonsFetchData() {
   return (dispatch) => {
     batch(() => {
@@ -270,7 +277,7 @@ export function getClientPerdets(query = {}) {
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'classification']; // add 'panel_clients' back later
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages']; // add 'panel_clients' and 'classification' back later
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
