@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
-import { entryLevelFetchData, entryLevelFiltersFetchData } from 'actions/entryLevel';
+import { entryLevelFetchData, entryLevelFiltersFetchData, saveEntryLevelSelections } from 'actions/entryLevel';
 import { renderSelectionList } from 'utilities';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';
 import ProfileSectionTitle from 'Components/ProfileSectionTitle';
@@ -25,10 +25,10 @@ const MaintainEntryLevelPositions = () => {
   const [selectedTps, setSelectedTps] = useState(userSelections?.selectedTps || []);
   const [selectedBureaus, setSelectedBureaus] = useState(userSelections?.selectedBureaus || []);
   const [selectedOrgs, setSelectedOrgs] = useState(userSelections?.selectedOrgs || []);
-  const [selectedGrades, setSelectedGrades] = useState(userSelections?.selectedGrade || []);
+  const [selectedGrades, setSelectedGrades] = useState(userSelections?.selectedGrades || []);
   const [selectedSkills, setSelectedSkills] = useState(userSelections?.selectedSkills || []);
   const [selectedJobs, setSelectedJobs] = useState(userSelections?.selectedJobs || []);
-  const [selectedLanguages, setSelectedLanguages] = useState(userSelections?.selectedLanguage || []);
+  const [selectedLanguages, setSelectedLanguages] = useState(userSelections?.selectedLanguages || []);
   const [overseas, setOverseas] = useState(userSelections?.overseas || false);
   const [domestic, setDomestic] = useState(userSelections?.domestic || false);
   const [textSearch, setTextSearch] = useState('');
@@ -52,6 +52,30 @@ const MaintainEntryLevelPositions = () => {
 
   const childRef = useRef();
 
+  const getCurrentInputs = () => ({
+    selectedTps,
+    selectedBureaus,
+    selectedOrgs,
+    selectedGrades,
+    selectedSkills,
+    selectedJobs,
+    selectedLanguages,
+    overseas,
+    domestic,
+  });
+
+  const getQuery = () => ({
+    'el-tps': selectedTps.map(tpObject => (tpObject?.code)),
+    'el-bureaus': selectedBureaus.map(bureauObject => (bureauObject?.code)),
+    'el-orgs': selectedOrgs.map(orgObject => (orgObject?.code)),
+    'el-grades': selectedGrades.map(gradeObject => (gradeObject?.code)),
+    'el-skills': selectedSkills.map(skillObject => (skillObject?.code)),
+    'el-jobs': selectedJobs.map(jobObject => (jobObject?.code)),
+    'el-language': selectedLanguages.map(langObject => (langObject?.code)),
+    'el-overseas': overseas,
+    'el-domestic': domestic,
+  });
+
   const fetchAndSet = () => {
     const filters = [
       selectedTps,
@@ -66,7 +90,9 @@ const MaintainEntryLevelPositions = () => {
       setClearFilters(false);
     } else {
       setClearFilters(true);
+      dispatch(entryLevelFetchData(getQuery()));
     }
+    dispatch(saveEntryLevelSelections(getCurrentInputs()));
   };
 
   const resetFilters = () => {
@@ -81,6 +107,15 @@ const MaintainEntryLevelPositions = () => {
     setClearFilters(false);
   };
 
+  useEffect(() => {
+    fetchAndSet();
+  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, textSearch]);
+
+  useEffect(() => {
+    dispatch(entryLevelFiltersFetchData());
+    dispatch(entryLevelFetchData(getQuery()));
+  }, []);
+
   const pickyProps = {
     numberDisplayed: 2,
     multiple: true,
@@ -89,15 +124,6 @@ const MaintainEntryLevelPositions = () => {
     renderList: renderSelectionList,
     includeSelectAll: true,
   };
-
-  useEffect(() => {
-    fetchAndSet();
-  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, textSearch]);
-
-  useEffect(() => {
-    dispatch(entryLevelFiltersFetchData());
-    dispatch(entryLevelFetchData());
-  }, []);
 
   const isLoading = elFiltersIsLoading || elPositionsIsLoading;
   const getOverlay = () => {
