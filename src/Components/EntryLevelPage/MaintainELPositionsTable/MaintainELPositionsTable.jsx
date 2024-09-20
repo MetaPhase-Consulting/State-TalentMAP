@@ -90,11 +90,11 @@ const MaintainELPositionsTable = ({ elPositions }) => {
         editedData[key] = editedData[key].toString();
       }
     });
-    // Add seqnum to the edited data
-    const data = {
+    // Add seqnum to the edited data, wrap in array for API
+    const data = [{
       POS_SEQ_NUM: params.data.POS_SEQ_NUM,
       ...editedData,
-    };
+    }];
     dispatch(entryLevelEdit(data));
   };
 
