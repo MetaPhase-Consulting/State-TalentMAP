@@ -323,7 +323,6 @@ BidControls.propTypes = {
   setCDOD30: PropTypes.func.isRequired,
   setEditClassification: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
-  panelClientFetchData: PropTypes.arrayOf(PropTypes.shape({})),
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
