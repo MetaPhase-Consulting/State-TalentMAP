@@ -46,7 +46,6 @@ class BidControls extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    console.log('panelClientFetchData', this.props.panelClientFetchData);
     if (!(this.props.selection.length === 1 && get(this.props, 'selection[0].isCurrentUser', false))) {
       this.setState({ proxyCdos: this.props.selection }, this.generatePills);
     }
