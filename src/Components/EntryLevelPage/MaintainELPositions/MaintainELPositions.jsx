@@ -45,8 +45,8 @@ const MaintainEntryLevelPositions = () => {
   const jcFilters = elFiltersList?.jcFilters;
   const languageFilters = elFiltersList?.languageFilters;
 
-  const elPositionsHasErrored = useSelector(state => state.entryLevelPositionsHasErrored);
-  const elPositionsIsLoading = useSelector(state => state.entryLevelPositionsIsLoading);
+  const elPositionsHasErrored = useSelector(state => state.entryLevelFetchDataErrored);
+  const elPositionsIsLoading = useSelector(state => state.entryLevelFetchDataLoading);
   const elPositions = useSelector(state => state.entryLevelPositions);
   const count = elPositions?.length || 0;
 
