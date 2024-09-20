@@ -123,13 +123,11 @@ class BidControls extends Component {
     const orderingObject = { ordering: q.target.value };
     this.props.queryParamUpdate(orderingObject);
   };
-  onCDOChange = () => {
+  onCDOToggleChange = () => {
     const { isCDOD30 } = this.state;
     this.setState({ isCDOD30: !isCDOD30 });
     this.props.setCDOD30(!isCDOD30);
-    if (!isCDOD30) {
-      this.resetAllFilters();
-    }
+    this.resetAllFilters();
   };
   updateQueryLimit = q => {
     const { updatePagination } = this.props;
@@ -168,7 +166,7 @@ class BidControls extends Component {
     this.setState({ proxyCdos: [] });
     this.updateMultiSelect([]);
     this.onFilterChange(BID_PORTFOLIO_FILTERS.options[0].value);
-    this.setState({ unassignedBidders: [] });
+    this.setState({ unassignedBidders: [], unassignedFilter: false, panelClient: false });
     this.props.queryParamUpdate({ value: 'skip' });
   };
 
@@ -296,7 +294,7 @@ class BidControls extends Component {
           <div className="jc-toggle-container">
             <ToggleButton
               labelTextRight={!isCDOD30 ? 'Toggle CDO D3.0 View' : 'Toggle Client Search View'}
-              onChange={this.onCDOChange}
+              onChange={this.onCDOToggleChange}
               checked={isCDOD30}
               onColor="#0071BC"
             />
