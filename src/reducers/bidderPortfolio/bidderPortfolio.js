@@ -198,6 +198,34 @@ export function bidderPortfolioSelectedCDOsToSearchBy(state = [], action) {
   }
 }
 
+export function panelClientFetchDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'PANEL_CLIENT_FETCH_DATA_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+
+export function panelClientFetchDataHasErrored(state = false, action) {
+  switch (action.type) {
+    case 'PANEL_CLIENT_FETCH_DATA_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+
+export function panelClientFetchData(state = {}, action) {
+  switch (action.type) {
+    case 'PANEL_CLIENT_FETCH_DATA_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
+
 export function bidderPortfolioLastQuery(state = '/fsbid/client/', action, endpoint = '/fsbid/client/') {
   switch (action.type) {
     case 'SET_BIDDER_PORTFOLIO_LAST_QUERY': {

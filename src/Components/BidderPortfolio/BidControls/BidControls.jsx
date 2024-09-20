@@ -38,6 +38,7 @@ class BidControls extends Component {
       filterBy: {},
       unassignedFilter: false,
       panelClient: false,
+      classifications: false,
       panelClientDate: '',
       unassignedBidders: [],
       pills: [],
@@ -46,6 +47,7 @@ class BidControls extends Component {
   }
 
   UNSAFE_componentWillMount() {
+    console.log('panelClientFetchData', this.props.panelClientFetchData);
     if (!(this.props.selection.length === 1 && get(this.props, 'selection[0].isCurrentUser', false))) {
       this.setState({ proxyCdos: this.props.selection }, this.generatePills);
     }
@@ -103,6 +105,7 @@ class BidControls extends Component {
     this.setState({
       unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons),
       panelClient: (q === 'panel_clients' && this.state.hasSeasons),
+      classifications: (q === 'classification' && this.state.hasSeasons),
     });
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
@@ -243,6 +246,7 @@ class BidControls extends Component {
                   disabled={!hasSeasons}
                 />
               </PreferenceWrapper>
+              { unassignedFilter &&
               <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
                 <div className="label">Unassigned Bidders:</div>
                 <Picky
@@ -260,6 +264,7 @@ class BidControls extends Component {
                   disabled={!unassignedFilter}
                 />
               </div>
+              }
             </>
             }
             { panelClient &&
@@ -321,6 +326,7 @@ BidControls.propTypes = {
   setUnassigned: PropTypes.func.isRequired,
   setCDOD30: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
+  panelClientFetchData: PropTypes.arrayOf(PropTypes.shape({})),
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
@@ -332,11 +338,13 @@ BidControls.defaultProps = {
   unassignedSelection: [],
   pageSize: CLIENTS_PAGE_SIZES.defaultSort,
   updatePagination: EMPTY_FUNCTION,
+  panelClientFetchData: [],
 };
 
 const mapStateToProps = state => ({
   selection: state.bidderPortfolioSelectedCDOsToSearchBy,
   unassignedSelection: state.bidderPortfolioSelectedUnassigned,
+  panelClientFetchData: state.panelClientFetchData,
 });
 
 export const mapDispatchToProps = dispatch => ({

@@ -148,6 +148,24 @@ export function bidderPortfolioPaginationFetchDataSuccess(data) {
     data,
   };
 }
+export function panelClientFetchDataLoading(bool) {
+  return {
+    type: 'PANEL_CLIENT_FETCH_DATA_LOADING',
+    isLoading: bool,
+  };
+}
+export function panelClientFetchDataErrored(bool) {
+  return {
+    type: 'PANEL_CLIENT_FETCH_DATA_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function panelClientFetchDataSuccess(data) {
+  return {
+    type: 'PANEL_CLIENT_FETCH_DATA_SUCCESS',
+    data,
+  };
+}
 export function saveBidderPortfolioPagination(paginationObject) {
   return (dispatch) => {
     dispatch(bidderPortfolioPaginationFetchDataSuccess(paginationObject));
@@ -421,6 +439,37 @@ export function bidderPortfolioCDOsFetchData() {
           });
         });
     }
+  };
+}
+
+export function panelClientFetchData() {
+  return (dispatch) => {
+    batch(() => {
+      dispatch(panelClientFetchDataLoading(true));
+      dispatch(panelClientFetchDataErrored(false));
+    });
+    api().get('fsbid/client/panel/')
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(panelClientFetchDataSuccess(data));
+          dispatch(panelClientFetchDataErrored(false));
+          dispatch(panelClientFetchDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message === 'cancel') {
+          batch(() => {
+            dispatch(panelClientFetchDataLoading(true));
+            dispatch(panelClientFetchDataErrored(false));
+          });
+        } else {
+          batch(() => {
+            dispatch(panelClientFetchDataSuccess([]));
+            dispatch(panelClientFetchDataErrored(false));
+            dispatch(panelClientFetchDataLoading(false));
+          });
+        }
+      });
   };
 }
 

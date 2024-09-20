@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
 import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
+import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, panelClientFetchData, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
@@ -36,6 +36,7 @@ class BidderPortfolio extends Component {
     this.props.fetchBidderPortfolioCDOs();
     this.props.fetchClassifications();
     this.props.fetchAvailableBidders();
+    this.props.fetchPanelDates();
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -171,6 +172,7 @@ BidderPortfolio.propTypes = {
   cdos: PropTypes.arrayOf(PropTypes.shape({})),
   selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])), // eslint-disable-line
   fetchClassifications: PropTypes.func.isRequired,
+  fetchPanelDates: PropTypes.func.isRequired,
   classifications: CLASSIFICATIONS,
   classificationsHasErrored: PropTypes.bool.isRequired,
   classificationsIsLoading: PropTypes.bool.isRequired,
@@ -202,6 +204,7 @@ BidderPortfolio.defaultProps = {
   classificationsIsLoading: false,
   classificationsHasErrored: false,
   fetchClassifications: EMPTY_FUNCTION,
+  fetchPanelDates: EMPTY_FUNCTION,
   isCDOD30: false,
   cdos: [],
   selectedSeasons: [],
@@ -246,6 +249,7 @@ export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
   fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
+  fetchPanelDates: () => dispatch(panelClientFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),
   updatePagination: (arr = {}) => dispatch(saveBidderPortfolioPagination(arr)),
