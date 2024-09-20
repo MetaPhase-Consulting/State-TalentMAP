@@ -193,7 +193,7 @@ class BidControls extends Component {
 
   render() {
     const { viewType, changeViewType, defaultHandshake,
-      defaultOrdering, pageSize, getKeyword, updatePagination } = this.props;
+      defaultOrdering, pageSize, getKeyword, updatePagination, panelClientFetchData } = this.props;
     const { panelClient, isCDOD30, panelClientDate, hasSeasons, pills, proxyCdos, unassignedBidders, unassignedFilter } = this.state;
     const pageSizes = CLIENTS_PAGE_SIZES.options;
     const displayUnassignedFilter = useUnassignedFilter();
@@ -271,7 +271,12 @@ class BidControls extends Component {
                 onChange={(e) => this.state({ panelClientDate: e.target.value })}
               >
                 {/* placeholder for now */}
-                <option value="" disabled />
+                <option value="" />
+                {
+                  panelClientFetchData.map((d) => (
+                    <option key={d.PM_SEQ_NUM} value={d.PM_SEQ_NUM}>{d.MEETING_DESC}</option>
+                  ))
+                }
               </select>
             </div>
             }
