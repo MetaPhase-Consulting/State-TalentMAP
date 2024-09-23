@@ -191,6 +191,13 @@ export function setIsCDOD30(bool) {
   };
 }
 
+export function setPanelDateID(id) {
+  return {
+    type: 'BIDDER_PORTFOLIO_PANEL_DATE',
+    panelDateID: id,
+  };
+}
+
 export function setEditClassification(bool) {
   return {
     type: 'BIDDER_PORTFOLIO_EDIT_CLASSIFICATION',

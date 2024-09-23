@@ -10,7 +10,7 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioSetUnassigned, setEditClassification, setIsCDOD30 } from 'actions/bidderPortfolio';
+import { bidderPortfolioSetUnassigned, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -203,6 +203,11 @@ class BidControls extends Component {
       BID_PORTFOLIO_FILTERS$.options = BID_PORTFOLIO_FILTERS.options.filter(b => b.value !== 'unassigned_filters');
     }
 
+    const onPanelDateIDChange = (e) => {
+      this.setState({ panelClientDate: e.target.value });
+      this.props.setPanelDateID(e.target.value);
+    };
+
     return (
       <div className="usa-grid-full portfolio-controls">
         <div className="usa-width-one-whole portfolio-sort-container results-dropdown">
@@ -268,9 +273,8 @@ class BidControls extends Component {
               <div className="label">Panel Client Date:</div>
               <select
                 value={panelClientDate}
-                onChange={(e) => this.state({ panelClientDate: e.target.value })}
+                onChange={onPanelDateIDChange}
               >
-                {/* placeholder for now */}
                 <option value="" />
                 {
                   panelClientFetchData.map((d) => (
@@ -327,6 +331,7 @@ BidControls.propTypes = {
   setUnassigned: PropTypes.func.isRequired,
   setCDOD30: PropTypes.func.isRequired,
   setEditClassification: PropTypes.func.isRequired,
+  setPanelDateID: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
@@ -352,6 +357,7 @@ export const mapDispatchToProps = dispatch => ({
   setUnassigned: (arr = []) => dispatch(bidderPortfolioSetUnassigned(arr)),
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
   setEditClassification: (bool) => dispatch(setEditClassification(bool)),
+  setPanelDateID: (id) => dispatch(setPanelDateID(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);

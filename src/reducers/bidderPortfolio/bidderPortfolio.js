@@ -33,6 +33,15 @@ export function isCDOD30(state = false, action) {
   }
 }
 
+export function panelDateID(state = '', action) {
+  switch (action.type) {
+    case 'BIDDER_PORTFOLIO_PANEL_DATE':
+      return action.panelDateID;
+    default:
+      return state;
+  }
+}
+
 export function setEditClassification(state = false, action) {
   switch (action.type) {
     case 'BIDDER_PORTFOLIO_EDIT_CLASSIFICATION':
@@ -226,7 +235,7 @@ export function panelClientFetchDataHasErrored(state = false, action) {
   }
 }
 
-export function panelClientFetchData(state = {}, action) {
+export function panelClientFetchData(state = [], action) {
   switch (action.type) {
     case 'PANEL_CLIENT_FETCH_DATA_SUCCESS':
       return action.data;
