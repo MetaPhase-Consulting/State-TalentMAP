@@ -167,6 +167,7 @@ class BidControls extends Component {
     this.onFilterChange(BID_PORTFOLIO_FILTERS.options[0].value);
     this.setState({ unassignedBidders: [], unassignedFilter: false, panelClient: false });
     this.props.queryParamUpdate({ value: 'skip' });
+    this.props.setPanelDateID('');
   };
 
   pillClick = (dropdownID, pillID) => {
