@@ -114,6 +114,7 @@ const PanelMeetingAgendas = (props) => {
   const getQuery = () => ({
     page,
     limit,
+    ordering: ['-panel_date', '-pmipmseqnum', '-agenda_id'],
     pmipmseqnum: pmSeqNums,
   });
 
