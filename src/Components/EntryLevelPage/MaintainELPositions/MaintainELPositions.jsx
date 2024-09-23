@@ -67,6 +67,7 @@ const MaintainEntryLevelPositions = () => {
   const getQuery = () => ({
     page,
     limit,
+    text: textSearch,
     'el-tps': selectedTps.map(tpObject => (tpObject?.code)),
     'el-bureaus': selectedBureaus.map(bureauObject => (bureauObject?.code)),
     'el-orgs': selectedOrgs.map(orgObject => (orgObject?.code)),
@@ -274,19 +275,15 @@ const MaintainEntryLevelPositions = () => {
           <div className="controls-container results-dropdown">
             <div className="el-page-header">Maintain Entry Level Positions</div>
             <div className="position-search-controls--right">
-              {
-                false &&
-                // hidden until pagination added to endpoint
-                <div className="position-search-controls--results">
-                  <SelectForm
-                    id="position-manager-num-results"
-                    options={POSITION_PAGE_SIZES.options}
-                    label="Results:"
-                    defaultSort={limit}
-                    onSelectOption={value => setLimit(value.target.value)}
-                  />
-                </div>
-              }
+              <div className="position-search-controls--results">
+                <SelectForm
+                  id="position-manager-num-results"
+                  options={POSITION_PAGE_SIZES.options}
+                  label="Results:"
+                  defaultSort={limit}
+                  onSelectOption={value => setLimit(value.target.value)}
+                />
+              </div>
               <div className="export-button-container">
                 <ExportButton disabled />
               </div>
