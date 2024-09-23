@@ -213,6 +213,7 @@ class BidControls extends Component {
               cdoPills={proxyCdos}
               updatePagination={updatePagination}
               pageSize={pageSize}
+              isMultiple={!isCDOD30}
             />
           </div>
           <div className="portfolio-sort-container-contents small-screen-stack">
