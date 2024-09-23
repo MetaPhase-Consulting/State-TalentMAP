@@ -65,6 +65,8 @@ const MaintainEntryLevelPositions = () => {
   });
 
   const getQuery = () => ({
+    page,
+    limit,
     'el-tps': selectedTps.map(tpObject => (tpObject?.code)),
     'el-bureaus': selectedBureaus.map(bureauObject => (bureauObject?.code)),
     'el-orgs': selectedOrgs.map(orgObject => (orgObject?.code)),
@@ -297,18 +299,14 @@ const MaintainEntryLevelPositions = () => {
               <div className="usa-grid-full el-table-container">
                 <MaintainELPositionsTable elPositions={elPositions} />
               </div>
-              {
-                false &&
-                // hidden until pagination added to endpoint
-                <div className="usa-grid-full react-paginate">
-                  <PaginationWrapper
-                    pageSize={limit}
-                    onPageChange={p => setPage(p.page)}
-                    forcePage={page}
-                    totalResults={count}
-                  />
-                </div>
-              }
+              <div className="usa-grid-full react-paginate">
+                <PaginationWrapper
+                  pageSize={limit}
+                  onPageChange={p => setPage(p.page)}
+                  forcePage={page}
+                  totalResults={count}
+                />
+              </div>
             </>
             }
           </div>
