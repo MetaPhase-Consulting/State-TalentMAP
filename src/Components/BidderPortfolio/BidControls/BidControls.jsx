@@ -333,6 +333,7 @@ BidControls.propTypes = {
   setEditClassification: PropTypes.func.isRequired,
   setPanelDateID: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
+  panelID: PropTypes.string,
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
@@ -345,12 +346,14 @@ BidControls.defaultProps = {
   pageSize: CLIENTS_PAGE_SIZES.defaultSort,
   updatePagination: EMPTY_FUNCTION,
   panelClientFetchData: [],
+  panelID: '',
 };
 
 const mapStateToProps = state => ({
   selection: state.bidderPortfolioSelectedCDOsToSearchBy,
   unassignedSelection: state.bidderPortfolioSelectedUnassigned,
   panelClientFetchData: state.panelClientFetchData,
+  panelID: state.panelDateID,
 });
 
 export const mapDispatchToProps = dispatch => ({
