@@ -205,8 +205,10 @@ class BidControls extends Component {
     }
 
     const onPanelDateIDChange = (e) => {
-      this.setState({ panelClientDate: e.target.value });
+      this.setState({ panelClientDate: e.target.value }, this.generatePills);
+      this.props.queryParamUpdate({ panelClientID: e.target.value });
       this.props.setPanelDateID(e.target.value);
+      this.props.setUnassigned([]);
     };
 
     return (
@@ -277,6 +279,9 @@ class BidControls extends Component {
                 onChange={onPanelDateIDChange}
               >
                 <option value="" />
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
                 {
                   panelClientFetchData.map((d) => (
                     <option key={d.PM_SEQ_NUM} value={d.PM_SEQ_NUM}>{d.MEETING_DESC}</option>
