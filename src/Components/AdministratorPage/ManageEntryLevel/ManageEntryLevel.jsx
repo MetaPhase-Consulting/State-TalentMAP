@@ -16,7 +16,7 @@ const ManageEntryLevel = () => {
 
   const userSelections = useSelector(state => state.entryLevelSelections);
 
-  const elPositionsList = useSelector(state => state.entryLevelPositions);
+  const elPositionsList = useSelector(state => state.entryLevelPositions.results);
   const elPositionsIsLoading = useSelector(state => state.entryLevelFetchDataLoading);
   const elPositionsHasErrored = useSelector(state => state.entryLevelFetchDataErrored);
   const elFiltersIsLoading = useSelector(state => state.entryLevelFiltersFetchDataLoading);
