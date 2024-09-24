@@ -83,7 +83,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     const editedData = Object.fromEntries(Object.entries(params.data).slice(0, 6));
     // Convert MC_END_DATE back to a string if it exists
     if (editedData.MC_END_DATE) {
-      editedData.MC_END_DATE = format(editedData.MC_END_DATE, 'yyyy-MM-dd\'T\'HH:mm:ss');
+      editedData.MC_END_DATE = format(editedData.MC_END_DATE, 'MM/dd/yyyy');
     }
     // Convert checkboxes to strings
     Object.keys(editedData).forEach((key) => {
