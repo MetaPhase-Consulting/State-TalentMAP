@@ -287,7 +287,7 @@ export function getClientPerdets(query = {}, panel = false) {
         query$.panel_clients = true;
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'panel_clients'];
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
