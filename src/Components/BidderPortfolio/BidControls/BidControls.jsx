@@ -208,7 +208,6 @@ class BidControls extends Component {
       this.setState({ panelClientDate: e.target.value }, this.generatePills);
       this.props.queryParamUpdate({ panelClientID: e.target.value });
       this.props.setPanelDateID(e.target.value);
-      this.props.setUnassigned([]);
     };
 
     return (
@@ -220,7 +219,6 @@ class BidControls extends Component {
               cdoPills={proxyCdos}
               updatePagination={updatePagination}
               pageSize={pageSize}
-              isMultiple={!isCDOD30}
             />
           </div>
           <div className="portfolio-sort-container-contents small-screen-stack">
