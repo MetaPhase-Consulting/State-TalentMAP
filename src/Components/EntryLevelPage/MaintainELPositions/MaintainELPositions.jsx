@@ -104,6 +104,7 @@ const MaintainEntryLevelPositions = () => {
     setSelectedOrgs([]);
     setSelectedGrades([]);
     setSelectedSkills([]);
+    setSelectedJobs([]);
     setSelectedLanguages([]);
     setOverseas(false);
     setDomestic(false);
@@ -112,7 +113,7 @@ const MaintainEntryLevelPositions = () => {
 
   useEffect(() => {
     fetchAndSet();
-  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedLanguages, overseas, domestic, textSearch]);
+  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedJobs, selectedLanguages, overseas, domestic, textSearch]);
 
   useEffect(() => {
     dispatch(entryLevelFiltersFetchData());
