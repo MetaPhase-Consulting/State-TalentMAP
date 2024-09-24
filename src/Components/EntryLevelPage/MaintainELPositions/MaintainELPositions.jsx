@@ -79,7 +79,7 @@ const MaintainEntryLevelPositions = () => {
     'el-domestic': domestic,
   });
 
-  const fetchAndSet = () => {
+  const fetchAndSet = (resetPage = false) => {
     const filters = [
       selectedTps,
       selectedBureaus,
@@ -93,6 +93,9 @@ const MaintainEntryLevelPositions = () => {
       setClearFilters(false);
     } else {
       setClearFilters(true);
+    }
+    if (resetPage) {
+      setPage(1);
     }
     dispatch(saveEntryLevelSelections(getCurrentInputs()));
     dispatch(entryLevelFetchData(getQuery()));
@@ -112,8 +115,12 @@ const MaintainEntryLevelPositions = () => {
   };
 
   useEffect(() => {
+    fetchAndSet(true);
+  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedJobs, selectedLanguages, overseas, domestic, textSearch, page, limit]);
+
+  useEffect(() => {
     fetchAndSet();
-  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedJobs, selectedLanguages, overseas, domestic, textSearch]);
+  }, [page]);
 
   useEffect(() => {
     dispatch(entryLevelFiltersFetchData());
