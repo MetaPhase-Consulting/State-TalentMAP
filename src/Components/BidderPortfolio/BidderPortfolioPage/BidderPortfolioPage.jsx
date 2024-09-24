@@ -99,6 +99,7 @@ class BidderPortfolioPage extends Component {
                 getKeyword={this.state.q}
                 resetKeyword={this.resetRefKeyword}
                 updatePagination={updatePagination}
+                userProfile={bidderPortfolio}
               />
             </div>
           }

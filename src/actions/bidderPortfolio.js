@@ -253,7 +253,7 @@ const handleError = (error, dispatch) => {
   }
 };
 
-export function getClientPerdets(query = {}) {
+export function getClientPerdets(query = {}, panel = false) {
   return async (dispatch, getState) => {
     try {
       dispatch(bidderPortfolioIsLoading(true));
@@ -283,8 +283,11 @@ export function getClientPerdets(query = {}) {
         if (UAvalues.includes('noPanel')) query$.noPanel = true;
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
+      if (panel) {
+        query$.panel_clients = true;
+      }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages']; // add 'panel_clients' and 'classification' back later
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
@@ -292,7 +295,7 @@ export function getClientPerdets(query = {}) {
       });
 
       const queryString = stringify(query$);
-      const endpoint = '/fsbid/client/client_perdets/';
+      const endpoint = panel ? '/fsbid/client/panel_update/' : '/fsbid/client/client_perdets/';
       const url = `${endpoint}?${queryString}`;
 
       if (cancelUnnassignedBidders) {
