@@ -50,7 +50,7 @@ const MaintainEntryLevelPositions = () => {
   const elPositions = useSelector(state => state.entryLevelPositions.results);
   const count = useSelector(state => state.entryLevelPositions.count);
 
-  const childRef = useRef();
+  const textSearchRef = useRef();
 
   const getCurrentInputs = () => ({
     selectedTps,
@@ -111,12 +111,26 @@ const MaintainEntryLevelPositions = () => {
     setSelectedLanguages([]);
     setOverseas(false);
     setDomestic(false);
+    setTextSearch('');
+    textSearchRef.current.clearText();
     setClearFilters(false);
   };
 
   useEffect(() => {
     fetchAndSet(true);
-  }, [selectedTps, selectedBureaus, selectedOrgs, selectedGrades, selectedSkills, selectedJobs, selectedLanguages, overseas, domestic, textSearch, page, limit]);
+  }, [
+    selectedTps,
+    selectedBureaus,
+    selectedOrgs,
+    selectedGrades,
+    selectedSkills,
+    selectedJobs,
+    selectedLanguages,
+    overseas,
+    domestic,
+    textSearch,
+    limit,
+  ]);
 
   useEffect(() => {
     fetchAndSet();
@@ -159,11 +173,10 @@ const MaintainEntryLevelPositions = () => {
             <ProfileSectionTitle title="Entry Level Search" icon="keyboard-o" />
             <div className="search-bar-container">
               <PositionManagerSearch
-                ref={childRef}
+                ref={textSearchRef}
                 placeHolder="Search using Position Number or Position Title"
                 textSearch={textSearch}
                 submitSearch={(input) => setTextSearch(input)}
-                noButton
               />
             </div>
             <div className="filterby-container">
