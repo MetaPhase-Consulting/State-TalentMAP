@@ -162,7 +162,7 @@ const MaintainEntryLevelPositions = () => {
                 ref={childRef}
                 placeHolder="Search using Position Number or Position Title"
                 textSearch={textSearch}
-                onChange={setTextSearch}
+                submitSearch={(input) => setTextSearch(input)}
                 noButton
               />
             </div>
