@@ -40,7 +40,7 @@ export function entryLevelEdit(data) {
       dispatch(entryLevelEditLoading(true));
       dispatch(entryLevelEditErrored(false));
     });
-    api().post('/fsbid/positions/el_positions/save/', { data }, {
+    api().post('/fsbid/positions/el_positions/save/', data, {
       cancelToken: new CancelToken((c) => { cancelELedit = c; }),
     })
       .then(() => {
