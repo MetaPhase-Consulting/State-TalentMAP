@@ -15,7 +15,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     { field: 'FICA', headerName: 'FICA', cellDataType: 'boolean', editable: true, width: 75 },
     { field: 'ELTOML', headerName: 'EL to ML OTO', cellDataType: 'boolean', editable: true, width: 100 },
     { field: 'MC', headerName: 'ML to EL OTO', cellDataType: 'boolean', editable: true, width: 100 },
-    { field: 'MC_END_DATE', headerName: 'Cede End Date', type: 'customDate', cellEditor: 'agDateCellEditor', editable: true, width: 125 },
+    { field: 'MC_END_DATE', headerName: 'Cede End Date', type: 'customDate', cellEditor: 'agDateCellEditor', editable: params => params.data.MC === true, width: 125 },
     { field: 'BUREAU_SHORT_DESC', headerName: 'Bureau', width: 75 },
     { field: 'POS_OVERSEAS_DESC', headerName: 'Overseas / Domestic', width: 100 },
     { field: 'ORG_SHORT_DESC', headerName: 'Location / Org', width: 125 },
