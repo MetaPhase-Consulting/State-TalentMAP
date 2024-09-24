@@ -253,7 +253,74 @@ const handleError = (error, dispatch) => {
   }
 };
 
-export function getClientPerdets(query = {}, panel = false) {
+export function getClientDatePerdets(query = {}) {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(bidderPortfolioIsLoading(true));
+      dispatch(bidderPortfolioHasErrored(false));
+
+      const state = getState();
+      const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
+      const ids = cdos.map(m => m.hru_id).filter(Boolean);
+
+      let query$ = { ...query };
+
+      if (ids.length) {
+        query$.hru_id__in = ids.join();
+        query$.panel_clients = true;
+      }
+
+      if (!query$.bid_seasons) {
+        query$ = omit(query$, ['hasHandshake', 'handshake']);
+      }
+
+      const queryString = stringify(query$);
+      const endpoint = '/fsbid/client/panel_update/';
+      const url = `${endpoint}?${queryString}`;
+
+      if (cancelUnnassignedBidders) {
+        cancelUnnassignedBidders('cancel');
+      }
+
+      const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
+
+      if (ids.length) {
+        const response = await api().get(url, { cancelToken });
+        const { data } = response;
+        const newQuery = { ...query$, perdet_seq_num: data.map(String) };
+        const secondQueryString = stringify(newQuery);
+        const secondEndpoint = '/fsbid/client/';
+        const secondUrl = `${secondEndpoint}?${secondQueryString}`;
+
+        if (data.length === 0) {
+          dispatch(bidderPortfolioLastQuery(secondQueryString, 0, secondEndpoint));
+          dispatch(bidderPortfolioFetchDataSuccess({ results: [], count: '0' }));
+          dispatch(bidderPortfolioHasErrored(false));
+          dispatch(bidderPortfolioIsLoading(false));
+          return;
+        }
+
+        try {
+          const secondResponse = await api().get(secondUrl, { cancelToken });
+          const { data: secondData } = secondResponse;
+
+          batch(() => {
+            dispatch(bidderPortfolioLastQuery(secondQueryString, secondData.count, secondEndpoint));
+            dispatch(bidderPortfolioFetchDataSuccess(secondData));
+            dispatch(bidderPortfolioHasErrored(false));
+            dispatch(bidderPortfolioIsLoading(false));
+          });
+        } catch (error) {
+          handleError(error, dispatch);
+        }
+      }
+    } catch (error) {
+      handleError(error, dispatch);
+    }
+  };
+}
+
+export function getClientPerdets(query = {}) {
   return async (dispatch, getState) => {
     try {
       dispatch(bidderPortfolioIsLoading(true));
@@ -283,10 +350,6 @@ export function getClientPerdets(query = {}, panel = false) {
         if (UAvalues.includes('noPanel')) query$.noPanel = true;
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
-      if (panel) {
-        query$.panel_clients = true;
-        query$ = omit(query$, ['bid_seasons']);
-      }
 
       const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
       filters.forEach(filter => {
@@ -296,7 +359,7 @@ export function getClientPerdets(query = {}, panel = false) {
       });
 
       const queryString = stringify(query$);
-      const endpoint = panel ? '/fsbid/client/panel_update/' : '/fsbid/client/client_perdets/';
+      const endpoint = '/fsbid/client/client_perdets/';
       const url = `${endpoint}?${queryString}`;
 
       if (cancelUnnassignedBidders) {
@@ -306,7 +369,7 @@ export function getClientPerdets(query = {}, panel = false) {
       const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
 
       if (ids.length) {
-        const response = panel ? await api().get(url, { cancelToken }) : await api().post(url, { cancelToken });
+        const response = await api().post(url, { cancelToken });
         const { data } = response;
         const newQuery = { ...query$, perdet_seq_num: data.map(String) };
         const secondQueryString = stringify(newQuery);

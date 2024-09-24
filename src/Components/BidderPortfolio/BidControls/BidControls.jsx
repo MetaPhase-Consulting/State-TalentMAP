@@ -10,7 +10,7 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioSetUnassigned, getClientPerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
+import { bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -209,7 +209,7 @@ class BidControls extends Component {
         this.setState({ panelClientDate: e.target.value }, this.generatePills);
         this.props.queryParamUpdate({ panelClientID: e.target.value });
         this.props.setPanelDateID(e.target.value);
-        this.props.getClientPerdets({
+        this.props.getClientDatePerdets({
           hru_id__in: proxyCdos[0].hru_id, // will always be one
           panel_clients: true,
           cdo_pm_seq_num: panelClientDate,
@@ -341,7 +341,7 @@ BidControls.propTypes = {
   setCDOD30: PropTypes.func.isRequired,
   setEditClassification: PropTypes.func.isRequired,
   setPanelDateID: PropTypes.func.isRequired,
-  getClientPerdets: PropTypes.func.isRequired,
+  getClientDatePerdets: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
@@ -369,7 +369,7 @@ export const mapDispatchToProps = dispatch => ({
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
   setEditClassification: (bool) => dispatch(setEditClassification(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
-  getClientPerdets: (query, isDate) => dispatch(getClientPerdets(query, isDate)),
+  getClientDatePerdets: (query, isDate) => dispatch(getClientDatePerdets(query, isDate)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);
