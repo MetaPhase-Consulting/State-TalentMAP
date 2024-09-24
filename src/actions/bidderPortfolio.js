@@ -467,7 +467,6 @@ export function panelClientFetchData() {
     });
     api().get('fsbid/client/panel/')
       .then(({ data }) => {
-        console.log('panelClientFetchData', data);
         batch(() => {
           dispatch(panelClientFetchDataSuccess(data));
           dispatch(panelClientFetchDataErrored(false));
