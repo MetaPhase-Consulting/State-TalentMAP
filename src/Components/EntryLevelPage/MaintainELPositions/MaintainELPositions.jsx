@@ -127,7 +127,7 @@ const MaintainEntryLevelPositions = () => {
     includeSelectAll: true,
   };
 
-  const isLoading = elFiltersIsLoading || elPositionsIsLoading;
+  const isLoading = elFiltersIsLoading;
   const getOverlay = () => {
     let toReturn;
     if (elPositionsIsLoading) {
