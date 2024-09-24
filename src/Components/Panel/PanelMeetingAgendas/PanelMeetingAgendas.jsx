@@ -30,7 +30,7 @@ const PanelMeetingAgendas = (props) => {
   const { isCDO, location } = props;
 
   const panelMeetings = location.state?.panelMeetings || [];
-  const pmSeqNums = panelMeetings.map(pm => pm.pmi_pm_seq_num);
+  const pmSeqNums = sortBy(panelMeetings.map(pm => pm.pmi_pm_seq_num), (n) => n);
 
   const agendasIsLoading = useSelector(state => state.panelMeetingAgendasFetchDataLoading);
   const agendas$ = useSelector(state => state.panelMeetingAgendas);
@@ -114,8 +114,18 @@ const PanelMeetingAgendas = (props) => {
   const getQuery = () => ({
     page,
     limit,
-    ordering: ['-panel_date', '-pmipmseqnum', '-agenda_id'],
+    ordering: ['panel_date', 'pmipmseqnum', 'agenda_id'],
     pmipmseqnum: pmSeqNums,
+    // @TODO: add filters
+    // orgs: selectedOrgs.map(orgObject => orgObject.code),
+    // categories: selectedCategories.map(categoryObject => categoryObject.mic_code),
+    // grades: selectedGrades.map(gradeObject => gradeObject.code),
+    // actions: selectedActions.map(actionObject => actionObject.code),
+    // statuses: selectedStatuses.map(statusObject => statusObject.code),
+    // languages: selectedLanguages.map(languageObject => languageObject.code),
+    // remarks: selectedRemarks.map(remarkObject => remarkObject.seq_num),
+    // skills: selectedSkills.map(skillObject => skillObject.code),
+    // text_search: textSearch,
   });
 
   const getCurrentInputs = () => ({
