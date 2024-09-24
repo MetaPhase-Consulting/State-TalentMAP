@@ -41,10 +41,17 @@ export function entryLevelFetchDataLoading(state = false, action) {
       return state;
   }
 }
-export function entryLevelPositions(state = [], action) {
+const initialState = {
+  count: 0,
+  results: [],
+};
+export function entryLevelPositions(state = initialState, action) {
   switch (action.type) {
     case 'ENTRY_LEVEL_FETCH_SUCCESS':
-      return action.results;
+      return {
+        count: action.data.count,
+        results: action.data.results,
+      };
     default:
       return state;
   }

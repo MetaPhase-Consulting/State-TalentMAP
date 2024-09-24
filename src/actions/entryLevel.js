@@ -81,10 +81,13 @@ export function entryLevelFetchDataLoading(bool) {
     isLoading: bool,
   };
 }
-export function entryLevelFetchDataSuccess(results) {
+export function entryLevelFetchDataSuccess(count, results) {
   return {
     type: 'ENTRY_LEVEL_FETCH_SUCCESS',
-    results,
+    data: {
+      count,
+      results,
+    },
   };
 }
 export function entryLevelFetchData(query = {}) {
@@ -102,7 +105,9 @@ export function entryLevelFetchData(query = {}) {
     })
       .then(({ data }) => {
         batch(() => {
-          dispatch(entryLevelFetchDataSuccess(data));
+          const count = data.count;
+          const results = data.results;
+          dispatch(entryLevelFetchDataSuccess(count, results));
           dispatch(entryLevelFetchDataErrored(false));
           dispatch(entryLevelFetchDataLoading(false));
         });

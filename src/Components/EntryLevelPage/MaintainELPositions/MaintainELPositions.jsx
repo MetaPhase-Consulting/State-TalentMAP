@@ -47,8 +47,8 @@ const MaintainEntryLevelPositions = () => {
 
   const elPositionsHasErrored = useSelector(state => state.entryLevelFetchDataErrored);
   const elPositionsIsLoading = useSelector(state => state.entryLevelFetchDataLoading);
-  const elPositions = useSelector(state => state.entryLevelPositions);
-  const count = elPositions?.length || 0;
+  const elPositions = useSelector(state => state.entryLevelPositions.results);
+  const count = useSelector(state => state.entryLevelPositions.count);
 
   const childRef = useRef();
 
