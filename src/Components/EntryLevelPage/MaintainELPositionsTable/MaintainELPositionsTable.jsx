@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { entryLevelEdit } from 'actions/entryLevel';
+import { format } from 'date-fns-v2';
 
 const MaintainELPositionsTable = ({ elPositions }) => {
   const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     const editedData = Object.fromEntries(Object.entries(params.data).slice(0, 6));
     // Convert MC_END_DATE back to a string if it exists
     if (editedData.MC_END_DATE) {
-      editedData.MC_END_DATE = editedData.MC_END_DATE.toISOString();
+      editedData.MC_END_DATE = format(editedData.MC_END_DATE, 'yyyy-MM-dd\'T\'HH:mm:ss');
     }
     // Convert checkboxes to strings
     Object.keys(editedData).forEach((key) => {
