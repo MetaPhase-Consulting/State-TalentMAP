@@ -285,9 +285,10 @@ export function getClientPerdets(query = {}, panel = false) {
       }
       if (panel) {
         query$.panel_clients = true;
+        query$ = omit(query$, ['bid_seasons']);
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'panel_clients'];
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
@@ -305,7 +306,7 @@ export function getClientPerdets(query = {}, panel = false) {
       const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
 
       if (ids.length) {
-        const response = await api().post(url, { cancelToken });
+        const response = panel ? await api().get(url, { cancelToken }) : await api().post(url, { cancelToken });
         const { data } = response;
         const newQuery = { ...query$, perdet_seq_num: data.map(String) };
         const secondQueryString = stringify(newQuery);
