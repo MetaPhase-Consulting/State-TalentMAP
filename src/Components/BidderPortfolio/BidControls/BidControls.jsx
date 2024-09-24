@@ -194,7 +194,7 @@ class BidControls extends Component {
 
   render() {
     const { viewType, changeViewType, defaultHandshake,
-      defaultOrdering, pageSize, getKeyword, updatePagination, panelClientFetchData, userProfile } = this.props;
+      defaultOrdering, pageSize, getKeyword, updatePagination, panelClientFetchData } = this.props;
     const { panelClient, isCDOD30, panelClientDate, hasSeasons, pills, proxyCdos, unassignedBidders, unassignedFilter } = this.state;
     const pageSizes = CLIENTS_PAGE_SIZES.options;
     const displayUnassignedFilter = useUnassignedFilter();
@@ -205,13 +205,12 @@ class BidControls extends Component {
     }
 
     const onPanelDateIDChange = (e) => {
-      console.log('userProfile', userProfile);
       if (e.target.value !== '') {
         this.setState({ panelClientDate: e.target.value }, this.generatePills);
         this.props.queryParamUpdate({ panelClientID: e.target.value });
         this.props.setPanelDateID(e.target.value);
         this.props.getClientPerdets({
-          hru_id__in: 2884,
+          hru_id__in: proxyCdos[0].hru_id, // will always be one
           panel_clients: true,
           cdo_pm_seq_num: panelClientDate,
         }, true);
@@ -286,9 +285,6 @@ class BidControls extends Component {
                 onChange={onPanelDateIDChange}
               >
                 <option value="" />
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
                 {
                   panelClientFetchData.map((d) => (
                     <option key={d.PM_SEQ_NUM} value={d.PM_SEQ_NUM}>{d.MEETING_DESC}</option>
@@ -350,6 +346,7 @@ BidControls.propTypes = {
   getKeyword: PropTypes.string.isRequired,
   resetKeyword: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
+  panelClientFetchData: PropTypes.arrayOf(PropTypes.shape({})),
   updatePagination: PropTypes.func,
 };
 
