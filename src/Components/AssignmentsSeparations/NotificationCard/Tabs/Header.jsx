@@ -61,7 +61,7 @@ const Header = (props) => {
               <DatePicker
                 id="date"
                 selected={getCableValue('DATE') !== '' ? (new Date(getCableValue('DATE'))) : ''}
-                onChange={(e) => modCableValue('DATE', e.target.value)}
+                onChange={(e) => modCableValue('DATE', e)}
                 dateFormat="MM/dd/yyyy"
                 placeholderText={'MM/DD/YYY'}
                 ref={datePickerRef}
