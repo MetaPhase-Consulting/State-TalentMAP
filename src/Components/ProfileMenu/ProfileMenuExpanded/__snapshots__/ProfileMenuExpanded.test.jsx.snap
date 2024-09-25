@@ -280,7 +280,16 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
       search=""
       title="Entry Level"
       toggleMenuSection={[Function]}
-    />
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Maintain Entry Level Positions"
+        link="/profile/entrylevel/maintainpositions"
+        search=""
+        title="Maintain Entry Level Positions"
+      />
+    </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
         Object {
@@ -793,7 +802,16 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
       search=""
       title="Entry Level"
       toggleMenuSection={[Function]}
-    />
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Maintain Entry Level Positions"
+        link="/profile/entrylevel/maintainpositions"
+        search=""
+        title="Maintain Entry Level Positions"
+      />
+    </withRouter(NavLink)>
     <withRouter(NavLink)
       expandedSection={
         Object {
