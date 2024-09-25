@@ -180,7 +180,7 @@ const NotificationCard = (props) => {
     let HDR_NME_UPDATE_DATE = '';
     let HDR_NME_CLEAR_IND = '';
     noteCable.forEach(s => {
-      const separator = HDR_NME_SEQ_NUM === '' ? '' : ',';
+      const separator = HDR_NME_SEQ_NUM === '' ? '' : '|';
       HDR_NME_SEQ_NUM = HDR_NME_SEQ_NUM.concat(separator, s.NME_SEQ_NUM);
       HDR_CLOB_LENGTH = HDR_CLOB_LENGTH.concat(separator, s.NME_OVERRIDE_CLOB.length);
       HDR_NME_OVERRIDE_CLOB = HDR_NME_OVERRIDE_CLOB.concat(separator, s.NME_OVERRIDE_CLOB ?? '');
@@ -291,9 +291,19 @@ const NotificationCard = (props) => {
   };
 
   const handleSend = () => {
+    const nmSeqNum = note?.NM_SEQ_NUM;
+    const type = memo ? 'M' : 'C';
+    let now = new Date();
+    now = now.toISOString();
+    now = now.replace(/\D/g, '');
+    const date = now.substring(0, 8);
+    const time = now.substring(8, 14);
     dispatch(sendNotification({
-      I_NM_SEQ_NUM: note?.NM_SEQ_NUM,
-      I_NOTE_TYPE: memo ? 'M' : 'C',
+      PV_NM_SEQ_NUM_I: nmSeqNum,
+      PV_FILE_NAME_I: `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`,
+      PV_NOTE_TYPE_I: type,
+      I_NM_SEQ_NUM: nmSeqNum,
+      I_NOTE_TYPE: type,
     }, null, memo));
   };
 
