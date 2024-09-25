@@ -15,9 +15,11 @@ import { filter, flatten, isEmpty } from 'lodash';
 import { POSITION_PAGE_SIZES } from 'Constants/Sort';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
+import { entryLevelExportData } from '../../../actions/entryLevel';
 
 const MaintainEntryLevelPositions = () => {
   const dispatch = useDispatch();
+  const textSearchRef = useRef();
 
   const userSelections = useSelector(state => state.entryLevelSelections);
   const [page, setPage] = useState(userSelections.page || 1);
@@ -49,8 +51,7 @@ const MaintainEntryLevelPositions = () => {
   const elPositionsIsLoading = useSelector(state => state.entryLevelFetchDataLoading);
   const elPositions = useSelector(state => state.entryLevelPositions.results);
   const count = useSelector(state => state.entryLevelPositions.count);
-
-  const textSearchRef = useRef();
+  const [exportIsLoading, setExportIsLoading] = useState(false);
 
   const getCurrentInputs = () => ({
     selectedTps,
@@ -163,6 +164,19 @@ const MaintainEntryLevelPositions = () => {
       return <div className="usa-width-one-whole empl-search-lower-section results-dropdown">{toReturn}</div>;
     }
     return false;
+  };
+
+  const exportTable = () => {
+    if (!exportIsLoading) {
+      setExportIsLoading(true);
+      entryLevelExportData(getQuery())
+        .then(() => {
+          setExportIsLoading(false);
+        })
+        .catch(() => {
+          setExportIsLoading(false);
+        });
+    }
   };
 
   return (
@@ -306,7 +320,7 @@ const MaintainEntryLevelPositions = () => {
                 />
               </div>
               <div className="export-button-container">
-                <ExportButton disabled />
+                <ExportButton onClick={exportTable} isLoading={exportIsLoading} />
               </div>
             </div>
           </div>
