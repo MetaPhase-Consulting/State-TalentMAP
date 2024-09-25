@@ -314,12 +314,12 @@ export function sendNotification(data, onSuccess, memo) {
       cancelSendNotification('cancel');
     }
     api()
-      .put('/fsbid/notification/send/', data, {
+      .post('/fsbid/notification/send/', data, {
         cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
       })
       .then(() => {
         api()
-          .put('/fsbid/notification/store/', data, {
+          .post('/fsbid/notification/store/', data, {
             cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
           })
           .then(() => {
