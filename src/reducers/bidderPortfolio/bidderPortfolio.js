@@ -24,9 +24,25 @@ export function bidderPortfolioSeasonsIsLoading(state = false, action) {
       return state;
   }
 }
+export function isCDOD30(state = false, action) {
+  switch (action.type) {
+    case 'BIDDER_CDO_IS_CDOD30':
+      return action.isCDOD30;
+    default:
+      return state;
+  }
+}
 export function bidderPortfolioSeasons(state = [], action) {
   switch (action.type) {
     case 'BIDDER_PORTFOLIO_SEASONS_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+export function unassignedbidderType(state = [], action) {
+  switch (action.type) {
+    case 'UNASSIGNED_BIDDER_TYPE_SUCCESS':
       return action.results;
     default:
       return state;
