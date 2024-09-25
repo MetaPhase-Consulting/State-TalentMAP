@@ -291,6 +291,29 @@ exports[`ProfileMenuExpandedComponent matches snapshot when isGlossaryEditor is 
         }
       }
       hidden={true}
+      iconName="street-view"
+      key="Entry Level"
+      search=""
+      title="Entry Level"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Maintain Entry Level Positions"
+        link="/profile/entrylevel/maintainpositions"
+        search=""
+        title="Maintain Entry Level Positions"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
       iconName="sitemap"
       key="FSBid Admin"
       search=""
@@ -804,6 +827,29 @@ exports[`ProfileMenuExpandedComponent matches snapshot when user is bidcycle_adm
         link="/profile/cdo/panelmeetings"
         search=""
         title="Panel Meetings"
+      />
+    </withRouter(NavLink)>
+    <withRouter(NavLink)
+      expandedSection={
+        Object {
+          "display": false,
+          "title": "",
+        }
+      }
+      hidden={true}
+      iconName="street-view"
+      key="Entry Level"
+      search=""
+      title="Entry Level"
+      toggleMenuSection={[Function]}
+    >
+      <withRouter(NavLink)
+        hidden={true}
+        iconName=" fa-keyboard-o"
+        key="Maintain Entry Level Positions"
+        link="/profile/entrylevel/maintainpositions"
+        search=""
+        title="Maintain Entry Level Positions"
       />
     </withRouter(NavLink)>
     <withRouter(NavLink)
