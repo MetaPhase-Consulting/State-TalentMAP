@@ -12,7 +12,7 @@ const EFM = (props) => {
         <span className="definition-title">EFM</span>
         <Linkify properties={{ target: '_blank' }}>
           <TextareaAutosize
-            maxRows={4}
+            maxRows={8}
             minRows={4}
             maxLength="500"
             name="efm"
@@ -33,13 +33,11 @@ const EFM = (props) => {
 };
 
 EFM.propTypes = {
-  getCableValue: PropTypes.func,
-  modCableValue: PropTypes.func,
+  getCableValue: PropTypes.func.isRequired,
+  modCableValue: PropTypes.func.isRequired,
 };
 
 EFM.defaultProps = {
-  getCableValue: undefined,
-  modCableValue: undefined,
 };
 
 export default EFM;
