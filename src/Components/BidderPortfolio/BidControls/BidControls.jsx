@@ -166,7 +166,7 @@ class BidControls extends Component {
     this.setState({ proxyCdos: [] });
     this.updateMultiSelect([]);
     this.onFilterChange(BID_PORTFOLIO_FILTERS.options[0].value);
-    this.setState({ unassignedBidders: [] });
+    this.setState({ unassignedBidders: [], unassignedFilter: false, panelClient: false });
     this.props.queryParamUpdate({ value: 'skip' });
   };
 
