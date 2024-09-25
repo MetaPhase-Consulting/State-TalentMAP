@@ -9,7 +9,7 @@ import DefinitionList from '../../../DefinitionList';
 import InputActions from '../Common/InputActions';
 
 const Header = (props) => {
-  const { getCableValue, modCableValue } = props;
+  const { getCableValue, modCableValue, handleDefaultClear } = props;
 
   const datePickerRef = useRef(null);
   const openDatePicker = () => {
@@ -42,7 +42,7 @@ const Header = (props) => {
         <InputActions
           keys={['DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT']}
           getCableValue={getCableValue}
-          modCableValue={modCableValue}
+          handleDefaultClear={handleDefaultClear}
         />
         <div className="position-form--label-input-container">
           <label htmlFor="drafting-office">Drafting Office</label>
@@ -61,7 +61,7 @@ const Header = (props) => {
               <DatePicker
                 id="date"
                 selected={getCableValue('DATE') !== '' ? (new Date(getCableValue('DATE'))) : ''}
-                onChange={(e) => modCableValue('DATE', e.target.value)}
+                onChange={(e) => modCableValue('DATE', e)}
                 dateFormat="MM/dd/yyyy"
                 placeholderText={'MM/DD/YYY'}
                 ref={datePickerRef}
@@ -77,7 +77,7 @@ const Header = (props) => {
             onChange={(e) => modCableValue('TELEPHONE', e.target.value)}
           />
         </div>
-        <Row fluid className="position-content--description">
+        <Row fluid className="position-content--description pt-20">
           <span className="definition-title">Subject</span>
           <Linkify properties={{ target: '_blank' }}>
             <TextareaAutosize
@@ -101,13 +101,12 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
-  getCableValue: PropTypes.func,
-  modCableValue: PropTypes.func,
+  getCableValue: PropTypes.func.isRequired,
+  modCableValue: PropTypes.func.isRequired,
+  handleDefaultClear: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
-  getCableValue: undefined,
-  modCableValue: undefined,
 };
 
 export default Header;
