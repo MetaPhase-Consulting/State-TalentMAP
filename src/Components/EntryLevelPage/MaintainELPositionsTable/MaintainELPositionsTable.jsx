@@ -69,7 +69,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
       extendsDataType: 'date',
       baseDataType: 'date',
       valueFormatter: params =>
-        // convert to `dd/mm/yyyy`
+        // convert to `mm/dd/yyyy`
         params.value == null
           ? ''
           : `${params.value.getMonth() + 1}/${params.value.getDate()}/${params.value.getFullYear()}`
