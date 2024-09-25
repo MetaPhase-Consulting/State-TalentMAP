@@ -244,6 +244,7 @@ class BidControls extends Component {
                   disabled={!hasSeasons}
                 />
               </PreferenceWrapper>
+              { unassignedFilter &&
               <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
                 <div className="label">Unassigned Bidders:</div>
                 <Picky
@@ -261,6 +262,7 @@ class BidControls extends Component {
                   disabled={!unassignedFilter}
                 />
               </div>
+              }
             </>
             }
             { panelClient &&
