@@ -315,23 +315,44 @@ export function sendNotification(data, onSuccess, memo) {
     }
     api()
       .put('/fsbid/notification/send/', data, {
-        cancelToken: new CancelToken((c) => { cancelRebuildNotification = c; }),
+        cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
       })
       .then(() => {
-        if (memo) {
-          dispatch(toastSuccess(
-            SEND_MEMO_SUCCESS,
-            SEND_MEMO_SUCCESS_TITLE,
-          ));
-        } else {
-          dispatch(toastSuccess(
-            SEND_NOTIFICATION_SUCCESS,
-            SEND_NOTIFICATION_SUCCESS_TITLE,
-          ));
-        }
-        if (onSuccess) {
-          onSuccess();
-        }
+        api()
+          .put('/fsbid/notification/store/', data, {
+            cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
+          })
+          .then(() => {
+            if (memo) {
+              dispatch(toastSuccess(
+                SEND_MEMO_SUCCESS,
+                SEND_MEMO_SUCCESS_TITLE,
+              ));
+            } else {
+              dispatch(toastSuccess(
+                SEND_NOTIFICATION_SUCCESS,
+                SEND_NOTIFICATION_SUCCESS_TITLE,
+              ));
+            }
+            if (onSuccess) {
+              onSuccess();
+            }
+          })
+          .catch((err) => {
+            if (err?.message !== 'cancel') {
+              if (memo) {
+                dispatch(toastError(
+                  SEND_MEMO_ERROR,
+                  SEND_MEMO_ERROR_TITLE,
+                ));
+              } else {
+                dispatch(toastError(
+                  SEND_NOTIFICATION_ERROR,
+                  SEND_NOTIFICATION_ERROR_TITLE,
+                ));
+              }
+            }
+          });
       })
       .catch((err) => {
         if (err?.message !== 'cancel') {
