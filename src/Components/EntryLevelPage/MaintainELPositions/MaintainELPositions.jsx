@@ -320,7 +320,7 @@ const MaintainEntryLevelPositions = () => {
                 />
               </div>
               <div className="export-button-container">
-                <ExportButton onClick={exportTable} isLoading={exportIsLoading} disabled />
+                <ExportButton onClick={exportTable} isLoading={exportIsLoading} />
               </div>
             </div>
           </div>
