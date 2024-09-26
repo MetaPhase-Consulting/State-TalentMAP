@@ -166,7 +166,7 @@ class BidControls extends Component {
     this.setState({ proxyCdos: [] });
     this.updateMultiSelect([]);
     this.onFilterChange(BID_PORTFOLIO_FILTERS.options[0].value);
-    this.setState({ unassignedBidders: [] });
+    this.setState({ unassignedBidders: [], unassignedFilter: false, panelClient: false });
     this.props.queryParamUpdate({ value: 'skip' });
   };
 
@@ -213,6 +213,7 @@ class BidControls extends Component {
               cdoPills={proxyCdos}
               updatePagination={updatePagination}
               pageSize={pageSize}
+              isMultiple={!isCDOD30}
             />
           </div>
           <div className="portfolio-sort-container-contents small-screen-stack">
@@ -243,6 +244,7 @@ class BidControls extends Component {
                   disabled={!hasSeasons}
                 />
               </PreferenceWrapper>
+              { unassignedFilter &&
               <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
                 <div className="label">Unassigned Bidders:</div>
                 <Picky
@@ -260,6 +262,7 @@ class BidControls extends Component {
                   disabled={!unassignedFilter}
                 />
               </div>
+              }
             </>
             }
             { panelClient &&
