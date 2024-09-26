@@ -110,11 +110,10 @@ const PanelMeetingAgendas = (props) => {
   const [printView, setPrintView] = useState(false);
 
   const isLoading = genericFiltersIsLoading || panelFiltersIsLoading || agendasIsLoading;
-
   const getQuery = () => ({
     page,
     limit,
-    ordering: ['panel_date', 'pmipmseqnum', 'agenda_id'],
+    ordering: ['panel_date', 'agenda_id'],
     pmipmseqnum: pmSeqNums,
     // @TODO: add filters
     // orgs: selectedOrgs.map(orgObject => orgObject.code),
