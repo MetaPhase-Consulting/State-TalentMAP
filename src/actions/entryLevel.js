@@ -8,7 +8,7 @@ import { batch } from 'react-redux';
 import { CancelToken } from 'axios';
 import api from '../api';
 import { toastError, toastSuccess } from './toast';
-import { convertQueryToString, downloadFromResponse, formatDate } from '../utilities';
+import { convertQueryToString } from '../utilities';
 
 let cancelELdata;
 let cancelELedit;
@@ -167,8 +167,6 @@ export function entryLevelFiltersFetchData() {
     })
       .then(({ data }) => {
         batch(() => {
-          // dispatch(entryLevelFetchDataErrored(false));
-          // dispatch(entryLevelFetchDataLoading(false));
           dispatch(entryLevelFiltersFetchDataSuccess(data));
           dispatch(entryLevelFiltersFetchDataErrored(false));
           dispatch(entryLevelFiltersFetchDataLoading(false));
@@ -184,17 +182,4 @@ export function entryLevelFiltersFetchData() {
         }
       });
   };
-}
-
-// ================ Entry Level: Export ================
-
-export function entryLevelExportData(query = {}) {
-  const q = convertQueryToString(query);
-  const endpoint = '/fsbid/positions/el_positions/export/';
-  const ep = `${endpoint}?${q}`;
-  return api()
-    .get(ep)
-    .then((response) => {
-      downloadFromResponse(response, `EL_POSITIONS_${formatDate(new Date().getTime(), 'YYYY_M_D_Hms')}`);
-    });
 }
