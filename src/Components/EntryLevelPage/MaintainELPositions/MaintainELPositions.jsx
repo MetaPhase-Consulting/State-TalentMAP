@@ -15,11 +15,11 @@ import { filter, flatten, isEmpty } from 'lodash';
 import { POSITION_PAGE_SIZES } from 'Constants/Sort';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import { entryLevelExportData } from '../../../actions/entryLevel';
 
 const MaintainEntryLevelPositions = () => {
   const dispatch = useDispatch();
   const textSearchRef = useRef();
+  const tableRef = useRef(null);
 
   const userSelections = useSelector(state => state.entryLevelSelections);
   const [page, setPage] = useState(userSelections.page || 1);
@@ -167,15 +167,11 @@ const MaintainEntryLevelPositions = () => {
   };
 
   const exportTable = () => {
-    if (!exportIsLoading) {
+    if (tableRef.current) {
       setExportIsLoading(true);
-      entryLevelExportData(getQuery())
-        .then(() => {
-          setExportIsLoading(false);
-        })
-        .catch(() => {
-          setExportIsLoading(false);
-        });
+      const grid = tableRef.current.getGridRef();
+      grid.api.exportDataAsCsv();
+      setExportIsLoading(false);
     }
   };
 
@@ -329,7 +325,7 @@ const MaintainEntryLevelPositions = () => {
               getOverlay() ||
             <>
               <div className="usa-grid-full el-table-container">
-                <MaintainELPositionsTable elPositions={elPositions} />
+                <MaintainELPositionsTable ref={tableRef} elPositions={elPositions} />
               </div>
               <div className="usa-grid-full react-paginate">
                 <PaginationWrapper
