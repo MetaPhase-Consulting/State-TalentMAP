@@ -174,7 +174,7 @@ const MaintainEntryLevelPositions = () => {
             <div className="search-bar-container">
               <PositionManagerSearch
                 ref={textSearchRef}
-                placeHolder="Search using Position Number or Position Title"
+                placeHolder="Search using Position Number, Position Title, Bureau, Org, Skill, or Language (i.e FR)"
                 textSearch={textSearch}
                 submitSearch={(input) => setTextSearch(input)}
               />
