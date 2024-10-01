@@ -6,7 +6,6 @@ import { entryLevelEdit } from 'actions/entryLevel';
 import { format } from 'date-fns-v2';
 
 const MaintainELPositionsTable = ({ elPositions }) => {
-  console.log('elPositions', elPositions);
   const dispatch = useDispatch();
   const gridRef = useRef(null);
 
