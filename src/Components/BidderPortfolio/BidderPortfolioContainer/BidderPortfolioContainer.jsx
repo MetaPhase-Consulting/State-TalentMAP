@@ -8,6 +8,7 @@ import PaginationWrapper from 'Components/PaginationWrapper/PaginationWrapper';
 import Alert from 'Components/Alert/Alert';
 import BidderPortfolioCardList from '../BidderPortfolioCardList';
 import BidderPortfolioGridList from '../BidderPortfolioGridList';
+import BidderPortfolioTable from './BidderPorfolioTable/BidPortfolioTable';
 
 const ID = 'bidder-portfolio-container';
 
@@ -34,9 +35,9 @@ class BidderPortfolioContainer extends Component {
 
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
-        {!showNoCdosAlert && !hasErrored && isCDOD30 &&
+        {!showNoCdosAlert && !hasErrored && isCDOD30 && !noResults &&
           <div className="usa-grid-full bidder-portfolio-listing">
-            <h1>PLACE FOR TABLE</h1>
+            <BidderPortfolioTable results={bidderPortfolio.results} />
           </div>
         }
         {

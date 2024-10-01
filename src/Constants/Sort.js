@@ -101,7 +101,7 @@ BID_PORTFOLIO_SORTS.defaultSort = BID_PORTFOLIO_SORTS.options[0].value;
 
 export const BID_PORTFOLIO_FILTERS = {
   options: [
-    { value: '', text: 'All' },
+    { value: '', text: 'Clients' },
     { value: 'handshake', text: 'Handshake' },
     { value: 'unassigned_filters', text: 'Unassigned Filters' },
   ],
