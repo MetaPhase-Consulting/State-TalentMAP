@@ -35,4 +35,4 @@ yarn-error.log*
 .idea
 
 # Visual Studio Code
-settings.json
+.vscode
