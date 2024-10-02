@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { entryLevelEdit } from 'actions/entryLevel';
 import { format } from 'date-fns-v2';
 
-const MaintainELPositionsTable = ({ elPositions }) => {
+const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   const dispatch = useDispatch();
   const gridRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    getGridRef: () => gridRef.current,
+  }));
 
   const [headers] = useState([
     { field: 'EL', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', cellDataType: 'boolean', editable: true, width: 100 },
@@ -101,6 +105,10 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     dispatch(entryLevelEdit(data));
   };
 
+  const csvExportParams = {
+    fileName: 'Entry_Level_Positions_Export.csv',
+  };
+
   return (
     <div className="el-table ag-theme-quartz" style={{ height: 650, width: '100%' }}>
       <AgGridReact
@@ -111,10 +119,11 @@ const MaintainELPositionsTable = ({ elPositions }) => {
         columnTypes={columnTypes}
         defaultColDef={defaultColDef}
         singleClickEdit
+        defaultCsvExportParams={csvExportParams}
       />
     </div>
   );
-};
+});
 
 MaintainELPositionsTable.propTypes = {
   elPositions: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -18,6 +18,8 @@ import Alert from 'Components/Alert';
 
 const MaintainEntryLevelPositions = () => {
   const dispatch = useDispatch();
+  const textSearchRef = useRef();
+  const tableRef = useRef(null);
 
   const userSelections = useSelector(state => state.entryLevelSelections);
   const [page, setPage] = useState(userSelections.page || 1);
@@ -49,8 +51,7 @@ const MaintainEntryLevelPositions = () => {
   const elPositionsIsLoading = useSelector(state => state.entryLevelFetchDataLoading);
   const elPositions = useSelector(state => state.entryLevelPositions.results);
   const count = useSelector(state => state.entryLevelPositions.count);
-
-  const textSearchRef = useRef();
+  const [exportIsLoading, setExportIsLoading] = useState(false);
 
   const getCurrentInputs = () => ({
     selectedTps,
@@ -163,6 +164,15 @@ const MaintainEntryLevelPositions = () => {
       return <div className="usa-width-one-whole empl-search-lower-section results-dropdown">{toReturn}</div>;
     }
     return false;
+  };
+
+  const exportTable = () => {
+    if (tableRef.current) {
+      setExportIsLoading(true);
+      const grid = tableRef.current.getGridRef();
+      grid.api.exportDataAsCsv();
+      setExportIsLoading(false);
+    }
   };
 
   return (
@@ -306,7 +316,7 @@ const MaintainEntryLevelPositions = () => {
                 />
               </div>
               <div className="export-button-container">
-                <ExportButton disabled />
+                <ExportButton onClick={exportTable} isLoading={exportIsLoading} />
               </div>
             </div>
           </div>
@@ -315,7 +325,7 @@ const MaintainEntryLevelPositions = () => {
               getOverlay() ||
             <>
               <div className="usa-grid-full el-table-container">
-                <MaintainELPositionsTable elPositions={elPositions} />
+                <MaintainELPositionsTable ref={tableRef} elPositions={elPositions} />
               </div>
               <div className="usa-grid-full react-paginate">
                 <PaginationWrapper

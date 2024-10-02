@@ -167,8 +167,6 @@ export function entryLevelFiltersFetchData() {
     })
       .then(({ data }) => {
         batch(() => {
-          // dispatch(entryLevelFetchDataErrored(false));
-          // dispatch(entryLevelFetchDataLoading(false));
           dispatch(entryLevelFiltersFetchDataSuccess(data));
           dispatch(entryLevelFiltersFetchDataErrored(false));
           dispatch(entryLevelFiltersFetchDataLoading(false));
