@@ -36,6 +36,7 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   ]);
 
   const mapObjectToRow = (obj) => ({
+    POS_SEQ_NUM: obj.POS_SEQ_NUM,
     EL: obj.EL === 'true',
     LNA: obj.LNA === 'true',
     FICA: obj.FICA === 'true',
@@ -45,7 +46,7 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
     BUREAU_SHORT_DESC: obj.bureau,
     POS_OVERSEAS_DESC: obj.OD,
     ORG_SHORT_DESC: obj.org,
-    POS_SEQ_NUM: obj.positionNumber,
+    POS_NUM_TEXT: obj.positionNumber,
     POS_SKILL_CODE: obj.skill,
     POS_JOB_CATEGORY: obj.jobCategory,
     POS_TITLE_DESC: obj.positionTitle,
@@ -110,7 +111,7 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   };
 
   return (
-    <div className="el-table ag-theme-quartz" style={{ height: 650, width: '100%' }}>
+    <div className="el-table ag-theme-quartz" style={{ height: 475, width: '100%' }}>
       <AgGridReact
         ref={gridRef}
         columnDefs={headers}
