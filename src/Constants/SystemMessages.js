@@ -431,6 +431,11 @@ export const REBUILD_NOTIFICATION_SUCCESS = 'This Assignment Notification has be
 export const REBUILD_NOTIFICATION_ERROR_TITLE = 'Assignment Notification Rebuild Error';
 export const REBUILD_NOTIFICATION_ERROR = 'There was an issue attempting to rebuild this Assignment Notification. Please try again.';
 
+export const SEND_NOTIFICATION_SUCCESS_TITLE = 'Assignment Notification Sent';
+export const SEND_NOTIFICATION_SUCCESS = 'This Assignment Notification has been successfully sent.';
+export const SEND_NOTIFICATION_ERROR_TITLE = 'Assignment Notification Send Error';
+export const SEND_NOTIFICATION_ERROR = 'There was an issue attempting to send this Assignment Notification. Please try again.';
+
 export const GET_MEMO_ERROR_TITLE = 'Assignment Memo Error';
 export const GET_MEMO_ERROR = 'There was an issue attempting to create this Assignment Memo. Please try again.';
 
@@ -443,3 +448,11 @@ export const REBUILD_MEMO_SUCCESS_TITLE = 'Assignment Memo Rebuilt';
 export const REBUILD_MEMO_SUCCESS = 'This Assignment Memo has been successfully rebuilt.';
 export const REBUILD_MEMO_ERROR_TITLE = 'Assignment Memo Rebuild Error';
 export const REBUILD_MEMO_ERROR = 'There was an issue attempting to rebuild this Assignment Memo. Please try again.';
+
+export const SEND_MEMO_SUCCESS_TITLE = 'Assignment Memo Sent';
+export const SEND_MEMO_SUCCESS = 'This Assignment Memo has been successfully sent.';
+export const SEND_MEMO_ERROR_TITLE = 'Assignment Memo Send Error';
+export const SEND_MEMO_ERROR = 'There was an issue attempting to send this Assignment Memo. Please try again.';
+
+export const GET_GAL_ERROR_TITLE = 'GAL Lookup Error';
+export const GET_GAL_ERROR = 'There was an issue attempting this GAL Lookup. Please try again.';

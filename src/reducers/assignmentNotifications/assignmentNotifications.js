@@ -78,3 +78,30 @@ export function noteCableRefFetchData(state = [], action) {
       return state;
   }
 }
+
+// ================ GAL LOOKUP ================
+
+export function getGalErrored(state = false, action) {
+  switch (action.type) {
+    case 'GAL_FETCH_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function getGalLoading(state = false, action) {
+  switch (action.type) {
+    case 'GAL_FETCH_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function getGal(state = [], action) {
+  switch (action.type) {
+    case 'GAL_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
