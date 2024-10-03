@@ -124,7 +124,7 @@ const Preview = (props) => {
   };
 
   const handleSend = () => {
-    generatePDF();
+    generatePDF(); // TEMPORARY: Saves PDF locally for testing purposes
     const nmSeqNum = note?.NM_SEQ_NUM;
     const type = memo ? 'M' : 'C';
     let now = new Date();
