@@ -22,6 +22,7 @@ exports[`BidControlsComponent matches snapshot when isLoading is false 1`] = `
       </div>
       <Connect(CDOAutoSuggest)
         cdoPills={Array []}
+        isMultiple={true}
         pageSize={10}
         updatePagination={[Function]}
       />
@@ -175,6 +176,7 @@ exports[`BidControlsComponent matches snapshot when isLoading is true 1`] = `
       </div>
       <Connect(CDOAutoSuggest)
         cdoPills={Array []}
+        isMultiple={true}
         pageSize={10}
         updatePagination={[Function]}
       />

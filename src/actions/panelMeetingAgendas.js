@@ -45,9 +45,8 @@ export function panelMeetingAgendasFetchData(query = {}) {
     dispatch(panelMeetingAgendasFetchDataLoading(true));
     api().get(ep)
       .then(({ data }) => {
-        const agendas = data.results;
         batch(() => {
-          dispatch(panelMeetingAgendasFetchDataSuccess(agendas));
+          dispatch(panelMeetingAgendasFetchDataSuccess(data));
           dispatch(panelMeetingAgendasFetchDataErrored(false));
           dispatch(panelMeetingAgendasFetchDataLoading(false));
         });

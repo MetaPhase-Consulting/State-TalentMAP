@@ -39,6 +39,9 @@
   }
 
   .notification-card__sub-section {
+    display: flex;
+    flex-direction: column;
+
     .sub-header {
       font-weight: 500;
       font-size: 20px;
@@ -124,5 +127,89 @@
 
   label {
     margin: 0px;
+  }
+}
+
+.routing-sub-section {
+  margin: 10px 0px 10px 0px;
+  padding: 20px 10px 10px 10px;
+  background-color: $bg-gray-dark-4;
+  position: relative;
+
+  label {
+    margin-top: 0px;
+  }
+
+  .routing-delete-button {
+    color: $secondary-dark;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+}
+
+.gal-lookup {
+  .gal-lookup__input {
+    >div {
+      display: flex;
+      flex-direction: row;
+    }
+
+    button {
+      margin-left: 10px;
+    }
+  }
+
+  .gal-label {
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .recipients {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0px 25px;
+
+    .recipients-list {
+      width: 50%;
+
+      &:first-of-type {
+        margin-right: 15px;
+      }
+
+      &:last-of-type {
+        margin-left: 15px;
+      }
+    }
+  }
+
+  .gal-result {
+    margin-top: 10px;
+    border: 0.1rem solid #5b616b;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .gal-result__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 11.9px;
+    font-size: 17px;
+    border-bottom: 0.1rem solid #5b616b;
+
+    &:last-of-type {
+      border: none;
+    }
+
+    &.clickable:hover {
+      background-color: $color-gray-lightest;
+      cursor: pointer;
+    }
+
+    .delete-button {
+      color: $secondary-dark;
+    }
   }
 }
