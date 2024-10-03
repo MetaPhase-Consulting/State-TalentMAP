@@ -246,7 +246,7 @@ class BidControls extends Component {
               </PreferenceWrapper>
               { unassignedFilter &&
               <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
-                <div className="label">Unassigned Bidders:</div>
+                <div className="label">Unassigned Filters:</div>
                 <Picky
                   placeholder="Select Criteria"
                   value={unassignedBidders}
