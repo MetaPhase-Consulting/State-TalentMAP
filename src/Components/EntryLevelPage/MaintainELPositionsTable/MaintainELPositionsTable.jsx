@@ -23,7 +23,7 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
     { field: 'BUREAU_SHORT_DESC', headerName: 'Bureau', width: 75 },
     { field: 'POS_OVERSEAS_DESC', headerName: 'Overseas / Domestic', width: 100 },
     { field: 'ORG_SHORT_DESC', headerName: 'Location / Org', width: 125 },
-    { field: 'POS_SEQ_NUM', headerName: 'Position Number', width: 100 },
+    { field: 'POS_NUM_TEXT', headerName: 'Position Number', width: 100 },
     { field: 'POS_SKILL_CODE', headerName: 'Skill', width: 75 },
     { field: 'POS_JOB_CATEGORY', headerName: 'Job Category', width: 100 },
     { field: 'POS_TITLE_DESC', headerName: 'Title', width: 200 },
