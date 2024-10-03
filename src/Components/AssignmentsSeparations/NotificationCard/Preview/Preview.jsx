@@ -274,10 +274,10 @@ const Preview = (props) => {
 
 Preview.propTypes = {
   note: PropTypes.shape({
-    O_LAST_SENT_DATE: PropTypes.string,
+    NM_SEQ_NUM: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   cable: PropTypes.shape({
-    NM_SEQ_NUM: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    O_LAST_SENT_DATE: PropTypes.string,
   }),
   onCancel: PropTypes.func,
   memo: PropTypes.bool,
