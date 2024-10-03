@@ -270,7 +270,7 @@ export function getClientDatePerdets(query = {}) {
         query$.panel_clients = true;
       }
 
-      if (!query$.bid_seasons) {
+      if (!query$.bid_seasogetPanelPerdetsns) {
         query$ = omit(query$, ['hasHandshake', 'handshake']);
       }
 
