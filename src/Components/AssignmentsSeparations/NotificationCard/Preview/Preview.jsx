@@ -90,7 +90,7 @@ const Preview = (props) => {
     return memoPreview.join('\n');
   };
 
-  const generatePDF = () => {
+  const generatePDF = (filename) => {
     const content = document.createElement('p');
     content.style.cssText = 'width:calc(595px - 72px); font-size:12px; font-family:Times; line-height:1.3em; letter-spacing:0.01em; white-space:pre-line;';
     content.innerHTML = getPreviewText(true);
@@ -116,7 +116,7 @@ const Preview = (props) => {
           );
           doc.restoreGraphicsState();
         }
-        doc.save('sample.pdf');
+        doc.save(filename);
       },
       margin: [36, 36, 36, 36],
       autoPaging: 'text',
@@ -124,7 +124,6 @@ const Preview = (props) => {
   };
 
   const handleSend = () => {
-    generatePDF(); // TEMPORARY: Saves PDF locally for testing purposes
     const nmSeqNum = note?.NM_SEQ_NUM;
     const type = memo ? 'M' : 'C';
     let now = new Date();
@@ -132,9 +131,11 @@ const Preview = (props) => {
     now = now.replace(/\D/g, '');
     const date = now.substring(0, 8);
     const time = now.substring(8, 14);
+    const filename = `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`;
+    generatePDF(filename); // TEMPORARY: Saves PDF locally for testing purposes
     dispatch(sendNotification({
       PV_NM_SEQ_NUM_I: nmSeqNum,
-      PV_FILE_NAME_I: `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`,
+      PV_FILE_NAME_I: filename,
       PV_NOTE_TYPE_I: type,
       I_NM_SEQ_NUM: nmSeqNum,
       I_NOTE_TYPE: type,
@@ -239,7 +240,7 @@ const Preview = (props) => {
           </div>
           <div className="position-form--actions">
             <button onClick={() => setRecipientMode(false)}>Back to Preview</button>
-            <button onClick={() => handleSend()}>Email Memo</button>
+            <button onClick={() => handleSend()} disabled={recipients?.length === 0}>Email Memo</button>
           </div>
         </div>
       </Row>
