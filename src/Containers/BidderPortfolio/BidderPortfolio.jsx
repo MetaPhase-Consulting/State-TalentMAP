@@ -260,7 +260,7 @@ export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
   fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
-  fetchPanelPerdets: () => dispatch(getClientDatePerdets()),
+  fetchPanelPerdets: query => dispatch(getClientDatePerdets(query)),
   fetchPanelDates: () => dispatch(panelClientFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),
