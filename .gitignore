@@ -33,3 +33,6 @@ yarn-error.log*
 
 # Jetbrains IDE
 .idea
+
+# Visual Studio Code
+.vscode
