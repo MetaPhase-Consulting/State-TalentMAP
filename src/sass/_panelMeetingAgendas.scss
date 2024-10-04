@@ -48,7 +48,9 @@
         .category-header{
           display: flex;
           flex-direction: column;
-          border-bottom: solid 2px $color-gray-light;
+          padding: 12px 20px;
+          background: #00293f;
+          color: #fff;
         }
       }
     }
@@ -171,7 +173,6 @@
 
   .panel-meeting-agendas-profile-link {
     font-weight: bold;
-    font-size: 1.8rem;
     flex-shrink: 0;
   }
 }
