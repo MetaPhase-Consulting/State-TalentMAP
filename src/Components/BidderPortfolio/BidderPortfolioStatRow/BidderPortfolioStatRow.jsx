@@ -33,6 +33,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
   const languages = get(userProfile, 'current_assignment.position.language');
   const bidder = get(userProfile, 'shortened_name') || 'None listed';
+  const alternativeEmail = get(userProfile, 'alt_email') || 'None listed';
+  const commentsText = get(userProfile, 'comments') || 'None listed';
   // This is the new key bidder_types. It returns a string of either 'cusp' or 'eligible'
   const bidderType = 'cusp';
   const orgShortDesc = get(userProfile, 'current_assignment.position.organization');
@@ -41,8 +43,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewTy
   const [edit, setEdit] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [included, setIncluded] = useState(bidderType === 'cusp');
-  const [comments, setComments] = useState('');
-  const [altEmail, setAltEmail] = useState('');
+  const [comments, setComments] = useState(commentsText);
+  const [altEmail, setAltEmail] = useState(alternativeEmail);
   const [currentSeason, setCurrentSeason] = useState(0);
 
   const cusp = included;
