@@ -271,7 +271,7 @@ export function getClientPerdets(query = {}) {
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'classification']; // add 'panel_clients' back later
+      const filters = ['clients', 'handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'classification']; // add 'panel_clients' back later
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
