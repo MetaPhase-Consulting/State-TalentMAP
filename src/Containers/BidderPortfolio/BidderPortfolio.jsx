@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
 import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
+import { bidderPortfolioCDOsFetchData, getClientPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
@@ -153,7 +153,6 @@ BidderPortfolio.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
-  fetchBidderPortfolio: PropTypes.func.isRequired,
   fetchUnassignedBidderTypes: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
@@ -185,7 +184,6 @@ BidderPortfolio.defaultProps = {
   bidderPortfolio: { results: [] },
   bidderPortfolioIsLoading: false,
   bidderPortfolioHasErrored: false,
-  fetchBidderPortfolio: EMPTY_FUNCTION,
   fetchUnassignedBidderTypes: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
   bidderPortfolioCountsIsLoading: false,
@@ -235,7 +233,6 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
   fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
