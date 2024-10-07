@@ -337,7 +337,6 @@ export function bidderPortfolioFetchData(query = {}) {
     let query$ = { ...query };
     if (ids.length) {
       query$.hru_id__in = ids.join();
-      query$.clients = true;
     }
     if (isArray(seasons) && seasons.length) {
       query$.bid_seasons = join(seasons, ',');
