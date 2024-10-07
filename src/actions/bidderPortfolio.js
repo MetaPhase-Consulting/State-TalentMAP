@@ -442,13 +442,6 @@ export function bidderPortfolioFetchData(query = {}) {
     if (!query$.bid_seasons || !query$.bid_seasons.length) {
       query$ = omit(query$, ['hasHandshake', 'handshake']); // hasHandshake requires at least one bid season
     }
-    if (get(query, 'hasHandshake')) {
-      query$ = omit(query$, [
-        'hasHandshake', 'noBids', 'noPanel', 'handshake',
-        'eligible_bidders', 'cusp_bidders', 'separations',
-        'languages', 'classification', 'panel_clients',
-      ]);
-    }
 
     if (!query$.ordering) {
       query$.ordering = BID_PORTFOLIO_SORTS.defaultSort;
