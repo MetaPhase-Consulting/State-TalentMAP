@@ -207,13 +207,13 @@ class BidControls extends Component {
     const onPanelDateIDChange = (e) => {
       if (e.target.value !== '') {
         this.setState({ panelClientDate: e.target.value }, this.generatePills);
-        this.props.queryParamUpdate({ panelClientID: e.target.value });
+        // this.props.queryParamUpdate({ panelClientID: e.target.value });
         this.props.setPanelDateID(e.target.value);
         this.props.getClientDatePerdets({
           hru_id__in: proxyCdos[0].hru_id, // will always be one
           panel_clients: true,
-          cdo_pm_seq_num: panelClientDate,
-        }, true);
+          cdo_pm_seq_num: e.target.value,
+        });
       }
     };
 
@@ -369,7 +369,7 @@ export const mapDispatchToProps = dispatch => ({
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
   setEditClassification: (bool) => dispatch(setEditClassification(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
-  getClientDatePerdets: (query, isDate) => dispatch(getClientDatePerdets(query, isDate)),
+  getClientDatePerdets: (query) => dispatch(getClientDatePerdets(query)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);

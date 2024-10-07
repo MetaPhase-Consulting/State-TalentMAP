@@ -286,10 +286,9 @@ export function getClientDatePerdets(query = {}) {
 
       if (ids.length) {
         query$.hru_id__in = ids.join();
-        query$.panel_clients = true;
       }
 
-      if (!query$.bid_seasogetPanelPerdetsns) {
+      if (!query$.bid_seasons) {
         query$ = omit(query$, ['hasHandshake', 'handshake']);
       }
 
@@ -304,7 +303,7 @@ export function getClientDatePerdets(query = {}) {
       const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
 
       if (ids.length) {
-        const response = await api().get(url, { cancelToken });
+        const response = await api().post(url, query$, { cancelToken });
         const { data } = response;
         const newQuery = { ...query$, perdet_seq_num: data.map(String) };
         const secondQueryString = stringify(newQuery);
