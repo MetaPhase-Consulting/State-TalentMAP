@@ -207,7 +207,7 @@ BidderPortfolio.defaultProps = {
   selectedSeasons: [],
   classifications: [],
   bidderPortfolioCDOsIsLoading: false,
-  defaultHandshakeFilter: 'clients',
+  defaultHandshakeFilter: '',
   defaultSort: '',
   fetchAvailableBidders: EMPTY_FUNCTION,
   selectedUnassigned: [],
