@@ -39,6 +39,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
   const bidderType = 'cusp';
   const orgShortDesc = get(userProfile, 'current_assignment.position.organization');
   const email = get(userProfile, 'cdos')[0]?.cdo_email || 'None listed';
+  const alternativEmail = get(userProfile, 'alt_email') || 'None listed';
+  const comments = get(userProfile, 'comments') || 'None listed';
   const [currentBidderType, setCurrentBidderType] = useState(bidderType);
   // const [edit, setEdit] = useState(false);
   // const [showMore, setShowMore] = useState(false);
@@ -191,17 +193,12 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
                 <a href={`mailto:${email}`}>{email}</a>
               </dd>
             </div>
-            {/* <div className={!edit && 'stat-card-data-point'}>
+            <div className={'stat-card-data-point'} >
               <dt>Alt Email:</dt>
-              {
-                altEmail ?
-                  <dd>
-                    <a href={`mailto:${altEmail}`}>{altEmail}</a>
-                  </dd> :
-                  <dd>
-                  None Listed
-                  </dd>}
-              {
+              <dd>
+                <a href={`mailto:${alternativEmail}`}>{alternativEmail}</a>
+              </dd>
+              {/* {
                 edit &&
                 <input
                   type="text"
@@ -209,8 +206,11 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
                   placeholder="example@gmail.com"
                   onChange={(e) => setAltEmail(e.target.value)}
                 />
-              }
-            </div> */}
+              } */}
+            </div>
+            <div className="stat-card-data-point">
+              <dt>Comments:</dt><dd>{comments}</dd>
+            </div>
           </>
         }
 

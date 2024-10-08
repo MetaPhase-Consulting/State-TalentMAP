@@ -38,6 +38,8 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications }) => 
   // This is the new key bidder_types. It returns a string of either 'cusp' or 'eligible'
   const bidderType = 'eligible';
   const email = get(userProfile, 'cdos')[0]?.cdo_email || 'None listed';
+  const alternativEmail = get(userProfile, 'alt_email') || 'None listed';
+  const comments = get(userProfile, 'comments') || 'None listed';
   const orgShortDesc = get(userProfile, 'current_assignment.position.organization');
   const [currentBidderType, setCurrentBidderType] = useState(bidderType);
   const [included, setIncluded] = useState(bidderType === 'cusp');
@@ -189,16 +191,12 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications }) => 
                 <a href={`mailto: ${email}`}>{email}</a>
               </dd>
             </div>
-            {/* <div className={!edit && 'stat-card-data-point'} >
+            <div className={'stat-card-data-point'} >
               <dt>Alt Email:</dt>
               <dd>
-                {
-                  altEmail ?
-                    <a href={`mailto:${altEmail}`}>{altEmail}</a> :
-                    'None Listed'
-                }
+                <a href={`mailto:${alternativEmail}`}>{alternativEmail}</a>
               </dd>
-              {
+              {/* {
                 edit &&
                 <input
                   type="text"
@@ -206,8 +204,11 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications }) => 
                   placeholder="example@gmail.com"
                   onChange={(e) => setAltEmail(e.target.value)}
                 />
-              }
-            </div> */}
+              } */}
+            </div>
+            <div className="stat-card-data-point">
+              <dt>Comments:</dt><dd>{comments}</dd>
+            </div>
           </>
         }
       </div>
