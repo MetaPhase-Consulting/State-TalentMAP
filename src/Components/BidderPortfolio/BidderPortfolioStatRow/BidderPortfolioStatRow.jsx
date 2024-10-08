@@ -38,8 +38,8 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
   // This is the new key bidder_types. It returns a string of either 'cusp' or 'eligible'
   const bidderType = 'cusp';
   const orgShortDesc = get(userProfile, 'current_assignment.position.organization');
-  const email = get(userProfile, 'cdos')[0]?.cdo_email || 'None listed';
-  const alternativEmail = get(userProfile, 'alt_email') || 'None listed';
+  const email = get(userProfile, 'cdos')[0]?.cdo_email;
+  const alternativeEmail = get(userProfile, 'alt_email');
   const comments = get(userProfile, 'comments') || 'None listed';
   const [currentBidderType, setCurrentBidderType] = useState(bidderType);
   // const [edit, setEdit] = useState(false);
@@ -190,13 +190,19 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
             <div className="stat-card-data-point">
               <dt>DOS Email:</dt>
               <dd>
-                <a href={`mailto:${email}`}>{email}</a>
+                {email ?
+                  <a href={`mailto: ${email}`}>{email}</a>
+                  : 'None listed'
+                }
               </dd>
             </div>
             <div className={'stat-card-data-point'} >
               <dt>Alt Email:</dt>
               <dd>
-                <a href={`mailto:${alternativEmail}`}>{alternativEmail}</a>
+                {alternativeEmail ?
+                  <a href={`mailto:${alternativeEmail}`}>{alternativeEmail}</a> :
+                  'None listed'
+                }
               </dd>
               {/* {
                 edit &&
