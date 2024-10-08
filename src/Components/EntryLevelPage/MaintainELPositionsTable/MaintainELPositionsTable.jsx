@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { entryLevelEdit } from 'actions/entryLevel';
 import { format } from 'date-fns-v2';
 
-const MaintainELPositionsTable = ({ elPositions }) => {
+const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   const dispatch = useDispatch();
   const gridRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    getGridRef: () => gridRef.current,
+  }));
 
   const [headers] = useState([
     { field: 'EL', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', cellDataType: 'boolean', editable: true, width: 100 },
@@ -19,8 +23,9 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     { field: 'BUREAU_SHORT_DESC', headerName: 'Bureau', width: 75 },
     { field: 'POS_OVERSEAS_DESC', headerName: 'Overseas / Domestic', width: 100 },
     { field: 'ORG_SHORT_DESC', headerName: 'Location / Org', width: 125 },
-    { field: 'POS_SEQ_NUM', headerName: 'Position Number', width: 100 },
+    { field: 'POS_NUM_TEXT', headerName: 'Position Number', width: 100 },
     { field: 'POS_SKILL_CODE', headerName: 'Skill', width: 75 },
+    { field: 'POS_JOB_CATEGORY', headerName: 'Job Category', width: 100 },
     { field: 'POS_TITLE_DESC', headerName: 'Title', width: 200 },
     { field: 'POS_GRADE_CODE', headerName: 'Grade', width: 75 },
     { field: 'POS_POSITION_LANG_PROF_CODE', headerName: 'Languages', width: 175 },
@@ -31,6 +36,7 @@ const MaintainELPositionsTable = ({ elPositions }) => {
   ]);
 
   const mapObjectToRow = (obj) => ({
+    POS_SEQ_NUM: obj.POS_SEQ_NUM,
     EL: obj.EL === 'true',
     LNA: obj.LNA === 'true',
     FICA: obj.FICA === 'true',
@@ -40,8 +46,9 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     BUREAU_SHORT_DESC: obj.bureau,
     POS_OVERSEAS_DESC: obj.OD,
     ORG_SHORT_DESC: obj.org,
-    POS_SEQ_NUM: obj.positionNumber,
+    POS_NUM_TEXT: obj.positionNumber,
     POS_SKILL_CODE: obj.skill,
+    POS_JOB_CATEGORY: obj.jobCategory,
     POS_TITLE_DESC: obj.positionTitle,
     POS_GRADE_CODE: obj.grade,
     POS_POSITION_LANG_PROF_CODE: obj.languages,
@@ -99,8 +106,12 @@ const MaintainELPositionsTable = ({ elPositions }) => {
     dispatch(entryLevelEdit(data));
   };
 
+  const csvExportParams = {
+    fileName: 'Entry_Level_Positions_Export.csv',
+  };
+
   return (
-    <div className="el-table ag-theme-quartz" style={{ height: 650, width: '100%' }}>
+    <div className="el-table ag-theme-quartz" style={{ height: 475, width: '100%' }}>
       <AgGridReact
         ref={gridRef}
         columnDefs={headers}
@@ -109,10 +120,11 @@ const MaintainELPositionsTable = ({ elPositions }) => {
         columnTypes={columnTypes}
         defaultColDef={defaultColDef}
         singleClickEdit
+        defaultCsvExportParams={csvExportParams}
       />
     </div>
   );
-};
+});
 
 MaintainELPositionsTable.propTypes = {
   elPositions: PropTypes.arrayOf(PropTypes.object).isRequired,
