@@ -2,17 +2,20 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Linkify from 'react-linkify';
 import FA from 'react-fontawesome';
+import jsPDF from 'jspdf';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { getGal, sendNotification } from 'actions/assignmentNotifications';
 import { checkFlag } from 'flags';
-import { ifEnter } from 'utilities';
+import { getAssetPath, ifEnter } from 'utilities';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { Row } from 'Components/Layout';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import NavTabs from 'Components/NavTabs';
 import InteractiveElement from 'Components/InteractiveElement';
+
+const dosSeal = getAssetPath('/assets/img/dos-seal-pdf.png');
 
 const useNotificationSend = () => checkFlag('flags.assignment_notification_send');
 const useMemoSend = () => checkFlag('flags.assignment_memo_send');
@@ -41,6 +44,85 @@ const Preview = (props) => {
   const [galQuery, setGalQuery] = useState('');
   const [recipients, setRecipients] = useState([]);
 
+  const getPreviewText = (fullPreview) => {
+    if (!memo) {
+      const notePreview = [
+        `${getCableValue('CLASSIFICATION')}\n\n`,
+        `${getCableValue('DRAFTING OFFICE')}`,
+        `${getCableValue('DATE')} - ${getCableValue('TELEPHONE')}`,
+        `${getCableValue('APPROVING OFFICE')}\n`,
+        `${getCableValue('CLEARANCE')}\n`,
+        // `${getCableValue('DISTRIBUTION')}\n`,
+        // `${getCableValue('ACTION')}\n`,
+        // `${getCableValue('INFORMATION')}\n`,
+        `${getCableValue('SPECIAL HANDLING')}\n`,
+        `${getCableValue('CAPTIONS')}\n`,
+        `${getCableValue('E.O.')}\n`,
+        `${getCableValue('TAGS')}\n`,
+        `${getCableValue('SUBJECT')}\n`,
+        `1. ${getCableValue('ASSIGNMENTS')}\n`,
+        `2. ${getCableValue('COMBINED TOD')}\n`,
+        `3. ${getCableValue('EFM')}\n`,
+        `4. ${getCableValue('REMARKS')}\n`,
+        `5. ${getCableValue('PARAGRAPHS')}\n`,
+        `${getCableValue('EOM')}`,
+      ];
+      return notePreview.join('\n');
+    }
+    const memoPreview = [
+      `${getCableValue('ASSIGNMENTS')}\n`,
+      `${getCableValue('COMBINED TOD')}\n`,
+      `${getCableValue('REMARKS')}\n`,
+      `${getCableValue('PARAGRAPHS')}\n`,
+    ];
+    if (fullPreview) {
+      const memoFullPreview = [
+        '\n\n',
+        'MEMORANDUM\n',
+        `TO: ${getCableValue('TO_ADDRESS')}\n`,
+        `FROM: ${getCableValue('FROM_ADDRESS')}\n`,
+        `SUBJECT: ${getCableValue('SUBJECT')}\n`,
+        `LAST SENT: ${cable?.O_LAST_SENT_DATE}\n`,
+        ...memoPreview,
+      ];
+      return memoFullPreview.join('\n');
+    }
+    return memoPreview.join('\n');
+  };
+
+  const generatePDF = (filename) => {
+    const content = document.createElement('p');
+    content.style.cssText = 'width:calc(595px - 72px); font-size:12px; font-family:Times; line-height:1.3em; letter-spacing:0.01em; white-space:pre-line;';
+    content.innerHTML = getPreviewText(true);
+
+    // eslint-disable-next-line new-cap
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    pdf.html(content, {
+      callback: (doc) => {
+        if (memo) {
+          doc.addImage(dosSeal, 'PNG', 36, 10, 75, 75);
+        }
+        // eslint-disable-next-line no-loops/no-loops
+        for (let page = 1; page <= doc.getNumberOfPages(); page += 1) {
+          doc.setPage(page);
+          doc.saveGraphicsState();
+          doc.setGState(new doc.GState({ opacity: 0.15 }));
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(70);
+          doc.text(
+            'NOT FOR PRODUCTION USE',
+            297, 400,
+            { align: 'center', baseline: 'center', maxWidth: 500 },
+          );
+          doc.restoreGraphicsState();
+        }
+        doc.save(filename);
+      },
+      margin: [36, 36, 36, 36],
+      autoPaging: 'text',
+    });
+  };
+
   const handleSend = () => {
     const nmSeqNum = note?.NM_SEQ_NUM;
     const type = memo ? 'M' : 'C';
@@ -49,43 +131,15 @@ const Preview = (props) => {
     now = now.replace(/\D/g, '');
     const date = now.substring(0, 8);
     const time = now.substring(8, 14);
+    const filename = `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`;
+    generatePDF(filename); // TEMPORARY: Saves PDF locally for testing purposes
     dispatch(sendNotification({
       PV_NM_SEQ_NUM_I: nmSeqNum,
-      PV_FILE_NAME_I: `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`,
+      PV_FILE_NAME_I: filename,
       PV_NOTE_TYPE_I: type,
       I_NM_SEQ_NUM: nmSeqNum,
       I_NOTE_TYPE: type,
     }, null, memo));
-  };
-
-  const getPreviewText = () => {
-    const textLines = memo ? [
-      `${getCableValue('ASSIGNMENTS')}\n`,
-      `${getCableValue('COMBINED TOD')}\n`,
-      `${getCableValue('REMARKS')}\n`,
-      `${getCableValue('PARAGRAPHS')}\n`,
-    ] : [
-      `${getCableValue('CLASSIFICATION')}\n\n`,
-      `${getCableValue('DRAFTING OFFICE')}`,
-      `${getCableValue('DATE')} - ${getCableValue('TELEPHONE')}`,
-      `${getCableValue('APPROVING OFFICE')}\n`,
-      `${getCableValue('CLEARANCE')}\n`,
-      // `${getCableValue('DISTRIBUTION')}\n`,
-      // `${getCableValue('ACTION')}\n`,
-      // `${getCableValue('INFORMATION')}\n`,
-      `${getCableValue('SPECIAL HANDLING')}\n`,
-      `${getCableValue('CAPTIONS')}\n`,
-      `${getCableValue('E.O.')}\n`,
-      `${getCableValue('TAGS')}\n`,
-      `${getCableValue('SUBJECT')}\n`,
-      `1. ${getCableValue('ASSIGNMENTS')}\n`,
-      `2. ${getCableValue('COMBINED TOD')}\n`,
-      `3. ${getCableValue('EFM')}\n`,
-      `4. ${getCableValue('REMARKS')}\n`,
-      `5. ${getCableValue('PARAGRAPHS')}\n`,
-      `${getCableValue('EOM')}`,
-    ];
-    return textLines.join('\n');
   };
 
   const getOverlay = () => {
@@ -186,7 +240,7 @@ const Preview = (props) => {
           </div>
           <div className="position-form--actions">
             <button onClick={() => setRecipientMode(false)}>Back to Preview</button>
-            <button onClick={() => handleSend()}>Email Memo</button>
+            <button onClick={() => handleSend()} disabled={recipients?.length === 0}>Email Memo</button>
           </div>
         </div>
       </Row>
