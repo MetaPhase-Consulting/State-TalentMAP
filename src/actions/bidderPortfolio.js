@@ -295,7 +295,6 @@ export function getClientDatePerdets(query = {}) {
       const queryString = stringify(query$);
       const endpoint = '/fsbid/client/panel_update/';
       const url = `${endpoint}?${queryString}`;
-      console.log('url', url);
       if (cancelUnnassignedBidders) {
         cancelUnnassignedBidders('cancel');
       }
@@ -303,10 +302,8 @@ export function getClientDatePerdets(query = {}) {
       const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
 
       if (ids.length) {
-        console.log('query$', query$);
         const response = await api().post(url, query$, { cancelToken });
         const { data } = response;
-        console.log('data', data);
         const newQuery = { ...query$, perdet_seq_num: data.map(String) };
         const secondQueryString = stringify(newQuery);
         const secondEndpoint = '/fsbid/client/';
