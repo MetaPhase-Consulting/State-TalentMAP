@@ -8,7 +8,7 @@ import { Row } from 'Components/Layout';
 import DefinitionList from '../../../DefinitionList';
 import InputActions from '../Common/InputActions';
 
-const Header = (props) => {
+const NoteHeader = (props) => {
   const { getCableValue, modCableValue, handleDefaultClear } = props;
 
   const datePickerRef = useRef(null);
@@ -100,13 +100,13 @@ const Header = (props) => {
   );
 };
 
-Header.propTypes = {
+NoteHeader.propTypes = {
   getCableValue: PropTypes.func.isRequired,
   modCableValue: PropTypes.func.isRequired,
   handleDefaultClear: PropTypes.func.isRequired,
 };
 
-Header.defaultProps = {
+NoteHeader.defaultProps = {
 };
 
-export default Header;
+export default NoteHeader;
