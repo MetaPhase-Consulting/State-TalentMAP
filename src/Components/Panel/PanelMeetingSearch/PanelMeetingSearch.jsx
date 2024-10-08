@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import FA from 'react-fontawesome';
 import Picky from 'react-picky';
 import { filter, flatten, get, has, isEmpty } from 'lodash';
-import { isDate, startOfDay } from 'date-fns-v2';
+import { isDate, startOfDay } from 'date-fns';
 import { usePrevious } from 'hooks';
 import { checkFlag } from 'flags';
 import { panelMeetingsExport, panelMeetingsFetchData, panelMeetingsFiltersFetchData, savePanelMeetingsSelections } from 'actions/panelMeetings';

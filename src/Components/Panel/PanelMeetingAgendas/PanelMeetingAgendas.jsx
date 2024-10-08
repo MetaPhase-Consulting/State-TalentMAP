@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
 import { filter, flatten, get, has, includes, isEmpty, sortBy, uniqBy } from 'lodash';
-import { format } from 'date-fns-v2';
+import { format } from 'date-fns';
 import { panelMeetingAgendasFetchData, savePanelMeetingAgendasSelections } from 'actions/panelMeetingAgendas';
 import { filtersFetchData } from 'actions/filters/filters';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';

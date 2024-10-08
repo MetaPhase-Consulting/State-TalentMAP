@@ -230,7 +230,7 @@ describe('existsInNestedObject', () => {
   });
 });
 
-describe('distanceInWords', () => {
+describe('getTimeDistanceInWords', () => {
   it('returns a defined value containg "ago" in the string', () => {
     const timeDistanceInWords = getTimeDistanceInWords(new Date());
     // we won't explicitly test for values since we can expect date-fns to work

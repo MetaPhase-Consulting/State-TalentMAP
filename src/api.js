@@ -5,7 +5,7 @@ import memoize from 'memoize-one';
 import { get, throttle } from 'lodash';
 import Enum from 'enum';
 import bowser from 'bowser';
-import { hoursToMilliseconds } from 'date-fns-v2';
+import { hoursToMilliseconds } from 'date-fns';
 import { setUserEmpId } from 'actions/userProfile';
 import { toastWarning } from 'actions/toast';
 import { fetchJWT, fetchUserToken, hasValidToken, isOnProxy, propOrDefault, redirectToLoginRedirect } from 'utilities';

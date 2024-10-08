@@ -5,7 +5,7 @@ import Picky from 'react-picky';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { filter, flatten, get, has, identity, isEmpty } from 'lodash';
 import FA from 'react-fontawesome';
-import { isDate, startOfDay } from 'date-fns-v2';
+import { isDate, startOfDay } from 'date-fns';
 import { agendaEmployeesFetchData, agendaEmployeesFiltersFetchData, employeeAgendaSearchExport, saveAgendaEmployeesSelections } from 'actions/agendaEmployees';
 import { bidderPortfolioCDOsFetchData } from 'actions/bidderPortfolio';
 import PositionManagerSearch from 'Components/BureauPage/PositionManager/PositionManagerSearch';

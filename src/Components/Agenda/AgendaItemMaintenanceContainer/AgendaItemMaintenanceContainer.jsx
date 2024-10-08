@@ -12,7 +12,7 @@ import { HISTORY_OBJECT } from 'Constants/PropTypes';
 import { Link } from 'react-router-dom';
 import { fetchAI, modifyAgenda, removeAgenda, resetAIValidation, resetCreateAI, validateAI } from 'actions/agendaItemMaintenancePane';
 import { useDataLoader, usePrevious } from 'hooks';
-import { isAfter } from 'date-fns-v2';
+import { isAfter } from 'date-fns';
 import shortid from 'shortid';
 import Alert from 'Components/Alert';
 import AgendaItemResearchPane from '../AgendaItemResearchPane';

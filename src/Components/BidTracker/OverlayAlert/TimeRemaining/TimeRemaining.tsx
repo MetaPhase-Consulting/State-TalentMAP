@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { differenceInMinutes, distanceInWords, isAfter } from 'date-fns'; // TODO - use v2 and figure out how alias'd typings work
+import { differenceInMinutes, formatDistance, isAfter } from 'date-fns'; // TODO - use v2 and figure out how alias'd typings work
 import { upperFirst } from 'lodash';
 
 interface Props {
@@ -15,7 +15,7 @@ const TimeRemaining: React.FC<Props> = props => {
       const now = Date.now();
       let time$ = 'no time';
       if (isAfter(props.time, now)) {
-        time$ = distanceInWords(time, now);
+        time$ = formatDistance(time, now);
         if (Math.abs(differenceInMinutes(now, time)) < 60) {
           time$ = 'less than an hour';
         }

@@ -6,7 +6,7 @@ import InteractiveElement from 'Components/InteractiveElement';
 import Calendar from 'react-calendar';
 import { formatDate, formatLang, formatMonthYearDate } from 'utilities';
 import swal from '@sweetalert/with-react';
-import { add } from 'date-fns-v2';
+import { add } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { DEFAULT_TEXT } from 'Constants/SystemMessages';
 import { GSA as LocationsTabID } from '../AgendaItemResearchPane/AgendaItemResearchPane';

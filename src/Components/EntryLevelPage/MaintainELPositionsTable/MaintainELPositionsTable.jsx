@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { entryLevelEdit } from 'actions/entryLevel';
-import { format } from 'date-fns-v2';
+import { format } from 'date-fns';
 
 const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   const dispatch = useDispatch();

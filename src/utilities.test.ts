@@ -149,13 +149,11 @@ describe('formExploreRegionDropdown function', () => {
   const regions = formExploreRegionDropdown(filters);
 
   it('can filter for region', () => {
-    if (filters[0].data)
-      expect(regions[1].long_description).toBe(filters[0].data[0].long_description);
+    if (filters[0].data) { expect(regions[1].long_description).toBe(filters[0].data[0].long_description); }
   });
 
   it('can add new properties', () => {
-    if (filters[0].data)
-      expect(regions[1].text).toBe(filters[0].data[0].long_description);
+    if (filters[0].data) { expect(regions[1].text).toBe(filters[0].data[0].long_description); }
   });
 
   it('adds the placeholder object to the beginning of the array', () => {
@@ -171,8 +169,7 @@ describe('scrollToTop function', () => {
 
 describe('getItemLabel function', () => {
   it('can can get an item label', () => {
-    if (filters[0].data)
-      expect(getItemLabel(filters[0].data[0])).toBe(filters[0].data[0].long_description);
+    if (filters[0].data) { expect(getItemLabel(filters[0].data[0])).toBe(filters[0].data[0].long_description); }
     expect(getItemLabel({ description: 'test' })).toBe('test');
     expect(getItemLabel({ code: '0' })).toBe('0');
   });
@@ -234,7 +231,7 @@ describe('existsInNestedObject', () => {
   });
 });
 
-describe('distanceInWords', () => {
+describe('getTimeDistanceInWords', () => {
   it('returns a defined value containg "ago" in the string', () => {
     const timeDistanceInWords = getTimeDistanceInWords(new Date());
     // we won't explicitly test for values since we can expect date-fns to work
@@ -633,7 +630,7 @@ describe('mapSavedSearchToDescriptions', () => {
     isCommon: undefined,
     isTandem: true,
     isToggle: undefined,
-    selectionRef: 'position__skill__code__in'
+    selectionRef: 'position__skill__code__in',
   }];
 
   it('maps saved searches to descriptions', () => {
@@ -805,9 +802,9 @@ describe('scrollToGlossaryTerm', () => {
     const clickSpy = sinon.spy();
 
     window.document.getElementById = () => ({
-      scrollIntoView: scrollSpy, 
-      getAttribute: () => '', 
-      click: clickSpy, 
+      scrollIntoView: scrollSpy,
+      getAttribute: () => '',
+      click: clickSpy,
       focus: () => { },
     } as unknown as HTMLElement);
 

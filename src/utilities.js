@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import swal from '@sweetalert/with-react';
 import Scroll from 'react-scroll';
-import { distanceInWords, format } from 'date-fns';
-import { format as formatV2, isDate } from 'date-fns-v2';
+import { format, formatDistance, isDate } from 'date-fns';
 import {
   cloneDeep, get, has, identity, includes, intersection, isArray, isEmpty, isEqual,
   isFunction, isNumber, isObject, isString, keys, lowerCase, merge as merge$, omit, orderBy,
@@ -318,16 +317,17 @@ export const removeDuplicates = (myArr, props = ['']) => (
 // Format date for notifications.
 // We want to use minutes for recent notifications, but days for older ones.
 export const getTimeDistanceInWords = (dateToCompare, date = new Date(), options = {}) =>
-  `${distanceInWords(dateToCompare, date, options)} ago`;
+  `${formatDistance(dateToCompare, date, options)} ago`;
 
 // Format the date into our preferred format.
 // We can take any valid date and convert it into M.D.YYYY format, or any
 // format provided with the dateFormat param.
-export const formatDate = (date, dateFormat = 'MM/DD/YYYY') => {
+export const formatDate = (date, dateFormat = 'MM/dd/yyyy') => {
   if (date) {
     if (date === '-') return '-';
     // date-fns assumes incoming date is UTC, must adjust for timezones
     // before passing to format for correct FE rendering
+    // TODO: could use parseJSON to get correct type, see https://date-fns.org/v2.28.0/docs/parseJSON
     const date$ = new Date(date);
     const timezoneAdjustedDate = new Date(
       // date$.valueOf() is in milliseconds while getTimezoneOffset() is in minutes
@@ -354,7 +354,7 @@ export const formatDateFromStr = (date) => {
 
 export const formatMonthYearDate = (d) => {
   if (d) {
-    return !isNaN(new Date(d)) && isDate(new Date(d)) ? formatV2(new Date(d), 'MM/yy') : d;
+    return !isNaN(new Date(d)) && isDate(new Date(d)) ? format(new Date(d), 'MM/yy') : d;
   }
   return '';
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import FA from 'react-fontawesome';
 import { Tooltip } from 'react-tippy';
-import { format, isDate, isPast } from 'date-fns-v2';
+import { format, isDate, isPast } from 'date-fns';
 
 
 const HandshakeStatus = props => {

@@ -5,7 +5,7 @@ import { EMPTY_FUNCTION, HANDSHAKE_DETAILS } from 'Constants/PropTypes';
 import swal from '@sweetalert/with-react';
 import Calendar from 'react-calendar';
 import TimePicker from 'react-time-picker';
-import { add, differenceInCalendarDays, format, getDate, getHours, getMinutes, getMonth, getYear, isBefore, isFuture, isPast } from 'date-fns-v2';
+import { add, differenceInCalendarDays, format, getDate, getHours, getMinutes, getMonth, getYear, isBefore, isFuture, isPast } from 'date-fns';
 import { useCloseSwalOnUnmount } from 'utilities';
 
 const EditHandshake = props => {

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { format, isValid } from 'date-fns-v2';
+import { format, isValid } from 'date-fns';
 import { get } from 'lodash';
 import shortid from 'shortid';
 import SectionTitle from '../SectionTitle';

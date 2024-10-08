@@ -8,7 +8,7 @@ import { Tooltip } from 'react-tippy';
 import InteractiveElement from 'Components/InteractiveElement';
 import DatePicker from 'react-datepicker';
 import TextareaAutosize from 'react-textarea-autosize';
-import { format } from 'date-fns-v2';
+import { format } from 'date-fns';
 
 const DATE_FORMAT = 'MMMM d, yyyy';
 

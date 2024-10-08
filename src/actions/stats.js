@@ -1,6 +1,5 @@
 import { stringify } from 'query-string';
-import { addMonths, subDays, subMonths } from 'date-fns';
-import { eachMonthOfInterval, format } from 'date-fns-v2';
+import { addMonths, eachMonthOfInterval, format, subDays, subMonths } from 'date-fns';
 import api from '../api';
 
 export const getTitle = (string = '', isUnique = false) => `${isUnique ? 'Unique' : 'Total'} logins in the past ${string}`;

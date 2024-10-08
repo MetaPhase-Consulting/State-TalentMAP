@@ -1,18 +1,17 @@
-import { useEffect, KeyboardEvent } from 'react';
+import { KeyboardEvent, useEffect } from 'react';
 import {
   cloneDeep, get, has, identity, includes, intersection, isArray, isEmpty, isEqual,
   isFunction, isNumber, isObject, isString, keys, lowerCase, merge as merge$, omit, orderBy,
-  padStart, pick, pickBy, split, startCase, take, toLower, toString, transform, uniqBy
+  padStart, pick, pickBy, split, startCase, take, toLower, toString, transform, uniqBy,
 } from 'lodash';
-import queryString from 'query-string'; //upgraded package
+import queryString from 'query-string';
 // import swal from '@sweetalert/with-react'; //need to check if this is compatible with typescript
 import Fuse from 'fuse.js';
 import shortid from 'shortid';
 import Bowser from 'bowser';
 import Scroll from 'react-scroll';
 import numeral from 'numeral';
-import { distanceInWords, format } from 'date-fns';
-
+import { format, formatDistance, parseJSON } from 'date-fns';
 import { Bid, Grade, Region, Waiver } from './types';
 import { LOGIN_REDIRECT, LOGIN_ROUTE, LOGOUT_ROUTE } from './login/routes';
 import { NO_BID_CYCLE, NO_POST } from './Constants/SystemMessages';
@@ -55,7 +54,7 @@ export function localStorageSetKey(key: string, value: string): void {
 // toggling a specific value in an array
 // useDispatch: only dispatch an event if true.
 // onlyDelete: don't add, only delete from the array
-export function localStorageToggleValue(key: string, value: any, useDispatch: boolean = true, onlyDelete: boolean = false): void {
+export function localStorageToggleValue(key: string, value: any, useDispatch = true, onlyDelete = false): void {
   const existingArray = JSON.parse(localStorage.getItem(key) ?? '') || [];
   // check if the value matches, either as a string or as a number
   let indexOfId = existingArray.indexOf(value);
@@ -224,7 +223,7 @@ export const getItemLabel = (itemData: any): string =>
 
 // abcde 4 // a...
 // Shortens strings to varying lengths
-export const shortenString = (string: string, shortenTo: number = 250, suffix: (string | null) = '...'): string => {
+export const shortenString = (string: string, shortenTo = 250, suffix: (string | null) = '...'): string => {
   let newString = string;
   let newSuffix = suffix;
   if (!newSuffix) {
@@ -261,7 +260,7 @@ export const existsInArray = (ref: any, array: any[]): boolean => {
 // Check if there is an object in the array with a value in the nested prop
 // strictly equal to the given ref value
 // Used for checking if a position is in the user's bid list
-export const existsInNestedObject = (ref: any, array: any[], prop: string = 'position_info', nestedProp: string = 'id'): boolean => {
+export const existsInNestedObject = (ref: any, array: any[], prop = 'position_info', nestedProp = 'id'): boolean => {
   const array$ = isArray(array) ? array : [];
   let found = false;
   array$.some((i) => {
@@ -317,15 +316,16 @@ export const removeDuplicates = (myArr: any[], props: string[] = ['']): any => (
 // Format date for notifications.
 // We want to use minutes for recent notifications, but days for older ones.
 export const getTimeDistanceInWords = (dateToCompare: Date, date: Date = new Date(), options = {}): string =>
-  `${distanceInWords(dateToCompare, date, options)} ago`;
+  `${formatDistance(dateToCompare, date, options)} ago`;
 
 // Format the date into our preferred format.
 // We can take any valid date and convert it into M.D.YYYY format, or any
 // format provided with the dateFormat param.
-export const formatDate = (date: string | null, dateFormat: string = 'MM/DD/YYYY'): (string | null) => {
+export const formatDate = (date: string | null, dateFormat = 'MM/dd/yyyy'): (string | null) => {
   if (date) {
+    const parsedDate = parseJSON(date);
     // then format the date with dateFormat
-    const formattedDate = format(date, dateFormat);
+    const formattedDate = format(parsedDate, dateFormat);
     // and finally return the formatted date
     return formattedDate;
   }
@@ -388,7 +388,7 @@ export const focusById = (id: string, timeout?: number, config: { preventScroll?
 // Determine which header type to focus. We always have a page title h1, so we
 // search for 1. The second h1, 2. the first h2, 3. the first h3, and focus which ever
 // is found first.
-export const focusByFirstOfHeader = (timeout: number = 1): void => {
+export const focusByFirstOfHeader = (timeout = 1): void => {
   setTimeout(() => {
     let element: HTMLCollectionOf<HTMLHeadingElement> | HTMLHeadingElement = document.getElementsByTagName('h1');
     element = (element && element[1]) || document.getElementsByTagName('h2')[0] || document.getElementsByTagName('h3')[0];
@@ -415,7 +415,7 @@ export const returnObjectsWherePropMatches = (sourceArray: any[] = [], compareAr
   sourceArray.filter(o1 => compareArray.some(o2 => o1[propToCheck] === o2[propToCheck]));
 
 // Convert a numerator and a denominator to a percentage.
-export const numbersToPercentString = (numerator: number, denominator: number, percentFormat: string = '0.0%'): string => {
+export const numbersToPercentString = (numerator: number, denominator: number, percentFormat = '0.0%'): string => {
   const fraction = numerator / denominator;
   const percentage = numeral(fraction).format(percentFormat);
   return percentage;
@@ -518,7 +518,7 @@ export const mapSavedSearchToDescriptions = (savedSearchObject: any, mappedParam
         isTandem: undefined,
         isCommon: true,
         isToggle: undefined,
-      }
+      },
     );
   }
   searchKeys.forEach((s) => {
@@ -566,7 +566,7 @@ export const getAccessiblePositionNumber = (positionNumber?: string | null) => {
 };
 
 // returns a percentage string for differential data.
-export const getDifferentialPercentage = (differential: number | null, defaultValue: string = ''): string => {
+export const getDifferentialPercentage = (differential: number | null, defaultValue = ''): string => {
   if (isNumber(differential)) {
     return `${differential}%`;
   }
@@ -599,15 +599,13 @@ export const redirectToLogout = () => {
 * difference(base, object) => { param1: false }
 * difference(object, base) => { param1: true }
 */
-export const difference = (base: any, object: any): any => {
-  return transform(object, (result: any, value: any, key: any) => {
-    /* eslint-disable no-param-reassign */
-    if (!isEqual(value, base[key])) {
-      result[key] = (isObject(value) && isObject(base[key]) && difference(base[key], value)) || value;
-    }
-    /* eslint-enable no-param-reassign */
-  });
-};
+export const difference = (base: any, object: any): any => transform(object, (result: any, value: any, key: any) => {
+  /* eslint-disable no-param-reassign */
+  if (!isEqual(value, base[key])) {
+    result[key] = (isObject(value) && isObject(base[key]) && difference(base[key], value)) || value;
+  }
+  /* eslint-enable no-param-reassign */
+});
 
 /* returns true/false whether url is a valid url that contains http/https/ftp */
 export const isUrl = (url: string): RegExpMatchArray | null => {
@@ -650,35 +648,33 @@ export const paginate = (array: any[], pageSize: number, pageNumber: number): an
 // to any objects that are duplicates.
 export const mapDuplicates = (
   data: any[] = [],
-  propToCheck: string = 'custom_description',
-  transformFunc?: (item: any) => any
-): any[] => {
-  return data.slice().map((p) => {
-    let p$ = { ...p };
-    const matching = data.filter(f => f[propToCheck] === p$[propToCheck]) || [];
-    if (matching.length >= 2) {
-      p$.hasDuplicateDescription = true;
-      if (typeof transformFunc === 'function') {
-        transformFunc = (e: any) => ({
-          ...e,
-          name: e.code ? `${e.name} (${e.code})` : e.name
-        });
-        p$ = transformFunc(p$);
-      }
+  propToCheck = 'custom_description',
+  transformFunc?: (item: any) => any,
+): any[] => data.slice().map((p) => {
+  let p$ = { ...p };
+  const matching = data.filter(f => f[propToCheck] === p$[propToCheck]) || [];
+  if (matching.length >= 2) {
+    p$.hasDuplicateDescription = true;
+    if (typeof transformFunc === 'function') {
+      transformFunc = (e: any) => ({
+        ...e,
+        name: e.code ? `${e.name} (${e.code})` : e.name,
+      });
+      p$ = transformFunc(p$);
     }
-    return p$;
-  });
-};
+  }
+  return p$;
+});
 
 export const termInGlossary = (term: string): boolean => {
-  const id: string = `${formatIdSpacing(term)}-button`;
+  const id = `${formatIdSpacing(term)}-button`;
   return document.getElementById(id) !== null;
 };
 
 // scroll to a specific glossary term
 export const scrollToGlossaryTerm = (term: string): void => {
   // id formatting used for glossary accordion buttons
-  const id: string = `${formatIdSpacing(term)}-button`;
+  const id = `${formatIdSpacing(term)}-button`;
 
   const el: HTMLElement | null = document.getElementById(id);
   if (el) {
@@ -713,8 +709,8 @@ export const getAriaValue = (e: string | number | boolean | null) => {
 
 export const downloadFromResponse = (
   response: any,
-  fileNameAlt: string = '',
-  type: string = 'text/csv'
+  fileNameAlt = '',
+  type = 'text/csv',
 ): void => {
   const cd: string = get(response, 'headers.content-disposition', '');
   const filename: string = cd.replace('attachment; filename=', '') || fileNameAlt;
@@ -728,7 +724,7 @@ export const downloadFromResponse = (
 
   if (_win.msSaveBlob) {
     a.onclick = (() => {
-      const BOM: string = '\uFEFF';
+      const BOM = '\uFEFF';
       const blobObject: Blob = new Blob([BOM + response.data], { type: ` type: "${type}; charset=utf-8"` });
       _win.msSaveOrOpenBlob(blobObject, filename);
     });
@@ -740,7 +736,7 @@ export const downloadFromResponse = (
 
 export const downloadPdfBlob = (
   response: any,
-  filename: string = 'employee-profile.pdf'
+  filename = 'employee-profile.pdf',
 ): void => {
   const _win = window.navigator as any;
 
@@ -772,14 +768,14 @@ const saveByteArray = (reportName: string, byte: Uint8Array): void => {
     link.download = fileName;
     link.click();
   }
-}
+};
 
-export const downloadPdfStream = (response: any, filename: string = 'employee-profile.pdf') => {
+export const downloadPdfStream = (response: any, filename = 'employee-profile.pdf') => {
   saveByteArray(filename, response);
 };
 
 
-//Create a tsx file for the constants
+// Create a tsx file for the constants
 export const getBidCycleName = (bidcycle: string | object): string => {
   // TODO: Reference bidcycle type once determined instead of any
   let text: string = isObject(bidcycle) && has(bidcycle, 'name') ? (bidcycle as any).name : bidcycle;
@@ -788,7 +784,7 @@ export const getBidCycleName = (bidcycle: string | object): string => {
 };
 
 
-export const anyToTitleCase = (str: string = '') => startCase(toLower(str));
+export const anyToTitleCase = (str = '') => startCase(toLower(str));
 
 export const loadImg = (src: string, callback: () => void): void => {
   const sprite: HTMLImageElement = new Image();
@@ -828,7 +824,7 @@ const fuseOptions: FuseOptions = {
 
 const flagFuse = new Fuse(FLAG_COLORS, fuseOptions);
 
-export const getFlagColorsByTextSearch = (t: string = '', limit: number = 5): string[] | false => {
+export const getFlagColorsByTextSearch = (t = '', limit = 5): string[] | false => {
   let value: string[] | false = false;
   if (t && isString(t)) {
     const result = flagFuse.search(t).map(({ item }) => item);
@@ -860,11 +856,11 @@ export const getContrastYIQ = (hexcolor: string): 'black' | 'white' => {
 // Returns background color and text color
 // Supply a user's full name
 // Returns background color and text color
-export const getAvatarColor = (str: string, hashAdjuster: number = 0): { backgroundColor: string, color: 'black' | 'white' } | null => {
+export const getAvatarColor = (str: string, hashAdjuster = 0): { backgroundColor: string, color: 'black' | 'white' } | null => {
   if (str) {
     let hash: number = Math.floor(Math.random() * hashAdjuster);
 
-    //replaced this loop with the for loop below
+    // replaced this loop with the for loop below
 
     // [...str].forEach((s: string, i: number) => {
     //   if (i) {
@@ -884,7 +880,7 @@ export const getAvatarColor = (str: string, hashAdjuster: number = 0): { backgro
     const backgroundColor: string = '00000'.substring(0, 6 - c.length) + c;
     const color: 'black' | 'white' = getContrastYIQ(backgroundColor);
 
-    const backgroundColorWithHash: string = `#${backgroundColor}`;
+    const backgroundColorWithHash = `#${backgroundColor}`;
 
     return { backgroundColor: backgroundColorWithHash, color };
   }
@@ -893,7 +889,7 @@ export const getAvatarColor = (str: string, hashAdjuster: number = 0): { backgro
 };
 
 export function getBidListStats(bidList: any[], statuses: string[], padWithZero?: boolean): number | string {
-  let numBids: number = 0;
+  let numBids = 0;
   bidList.forEach((b: any) => {
     if (includes(statuses, b.status)) numBids += 1;
   });
@@ -920,14 +916,14 @@ export function getCustomLocation(loc: any, org: string): string {
   if (get(loc, 'country') === 'USA') return `${get(loc, 'city')}, ${get(loc, 'state')}`;
   if (!get(loc, 'city') && !get(loc, 'country')) return '';
   // Foreign posts - City, Country
-  let x: string = `${get(loc, 'city')}, ${get(loc, 'country')}`;
+  let x = `${get(loc, 'city')}, ${get(loc, 'country')}`;
   if (!get(loc, 'city')) { x = get(loc, 'country'); }
   if (!get(loc, 'country')) { x = get(loc, 'city'); }
   return x;
 }
 
 
-//These will be added back after the swal package is updated to be compatible with typescript
+// These will be added back after the swal package is updated to be compatible with typescript
 // export const closeSwal = (): void | null => {
 //   try {
 //     swal.close();

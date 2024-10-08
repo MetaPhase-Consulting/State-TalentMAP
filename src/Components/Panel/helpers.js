@@ -1,5 +1,5 @@
 import { findLastIndex, get, isEmpty } from 'lodash';
-import { format, isPast } from 'date-fns-v2';
+import { format, isPast } from 'date-fns';
 import { createPanelMeeting } from '../../actions/panelMeetingAdmin';
 
 export const formatPanelMeetingTrackerData = (meetingDates = []) => {
