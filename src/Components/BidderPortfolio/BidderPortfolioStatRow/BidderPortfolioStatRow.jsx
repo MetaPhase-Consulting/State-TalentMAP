@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 import { checkFlag } from 'flags';
 import { Cusp, Eligible } from 'Components/Ribbon';
 import { NO_GRADE, NO_LANGUAGE, NO_POST, NO_TOUR_END_DATE } from 'Constants/SystemMessages';
-import { formatDate } from 'utilities';
+import { formatDate, getBidderPortfolioUrl } from 'utilities';
 import ToggleButton from 'Components/ToggleButton';
 import { BIDDER_OBJECT, CLASSIFICATIONS } from '../../../Constants/PropTypes';
 import SkillCodeList from '../../SkillCodeList';
@@ -14,7 +15,7 @@ import CheckboxList from '../CheckboxList';
 import SearchAsClientButton from '../SearchAsClientButton';
 import AddToInternalListButton from '../AddToInternalListButton';
 
-const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
+const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications, viewType }) => {
   const showCDOD30 = checkFlag('flags.CDOD30');
 
   const currentAssignmentText = get(userProfile, 'pos_location');
@@ -23,6 +24,7 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
   const id = get(userProfile, 'employee_id');
   const ted = formatDate(get(userProfile, 'current_assignment.end_date'));
   const languages = get(userProfile, 'current_assignment.position.language');
+  const bidder = get(userProfile, 'shortened_name') || 'None listed';
   const bidderType = 'cusp';
   const orgShortDesc = get(userProfile, 'current_assignment.position.organization');
   const email = get(userProfile, 'cdos')[0]?.cdo_email;
@@ -92,6 +94,9 @@ const BidderPortfolioStatRow = ({ userProfile, showEdit, classifications }) => {
             onColor="#0071BC"
           />
         }
+      </div>
+      <div className="stat-card-data-point bidder-compact-card-head">
+        <Link to={getBidderPortfolioUrl(perdet, viewType)}>{bidder}</Link>
       </div>
       {
         showToggle && showCDOD30 &&
@@ -180,6 +185,7 @@ BidderPortfolioStatRow.propTypes = {
   userProfile: BIDDER_OBJECT.isRequired,
   showEdit: PropTypes.bool,
   classifications: CLASSIFICATIONS,
+  viewType: PropTypes.string,
 };
 
 BidderPortfolioStatRow.defaultProps = {
