@@ -108,7 +108,7 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
           </div>
         }
         <div className="stat-card-data-point">
-          <dt>Employdddee ID:</dt><dd>{id}</dd>
+          <dt>Employee ID:</dt><dd>{id}</dd>
         </div>
         <div className="stat-card-data-point">
           <dt>Skill:</dt><dd><SkillCodeList skillCodes={userProfile.skills} /></dd>
