@@ -104,7 +104,7 @@ class BidControls extends Component {
       unassignedFilter: (q === 'unassigned_filters' && this.state.hasSeasons),
       panelClient: (q === 'panel_clients' && this.state.hasSeasons),
     });
-    this.props.setEditClassification(q === 'classification');
+    this.props.setEditClassifications(q === 'classification');
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
     } else {
@@ -340,7 +340,7 @@ BidControls.propTypes = {
   selection: PropTypes.arrayOf(PropTypes.shape({})),
   setUnassigned: PropTypes.func.isRequired,
   setCDOD30: PropTypes.func.isRequired,
-  setEditClassification: PropTypes.func.isRequired,
+  setEditClassifications: PropTypes.func.isRequired,
   setPanelDateID: PropTypes.func.isRequired,
   getClientDatePerdets: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
@@ -368,7 +368,7 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   setUnassigned: (arr = []) => dispatch(bidderPortfolioSetUnassigned(arr)),
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
-  setEditClassification: (bool) => dispatch(setEditClassification(bool)),
+  setEditClassifications: (bool) => dispatch(setEditClassification(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
   getClientDatePerdets: (query) => dispatch(getClientDatePerdets(query)),
 });
