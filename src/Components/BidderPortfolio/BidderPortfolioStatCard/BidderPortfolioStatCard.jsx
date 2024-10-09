@@ -86,17 +86,19 @@ const BidderPortfolioStatCard = ({ userProfile, showEdit, classifications, viewT
     <BoxShadow className="usa-grid-full bidder-portfolio-stat-card">
       <div className="bidder-portfolio-stat-card-top">
         <div className="bidder-compact-card-head">
-          <div className="stat-card-data-point bidder-compact-card-head">
-            <Link to={getBidderPortfolioUrl(perdet, viewType)}>{bidder}</Link>
-          </div>
           {
             showToggle && showCDOD30 &&
-            <ToggleButton
-              labelTextRight={!included ? 'Excluded' : 'Included'}
-              checked={included}
-              onChange={onToggleChange}
-              onColor="#0071BC"
-            />
+            <div>
+              <ToggleButton
+                labelTextRight={!included ? 'Excluded' : 'Included'}
+                checked={included}
+                onChange={onToggleChange}
+                onColor="#0071BC"
+              />
+              <div className="stat-card-data-point bidder-compact-card-head">
+                <Link to={getBidderPortfolioUrl(perdet, viewType)}>{bidder}</Link>
+              </div>
+            </div>
           }
         </div>
         {
