@@ -22,10 +22,11 @@ import { EMPTY_FUNCTION } from '../../../../Constants/PropTypes';
 import { focusById } from '../../../../utilities';
 import ExportButton from '../../../ExportButton';
 
-export const FORMAT = 'MM-DD-YY hh:mm A';
-export const FORMAT_TIME = 'hh:mm A';
+export const FORMAT_DATE = 'yyyy-MM-dd';
+export const FORMAT_DATE_TIME = 'MM-dd-yy hh:mm a';
+export const FORMAT_TIME = 'hh:mm a';
 
-export const formatDate = (date, format$ = FORMAT, locale) => format(date, format$, { locale });
+export const formatDate = (date, format$ = FORMAT_DATE_TIME, locale) => format(date, format$, { locale });
 
 export const parseDate = (str, format$, locale) => {
   if (str) {
@@ -91,7 +92,7 @@ class DataSync extends Component {
     // one on the API.
     const parseDateTime = (date, time) => {
       let date$ = parse(
-        `${format(date, 'YYYY-MM-DD')} ${time}`,
+        `${format(date, FORMAT_DATE)} ${time}`,
         `YYYY-MM-DD ${FORMAT_TIME}`,
       );
       // date-fns can format TO am/pm but can't parse FROM it,
@@ -194,7 +195,7 @@ class DataSync extends Component {
               <div className="usa-grid-full sync-job-container">
                 {
                   syncJobs.map((n) => {
-                    const nextSyncDate = format(n.next_synchronization, FORMAT);
+                    const nextSyncDate = format(n.next_synchronization, FORMAT_DATE_TIME);
                     return (
                       <div key={n.id} className="usa-grid-full sync-job-item">
                         <div>

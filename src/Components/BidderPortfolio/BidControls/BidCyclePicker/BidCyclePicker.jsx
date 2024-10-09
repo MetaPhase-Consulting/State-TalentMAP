@@ -27,7 +27,7 @@ export function renderList({ items, selected, ...rest }) {
       key: item.id,
       item: item.description,
     };
-    const DATE_FORMAT = 'MMM YYYY';
+    const DATE_FORMAT = 'MMM yyyy';
     const startDate = format(item.start_date, DATE_FORMAT);
     const endDate = format(item.end_date, DATE_FORMAT);
     if (startDate && endDate) {
