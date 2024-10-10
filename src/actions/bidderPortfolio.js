@@ -203,14 +203,16 @@ export function bidderPortfolioSeasonsFetchData() {
   };
 }
 
-export function bidderPortfolioExtraDetailsFetchData(id) {
-  return (dispatch) => {
-    const query = { hru_id__in: id };
-    batch(() => {
-      dispatch(bidderPortfolioIsLoading(true));
-      dispatch(bidderPortfolioHasErrored(false));
-    });
-    const queryString = stringify(query);
+export function bidderPortfolioExtraDetailsFetchData() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
+    const ids = cdos.map(m => m.hru_id).filter(f => f);
+    const query$ = {};
+    if (ids.length) {
+      query$.hru_id__in = ids.join();
+    }
+    const queryString = stringify(query$);
     const endpoint = '/fsbid/client/extra_client_data/';
     const q = `${endpoint}?${queryString}`;
     api().get(q, {
@@ -455,8 +457,6 @@ export function bidderPortfolioFetchData(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(query$$, data.count, endpoint));
             dispatch(bidderPortfolioFetchDataSuccess(data));
-            dispatch(bidderPortfolioHasErrored(false));
-            dispatch(bidderPortfolioIsLoading(false));
           });
         })
         .catch((m) => {

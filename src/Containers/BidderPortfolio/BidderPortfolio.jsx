@@ -251,9 +251,9 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: query => {
-    dispatch(bidderPortfolioFetchData(query));
-    dispatch(bidderPortfolioExtraDetailsFetchData(query.hru_id__in));
+  fetchBidderPortfolio: async query => {
+    await dispatch(bidderPortfolioFetchData(query));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
   },
   fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
   fetchPanelPerdets: query => dispatch(getPanelPerdets(query)),
