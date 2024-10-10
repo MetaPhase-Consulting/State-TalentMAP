@@ -115,16 +115,16 @@ const PanelMeetingAgendas = (props) => {
     limit,
     ordering: ['panel_date', 'agenda_id'],
     pmipmseqnum: pmSeqNums,
-    // @TODO: add filters
-    // orgs: selectedOrgs.map(orgObject => orgObject.code),
-    // categories: selectedCategories.map(categoryObject => categoryObject.mic_code),
-    // grades: selectedGrades.map(gradeObject => gradeObject.code),
-    // actions: selectedActions.map(actionObject => actionObject.code),
-    // statuses: selectedStatuses.map(statusObject => statusObject.code),
-    // languages: selectedLanguages.map(languageObject => languageObject.code),
-    // remarks: selectedRemarks.map(remarkObject => remarkObject.seq_num),
-    // skills: selectedSkills.map(skillObject => skillObject.code),
-    // text_search: textSearch,
+    bureaus: selectedBureaus.map(bureauObject => bureauObject.code),
+    orgs: selectedOrgs.map(orgObject => orgObject.code),
+    categories: selectedCategories.map(categoryObject => categoryObject.mic_code),
+    grades: selectedGrades.map(gradeObject => gradeObject.code),
+    actions: selectedActions.map(actionObject => actionObject.code),
+    statuses: selectedStatuses.map(statusObject => statusObject.code),
+    languages: selectedLanguages.map(languageObject => languageObject.code),
+    remarks: selectedRemarks.map(remarkObject => remarkObject.seq_num),
+    skills: selectedSkills.map(skillObject => skillObject.code),
+    freetext: textSearch,
   });
 
   const getCurrentInputs = () => ({
