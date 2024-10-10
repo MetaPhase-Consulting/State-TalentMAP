@@ -452,7 +452,6 @@ export function bidderPortfolioFetchData(query = {}) {
         }),
       })
         .then(({ data }) => {
-          bidderPortfolioExtraDetailsFetchData(query$.hru_id__in);
           batch(() => {
             dispatch(bidderPortfolioLastQuery(query$$, data.count, endpoint));
             dispatch(bidderPortfolioFetchDataSuccess(data));
