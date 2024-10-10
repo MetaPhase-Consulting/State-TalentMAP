@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
 import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
+import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientPerdets, getPanelPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
@@ -20,7 +20,7 @@ class BidderPortfolio extends Component {
       key: 0,
       query: { value: window.location.search.replace('?', '') || '' },
       defaultKeyword: { value: '' },
-      hasHandshake: { value: props.defaultHandshakeFilter },
+      hasHandshake: { value: undefined },
       ordering: { value: props.defaultSort },
       bidderIdsHasLoaded: false,
     };
@@ -73,10 +73,17 @@ class BidderPortfolio extends Component {
     const noPanel = this.props.selectedUnassigned.some(obj => obj.value === 'noPanel');
     const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
-      'separations', 'languages', 'classification']; // add 'panel_clients' back later
+      'separations', 'languages', 'classification']; // no need for panel_clients
+
+    if (query.hasHandshake === 'panel_clients') {
+      this.props.fetchPanelPerdets(query);
+    }
+
     if (noBids || noPanel || filters.includes(query.hasHandshake)) {
       this.props.fetchUnassignedBidderTypes(query);
-    } else {
+    }
+
+    if (!noBids && !noPanel && !filters.includes(query.hasHandshake) && query.hasHandshake !== 'panel_clients') {
       this.props.fetchBidderPortfolio(query);
     }
   }
@@ -163,6 +170,7 @@ BidderPortfolio.propTypes = {
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
   fetchUnassignedBidderTypes: PropTypes.func.isRequired,
+  fetchPanelPerdets: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
@@ -175,7 +183,6 @@ BidderPortfolio.propTypes = {
   classificationsHasErrored: PropTypes.bool.isRequired,
   classificationsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCDOsIsLoading: PropTypes.bool,
-  defaultHandshakeFilter: PropTypes.string,
   defaultPageSize: PropTypes.number,
   defaultSort: PropTypes.string,
   fetchAvailableBidders: PropTypes.func.isRequired,
@@ -195,6 +202,7 @@ BidderPortfolio.defaultProps = {
   bidderPortfolioHasErrored: false,
   fetchBidderPortfolio: EMPTY_FUNCTION,
   fetchUnassignedBidderTypes: EMPTY_FUNCTION,
+  fetchPanelPerdets: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
   bidderPortfolioCountsIsLoading: false,
   bidderPortfolioCountsHasErrored: false,
@@ -245,6 +253,7 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
   fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
+  fetchPanelPerdets: query => dispatch(getPanelPerdets(query)),
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),
