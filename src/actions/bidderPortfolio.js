@@ -215,7 +215,7 @@ export function bidderPortfolioExtraDetailsFetchData() {
     const queryString = stringify(query$);
     const endpoint = '/fsbid/client/extra_client_data/';
     const q = `${endpoint}?${queryString}`;
-    api().get(q, {
+    api().post(q, {
       cancelToken: new CancelToken((c) => {
         cancelPortfolio = c;
       }),
