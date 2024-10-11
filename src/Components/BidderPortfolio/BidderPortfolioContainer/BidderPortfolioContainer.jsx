@@ -34,6 +34,8 @@ class BidderPortfolioContainer extends Component {
     const showExpand = !hideControls;
 
     if (bidderPortfolioExtraData.length !== 0) {
+      console.log('bidderPortfolioExtraData', bidderPortfolioExtraData);
+      console.log('bidderPortfolio', bidderPortfolio);
       const combinedArray = bidderPortfolio.results.map(item1 => {
         const matchingItem = bidderPortfolioExtraData.find(item2 => Number(item2.per_seq_num) === Number(item1.perdet_seq_number));
         return matchingItem ? { ...item1, ...matchingItem } : item1;
