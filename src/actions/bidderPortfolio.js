@@ -203,15 +203,24 @@ export function bidderPortfolioSeasonsFetchData() {
   };
 }
 
-export function bidderPortfolioExtraDetailsFetchData() {
+export function bidderPortfolioExtraDetailsFetchData(query = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
     const ids = cdos.map(m => m.hru_id).filter(f => f);
-    const query$ = {};
+    const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
+
+    let query$ = { ...query };
     if (ids.length) {
       query$.hru_id__in = ids.join();
     }
+    if (seasons.length) {
+      query$.bid_seasons = seasons.join(',');
+    }
+    if (!query$.bid_seasons) {
+      query$ = omit(query$, ['hasHandshake', 'handshake']);
+    }
+
     const queryString = stringify(query$);
     const endpoint = '/fsbid/client/extra_client_data/';
     const q = `${endpoint}?${queryString}`;
