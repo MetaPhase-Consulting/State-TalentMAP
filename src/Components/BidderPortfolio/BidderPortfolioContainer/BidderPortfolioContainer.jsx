@@ -32,14 +32,15 @@ class BidderPortfolioContainer extends Component {
     const showNoCdosAlert = !cdosLength;
     const showEdit$ = !hideControls && showCDOD30;
     const showExpand = !hideControls;
-    const [combinedData, setCombinedData] = useState([]);
+    // const [combinedData, setCombinedData] = useState([]);
     if (bidderPortfolioExtraData.length !== 0) {
       const combinedArray = bidderPortfolio.results.map(item1 => {
         const matchingItem = bidderPortfolioExtraData.find(item2 => Number(item2.PER_SEQ_NUM) === Number(item1.perdet_seq_number));
         return matchingItem ? { ...item1, ...matchingItem } : null;
       }).filter(item => item !== null);
 
-      setCombinedData(combinedArray);
+      console.log(combinedArray);
+      // setCombinedData(combinedArray);
     }
 
     return (
@@ -56,13 +57,13 @@ class BidderPortfolioContainer extends Component {
               <BidderPortfolioGridList
                 showEdit={showEdit$}
                 showExpand={showExpand}
-                results={combinedData}
+                results={bidderPortfolio.results}
                 classifications={classifications}
                 viewType={viewType}
               />
               :
               <BidderPortfolioCardList
-                results={combinedData}
+                results={bidderPortfolio.results}
                 classifications={classifications}
                 viewType={viewType}
               />
