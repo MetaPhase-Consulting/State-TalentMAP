@@ -23,7 +23,7 @@ class BidderPortfolioContainer extends Component {
   };
 
   render() {
-    const { bidderPortfolio, pageSize, showListView, isLoading, viewType,
+    const { bidderPortfolio, bidderPortfolioExtraData, pageSize, showListView, isLoading, viewType,
       cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30 } = this.props;
 
     const showCDOD30 = checkFlag('flags.CDOD30');
@@ -32,6 +32,18 @@ class BidderPortfolioContainer extends Component {
     const showNoCdosAlert = !cdosLength;
     const showEdit$ = !hideControls && showCDOD30;
     const showExpand = !hideControls;
+
+    if (bidderPortfolioExtraData.length !== 0) {
+      const combinedArray = bidderPortfolio.results.map(item1 => {
+        // Find the matching object in array2 with the same id
+        const matchingItem = bidderPortfolioExtraData.find(item2 => item2.id === item1.id);
+        // If there's a match, merge the objects, otherwise return the original item from array1
+        return matchingItem ? { ...item1, ...matchingItem } : item1;
+      });
+      // Combine the two results
+      const finalResult = [...combinedArray];
+      console.log(finalResult);
+    }
 
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
@@ -98,6 +110,7 @@ class BidderPortfolioContainer extends Component {
 
 BidderPortfolioContainer.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
+  bidderPortfolioExtraData: BIDDER_LIST.isRequired,
   pageSize: PropTypes.number.isRequired,
   queryParamUpdate: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,

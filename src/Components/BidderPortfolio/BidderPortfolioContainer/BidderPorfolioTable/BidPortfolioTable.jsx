@@ -7,7 +7,6 @@ import { formatDate } from 'utilities';
 
 const BidPortfolioTable = ({ results }) => {
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
-  console.log('results', results);
   const rowSelection = {
     mode: 'multiRow',
     headerCheckbox: false,
