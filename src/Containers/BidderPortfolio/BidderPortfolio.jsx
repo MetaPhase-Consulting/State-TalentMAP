@@ -256,12 +256,15 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: async query => {
-    await dispatch(bidderPortfolioFetchData(query));
+  fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
+  fetchUnassignedBidderTypes: async query => {
+    await dispatch(getClientPerdets(query));
     dispatch(bidderPortfolioExtraDetailsFetchData());
   },
-  fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
-  fetchPanelPerdets: query => dispatch(getPanelPerdets(query)),
+  fetchPanelPerdets: async query => {
+    await dispatch(getPanelPerdets(query));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
+  },
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),

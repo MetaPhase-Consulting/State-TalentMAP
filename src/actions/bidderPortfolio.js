@@ -325,8 +325,6 @@ export function getPanelPerdets(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(secondQueryString, secondData.count, secondEndpoint));
             dispatch(bidderPortfolioFetchDataSuccess(secondData));
-            dispatch(bidderPortfolioHasErrored(false));
-            dispatch(bidderPortfolioIsLoading(false));
           });
         } catch (error) {
           handleError(error, dispatch);
@@ -409,8 +407,6 @@ export function getClientPerdets(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(secondQueryString, secondData.count, secondEndpoint));
             dispatch(bidderPortfolioFetchDataSuccess(secondData));
-            dispatch(bidderPortfolioHasErrored(false));
-            dispatch(bidderPortfolioIsLoading(false));
           });
         } catch (error) {
           handleError(error, dispatch);
@@ -466,6 +462,8 @@ export function bidderPortfolioFetchData(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(query$$, data.count, endpoint));
             dispatch(bidderPortfolioFetchDataSuccess(data));
+            dispatch(bidderPortfolioHasErrored(false));
+            dispatch(bidderPortfolioIsLoading(false));
           });
         })
         .catch((m) => {

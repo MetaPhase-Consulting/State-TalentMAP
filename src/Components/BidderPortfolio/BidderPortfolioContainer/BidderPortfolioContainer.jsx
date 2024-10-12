@@ -1,4 +1,4 @@
-import { Component, useState } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { checkFlag } from 'flags';
@@ -32,7 +32,7 @@ class BidderPortfolioContainer extends Component {
     const showNoCdosAlert = !cdosLength;
     const showEdit$ = !hideControls && showCDOD30;
     const showExpand = !hideControls;
-    // const [combinedData, setCombinedData] = useState([]);
+
     if (bidderPortfolioExtraData.length !== 0) {
       const combinedArray = bidderPortfolio.results.map(item1 => {
         const matchingItem = bidderPortfolioExtraData.find(item2 => Number(item2.PER_SEQ_NUM) === Number(item1.perdet_seq_number));
@@ -40,7 +40,6 @@ class BidderPortfolioContainer extends Component {
       }).filter(item => item !== null);
 
       console.log(combinedArray);
-      // setCombinedData(combinedArray);
     }
 
     return (
