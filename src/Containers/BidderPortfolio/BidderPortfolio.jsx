@@ -74,16 +74,25 @@ class BidderPortfolio extends Component {
     const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
       'separations', 'languages', 'classification']; // no need for panel_clients
-
+    console.log(
+      'noPanel', noPanel,
+      'noBids', noBids,
+      'filters', filters,
+      'query.hasHandshake', query.hasHandshake,
+      'filter includes query.hasHandshake', filters.includes(query.hasHandshake),
+    );
     if (query.hasHandshake === 'panel_clients') {
+      console.log('fetchPanelPerdets');
       this.props.fetchPanelPerdets(query);
     }
 
     if (noBids || noPanel || filters.includes(query.hasHandshake)) {
+      console.log('fetchUnassignedBidderTypes');
       this.props.fetchUnassignedBidderTypes(query);
     }
 
     if (!noBids && !noPanel && !filters.includes(query.hasHandshake) && query.hasHandshake !== 'panel_clients') {
+      console.log('fetchBidderPortfolio');
       this.props.fetchBidderPortfolio(query);
     }
   }
@@ -256,7 +265,10 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
+  fetchBidderPortfolio: async query => {
+    await dispatch(bidderPortfolioFetchData(query));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
+  },
   fetchUnassignedBidderTypes: async query => {
     await dispatch(getClientPerdets(query));
     dispatch(bidderPortfolioExtraDetailsFetchData());
