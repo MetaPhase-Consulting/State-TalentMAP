@@ -1,5 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
 import jsPDF from 'jspdf';
-import { randomUUID } from 'crypto';
 import { formatDate, getAssetPath } from 'utilities';
 
 const dosSeal = getAssetPath('/assets/img/dos-seal-pdf.png');
@@ -76,7 +76,7 @@ const appendChain = (element, apprOriginator, doc) => (
  * @param {*} subject subject line of note cable
  */
 export const generateXML = (cable, content, subject) => {
-  const uuid = randomUUID();
+  const uuid = uuidv4();
   const date = new Date();
   const apprOriginator = cable?.QRY_APPR_ORIGINATOR;
   const routingDistro = cable?.QRY_ROUTING_DISTRO;
@@ -290,4 +290,6 @@ export const generateXML = (cable, content, subject) => {
     });
 
   doc.appendChild(SmartPortalMessage);
+
+  return doc;
 };
