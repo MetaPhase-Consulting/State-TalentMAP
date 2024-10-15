@@ -98,7 +98,7 @@ const Preview = (props) => {
     const date = now.substring(0, 8);
     const time = now.substring(8, 14);
     const filename = `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`;
-    generatePDF(getPreviewText, filename); // TEMPORARY: Saves PDF locally for testing purposes
+    generatePDF(getPreviewText, filename, memo); // TEMPORARY: Saves PDF locally for testing purposes
     console.log(generateXML(cable, getPreviewText(), getCableValue('SUBJECT')));
     dispatch(sendNotification({
       PV_NM_SEQ_NUM_I: nmSeqNum,

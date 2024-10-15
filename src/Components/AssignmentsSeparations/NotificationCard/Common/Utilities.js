@@ -1,16 +1,20 @@
 import jsPDF from 'jspdf';
-import { formatDate,getAssetPath } from 'utilities';
+import { randomUUID } from 'crypto';
+import { formatDate, getAssetPath } from 'utilities';
 
 const dosSeal = getAssetPath('/assets/img/dos-seal-pdf.png');
+
+/* eslint-disable indent */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
 
 /**
  * Generates PDF of TM1 Note/Memo formatted accordingly to given
  * examples in EOPF directory
- * 
  * @param {*} getPreviewText retrieves the formatted note/memo preview text
  * @param {*} filename name of the note/memo according to EOPF filename standards
  */
-export const generatePDF = (getPreviewText, filename) => {
+export const generatePDF = (getPreviewText, filename, memo) => {
   const content = document.createElement('p');
   content.style.cssText = 'width:calc(595px - 72px); font-size:12px; font-family:Times; line-height:1.3em; letter-spacing:0.01em; white-space:pre-line;';
   content.innerHTML = getPreviewText(true);
@@ -45,11 +49,10 @@ export const generatePDF = (getPreviewText, filename) => {
 
 /**
  * Helper function to append Approval Chain XML items to a section
- * 
  * @param {*} element document HTML element to append to
  * @param {*} apprOriginator ref array of approval originator objects
  */
-const appendChain = (element, apprOriginator) => {
+const appendChain = (element, apprOriginator, doc) => (
   apprOriginator?.forEach(a => {
     var Name = doc.createElement('Name');
     Name.innerHTML = a?.Name;
@@ -64,25 +67,25 @@ const appendChain = (element, apprOriginator) => {
     UserID.innerHTML = a?.UserId;
     element.appendChild(UserID);
   })
-};
+);
 
 /**
  * Generates XML of TM1 Notification according to FSBID format
- * @param {*} cable cable ref object 
+ * @param {*} cable cable ref object
  * @param {*} content formatted contents of the note cable
  * @param {*} subject subject line of note cable
  */
 export const generateXML = (cable, content, subject) => {
-  const uuid = crypto.randomUUID();
+  const uuid = randomUUID();
   const date = new Date();
   const apprOriginator = cable?.QRY_APPR_ORIGINATOR;
   const routingDistro = cable?.QRY_ROUTING_DISTRO;
 
   var doc = document.implementation.createDocument('', '', null);
   var SmartPortalMessage = doc.createElement('SmartPortalMessage');
-  SmartPortalMessage = setAttribute('xmlns', 'http://SmartPortalMessage.State.Gov/v1');
-  SmartPortalMessage = setAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
-  SmartPortalMessage = setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+  SmartPortalMessage.setAttribute('xmlns', 'http://SmartPortalMessage.State.Gov/v1');
+  SmartPortalMessage.setAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
+  SmartPortalMessage.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 
   // ================== IDENTIFIERS ==================
 
@@ -133,7 +136,7 @@ export const generateXML = (cable, content, subject) => {
   SmartPortalMessage.appendChild(Addressees);
     var Addressee = doc.createElement('Addressee');
     Addressees.appendChild(Addressee);
-    routingDistro?.forEach(a => {
+    routingDistro.forEach(a => {
       if (a.ActionType) {
         var Address = doc.createElement('Address');
         Address.innerHTML = '';
@@ -147,9 +150,9 @@ export const generateXML = (cable, content, subject) => {
         var ActionType = doc.createElement('ActionType');
         ActionType.innerHTML = '';
         Addressee.appendChild(ActionType);
-        var Precedence = doc.createElement('Precedence');
-        Precedence.innerHTML = '';
-        Addressee.appendChild(Precedence);
+        var Precedence2 = doc.createElement('Precedence');
+        Precedence2.innerHTML = '';
+        Addressee.appendChild(Precedence2);
         var IsZen = doc.createElement('IsZen');
         IsZen.innerHTML = 'false';
         Addressee.appendChild(IsZen);
@@ -162,16 +165,16 @@ export const generateXML = (cable, content, subject) => {
   SmartPortalMessage.appendChild(ApprovalChain);
     var Drafter = doc.createElement('Drafter');
     ApprovalChain.appendChild(Drafter);
-    appendChain(Drafter, apprOriginator);
+    appendChain(Drafter, apprOriginator, doc);
     var Approver = doc.createElement('Approver');
     ApprovalChain.appendChild(Approver);
-    appendChain(Approver, apprOriginator);
+    appendChain(Approver, apprOriginator, doc);
     var Releaser = doc.createElement('Releaser');
     ApprovalChain.appendChild(Releaser);
-    appendChain(Releaser, apprOriginator);
+    appendChain(Releaser, apprOriginator, doc);
     var Originator = doc.createElement('Originator');
     ApprovalChain.appendChild(Originator);
-    apprOriginator?.forEach(a => {
+    apprOriginator.forEach(a => {
       var OriginatorName = doc.createElement('Originator');
       OriginatorName.innerHTML = a?.OriginatorName;
       Originator.appendChild(OriginatorName);
@@ -217,18 +220,19 @@ export const generateXML = (cable, content, subject) => {
       var Value = doc.createElement('Value');
       Value.innerHTML = 'FSBID';
       AdHocProperties.appendChild(Value);
-    var AdHocProperties = doc.createElement('AdHocProperties');
-      var Key = doc.createElement('Key');
-      Key.innerHTML = 'SchemaSource';
-      AdHocProperties.appendChild(Key);
-      var Value = doc.createElement('Value');
-      Value.innerHTML = 'SmartPortalMessage';
-      AdHocProperties.appendChild(Value);
-  
+    var AdHocProperties2 = doc.createElement('AdHocProperties');
+    Properties.appendChild(AdHocProperties2);
+      var Key2 = doc.createElement('Key');
+      Key2.innerHTML = 'SchemaSource';
+      AdHocProperties2.appendChild(Key2);
+      var Value2 = doc.createElement('Value');
+      Value2.innerHTML = 'SmartPortalMessage';
+      AdHocProperties2.appendChild(Value2);
+
   // ========== CLASSIFICATION MODIFICATION DRIVER ==========
 
   var ClassificationModificationDriver = doc.createElement('ClassificationModificationDriver');
-  ClassificationModificationDriver = setAttribute('xsi:nil', 'true');
+  ClassificationModificationDriver.setAttribute('xsi:nil', 'true');
   SmartPortalMessage.appendChild(ClassificationModificationDriver);
 
   // ================== SENSITIVITY CODE ==================
@@ -253,9 +257,9 @@ export const generateXML = (cable, content, subject) => {
   SmartPortalMessage.appendChild(Captions);
     var Caption = doc.createElement('Caption');
     Captions.appendChild(Caption);
-      var Value = doc.createElement('Value');
-      Value.innerHTML = 'TM CHANNEL';
-      Caption.appendChild(Value);
+      var ValueC = doc.createElement('Value');
+      ValueC.innerHTML = 'TM CHANNEL';
+      Caption.appendChild(ValueC);
 
   // ================== TAGS ==================
 
@@ -263,23 +267,23 @@ export const generateXML = (cable, content, subject) => {
   SmartPortalMessage.appendChild(Tags);
     var Tag = doc.createElement('Tag');
     Tags.appendChild(Tag);
-      var Value = doc.createElement('Value');
-      Value.innerHTML = 'APER';
-      Tag.appendChild(Value);
+      var ValueT = doc.createElement('Value');
+      ValueT.innerHTML = 'APER';
+      Tag.appendChild(ValueT);
       var TagType = doc.createElement('TagType');
       TagType.innerHTML = 'S';
       Tag.appendChild(TagType);
-    var Tag = doc.createElement('Tag');
-    Tags.appendChild(Tag);
-      var Value = doc.createElement('Value');
-      Value.innerHTML = 'AFIN';
-      Tag.appendChild(Value);
-      var TagType = doc.createElement('TagType');
-      TagType.innerHTML = 'S';
-      Tag.appendChild(TagType);
+    var Tag2 = doc.createElement('Tag');
+    Tags.appendChild(Tag2);
+      var ValueT2 = doc.createElement('Value');
+      ValueT2.innerHTML = 'AFIN';
+      Tag2.appendChild(ValueT2);
+      var TagTypeT2 = doc.createElement('TagType');
+      TagTypeT2.innerHTML = 'S';
+      Tag2.appendChild(TagTypeT2);
     var PassLines = doc.createElement('PassLines');
     Tags.appendChild(PassLines);
-    routingDistro?.forEach(a => {
+    routingDistro.forEach(a => {
       var PassLine = doc.createElement('PassLine');
       PassLine.innerHTML = a;
       PassLines.appendChild(PassLine);
