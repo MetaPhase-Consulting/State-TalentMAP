@@ -45,13 +45,13 @@ class BidderPortfolioContainer extends Component {
       return [];
     };
 
-    console.log('bidderPortfolioExtraData', bidderPortfolioExtraData);
+    console.log('bidderPortfolioExtraData', bidderPortfolioExtraDataLength());
 
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
         {!showNoCdosAlert && !hasErrored && isCDOD30 && !noResults &&
           <div className="usa-grid-full bidder-portfolio-listing">
-            <BidderPortfolioTable results={bidderPortfolioExtraDataLength()} />
+            <BidderPortfolioTable results={bidderPortfolio.results} />
           </div>
         }
         {
