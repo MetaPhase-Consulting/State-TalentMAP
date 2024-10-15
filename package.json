@@ -107,7 +107,8 @@
     "typeface-merriweather": "^1.1.13",
     "typeface-roboto": "^1.1.13",
     "use-query-params": "^1.2.3",
-    "uswds": "~1.6.12"
+    "uswds": "~1.6.12",
+    "uuid": "^10.0.0"
   },
   "resolutions": {
     "**/**/type-fest": "0.21.3",
