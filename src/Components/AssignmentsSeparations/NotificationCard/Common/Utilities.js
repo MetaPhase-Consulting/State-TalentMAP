@@ -53,19 +53,21 @@ export const generatePDF = (getPreviewText, filename, memo) => {
  * @param {*} apprOriginator ref array of approval originator objects
  */
 const appendChain = (element, apprOriginator, doc) => (
-  apprOriginator?.forEach(a => {
-    var Name = doc.createElement('Name');
-    Name.innerHTML = a?.Name;
-    element.appendChild(Name);
-    var EMailAddress = doc.createElement('EMailAddress');
-    EMailAddress.innerHTML = a?.EmailAddress;
-    element.appendChild(EMailAddress);
-    var OrgName = doc.createElement('OrgName');
-    OrgName.innerHTML = a?.OrgName;
-    element.appendChild(OrgName);
-    var UserID = doc.createElement('UserID');
-    UserID.innerHTML = a?.UserId;
-    element.appendChild(UserID);
+  apprOriginator.forEach(a => {
+    if (a.Name || a.EmailAddress || a.OrgName || a.UserId) {
+      var Name = doc.createElement('Name');
+      Name.innerHTML = a.Name;
+      element.appendChild(Name);
+      var EMailAddress = doc.createElement('EMailAddress');
+      EMailAddress.innerHTML = a.EmailAddress;
+      element.appendChild(EMailAddress);
+      var OrgName = doc.createElement('OrgName');
+      OrgName.innerHTML = a.OrgName;
+      element.appendChild(OrgName);
+      var UserID = doc.createElement('UserID');
+      UserID.innerHTML = a.UserId;
+      element.appendChild(UserID);
+    }
   })
 );
 
@@ -82,6 +84,7 @@ export const generateXML = (cable, content, subject) => {
   const routingDistro = cable?.QRY_ROUTING_DISTRO;
 
   var doc = document.implementation.createDocument('', '', null);
+
   var SmartPortalMessage = doc.createElement('SmartPortalMessage');
   SmartPortalMessage.setAttribute('xmlns', 'http://SmartPortalMessage.State.Gov/v1');
   SmartPortalMessage.setAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
@@ -137,21 +140,21 @@ export const generateXML = (cable, content, subject) => {
     var Addressee = doc.createElement('Addressee');
     Addressees.appendChild(Addressee);
     routingDistro.forEach(a => {
-      if (a.ActionType) {
+      if (a.DT_CODE === 'A' || a.DT_CODE === 'I') {
         var Address = doc.createElement('Address');
-        Address.innerHTML = '';
+        Address.innerHTML = a.DisplayName;
         Addressee.appendChild(Address);
         var AddressDisplayName = doc.createElement('AddressDisplayName');
-        AddressDisplayName.innerHTML = '';
+        AddressDisplayName.innerHTML = a.DisplayName;
         Addressee.appendChild(AddressDisplayName);
         var AddressType = doc.createElement('AddressType');
-        AddressType.innerHTML = '';
+        AddressType.innerHTML = a.AddressType;
         Addressee.appendChild(AddressType);
         var ActionType = doc.createElement('ActionType');
-        ActionType.innerHTML = '';
+        ActionType.innerHTML = a.ActionType;
         Addressee.appendChild(ActionType);
         var Precedence2 = doc.createElement('Precedence');
-        Precedence2.innerHTML = '';
+        Precedence2.innerHTML = a.Precendence;
         Addressee.appendChild(Precedence2);
         var IsZen = doc.createElement('IsZen');
         IsZen.innerHTML = 'false';
