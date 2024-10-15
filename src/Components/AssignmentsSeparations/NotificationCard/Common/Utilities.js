@@ -214,12 +214,15 @@ export const generateXML = (cable, content, subject) => {
 
   xmlStr = xmlStr.concat('</SmartPortalMessage>');
 
+  // ================== PARSE XML ==================
   // const parser = new window.DOMParser();
-  // const xmlp = parser.parseFromString(xmlStr, 'text/xml');
-  // console.log(xmlp);
-  // const serializer = new window.XMLSerializer();
-  // const xml = serializer.serializeToString(doc);
+  // const xml = parser.parseFromString(xmlStr, 'text/xml');
   // console.log(xml);
+
+  // ================== SERIALIZE XML ==================
+  // const serializer = new window.XMLSerializer();
+  // const xmlDoc = serializer.serializeToString(xml);
+  // console.log(xmlDoc);
 
   return xmlStr;
 };
