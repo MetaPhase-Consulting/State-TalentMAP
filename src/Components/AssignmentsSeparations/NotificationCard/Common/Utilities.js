@@ -4,10 +4,6 @@ import { formatDate, getAssetPath } from 'utilities';
 
 const dosSeal = getAssetPath('/assets/img/dos-seal-pdf.png');
 
-/* eslint-disable indent */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-
 /**
  * Generates PDF of TM1 Note/Memo formatted accordingly to given
  * examples in EOPF directory
