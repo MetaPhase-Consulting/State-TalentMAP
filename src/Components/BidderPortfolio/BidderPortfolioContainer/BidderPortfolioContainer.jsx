@@ -23,13 +23,8 @@ class BidderPortfolioContainer extends Component {
   };
 
   render() {
-<<<<<<< HEAD
     const { bidderPortfolio, bidderPortfolioExtraData, pageSize, showListView, isLoading, viewType,
       cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30 } = this.props;
-=======
-    const { bidderPortfolio, pageSize, showListView, isLoading, viewType,
-      cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30, setEditClassification } = this.props;
->>>>>>> dev
 
     const showCDOD30 = checkFlag('flags.CDOD30');
 
@@ -51,12 +46,7 @@ class BidderPortfolioContainer extends Component {
       <div className="usa-grid-full user-dashboard" id={ID}>
         {!showNoCdosAlert && !hasErrored && isCDOD30 && !noResults &&
           <div className="usa-grid-full bidder-portfolio-listing">
-<<<<<<< HEAD
             <BidderPortfolioTable results={bidderPortfolio.results} />
-=======
-            <h1>PLACE FOR TABLE</h1>
-            { setEditClassification && <p>Edit Classification - {setEditClassification.toString()}</p> }
->>>>>>> dev
           </div>
         }
         {
@@ -128,7 +118,6 @@ BidderPortfolioContainer.propTypes = {
   hideControls: PropTypes.bool,
   hasErrored: PropTypes.bool,
   isCDOD30: PropTypes.bool,
-  setEditClassification: PropTypes.bool,
   updatePagination: PropTypes.func,
   viewType: PropTypes.string,
 };

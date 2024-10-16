@@ -10,11 +10,7 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-<<<<<<< HEAD
-import { bidderPortfolioFetchDataSuccess, bidderPortfolioSetUnassigned, setIsCDOD30 } from 'actions/bidderPortfolio';
-=======
-import { bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
->>>>>>> dev
+import { bidderPortfolioFetchDataSuccess, bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -374,13 +370,10 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   setUnassigned: (arr = []) => dispatch(bidderPortfolioSetUnassigned(arr)),
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
-<<<<<<< HEAD
   bidderPortfolioFetchDataSuccess: (results) => dispatch(bidderPortfolioFetchDataSuccess(results)),
-=======
   setEditClassifications: (bool) => dispatch(setEditClassification(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
   getClientDatePerdets: (query) => dispatch(getClientDatePerdets(query)),
->>>>>>> dev
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);

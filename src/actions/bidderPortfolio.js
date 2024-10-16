@@ -320,11 +320,7 @@ const handleError = (error, dispatch) => {
   }
 };
 
-<<<<<<< HEAD
 export function getPanelPerdets(query = {}) {
-=======
-export function getClientDatePerdets(query = {}) {
->>>>>>> dev
   return async (dispatch, getState) => {
     try {
       dispatch(bidderPortfolioIsLoading(true));
@@ -333,23 +329,16 @@ export function getClientDatePerdets(query = {}) {
       const state = getState();
       const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
       const ids = cdos.map(m => m.hru_id).filter(Boolean);
-<<<<<<< HEAD
       const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
-=======
->>>>>>> dev
 
       let query$ = { ...query };
 
       if (ids.length) {
         query$.hru_id__in = ids.join();
       }
-<<<<<<< HEAD
       if (seasons.length) {
         query$.bid_seasons = seasons.join(',');
       }
-=======
-
->>>>>>> dev
       if (!query$.bid_seasons) {
         query$ = omit(query$, ['hasHandshake', 'handshake']);
       }
@@ -357,10 +346,7 @@ export function getClientDatePerdets(query = {}) {
       const queryString = stringify(query$);
       const endpoint = '/fsbid/client/panel_update/';
       const url = `${endpoint}?${queryString}`;
-<<<<<<< HEAD
 
-=======
->>>>>>> dev
       if (cancelUnnassignedBidders) {
         cancelUnnassignedBidders('cancel');
       }
@@ -368,11 +354,7 @@ export function getClientDatePerdets(query = {}) {
       const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
 
       if (ids.length) {
-<<<<<<< HEAD
         const response = await api().post(url, { cancelToken });
-=======
-        const response = await api().post(url, query$, { cancelToken });
->>>>>>> dev
         const { data } = response;
         const newQuery = { ...query$, perdet_seq_num: data.map(String) };
         const secondQueryString = stringify(newQuery);
@@ -394,11 +376,6 @@ export function getClientDatePerdets(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(secondQueryString, secondData.count, secondEndpoint));
             dispatch(bidderPortfolioFetchDataSuccess(secondData));
-<<<<<<< HEAD
-=======
-            dispatch(bidderPortfolioHasErrored(false));
-            dispatch(bidderPortfolioIsLoading(false));
->>>>>>> dev
           });
         } catch (error) {
           handleError(error, dispatch);
@@ -441,7 +418,7 @@ export function getClientPerdets(query = {}) {
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'classification']; // add 'panel_clients' back later
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
