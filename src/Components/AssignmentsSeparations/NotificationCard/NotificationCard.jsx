@@ -94,13 +94,13 @@ const NotificationCard = (props) => {
           return {
             ...c,
             NME_OVERRIDE_CLOB: override ? formatDate(override, 'MM/DD/YYYY') : '',
-            NME_CLEAR_IND: 'N',
+            NME_CLEAR_IND: override ? 'N' : 'Y',
           };
         }
         return {
           ...c,
           NME_OVERRIDE_CLOB: override || '',
-          NME_CLEAR_IND: 'N',
+          NME_CLEAR_IND: override ? 'N' : 'Y',
         };
       }
       return c;
