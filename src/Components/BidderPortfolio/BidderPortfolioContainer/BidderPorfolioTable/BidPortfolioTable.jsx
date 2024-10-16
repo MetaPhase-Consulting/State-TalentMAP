@@ -120,6 +120,12 @@ const BidPortfolioTable = ({ results }) => {
     }
   }, []);
 
+  const defaultColDef = useMemo(() => ({
+    editable: true,
+    filter: true,
+  }), []);
+
+
   return (
     <div style={gridStyle}>
       <div
@@ -129,6 +135,7 @@ const BidPortfolioTable = ({ results }) => {
         <AgGridReact
           rowData={rows}
           columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
           onColumnPinned={onColumnPinned}
           rowSelection={rowSelection}
         />
