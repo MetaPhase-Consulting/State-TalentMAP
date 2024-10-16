@@ -264,7 +264,7 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: async query => dispatch(bidderPortfolioFetchData(query)),
   fetchBidderPortfolioCDO: async query => {
-    await dispatch(bidderPortfolioFetchData(query));
+    await dispatch(bidderPortfolioFetchData(query, true));
     dispatch(bidderPortfolioExtraDetailsFetchData());
   },
   fetchUnassignedBidderTypes: async query => {

@@ -419,7 +419,7 @@ export function getClientPerdets(query = {}) {
 }
 
 
-export function bidderPortfolioFetchData(query = {}) {
+export function bidderPortfolioFetchData(query = {}, isCDO = false) {
   return (dispatch, getState) => {
     if (cancelPortfolio) { cancelPortfolio('cancel'); }
     dispatch(bidderPortfolioIsLoading(true));
@@ -462,6 +462,10 @@ export function bidderPortfolioFetchData(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(query$$, data.count, endpoint));
             dispatch(bidderPortfolioFetchDataSuccess(data));
+            if (!isCDO) {
+              dispatch(bidderPortfolioHasErrored(true));
+              dispatch(bidderPortfolioIsLoading(false));
+            }
           });
         })
         .catch((m) => {
