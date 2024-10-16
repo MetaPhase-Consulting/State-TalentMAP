@@ -463,7 +463,7 @@ export function bidderPortfolioFetchData(query = {}, isCDO = false) {
             dispatch(bidderPortfolioLastQuery(query$$, data.count, endpoint));
             dispatch(bidderPortfolioFetchDataSuccess(data));
             if (!isCDO) {
-              dispatch(bidderPortfolioHasErrored(true));
+              dispatch(bidderPortfolioHasErrored(false));
               dispatch(bidderPortfolioIsLoading(false));
             }
           });
