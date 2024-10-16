@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Linkify from 'react-linkify';
 import FA from 'react-fontawesome';
@@ -13,7 +13,8 @@ import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import NavTabs from 'Components/NavTabs';
 import InteractiveElement from 'Components/InteractiveElement';
-import { generatePDF, generateXML } from '../Common/Utilities';
+import { generatePDF, generateSoapXML, generateXML } from '../Common/Utilities';
+import { createOpsLog, getOpsData, getOpsWsdl } from '../../../../actions/assignmentNotifications';
 
 const useNotificationSend = () => checkFlag('flags.assignment_notification_send');
 const useMemoSend = () => checkFlag('flags.assignment_memo_send');
@@ -26,6 +27,7 @@ const Preview = (props) => {
     memo,
     getCableValue,
     setEditMode,
+    fetchData,
   } = props;
 
   const dispatch = useDispatch();
@@ -38,9 +40,22 @@ const Preview = (props) => {
   const galErrored = useSelector(state => state.getGalErrored);
   const galLoading = useSelector(state => state.getGalLoading);
 
+  // const opsWsdl = useSelector(state => state.getOpsWsdl);
+  // const opsWsdlErrored = useSelector(state => state.getOpsWsdlErrored);
+  // const opsWsdlLoading = useSelector(state => state.getOpsWsdlLoading);
+
+  const opsData = useSelector(state => state.getOpsData);
+  // const opsDataErrored = useSelector(state => state.getOpsDataErrored);
+  // const opsDataLoading = useSelector(state => state.getOpsDataLoading);
+
   const [recipientMode, setRecipientMode] = useState(false);
   const [galQuery, setGalQuery] = useState('');
   const [recipients, setRecipients] = useState([]);
+
+  useEffect(() => {
+    getOpsWsdl();
+    getOpsData({ PV_NM_SEQ_NUM_I: note?.NM_SEQ_NUM });
+  }, []);
 
   const getPreviewText = (fullPreview) => {
     if (!memo) {
@@ -98,15 +113,34 @@ const Preview = (props) => {
     const date = now.substring(0, 8);
     const time = now.substring(8, 14);
     const filename = `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`;
-    generatePDF(getPreviewText, filename, memo); // TEMPORARY: Saves PDF locally for testing purposes
+
+    // ------------ Handle Send ------------
+
     console.log(generateXML(cable, getPreviewText(), getCableValue('SUBJECT')));
     dispatch(sendNotification({
+      I_NM_SEQ_NUM: nmSeqNum,
+      I_NOTE_TYPE: type,
+    }, fetchData, memo));
+
+    // ------------ Handle PDF ------------ // Synchronous
+
+    if (cable?.O_LAST_SENT_DATE) {
+      generatePDF(getPreviewText, filename, memo); // TEMPORARY: Saves PDF locally for testing purposes
+      dispatch(sendNotification({
+        PV_NM_SEQ_NUM_I: nmSeqNum,
+        PV_FILE_NAME_I: filename,
+        PV_NOTE_TYPE_I: type,
+      }, null, memo));
+    }
+
+    // ------------ Handle OPS ------------
+
+    generateSoapXML(opsData);
+    dispatch(createOpsLog({
       PV_NM_SEQ_NUM_I: nmSeqNum,
       PV_FILE_NAME_I: filename,
       PV_NOTE_TYPE_I: type,
-      I_NM_SEQ_NUM: nmSeqNum,
-      I_NOTE_TYPE: type,
-    }, null, memo));
+    }, null));
   };
 
   const getOverlay = () => {
@@ -304,6 +338,7 @@ Preview.propTypes = {
   memo: PropTypes.bool,
   getCableValue: PropTypes.func.isRequired,
   setEditMode: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
 };
 
 Preview.defaultProps = {
