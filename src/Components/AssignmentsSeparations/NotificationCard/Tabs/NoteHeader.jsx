@@ -57,7 +57,7 @@ const NoteHeader = (props) => {
             <label htmlFor="date">Date</label>
             <div className="date-wrapper-react larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '', true)} />
+              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '')} />
               <DatePicker
                 id="date"
                 selected={getCableValue('DATE') !== '' ? (new Date(getCableValue('DATE'))) : ''}
