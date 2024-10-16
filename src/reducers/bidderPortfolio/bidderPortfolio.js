@@ -32,6 +32,25 @@ export function isCDOD30(state = false, action) {
       return state;
   }
 }
+
+export function panelDateID(state = '', action) {
+  switch (action.type) {
+    case 'BIDDER_PORTFOLIO_PANEL_DATE':
+      return action.panelDateID;
+    default:
+      return state;
+  }
+}
+
+export function setEditClassification(state = false, action) {
+  switch (action.type) {
+    case 'BIDDER_PORTFOLIO_EDIT_CLASSIFICATION':
+      return action.editClassification;
+    default:
+      return state;
+  }
+}
+
 export function bidderPortfolioSeasons(state = [], action) {
   switch (action.type) {
     case 'BIDDER_PORTFOLIO_SEASONS_SUCCESS':
@@ -204,6 +223,34 @@ export function bidderPortfolioSelectedCDOsToSearchBy(state = [], action) {
       return state;
   }
 }
+
+export function panelClientFetchDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'PANEL_CLIENT_FETCH_DATA_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+
+export function panelClientFetchDataHasErrored(state = false, action) {
+  switch (action.type) {
+    case 'PANEL_CLIENT_FETCH_DATA_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+
+export function panelClientFetchData(state = [], action) {
+  switch (action.type) {
+    case 'PANEL_CLIENT_FETCH_DATA_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 
 export function bidderPortfolioLastQuery(state = '/fsbid/client/', action, endpoint = '/fsbid/client/') {
   switch (action.type) {

@@ -24,7 +24,7 @@ class BidderPortfolioContainer extends Component {
 
   render() {
     const { bidderPortfolio, bidderPortfolioExtraData, pageSize, showListView, isLoading, viewType,
-      cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30 } = this.props;
+      cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30, setEditClassification } = this.props;
 
     const showCDOD30 = checkFlag('flags.CDOD30');
 
@@ -40,6 +40,7 @@ class BidderPortfolioContainer extends Component {
       }).filter(item => item !== null);
 
       console.log(combinedArray);
+      console.log('setEditClassification', setEditClassification);
     }
 
     return (
@@ -118,6 +119,7 @@ BidderPortfolioContainer.propTypes = {
   hideControls: PropTypes.bool,
   hasErrored: PropTypes.bool,
   isCDOD30: PropTypes.bool,
+  setEditClassification: PropTypes.bool,
   updatePagination: PropTypes.func,
   viewType: PropTypes.string,
 };
@@ -130,6 +132,7 @@ BidderPortfolioContainer.defaultProps = {
   hideControls: false,
   hasErrored: false,
   isCDOD30: false,
+  setEditClassification: false,
   updatePagination: EMPTY_FUNCTION,
   viewType: '',
 };

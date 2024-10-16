@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Linkify from 'react-linkify';
-import FA from 'react-fontawesome';
 import PropTypes from 'prop-types';
-import TextareaAutosize from 'react-textarea-autosize';
 import {
-  cableFetchData, editNoteCable, getGal, noteCableRefFetchData,
-  rebuildNotification, sendNotification,
+  cableFetchData, editNoteCable, noteCableRefFetchData,
+  rebuildNotification,
 } from 'actions/assignmentNotifications';
-import { checkFlag } from 'flags';
-import { ifEnter } from 'utilities';
 import { EMPTY_FUNCTION } from 'Constants/PropTypes';
-import { Row } from 'Components/Layout';
 import TabbedCard from 'Components/TabbedCard';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
-import NavTabs from 'Components/NavTabs';
-import InteractiveElement from 'Components/InteractiveElement';
-import Header from './Tabs/Header';
+import Header from './Tabs/NoteHeader';
 import EFM from './Tabs/EFM';
 import Remarks from './Tabs/Remarks';
 import Training from './Tabs/Training';
@@ -25,16 +17,13 @@ import Assignments from './Tabs/Assignments';
 import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
 import MemoHeader from './Tabs/MemoHeader';
-
-const useNotificationSend = () => checkFlag('flags.assignment_notification_send');
-const useMemoSend = () => checkFlag('flags.assignment_memo_send');
+import Preview from './Preview/Preview';
+import { formatDate } from '../../../utilities';
 
 const NotificationCard = (props) => {
   const { note, onCancel, memo } = props;
 
   const dispatch = useDispatch();
-
-  const useSend = memo ? useMemoSend() : useNotificationSend();
 
   // ====================== Data Retrieval ======================
 
@@ -46,21 +35,14 @@ const NotificationCard = (props) => {
   const refErrored = useSelector(state => state.noteCableRefFetchDataErrored);
   const refLoading = useSelector(state => state.noteCableRefFetchDataLoading);
 
-  const gal = useSelector(state => state.getGal);
-  // const galErrored = useSelector(state => state.getGalErrored);
-  // const galLoading = useSelector(state => state.getGalLoading);
-
   const loading = cableLoading || refLoading;
   const errored = cableErrored || refErrored;
 
   const [editMode, setEditMode] = useState(false);
-  const [recipientMode, setRecipientMode] = useState(false);
   const [noteCable, setNoteCable] = useState(ref?.QRY_CABLE_REF || []);
   const [noteRouting, setNoteRouting] = useState(ref?.QRY_NMD_REF || []);
   const [noteAssignments, setNoteAssignments] = useState([]);
   const [noteParagraphs, setNoteParagraphs] = useState([]);
-  const [galQuery, setGalQuery] = useState('');
-  const [recipients, setRecipients] = useState([]);
 
   const fetchNoteData = () => {
     if (note?.NM_SEQ_NUM) {
@@ -108,10 +90,17 @@ const NotificationCard = (props) => {
   const modCableValue = (key, override) => {
     const sections = noteCable.map(c => {
       if (c.ME_DESC === key) {
+        if (key === 'DATE') {
+          return {
+            ...c,
+            NME_OVERRIDE_CLOB: override ? formatDate(override, 'MM/DD/YYYY') : '',
+            NME_CLEAR_IND: override ? 'N' : 'Y',
+          };
+        }
         return {
           ...c,
           NME_OVERRIDE_CLOB: override || '',
-          NME_CLEAR_IND: 'N',
+          NME_CLEAR_IND: override ? 'N' : 'Y',
         };
       }
       return c;
@@ -290,23 +279,6 @@ const NotificationCard = (props) => {
     dispatch(editNoteCable(req, fetchNoteData, memo));
   };
 
-  const handleSend = () => {
-    const nmSeqNum = note?.NM_SEQ_NUM;
-    const type = memo ? 'M' : 'C';
-    let now = new Date();
-    now = now.toISOString();
-    now = now.replace(/\D/g, '');
-    const date = now.substring(0, 8);
-    const time = now.substring(8, 14);
-    dispatch(sendNotification({
-      PV_NM_SEQ_NUM_I: nmSeqNum,
-      PV_FILE_NAME_I: `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`,
-      PV_NOTE_TYPE_I: type,
-      I_NM_SEQ_NUM: nmSeqNum,
-      I_NOTE_TYPE: type,
-    }, null, memo));
-  };
-
   const freeTextContainer = (children, meDescs) => {
     let tabSeqNums = '';
     let tabUpdateIds = '';
@@ -384,316 +356,122 @@ const NotificationCard = (props) => {
     return overlay;
   };
 
-  const getPreviewText = () => {
-    const textLines = memo ? [
-      `${getCableValue('ASSIGNMENTS')}\n`,
-      `${getCableValue('COMBINED TOD')}\n`,
-      `${getCableValue('REMARKS')}\n`,
-      `${getCableValue('PARAGRAPHS')}\n`,
-    ] : [
-      `${getCableValue('CLASSIFICATION')}\n\n`,
-      `${getCableValue('DRAFTING OFFICE')}`,
-      `${getCableValue('DATE')} - ${getCableValue('TELEPHONE')}`,
-      `${getCableValue('APPROVING OFFICE')}\n`,
-      `${getCableValue('CLEARANCE')}\n`,
-      // `${getCableValue('DISTRIBUTION')}\n`,
-      // `${getCableValue('ACTION')}\n`,
-      // `${getCableValue('INFORMATION')}\n`,
-      `${getCableValue('SPECIAL HANDLING')}\n`,
-      `${getCableValue('CAPTIONS')}\n`,
-      `${getCableValue('E.O.')}\n`,
-      `${getCableValue('TAGS')}\n`,
-      `${getCableValue('SUBJECT')}\n`,
-      `1. ${getCableValue('ASSIGNMENTS')}\n`,
-      `2. ${getCableValue('COMBINED TOD')}\n`,
-      `3. ${getCableValue('EFM')}\n`,
-      `4. ${getCableValue('REMARKS')}\n`,
-      `5. ${getCableValue('PARAGRAPHS')}\n`,
-      `${getCableValue('EOM')}`,
-    ];
-    return textLines.join('\n');
-  };
-
-  const previewCard = (
-    <Row fluid className="tabbed-card box-shadow-standard">
-      <Row fluid className="tabbed-card--header">
-        <NavTabs
-          tabs={[{ text: 'Preview', value: 'PREVIEW' }]}
-          value="PREVIEW"
-          styleVariant="lightBorderBottom"
-        />
-      </Row>
-      <div className="position-content position-form notification-card">
-        <button className="toggle-edit-mode notification-card__rebuild" onClick={() => setEditMode(true)}>
-          <FA name="pencil" />
-          <div>Edit</div>
-        </button>
-        <div className="notification-card__header">
-          {memo ?
-            <>
-              <span>
-                Memorandum
-              </span>
-              <span className="notification-card__header-subtitle">To</span>
-              <span>
-                {getCableValue('TO_ADDRESS') ?? '---'}
-              </span>
-              <span className="notification-card__header-subtitle">From</span>
-              <span>
-                {getCableValue('FROM_ADDRESS') ?? '---'}
-              </span>
-              <span className="notification-card__header-subtitle">Subject</span>
-              <span>
-                {getCableValue('SUBJECT') ?? '---'}
-              </span>
-              <span className="notification-card__header-subtitle">Last Sent</span>
-              <span>
-                {cable?.O_LAST_SENT_DATE ?? '---'}
-              </span>
-              <span className="notification-card__header-subtitle">Body</span>
-            </> :
-            <>
-              <span>
-                Notification
-              </span>
-              <span>
-                The Notification Cable for {getCableValue('EMPLOYEE FULL NAME')} will be emailed to the Dos Communications Center from the preparer {getCableValue('FROM_ADDRESS')}.
-              </span>
-            </>
-          }
-        </div>
-        <Row fluid className="position-content--description">
-          <Linkify properties={{ target: '_blank' }}>
-            <TextareaAutosize
-              maxRows={50}
-              minRows={1}
-              maxLength="500"
-              name="preview-body"
-              value={getPreviewText()}
-              draggable={false}
-              disabled
-            />
-          </Linkify>
-          <div className="word-count">
-            {getPreviewText()?.length} / 500
-          </div>
-        </Row>
-        <div className="position-form--actions">
-          {useSend ?
-            <>
-              <button onClick={onCancel}>Cancel</button>
-              <button onClick={() => { if (memo) { setRecipientMode(true); } else { handleSend(); } }}>
-                {memo ? 'Select Memo Recipients' : 'Send Cable'}
-              </button>
-            </> :
-            <button onClick={onCancel}>Back</button>
-          }
-        </div>
-      </div>
-    </Row>
-  );
-
-  const recipientCard = (
-    <Row fluid className="tabbed-card box-shadow-standard">
-      <Row fluid className="tabbed-card--header">
-        <NavTabs
-          tabs={[{ text: 'Recipients', value: 'RECIPIENTS' }]}
-          value="RECIPIENTS"
-          styleVariant="lightBorderBottom"
-        />
-      </Row>
-      <div className="position-content position-form notification-card">
-        <div className="notification-card__header">
-          <span>
-            Memorandum
-          </span>
-          <span>
-            Search by last name for a list of recipients to add to the email.
-          </span>
-        </div>
-        <div className="gal-lookup">
-          <div className="gal-lookup__input">
-            <label htmlFor="gal-lookup" className="gal-label">GAL Lookup</label>
-            <div>
-              <input
-                id="gal-lookup"
-                name="gal-lookup"
-                placeholder="Last Name"
-                value={galQuery}
-                onChange={(e) => setGalQuery(e.target.value)}
-                onKeyUp={(e) => { if (ifEnter(e)) dispatch(getGal({ PV_LAST_NAME_I: galQuery })); }}
-              />
-              <button onClick={() => dispatch(getGal({ PV_LAST_NAME_I: galQuery }))}>
-                Search
-              </button>
-            </div>
-          </div>
-          <div className="recipients">
-            <div className="recipients-list">
-              <div className="gal-label">Recipients</div>
-              {gal?.length > 0 &&
-                <div className="gal-result">
-                  {gal?.map(g => (
-                    <div
-                      tabIndex={0}
-                      role="button"
-                      className="gal-result__item clickable"
-                      onClick={() => {
-                        const match = recipients.find(r => r.GAL_SMTP_EMAIL_ADRS_TEXT === g.GAL_SMTP_EMAIL_ADRS_TEXT);
-                        if (!match) {
-                          setRecipients([...recipients, g]);
-                        }
-                      }}
-                    >
-                      {g.GAL_DISPLAY_NAME}
-                    </div>
-                  ))}
-                </div>
-              }
-            </div>
-            <div className="recipients-list">
-              <div className="gal-label">Added Recipients</div>
-              {recipients?.length > 0 &&
-                <div className="gal-result">
-                  {recipients?.map(g => (
-                    <div className="gal-result__item">
-                      <div>{g.GAL_DISPLAY_NAME}</div>
-                      <InteractiveElement
-                        title={`Remove Recipient ${g.GAL_DISPLAY_NAME}`}
-                        onClick={() => {
-                          const removed = recipients.filter(r => r.GAL_SMTP_EMAIL_ADRS_TEXT !== g.GAL_SMTP_EMAIL_ADRS_TEXT);
-                          setRecipients(removed);
-                        }}
-                        className="delete-button"
-                      >
-                        <FA name="trash" className="fa-lg" />
-                      </InteractiveElement>
-                    </div>
-                  ))}
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-        <div className="position-form--actions">
-          <button onClick={() => setRecipientMode(false)}>Back to Preview</button>
-          <button onClick={() => handleSend()}>Email Memo</button>
-        </div>
-      </div>
-    </Row>
-  );
-
-  const editCard = (
-    <TabbedCard
-      tabs={[memo ? {
-        text: 'Header',
-        value: 'HEADER',
-        content: freeTextContainer(
-          <MemoHeader
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
-            handleDefaultClear={handleDefaultClear}
-          />,
-          ['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT'],
-        ),
-      } : {
-        text: 'Header',
-        value: 'HEADER',
-        content: freeTextContainer(
-          <Header
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
-            handleDefaultClear={handleDefaultClear}
-          />,
-          [
-            'DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT',
-            'CLEARANCE', 'CLASSIFICATION', 'SPECIAL HANDLING',
-            'CAPTIONS', 'E.O.', 'TAGS', 'EOM', 'CONTINUATION',
-          ],
-        ),
-      }, memo ? null : {
-        text: 'Routing',
-        value: 'ROUTING',
-        content: freeTextContainer(
-          <Routing
-            routingValue={noteRouting}
-            modRoutingValue={modRoutingValue}
-            postOptions={ref?.QRY_POST_REF}
-            precedenceOptions={ref?.QRY_PT_REF}
-            organizationOptions={ref?.QRY_ORGS_REF}
-          />,
-          ['ACTION', 'INFORMATION', 'DISTRIBUTION'],
-        ),
-      }, {
-        text: 'Assignments',
-        value: 'ASSIGNMENTS',
-        content: freeTextContainer(
-          <Assignments
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
-            handleDefaultClear={handleDefaultClear}
-            assignments={noteAssignments}
-            setAssignments={setNoteAssignments}
-          />,
-          ['ASSIGNMENTS', 'COMBINED TOD'],
-        ),
-      }, {
-        text: 'Paragraphs',
-        value: 'PARAGRAPHS',
-        content: freeTextContainer(
-          <Paragraphs
-            getCableValue={getCableValue}
-            handleDefaultClear={handleDefaultClear}
-            selections={noteParagraphs}
-            setSelections={setNoteParagraphs}
-            paragraphs={ref?.QRY_PARA_REF}
-            defaultSelections={ref?.QRY_PARA_REF?.filter(p => p.INC_IND === 1).map(p => p.NOTP_CODE)}
-          />,
-          ['PARAGRAPHS'],
-        ),
-      }, memo ? null : {
-        text: 'Training',
-        value: 'TRAINING',
-        content: freeTextContainer(
-          <Training
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
-            handleDefaultClear={handleDefaultClear}
-          />,
-          ['TRAINING'],
-        ),
-      }, memo ? null : {
-        text: 'EFM',
-        value: 'EFM',
-        content: freeTextContainer(
-          <EFM
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
-          />,
-          ['EFM'],
-        ),
-      }, {
-        text: 'Remarks',
-        value: 'REMARKS',
-        content: freeTextContainer(
-          <Remarks
-            getCableValue={getCableValue}
-            modCableValue={modCableValue}
-            handleDefaultClear={handleDefaultClear}
-          />,
-          ['REMARKS'],
-        ),
-      }]}
-    />
-  );
-
   const cardMode = () => {
-    if (recipientMode) {
-      return recipientCard;
-    } else if (!editMode) {
-      return previewCard;
+    if (editMode) {
+      return (
+        <TabbedCard
+          tabs={[memo ? {
+            text: 'Header',
+            value: 'HEADER',
+            content: freeTextContainer(
+              <MemoHeader
+                getCableValue={getCableValue}
+                modCableValue={modCableValue}
+                handleDefaultClear={handleDefaultClear}
+              />,
+              ['TO_ADDRESS', 'FROM_ADDRESS', 'SUBJECT'],
+            ),
+          } : {
+            text: 'Header',
+            value: 'HEADER',
+            content: freeTextContainer(
+              <Header
+                getCableValue={getCableValue}
+                modCableValue={modCableValue}
+                handleDefaultClear={handleDefaultClear}
+              />,
+              [
+                'DRAFTING OFFICE', 'DATE', 'TELEPHONE', 'SUBJECT',
+                'CLEARANCE', 'CLASSIFICATION', 'SPECIAL HANDLING',
+                'CAPTIONS', 'E.O.', 'TAGS', 'EOM', 'CONTINUATION',
+              ],
+            ),
+          }, memo ? null : {
+            text: 'Routing',
+            value: 'ROUTING',
+            content: freeTextContainer(
+              <Routing
+                routingValue={noteRouting}
+                modRoutingValue={modRoutingValue}
+                postOptions={ref?.QRY_POST_REF}
+                precedenceOptions={ref?.QRY_PT_REF}
+                organizationOptions={ref?.QRY_ORGS_REF}
+              />,
+              ['ACTION', 'INFORMATION', 'DISTRIBUTION'],
+            ),
+          }, {
+            text: 'Assignments',
+            value: 'ASSIGNMENTS',
+            content: freeTextContainer(
+              <Assignments
+                getCableValue={getCableValue}
+                modCableValue={modCableValue}
+                handleDefaultClear={handleDefaultClear}
+                assignments={noteAssignments}
+                setAssignments={setNoteAssignments}
+              />,
+              ['ASSIGNMENTS', 'COMBINED TOD'],
+            ),
+          }, {
+            text: 'Paragraphs',
+            value: 'PARAGRAPHS',
+            content: freeTextContainer(
+              <Paragraphs
+                getCableValue={getCableValue}
+                handleDefaultClear={handleDefaultClear}
+                selections={noteParagraphs}
+                setSelections={setNoteParagraphs}
+                paragraphs={ref?.QRY_PARA_REF}
+                defaultSelections={ref?.QRY_PARA_REF?.filter(p => p.INC_IND === 1).map(p => p.NOTP_CODE)}
+              />,
+              ['PARAGRAPHS'],
+            ),
+          }, memo ? null : {
+            text: 'Training',
+            value: 'TRAINING',
+            content: freeTextContainer(
+              <Training
+                getCableValue={getCableValue}
+                modCableValue={modCableValue}
+                handleDefaultClear={handleDefaultClear}
+              />,
+              ['TRAINING'],
+            ),
+          }, memo ? null : {
+            text: 'EFM',
+            value: 'EFM',
+            content: freeTextContainer(
+              <EFM
+                getCableValue={getCableValue}
+                modCableValue={modCableValue}
+              />,
+              ['EFM'],
+            ),
+          }, {
+            text: 'Remarks',
+            value: 'REMARKS',
+            content: freeTextContainer(
+              <Remarks
+                getCableValue={getCableValue}
+                modCableValue={modCableValue}
+                handleDefaultClear={handleDefaultClear}
+              />,
+              ['REMARKS'],
+            ),
+          }]}
+        />
+      );
     }
-    return editCard;
+    return (
+      <Preview
+        note={note}
+        cable={cable}
+        onCancel={onCancel}
+        memo={memo}
+        getCableValue={getCableValue}
+        setEditMode={setEditMode}
+      />
+    );
   };
 
   return (getOverlay() || cardMode());
