@@ -5,13 +5,14 @@ import { CancelToken } from 'axios';
 import { toastSuccess } from 'actions/toast';
 import { downloadFromResponse } from 'utilities';
 import { BID_PORTFOLIO_SORTS } from 'Constants/Sort';
-import { BIDDER_PORTFOLIO_ADD_ERROR, BIDDER_PORTFOLIO_ADD_SUCCESS } from '../Constants/SystemMessages';
+import { BIDDER_PORTFOLIO_UPDATE_ERROR, BIDDER_PORTFOLIO_UPDATE_SUCCESS } from '../Constants/SystemMessages';
 import api from '../api';
 import { toastError } from './toast';
 
 let cancelCDOs;
 let cancelPortfolio;
 let cancelUnnassignedBidders;
+let cancelSave;
 
 export function bidderPortfolioSelectedSeasons(arr = []) {
   return {
@@ -153,6 +154,24 @@ export function bidderPortfolioPaginationFetchDataSuccess(data) {
     data,
   };
 }
+export function panelClientFetchDataLoading(bool) {
+  return {
+    type: 'PANEL_CLIENT_FETCH_DATA_LOADING',
+    isLoading: bool,
+  };
+}
+export function panelClientFetchDataErrored(bool) {
+  return {
+    type: 'PANEL_CLIENT_FETCH_DATA_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function panelClientFetchDataSuccess(data) {
+  return {
+    type: 'PANEL_CLIENT_FETCH_DATA_SUCCESS',
+    data,
+  };
+}
 export function saveBidderPortfolioPagination(paginationObject) {
   return (dispatch) => {
     dispatch(bidderPortfolioPaginationFetchDataSuccess(paginationObject));
@@ -175,6 +194,20 @@ export function setIsCDOD30(bool) {
   return {
     type: 'BIDDER_CDO_IS_CDOD30',
     isCDOD30: bool,
+  };
+}
+
+export function setPanelDateID(id) {
+  return {
+    type: 'BIDDER_PORTFOLIO_PANEL_DATE',
+    panelDateID: id,
+  };
+}
+
+export function setEditClassification(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_EDIT_CLASSIFICATION',
+    editClassification: bool,
   };
 }
 
@@ -254,6 +287,24 @@ export function lookupAndSetCDO(id) {
     }
   };
 }
+export function bidderPortfolioSaveSeasonsHasErrored(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_SAVE_SEASONS_HAS_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function bidderPortfolioSaveSeasonsIsLoading(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_SAVE_SEASONS_IS_LOADING',
+    isLoading: bool,
+  };
+}
+export function bidderPortfolioSaveSeasonsSuccess(results) {
+  return {
+    type: 'BIDDER_PORTFOLIO_SAVE_SEASONS_SUCCESS',
+    results,
+  };
+}
 
 const handleError = (error, dispatch) => {
   if (get(error, 'message') === 'cancel') {
@@ -269,7 +320,11 @@ const handleError = (error, dispatch) => {
   }
 };
 
+<<<<<<< HEAD
 export function getPanelPerdets(query = {}) {
+=======
+export function getClientDatePerdets(query = {}) {
+>>>>>>> dev
   return async (dispatch, getState) => {
     try {
       dispatch(bidderPortfolioIsLoading(true));
@@ -278,16 +333,23 @@ export function getPanelPerdets(query = {}) {
       const state = getState();
       const cdos = get(state, 'bidderPortfolioSelectedCDOsToSearchBy', []);
       const ids = cdos.map(m => m.hru_id).filter(Boolean);
+<<<<<<< HEAD
       const seasons = get(state, 'bidderPortfolioSelectedSeasons', []);
+=======
+>>>>>>> dev
 
       let query$ = { ...query };
 
       if (ids.length) {
         query$.hru_id__in = ids.join();
       }
+<<<<<<< HEAD
       if (seasons.length) {
         query$.bid_seasons = seasons.join(',');
       }
+=======
+
+>>>>>>> dev
       if (!query$.bid_seasons) {
         query$ = omit(query$, ['hasHandshake', 'handshake']);
       }
@@ -295,7 +357,10 @@ export function getPanelPerdets(query = {}) {
       const queryString = stringify(query$);
       const endpoint = '/fsbid/client/panel_update/';
       const url = `${endpoint}?${queryString}`;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
       if (cancelUnnassignedBidders) {
         cancelUnnassignedBidders('cancel');
       }
@@ -303,7 +368,11 @@ export function getPanelPerdets(query = {}) {
       const cancelToken = new CancelToken(c => { cancelUnnassignedBidders = c; });
 
       if (ids.length) {
+<<<<<<< HEAD
         const response = await api().post(url, { cancelToken });
+=======
+        const response = await api().post(url, query$, { cancelToken });
+>>>>>>> dev
         const { data } = response;
         const newQuery = { ...query$, perdet_seq_num: data.map(String) };
         const secondQueryString = stringify(newQuery);
@@ -325,6 +394,11 @@ export function getPanelPerdets(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(secondQueryString, secondData.count, secondEndpoint));
             dispatch(bidderPortfolioFetchDataSuccess(secondData));
+<<<<<<< HEAD
+=======
+            dispatch(bidderPortfolioHasErrored(false));
+            dispatch(bidderPortfolioIsLoading(false));
+>>>>>>> dev
           });
         } catch (error) {
           handleError(error, dispatch);
@@ -367,7 +441,7 @@ export function getClientPerdets(query = {}) {
         if (UAvalues.includes('noBids')) query$.noBids = true;
       }
 
-      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages', 'classification']; // add 'panel_clients' back later
+      const filters = ['handshake', 'eligible_bidders', 'cusp_bidders', 'separations', 'languages'];
       filters.forEach(filter => {
         if (get(query, 'hasHandshake') === filter) {
           query$[filter] = true;
@@ -437,13 +511,6 @@ export function bidderPortfolioFetchData(query = {}) {
     }
     if (!query$.bid_seasons || !query$.bid_seasons.length) {
       query$ = omit(query$, ['hasHandshake', 'handshake']); // hasHandshake requires at least one bid season
-    }
-    if (get(query, 'hasHandshake')) {
-      query$ = omit(query$, [
-        'hasHandshake', 'noBids', 'noPanel', 'handshake',
-        'eligible_bidders', 'cusp_bidders', 'separations',
-        'languages', 'classification', 'panel_clients',
-      ]);
     }
 
     if (!query$.ordering) {
@@ -535,6 +602,37 @@ export function bidderPortfolioCDOsFetchData() {
   };
 }
 
+export function panelClientFetchData() {
+  return (dispatch) => {
+    batch(() => {
+      dispatch(panelClientFetchDataLoading(true));
+      dispatch(panelClientFetchDataErrored(false));
+    });
+    api().get('fsbid/client/panel/')
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(panelClientFetchDataSuccess(data));
+          dispatch(panelClientFetchDataErrored(false));
+          dispatch(panelClientFetchDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message === 'cancel') {
+          batch(() => {
+            dispatch(panelClientFetchDataLoading(true));
+            dispatch(panelClientFetchDataErrored(false));
+          });
+        } else {
+          batch(() => {
+            dispatch(panelClientFetchDataSuccess([]));
+            dispatch(panelClientFetchDataErrored(false));
+            dispatch(panelClientFetchDataLoading(false));
+          });
+        }
+      });
+  };
+}
+
 export function bidderPortfolioFetchDataFromLastQuery() {
   return (dispatch, getState) => {
     batch(() => {
@@ -575,24 +673,28 @@ export function bidderPortfolioSelections(queryObject) {
   return (dispatch) => dispatch(bidderPortfolioSelectionsSaveSuccess(queryObject));
 }
 
-export function saveBidderPortfolioSelections(client) {
+export function saveBidderPortfolioSelections(data = {}) {
   return (dispatch) => {
-    dispatch(bidderPortfolioSeasonsIsLoading(true));
+    if (cancelSave) { cancelSave('cancel'); }
+    dispatch(bidderPortfolioSaveSeasonsIsLoading(true));
     dispatch(bidderPortfolioSeasonsHasErrored(false));
-    api()
-      .post('/fsbid/client/', client)
-      .then(({ data }) => {
+
+    const endpoint = '/fsbid/client/update/';
+    api().post(endpoint, data, {
+      cancelToken: new CancelToken((c) => { cancelSave = c; }),
+    })
+      .then(({ res }) => {
         batch(() => {
-          dispatch(bidderPortfolioSeasonsHasErrored(false));
-          dispatch(bidderPortfolioSeasonsSuccess(data));
-          dispatch(toastSuccess(BIDDER_PORTFOLIO_ADD_SUCCESS));
-          dispatch(bidderPortfolioIsLoading(false));
+          dispatch(bidderPortfolioSaveSeasonsHasErrored(false));
+          dispatch(bidderPortfolioSaveSeasonsSuccess(res));
+          dispatch(toastSuccess(BIDDER_PORTFOLIO_UPDATE_SUCCESS));
+          dispatch(bidderPortfolioSaveSeasonsIsLoading(false));
         });
       })
       .catch(() => {
-        dispatch(toastError(BIDDER_PORTFOLIO_ADD_ERROR));
-        dispatch(bidderPortfolioSeasonsHasErrored(true));
-        dispatch(bidderPortfolioIsLoading(false));
+        dispatch(toastError(BIDDER_PORTFOLIO_UPDATE_ERROR));
+        dispatch(bidderPortfolioSaveSeasonsHasErrored(true));
+        dispatch(bidderPortfolioSaveSeasonsIsLoading(false));
       });
   };
 }
