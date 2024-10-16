@@ -18,6 +18,7 @@ import Paragraphs from './Tabs/Paragraphs';
 import Routing from './Tabs/Routing';
 import MemoHeader from './Tabs/MemoHeader';
 import Preview from './Preview/Preview';
+import { formatDate } from '../../../utilities';
 
 const NotificationCard = (props) => {
   const { note, onCancel, memo } = props;
@@ -89,10 +90,17 @@ const NotificationCard = (props) => {
   const modCableValue = (key, override) => {
     const sections = noteCable.map(c => {
       if (c.ME_DESC === key) {
+        if (key === 'DATE') {
+          return {
+            ...c,
+            NME_OVERRIDE_CLOB: override ? formatDate(override, 'MM/DD/YYYY') : '',
+            NME_CLEAR_IND: override ? 'N' : 'Y',
+          };
+        }
         return {
           ...c,
           NME_OVERRIDE_CLOB: override || '',
-          NME_CLEAR_IND: 'N',
+          NME_CLEAR_IND: override ? 'N' : 'Y',
         };
       }
       return c;
