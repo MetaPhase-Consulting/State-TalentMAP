@@ -462,6 +462,8 @@ export function bidderPortfolioFetchData(query = {}) {
           batch(() => {
             dispatch(bidderPortfolioLastQuery(query$$, data.count, endpoint));
             dispatch(bidderPortfolioFetchDataSuccess(data));
+            dispatch(bidderPortfolioHasErrored(false));
+            dispatch(bidderPortfolioIsLoading(false));
           });
         })
         .catch((m) => {
