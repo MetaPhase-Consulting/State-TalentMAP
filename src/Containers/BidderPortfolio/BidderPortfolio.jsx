@@ -74,26 +74,21 @@ class BidderPortfolio extends Component {
     const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
       'separations', 'languages', 'classification']; // no need for panel_clients
-    console.log(
-      'noPanel', noPanel,
-      'noBids', noBids,
-      'filters', filters,
-      'query.hasHandshake', query.hasHandshake,
-      'filter includes query.hasHandshake', filters.includes(query.hasHandshake),
-    );
+
     if (query.hasHandshake === 'panel_clients') {
-      console.log('fetchPanelPerdets');
       this.props.fetchPanelPerdets(query);
     }
 
     if (noBids || noPanel || filters.includes(query.hasHandshake)) {
-      console.log('fetchUnassignedBidderTypes');
       this.props.fetchUnassignedBidderTypes(query);
     }
 
     if (!noBids && !noPanel && !filters.includes(query.hasHandshake) && query.hasHandshake !== 'panel_clients') {
-      console.log('fetchBidderPortfolio');
       this.props.fetchBidderPortfolio(query);
+    }
+
+    if (!noBids && !noPanel && !filters.includes(query.hasHandshake) && query.hasHandshake !== 'panel_clients' && this.props.isCDOD30) {
+      this.props.fetchBidderPortfolioCDO(query);
     }
   }
 
@@ -182,6 +177,7 @@ BidderPortfolio.propTypes = {
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
   fetchUnassignedBidderTypes: PropTypes.func.isRequired,
+  fetchBidderPortfolioCDO: PropTypes.func.isRequired,
   fetchPanelPerdets: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
@@ -214,6 +210,7 @@ BidderPortfolio.defaultProps = {
   bidderPortfolioIsLoading: false,
   bidderPortfolioHasErrored: false,
   fetchBidderPortfolio: EMPTY_FUNCTION,
+  fetchBidderPortfolioCDO: EMPTY_FUNCTION,
   fetchUnassignedBidderTypes: EMPTY_FUNCTION,
   fetchPanelPerdets: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
@@ -265,7 +262,8 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: async query => {
+  fetchBidderPortfolio: async query => dispatch(bidderPortfolioFetchData(query)),
+  fetchBidderPortfolioCDO: async query => {
     await dispatch(bidderPortfolioFetchData(query));
     dispatch(bidderPortfolioExtraDetailsFetchData());
   },
