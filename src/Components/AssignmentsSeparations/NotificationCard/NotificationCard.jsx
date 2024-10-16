@@ -93,7 +93,7 @@ const NotificationCard = (props) => {
         if (key === 'DATE') {
           return {
             ...c,
-            NME_OVERRIDE_CLOB: (override && override !== '') ? formatDate(override, 'MM/DD/YYYY') : '',
+            NME_OVERRIDE_CLOB: override ? formatDate(override, 'MM/DD/YYYY') : '',
             NME_CLEAR_IND: 'N',
           };
         }
