@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { entryLevelEdit } from 'actions/entryLevel';
 import { format } from 'date-fns-v2';
+import CheckboxRenderer from '../../AgGrid/CheckBoxRenderer';
 
 const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   const dispatch = useDispatch();
@@ -14,11 +15,11 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
   }));
 
   const [headers] = useState([
-    { field: 'EL', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', cellDataType: 'boolean', editable: true, width: 100 },
-    { field: 'LNA', headerName: 'LNA', cellDataType: 'boolean', editable: true, width: 75 },
-    { field: 'FICA', headerName: 'FICA', cellDataType: 'boolean', editable: true, width: 75 },
-    { field: 'ELTOML', headerName: 'EL to ML OTO', cellDataType: 'boolean', editable: true, width: 100 },
-    { field: 'MC', headerName: 'ML to EL OTO', cellDataType: 'boolean', editable: true, width: 100 },
+    { field: 'EL', headerName: 'EL Managed', headerTooltip: 'This indicates EL Position', cellRenderer: CheckboxRenderer, width: 100 },
+    { field: 'LNA', headerName: 'LNA', cellRenderer: CheckboxRenderer, width: 75 },
+    { field: 'FICA', headerName: 'FICA', cellRenderer: CheckboxRenderer, width: 75 },
+    { field: 'ELTOML', headerName: 'EL to ML OTO', cellRenderer: CheckboxRenderer, width: 100 },
+    { field: 'MC', headerName: 'ML to EL OTO', cellRenderer: CheckboxRenderer, width: 100 },
     { field: 'MC_END_DATE', headerName: 'Cede End Date', type: 'customDate', cellEditor: 'agDateCellEditor', editable: params => params.data.MC === true, width: 125 },
     { field: 'BUREAU_SHORT_DESC', headerName: 'Bureau', width: 75 },
     { field: 'POS_OVERSEAS_DESC', headerName: 'Overseas / Domestic', width: 100 },
@@ -119,8 +120,8 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
         onCellValueChanged={onCellValueChanged}
         columnTypes={columnTypes}
         defaultColDef={defaultColDef}
-        singleClickEdit
         defaultCsvExportParams={csvExportParams}
+        singleClickEdit
       />
     </div>
   );
