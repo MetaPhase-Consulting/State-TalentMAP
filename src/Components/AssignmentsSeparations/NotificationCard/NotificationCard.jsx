@@ -470,6 +470,7 @@ const NotificationCard = (props) => {
         memo={memo}
         getCableValue={getCableValue}
         setEditMode={setEditMode}
+        fetchData={fetchNoteData}
       />
     );
   };

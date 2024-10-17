@@ -213,7 +213,7 @@ export function noteCableRefFetchData(query = {}) {
   };
 }
 
-// ================ EDIT NOTIFICATION/MEMO ================
+// ================ EDIT TM1 ================
 
 let cancelEditNoteCable;
 export function editNoteCable(data, onSuccess, memo) {
@@ -259,7 +259,7 @@ export function editNoteCable(data, onSuccess, memo) {
   };
 }
 
-// ================ REBUILD NOTIFICATION ================
+// ================ REBUILD TM1 ================
 
 let cancelRebuildNotification;
 export function rebuildNotification(data, onSuccess, memo) {
@@ -304,74 +304,6 @@ export function rebuildNotification(data, onSuccess, memo) {
       });
   };
 }
-
-// ================ SEND NOTIFICATION/MEMO ================
-
-let cancelSendNotification;
-export function sendNotification(data, onSuccess, memo) {
-  return (dispatch) => {
-    if (cancelSendNotification) {
-      cancelSendNotification('cancel');
-    }
-    api()
-      .post('/fsbid/notification/send/', data, {
-        cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
-      })
-      .then(() => {
-        api()
-          .post('/fsbid/notification/store/', data, {
-            cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
-          })
-          .then(() => {
-            if (memo) {
-              dispatch(toastSuccess(
-                SEND_MEMO_SUCCESS,
-                SEND_MEMO_SUCCESS_TITLE,
-              ));
-            } else {
-              dispatch(toastSuccess(
-                SEND_NOTIFICATION_SUCCESS,
-                SEND_NOTIFICATION_SUCCESS_TITLE,
-              ));
-            }
-            if (onSuccess) {
-              onSuccess();
-            }
-          })
-          .catch((err) => {
-            if (err?.message !== 'cancel') {
-              if (memo) {
-                dispatch(toastError(
-                  SEND_MEMO_ERROR,
-                  SEND_MEMO_ERROR_TITLE,
-                ));
-              } else {
-                dispatch(toastError(
-                  SEND_NOTIFICATION_ERROR,
-                  SEND_NOTIFICATION_ERROR_TITLE,
-                ));
-              }
-            }
-          });
-      })
-      .catch((err) => {
-        if (err?.message !== 'cancel') {
-          if (memo) {
-            dispatch(toastError(
-              SEND_MEMO_ERROR,
-              SEND_MEMO_ERROR_TITLE,
-            ));
-          } else {
-            dispatch(toastError(
-              SEND_NOTIFICATION_ERROR,
-              SEND_NOTIFICATION_ERROR_TITLE,
-            ));
-          }
-        }
-      });
-  };
-}
-
 
 // ================ GAL LOOKUP ================
 
@@ -431,6 +363,288 @@ export function getGal(query = {}) {
             dispatch(getGalErrored(false));
             dispatch(getGalLoading(true));
           });
+        }
+      });
+  };
+}
+
+// ================ SEND TM1 ================
+
+let cancelSendNotification;
+export function sendNotification(data, onSuccess, memo) {
+  return (dispatch) => {
+    if (cancelSendNotification) {
+      cancelSendNotification('cancel');
+    }
+    api()
+      .post('/fsbid/notification/send/', data, {
+        cancelToken: new CancelToken((c) => { cancelSendNotification = c; }),
+      })
+      .then(() => {
+        if (memo) {
+          dispatch(toastSuccess(
+            SEND_MEMO_SUCCESS,
+            SEND_MEMO_SUCCESS_TITLE,
+          ));
+        } else {
+          dispatch(toastSuccess(
+            SEND_NOTIFICATION_SUCCESS,
+            SEND_NOTIFICATION_SUCCESS_TITLE,
+          ));
+        }
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          if (memo) {
+            dispatch(toastError(
+              SEND_MEMO_ERROR,
+              SEND_MEMO_ERROR_TITLE,
+            ));
+          } else {
+            dispatch(toastError(
+              SEND_NOTIFICATION_ERROR,
+              SEND_NOTIFICATION_ERROR_TITLE,
+            ));
+          }
+        }
+      });
+  };
+}
+
+// ================ STORE TM1 ================
+
+let cancelStoreNotification;
+export function storeNotification(data, onSuccess, memo) {
+  return (dispatch) => {
+    if (cancelStoreNotification) {
+      cancelStoreNotification('cancel');
+    }
+    api()
+      .post('/fsbid/notification/store/', data, {
+        cancelToken: new CancelToken((c) => { cancelStoreNotification = c; }),
+      })
+      .then(() => {
+        if (memo) {
+          dispatch(toastSuccess(
+            SEND_MEMO_SUCCESS,
+            SEND_MEMO_SUCCESS_TITLE,
+          ));
+        } else {
+          dispatch(toastSuccess(
+            SEND_NOTIFICATION_SUCCESS,
+            SEND_NOTIFICATION_SUCCESS_TITLE,
+          ));
+        }
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          if (memo) {
+            dispatch(toastError(
+              SEND_MEMO_ERROR,
+              SEND_MEMO_ERROR_TITLE,
+            ));
+          } else {
+            dispatch(toastError(
+              SEND_NOTIFICATION_ERROR,
+              SEND_NOTIFICATION_ERROR_TITLE,
+            ));
+          }
+        }
+      });
+  };
+}
+
+// ================ GET OPS WSDL ================
+
+export function getOpsWsdlErrored(bool) {
+  return {
+    type: 'OPS_WSDL_FETCH_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function getOpsWsdlLoading(bool) {
+  return {
+    type: 'OPS_WSDL_FETCH_LOADING',
+    isLoading: bool,
+  };
+}
+export function getOpsWsdlSuccess(results) {
+  return {
+    type: 'OPS_WSDL_FETCH_SUCCESS',
+    results,
+  };
+}
+let cancelGetOpsWsdl;
+export function getOpsWsdl(query = {}) {
+  return (dispatch) => {
+    if (cancelGetOpsWsdl) { cancelGetOpsWsdl('cancel'); }
+    batch(() => {
+      dispatch(getOpsWsdlLoading(true));
+      dispatch(getOpsWsdlErrored(false));
+    });
+    const q = convertQueryToString(query);
+    const endpoint = '/fsbid/notification/ops/wsdl/';
+    const ep = `${endpoint}?${q}`;
+    api().get(ep, {
+      cancelToken: new CancelToken((c) => { cancelGetOpsWsdl = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(getOpsWsdlSuccess(data));
+          dispatch(getOpsWsdlErrored(false));
+          dispatch(getOpsWsdlLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(getOpsWsdlSuccess({}));
+            dispatch(getOpsWsdlErrored(true));
+            dispatch(getOpsWsdlLoading(false));
+            dispatch(toastError(
+              GET_GAL_ERROR,
+              GET_GAL_ERROR_TITLE,
+            ));
+          });
+        } else {
+          batch(() => {
+            dispatch(getOpsWsdlSuccess({}));
+            dispatch(getOpsWsdlErrored(false));
+            dispatch(getOpsWsdlLoading(true));
+          });
+        }
+      });
+  };
+}
+
+// ================ GET OPS DATA ================
+
+export function getOpsDataErrored(bool) {
+  return {
+    type: 'OPS_DATA_FETCH_ERRORED',
+    hasErrored: bool,
+  };
+}
+export function getOpsDataLoading(bool) {
+  return {
+    type: 'OPS_DATA_FETCH_LOADING',
+    isLoading: bool,
+  };
+}
+export function getOpsDataSuccess(results) {
+  return {
+    type: 'OPS_DATA_FETCH_SUCCESS',
+    results,
+  };
+}
+let cancelGetOpsData;
+export function getOpsData(query = {}) {
+  return (dispatch) => {
+    if (cancelGetOpsData) { cancelGetOpsData('cancel'); }
+    batch(() => {
+      dispatch(getOpsDataLoading(true));
+      dispatch(getOpsDataErrored(false));
+    });
+    const q = convertQueryToString(query);
+    const endpoint = '/fsbid/notification/ops/data/';
+    const ep = `${endpoint}?${q}`;
+    api().get(ep, {
+      cancelToken: new CancelToken((c) => { cancelGetOpsData = c; }),
+    })
+      .then(({ data }) => {
+        batch(() => {
+          dispatch(getOpsDataSuccess(data));
+          dispatch(getOpsDataErrored(false));
+          dispatch(getOpsDataLoading(false));
+        });
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          batch(() => {
+            dispatch(getOpsDataSuccess({}));
+            dispatch(getOpsDataErrored(true));
+            dispatch(getOpsDataLoading(false));
+            dispatch(toastError(
+              GET_GAL_ERROR,
+              GET_GAL_ERROR_TITLE,
+            ));
+          });
+        } else {
+          batch(() => {
+            dispatch(getOpsDataSuccess({}));
+            dispatch(getOpsDataErrored(false));
+            dispatch(getOpsWsdlLoading(true));
+          });
+        }
+      });
+  };
+}
+
+// ================ CREATE OPS LOG ================
+
+let cancelCreateOpsLog;
+export function createOpsLog(data, onSuccess) {
+  return (dispatch) => {
+    if (cancelCreateOpsLog) {
+      cancelCreateOpsLog('cancel');
+    }
+    api()
+      .post('/fsbid/notification/ops/create/', data, {
+        cancelToken: new CancelToken((c) => { cancelCreateOpsLog = c; }),
+      })
+      .then(() => {
+        dispatch(toastSuccess(
+          UPDATE_NOTIFICATION_SUCCESS,
+          UPDATE_NOTIFICATION_SUCCESS_TITLE,
+        ));
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(
+            UPDATE_NOTIFICATION_ERROR,
+            UPDATE_NOTIFICATION_ERROR_TITLE,
+          ));
+        }
+      });
+  };
+}
+
+// ================ UPDATE OPS LOG ================
+
+let cancelUpdateOpsLog;
+export function updateOpsLog(data, onSuccess) {
+  return (dispatch) => {
+    if (cancelUpdateOpsLog) {
+      cancelUpdateOpsLog('cancel');
+    }
+    api()
+      .post('/fsbid/notification/ops/update/', data, {
+        cancelToken: new CancelToken((c) => { cancelUpdateOpsLog = c; }),
+      })
+      .then(() => {
+        dispatch(toastSuccess(
+          UPDATE_MEMO_SUCCESS,
+          UPDATE_MEMO_SUCCESS_TITLE,
+        ));
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(
+            UPDATE_NOTIFICATION_ERROR,
+            UPDATE_NOTIFICATION_ERROR_TITLE,
+          ));
         }
       });
   };
