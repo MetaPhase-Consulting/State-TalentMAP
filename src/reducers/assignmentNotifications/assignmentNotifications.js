@@ -16,7 +16,7 @@ export function noteCableFetchDataLoading(state = false, action) {
       return state;
   }
 }
-export function noteCableFetchData(state = [], action) {
+export function noteCableFetchData(state = {}, action) {
   switch (action.type) {
     case 'NOTE_CABLE_FETCH_SUCCESS':
       return action.results;
@@ -43,7 +43,7 @@ export function cableFetchDataLoading(state = false, action) {
       return state;
   }
 }
-export function cableFetchData(state = [], action) {
+export function cableFetchData(state = {}, action) {
   switch (action.type) {
     case 'CABLE_FETCH_SUCCESS':
       return action.results;
@@ -70,7 +70,7 @@ export function noteCableRefFetchDataLoading(state = false, action) {
       return state;
   }
 }
-export function noteCableRefFetchData(state = [], action) {
+export function noteCableRefFetchData(state = {}, action) {
   switch (action.type) {
     case 'NOTE_CABLE_REF_FETCH_SUCCESS':
       return action.results;
