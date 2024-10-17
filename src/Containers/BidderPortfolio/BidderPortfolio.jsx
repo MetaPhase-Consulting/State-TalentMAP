@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
 import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioExtraDetailsFetchData, bidderPortfolioFetchData, getClientPerdets, getPanelPerdets, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
+import { bidderPortfolioCDOsFetchData, bidderPortfolioExtraDetailsFetchData, bidderPortfolioFetchData, getClientDatePerdets, getClientPerdets, panelClientFetchData, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
@@ -36,6 +36,7 @@ class BidderPortfolio extends Component {
     this.props.fetchBidderPortfolioCDOs();
     this.props.fetchClassifications();
     this.props.fetchAvailableBidders();
+    this.props.fetchPanelDates();
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -76,7 +77,7 @@ class BidderPortfolio extends Component {
       'separations', 'languages', 'classification']; // no need for panel_clients
 
     if (query.hasHandshake === 'panel_clients') {
-      this.props.fetchPanelPerdets(query);
+      this.props.fetchPanelDatePerdets(query);
     }
 
     if (noBids || noPanel || filters.includes(query.hasHandshake)) {
@@ -164,6 +165,7 @@ class BidderPortfolio extends Component {
           updatePagination={updatePagination}
           viewType={viewType}
           isCDOD30={this.props.isCDOD30}
+          setEditClassification={this.props.setEditClassification}
         />
       </div>
     );
@@ -178,15 +180,16 @@ BidderPortfolio.propTypes = {
   fetchBidderPortfolio: PropTypes.func.isRequired,
   fetchUnassignedBidderTypes: PropTypes.func.isRequired,
   fetchBidderPortfolioCDO: PropTypes.func.isRequired,
-  fetchPanelPerdets: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolioCDOs: PropTypes.func.isRequired,
   isCDOD30: PropTypes.bool,
+  setEditClassification: PropTypes.bool,
   cdos: PropTypes.arrayOf(PropTypes.shape({})),
   selectedSeasons: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])), // eslint-disable-line
   fetchClassifications: PropTypes.func.isRequired,
+  fetchPanelDates: PropTypes.func.isRequired,
   classifications: CLASSIFICATIONS,
   classificationsHasErrored: PropTypes.bool.isRequired,
   classificationsIsLoading: PropTypes.bool.isRequired,
@@ -220,12 +223,13 @@ BidderPortfolio.defaultProps = {
   classificationsIsLoading: false,
   classificationsHasErrored: false,
   fetchClassifications: EMPTY_FUNCTION,
+  fetchPanelDates: EMPTY_FUNCTION,
   isCDOD30: false,
+  setEditClassification: false,
   cdos: [],
   selectedSeasons: [],
   classifications: [],
   bidderPortfolioCDOsIsLoading: false,
-  defaultHandshakeFilter: '',
   defaultSort: '',
   fetchAvailableBidders: EMPTY_FUNCTION,
   selectedUnassigned: [],
@@ -259,6 +263,7 @@ const mapStateToProps = state => ({
   availableBiddersIdsLoading: state.availableBiddersIdsLoading,
   bidderPortfolioPagination: state.bidderPortfolioPagination,
   isCDOD30: state.isCDOD30,
+  setEditClassification: state.setEditClassification,
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -272,10 +277,11 @@ export const mapDispatchToProps = dispatch => ({
     dispatch(bidderPortfolioExtraDetailsFetchData());
   },
   fetchPanelPerdets: async query => {
-    await dispatch(getPanelPerdets(query));
+    await dispatch(getClientDatePerdets(query));
     dispatch(bidderPortfolioExtraDetailsFetchData());
   },
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
+  fetchPanelDates: () => dispatch(panelClientFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),
   updatePagination: (arr = {}) => dispatch(saveBidderPortfolioPagination(arr)),

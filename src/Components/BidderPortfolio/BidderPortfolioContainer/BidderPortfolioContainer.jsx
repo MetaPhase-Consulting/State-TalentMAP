@@ -118,6 +118,7 @@ BidderPortfolioContainer.propTypes = {
   hideControls: PropTypes.bool,
   hasErrored: PropTypes.bool,
   isCDOD30: PropTypes.bool,
+  setEditClassification: PropTypes.bool,
   updatePagination: PropTypes.func,
   viewType: PropTypes.string,
 };
@@ -130,6 +131,7 @@ BidderPortfolioContainer.defaultProps = {
   hideControls: false,
   hasErrored: false,
   isCDOD30: false,
+  setEditClassification: false,
   updatePagination: EMPTY_FUNCTION,
   viewType: '',
 };
