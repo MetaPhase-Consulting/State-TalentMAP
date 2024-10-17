@@ -10,7 +10,7 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioFetchDataSuccess, bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
+import { bidderPortfolioExtraDetailsFetchData, bidderPortfolioFetchDataSuccess, bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -373,7 +373,10 @@ export const mapDispatchToProps = dispatch => ({
   bidderPortfolioFetchDataSuccess: (results) => dispatch(bidderPortfolioFetchDataSuccess(results)),
   setEditClassifications: (bool) => dispatch(setEditClassification(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
-  getClientDatePerdets: (query) => dispatch(getClientDatePerdets(query)),
+  getClientDatePerdets: async query => {
+    await dispatch(getClientDatePerdets(query));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);

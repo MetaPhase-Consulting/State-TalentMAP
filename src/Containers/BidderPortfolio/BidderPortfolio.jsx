@@ -213,7 +213,6 @@ BidderPortfolio.defaultProps = {
   fetchBidderPortfolio: EMPTY_FUNCTION,
   fetchBidderPortfolioCDO: EMPTY_FUNCTION,
   fetchUnassignedBidderTypes: EMPTY_FUNCTION,
-  fetchPanelPerdets: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
   bidderPortfolioCountsIsLoading: false,
   bidderPortfolioCountsHasErrored: false,
@@ -272,10 +271,6 @@ export const mapDispatchToProps = dispatch => ({
   },
   fetchUnassignedBidderTypes: async query => {
     await dispatch(getClientPerdets(query));
-    dispatch(bidderPortfolioExtraDetailsFetchData());
-  },
-  fetchPanelPerdets: async query => {
-    await dispatch(getClientDatePerdets(query));
     dispatch(bidderPortfolioExtraDetailsFetchData());
   },
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
