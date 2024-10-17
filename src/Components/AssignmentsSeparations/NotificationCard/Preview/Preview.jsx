@@ -116,7 +116,7 @@ const Preview = (props) => {
 
     // ------------ Handle Send ------------
 
-    console.log(generateXML(cable, getPreviewText(), getCableValue('SUBJECT')));
+    generateXML(cable, getPreviewText(), getCableValue('SUBJECT'));
     dispatch(sendNotification({
       I_NM_SEQ_NUM: nmSeqNum,
       I_NOTE_TYPE: type,
