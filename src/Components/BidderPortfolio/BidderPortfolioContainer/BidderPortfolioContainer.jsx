@@ -130,6 +130,7 @@ BidderPortfolioContainer.defaultProps = {
   hideControls: false,
   hasErrored: false,
   isCDOD30: false,
+  setEditClassification: false,
   updatePagination: EMPTY_FUNCTION,
   viewType: '',
 };

@@ -8,7 +8,7 @@ import { Row } from 'Components/Layout';
 import DefinitionList from '../../../DefinitionList';
 import InputActions from '../Common/InputActions';
 
-const Header = (props) => {
+const NoteHeader = (props) => {
   const { getCableValue, modCableValue, handleDefaultClear } = props;
 
   const datePickerRef = useRef(null);
@@ -57,7 +57,7 @@ const Header = (props) => {
             <label htmlFor="date">Date</label>
             <div className="date-wrapper-react larger-date-picker">
               <FA name="fa fa-calendar" onClick={() => openDatePicker()} />
-              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '', true)} />
+              <FA name="times" className={`${getCableValue('DATE') ? '' : 'hide'}`} onClick={() => modCableValue('DATE', '')} />
               <DatePicker
                 id="date"
                 selected={getCableValue('DATE') !== '' ? (new Date(getCableValue('DATE'))) : ''}
@@ -100,13 +100,13 @@ const Header = (props) => {
   );
 };
 
-Header.propTypes = {
+NoteHeader.propTypes = {
   getCableValue: PropTypes.func.isRequired,
   modCableValue: PropTypes.func.isRequired,
   handleDefaultClear: PropTypes.func.isRequired,
 };
 
-Header.defaultProps = {
+NoteHeader.defaultProps = {
 };
 
-export default Header;
+export default NoteHeader;
