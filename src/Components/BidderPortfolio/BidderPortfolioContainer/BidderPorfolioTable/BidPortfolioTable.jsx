@@ -4,6 +4,7 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDate } from 'utilities';
+import CheckBox from '../../../CheckBox';
 
 const BidPortfolioTable = ({ results }) => {
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -65,9 +66,12 @@ const BidPortfolioTable = ({ results }) => {
       setRows(mappedRows);
     }
   }, [results]);
+  const [clicked, setClicked] = useState(false);
+  const CheckboxComponent = (props) => <CheckBox {...props} className="test" value={clicked} onCheckBoxClick={() => setClicked(!clicked)} />;
 
   const [columnDefs] = useState([
-    { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', headerToolTip: 'Include/Exclude', cellDataType: 'boolean', editable: true },
+    // { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', headerToolTip: 'Include/Exclude', cellDataType: 'boolean', editable: true },
+    { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', cellRenderer: CheckboxComponent, editable: true },
     { field: 'Employee', pinned: 'left', lockPosition: 'left', headerName: 'Employee', headerToolTip: 'Employee Name' },
     { field: 'Skill', headerName: 'Skill', headerToolTip: 'Skill Code' },
     { field: 'PPGrade', headerName: 'PP/Grade', headerToolTip: 'Pay Plan/Grade' },
