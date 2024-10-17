@@ -76,9 +76,7 @@ class BidderPortfolio extends Component {
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
       'separations', 'languages', 'classification']; // no need for panel_clients
 
-    if (query.hasHandshake === 'panel_clients') {
-      this.props.fetchPanelPerdets(query);
-    }
+    if (query.hasHandshake === 'panel_clients' || query.hasHandshake === 'unassigned_filters') return;
 
     if (noBids || noPanel || filters.includes(query.hasHandshake)) {
       this.props.fetchUnassignedBidderTypes(query);
