@@ -177,7 +177,6 @@ BidderPortfolio.propTypes = {
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
   fetchUnassignedBidderTypes: PropTypes.func.isRequired,
-  fetchPanelPerdets: PropTypes.func.isRequired,
   fetchBidderPortfolioCDO: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
