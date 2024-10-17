@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchClassifications } from 'actions/classifications';
 import { BID_PORTFOLIO_FILTERS_TYPE, BID_PORTFOLIO_SORTS_TYPE, CLIENTS_PAGE_SIZES } from 'Constants/Sort';
-import { bidderPortfolioCDOsFetchData, bidderPortfolioFetchData, getClientDatePerdets, getClientPerdets, panelClientFetchData, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
+import { bidderPortfolioCDOsFetchData, bidderPortfolioExtraDetailsFetchData, bidderPortfolioFetchData, getClientPerdets, panelClientFetchData, saveBidderPortfolioPagination } from 'actions/bidderPortfolio';
 import { availableBiddersIds } from 'actions/availableBidders';
 import { BIDDER_LIST, BIDDER_PORTFOLIO_COUNTS, CLASSIFICATIONS, EMPTY_FUNCTION } from 'Constants/PropTypes';
 import { BIDDER_PORTFOLIO_PARAM_OBJECTS } from 'Constants/EndpointParams';
@@ -74,7 +74,7 @@ class BidderPortfolio extends Component {
     const noPanel = this.props.selectedUnassigned.some(obj => obj.value === 'noPanel');
     const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
-      'separations', 'languages'];
+      'separations', 'languages', 'classification']; // no need for panel_clients
 
     if (query.hasHandshake === 'panel_clients' || query.hasHandshake === 'unassigned_filters') return;
 
@@ -82,8 +82,12 @@ class BidderPortfolio extends Component {
       this.props.fetchUnassignedBidderTypes(query);
     }
 
-    if (!noBids && !noPanel && !filters.includes(query.hasHandshake)) {
+    if (!noBids && !noPanel && !filters.includes(query.hasHandshake) && query.hasHandshake !== 'panel_clients') {
       this.props.fetchBidderPortfolio(query);
+    }
+
+    if (!noBids && !noPanel && !filters.includes(query.hasHandshake) && query.hasHandshake !== 'panel_clients' && this.props.isCDOD30) {
+      this.props.fetchBidderPortfolioCDO(query);
     }
   }
 
@@ -128,7 +132,7 @@ class BidderPortfolio extends Component {
   }
 
   render() {
-    const { bidderPortfolio, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
+    const { bidderPortfolio, bidderPortfolioExtraData, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
       bidderPortfolioCounts, bidderPortfolioCountsIsLoading, availableBiddersIdsLoading,
       bidderPortfolioCountsHasErrored, cdos, bidderPortfolioCDOsIsLoading,
       updatePagination, bidderPortfolioPagination, viewType,
@@ -136,10 +140,12 @@ class BidderPortfolio extends Component {
     const { hasHandshake, ordering, bidderIdsHasLoaded } = this.state;
     const isLoading = (bidderPortfolioCDOsIsLoading || bidderPortfolioIsLoading
       || (availableBiddersIdsLoading && !bidderIdsHasLoaded)) && cdos.length;
+
     return (
       <div>
         <BidderPortfolioPage
           bidderPortfolio={bidderPortfolio}
+          bidderPortfolioExtraData={bidderPortfolioExtraData}
           bidderPortfolioIsLoading={isLoading}
           bidderPortfolioHasErrored={bidderPortfolioHasErrored}
           pageSize={bidderPortfolioPagination.pageSize || 10}
@@ -166,10 +172,12 @@ class BidderPortfolio extends Component {
 
 BidderPortfolio.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
+  bidderPortfolioExtraData: BIDDER_LIST.isRequired,
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
   fetchUnassignedBidderTypes: PropTypes.func.isRequired,
+  fetchBidderPortfolioCDO: PropTypes.func.isRequired,
   bidderPortfolioCounts: BIDDER_PORTFOLIO_COUNTS.isRequired,
   bidderPortfolioCountsIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioCountsHasErrored: PropTypes.bool.isRequired,
@@ -199,11 +207,12 @@ BidderPortfolio.propTypes = {
 
 BidderPortfolio.defaultProps = {
   bidderPortfolio: { results: [] },
+  bidderPortfolioExtraData: { results: [] },
   bidderPortfolioIsLoading: false,
   bidderPortfolioHasErrored: false,
   fetchBidderPortfolio: EMPTY_FUNCTION,
+  fetchBidderPortfolioCDO: EMPTY_FUNCTION,
   fetchUnassignedBidderTypes: EMPTY_FUNCTION,
-  fetchPanelPerdets: EMPTY_FUNCTION,
   bidderPortfolioCounts: {},
   bidderPortfolioCountsIsLoading: false,
   bidderPortfolioCountsHasErrored: false,
@@ -230,6 +239,7 @@ BidderPortfolio.defaultProps = {
 
 const mapStateToProps = state => ({
   bidderPortfolio: state.bidderPortfolio,
+  bidderPortfolioExtraData: state.bidderPortfolioExtraData,
   bidderPortfolioIsLoading: state.bidderPortfolioIsLoading,
   bidderPortfolioHasErrored: state.bidderPortfolioHasErrored,
   bidderPortfolioCounts: state.bidderPortfolioCounts,
@@ -254,10 +264,16 @@ const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  fetchBidderPortfolio: query => dispatch(bidderPortfolioFetchData(query)),
-  fetchUnassignedBidderTypes: query => dispatch(getClientPerdets(query)),
+  fetchBidderPortfolio: async query => dispatch(bidderPortfolioFetchData(query)),
+  fetchBidderPortfolioCDO: async query => {
+    await dispatch(bidderPortfolioFetchData(query, true));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
+  },
+  fetchUnassignedBidderTypes: async query => {
+    await dispatch(getClientPerdets(query));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
+  },
   fetchBidderPortfolioCDOs: () => dispatch(bidderPortfolioCDOsFetchData()),
-  fetchPanelPerdets: query => dispatch(getClientDatePerdets(query)),
   fetchPanelDates: () => dispatch(panelClientFetchData()),
   fetchClassifications: () => dispatch(fetchClassifications()),
   fetchAvailableBidders: () => dispatch(availableBiddersIds()),

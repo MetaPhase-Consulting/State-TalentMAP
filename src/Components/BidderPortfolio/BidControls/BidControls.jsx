@@ -10,7 +10,7 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
+import { bidderPortfolioExtraDetailsFetchData, bidderPortfolioFetchDataSuccess, bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -162,6 +162,7 @@ class BidControls extends Component {
   resetAllFilters = () => {
     const { resetKeyword } = this.props;
     resetKeyword();
+    this.props.bidderPortfolioFetchDataSuccess({ results: [], count: 0 });
     this.setState({ proxyCdos: [] });
     this.updateMultiSelect([]);
     this.onFilterChange(BID_PORTFOLIO_FILTERS.options[0].value);
@@ -259,7 +260,7 @@ class BidControls extends Component {
               </PreferenceWrapper>
               { unassignedFilter &&
               <div className={`unassigned-bidder-picker-container usa-form ${!unassignedFilter ? 'unassigned-disabled' : ''}`}>
-                <div className="label">Unassigned Bidders:</div>
+                <div className="label">Unassigned Filters:</div>
                 <Picky
                   placeholder="Select Criteria"
                   value={unassignedBidders}
@@ -339,6 +340,7 @@ BidControls.propTypes = {
   defaultOrdering: PropTypes.string.isRequired,
   selection: PropTypes.arrayOf(PropTypes.shape({})),
   setUnassigned: PropTypes.func.isRequired,
+  bidderPortfolioFetchDataSuccess: PropTypes.func.isRequired,
   setCDOD30: PropTypes.func.isRequired,
   setEditClassifications: PropTypes.func.isRequired,
   setPanelDateID: PropTypes.func.isRequired,
@@ -368,9 +370,13 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   setUnassigned: (arr = []) => dispatch(bidderPortfolioSetUnassigned(arr)),
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
+  bidderPortfolioFetchDataSuccess: (results) => dispatch(bidderPortfolioFetchDataSuccess(results)),
   setEditClassifications: (bool) => dispatch(setEditClassification(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
-  getClientDatePerdets: (query) => dispatch(getClientDatePerdets(query)),
+  getClientDatePerdets: async query => {
+    await dispatch(getClientDatePerdets(query));
+    dispatch(bidderPortfolioExtraDetailsFetchData());
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BidControls);
