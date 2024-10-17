@@ -67,7 +67,7 @@ const BidPortfolioTable = ({ results }) => {
   }, [results]);
 
   const [columnDefs] = useState([
-    { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', headerToolTip: 'Include/Exclude', cellDataType: 'boolean' },
+    { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', headerToolTip: 'Include/Exclude', cellDataType: 'boolean', editable: true },
     { field: 'Employee', pinned: 'left', lockPosition: 'left', headerName: 'Employee', headerToolTip: 'Employee Name' },
     { field: 'Skill', headerName: 'Skill', headerToolTip: 'Skill Code' },
     { field: 'PPGrade', headerName: 'PP/Grade', headerToolTip: 'Pay Plan/Grade' },
@@ -83,7 +83,7 @@ const BidPortfolioTable = ({ results }) => {
     { field: 'F', headerName: 'Fair Share Bidders' },
     { field: 'M', headerName: 'Meritorious Step Increases' },
     { field: 'R', headerName: 'Recommended for Tenure' },
-    { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder' },
+    { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', editable: true },
     { field: 'Ldr', headerName: 'Ldr' },
     { field: 'LocationOrg', headerName: 'Location/Org' },
     { field: 'Code', headerName: 'Code' },
@@ -101,11 +101,11 @@ const BidPortfolioTable = ({ results }) => {
     { field: 'SkillCode3', headerName: 'Skill Code 3' },
     { field: 'Number of Bids', headerName: 'Number of Bids' },
     { field: 'EFM', headerName: 'EFM' },
-    { field: 'Comments', headerName: 'Comments' },
+    { field: 'Comments', headerName: 'Comments', editable: true },
     { field: 'Send DOS Email', cellDataType: 'boolean', headerName: 'Send DOS Email' },
     { field: 'DOSEmail', headerName: 'DOS Email' },
     { field: 'Send Alt Email', cellDataType: 'boolean', headerName: 'Send Alt Email' },
-    { field: 'Alt Email', headerName: 'Alt Email' },
+    { field: 'Alt Email', headerName: 'Alt Email', editable: true },
     { field: 'Separation Date', headerName: 'Separation Date' },
     { field: 'Separation Panel Date', headerName: 'Separation Panel Date' },
     { field: 'Separation Location', headerName: 'Separation Location' },
@@ -120,12 +120,6 @@ const BidPortfolioTable = ({ results }) => {
     }
   }, []);
 
-  const defaultColDef = useMemo(() => ({
-    editable: true,
-    filter: true,
-  }), []);
-
-
   return (
     <div style={gridStyle}>
       <div
@@ -135,7 +129,6 @@ const BidPortfolioTable = ({ results }) => {
         <AgGridReact
           rowData={rows}
           columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
           onColumnPinned={onColumnPinned}
           rowSelection={rowSelection}
         />
