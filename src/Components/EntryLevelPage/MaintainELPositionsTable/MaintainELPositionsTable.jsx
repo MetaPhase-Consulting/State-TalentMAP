@@ -36,28 +36,41 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
     { field: 'ASSIGNEE_TED', headerName: 'Assignee TED', type: 'customDate', width: 125 },
   ]);
 
-  const mapObjectToRow = (obj) => ({
-    POS_SEQ_NUM: obj.POS_SEQ_NUM,
-    EL: obj.EL === 'true',
-    LNA: obj.LNA === 'true',
-    FICA: obj.FICA === 'true',
-    ELTOML: obj.ELTOML === 'true',
-    MC: obj.MC === 'true',
-    MC_END_DATE: obj.mcEndDate ? new Date(obj.mcEndDate) : null,
-    BUREAU_SHORT_DESC: obj.bureau,
-    POS_OVERSEAS_DESC: obj.OD,
-    ORG_SHORT_DESC: obj.org,
-    POS_NUM_TEXT: obj.positionNumber,
-    POS_SKILL_CODE: obj.skill,
-    POS_JOB_CATEGORY: obj.jobCategory,
-    POS_TITLE_DESC: obj.positionTitle,
-    POS_GRADE_CODE: obj.grade,
-    POS_POSITION_LANG_PROF_CODE: obj.languages,
-    INCUMBENT: obj.incumbent,
-    INCUMBENT_TED: obj.incumbentTED ? new Date(obj.incumbentTED) : null,
-    ASSIGNEE: obj.assignee,
-    ASSIGNEE_TED: obj.assigneeTED ? new Date(obj.assigneeTED) : null,
-  });
+  const mapObjectToRow = (obj) => {
+    const row = {
+      POS_SEQ_NUM: obj.POS_SEQ_NUM,
+      EL: obj.EL === 'true',
+      LNA: obj.LNA === 'true',
+      FICA: obj.FICA === 'true',
+      ELTOML: obj.ELTOML === 'true',
+      MC: obj.MC === 'true',
+      MC_END_DATE: obj.mcEndDate ? new Date(obj.mcEndDate) : null,
+      BUREAU_SHORT_DESC: obj.bureau,
+      POS_OVERSEAS_DESC: obj.OD,
+      ORG_SHORT_DESC: obj.org,
+      POS_NUM_TEXT: obj.positionNumber,
+      POS_SKILL_CODE: obj.skill,
+      POS_JOB_CATEGORY: obj.jobCategory,
+      POS_TITLE_DESC: obj.positionTitle,
+      POS_GRADE_CODE: obj.grade,
+      POS_POSITION_LANG_PROF_CODE: obj.languages,
+      INCUMBENT: obj.incumbent,
+      INCUMBENT_TED: obj.incumbentTED ? new Date(obj.incumbentTED) : null,
+      ASSIGNEE: obj.assignee,
+      ASSIGNEE_TED: obj.assigneeTED ? new Date(obj.assigneeTED) : null,
+    };
+
+    // Add unique IDs for checkbox cells only
+    const checkboxFields = ['EL', 'LNA', 'FICA', 'ELTOML', 'MC'];
+    headers.forEach(header => {
+      if (checkboxFields.includes(header.field)) {
+        row[`${header.field}_ID`] = `${obj.POS_SEQ_NUM}_${header.field}`;
+      }
+    });
+
+
+    return row;
+  };
 
   const [rows, setRows] = useState([]);
 
@@ -88,8 +101,8 @@ const MaintainELPositionsTable = forwardRef(({ elPositions }, ref) => {
 
   const onCellValueChanged = (params) => {
     // Grab the editable columns only
-    const editedData = Object.fromEntries(Object.entries(params.data).slice(0, 6));
-    // Convert MC_END_DATE back to a string if it exists
+    const editedData = Object.fromEntries(Object.entries(params.data).slice(1, 7));
+    // Convert MC_END_DATE to string
     if (editedData.MC_END_DATE) {
       editedData.MC_END_DATE = format(editedData.MC_END_DATE, 'MM/dd/yyyy');
     }
