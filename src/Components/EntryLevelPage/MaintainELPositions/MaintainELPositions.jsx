@@ -322,10 +322,11 @@ const MaintainEntryLevelPositions = () => {
                   label="Results:"
                   defaultSort={limit}
                   onSelectOption={value => setLimit(value.target.value)}
+                  disabled={elPositionsIsLoading}
                 />
               </div>
               <div className="export-button-container">
-                <ExportButton onClick={exportTable} isLoading={exportIsLoading} />
+                <ExportButton onClick={exportTable} isLoading={exportIsLoading} disabled={elPositionsIsLoading} />
               </div>
             </div>
           </div>

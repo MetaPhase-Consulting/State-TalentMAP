@@ -10,5 +10,8 @@
         .ag-cell {
             font-size: 12px;
         }
+        .ag-cell, label {
+            display: initial;
+        }
     }
 }
