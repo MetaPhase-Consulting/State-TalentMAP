@@ -2,8 +2,9 @@ import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDate } from 'utilities';
+import CheckBox from '../../../CheckBox';
 
-const BidPortfolioTable = ({ results }) => {
+const BidPortfolioTable = ({ results, setEditClassification }) => {
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const rowSelection = {
     mode: 'multiRow',
@@ -22,10 +23,11 @@ const BidPortfolioTable = ({ results }) => {
     C: obj?.classifications.includes(85) ? 'C' : '',
     C1: obj?.classifications.includes(203) ? 'C1' : '',
     CC: obj?.classifications.includes(204) ? 'CC' : '',
-    D: obj?.classifications.includes(212) ? 'D' : '',
+    D: obj?.classifications.includes(133) ? 'D' : '',
     F: obj?.classifications.includes(210) ? 'F' : '',
     M: obj?.classifications.includes(206) ? 'M' : '',
     R: obj?.classifications.includes(205) ? 'R' : '',
+    T: obj?.classifications.includes(185) ? 'T' : '',
     LocationOrg: `${obj?.pos_location} / ${obj?.current_assignment.position.organization}`,
     Code: obj?.role_code,
     Position: obj?.position,
@@ -34,8 +36,8 @@ const BidPortfolioTable = ({ results }) => {
     SkillCode: obj?.skills[0]?.code || 'None listed',
     SkillCode2: obj?.skills[1]?.code || 'None listed',
     SkillCode3: obj?.skills[2]?.code || 'None listed',
-    DOSEmail: obj?.cdos[0]?.cdo_email || 'None listed',
-    AltEmail: obj?.cdos[0]?.cdo_alt_email || 'None listed',
+    DOSEmail: obj?.cdos[0]?.cdo_email,
+    AltEmail: obj?.cdos[0]?.cdo_alt_email,
     FSEOD: formatDate(obj?.EMP_FS_EOD_DT),
     LastPromotion: formatDate(obj?.EMP_LAST_PROMOTION_DT),
     SeparationDate: formatDate(obj?.SEP_PEND_DATE),
@@ -49,7 +51,6 @@ const BidPortfolioTable = ({ results }) => {
     NumberOfBids: obj?.EMP_ACTIVE_BID_COUNT,
     PanelDate: formatDate(obj?.ASG_PEND_PANEL_DT),
     SCD: formatDate(obj?.EMP_SERVICE_DT),
-    T: true,
     SendDOSEmail: true,
     IncExc: false,
     SendAltEmail: true,
@@ -63,25 +64,52 @@ const BidPortfolioTable = ({ results }) => {
       setRows(mappedRows);
     }
   }, [results]);
+  const [included, setIncluded] = useState(false);
+  const [isTandem, setIsTandem] = useState(false);
+  const [isDOSEmail, setIsDOSEmail] = useState(false);
+  const [isAltEmail, setIsAltEmail] = useState(false);
+
+  const IncExc = () => {
+    setIncluded(!included);
+  };
+
+  const Tandem = () => {
+    setIsTandem(!isTandem);
+  };
+
+  const DOSEmail = () => {
+    setIsDOSEmail(!isDOSEmail);
+  };
+
+  const AltEmail = () => {
+    setIsAltEmail(!isAltEmail);
+  };
+
+  const IncExcCheckboxComponent = () => <CheckBox value={included} onCheckBoxClick={IncExc} disabled={false} />;
+  const TandemCheckboxComponent = (e) => <CheckBox value={isTandem} onCheckBoxClick={Tandem} disabled={e?.data?.T === ''} />;
+  const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
+  const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
+
+  const ClassificationCheckboxComponent = (e, { customParam1 }) => e?.data[customParam1] === customParam1 && setEditClassification ? <CheckBox value={false} onCheckBoxClick={IncExc} disabled={false} /> : <span>{customParam1}</span>;
 
   const [columnDefs] = useState([
-    { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', headerToolTip: 'Include/Exclude', cellDataType: 'boolean', editable: true },
+    { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', cellDataType: 'boolean', cellRenderer: IncExcCheckboxComponent },
     { field: 'Employee', pinned: 'left', lockPosition: 'left', headerName: 'Employee', headerToolTip: 'Employee Name' },
     { field: 'Skill', headerName: 'Skill', headerToolTip: 'Skill Code' },
     { field: 'PPGrade', headerName: 'PP/Grade', headerToolTip: 'Pay Plan/Grade' },
     { field: 'Tenure', headerName: 'Tenure', headerToolTip: 'Tenure' },
-    { field: '3', headerName: '3rd Tour Bidders' },
-    { field: '6', headerName: '6/8 Rule' },
-    { field: '8', headerName: '8 Rule' },
-    { field: 'A', headerName: 'Ambassador or Deputy Assistant Secretary' },
-    { field: 'C', headerName: 'Critical Need Language' },
-    { field: 'C1', headerName: 'Critical Need Language 1st Tour Complete' },
-    { field: 'CC', headerName: 'Critical Need Language Final Tour Complete' },
-    { field: 'D', headerName: 'Differential Bidder' },
-    { field: 'F', headerName: 'Fair Share Bidders' },
-    { field: 'M', headerName: 'Meritorious Step Increases' },
-    { field: 'R', headerName: 'Recommended for Tenure' },
-    { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', editable: true },
+    { field: '3', headerName: '3rd Tour Bidders', cellDataType: 'boolean', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '3' } },
+    { field: '6', headerName: '6/8 Rule', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '6' } },
+    { field: '8', headerName: '8 Rule', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '8' } },
+    { field: 'A', headerName: 'Ambassador or Deputy Assistant Secretary', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'A' } },
+    { field: 'C', headerName: 'Critical Need Language', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'C' } },
+    { field: 'C1', headerName: 'Critical Need Language 1st Tour Complete', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'C1' } },
+    { field: 'CC', headerName: 'Critical Need Language Final Tour Complete', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'CC' } },
+    { field: 'D', headerName: 'Differential Bidder', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'D' } },
+    { field: 'F', headerName: 'Fair Share Bidders', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'F' } },
+    { field: 'M', headerName: 'Meritorious Step Increases', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'M' } },
+    { field: 'R', headerName: 'Recommended for Tenure', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'R' } },
+    { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', cellRenderer: TandemCheckboxComponent },
     { field: 'Ldr', headerName: 'Ldr' },
     { field: 'LocationOrg', headerName: 'Location/Org' },
     { field: 'Code', headerName: 'Code' },
@@ -100,9 +128,9 @@ const BidPortfolioTable = ({ results }) => {
     { field: 'NumberOfBids', headerName: 'Number of Bids' },
     { field: 'EFM', headerName: 'EFM' },
     { field: 'Comments', headerName: 'Comments', editable: true },
-    { field: 'SendDOSEmail', cellDataType: 'boolean', headerName: 'Send DOS Email' },
-    { field: 'DOSEmail', headerName: 'DOS Email' },
-    { field: 'SendAltEmail', cellDataType: 'boolean', headerName: 'Send Alt Email' },
+    { field: 'SendDOSEmail', cellDataType: 'boolean', headerName: 'Send DOS Email', cellRenderer: DOSEmailCheckboxComponent },
+    { field: 'DOSEmail', headerName: 'DOS Email', editable: true },
+    { field: 'SendAltEmail', cellDataType: 'boolean', headerName: 'Send Alt Email', cellRenderer: AltEmailCheckboxComponent },
     { field: 'AltEmail', headerName: 'Alt Email', editable: true },
     { field: 'SeparationDate', headerName: 'Separation Date' },
     { field: 'SeparationPanelDate', headerName: 'Separation Panel Date' },
@@ -137,5 +165,6 @@ const BidPortfolioTable = ({ results }) => {
 
 BidPortfolioTable.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setEditClassification: PropTypes.bool.isRequired,
 };
 export default BidPortfolioTable;

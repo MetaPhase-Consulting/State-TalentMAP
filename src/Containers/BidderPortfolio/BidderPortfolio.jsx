@@ -132,7 +132,7 @@ class BidderPortfolio extends Component {
   }
 
   render() {
-    const { bidderPortfolio, bidderPortfolioExtraData, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
+    const { bidderPortfolio, bidderPortfolioIsLoading, bidderPortfolioHasErrored,
       bidderPortfolioCounts, bidderPortfolioCountsIsLoading, availableBiddersIdsLoading,
       bidderPortfolioCountsHasErrored, cdos, bidderPortfolioCDOsIsLoading,
       updatePagination, bidderPortfolioPagination, viewType,
@@ -145,7 +145,6 @@ class BidderPortfolio extends Component {
       <div>
         <BidderPortfolioPage
           bidderPortfolio={bidderPortfolio}
-          bidderPortfolioExtraData={bidderPortfolioExtraData}
           bidderPortfolioIsLoading={isLoading}
           bidderPortfolioHasErrored={bidderPortfolioHasErrored}
           pageSize={bidderPortfolioPagination.pageSize || 10}
@@ -172,7 +171,6 @@ class BidderPortfolio extends Component {
 
 BidderPortfolio.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
-  bidderPortfolioExtraData: BIDDER_LIST.isRequired,
   bidderPortfolioIsLoading: PropTypes.bool.isRequired,
   bidderPortfolioHasErrored: PropTypes.bool.isRequired,
   fetchBidderPortfolio: PropTypes.func.isRequired,
@@ -207,7 +205,6 @@ BidderPortfolio.propTypes = {
 
 BidderPortfolio.defaultProps = {
   bidderPortfolio: { results: [] },
-  bidderPortfolioExtraData: { results: [] },
   bidderPortfolioIsLoading: false,
   bidderPortfolioHasErrored: false,
   fetchBidderPortfolio: EMPTY_FUNCTION,
@@ -239,7 +236,6 @@ BidderPortfolio.defaultProps = {
 
 const mapStateToProps = state => ({
   bidderPortfolio: state.bidderPortfolio,
-  bidderPortfolioExtraData: state.bidderPortfolioExtraData,
   bidderPortfolioIsLoading: state.bidderPortfolioIsLoading,
   bidderPortfolioHasErrored: state.bidderPortfolioHasErrored,
   bidderPortfolioCounts: state.bidderPortfolioCounts,
@@ -266,8 +262,7 @@ const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   fetchBidderPortfolio: async query => dispatch(bidderPortfolioFetchData(query)),
   fetchBidderPortfolioCDO: async query => {
-    await dispatch(bidderPortfolioFetchData(query, true));
-    dispatch(bidderPortfolioExtraDetailsFetchData());
+    await dispatch(bidderPortfolioFetchData(query));
   },
   fetchUnassignedBidderTypes: async query => {
     await dispatch(getClientPerdets(query));

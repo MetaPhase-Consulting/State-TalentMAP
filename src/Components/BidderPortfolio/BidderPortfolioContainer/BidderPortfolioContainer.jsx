@@ -23,8 +23,8 @@ class BidderPortfolioContainer extends Component {
   };
 
   render() {
-    const { bidderPortfolio, bidderPortfolioExtraData, pageSize, showListView, isLoading, viewType,
-      cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30 } = this.props;
+    const { bidderPortfolio, pageSize, showListView, isLoading, viewType,
+      cdosLength, hideControls, classifications, hasErrored, pageNumber, isCDOD30, setEditClassification } = this.props;
 
     const showCDOD30 = checkFlag('flags.CDOD30');
 
@@ -33,20 +33,20 @@ class BidderPortfolioContainer extends Component {
     const showEdit$ = !hideControls && showCDOD30;
     const showExpand = !hideControls;
 
-    const getExtraClientData = () => {
-      const combinedArray = bidderPortfolio?.results?.map(item1 => {
-        const matchingItem = bidderPortfolioExtraData?.find(item2 => Number(item2?.PER_SEQ_NUM) === Number(item1?.perdet_seq_number));
-        return matchingItem ? { ...item1, ...matchingItem } : null;
-      }).filter(item => item !== null);
+    // const getExtraClientData = () => {
+    //   const combinedArray = bidderPortfolio?.results?.map(item1 => {
+    //     const matchingItem = bidderPortfolioExtraData?.find(item2 => Number(item2?.PER_SEQ_NUM) === Number(item1?.perdet_seq_number));
+    //     return matchingItem ? { ...item1, ...matchingItem } : null;
+    //   }).filter(item => item !== null);
 
-      return combinedArray;
-    };
+    //   return combinedArray;
+    // };
 
     return (
       <div className="usa-grid-full user-dashboard" id={ID}>
         {!showNoCdosAlert && !hasErrored && isCDOD30 && !noResults &&
           <div className="usa-grid-full bidder-portfolio-listing">
-            <BidderPortfolioTable results={bidderPortfolioExtraData.length !== 0 ? getExtraClientData() : []} />
+            <BidderPortfolioTable results={bidderPortfolio.results} setEditClassification={setEditClassification} />
           </div>
         }
         {
@@ -107,7 +107,6 @@ class BidderPortfolioContainer extends Component {
 
 BidderPortfolioContainer.propTypes = {
   bidderPortfolio: BIDDER_LIST.isRequired,
-  bidderPortfolioExtraData: BIDDER_LIST.isRequired,
   pageSize: PropTypes.number.isRequired,
   queryParamUpdate: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,
@@ -118,6 +117,7 @@ BidderPortfolioContainer.propTypes = {
   hideControls: PropTypes.bool,
   hasErrored: PropTypes.bool,
   isCDOD30: PropTypes.bool,
+  setEditClassification: PropTypes.bool,
   updatePagination: PropTypes.func,
   viewType: PropTypes.string,
 };
