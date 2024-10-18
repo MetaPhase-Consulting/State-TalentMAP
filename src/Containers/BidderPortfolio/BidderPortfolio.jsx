@@ -74,7 +74,7 @@ class BidderPortfolio extends Component {
     const noPanel = this.props.selectedUnassigned.some(obj => obj.value === 'noPanel');
     const noBids = this.props.selectedUnassigned.some(obj => obj.value === 'noBids');
     const filters = ['handshake', 'eligible_bidders', 'cusp_bidders',
-      'separations', 'languages', 'classification']; // no need for panel_clients
+      'separations', 'languages'];
 
     if (query.hasHandshake === 'panel_clients' || query.hasHandshake === 'unassigned_filters') return;
 
