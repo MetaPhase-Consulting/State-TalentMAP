@@ -13,7 +13,7 @@ import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import NavTabs from 'Components/NavTabs';
 import InteractiveElement from 'Components/InteractiveElement';
-import { generatePDF, generateXML } from '../Common/Utilities';
+import { generateHTML, generatePDF, generateXML } from '../Common/Utilities';
 
 const useNotificationSend = () => checkFlag('flags.assignment_notification_send');
 const useMemoSend = () => checkFlag('flags.assignment_memo_send');
@@ -88,7 +88,6 @@ const Preview = (props) => {
     return memoPreview.join('\n');
   };
 
-
   const handleSend = () => {
     const nmSeqNum = note?.NM_SEQ_NUM;
     const type = memo ? 'M' : 'C';
@@ -100,6 +99,7 @@ const Preview = (props) => {
     const filename = `TMONE_${memo ? 'MEMO' : 'CABLE'}_${nmSeqNum}_${date}_${time}.pdf`;
     generatePDF(getPreviewText, filename, memo); // TEMPORARY: Saves PDF locally for testing purposes
     generateXML(cable, getPreviewText(), getCableValue('SUBJECT'));
+    generateHTML(getCableValue, cable?.O_LAST_SENT_DATE, getPreviewText());
     dispatch(sendNotification({
       PV_NM_SEQ_NUM_I: nmSeqNum,
       PV_FILE_NAME_I: filename,
@@ -165,6 +165,7 @@ const Preview = (props) => {
                   <div className="gal-result">
                     {gal?.map(g => (
                       <div
+                        key={g.GAL_SMTP_EMAIL_ADRS_TEXT}
                         tabIndex={0}
                         role="button"
                         className="gal-result__item clickable"
