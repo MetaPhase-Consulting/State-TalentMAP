@@ -276,7 +276,6 @@ export const generateSoapXML = (log) => {
   return xmlStr;
 };
 
-/* eslint-disable react/style-prop-object */
 /**
  * Generates HTML of TM1 Memo according to FSBID format
  * @param {*} getCableValue helper function to retrieve memo fields
