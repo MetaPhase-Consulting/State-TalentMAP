@@ -54,6 +54,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     SendDOSEmail: true,
     IncExc: false,
     SendAltEmail: true,
+    classifications: obj?.classifications,
+    perdetSeqNumber: obj?.perdet_seq_number,
   });
 
   const [rows, setRows] = useState([]);
@@ -70,7 +72,6 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const [isAltEmail, setIsAltEmail] = useState(false);
 
   const IncExc = (e) => {
-    console.log('Included', e);
     setIncluded(!included);
   };
   const setClassifications = (e) => {
