@@ -69,7 +69,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const [isDOSEmail, setIsDOSEmail] = useState(false);
   const [isAltEmail, setIsAltEmail] = useState(false);
 
-  const IncExc = () => {
+  const IncExc = (e) => {
+    console.log('E', e);
     setIncluded(!included);
   };
 
@@ -90,7 +91,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
-  const ClassificationCheckboxComponent = (e, { customParam1 }) => e?.data[customParam1] === customParam1 && setEditClassification ? <CheckBox value={false} onCheckBoxClick={IncExc} disabled={false} /> : <span>{customParam1}</span>;
+  const ClassificationCheckboxComponent = (e, { customParam1 }) => e?.data[customParam1] === customParam1 && setEditClassification ? <CheckBox value={false} onCheckBoxClick={() => IncExc(e)} disabled={false} /> : <span>{customParam1}</span>;
 
   const [columnDefs] = useState([
     { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', cellDataType: 'boolean', cellRenderer: IncExcCheckboxComponent },
