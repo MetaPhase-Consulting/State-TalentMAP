@@ -70,8 +70,11 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const [isAltEmail, setIsAltEmail] = useState(false);
 
   const IncExc = (e) => {
-    console.log('E', e);
+    console.log('Included', e);
     setIncluded(!included);
+  };
+  const setClassifications = (e) => {
+    console.log('E', e);
   };
 
   const Tandem = () => {
@@ -86,12 +89,13 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     setIsAltEmail(!isAltEmail);
   };
 
-  const IncExcCheckboxComponent = () => <CheckBox value={included} onCheckBoxClick={IncExc} disabled={false} />;
+  const IncExcCheckboxComponent = (e) => <CheckBox value={included} onCheckBoxClick={() => IncExc(e)} disabled={false} />;
   const TandemCheckboxComponent = (e) => <CheckBox value={isTandem} onCheckBoxClick={Tandem} disabled={e?.data?.T === ''} />;
   const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
-  const ClassificationCheckboxComponent = (e, { customParam1 }) => e?.data[customParam1] === customParam1 && setEditClassification ? <CheckBox value={false} onCheckBoxClick={() => IncExc(e)} disabled={false} /> : <span>{customParam1}</span>;
+  const ClassificationCheckboxComponent = (e, { customParam1, customParam2 }) => e?.data[customParam1] === customParam1 && setEditClassification ?
+    <CheckBox value={customParam2} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{customParam1}</span>;
 
   const [columnDefs] = useState([
     { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', cellDataType: 'boolean', cellRenderer: IncExcCheckboxComponent },
@@ -99,18 +103,18 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     { field: 'Skill', headerName: 'Skill', headerToolTip: 'Skill Code' },
     { field: 'PPGrade', headerName: 'PP/Grade', headerToolTip: 'Pay Plan/Grade' },
     { field: 'Tenure', headerName: 'Tenure', headerToolTip: 'Tenure' },
-    { field: '3', headerName: '3rd Tour Bidders', cellDataType: 'boolean', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '3' } },
-    { field: '6', headerName: '6/8 Rule', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '6' } },
-    { field: '8', headerName: '8 Rule', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '8' } },
-    { field: 'A', headerName: 'Ambassador or Deputy Assistant Secretary', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'A' } },
-    { field: 'C', headerName: 'Critical Need Language', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'C' } },
-    { field: 'C1', headerName: 'Critical Need Language 1st Tour Complete', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'C1' } },
-    { field: 'CC', headerName: 'Critical Need Language Final Tour Complete', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'CC' } },
-    { field: 'D', headerName: 'Differential Bidder', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'D' } },
-    { field: 'F', headerName: 'Fair Share Bidders', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'F' } },
-    { field: 'M', headerName: 'Meritorious Step Increases', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'M' } },
-    { field: 'R', headerName: 'Recommended for Tenure', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'R' } },
-    { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', cellRenderer: TandemCheckboxComponent },
+    { field: '3', headerName: '3rd Tour Bidders', cellDataType: 'boolean', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '3', customParam2: 207 } },
+    { field: '6', headerName: '6/8 Rule', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '6', customParam2: 208 } },
+    { field: '8', headerName: '8 Rule', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: '8', customParam2: 217 } },
+    { field: 'A', headerName: 'Ambassador or Deputy Assistant Secretary', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'A', customParam2: 209 } },
+    { field: 'C', headerName: 'Critical Need Language', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'C', customParam2: 85 } },
+    { field: 'C1', headerName: 'Critical Need Language 1st Tour Complete', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'C1', customParam2: 203 } },
+    { field: 'CC', headerName: 'Critical Need Language Final Tour Complete', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'CC', customParam2: 204 } },
+    { field: 'D', headerName: 'Differential Bidder', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'D', customParam2: 133 } },
+    { field: 'F', headerName: 'Fair Share Bidders', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'F', customParam2: 210 } },
+    { field: 'M', headerName: 'Meritorious Step Increases', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'M', customParam2: 206 } },
+    { field: 'R', headerName: 'Recommended for Tenure', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'R', customParam2: 205 } },
+    { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', cellRenderer: TandemCheckboxComponent, cellRendererParams: { customParam1: 'T', customParam2: 185 } },
     { field: 'Ldr', headerName: 'Ldr' },
     { field: 'LocationOrg', headerName: 'Location/Org' },
     { field: 'Code', headerName: 'Code' },
