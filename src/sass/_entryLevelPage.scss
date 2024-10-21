@@ -1,8 +1,4 @@
 .entry-level-page {
-    .el-page-header {
-        font-size: 24px;
-    }
-    
     .el-table{
         // AG-Grid
         .ag-header-cell-label {
@@ -13,6 +9,9 @@
         }
         .ag-cell {
             font-size: 12px;
+        }
+        .ag-cell, label {
+            display: initial;
         }
     }
 }

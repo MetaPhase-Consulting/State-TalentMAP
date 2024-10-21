@@ -15,6 +15,7 @@ import { filter, flatten, isEmpty } from 'lodash';
 import { POSITION_PAGE_SIZES } from 'Constants/Sort';
 import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
+import TotalResults from '../../TotalResults';
 
 const MaintainEntryLevelPositions = () => {
   const dispatch = useDispatch();
@@ -304,7 +305,15 @@ const MaintainEntryLevelPositions = () => {
             </div>
           </div>
           <div className="controls-container results-dropdown">
-            <div className="el-page-header">Maintain Entry Level Positions</div>
+            <div>
+              <TotalResults
+                total={count}
+                pageNumber={page}
+                pageSize={limit}
+                suffix="Results"
+                isHidden={elPositionsIsLoading}
+              />
+            </div>
             <div className="position-search-controls--right">
               <div className="position-search-controls--results">
                 <SelectForm
@@ -313,10 +322,11 @@ const MaintainEntryLevelPositions = () => {
                   label="Results:"
                   defaultSort={limit}
                   onSelectOption={value => setLimit(value.target.value)}
+                  disabled={elPositionsIsLoading}
                 />
               </div>
               <div className="export-button-container">
-                <ExportButton onClick={exportTable} isLoading={exportIsLoading} />
+                <ExportButton onClick={exportTable} isLoading={exportIsLoading} disabled={elPositionsIsLoading} />
               </div>
             </div>
           </div>
