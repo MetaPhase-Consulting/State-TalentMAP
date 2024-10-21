@@ -71,7 +71,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const [isDOSEmail, setIsDOSEmail] = useState(false);
   const [isAltEmail, setIsAltEmail] = useState(false);
 
-  const IncExc = (e) => {
+  const IncExc = () => {
     setIncluded(!included);
   };
   const setClassifications = (e) => {
