@@ -72,8 +72,6 @@ const PanelMeetingAgendas = (props) => {
   const genericFilters = useSelector(state => state.filters);
 
   const genericFilters$ = get(genericFilters, 'filters') || [];
-  const bureaus = genericFilters$.find(f => get(f, 'item.description') === 'region');
-  const bureausOptions = uniqBy(sortBy(get(bureaus, 'data'), [(b) => b.short_description]));
   const grades = genericFilters$.find(f => get(f, 'item.description') === 'grade');
   const gradesOptions = uniqBy(get(grades, 'data'), 'code');
   const skills = genericFilters$.find(f => get(f, 'item.description') === 'skill');
@@ -96,7 +94,6 @@ const PanelMeetingAgendas = (props) => {
     includes([orgsLoading, remarksLoading, statusLoading,
       actionLoading, categoryLoading], true);
 
-  const [selectedBureaus, setSelectedBureaus] = useState(get(userSelections, 'selectedBureaus') || []);
   const [selectedOrgs, setSelectedOrgs] = useState(get(userSelections, 'selectedOrgs') || []);
   const [selectedCategories, setSelectedCategories] = useState(get(userSelections, 'selectedCategories') || []);
   const [selectedGrades, setSelectedGrades] = useState(get(userSelections, 'selectedGrades') || []);
@@ -115,7 +112,6 @@ const PanelMeetingAgendas = (props) => {
     limit,
     ordering: ['-panel_date', 'agenda_id'],
     pmipmseqnum: pmSeqNums,
-    bureaus: selectedBureaus.map(bureauObject => bureauObject.code),
     orgs: selectedOrgs.map(orgObject => orgObject.code),
     categories: selectedCategories.map(categoryObject => categoryObject.mic_code),
     grades: selectedGrades.map(gradeObject => gradeObject.code),
@@ -128,7 +124,6 @@ const PanelMeetingAgendas = (props) => {
   });
 
   const getCurrentInputs = () => ({
-    selectedBureaus,
     selectedOrgs,
     selectedCategories,
     selectedGrades,
@@ -144,7 +139,6 @@ const PanelMeetingAgendas = (props) => {
 
   const fetchAndSet = () => {
     const filters = [
-      selectedBureaus,
       selectedOrgs,
       selectedCategories,
       selectedGrades,
@@ -171,7 +165,6 @@ const PanelMeetingAgendas = (props) => {
   useEffect(() => {
     fetchAndSet();
   }, [
-    selectedBureaus,
     selectedOrgs,
     selectedCategories,
     selectedGrades,
@@ -231,7 +224,6 @@ const PanelMeetingAgendas = (props) => {
   };
 
   const resetFilters = () => {
-    setSelectedBureaus([]);
     setSelectedOrgs([]);
     setSelectedCategories([]);
     setSelectedGrades([]);
@@ -286,19 +278,6 @@ const PanelMeetingAgendas = (props) => {
               </div>
             </div>
             <div className="usa-width-one-whole position-search--filters--panel-m-agendas">
-              <div className="filter-div">
-                <div className="label">Bureau:</div>
-                <Picky
-                  {...pickyProps}
-                  placeholder="Select Bureau(s)"
-                  value={selectedBureaus}
-                  options={bureausOptions}
-                  onChange={setSelectedBureaus}
-                  valueKey="code"
-                  labelKey="long_description"
-                  disabled={isLoading}
-                />
-              </div>
               <div className="filter-div">
                 <div className="label">Organization:</div>
                 <Picky
