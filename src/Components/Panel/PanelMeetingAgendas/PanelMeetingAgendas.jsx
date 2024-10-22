@@ -279,7 +279,7 @@ const PanelMeetingAgendas = (props) => {
             </div>
             <div className="usa-width-one-whole position-search--filters--panel-m-agendas">
               <div className="filter-div">
-                <div className="label">Organization:</div>
+                <div className="label">Location/Org:</div>
                 <Picky
                   {...pickyProps}
                   placeholder="Select Organization(s)"
