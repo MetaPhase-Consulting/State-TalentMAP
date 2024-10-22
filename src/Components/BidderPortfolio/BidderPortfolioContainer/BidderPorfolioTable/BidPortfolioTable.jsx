@@ -104,10 +104,12 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   };
 
   const DOSEmail = () => {
+    // will complete this later
     setIsDOSEmail(!isDOSEmail);
   };
 
   const AltEmail = () => {
+    // will complete this later
     setIsAltEmail(!isAltEmail);
   };
 
@@ -116,7 +118,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
-  const ClassificationCheckboxComponent = (e) => () => setEditClassification ?
+  const ClassificationCheckboxComponent = (e) => setEditClassification ?
     <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
 
   const [columnDefs] = useState([
