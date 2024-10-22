@@ -1,7 +1,7 @@
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { difference } from 'lodash';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDate } from 'utilities';
 import { updateClassifications } from 'actions/classifications';
@@ -14,6 +14,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     mode: 'multiRow',
     headerCheckbox: false,
   };
+
+  const selectedSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
 
   const mapObjectToRow = (obj) => ({
     Employee: obj?.shortened_name,
@@ -102,7 +104,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     // will complete this later, but this will add the person to the CC recipient list
   };
 
-  const IncExcCheckboxComponent = () => <CheckBox onCheckBoxClick={IncExc} disabled={false} />;
+  const IncExcCheckboxComponent = () => <CheckBox onCheckBoxClick={IncExc} disabled={selectedSeasons.length} />;
   const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={e?.data?.T === ''} />;
   const DOSEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
