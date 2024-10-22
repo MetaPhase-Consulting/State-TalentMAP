@@ -79,7 +79,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     setIncluded(!included);
   };
   const setClassifications = (e) => {
-    const pushClass = [...e.classifications];
+    console.log('E', e);
+    const pushClass = [...e.data.classifications];
     if (!pushClass.includes(e.customParam2)) {
       pushClass.push(e.customParam2);
     } else {
@@ -89,14 +90,13 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
       }
     }
 
-    console.log('E', e);
     console.log('pushClass', pushClass);
     const updateDiff = {
-      insert: difference(pushClass, e.classifications),
-      delete: difference(e.classifications, pushClass),
+      insert: difference(pushClass, e.data.classifications),
+      delete: difference(e.data.classifications, pushClass),
     };
 
-    this.props.updateUserClassifications(updateDiff, e.perdetSeqNumber);
+    this.props.updateUserClassifications(updateDiff, e.data.perdetSeqNumber);
   };
 
   const Tandem = () => {
