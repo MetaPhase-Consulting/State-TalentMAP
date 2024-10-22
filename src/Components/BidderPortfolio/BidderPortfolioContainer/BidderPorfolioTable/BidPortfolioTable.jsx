@@ -19,7 +19,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     Employee: obj?.shortened_name,
     Skill: obj?.skills[0]?.description || 'None listed',
     PPGrade: obj?.combined_pp_grade,
-    Tenure: obj?.per_tenure,
+    Tenure: obj?.PER_TENURE_CODE,
     3: obj?.classifications.includes(207) ? '3' : '',
     6: obj?.classifications.includes(208) ? '6' : '',
     8: obj?.classifications.includes(217) ? '8' : '',
