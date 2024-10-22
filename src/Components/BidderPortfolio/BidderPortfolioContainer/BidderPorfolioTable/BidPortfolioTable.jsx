@@ -115,8 +115,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
-  const ClassificationCheckboxComponent = (e, { customParam1, customParam2 }) => setEditClassification ?
-    <CheckBox value={e?.data?.classifications.includes(customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{customParam1}</span>;
+  const ClassificationCheckboxComponent = (e) => setEditClassification ?
+    <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{e.customParam1}</span>;
 
   const [columnDefs] = useState([
     { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', cellDataType: 'boolean', cellRenderer: IncExcCheckboxComponent },
