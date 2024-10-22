@@ -111,7 +111,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   };
 
   const IncExcCheckboxComponent = (e) => <CheckBox value={included} onCheckBoxClick={() => IncExc(e)} disabled={false} />;
-  const TandemCheckboxComponent = (e) => <CheckBox value={isTandem} onCheckBoxClick={Tandem} disabled={e?.data?.T === ''} />;
+  const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(185)} onCheckBoxClick={Tandem} disabled={e?.data?.T === ''} />;
   const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
