@@ -70,12 +70,9 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
       setRows(mappedRows);
     }
   }, [results]);
-  const [included, setIncluded] = useState(false);
-  const [isDOSEmail, setIsDOSEmail] = useState(false);
-  const [isAltEmail, setIsAltEmail] = useState(false);
 
   const IncExc = () => {
-    setIncluded(!included);
+    // will update this later but this will update the include/exclude status of the person
   };
 
   const setClassifications = (e) => {
@@ -97,19 +94,17 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   };
 
   const DOSEmail = () => {
-    // will complete this later
-    setIsDOSEmail(!isDOSEmail);
+    // will complete this later but this will send the email to the recipient list
   };
 
   const AltEmail = () => {
-    // will complete this later
-    setIsAltEmail(!isAltEmail);
+    // will complete this later, but this will add the person to the CC recipient list
   };
 
-  const IncExcCheckboxComponent = () => <CheckBox value={included} onCheckBoxClick={IncExc} disabled={false} />;
+  const IncExcCheckboxComponent = () => <CheckBox onCheckBoxClick={IncExc} disabled={false} />;
   const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={e?.data?.T === ''} />;
-  const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
-  const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
+  const DOSEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
+  const AltEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
   const ClassificationCheckboxComponent = (e) => setEditClassification ?
     <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
