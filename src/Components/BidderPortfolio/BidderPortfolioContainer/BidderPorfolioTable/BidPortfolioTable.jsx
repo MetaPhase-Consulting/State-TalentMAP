@@ -1,14 +1,14 @@
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { difference } from 'lodash';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDate } from 'utilities';
 import { updateClassifications } from 'actions/classifications';
-import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import CheckBox from '../../../CheckBox';
 
 const BidPortfolioTable = ({ results, setEditClassification }) => {
+  const dispatch = useDispatch();
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const rowSelection = {
     mode: 'multiRow',
@@ -95,8 +95,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
       insert: difference(pushClass, e.data.classifications),
       delete: difference(e.data.classifications, pushClass),
     };
-
-    this.props.updateUserClassifications(updateDiff, e.data.perdetSeqNumber);
+    dispatch(updateClassifications(updateDiff, e.data.perdetSeqNumber));
   };
 
   const Tandem = () => {
@@ -195,13 +194,4 @@ BidPortfolioTable.propTypes = {
   setEditClassification: PropTypes.bool.isRequired,
 };
 
-BidPortfolioTable.defaultProps = {
-  updateUserClassifications: EMPTY_FUNCTION,
-};
-
-export const mapDispatchToProps = dispatch => ({
-  updateUserClassifications: (classification, id) =>
-    dispatch(updateClassifications(classification, id)),
-});
-
-export default connect(null, mapDispatchToProps)(BidPortfolioTable);
+export default BidPortfolioTable;
