@@ -1,7 +1,11 @@
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
+import { difference } from 'lodash';
+import { connect } from 'react-redux';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDate } from 'utilities';
+import { updateClassifications } from 'actions/classifications';
+import { EMPTY_FUNCTION } from 'Constants/PropTypes';
 import CheckBox from '../../../CheckBox';
 
 const BidPortfolioTable = ({ results, setEditClassification }) => {
@@ -75,7 +79,24 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     setIncluded(!included);
   };
   const setClassifications = (e) => {
+    const pushClass = [...e.classifications];
+    if (!pushClass.includes(e.customParam2)) {
+      pushClass.push(e.customParam2);
+    } else {
+      const index = pushClass.indexOf(e.customParam2);
+      if (index > -1) {
+        pushClass.splice(index, 1);
+      }
+    }
+
     console.log('E', e);
+    console.log('pushClass', pushClass);
+    const updateDiff = {
+      insert: difference(pushClass, e.classifications),
+      delete: difference(e.classifications, pushClass),
+    };
+
+    this.props.updateUserClassifications(updateDiff, e.perdetSeqNumber);
   };
 
   const Tandem = () => {
@@ -173,4 +194,14 @@ BidPortfolioTable.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   setEditClassification: PropTypes.bool.isRequired,
 };
-export default BidPortfolioTable;
+
+BidPortfolioTable.defaultProps = {
+  updateUserClassifications: EMPTY_FUNCTION,
+};
+
+export const mapDispatchToProps = dispatch => ({
+  updateUserClassifications: (classification, id) =>
+    dispatch(updateClassifications(classification, id)),
+});
+
+export default connect(null, mapDispatchToProps)(BidPortfolioTable);
