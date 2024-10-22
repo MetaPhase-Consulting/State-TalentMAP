@@ -80,7 +80,6 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   };
 
   const setClassifications = (e) => {
-    console.log('E', e);
     const pushClass = [...e.data.classifications];
     if (!pushClass.includes(e.customParam2)) {
       pushClass.push(e.customParam2);
@@ -91,16 +90,11 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
       }
     }
 
-    console.log('pushClass', pushClass);
     const updateDiff = {
       insert: difference(pushClass, e.data.classifications),
       delete: difference(e.data.classifications, pushClass),
     };
     dispatch(updateClassifications(updateDiff, e.data.perdetSeqNumber));
-  };
-
-  const Tandem = () => {
-    setIsTandem(!isTandem);
   };
 
   const DOSEmail = () => {
@@ -114,7 +108,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   };
 
   const IncExcCheckboxComponent = () => <CheckBox value={included} onCheckBoxClick={IncExc} disabled={false} />;
-  const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(185)} onCheckBoxClick={Tandem} disabled={e?.data?.T === ''} />;
+  const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={e?.data?.T === ''} />;
   const DOSEmailCheckboxComponent = (e) => <CheckBox value={isDOSEmail} onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox value={isAltEmail} onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
 
