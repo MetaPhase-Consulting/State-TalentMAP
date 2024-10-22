@@ -128,7 +128,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     { field: 'F', headerName: 'Fair Share Bidders', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'F', customParam2: 210 } },
     { field: 'M', headerName: 'Meritorious Step Increases', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'M', customParam2: 206 } },
     { field: 'R', headerName: 'Recommended for Tenure', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'R', customParam2: 205 } },
-    { field: 'PR', headerName: 'Recommended for Tenure', cellRenderer: PRClassificationCheckboxComponent, cellRendererParams: { customParam1: 'PR', customParam2: 211 } },
+    { field: 'PR', headerName: 'Pickering/Rangel Fellow', cellRenderer: PRClassificationCheckboxComponent, cellRendererParams: { customParam1: 'PR', customParam2: 211 } },
     { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', cellRenderer: TandemCheckboxComponent, cellRendererParams: { customParam1: 'T', customParam2: 185 } },
     { field: 'Ldr', headerName: 'Ldr' },
     { field: 'LocationOrg', headerName: 'Location/Org' },
