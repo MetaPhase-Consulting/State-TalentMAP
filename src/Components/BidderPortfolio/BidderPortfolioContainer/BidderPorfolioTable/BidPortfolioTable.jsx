@@ -31,6 +31,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     F: obj?.classifications.includes(210) ? 'F' : '',
     M: obj?.classifications.includes(206) ? 'M' : '',
     R: obj?.classifications.includes(205) ? 'R' : '',
+    PR: obj?.classifications.includes(211) ? 'PR' : '',
     T: obj?.classifications.includes(185) ? 'T' : '',
     LocationOrg: `${obj?.pos_location} / ${obj?.current_assignment.position.organization}`,
     Code: obj?.role_code,
@@ -105,7 +106,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={e?.data?.T === ''} />;
   const DOSEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;
-
+  const PRClassificationCheckboxComponent = (e) => setEditClassification ?
+    <CheckBox value={e?.data?.classifications.includes(e.customParam2)} disabled /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
   const ClassificationCheckboxComponent = (e) => setEditClassification ?
     <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
 
@@ -126,6 +128,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     { field: 'F', headerName: 'Fair Share Bidders', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'F', customParam2: 210 } },
     { field: 'M', headerName: 'Meritorious Step Increases', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'M', customParam2: 206 } },
     { field: 'R', headerName: 'Recommended for Tenure', cellRenderer: ClassificationCheckboxComponent, cellRendererParams: { customParam1: 'R', customParam2: 205 } },
+    { field: 'PR', headerName: 'Recommended for Tenure', cellRenderer: PRClassificationCheckboxComponent, cellRendererParams: { customParam1: 'PR', customParam2: 211 } },
     { field: 'T', cellDataType: 'boolean', headerName: 'Tandem Bidder', cellRenderer: TandemCheckboxComponent, cellRendererParams: { customParam1: 'T', customParam2: 185 } },
     { field: 'Ldr', headerName: 'Ldr' },
     { field: 'LocationOrg', headerName: 'Location/Org' },
