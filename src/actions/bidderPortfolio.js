@@ -222,12 +222,6 @@ export function setIsEligible(bool) {
     isEligible: bool,
   };
 }
-export function setIsClient(bool) {
-  return {
-    type: 'BIDDER_PORTFOLIO_IS_CLIENT',
-    isClient: bool,
-  };
-}
 
 export function bidderPortfolioSeasonsFetchData() {
   return (dispatch) => {

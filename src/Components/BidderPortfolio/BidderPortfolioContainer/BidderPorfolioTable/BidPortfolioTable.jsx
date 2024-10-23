@@ -18,8 +18,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const selectedSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
   const isCusp = useSelector(state => state.setIsCusp);
   const isEligible = useSelector(state => state.setIsEligible);
-  const isClient = useSelector(state => state.setIsClient);
-  const isIncExcEnabled = selectedSeasons.length !== 0 || (isCusp || isEligible || isClient);
+  const isIncExcEnabled = selectedSeasons.length !== 0 || (isCusp || isEligible);
 
   const mapObjectToRow = (obj) => ({
     Employee: obj?.shortened_name,
