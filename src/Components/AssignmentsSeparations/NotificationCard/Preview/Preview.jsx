@@ -134,7 +134,7 @@ const Preview = (props) => {
     }
 
     // ------------ Handle OPS ------------
-    
+
     if (!memo) {
       const opsLogData = opsData?.PQRY_OTL_LOG_TM1_O?.[0];
       if (opsLogData) {
