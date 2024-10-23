@@ -72,8 +72,6 @@ const PanelMeetingAgendas = (props) => {
   const genericFilters = useSelector(state => state.filters);
 
   const genericFilters$ = get(genericFilters, 'filters') || [];
-  const bureaus = genericFilters$.find(f => get(f, 'item.description') === 'region');
-  const bureausOptions = uniqBy(sortBy(get(bureaus, 'data'), [(b) => b.short_description]));
   const grades = genericFilters$.find(f => get(f, 'item.description') === 'grade');
   const gradesOptions = uniqBy(get(grades, 'data'), 'code');
   const skills = genericFilters$.find(f => get(f, 'item.description') === 'skill');
@@ -96,7 +94,6 @@ const PanelMeetingAgendas = (props) => {
     includes([orgsLoading, remarksLoading, statusLoading,
       actionLoading, categoryLoading], true);
 
-  const [selectedBureaus, setSelectedBureaus] = useState(get(userSelections, 'selectedBureaus') || []);
   const [selectedOrgs, setSelectedOrgs] = useState(get(userSelections, 'selectedOrgs') || []);
   const [selectedCategories, setSelectedCategories] = useState(get(userSelections, 'selectedCategories') || []);
   const [selectedGrades, setSelectedGrades] = useState(get(userSelections, 'selectedGrades') || []);
@@ -109,26 +106,24 @@ const PanelMeetingAgendas = (props) => {
   const [clearFilters, setClearFilters] = useState(false);
   const [printView, setPrintView] = useState(false);
 
-  const isLoading = genericFiltersIsLoading || panelFiltersIsLoading || agendasIsLoading;
+  const isLoading = genericFiltersIsLoading || panelFiltersIsLoading;
   const getQuery = () => ({
     page,
     limit,
-    ordering: ['panel_date', 'agenda_id'],
+    ordering: ['-panel_date', 'agenda_id'],
     pmipmseqnum: pmSeqNums,
-    // @TODO: add filters
-    // orgs: selectedOrgs.map(orgObject => orgObject.code),
-    // categories: selectedCategories.map(categoryObject => categoryObject.mic_code),
-    // grades: selectedGrades.map(gradeObject => gradeObject.code),
-    // actions: selectedActions.map(actionObject => actionObject.code),
-    // statuses: selectedStatuses.map(statusObject => statusObject.code),
-    // languages: selectedLanguages.map(languageObject => languageObject.code),
-    // remarks: selectedRemarks.map(remarkObject => remarkObject.seq_num),
-    // skills: selectedSkills.map(skillObject => skillObject.code),
-    // text_search: textSearch,
+    orgs: selectedOrgs.map(orgObject => orgObject.code),
+    categories: selectedCategories.map(categoryObject => categoryObject.mic_code),
+    grades: selectedGrades.map(gradeObject => gradeObject.code),
+    actions: selectedActions.map(actionObject => actionObject.code),
+    statuses: selectedStatuses.map(statusObject => statusObject.code),
+    languages: selectedLanguages.map(languageObject => languageObject.code),
+    remarks: selectedRemarks.map(remarkObject => remarkObject.seq_num),
+    skills: selectedSkills.map(skillObject => skillObject.code),
+    freetext: textSearch,
   });
 
   const getCurrentInputs = () => ({
-    selectedBureaus,
     selectedOrgs,
     selectedCategories,
     selectedGrades,
@@ -144,7 +139,6 @@ const PanelMeetingAgendas = (props) => {
 
   const fetchAndSet = () => {
     const filters = [
-      selectedBureaus,
       selectedOrgs,
       selectedCategories,
       selectedGrades,
@@ -171,7 +165,6 @@ const PanelMeetingAgendas = (props) => {
   useEffect(() => {
     fetchAndSet();
   }, [
-    selectedBureaus,
     selectedOrgs,
     selectedCategories,
     selectedGrades,
@@ -231,7 +224,6 @@ const PanelMeetingAgendas = (props) => {
   };
 
   const resetFilters = () => {
-    setSelectedBureaus([]);
     setSelectedOrgs([]);
     setSelectedCategories([]);
     setSelectedGrades([]);
@@ -287,20 +279,7 @@ const PanelMeetingAgendas = (props) => {
             </div>
             <div className="usa-width-one-whole position-search--filters--panel-m-agendas">
               <div className="filter-div">
-                <div className="label">Bureau:</div>
-                <Picky
-                  {...pickyProps}
-                  placeholder="Select Bureau(s)"
-                  value={selectedBureaus}
-                  options={bureausOptions}
-                  onChange={setSelectedBureaus}
-                  valueKey="code"
-                  labelKey="long_description"
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="filter-div">
-                <div className="label">Organization:</div>
+                <div className="label">Location/Org:</div>
                 <Picky
                   {...pickyProps}
                   placeholder="Select Organization(s)"
@@ -426,63 +405,67 @@ const PanelMeetingAgendas = (props) => {
                     onSelectOption={e => setLimit(e.target.value)}
                     disabled={agendasIsLoading}
                   />
-                  { <button onClick={() => setPrintView(true)}>Print View</button> }
-                </div>
+                  { <button onClick={() => setPrintView(true)} disabled={agendasIsLoading}>Print View</button> }                </div>
               </div>
               {
-                agendasByPanelMeeting.map((pm) => {
-                  // Find panel meeting date
-                  const panelMeetingDate = pm.panelMeetingDates.find(pmd => pmd.mdt_code === 'MEET') || DEFAULT_TEXT;
-                  return (
-                    <div className="pma-pm-container" key={pm.pmi_pm_seq_num}>
-                      <div className="pm-header">
-                        {get(pm, 'pmt_code')} {panelMeetingDate !== DEFAULT_TEXT ? format(new Date(panelMeetingDate.pmd_dttm), 'MM/dd/yy') : ''} - {get(pm, 'pms_desc_text')}
-                      </div>
-                      {
-                        isAllCategoriesEmpty(pm.agendas) ? (
-                          <div className="pm-empty-row">No agendas</div>
-                        ) : (
-                          <div className="pm-agendas-container">
+                agendasIsLoading ? <Spinner type="bureau-results" size="medium" /> :
+                  <>
+                    {
+                      agendasByPanelMeeting.map((pm) => {
+                        // Find panel meeting date
+                        const panelMeetingDate = pm.panelMeetingDates.find(pmd => pmd.mdt_code === 'MEET') || DEFAULT_TEXT;
+                        return (
+                          <div className="pma-pm-container" key={pm.pmi_pm_seq_num}>
+                            <div className="pm-header">
+                              {get(pm, 'pmt_code')} {panelMeetingDate !== DEFAULT_TEXT ? format(new Date(panelMeetingDate.pmd_dttm), 'MM/dd/yy') : ''} - {get(pm, 'pms_desc_text')}
+                            </div>
                             {
-                              Object.keys(pm.agendas).map((category) => (
-                                <div key={category} className="category-container">
-                                  <div className="category-header">
-                                    {category}
-                                  </div>
-                                  <div className="agenda-item-row-container">
-                                    {
-                                      pm.agendas[category].length > 0 ? (
-                                        pm.agendas[category].map(agenda => (
-                                          <AgendaItemRow
-                                            agenda={agenda}
-                                            key={agenda.id}
-                                            isCDO={isCDO}
-                                            isPanelMeetingView
-                                          />
-                                        ))
-                                      ) : (
-                                        <div className="ai-empty-row">(No Agendas)</div>
-                                      )
-                                    }
-                                  </div>
+                              isAllCategoriesEmpty(pm.agendas) ? (
+                                <div className="pm-empty-row">No agendas</div>
+                              ) : (
+                                <div className="pm-agendas-container">
+                                  {
+                                    Object.keys(pm.agendas).map((category) => (
+                                      <div key={category} className="category-container">
+                                        <div className="category-header">
+                                          {category}
+                                        </div>
+                                        <div className="agenda-item-row-container">
+                                          {
+                                            pm.agendas[category].length > 0 ? (
+                                              pm.agendas[category].map(agenda => (
+                                                <AgendaItemRow
+                                                  agenda={agenda}
+                                                  key={agenda.id}
+                                                  isCDO={isCDO}
+                                                  isPanelMeetingView
+                                                />
+                                              ))
+                                            ) : (
+                                              <div className="ai-empty-row">(No Agendas)</div>
+                                            )
+                                          }
+                                        </div>
+                                      </div>
+                                    ))
+                                  }
                                 </div>
-                              ))
+                              )
                             }
                           </div>
-                        )
-                      }
+                        );
+                      })
+                    }
+                    <div className="usa-grid-full react-paginate">
+                      <PaginationWrapper
+                        pageSize={limit}
+                        onPageChange={p => setPage(p.page)}
+                        forcePage={page}
+                        totalResults={count}
+                      />
                     </div>
-                  );
-                })
+                  </>
               }
-              <div className="usa-grid-full react-paginate">
-                <PaginationWrapper
-                  pageSize={limit}
-                  onPageChange={p => setPage(p.page)}
-                  forcePage={page}
-                  totalResults={count}
-                />
-              </div>
             </div>
           }
         </div>

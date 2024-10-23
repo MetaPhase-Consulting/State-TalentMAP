@@ -103,7 +103,6 @@ const Preview = (props) => {
     return memoPreview.join('\n');
   };
 
-
   const handleSend = () => {
     const nmSeqNum = note?.NM_SEQ_NUM;
     const type = memo ? 'M' : 'C';
@@ -117,6 +116,7 @@ const Preview = (props) => {
     // ------------ Handle Send ------------
 
     generateXML(cable, getPreviewText(), getCableValue('SUBJECT'));
+    generateHTML(getCableValue, cable?.O_LAST_SENT_DATE, getPreviewText());
     dispatch(sendNotification({
       I_NM_SEQ_NUM: nmSeqNum,
       I_NOTE_TYPE: type,
@@ -200,6 +200,7 @@ const Preview = (props) => {
                   <div className="gal-result">
                     {gal?.map(g => (
                       <div
+                        key={g.GAL_SMTP_EMAIL_ADRS_TEXT}
                         tabIndex={0}
                         role="button"
                         className="gal-result__item clickable"
