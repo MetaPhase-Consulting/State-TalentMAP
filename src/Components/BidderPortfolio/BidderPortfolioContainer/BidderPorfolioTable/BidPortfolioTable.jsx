@@ -112,7 +112,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const PRClassificationCheckboxComponent = (e) => setEditClassification ?
     <CheckBox value={e?.data?.classifications.includes(e.customParam2)} disabled /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
   const ClassificationCheckboxComponent = (e) => setEditClassification ?
-    <input type="checkbox" checked={e?.data?.classifications.includes(e.customParam2)} onChange={() => setClassifications(e)} disabled={false} /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
+    <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={false} /> : <span>{e?.data?.classifications.includes(e.customParam2) ? e.customParam1 : ''}</span>;
 
   const [columnDefs] = useState([
     { field: 'IncExc', pinned: 'left', lockPosition: 'left', headerName: 'Inc/Exc', cellDataType: 'boolean', cellRenderer: IncExcCheckboxComponent },
@@ -176,6 +176,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
         className={'ag-theme-quartz'}
       >
         <AgGridReact
+          getRowNodeId={(data) => data.perdetSeqNumber}
+          suppressScrollOnNewData
           rowData={rows}
           columnDefs={columnDefs}
           onColumnPinned={onColumnPinned}
