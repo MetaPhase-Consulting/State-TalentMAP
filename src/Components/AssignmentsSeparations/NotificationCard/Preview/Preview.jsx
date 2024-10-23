@@ -13,7 +13,7 @@ import Spinner from 'Components/Spinner';
 import Alert from 'Components/Alert';
 import NavTabs from 'Components/NavTabs';
 import InteractiveElement from 'Components/InteractiveElement';
-import { generatePDF, generateSoapXML, generateXML } from '../Common/Utilities';
+import { generateHTML, generatePDF, generateSoapXML, generateXML } from '../Common/Utilities';
 import { createOpsLog, getOpsData, getOpsWsdl } from '../../../../actions/assignmentNotifications';
 
 const useNotificationSend = () => checkFlag('flags.assignment_notification_send');
@@ -134,13 +134,15 @@ const Preview = (props) => {
     }
 
     // ------------ Handle OPS ------------
-
-    const opsLogData = opsData?.PQRY_OTL_LOG_TM1_O?.[0];
-    if (opsLogData) {
-      dispatch(createOpsLog({
-        PV_OTL_TM_DATA_I: generateSoapXML(opsLogData),
-        PV_ETL_SEQ_NBR_I: opsLogData.ETL_SEQ_NUM,
-      }, null));
+    
+    if (!memo) {
+      const opsLogData = opsData?.PQRY_OTL_LOG_TM1_O?.[0];
+      if (opsLogData) {
+        dispatch(createOpsLog({
+          PV_OTL_TM_DATA_I: generateSoapXML(opsLogData),
+          PV_ETL_SEQ_NBR_I: opsLogData.ETL_SEQ_NUM,
+        }, null));
+      }
     }
   };
 
