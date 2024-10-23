@@ -275,3 +275,60 @@ export const generateSoapXML = (log) => {
 
   return xmlStr;
 };
+
+/**
+ * Generates HTML of TM1 Memo according to FSBID format
+ * @param {*} getCableValue helper function to retrieve memo fields
+ * @param {*} lastSentDate last sent date
+ * @param {*} body contents of the memo
+ */
+export const generateHTML = (getCableValue, lastSentDate, body) => (
+  <html lang="en">
+    <head>
+      <title>{getCableValue('SUBJECT')}</title>
+    </head>
+    <body>
+      <div id="AsgMemoHeader" style={{ width: 650, backgroundColor: 'white' }}>
+        <div id="divReport">
+          <div style={{ position: 'absolute', right: 0 }}>
+            <img src={dosSeal} width="90" height="90" alt="DoS Seal" border="0" />
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 600, color: 'navy' }}>
+            <span>MEMORANDUM</span>
+          </div>
+          <div>
+            <span>&nbsp;</span>
+          </div>
+          <div>
+            <span style={{ width: 80 }}>TO:&nbsp;</span>
+            <span>{getCableValue('TO_ADDRESS')}</span>
+          </div>
+          <div>
+            <span>&nbsp;</span>
+          </div>
+          <div>
+            <span style={{ width: 80 }}>FROM:&nbsp;</span>
+            <span>{getCableValue('FROM_ADDRESS')}</span>
+          </div>
+          <div>
+            <span>&nbsp;</span>
+          </div>
+          <div>
+            <span style={{ width: 80 }}>SUBJECT:&nbsp;</span>
+            <span>{getCableValue('SUBJECT')}</span>
+          </div>
+          <div>
+            <span>&nbsp;</span>
+          </div>
+          <div style={{ borderBottom: '2px solid black' }}>
+            <span style={{ width: 80 }}>LAST SENT:&nbsp;</span>
+            <span>{lastSentDate}</span>
+          </div>
+          <div>
+            <span style={{ width: 550, whiteSpace: 'pre-line' }}>{body}</span>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+);
