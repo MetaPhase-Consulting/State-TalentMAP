@@ -135,12 +135,13 @@ const Preview = (props) => {
 
     // ------------ Handle OPS ------------
 
-    generateSoapXML(opsData);
-    dispatch(createOpsLog({
-      PV_NM_SEQ_NUM_I: nmSeqNum,
-      PV_FILE_NAME_I: filename,
-      PV_NOTE_TYPE_I: type,
-    }, null));
+    const opsLogData = opsData?.PQRY_OTL_LOG_TM1_O?.[0];
+    if (opsLogData) {
+      dispatch(createOpsLog({
+        PV_OTL_TM_DATA_I: generateSoapXML(opsLogData),
+        PV_ETL_SEQ_NBR_I: opsLogData.ETL_SEQ_NUM,
+      }, null));
+    }
   };
 
   const getOverlay = () => {
