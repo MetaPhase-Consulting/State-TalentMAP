@@ -456,3 +456,19 @@ export const SEND_MEMO_ERROR = 'There was an issue attempting to send this Assig
 
 export const GET_GAL_ERROR_TITLE = 'GAL Lookup Error';
 export const GET_GAL_ERROR = 'There was an issue attempting this GAL Lookup. Please try again.';
+
+export const GET_OPS_WSDL_ERROR_TITLE = 'OPS WSDL Error';
+export const GET_OPS_WSDL_ERROR = 'There was an issue attempting to retrieve the OPS WSDL. Please try again.';
+
+export const GET_OPS_DATA_ERROR_TITLE = 'OPS Log Data Error';
+export const GET_OPS_DATA_ERROR = 'There was an issue attempting to retrieve OPS Log Data. Please try again.';
+
+export const INSERT_OPS_LOG_SUCCESS_TITLE = 'OPS Log Created';
+export const INSERT_OPS_LOG_SUCCESS = 'This TM1 OPS Log has been successfully created.';
+export const INSERT_OPS_LOG_ERROR_TITLE = 'Create OPS Log Error';
+export const INSERT_OPS_LOG_ERROR = 'There was an issue attempting to create this TM1 OPS Log. Please try again.';
+
+export const UPDATE_OPS_LOG_SUCCESS_TITLE = 'OPS Log Updated';
+export const UPDATE_OPS_LOG_SUCCESS = 'This TM1 OPS Log has been successfully updated.';
+export const UPDATE_OPS_LOG_ERROR_TITLE = 'Update OPS Log Error';
+export const UPDATE_OPS_LOG_ERROR = 'There was an issue attempting to update this TM1 OPS Log. Please try again.';

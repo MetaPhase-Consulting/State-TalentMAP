@@ -105,3 +105,57 @@ export function getGal(state = [], action) {
       return state;
   }
 }
+
+// ================ GET OPS WSDL ================
+
+export function getOpsWsdlErrored(state = false, action) {
+  switch (action.type) {
+    case 'OPS_WSDL_FETCH_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function getOpsWsdlLoading(state = false, action) {
+  switch (action.type) {
+    case 'OPS_WSDL_FETCH_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function getOpsWsdl(state = [], action) {
+  switch (action.type) {
+    case 'OPS_WSDL_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
+
+// ================ GET OPS DATA ================
+
+export function getOpsDataErrored(state = false, action) {
+  switch (action.type) {
+    case 'OPS_DATA_FETCH_ERRORED':
+      return action.hasErrored;
+    default:
+      return state;
+  }
+}
+export function getOpsDataLoading(state = false, action) {
+  switch (action.type) {
+    case 'OPS_DATA_FETCH_LOADING':
+      return action.isLoading;
+    default:
+      return state;
+  }
+}
+export function getOpsData(state = [], action) {
+  switch (action.type) {
+    case 'OPS_DATA_FETCH_SUCCESS':
+      return action.results;
+    default:
+      return state;
+  }
+}
