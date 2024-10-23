@@ -210,6 +210,18 @@ export function setEditClassification(bool) {
     editClassification: bool,
   };
 }
+export function setIsCusp(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_IS_CUSP',
+    isCusp: bool,
+  };
+}
+export function setIsEligible(bool) {
+  return {
+    type: 'BIDDER_PORTFOLIO_IS_ELIGIBLE',
+    isEligible: bool,
+  };
+}
 
 export function bidderPortfolioSeasonsFetchData() {
   return (dispatch) => {

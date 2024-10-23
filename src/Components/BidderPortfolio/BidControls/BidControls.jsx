@@ -10,7 +10,16 @@ import { filter, findIndex, get, includes, isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import Picky from 'react-picky';
 import ListItem from 'Components/BidderPortfolio/BidControls/BidCyclePicker/ListItem';
-import { bidderPortfolioExtraDetailsFetchData, bidderPortfolioFetchDataSuccess, bidderPortfolioSetUnassigned, getClientDatePerdets, setEditClassification, setIsCDOD30, setPanelDateID } from 'actions/bidderPortfolio';
+import { bidderPortfolioExtraDetailsFetchData,
+  bidderPortfolioFetchDataSuccess,
+  bidderPortfolioSetUnassigned,
+  getClientDatePerdets,
+  setEditClassification,
+  setIsCDOD30,
+  setIsCusp,
+  setIsEligible,
+  setPanelDateID,
+} from 'actions/bidderPortfolio';
 import ToggleButton from 'Components/ToggleButton';
 import ResultsPillContainer from '../../ResultsPillContainer/ResultsPillContainer';
 import SelectForm from '../../SelectForm';
@@ -105,6 +114,8 @@ class BidControls extends Component {
       panelClient: (q === 'panel_clients' && this.state.hasSeasons),
     });
     this.props.setEditClassifications(q === 'classification');
+    this.props.isCusp(q === 'cusp_bidders');
+    this.props.isEligible(q === 'eligible_bidders');
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
     } else {
@@ -343,6 +354,8 @@ BidControls.propTypes = {
   bidderPortfolioFetchDataSuccess: PropTypes.func.isRequired,
   setCDOD30: PropTypes.func.isRequired,
   setEditClassifications: PropTypes.func.isRequired,
+  isCusp: PropTypes.func.isRequired,
+  isEligible: PropTypes.func.isRequired,
   setPanelDateID: PropTypes.func.isRequired,
   getClientDatePerdets: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
@@ -372,6 +385,8 @@ export const mapDispatchToProps = dispatch => ({
   setCDOD30: (bool) => dispatch(setIsCDOD30(bool)),
   bidderPortfolioFetchDataSuccess: (results) => dispatch(bidderPortfolioFetchDataSuccess(results)),
   setEditClassifications: (bool) => dispatch(setEditClassification(bool)),
+  isCusp: (bool) => dispatch(setIsCusp(bool)),
+  isEligible: (bool) => dispatch(setIsEligible(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
   getClientDatePerdets: async query => {
     await dispatch(getClientDatePerdets(query));
