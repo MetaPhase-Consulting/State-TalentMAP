@@ -18,7 +18,8 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
   const selectedSeasons = useSelector(state => state.bidderPortfolioSelectedSeasons);
   const isCusp = useSelector(state => state.setIsCusp);
   const isEligible = useSelector(state => state.setIsEligible);
-  const isIncExcEnabled = selectedSeasons.length === 0 && (isCusp || isEligible || '');
+  const isClient = useSelector(state => state.setIsClient);
+  const isIncExcEnabled = selectedSeasons.length !== 0 && (isCusp || isEligible || isClient);
 
   const mapObjectToRow = (obj) => ({
     Employee: obj?.shortened_name,
@@ -61,11 +62,11 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     NumberOfBids: obj?.EMP_ACTIVE_BID_COUNT,
     PanelDate: formatDate(obj?.ASG_PEND_PANEL_DT),
     SCD: formatDate(obj?.EMP_SERVICE_DT),
+    classifications: obj?.classifications,
+    perdetSeqNumber: obj?.perdet_seq_number,
     SendDOSEmail: true,
     IncExc: false,
     SendAltEmail: true,
-    classifications: obj?.classifications,
-    perdetSeqNumber: obj?.perdet_seq_number,
   });
 
   const [rows, setRows] = useState([]);
@@ -107,7 +108,7 @@ const BidPortfolioTable = ({ results, setEditClassification }) => {
     // will complete this later, but this will add the person to the CC recipient list
   };
 
-  const IncExcCheckboxComponent = () => <CheckBox onCheckBoxClick={IncExc} disabled={isIncExcEnabled} />;
+  const IncExcCheckboxComponent = () => <CheckBox onCheckBoxClick={IncExc} disabled={!isIncExcEnabled} />;
   const TandemCheckboxComponent = (e) => <CheckBox value={e?.data?.classifications.includes(e.customParam2)} onCheckBoxClick={() => setClassifications(e)} disabled={e?.data?.T === ''} />;
   const DOSEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={DOSEmail} disabled={e?.data?.DOSEmail === undefined} />;
   const AltEmailCheckboxComponent = (e) => <CheckBox onCheckBoxClick={AltEmail} disabled={e?.data?.AltEmail === undefined} />;

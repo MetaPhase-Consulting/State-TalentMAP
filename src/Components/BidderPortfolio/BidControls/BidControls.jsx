@@ -16,6 +16,7 @@ import { bidderPortfolioExtraDetailsFetchData,
   getClientDatePerdets,
   setEditClassification,
   setIsCDOD30,
+  setIsClient,
   setIsCusp,
   setIsEligible,
   setPanelDateID,
@@ -116,6 +117,7 @@ class BidControls extends Component {
     this.props.setEditClassifications(q === 'classification');
     this.props.isCusp(q === 'cusp_bidders');
     this.props.isEligible(q === 'eligible_bidders');
+    this.props.isClient(q === '');
     if (value === 'skip') {
       this.props.queryParamUpdate({ value: 'skip' });
     } else {
@@ -356,6 +358,7 @@ BidControls.propTypes = {
   setEditClassifications: PropTypes.func.isRequired,
   isCusp: PropTypes.func.isRequired,
   isEligible: PropTypes.func.isRequired,
+  isClient: PropTypes.func.isRequired,
   setPanelDateID: PropTypes.func.isRequired,
   getClientDatePerdets: PropTypes.func.isRequired,
   unassignedSelection: PropTypes.arrayOf(PropTypes.shape({})),
@@ -387,6 +390,7 @@ export const mapDispatchToProps = dispatch => ({
   setEditClassifications: (bool) => dispatch(setEditClassification(bool)),
   isCusp: (bool) => dispatch(setIsCusp(bool)),
   isEligible: (bool) => dispatch(setIsEligible(bool)),
+  isClient: (bool) => dispatch(setIsClient(bool)),
   setPanelDateID: (id) => dispatch(setPanelDateID(id)),
   getClientDatePerdets: async query => {
     await dispatch(getClientDatePerdets(query));

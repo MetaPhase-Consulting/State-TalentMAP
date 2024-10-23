@@ -69,6 +69,15 @@ export function setIsEligible(state = false, action) {
   }
 }
 
+export function setIsClient(state = false, action) {
+  switch (action.type) {
+    case 'BIDDER_PORTFOLIO_IS_CLIENT':
+      return action.isClient;
+    default:
+      return state;
+  }
+}
+
 export function bidderPortfolioSeasons(state = [], action) {
   switch (action.type) {
     case 'BIDDER_PORTFOLIO_SEASONS_SUCCESS':
