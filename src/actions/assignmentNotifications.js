@@ -13,6 +13,14 @@ import { toastError, toastSuccess } from './toast';
 import { convertQueryToString } from '../utilities';
 import {
   GET_GAL_ERROR, GET_GAL_ERROR_TITLE, GET_MEMO_ERROR, GET_MEMO_ERROR_TITLE,
+  GET_OPS_DATA_ERROR,
+  GET_OPS_DATA_ERROR_TITLE,
+  GET_OPS_WSDL_ERROR,
+  GET_OPS_WSDL_ERROR_TITLE,
+  INSERT_OPS_LOG_ERROR,
+  INSERT_OPS_LOG_ERROR_TITLE,
+  INSERT_OPS_LOG_SUCCESS,
+  INSERT_OPS_LOG_SUCCESS_TITLE,
   REBUILD_MEMO_ERROR, REBUILD_MEMO_ERROR_TITLE, REBUILD_MEMO_SUCCESS, REBUILD_MEMO_SUCCESS_TITLE,
   REBUILD_NOTIFICATION_ERROR, REBUILD_NOTIFICATION_ERROR_TITLE,
   REBUILD_NOTIFICATION_SUCCESS, REBUILD_NOTIFICATION_SUCCESS_TITLE,
@@ -20,6 +28,10 @@ import {
   SEND_NOTIFICATION_ERROR, SEND_NOTIFICATION_ERROR_TITLE,
   SEND_NOTIFICATION_SUCCESS, SEND_NOTIFICATION_SUCCESS_TITLE,
   UPDATE_MEMO_ERROR, UPDATE_MEMO_ERROR_TITLE, UPDATE_MEMO_SUCCESS, UPDATE_MEMO_SUCCESS_TITLE,
+  UPDATE_OPS_LOG_ERROR,
+  UPDATE_OPS_LOG_ERROR_TITLE,
+  UPDATE_OPS_LOG_SUCCESS,
+  UPDATE_OPS_LOG_SUCCESS_TITLE,
 } from '../Constants/SystemMessages';
 import { history } from '../store';
 
@@ -508,8 +520,8 @@ export function getOpsWsdl(query = {}) {
             dispatch(getOpsWsdlErrored(true));
             dispatch(getOpsWsdlLoading(false));
             dispatch(toastError(
-              GET_GAL_ERROR,
-              GET_GAL_ERROR_TITLE,
+              GET_OPS_WSDL_ERROR,
+              GET_OPS_WSDL_ERROR_TITLE,
             ));
           });
         } else {
@@ -571,8 +583,8 @@ export function getOpsData(query = {}) {
             dispatch(getOpsDataErrored(true));
             dispatch(getOpsDataLoading(false));
             dispatch(toastError(
-              GET_GAL_ERROR,
-              GET_GAL_ERROR_TITLE,
+              GET_OPS_DATA_ERROR,
+              GET_OPS_DATA_ERROR_TITLE,
             ));
           });
         } else {
@@ -581,38 +593,6 @@ export function getOpsData(query = {}) {
             dispatch(getOpsDataErrored(false));
             dispatch(getOpsWsdlLoading(true));
           });
-        }
-      });
-  };
-}
-
-// ================ CREATE OPS LOG ================
-
-let cancelCreateOpsLog;
-export function createOpsLog(data, onSuccess) {
-  return (dispatch) => {
-    if (cancelCreateOpsLog) {
-      cancelCreateOpsLog('cancel');
-    }
-    api()
-      .post('/fsbid/notification/ops/create/', data, {
-        cancelToken: new CancelToken((c) => { cancelCreateOpsLog = c; }),
-      })
-      .then(() => {
-        dispatch(toastSuccess(
-          UPDATE_NOTIFICATION_SUCCESS,
-          UPDATE_NOTIFICATION_SUCCESS_TITLE,
-        ));
-        if (onSuccess) {
-          onSuccess();
-        }
-      })
-      .catch((err) => {
-        if (err?.message !== 'cancel') {
-          dispatch(toastError(
-            UPDATE_NOTIFICATION_ERROR,
-            UPDATE_NOTIFICATION_ERROR_TITLE,
-          ));
         }
       });
   };
@@ -632,8 +612,8 @@ export function updateOpsLog(data, onSuccess) {
       })
       .then(() => {
         dispatch(toastSuccess(
-          UPDATE_MEMO_SUCCESS,
-          UPDATE_MEMO_SUCCESS_TITLE,
+          UPDATE_OPS_LOG_SUCCESS,
+          UPDATE_OPS_LOG_SUCCESS_TITLE,
         ));
         if (onSuccess) {
           onSuccess();
@@ -642,8 +622,52 @@ export function updateOpsLog(data, onSuccess) {
       .catch((err) => {
         if (err?.message !== 'cancel') {
           dispatch(toastError(
-            UPDATE_NOTIFICATION_ERROR,
-            UPDATE_NOTIFICATION_ERROR_TITLE,
+            UPDATE_OPS_LOG_ERROR,
+            UPDATE_OPS_LOG_ERROR_TITLE,
+          ));
+        }
+      });
+  };
+}
+
+// ================ CREATE OPS LOG ================
+
+let cancelCreateOpsLog;
+export function createOpsLog(data, onSuccess) {
+  return (dispatch) => {
+    if (cancelCreateOpsLog) {
+      cancelCreateOpsLog('cancel');
+    }
+    api()
+      .post('/fsbid/notification/ops/create/', data, {
+        cancelToken: new CancelToken((c) => { cancelCreateOpsLog = c; }),
+      })
+      .then((response) => {
+        dispatch(toastSuccess(
+          INSERT_OPS_LOG_SUCCESS,
+          INSERT_OPS_LOG_SUCCESS_TITLE,
+        ));
+
+        // Handle Post Insertion Update to Metadata
+        let submitMsg = response.PCUR_MESSAGE_O?.[0];
+        if (response.PV_RETURN_O === 0 && !submitMsg) {
+          submitMsg = 'SUCCESSFUL CALL OPS Web Service';
+        }
+        dispatch(updateOpsLog({
+          PV_OTL_ID_I: response.PV_OTL_ID_O,
+          PV_OTL_SUBMIT_RETURN_CODE_I: response.PV_RETURN_O,
+          PV_OTL_SUBMIT_MESSAGE_I: submitMsg || 'No Message',
+        }));
+
+        if (onSuccess) {
+          onSuccess();
+        }
+      })
+      .catch((err) => {
+        if (err?.message !== 'cancel') {
+          dispatch(toastError(
+            INSERT_OPS_LOG_ERROR,
+            INSERT_OPS_LOG_ERROR_TITLE,
           ));
         }
       });
