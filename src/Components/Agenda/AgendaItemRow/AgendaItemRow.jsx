@@ -21,7 +21,6 @@ const AgendaItemRow = props => {
   const userRole = isCDO ? 'cdo' : 'ao';
   const perdet$ = perdet || get(agenda, 'perdet');
   const publicProfileLink = `/profile/public/${perdet$}${!isCDO ? '/ao' : ''}`;
-
   const userName = agenda?.full_name ?? '';
   const userSkill = agenda?.skills?.join(', ') || 'None Listed';
   const userLanguages = agenda?.languages?.length ? agenda.languages.map(
@@ -55,7 +54,7 @@ const AgendaItemRow = props => {
         <div className={`ai-history-row agenda-border-row--${agendaStatus} `}>
           <div className="ai-history-status">
             <div className={`agenda-tag--${agendaStatus} pmi-official-item-number`}>
-              {isPanelMeetingView && agenda?.pmi_official_item_num}
+              {isPanelMeetingView && agenda.pmi_official_item_num ? agenda.pmi_official_item_num : '-'}
             </div>
             <div className={`status-tag agenda-tag--${agendaStatus}`}>
               {get(agenda, 'status_full') || 'Default'}
