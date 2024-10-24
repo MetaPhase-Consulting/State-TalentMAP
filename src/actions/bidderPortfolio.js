@@ -461,8 +461,8 @@ export function getClientPerdets(query = {}) {
         if (data.length === 0) {
           dispatch(bidderPortfolioLastQuery(secondQueryString, 0, secondEndpoint));
           dispatch(bidderPortfolioFetchDataSuccess({ results: [], count: '0' }));
-          dispatch(bidderPortfolioHasErrored(false));
-          dispatch(bidderPortfolioIsLoading(false));
+          // dispatch(bidderPortfolioHasErrored(false));
+          // dispatch(bidderPortfolioIsLoading(false));
           return;
         }
 
